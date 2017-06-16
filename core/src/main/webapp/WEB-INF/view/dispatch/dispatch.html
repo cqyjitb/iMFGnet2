@@ -1,0 +1,300 @@
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"><!DOCTYPE html>
+    <title>扫码页面</title>
+<!--    <Script src="${base.contextPath}/lib/IE9.js"></Script>-->
+    <style type="text/css">
+
+        #login-area{
+            width:240px;
+            height:320px;
+
+        }
+        #close{
+            width:40px;
+            height:20px;
+            background-color: #A1A6A9;
+            float: right;
+            font-size: small;
+            font-family: "微软雅黑";
+        }
+        #text{
+            width:100%;
+            height:100%;
+            float: left;
+            font-size: medium;
+            font-family: "微软雅黑";
+        }
+        #mask{
+            background-color: #434343;
+            opacity:0.5;
+            filter: alpha(opacity=50);
+            position:absolute;
+            left:0;
+            top:0;
+            z-index:1000;
+        }
+        #login{
+            background-color:white;
+            position:fixed;
+            z-index:1001;
+        }
+        #login{
+            border-radius: 5px;
+            behavior: url(ie-css3.htc) /*css3圆角兼容IE6*/
+        }
+        #msga{
+            width:200px;
+            height:30px;
+            background-color:#F5F1DD;
+            border-radius: 5px;
+        }
+        #msg0{
+            width:200px;
+            height:60px;
+        }
+        #msg1{
+            width:200px;
+            height:30px;
+        }
+        #msg2{
+            width:200px;
+            height:1px;
+            background-color:#ccc;
+        }
+        #msg3{
+            width:200px;
+            height:53px;
+        }
+        #msg4{
+            width:200px;
+            height:1px;
+            background-color:#ccc;
+        }
+        #msg5{
+            width:200px;
+            height:5px;
+        }
+        #msg6{
+            width:200px;
+            height:30px;
+        }
+        #msg7{
+            width:150px;
+            height:30px;
+            float: left;
+        }
+        #close1{
+            width:40px;
+            height:20px;
+            float: left;
+            background-color:#169bd5;
+        }
+
+    </style>
+    <script>
+        Date.prototype.format = function(fmt) {
+            var o = {
+                "M+" : this.getMonth()+1,                 //月份
+                "d+" : this.getDate(),                    //日
+                "h+" : this.getHours(),                   //小时
+                "m+" : this.getMinutes(),                 //分
+                "s+" : this.getSeconds(),                 //秒
+                "q+" : Math.floor((this.getMonth()+3)/3), //季度
+                "S"  : this.getMilliseconds()             //毫秒
+            };
+            if(/(y+)/.test(fmt)) {
+                fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
+            }
+            for(var k in o) {
+                if(new RegExp("("+ k +")").test(fmt)){
+                    fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
+                }
+            }
+            return fmt;
+        }
+
+        window.onload=function(){
+
+            var oBtn=document.getElementById("btnLogin");
+            //点击登录按钮
+            oBtn.onclick=function(){
+                openNewD();
+                return false;
+            }
+
+            var oIpt=document.getElementById("barcode");
+            oIpt.onpropertychange=function () {
+                //oIpt.onpropertychange=function () {
+                document.getElementById("order").value = document.getElementById("barcode").value;
+                var strBarcode = document.getElementById("barcode").value;
+                var lenbracode = strBarcode.length;
+                if (lenbracode >= 12){
+                    document.getElementById("order").value = strBarcode.substring(0,6);
+                    document.getElementById("operation").value = strBarcode.substring(lenbracode-4,lenbracode);
+                } else {
+                    document.getElementById("order").value = "";
+                    document.getElementById("operation").value = "";
+                }
+
+            }
+            oIpt.focus();
+
+            var oPstd = document.getElementById("postdate");
+            oPstd.onblur=function () {
+                var strPostDate = oPstd.options[oPstd.selectedIndex].value;
+                document.cookie = "postdate="+strPostDate;
+            }
+
+            var today = new Date().format("yyyy-MM-dd");
+            oPstd.options[1].value=today;
+            oPstd.options[1].innerHTML=today;
+            var yesterdayDate = new Date();
+            yesterdayDate.setDate(yesterdayDate.getDate()-1);
+            var yesterday = yesterdayDate.format("yyyy-MM-dd");
+            oPstd.options[0].value=yesterday;
+            oPstd.options[0].innerHTML=yesterday;
+
+            var arr,reg=new RegExp("(^| )"+"postdate"+"=([^;]*)(;|$)");
+            if(arr=document.cookie.match(reg)){
+                var postdate = arr[2];
+                var lenOptions = oPstd.options.length;
+                for(var i=0 ; i<lenOptions ; i++){
+                    if(oPstd.options[i].value == postdate){
+                        oPstd.options[i].selected = true;
+                    }
+                }
+            }
+
+        }
+        function openNewD() {
+            var oMaskD=document.createElement("div");
+            oMaskD.id="mask";
+            oMaskD.style.height="320px";
+            oMaskD.style.width="240px";
+            document.body.appendChild(oMaskD);
+
+
+            var oLoginD=document.createElement("div");
+            oLoginD.id="login";
+            oLoginD.style.height="120px";
+            oLoginD.style.width="200px";
+            oLoginD.style.top="150px";
+            oLoginD.style.left="20px";
+
+            oLoginD.innerHTML="<div class='loginCon'>"
+                +"<div id='msga'>确认</div>"
+                +"<div id='msg0'></div>"
+                +"<div id='msg6'>"
+                    /*                +"<div id='msg7'></div>"
+                     +"<div id='close1'>关闭</div>"*/
+                +"<button id='click1' style='float: right;width: auto;background-color: white'>取消</button>"
+                +"<button id='click2' style='float: right;width: auto;background-color: white'>确定</button>"
+                +"</div>"
+                +"</div>";
+
+            document.body.appendChild(oLoginD);
+
+            /*            var oClose=document.getElementById("close1");*/
+
+            var oClose1=document.getElementById("click1");
+
+            var oClose2=document.getElementById("click2");
+
+            //点击登陆框以外的区域也可以关闭登陆框
+            /*            oClose.onclick=function(){
+             document.body.removeChild(oLoginD);
+             document.body.removeChild(oMaskD);
+             };*/
+            oClose1.onclick=function(){
+                document.body.removeChild(oLoginD);
+                document.body.removeChild(oMaskD);
+            };
+            oClose2.onclick=function(){
+                document.body.removeChild(oLoginD);
+                document.body.removeChild(oMaskD);
+            };
+        }
+        function openNew(){
+            //获取页面的高度和宽度
+            var sWidth=document.body.scrollWidth;
+            var sHeight=document.body.scrollHeight;
+
+            //获取页面的可视区域高度和宽度
+            var wHeight=document.documentElement.clientHeight;
+
+            //弹出框背景色  灰色
+            var oMask=document.createElement("div");
+            oMask.id="mask";
+            oMask.style.height=sHeight+"px";
+            oMask.style.width=sWidth+"px";
+            document.body.appendChild(oMask);
+
+            //弹出框内容div
+            var oLogin=document.createElement("div");
+            oLogin.id="login";
+            oLogin.innerHTML="<div class='loginCon'><div id='close'>关闭</div><br/>"
+                +"<div id='text'> "
+                +"弹出窗口显示此内容"
+                +"</br>"
+                +"可在html页面中修改内容"
+                +"</div>"
+                +"</div>";
+
+            oLogin.style.height=sHeight/2+"px";
+            oLogin.style.width=sWidth/2+"px";
+
+            document.body.appendChild(oLogin);
+
+
+            //获取登陆框的宽和高
+            var dHeight=oLogin.offsetHeight;
+            var dWidth=oLogin.offsetWidth;
+            //设置登陆框的left和top
+            oLogin.style.left=sWidth/2-dWidth/2+"px";
+            oLogin.style.top=wHeight/2-dHeight/2+"px";
+
+            //点击关闭按钮
+            var oClose=document.getElementById("close");
+
+            //点击登陆框以外的区域也可以关闭登陆框
+            oClose.onclick=function(){
+                document.body.removeChild(oLogin);
+                document.body.removeChild(oMask);
+            };
+
+        }
+
+    </script>
+</head>
+<body>
+<div id="login-area">
+    <div style="width: 240px;height: 20px">
+        <div style="width:40px;height:20px;float: left;background-color:#169bd5;top: 0px">登录</div>
+    </div>
+    <div style="width: 240px;height: 240px">
+        <input id="barcode" style="font-size:10px;width: 200px;height: 20px" type="text"><br>
+        <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">过账日期</label><select id="postdate"  style="font-size:10px;width: 120px;height: 20px">
+        <option></option>
+        <option></option>
+    </select><br>
+        <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">订单号</label><input id="order" disabled="true" value="10010" style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" type="text"><br>
+        <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">工序</label><input id="operation" disabled="true" value="0010" style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" type="text"><br>
+        <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">合格数量</label><input style="font-size:10px;width: 120px;height: 20px" type="text"><br>
+        <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">工废数量</label><input style="font-size:10px;width: 120px;height: 20px" type="text"><br>
+        <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">料废数量</label><input style="font-size:10px;width: 120px;height: 20px" type="text"><br>
+        <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">班次</label><input style="font-size:10px;width: 120px;height: 20px" type="text"><br>
+        <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">生产线</label><input style="font-size:10px;width: 120px;height: 20px" type="text"><br>
+        <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">模号</label><input style="font-size:10px;width: 120px;height: 20px" type="text"><br>
+        <!--<button id="btnLogin" style="width: auto" hidefocus="true" class="login-btn">确认</button>-->
+    </div>
+    <div style="width: 240px;height: 30px">
+
+        <div style="width:50px;height:20px;float: left;"><button id="btnLogin" style="width: auto" hidefocus="true" class="login-btn" >确认</button></div>
+        <div style="font-size:12px;width:80px;height:20px;float: left;background-color:#169bd5;">其他信息</div>
+    </div>
+</div>
+
+</body>
+</html>
