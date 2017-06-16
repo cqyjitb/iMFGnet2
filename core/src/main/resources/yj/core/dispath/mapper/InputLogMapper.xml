@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.dispath.mapper.InputLogMapper">
+    <resultMap id="BaseResultMap" type="yj.core.dispath.dto.InputLog">
+        <result column="id" property="id" jdbcType="DECIMAL" />
+        <result column="barcode" property="barcode" jdbcType="VARCHAR" />
+        <result column="orderno" property="orderno" jdbcType="VARCHAR" />
+        <result column="dispatch" property="dispatch" jdbcType="VARCHAR" />
+        <result column="operation" property="operation" jdbcType="VARCHAR" />
+        <result column="yeild" property="yeild" jdbcType="DECIMAL" />
+        <result column="work_scrap" property="workScrap" jdbcType="DECIMAL" />
+        <result column="row_scrap" property="rowScrap" jdbcType="DECIMAL" />
+        <result column="classno" property="classno" jdbcType="VARCHAR" />
+        <result column="classgrp" property="classgrp" jdbcType="VARCHAR" />
+        <result column="shop_code" property="shopCode" jdbcType="VARCHAR" />
+        <result column="line" property="line" jdbcType="VARCHAR" />
+        <result column="model_no" property="modelNo" jdbcType="VARCHAR" />
+        <result column="posting_date" property="postingDate" jdbcType="DATE" />
+        <result column="attr1" property="attr1" jdbcType="VARCHAR" />
+        <result column="attr2" property="attr2" jdbcType="VARCHAR" />
+        <result column="attr3" property="attr3" jdbcType="VARCHAR" />
+        <result column="attr4" property="attr4" jdbcType="VARCHAR" />
+        <result column="attr5" property="attr5" jdbcType="VARCHAR" />
+        <result column="attr6" property="attr6" jdbcType="VARCHAR" />
+        <result column="attr7" property="attr7" jdbcType="VARCHAR" />
+        <result column="attr8" property="attr8" jdbcType="VARCHAR" />
+        <result column="attr9" property="attr9" jdbcType="VARCHAR" />
+        <result column="attr10" property="attr10" jdbcType="VARCHAR" />
+        <result column="attr11" property="attr11" jdbcType="VARCHAR" />
+        <result column="attr12" property="attr12" jdbcType="VARCHAR" />
+        <result column="attr13" property="attr13" jdbcType="VARCHAR" />
+        <result column="attr14" property="attr14" jdbcType="VARCHAR" />
+        <result column="attr15" property="attr15" jdbcType="VARCHAR" />
+
+    </resultMap>
+
+    <insert id="insertInputLog" parameterType="yj.core.dispath.dto.InputLog">
+        INSERT INTO confirmation_input_log(id,barcode,orderno,dispatch,
+        operation,yeild,work_scrap,row_scrap,classno,classgrp,shop_code,line,model_no,posting_date)
+        VALUES (#{id},#{barcode}, #{orderno},#{dispatch},
+        #{operation},#{yeild},#{workScrap},#{rowScrap},#{classno},#{classgrp},#{shopCode},#{line},#{modelNo},#{postingDate})
+    </insert>
+
+    <update id="updateInputLog" parameterType="yj.core.dispath.dto.InputLog">
+        UPDATE confirmation_input_log
+        <set>
+        <if test="barcode!=null">
+            barcode = #{barcode;};
+        </if>
+
+
+
+        </set>
+        WHERE id = #{id}
+    </update>
+    <select id="qureyall" parameterType="yj.core.dispath.dto.InputLog">
+
+
+    </select>
+
+</mapper>
