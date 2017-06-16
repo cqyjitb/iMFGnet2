@@ -1,0 +1,52 @@
+[33mcommit 95f47be2254030046748d9614082bf86ec71e9ca[m
+Author: 袁国庆 <guoqing.yuan@hand-china.com>
+Date:   Fri Jun 16 10:25:19 2017 +0800
+
+    修改文件夹名字 dispatch
+
+[33mcommit 80e9583a0e5f2248b0e4e223a64b3942ec5e0ced[m
+Author: 袁国庆 <guoqing.yuan@hand-china.com>
+Date:   Fri Jun 16 10:18:19 2017 +0800
+
+    三表DTO，前台展示，测试界面，测试方法,报工界面
+
+[33mcommit e073a7bba65bf979391b318fda6a52381621c56b[m
+Merge: 70446f8 7fcca4a
+Author: tangfeng <feng.tang@hand-china.com>
+Date:   Fri Jun 16 10:01:47 2017 +0800
+
+    Merge remote-tracking branch 'origin/h13857' into develop
+    
+    # Conflicts:
+    #       core/src/main/webapp/WEB-INF/view/dispatch/dispatch.html
+
+[33mcommit 70446f899faa67eba890c037ead27074d2e2d056[m
+Merge: 8d47ead 207cc22
+Author: tangfeng <feng.tang@hand-china.com>
+Date:   Fri Jun 16 10:00:51 2017 +0800
+
+    Merge remote-tracking branch 'origin/h13532' into develop
+
+[33mcommit 7fcca4a6e0ac6f2af8b98c0ce3a4bc342de407f9[m
+Author: 黎博 <bo.li03@hand-china.com>
+Date:   Fri Jun 16 09:37:22 2017 +0800
+
+    上传合并代码
+
+[33mcommit 207cc228e07aded5b1c4030f65425c99d310b952[m
+Author: 汤福荣 <furong.tang@hand-china.com>
+Date:   Fri Jun 16 00:33:16 2017 +0800
+
+    webservice connector test
+
+[33mcommit 8d47ead5071596c979823f846e68c31054b2f006[m
+Author: REBS-HP\REBS <rebschin@gmail.com>
+Date:   Thu Jun 15 23:48:39 2017 +0800
+
+    生产报工PDA界面
+
+[33mcommit 44d8c60dcec37d40cd62e44f6e02924f9409ac82[m
+Author: tangfeng <feng.tang@hand-china.com>
+Date:   Thu Jun 15 23:25:13 2017 +0800
+
+    first commit

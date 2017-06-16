@@ -1,4 +1,4 @@
-package yj.core.dispath.controllers;
+package yj.core.dispatch.controllers;
 
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.controllers.BaseController;
@@ -9,8 +9,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import yj.core.dispath.dto.Log;
-import yj.core.dispath.service.ILogService;
+import yj.core.dispatch.dto.Log;
+import yj.core.dispatch.service.ILogService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;

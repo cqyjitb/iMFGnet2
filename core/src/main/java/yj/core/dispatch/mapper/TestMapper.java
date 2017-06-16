@@ -1,7 +1,7 @@
-package yj.core.dispath.mapper;
+package yj.core.dispatch.mapper;
 
 import com.hand.hap.mybatis.common.Mapper;
-import yj.core.dispath.dto.Test;
+import yj.core.dispatch.dto.Test;
 
 import java.util.List;
 

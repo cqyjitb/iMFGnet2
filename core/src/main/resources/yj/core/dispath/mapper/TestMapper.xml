@@ -2,7 +2,7 @@
 
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="yj.core.dispath.mapper.TestMapper">
-    <resultMap id="BaseResultMap" type="yj.core.dispath.dto.Test">
+    <resultMap id="BaseResultMap" type="yj.core.dispatch.dto.Test">
         <result column="id" property="id" jdbcType="DECIMAL" />
         <result column="test_one" property="testOne" jdbcType="VARCHAR" />
         <result column="test_two" property="testTwo" jdbcType="DECIMAL" />
@@ -10,7 +10,7 @@
         <result column="test_four" property="testFour" jdbcType="DATE" />
     </resultMap>
 
-    <insert id="insertTest" parameterType="yj.core.dispath.dto.Test">
+    <insert id="insertTest" parameterType="yj.core.dispatch.dto.Test">
         INSERT INTO confirmation_test(id,test_one,test_two,test_three,
         test_four)
         VALUES (#{id},#{testOne}, #{testTwo},#{testThree},#{testFour})

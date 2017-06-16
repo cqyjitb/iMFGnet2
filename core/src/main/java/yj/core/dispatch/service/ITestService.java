@@ -1,9 +1,9 @@
-package yj.core.dispath.service;
+package yj.core.dispatch.service;
 
 import com.hand.hap.core.IRequest;
 import com.hand.hap.core.ProxySelf;
 import com.hand.hap.system.service.IBaseService;
-import yj.core.dispath.dto.Test;
+import yj.core.dispatch.dto.Test;
 
 import java.util.List;
 

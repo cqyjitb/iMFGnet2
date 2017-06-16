@@ -1,11 +1,11 @@
-package yj.core.dispath.controllers;
+package yj.core.dispatch.controllers;
 
 import org.springframework.stereotype.Controller;
 import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.dto.ResponseData;
-import yj.core.dispath.dto.Test;
-import yj.core.dispath.service.ITestService;
+import yj.core.dispatch.dto.Test;
+import yj.core.dispatch.service.ITestService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
