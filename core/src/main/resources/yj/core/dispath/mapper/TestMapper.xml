@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.dispath.mapper.TestMapper">
+    <resultMap id="BaseResultMap" type="yj.core.dispatch.dto.Test">
+        <result column="id" property="id" jdbcType="DECIMAL" />
+        <result column="test_one" property="testOne" jdbcType="VARCHAR" />
+        <result column="test_two" property="testTwo" jdbcType="DECIMAL" />
+        <result column="test_three" property="testThree" jdbcType="VARCHAR" />
+        <result column="test_four" property="testFour" jdbcType="DATE" />
+    </resultMap>
+
+    <insert id="insertTest" parameterType="yj.core.dispatch.dto.Test">
+        INSERT INTO confirmation_test(id,test_one,test_two,test_three,
+        test_four)
+        VALUES (#{id},#{testOne}, #{testTwo},#{testThree},#{testFour})
+    </insert>
+
+    <!--批量修改-->
+    <update id="updateTest" parameterType="java.util.List">
+        UPDATE confirmation_test
+        <foreach collection="list" item="m" separator="," open="" close="" >
+            set
+                test_one = #{m.testOne},
+
+                test_two = #{m.testTwo},
+
+                test_three = #{m.testThree},
+
+                test_four = #{m.testFour}
+
+                 WHERE id = #{m.id}
+
+        </foreach>
+    </update>
+
+    <!--批量增加-->
+    <insert id="insertTestMany" parameterType="java.util.List" >
+        INSERT INTO confirmation_test (id,test_one,test_two,test_three,
+        test_four)  VALUES
+        <foreach collection="list" item="m" separator="," open="" close="" >
+            (#{m.id},#{m.testOne},#{m.testTwo},#{m.testThree},#{m.testFour})
+        </foreach>
+    </insert>
+
+    <!--删除-->
+    <delete id="deleteById" parameterType="java.lang.Long">
+      DELETE FROM confirmation_test
+      WHERE id=#{id};
+
+    </delete>
+</mapper>
