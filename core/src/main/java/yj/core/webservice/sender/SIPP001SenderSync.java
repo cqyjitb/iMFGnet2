@@ -2,7 +2,7 @@
 package yj.core.webservice.sender;
 
 
-import yj.core.webservice.receiver.DTPP001RecRes;
+import yj.core.webservice.receiver.DTPP001SendRes;
 
 import javax.jws.WebMethod;
 import javax.jws.WebParam;
@@ -35,7 +35,7 @@ public interface SIPP001SenderSync {
      */
     @WebMethod(operationName = "SI_PP001_Sender_Sync", action = "http://sap.com/xi/WebService/soap1.1")
     @WebResult(name = "MT_PP001_Send_Res", targetNamespace = "http://www.cq-yj.com/HAP/PP001/Receiver", partName = "MT_PP001_Send_Res")
-    public DTPP001RecRes siPP001SenderSync(
+    public DTPP001SendRes siPP001SenderSync(
             @WebParam(name = "MT_PP001_Send_Req", targetNamespace = "http://www.cq-yj.com/HAP/PP001/Receiver", partName = "MT_PP001_Send_Req")
                     DTPP001SendReq mtPP001SendReq);
 
