@@ -30,25 +30,25 @@
 
 
     <root level="DEBUG">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT"/>
         <!-- <appender-ref ref="stash" /> -->
     </root>
     <logger name="org.activiti.engine" level="INFO" additivity="false">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT"/>
     </logger>
     <logger name="org.activiti.spring.SpringTransactionInterceptor" level="INFO" additivity="false">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT"/>
     </logger>
     <logger name="org.apache.ibatis.transaction.managed.ManagedTransaction" level="INFO" additivity="false">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT"/>
     </logger>
     <logger name="org.quartz.core.QuartzSchedulerThread" level="INFO" additivity="false">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT"/>
     </logger>
     <logger name="org.springframework.scheduling.quartz.LocalDataSourceJobStore" level="WARN" additivity="false">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT"/>
     </logger>
     <logger name="org.quartz.impl.jdbcjobstore.StdRowLockSemaphore" level="INFO" additivity="false">
-        <appender-ref ref="STDOUT" />
+        <appender-ref ref="STDOUT"/>
     </logger>
 </configuration>

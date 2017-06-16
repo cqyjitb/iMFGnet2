@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>渝江压铸登录</title>
+    <script src="${base.contextPath}/resources/js/yj-pda.js"  type="text/javascript"/>
+    <script src="${base.contextPath}/lib/assets/global/plugins/jquery.min.js" type="text/javascript"></script>
+</head>
+    <style>
+        #login {
+            width:240px;
+            height:320px;
+        }
+        #login #bord{
+
+            height: 10px;
+
+        }
+        #login #logo{
+            width :190px;
+            height: 80px;
+            margin:0 auto;
+            text-align: center;
+            background-color: #6BCBCA;
+        }
+        #login #input{
+            width :190px;
+            height: 140px;
+            margin:0 auto;
+
+            background-color: #EEEEEE;
+        }
+        #login #msg_name{
+            height: 30px;
+
+        }
+        #login #msg_pwd{
+            height: 30px;
+
+        }
+        #login #msg{
+            height: 30px;
+            text-align: center;
+        }
+        #login #input #login_name{
+            text-align: center;
+        }
+        #login  #input #login_pwd{
+            text-align: center;
+        }
+        #login #login_btn{
+            width :190px;
+            height: 60px;
+            margin:0 auto;
+            background-color: #C0C2CC;
+            text-align: center;
+        }
+        #login #btn{
+            width :120px;
+            height: 30px;
+            margin-top: 15px;
+            background-color: #0D8EDC;
+            color: #FFFFFF;
+            display: inline-block;
+            padding: 5px 10px 6px;
+            text-decoration: none;
+            -webkit-border-radius: 3px;
+            border: none ;
+            position: relative;
+            cursor: pointer
+        }
+
+    </style>
+    <body >
+    <div id="login">
+        <div id="bord"></div>
+        <div id="logo"><img src="${base.contextPath}/resources/images/yjlogo.jpg" style="width: 80px;height: 50px;margin-top: 15px;"/></div>
+        <div id="input">
+            <div id="msg_name"></div>
+            <div id="login_name">
+                <span>用 户</span>
+                <input id = "usn"type="text" style="width: 120px;height: 20px;"/>
+            </div>
+            <div id="msg_pwd"></div>
+            <div id="login_pwd">
+                <span>密 码</span>
+                <input id="pwd" type="password" style="width: 120px;height: 20px;"/>
+            </div>
+            <div id="msg"></div>
+        </div>
+
+        <div id="login_btn">
+            <button id="btn" onclick="submit()">登 陆</button>
+        </div>
+
+    </div>
+    <script type="text/javascript">
+        function submit(){
+            document.getElementById("msg_name").innerHTML ="";
+            document.getElementById("msg_pwd").innerHTML ="";
+            document.getElementById("msg").innerHTML ="";
+            var userName = document.getElementById("usn").value;
+            var password = document.getElementById("pwd").value;
+            if(userName == ""){
+                document.getElementById("msg_name").innerHTML = "<span style='font-size: 13px; margin-left: 70px;display: block;line-height:35px;color: red;;'>用户不能为空！</span>";
+                return
+            }else if (password == ""){
+                document.getElementById("msg_pwd").innerHTML = "<span style='font-size: 13px; margin-left: 70px;display: block;line-height:35px;color: red;;'>密码不能为空！</span>";
+                return
+            }
+            var data = {"userName":userName,"password":password};
+            $.ajax({
+                url:"${base.contextPath}/yujiang/login",
+                type:"get",
+                data : data,
+                contentType :"application/json",
+                success:function (res){
+                    if(!res.success){
+                        document.getElementById("msg").innerHTML = "<span style='font-size: 13px; margin-left: 20px;display: block;line-height:35px;color: red;;'>用户名或密码错误！</span>";
+                        return
+                    }else{
+                        setCookie("username",userName)
+                        window.location.href='/dispatch/dispatch.html';
+                        // window.open("/dispatch/dispatch.html");
+                    }
+
+
+                }
+            });
+        }
+
+    </script>
+    </body>
+    </html>
