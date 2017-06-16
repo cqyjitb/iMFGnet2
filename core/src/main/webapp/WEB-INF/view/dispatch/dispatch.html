@@ -1,10 +1,94 @@
 <html>
 <head>
-    <meta charset="utf-8">
+    <meta charset="utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"><!DOCTYPE html>
     <title>生产报工</title>
+
+    <script src="${base.contextPath}/lib/kendoui/js/jquery.min.js"></script>
+
+    <!–[if lt IE 9]>
     <Script src="${base.contextPath}/resources/js/IE9.js"></Script>
+    <![endif]–>
     <Script src="${base.contextPath}/resources/js/yj-pda.js"></Script>
+    <script>
+        var barcode;
+        var order;
+        var dispatch;
+        var operation;
+        var yeild;
+        var workscrap;
+        var rowscrap;
+        var klass;
+        var line;
+        var modelno;
+        var attr1 = "";
+        var attr2 = "";
+        var attr3 = "";
+        var attr4 = "";
+        var attr5 = "";
+        var attr6 = "";
+        var attr7 = "";
+        var attr8 = "";
+        function getValues() {
+            barcode = document.getElementById("barcode").value;
+            order = document.getElementById("order").value;
+            /*dispatch = document.getElementById("dispatch").value;*/
+            operation = document.getElementById("operation").value;
+            yeild = document.getElementById("yeild").value;
+            workscrap = document.getElementById("workscrap").value;
+            rowscrap = document.getElementById("rowscrap").value;
+            klass = document.getElementById("klass").value;
+            line = document.getElementById("line").value;
+            modelno = document.getElementById("modelno").value;
+
+        }
+        function clearValues() {
+            //set all ducoments as space
+            document.getElementById("barcode").value = "";
+            document.getElementById("order").value = "";
+            document.getElementById("operation").value = "";
+            document.getElementById("yeild").value = "";
+            document.getElementById("workscrap").value = "";
+            document.getElementById("rowscrap").value = "";
+            document.getElementById("klass").value = "";
+            document.getElementById("line").value = "";
+            document.getElementById("modelno").value = "";
+
+        }
+        function setOthers() {
+            document.getElementById("attr1").value = attr1;
+            document.getElementById("attr2").value = attr2;
+            document.getElementById("attr3").value = attr3;
+            document.getElementById("attr4").value = attr4;
+            document.getElementById("attr5").value = attr5;
+            document.getElementById("attr6").value = attr6;
+            document.getElementById("attr7").value = attr7;
+            document.getElementById("attr8").value = attr8;
+
+        }
+        function getOthers() {
+            attr1 = document.getElementById("attr1").value;
+            attr2 = document.getElementById("attr2").value;
+            attr3 = document.getElementById("attr3").value;
+            attr4 = document.getElementById("attr4").value;
+            attr5 = document.getElementById("attr5").value;
+            attr6 = document.getElementById("attr6").value;
+            attr7 = document.getElementById("attr7").value;
+            attr8 = document.getElementById("attr8").value;
+
+        }
+        function clearOthers() {
+            attr1 = "";
+            attr2 = "";
+            attr3 = "";
+            attr4 = "";
+            attr5 = "";
+            attr6 = "";
+            attr7 = "";
+            attr8 = "";
+
+        }
+    </script>
     <style type="text/css">
         #login-area{
             width:220px;
@@ -123,6 +207,15 @@
         function openFailureDialog() {
         }
 
+        /**
+         * a function for init postdate
+         */
+        function initPostDate() {
+            var oPstd = document.getElementById("postdate");
+            oPstd.options[1].value=oPstd.options[1].innerHTML=getTodayDate();
+            oPstd.options[0].value=oPstd.options[0].innerHTML=getYesterdayDate();
+        }
+
     </script>
     <script>
 /*        Date.prototype.format = function(fmt) {
@@ -148,11 +241,38 @@
 
         window.onload=function(){
 
+            var testCookie = document.cookie;
+            var username = getCookie("username");
+            if(username == "" || username == null){
+                window.location.href='/yjlogin.html';
+                return null;
+            }
+
+
+            // get trueName of user
+/*            $.ajax({
+                url:"${base.contextPath}/hr/employee/queryByCode",
+                type:"get",
+                data : {"code":username},
+                contentType :"application/json",
+                success:function (res){
+                    var namestr = JSON.stringify(res.rows[0].name);
+                    namestr = namestr.substring(1,namestr.length-1);
+                    document.getElementById("user").innerHTML = namestr;
+                }
+
+            });*/
+
             //click for logout
             var oLogout=document.getElementById("logout");
             oLogout.onclick=function () {
                 //code for logout..
-                alert("logout");
+                testCookie = document.cookie;
+                delCookie("username");
+                testCookie = document.cookie;
+                window.location.href='/yjlogin.html';
+                //alert("logout");
+                return null;
             }
 
             var oBtn=document.getElementById("btnLogin");
@@ -201,7 +321,7 @@
                 }*/
 
                 if (lenbarcode >= 12){
-                    document.getElementById("order").value = strBarcode.substring(0,6);
+                    document.getElementById("order").value = strBarcode.substring(4,lenbarcode-8);
                     document.getElementById("operation").value = strBarcode.substring(lenbarcode-4,lenbarcode);
                 } else {
                     document.getElementById("order").value = "";
@@ -220,17 +340,19 @@
                 setCookie("postdate",strPostDate);
             }
 
+            initPostDate();
+
 /*            var today = new Date().format("yyyy-MM-dd");
             oPstd.options[1].value=today;
             oPstd.options[1].innerHTML=today;*/
-            oPstd.options[1].value=oPstd.options[1].innerHTML=getTodayDate();
+            //oPstd.options[1].value=oPstd.options[1].innerHTML=getTodayDate();
 
 /*            var yesterdayDate = new Date();
              yesterdayDate.setDate(yesterdayDate.getDate()-1);
              var yesterday = yesterdayDate.format("yyyy-MM-dd");
              oPstd.options[0].value=yesterday;
              oPstd.options[0].innerHTML=yesterday;*/
-            oPstd.options[0].value=oPstd.options[0].innerHTML=getYesterdayDate();
+            //oPstd.options[0].value=oPstd.options[0].innerHTML=getYesterdayDate();
 
 /*            var arr,reg=new RegExp("(^| )"+"postdate"+"=([^;]*)(;|$)");
             if(arr=document.cookie.match(reg)){
@@ -271,20 +393,23 @@
                 +"<div id='back' style='width:40px;height:20px;float: left;background-color:#169bd5;top: 0px'>返回</div>"
                 +"</div>"
                 +"<div style='margin-left: 10px;width: 220px;height: 265px'>"
-                +"<label style='font-size:10px;width: 80px;height: 20px;display: inline-block'>扩充字段1</label><input id='attribution1' style='font-size:10px;width: 120px;height: 20px' type='text'/>"+"<br>"
-                +"<label style='font-size:10px;width: 80px;height: 20px;display: inline-block'>扩充字段2</label><input id='attribution2' style='font-size:10px;width: 120px;height: 20px' type='text'/>"+"<br>"
-                +"<label style='font-size:10px;width: 80px;height: 20px;display: inline-block'>扩充字段3</label><input id='attribution3' style='font-size:10px;width: 120px;height: 20px' type='text'/>"+"<br>"
-                +"<label style='font-size:10px;width: 80px;height: 20px;display: inline-block'>扩充字段4</label><input id='attribution4' style='font-size:10px;width: 120px;height: 20px' type='text'/>"+"<br>"
-                +"<label style='font-size:10px;width: 80px;height: 20px;display: inline-block'>扩充字段5</label><input id='attribution5' style='font-size:10px;width: 120px;height: 20px' type='text'/>"+"<br>"
-                +"<label style='font-size:10px;width: 80px;height: 20px;display: inline-block'>扩充字段6</label><input id='attribution6' style='font-size:10px;width: 120px;height: 20px' type='text'/>"+"<br>"
-                +"<label style='font-size:10px;width: 80px;height: 20px;display: inline-block'>扩充字段7</label><input id='attribution7' style='font-size:10px;width: 120px;height: 20px' type='text'/>"+"<br>"
-                +"<label style='font-size:10px;width: 80px;height: 20px;display: inline-block'>扩充字段8</label><input id='attribution8' style='font-size:10px;width: 120px;height: 20px' type='text'/>"+"<br>"
+                +"<label style='font-size:10px;width: 80px;height: 20px;display: inline-block'>扩充字段1</label><input id='attr1' style='font-size:10px;width: 120px;height: 20px' type='text'/>"+"<br>"
+                +"<label style='font-size:10px;width: 80px;height: 20px;display: inline-block'>扩充字段2</label><input id='attr2' style='font-size:10px;width: 120px;height: 20px' type='text'/>"+"<br>"
+                +"<label style='font-size:10px;width: 80px;height: 20px;display: inline-block'>扩充字段3</label><input id='attr3' style='font-size:10px;width: 120px;height: 20px' type='text'/>"+"<br>"
+                +"<label style='font-size:10px;width: 80px;height: 20px;display: inline-block'>扩充字段4</label><input id='attr4' style='font-size:10px;width: 120px;height: 20px' type='text'/>"+"<br>"
+                +"<label style='font-size:10px;width: 80px;height: 20px;display: inline-block'>扩充字段5</label><input id='attr5' style='font-size:10px;width: 120px;height: 20px' type='text'/>"+"<br>"
+                +"<label style='font-size:10px;width: 80px;height: 20px;display: inline-block'>扩充字段6</label><input id='attr6' style='font-size:10px;width: 120px;height: 20px' type='text'/>"+"<br>"
+                +"<label style='font-size:10px;width: 80px;height: 20px;display: inline-block'>扩充字段7</label><input id='attr7' style='font-size:10px;width: 120px;height: 20px' type='text'/>"+"<br>"
+                +"<label style='font-size:10px;width: 80px;height: 20px;display: inline-block'>扩充字段8</label><input id='attr8' style='font-size:10px;width: 120px;height: 20px' type='text'/>"+"<br>"
                 +"</div>";
 
             document.body.appendChild(oOtherD);
 
+            setOthers();
+
             var oBack=document.getElementById("back");
             oBack.onclick=function () {
+                getOthers();
                 document.body.removeChild(oOtherD);
                 oPostdate.style.display="";
                 removeMaskDialog()
@@ -310,7 +435,7 @@
                 +"<div id='msga'><label style='line-height: 25px'>&nbsp确认</label></div>"
                 +"<div id='msg0' style='text-align: center;line-height: 40px'>是否继续过账</div>"
                 +"<div id='msg6'>"
-                +"<button id='click1' style='float: right;width: auto;background-color: white'>取消</button>"
+                +"<button id='click1' style='float: left;width: auto;background-color: white'>取消</button>"
                 +"<button id='click2' style='float: right;width: auto;background-color: white'>确定</button>"
                 +"</div>"
                 +"</div>";
@@ -339,7 +464,71 @@
 /*                document.body.removeChild(oMaskD);*/
                 ablePostdate();
                 removeMaskDialog();
-                openSuccess();
+                var yeildNum=document.getElementById("yeild").value;
+                getValues();
+                if((barcode == "") || (barcode == null) || (yeild == "") || (yeild == null)){
+                    openError();
+                } else if(parseInt(yeildNum) > 100){
+                    openFailure();
+                } else {
+                    openSuccess();
+                }
+            };
+        }
+        function openError() {
+            appendMaskDialog();
+            disablePostdate();
+
+            var oLoginD = document.createElement("div");
+            oLoginD.id = "login";
+            oLoginD.style.height = "120px";
+            oLoginD.style.width = "200px";
+            oLoginD.style.top = "150px";
+            oLoginD.style.left = "20px";
+
+            oLoginD.innerHTML = "<div class='loginCon'>"
+                + "<div id='msga'><label style='line-height: 25px'>&nbsp错误</label></div>"
+                + "<div id='msg0' style='text-align: center;line-height: 40px'>请扫码或输入其他字段</div>"
+                + "<div id='msg6'>"
+                + "<button id='click2' style='float: right;width: auto;background-color: white'>确定</button>"
+                + "</div>"
+                + "</div>";
+
+            document.body.appendChild(oLoginD);
+            var oClose2 = document.getElementById("click2");
+            oClose2.onclick = function () {
+                document.body.removeChild(oLoginD);
+                /*                document.body.removeChild(oMaskD);*/
+                ablePostdate();
+                removeMaskDialog();
+            };
+        }
+        function openFailure() {
+            appendMaskDialog();
+            disablePostdate();
+
+            var oLoginD = document.createElement("div");
+            oLoginD.id = "login";
+            oLoginD.style.height = "120px";
+            oLoginD.style.width = "200px";
+            oLoginD.style.top = "150px";
+            oLoginD.style.left = "20px";
+
+            oLoginD.innerHTML = "<div class='loginCon'>"
+                + "<div id='msga'><label style='line-height: 25px'>&nbsp失败</label></div>"
+                + "<div id='msg0' style='text-align: center;line-height: 40px'>报工失败</div>"
+                + "<div id='msg6'>"
+                + "<button id='click2' style='float: right;width: auto;background-color: white'>确定</button>"
+                + "</div>"
+                + "</div>";
+
+            document.body.appendChild(oLoginD);
+            var oClose2 = document.getElementById("click2");
+            oClose2.onclick = function () {
+                document.body.removeChild(oLoginD);
+                /*                document.body.removeChild(oMaskD);*/
+                ablePostdate();
+                removeMaskDialog();
             };
         }
         function openSuccess(){
@@ -367,6 +556,9 @@
                 document.body.removeChild(oLoginD);
                 /*                document.body.removeChild(oMaskD);*/
                 ablePostdate();
+                clearValues();
+                clearOthers();
+                initPostDate();
                 removeMaskDialog();
             };
 
@@ -387,7 +579,7 @@
 <body>
 <div id="login-area">
     <div style="width: 220px;height: 20px">
-        <div id="logout" style="width:40px;height:20px;float: left;background-color:#169bd5;top: 0px">注销</div>
+        <div id="logout" style="width:40px;height:20px;float: left;background-color:#169bd5;top: 0px">注销</div><div style="width:20px;height:20px;float: left;background-color:white;top: 0px"></div><div id="user" style="font-size:10px;height:20px;float: right;background-color:white;top: 0px"></div>
     </div>
     <div style="width: 220px;height: 235px">
         <input id="barcode" style="font-size:10px;width: 200px;height: 20px" type="text"><br>
@@ -397,9 +589,9 @@
         <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">合格数量</label><input id="yeild" style="font-size:10px;width: 120px;height: 20px" type="text"><br>
         <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">工废数量</label><input id="workscrap" style="font-size:10px;width: 120px;height: 20px" type="text"><br>
         <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">料废数量</label><input id="rowscrap" style="font-size:10px;width: 120px;height: 20px" type="text"><br>
-        <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">班次</label><input style="font-size:10px;width: 120px;height: 20px" type="text"><br>
-        <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">生产线</label><input style="font-size:10px;width: 120px;height: 20px" type="text"><br>
-        <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">模号</label><input style="font-size:10px;width: 120px;height: 20px" type="text"><br>
+        <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">班次</label><input id="klass" style="font-size:10px;width: 120px;height: 20px" type="text"><br>
+        <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">生产线</label><input id="line" style="font-size:10px;width: 120px;height: 20px" type="text"><br>
+        <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">模号</label><input id="modelno" style="font-size:10px;width: 120px;height: 20px" type="text"><br>
         <!--<button id="btnLogin" style="width: auto" hidefocus="true" class="login-btn">确认</button>-->
     </div>
     <div style="width: 220px;height: 30px">

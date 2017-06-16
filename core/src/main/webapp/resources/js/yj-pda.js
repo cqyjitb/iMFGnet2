@@ -33,8 +33,15 @@ Date.prototype.format = function(fmt) {
  * @param name
  * @param value
  */
-function setCookie(name,value) {
+/*function setCookie(name,value) {
     document.cookie = name + "=" + value;
+}*/
+function setCookie(name,value)
+{
+    var Days = 30;
+    var exp = new Date();
+    exp.setTime(exp.getTime() + Days*24*60*60*1000);
+    document.cookie = name + "="+ value + ";expires=" + exp.toGMTString()+"domain=1;path=/";
 }
 
 /**
@@ -42,7 +49,7 @@ function setCookie(name,value) {
  * @param name
  * @returns {*}
  */
-function getCookie(name) {
+/*function getCookie(name) {
 
     var value = null;
 
@@ -51,13 +58,34 @@ function getCookie(name) {
         value = arr[2];
     }
     return value;
+}*/
+function getCookie(name)
+{
+    var arr,reg=new RegExp("(^| )"+name+"=([^;]*)(;|$)");
+    if(arr=document.cookie.match(reg))
+        return arr[2];
+    else
+        return null;
 }
 
-function delCookie(name) {
+/**
+ * using for deleting cookie
+ * @param name
+ * @returns {*}
+ */
+/*function delCookie(name) {
     var cval = getCookie(name);
     if(cval!=null){
         document.cookie = name + "=" + cval;
     }
+}*/
+function delCookie(name)
+{
+    var exp = new Date();
+    exp.setTime(exp.getTime() - 1);
+    var cval=getCookie(name);
+    if(cval!=null)
+        document.cookie= name + "="+cval+";expires="+exp.toGMTString()+"domain=1;path=/";
 }
 
 /**

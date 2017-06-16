@@ -14,10 +14,8 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
 /**
  * Created by libo on 2017/6/15.
  */
@@ -73,12 +71,14 @@ public class EmployeeController extends BaseController {
         return new ResponseData();
     }
 
-    @RequestMapping({"/hr/employee/queryByCode"})
+    @RequestMapping(value = "/hr/employee/queryByCode",method = RequestMethod.GET)
     @ResponseBody
     public ResponseData queryByCode(HttpServletRequest request){
         String code = request.getParameter("code");
         List<Employee> list = new ArrayList<Employee>();
         Employee employee = this.employeeService.queryByCode(code);
-        return new ResponseData(list.add(employee));
+        System.out.println(employee);
+        list.add(employee);
+        return new ResponseData(list);
     }
 }
