@@ -182,24 +182,11 @@
                    type: "POST",
                    dataType: "json"
                },
-               update: {
-                   url: BaseUrl + "/confirmation/input/log/submit",
-                   type: "POST",
-                   contentType: "application/json"
-               },
-               destroy: {
-                   url: BaseUrl + "/confirmation/input/log/remove",
-                   type: "POST",
-                   contentType: "application/json"
-               },
-               create: {
-                   url: BaseUrl + "/confirmation/input/log/submit",
-                   type: "POST",
-                   contentType: "application/json"
-               },
+
                parameterMap: function (options, type) {
                    if (type !== "read" && options.models) {
                        var datas = Hap.prepareSubmitParameter(options, type)
+
                        return kendo.stringify(datas);
                    } else if (type === "read") {
                        return Hap.prepareQueryParameter(viewModel.model.toJSON(), options)
@@ -214,11 +201,30 @@
                total: 'total',
                model: {
                    id: "id",
-                   fields: {}
+                   fields: {
+                       orderno:{type:"string"},
+                       operation:{type:"string"},
+                       postingDate:{type:"date"},
+                       creatDate:{type:"date"}
+
+                   }
                }
            }
        });
-
+//       var data = {};
+//       $.ajax({
+//           url:"${base.contextPath}/confirmation/input/log/query",
+//           type:"post",
+//           dataType : "json",
+//           contentType :"application/json",
+//           success:function (res){
+//              //  alert(JSON.stringify(res.rows[0].creatDate))
+//               data = JSON.stringify(res.rows)
+//
+//
+//           }
+//       });
+       //alert(JSON.stringify(dataSource.options.models))
        $("#Grid").kendoGrid({
            dataSource: dataSource,
            height: '100%',
@@ -233,75 +239,79 @@
            },
            columns: [
                {
-                   field: "id",
-                   title: '<@spring.message "InputLog.id"/>',
-                   width: 120
-               },
-               {
-                   field: "barcode",
-                   title: '<@spring.message "InputLog.barcode"/>',
-                   width: 120
-               },
-               {
                    field: "orderno",
-                   title: '<@spring.message "InputLog.orderno"/>',
-                   width: 120
-               },
-               {
-                   field: "dispatch",
-                   title: '<@spring.message "InputLog.dispatch"/>',
+                   title: '订单号',
                    width: 120
                },
                {
                    field: "operation",
-                   title: '<@spring.message "InputLog.operation"/>',
+                   title: '工序',
                    width: 120
+               },
+
+               {
+                   field: "postingDate",
+                   title: '过账日期',
+                   width: 120,
+                   format:"{0:yyyy-MM-dd}"
+               },
+               {
+                   field: "creatDate",
+                   title: '报功日期',
+                   width: 120,
+                   format:"{0:yyyy-MM-dd}"
                },
                {
                    field: "yeild",
-                   title: '<@spring.message "InputLog.yeild"/>',
+                   title: '合格数量',
                    width: 120
                },
                {
                    field: "workScrap",
-                   title: '<@spring.message "InputLog.workScrap"/>',
+                   title: '工废数量',
                    width: 120
                },
                {
                    field: "rowScrap",
-                   title: '<@spring.message "InputLog.rowScrap"/>',
-                   width: 120
-               },
-               {
-                   field: "classno",
-                   title: '<@spring.message "InputLog.classno"/>',
+                   title: '料费数量',
                    width: 120
                },
                {
                    field: "classgrp",
-                   title: '<@spring.message "InputLog.classgrp"/>',
-                   width: 120
-               },
-               {
-                   field: "shopCode",
-                   title: '<@spring.message "InputLog.shopCode"/>',
-                   width: 120
-               },
-               {
-                   field: "line",
-                   title: '<@spring.message "InputLog.line"/>',
+                   title: '班组',
                    width: 120
                },
                {
                    field: "modelNo",
-                   title: '<@spring.message "InputLog.modelNo"/>',
+                   title: '模号',
                    width: 120
                },
                {
-                   field: "postingDate",
-                   title: '<@spring.message "InputLog.postingDate"/>',
+                   field: "line",
+                   title: '生产线',
                    width: 120
                },
+               {
+                   field: "userName",
+                   title: '报工人',
+                   width: 120
+               },
+               {
+                   field: "plant",
+                   title: '工厂',
+                   width: 120
+               },
+               {
+                   field: "matDesc",
+                   title: '产品名称',
+                   width: 120
+               },
+               {
+                   field: "material",
+                   title: '产品物料号',
+                   width: 120
+               },
+
 
            ],
            editable: false

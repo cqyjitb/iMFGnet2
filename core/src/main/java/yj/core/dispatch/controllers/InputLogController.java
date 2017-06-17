@@ -28,7 +28,7 @@ private IInputLogService service;
 public ResponseData query(InputLog dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
     @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize, HttpServletRequest request) {
     IRequest requestContext = createRequestContext(request);
-    return new ResponseData(service.select(requestContext,dto,page,pageSize));
+    return new ResponseData(service.queryAllBg(requestContext,dto,page,pageSize));
 }
 
 @RequestMapping(value = "/confirmation/input/log/submit")

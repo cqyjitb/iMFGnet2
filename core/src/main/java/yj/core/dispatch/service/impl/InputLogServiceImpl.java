@@ -1,5 +1,6 @@
 package yj.core.dispatch.service.impl;
 
+import com.hand.hap.core.IRequest;
 import com.hand.hap.system.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -20,11 +21,12 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
      @Override
 
     //报功结果页面数据查询
-     public  List<InputLog> queryallBg(){
-         return inputLogMapper.queryallBg();
+     public  List<InputLog> queryAllBg(IRequest iRequest, InputLog inputLog, int page,int pageSize){
+         System.out.println("test!");
+         return inputLogMapper.queryAllBg(inputLog);
      };
 
-    //插入一条信息打到confirmation_input_log
+    //插入一条信息到confirmation_input_log
     public int insertInputLog(InputLog inputLog){
         return inputLogMapper.insertInputLog(inputLog);
     };

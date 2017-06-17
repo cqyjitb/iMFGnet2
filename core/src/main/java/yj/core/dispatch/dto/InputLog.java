@@ -18,7 +18,10 @@ public class InputLog extends BaseDTO {
      @GeneratedValue
       private Long id;
 
-      private String barcode; //条码
+    /**
+     *条码
+     */
+    private String barcode; //条码
 
       private String orderno; //订单
 
@@ -77,6 +80,17 @@ public class InputLog extends BaseDTO {
       private String attr15; //属性15
 
       @Transient
+      private  String creatDate;
+
+    public String getCreatDate() {
+        return creatDate;
+    }
+
+    public void setCreatDate(String creatDate) {
+        this.creatDate = creatDate;
+    }
+
+    @Transient
       private String matDesc;//产品名称
 
       @Transient
@@ -86,117 +100,110 @@ public class InputLog extends BaseDTO {
       private  String userName;//用户姓名
 
 
-     public void setId(Long id){
-         this.id = id;
-     }
 
-     public Long getId(){
-         return id;
-     }
+    public Long getId() {
+        return id;
+    }
 
-     public void setBarcode(String barcode){
-         this.barcode = barcode;
-     }
+    public void setId(Long id) {
+        this.id = id;
+    }
 
-     public String getBarcode(){
-         return barcode;
-     }
+    public String getBarcode() {
+        return barcode;
+    }
 
-     public void setOrderno(String orderno){
-         this.orderno = orderno;
-     }
+    public void setBarcode(String barcode) {
+        this.barcode = barcode;
+    }
 
-     public String getOrderno(){
-         return orderno;
-     }
+    public String getOrderno() {
+        return orderno;
+    }
 
-     public void setDispatch(String dispatch){
-         this.dispatch = dispatch;
-     }
+    public void setOrderno(String orderno) {
+        this.orderno = orderno;
+    }
 
-     public String getDispatch(){
-         return dispatch;
-     }
+    public String getDispatch() {
+        return dispatch;
+    }
 
-     public void setOperation(String operation){
-         this.operation = operation;
-     }
+    public void setDispatch(String dispatch) {
+        this.dispatch = dispatch;
+    }
 
-     public String getOperation(){
-         return operation;
-     }
+    public String getOperation() {
+        return operation;
+    }
 
-     public void setYeild(Double yeild){
-         this.yeild = yeild;
-     }
+    public void setOperation(String operation) {
+        this.operation = operation;
+    }
 
-     public Double getYeild(){
-         return yeild;
-     }
+    public Double getYeild() {
+        return yeild;
+    }
 
-     public void setWorkScrap(Double workScrap){
-         this.workScrap = workScrap;
-     }
+    public void setYeild(Double yeild) {
+        this.yeild = yeild;
+    }
 
-     public Double getWorkScrap(){
-         return workScrap;
-     }
+    public Double getWorkScrap() {
+        return workScrap;
+    }
 
-     public void setRowScrap(Double rowScrap){
-         this.rowScrap = rowScrap;
-     }
+    public void setWorkScrap(Double workScrap) {
+        this.workScrap = workScrap;
+    }
 
-     public Double getRowScrap(){
-         return rowScrap;
-     }
+    public Double getRowScrap() {
+        return rowScrap;
+    }
 
-     public void setClassno(String classno){
-         this.classno = classno;
-     }
+    public void setRowScrap(Double rowScrap) {
+        this.rowScrap = rowScrap;
+    }
 
-     public String getClassno(){
-         return classno;
-     }
+    public String getClassno() {
+        return classno;
+    }
 
-     public void setClassgrp(String classgrp){
-         this.classgrp = classgrp;
-     }
+    public void setClassno(String classno) {
+        this.classno = classno;
+    }
 
-     public String getClassgrp(){
-         return classgrp;
-     }
+    public String getClassgrp() {
+        return classgrp;
+    }
 
-     public void setShopCode(String shopCode){
-         this.shopCode = shopCode;
-     }
+    public void setClassgrp(String classgrp) {
+        this.classgrp = classgrp;
+    }
 
-     public String getShopCode(){
-         return shopCode;
-     }
+    public String getShopCode() {
+        return shopCode;
+    }
 
-     public void setLine(String line){
-         this.line = line;
-     }
+    public void setShopCode(String shopCode) {
+        this.shopCode = shopCode;
+    }
 
-     public String getLine(){
-         return line;
-     }
+    public String getLine() {
+        return line;
+    }
 
-     public void setModelNo(String modelNo){
-         this.modelNo = modelNo;
-     }
+    public void setLine(String line) {
+        this.line = line;
+    }
 
-     public String getModelNo(){
-         return modelNo;
-     }
+    public String getModelNo() {
+        return modelNo;
+    }
 
-     public void setPostingDate(Date postingDate){
-         this.postingDate = postingDate;
-     }
-
-     public Date getPostingDate(){
-         return postingDate;
-     }
+    public void setModelNo(String modelNo) {
+        this.modelNo = modelNo;
+    }
 
     public String getPlant() {
         return plant;
@@ -206,132 +213,140 @@ public class InputLog extends BaseDTO {
         this.plant = plant;
     }
 
-    public void setAttr1(String attr1){
-         this.attr1 = attr1;
-     }
+    public Date getPostingDate() {
+        return postingDate;
+    }
 
-     public String getAttr1(){
-         return attr1;
-     }
+    public void setPostingDate(Date postingDate) {
+        this.postingDate = postingDate;
+    }
 
-     public void setAttr2(String attr2){
-         this.attr2 = attr2;
-     }
+    public String getAttr1() {
+        return attr1;
+    }
 
-     public String getAttr2(){
-         return attr2;
-     }
+    public void setAttr1(String attr1) {
+        this.attr1 = attr1;
+    }
 
-     public void setAttr3(String attr3){
-         this.attr3 = attr3;
-     }
+    public String getAttr2() {
+        return attr2;
+    }
 
-     public String getAttr3(){
-         return attr3;
-     }
+    public void setAttr2(String attr2) {
+        this.attr2 = attr2;
+    }
 
-     public void setAttr4(String attr4){
-         this.attr4 = attr4;
-     }
+    public String getAttr3() {
+        return attr3;
+    }
 
-     public String getAttr4(){
-         return attr4;
-     }
+    public void setAttr3(String attr3) {
+        this.attr3 = attr3;
+    }
 
-     public void setAttr5(String attr5){
-         this.attr5 = attr5;
-     }
+    public String getAttr4() {
+        return attr4;
+    }
 
-     public String getAttr5(){
-         return attr5;
-     }
+    public void setAttr4(String attr4) {
+        this.attr4 = attr4;
+    }
 
-     public void setAttr6(String attr6){
-         this.attr6 = attr6;
-     }
+    public String getAttr5() {
+        return attr5;
+    }
 
-     public String getAttr6(){
-         return attr6;
-     }
+    public void setAttr5(String attr5) {
+        this.attr5 = attr5;
+    }
 
-     public void setAttr7(String attr7){
-         this.attr7 = attr7;
-     }
+    public String getAttr6() {
+        return attr6;
+    }
 
-     public String getAttr7(){
-         return attr7;
-     }
+    public void setAttr6(String attr6) {
+        this.attr6 = attr6;
+    }
 
-     public void setAttr8(String attr8){
-         this.attr8 = attr8;
-     }
+    public String getAttr7() {
+        return attr7;
+    }
 
-     public String getAttr8(){
-         return attr8;
-     }
+    public void setAttr7(String attr7) {
+        this.attr7 = attr7;
+    }
 
-     public void setAttr9(String attr9){
-         this.attr9 = attr9;
-     }
+    public String getAttr8() {
+        return attr8;
+    }
 
-     public String getAttr9(){
-         return attr9;
-     }
+    public void setAttr8(String attr8) {
+        this.attr8 = attr8;
+    }
 
-     public void setAttr10(String attr10){
-         this.attr10 = attr10;
-     }
+    public String getAttr9() {
+        return attr9;
+    }
 
-     public String getAttr10(){
-         return attr10;
-     }
+    public void setAttr9(String attr9) {
+        this.attr9 = attr9;
+    }
 
-     public void setAttr11(String attr11){
-         this.attr11 = attr11;
-     }
+    public String getAttr10() {
+        return attr10;
+    }
 
-     public String getAttr11(){
-         return attr11;
-     }
+    public void setAttr10(String attr10) {
+        this.attr10 = attr10;
+    }
 
-     public void setAttr12(String attr12){
-         this.attr12 = attr12;
-     }
+    public String getAttr11() {
+        return attr11;
+    }
 
-     public String getAttr12(){
-         return attr12;
-     }
+    public void setAttr11(String attr11) {
+        this.attr11 = attr11;
+    }
 
-     public void setAttr13(String attr13){
-         this.attr13 = attr13;
-     }
+    public String getAttr12() {
+        return attr12;
+    }
 
-     public String getAttr13(){
-         return attr13;
-     }
+    public void setAttr12(String attr12) {
+        this.attr12 = attr12;
+    }
 
-     public void setAttr14(String attr14){
-         this.attr14 = attr14;
-     }
+    public String getAttr13() {
+        return attr13;
+    }
 
-     public String getAttr14(){
-         return attr14;
-     }
+    public void setAttr13(String attr13) {
+        this.attr13 = attr13;
+    }
 
-     public void setAttr15(String attr15){
-         this.attr15 = attr15;
-     }
+    public String getAttr14() {
+        return attr14;
+    }
 
-     public String getAttr15(){
-         return attr15;
-     }
+    public void setAttr14(String attr14) {
+        this.attr14 = attr14;
+    }
+
+    public String getAttr15() {
+        return attr15;
+    }
+
+    public void setAttr15(String attr15) {
+        this.attr15 = attr15;
+    }
 
     public String getMatDesc() {
         return matDesc;
     }
 
-    public void setMatDesc(String mat_desc) {
-        this.matDesc = mat_desc;
+    public void setMatDesc(String matDesc) {
+        this.matDesc = matDesc;
     }
 
     public String getMaterial() {
