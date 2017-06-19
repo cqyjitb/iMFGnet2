@@ -8,12 +8,15 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import yj.core.dispatch.dto.InputLog;
 import yj.core.dispatch.service.IInputLogService;
+import yj.core.webservice.dto.DTPP001ReturnResult;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
-    @Controller
-    public class InputLogController extends BaseController{
+@Controller
+public class InputLogController extends BaseController{
 
     @Autowired
     private IInputLogService service;
@@ -42,12 +45,27 @@ import java.util.List;
         return new ResponseData();
     }
 
-        @RequestMapping(value = "/confirmation/input/log/insertInputLog" ,method = RequestMethod.POST)
+        @RequestMapping(value = "/confirmation/input/log/insertInputLog")
         @ResponseBody
-        public ResponseData insertInputLog(HttpServletRequest request,@RequestBody InputLog input){
+        public ResponseData insertInputLog(HttpServletRequest request){
             IRequest requestCtx = createRequestContext(request);
-            return new ResponseData(service.inputDispatch(input));
+            InputLog inputLog = new InputLog();
+            inputLog.setPwerk("1001");
+            inputLog.setOrderno("1000010");
+            inputLog.setOperation("0010");
+            inputLog.setPostingDate(new Date(2017,03,21));
+            inputLog.setYeild(17d);
+            inputLog.setWorkScrap(2d);
+            inputLog.setRowScrap(1d);
+            inputLog.setClassgrp("b");
+            inputLog.setLine("cccc线");
+            inputLog.setModelNo("1");
+            inputLog.setCreateDate(new Date());
+            inputLog.setBarcode("1001100001000010010");
+            inputLog.setDispatch("199990");
+            List<DTPP001ReturnResult> returnResults = new ArrayList<>();
+            returnResults.add(service.inputDispatch(inputLog));
+            return new ResponseData(returnResults);
         }
-
 
     }

@@ -10,6 +10,8 @@ import yj.core.webservice.sender.SIPP001SenderSyncService;
 
 import javax.xml.namespace.QName;
 import java.net.URL;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Map;
 
 /**
@@ -25,7 +27,7 @@ public class ConfirmationWebserviceUtil {
 
     public DTPP001ReturnResult receiveConfirmation(InputLog input){
         URL wsdlURL = SIPP001SenderSyncService.WSDL_LOCATION;
-        SIPP001SenderSyncService ss = new SIPP001SenderSyncService(wsdlURL, SERVICE_NAME);
+        SIPP001SenderSyncService ss = new SIPP001SenderSyncService();
         SIPP001SenderSync port = ss.getHTTPPort();
         // Set credentials
         Map<String, Object> reqCtxt = ((javax.xml.ws.BindingProvider) port).getRequestContext();
@@ -34,19 +36,20 @@ public class ConfirmationWebserviceUtil {
 
 
         System.out.println("Invoking siPP001SenderSync...");
+        DateFormat df=new SimpleDateFormat("yyyyMMdd");
         //新建参数
         DTPP001SendReq.ITEM item = new DTPP001SendReq.ITEM();
         item.setPWERK(input.getPwerk());
         item.setAUFNR(input.getOrderno());
         item.setVORNR(input.getOperation());
-        item.setBUDAT(input.getPostingDate().toString());
+        item.setBUDAT(df.format(input.getPostingDate()).toString());
         item.setGMNGA(input.getYeild().toString());
         item.setXMNGA(input.getWorkScrap().toString());
         item.setRMNGA(input.getRowScrap().toString());
-        item.setZSCBC(input.getClassno());
+        item.setZSCBC(input.getClassgrp());
         item.setZSCX(input.getLine());
         item.setZMNUM(input.getModelNo());
-        item.setDATUM(input.getCreationDate().toString());
+        item.setDATUM(df.format(input.getCreateDate()).toString());
         item.setZPGDBAR(input.getBarcode());
         item.setZPGDBH(input.getDispatch());
 

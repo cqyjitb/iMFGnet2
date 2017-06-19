@@ -72,11 +72,21 @@ public class InputLog extends BaseDTO {
 
       private String attr15; //属性15
 
+      private Date createDate; //报工日期
+
       @Transient
       private String pwerk; //工厂
 
       @Transient
       private String material; // 物料
+
+    public Date getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(Date createDate) {
+        this.createDate = createDate;
+    }
 
     public String getPwerk() {
         return pwerk;

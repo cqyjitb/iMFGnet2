@@ -1,17 +1,21 @@
 package yj.core.dispatch.controllers;
 
-import org.springframework.stereotype.Controller;
-import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.core.IRequest;
+import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.system.dto.ResponseData;
-import yj.core.dispatch.dto.Log;
-import yj.core.dispatch.service.ILogService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import yj.core.dispatch.dto.InputLog;
+import yj.core.dispatch.dto.Log;
+import yj.core.dispatch.service.ILogService;
+import yj.core.webservice.dto.DTPP001ReturnResult;
+
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
     @Controller
@@ -42,6 +46,15 @@ import java.util.List;
         service.batchDelete(dto);
         return new ResponseData();
     }
+
+        @RequestMapping(value = "/confirmation/log/sap/charge")
+        @ResponseBody
+        public ResponseData chargeAgainst(HttpServletRequest request,@RequestBody List<InputLog> inputLogs){
+            List<DTPP001ReturnResult> returnResults = new ArrayList<>();
+            returnResults.add(service.chargeAgainstConnector(inputLogs.get(0)));
+            return new ResponseData(returnResults);
+        }
+
 
 
 

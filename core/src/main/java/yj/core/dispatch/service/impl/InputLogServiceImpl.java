@@ -17,15 +17,13 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
     private ConfirmationWebserviceUtil webserviceUtil;
 
     @Override
-    public boolean inputDispatch(InputLog input) {
-        Boolean flag = false;
+    public DTPP001ReturnResult inputDispatch(InputLog input) {
         DTPP001ReturnResult returnResult = webserviceUtil.receiveConfirmation(input);
         if("S".equals(returnResult.getMSGTY())){
             //HAP添加数据
-            flag = true;
         }else{
             //只存log
         }
-        return flag;
+        return returnResult;
     }
 }
