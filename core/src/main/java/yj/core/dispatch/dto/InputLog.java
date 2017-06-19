@@ -23,81 +23,83 @@ public class InputLog extends BaseDTO {
      */
     private String barcode; //条码
 
-      private String orderno; //订单
+    private String orderno; //订单
 
-      private String dispatch; //派工单号
+    private String dispatch; //派工单号
 
-      private String operation; //工序
+    private String operation; //工序
 
-      private Double yeild; //合格数量
+    private Double yeild; //合格数量
 
-      private Double workScrap; //工废数量
+    private Double workScrap; //工废数量
 
-      private Double rowScrap; //料废数量
+    private Double rowScrap; //料废数量
 
-      private String classno; //班次
+    private String classno; //班次
 
-      private String classgrp; //班组
+    private String classgrp; //班组
 
-      private String shopCode; //车间编码
+    private String shopCode; //车间编码
 
-      private String line; //生产线
+    private String line; //生产线
 
-      private String modelNo;//模号
+    private String modelNo;//模号
 
-      private String plant; //工厂
+    private String plant; //工厂
 
-      private Date postingDate; //过账日期
+    private Date postingDate; //过账日期
 
-      private String attr1; //属性1
+    private String postingDateAfter;
 
-      private String attr2; //属性2
+    private String postingDateBefore ;
 
-      private String attr3; //属性3
+    private String attr1; //属性1
 
-      private String attr4; //属性4
+    private String attr2; //属性2
 
-      private String attr5; //属性5
+    private String attr3; //属性3
 
-      private String attr6; //属性6
+    private String attr4; //属性4
 
-      private String attr7; //属性7
+    private String attr5; //属性5
 
-      private String attr8; //属性8
+    private String attr6; //属性6
 
-      private String attr9; //属性9
+    private String attr7; //属性7
 
-      private String attr10; //属性10
+    private String attr8; //属性8
 
-      private String attr11; //属性11
+    private String attr9; //属性9
 
-      private String attr12; //属性12
+    private String attr10; //属性10
 
-      private String attr13; //属性13
+    private String attr11; //属性11
 
-      private String attr14; //属性14
+    private String attr12; //属性12
 
-      private String attr15; //属性15
+    private String attr13; //属性13
 
-      @Transient
-      private  String creatDate;
+    private String attr14; //属性14
 
-    public String getCreatDate() {
-        return creatDate;
-    }
+    private String attr15; //属性15
 
-    public void setCreatDate(String creatDate) {
-        this.creatDate = creatDate;
-    }
+    private String creatDate;
+
+    private String creatDateAfter;
+
+    private String creatDateBefore;
+
 
     @Transient
-      private String matDesc;//产品名称
+    private String matDesc;//产品名称
 
-      @Transient
-      private String material;//产品物料号
+    @Transient
+    private String material;//产品物料号
 
-      @Transient
-      private  String userName;//用户姓名
+    @Transient
+    private  String userName;//用户姓名
+
+
 
 
 
@@ -363,5 +365,45 @@ public class InputLog extends BaseDTO {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getCreatDate() {
+        return creatDate;
+    }
+
+    public void setCreatDate(String creatDate) {
+        this.creatDate = creatDate;
+    }
+
+    public String getPostingDateAfter() {
+        return postingDateAfter;
+    }
+
+    public void setPostingDateAfter(String postingDateAfter) {
+        this.postingDateAfter = postingDateAfter;
+    }
+
+    public String getPostingDateBefore() {
+        return postingDateBefore;
+    }
+
+    public void setPostingDateBefore(String postingDateBefore) {
+        this.postingDateBefore = postingDateBefore;
+    }
+
+    public String getCreatDateAfter() {
+        return creatDateAfter;
+    }
+
+    public void setCreatDateAfter(String creatDateAfter) {
+        this.creatDateAfter = creatDateAfter;
+    }
+
+    public String getCreatDateBefore() {
+        return creatDateBefore;
+    }
+
+    public void setCreatDateBefore(String creatDateBefore) {
+        this.creatDateBefore = creatDateBefore;
     }
 }

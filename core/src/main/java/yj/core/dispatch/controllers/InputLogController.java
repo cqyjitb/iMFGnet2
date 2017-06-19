@@ -22,14 +22,29 @@ public class InputLogController extends BaseController{
 @Autowired
 private IInputLogService service;
 
-
-@RequestMapping(value = "/confirmation/input/log/query")
+/*
+*报功冲销界面查询
+ */
+@RequestMapping(value = "/confirmation/input/log/queryWriteOff")
 @ResponseBody
-public ResponseData query(InputLog dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
+public ResponseData queryWriteOff(InputLog dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
     @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize, HttpServletRequest request) {
     IRequest requestContext = createRequestContext(request);
     return new ResponseData(service.queryAllBg(requestContext,dto,page,pageSize));
 }
+
+
+    /*
+    *报功结果界面查询
+     */
+    @RequestMapping(value = "/confirmation/input/log/queryResult")
+    @ResponseBody
+    public ResponseData queryResult(InputLog dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
+                              @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize, HttpServletRequest request) {
+        IRequest requestContext = createRequestContext(request);
+        return new ResponseData(service.queryAllBg(requestContext,dto,page,pageSize));
+    }
+
 
 @RequestMapping(value = "/confirmation/input/log/submit")
 @ResponseBody

@@ -70,7 +70,6 @@
         <result column="attr13" property="attr13" jdbcType="VARCHAR" />
         <result column="attr14" property="attr14" jdbcType="VARCHAR" />
         <result column="attr15" property="attr15" jdbcType="VARCHAR" />
-
     </resultMap>
 
 
@@ -94,6 +93,7 @@
 
     <select id="queryAllBg" resultMap="BaseResultMap" parameterType="yj.core.dispatch.dto.InputLog">
         SELECT
+        il.id,
         il.orderno,
         il.operation,
         il.CREATION_DATE,
@@ -110,8 +110,38 @@
         r.material,
         u.user_name
 
-        FROM confirmation_input_log il,confirmation_result r,sys_user u
-        WHERE il.id= r.input_id AND il.CREATED_BY = u.user_id
+        FROM confirmation_input_log il,confirmation_result r,sys_user u,confirmation_log l
+        <where>
+            il.id= r.input_id
+            AND il.CREATED_BY = u.user_id
+            AND l.ref_id = il.id
+            AND r.is_reversed ='0'
+            AND l.tran_type = '0'
+            AND l.msgty = 'S'
+
+            <if test="plant != null">
+                 and il.plant = #{plant}
+            </if>
+            <if test="orderno != null">
+                and il.orderno = #{orderno}
+            </if>
+            <if test="operation != null">
+                and il.operation = #{operation}
+            </if>
+            <if test="material != null">
+                and r.material = #{material}
+            </if>
+            <if test="creatDate != null">
+                and il.creatDate = #{CREATION_DATE}
+            </if>
+
+            <if test="postingDateAfter != null and postingDateBefore != null">
+                and posting_date BETWEEN  #{postingDateAfter} AND  #{postingDateBefore}
+            </if>
+        </where>
+
+
+
 
 /*
         FROM  confirmation_input_log il
