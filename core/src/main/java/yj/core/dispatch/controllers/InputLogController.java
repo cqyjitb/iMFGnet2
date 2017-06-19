@@ -28,8 +28,8 @@ private IInputLogService service;
  */
     @RequestMapping(value = "/confirmation/input/log/queryLog")
     @ResponseBody
-    public ResponseData queryWriteOff(InputLog dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize, HttpServletRequest request) {
+    public ResponseData queryWriteOff(final InputLog dto, @RequestParam(defaultValue = DEFAULT_PAGE)final int page,
+        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE)final int pageSize, final HttpServletRequest request) {
         IRequest requestContext = createRequestContext(request);
 
             if ( dto.getCreatDateBefore() !=null){
@@ -46,8 +46,16 @@ private IInputLogService service;
                 dto.setPostingDateBefore(pdBefore);
             }
 
+        List <InputLog> list = service.queryAllLog(requestContext,dto,page,pageSize);
+        for (int i=0 ; i<list.size();i++){
+            if (list.get(i).getMsgty().equals("S")){
+                list.get(i).setMsgty("成功");
+            }else {
+                list.get(i).setMsgty("失败");
+            }
+        }
 
-        return new ResponseData(service.queryAllLog(requestContext,dto,page,pageSize));
+        return new ResponseData(list);
     }
 
 

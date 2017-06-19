@@ -97,6 +97,7 @@
 -->
     <select id="queryAllBg" resultMap="BaseResultMap" parameterType="yj.core.dispatch.dto.InputLog">
         SELECT
+        DISTINCT
         il.id,
         il.orderno,
         il.operation,
