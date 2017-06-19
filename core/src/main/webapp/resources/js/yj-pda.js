@@ -124,3 +124,10 @@ function removeMaskDialog() {
     var oMaskD=document.getElementById("mask");
     document.body.removeChild(oMaskD);
 }
+
+/**
+ * using for translating Code
+ */
+function transCode(value) {
+    return value;
+}

@@ -4,14 +4,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1"><!DOCTYPE html>
     <title>生产报工</title>
 
-    <script src="${base.contextPath}/lib/kendoui/js/jquery.min.js"></script>
+    <!--<script src="${base.contextPath}/lib/kendoui/js/jquery.min.js"></script>-->
 
     <!–[if lt IE 9]>
     <Script src="${base.contextPath}/resources/js/IE9.js"></Script>
     <![endif]–>
     <Script src="${base.contextPath}/resources/js/yj-pda.js"></Script>
+    <Script src="${base.contextPath}/resources/js/jquery-1.9.1.min.js"></Script>
+    <Script src="${base.contextPath}/resources/js/json2.js"></Script>
     <script>
         var barcode;
+        var plant;
         var order;
         var dispatch;
         var operation;
@@ -21,6 +24,9 @@
         var klass;
         var line;
         var modelno;
+        var postingdate = "";
+        var createdate = "";
+        var zpgdbh = "";
         var attr1 = "";
         var attr2 = "";
         var attr3 = "";
@@ -29,10 +35,28 @@
         var attr6 = "";
         var attr7 = "";
         var attr8 = "";
+        var dispatchdate;
+        function setDispatchDate() {
+            dispatchdate={"barcode":barcode,
+                "plant":plant,
+                "order":order,
+                "dispatch":dispatch,
+                "zpgdbh":zpgdbh,
+                "operation":operation,
+                "yeild":yeild,
+                "workscrap":workscrap,
+                "rowscrap":rowscrap,
+                "klass":klass,
+                "line":line,
+                "modelno":modelno,
+                "postingdate":postingdate,
+                "createdate":createdate};
+        }
         function getValues() {
             barcode = document.getElementById("barcode").value;
             order = document.getElementById("order").value;
-            /*dispatch = document.getElementById("dispatch").value;*/
+            dispatch = barcode.substring(4,barcode.length-4);
+            zpgdbh = barcode.substring(barcode.length-8,barcode.length-4);
             operation = document.getElementById("operation").value;
             yeild = document.getElementById("yeild").value;
             workscrap = document.getElementById("workscrap").value;
@@ -40,6 +64,8 @@
             klass = document.getElementById("klass").value;
             line = document.getElementById("line").value;
             modelno = document.getElementById("modelno").value;
+            postingdate = document.getElementById("postdate").options[document.getElementById("postdate").selectedIndex].value.replace("-","").replace("-","");
+            createdate = getTodayDate().replace("-","").replace("-","");
 
         }
         function clearValues() {
@@ -249,19 +275,26 @@
             }
 
 
+//            var namestr = "123";
             // get trueName of user
-/*            $.ajax({
+            $.ajax({
                 url:"${base.contextPath}/hr/employee/queryByCode",
                 type:"get",
                 data : {"code":username},
                 contentType :"application/json",
                 success:function (res){
-                    var namestr = JSON.stringify(res.rows[0].name);
+                    var jsonname = res.rows[1].name;
+                    var namestr = JSON.stringify(jsonname);
                     namestr = namestr.substring(1,namestr.length-1);
-                    document.getElementById("user").innerHTML = namestr;
+                    document.getElementById("user").innerHTML = transCode(namestr);
+                    document.getElementById("user").innerHTML = username;
                 }
 
-            });*/
+            });
+            document.getElementById("user").innerHTML = username;
+/*            document.getElementById("user").innerHTML = transCode(namestr);
+            document.getElementById("klass").value = namestr;
+            document.getElementById("line").value = transCode(namestr);*!/*/
 
             //click for logout
             var oLogout=document.getElementById("logout");
@@ -460,6 +493,27 @@
                 removeMaskDialog();
             };
             oClose2.onclick=function(){
+                getValues();
+                setDispatchDate();
+                $.ajax({
+                     url:"${base.contextPath}/confirmation/input/log/insertInputLog",
+                     type:"post",
+                     data : dispatchdate,
+                     dataType : "json",
+                     contentType :"application/json",
+                     success:function (res){
+                         if(!res.success){
+
+                         }else{
+
+                         }
+                     },
+                     error:function (res) {
+
+                     }
+                 });
+
+
                 document.body.removeChild(oLoginD);
 /*                document.body.removeChild(oMaskD);*/
                 ablePostdate();
