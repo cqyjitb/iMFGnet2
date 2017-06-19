@@ -77,11 +77,7 @@ public class EmployeeController extends BaseController {
         String code = request.getParameter("code");
         List<Employee> list = new ArrayList<Employee>();
         Employee employee = this.employeeService.queryByCode(code);
-        Employee empl = new Employee();
-        empl.setName("袁国庆");
-        System.out.println(employee);
         list.add(employee);
-        list.add(empl);
         return new ResponseData(list);
     }
 }
