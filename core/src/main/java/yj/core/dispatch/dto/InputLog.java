@@ -11,6 +11,7 @@ import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.util.Date;
 
+
 @ExtensionAttribute(disable=true)
 @Table(name = "confirmation_input_log")
 public class InputLog extends BaseDTO {
@@ -47,11 +48,13 @@ public class InputLog extends BaseDTO {
 
     private String plant; //工厂
 
-    private Date postingDate; //过账日期
+    private String  postingDate; //过账日期
 
     private String postingDateAfter;
 
     private String postingDateBefore ;
+
+    private String  dispatchLogicID; //派工单流水号
 
     private String attr1; //属性1
 
@@ -89,7 +92,6 @@ public class InputLog extends BaseDTO {
 
     private String creatDateBefore;
 
-
     @Transient
     private String matDesc;//产品名称
 
@@ -99,8 +101,11 @@ public class InputLog extends BaseDTO {
     @Transient
     private  String userName;//用户姓名
 
+    @Transient
+    private String msgty;//是否成功
 
-
+    @Transient
+    private String msgtx;//信息
 
 
     public Long getId() {
@@ -215,11 +220,11 @@ public class InputLog extends BaseDTO {
         this.plant = plant;
     }
 
-    public Date getPostingDate() {
+    public String getPostingDate() {
         return postingDate;
     }
 
-    public void setPostingDate(Date postingDate) {
+    public void setPostingDate(String postingDate) {
         this.postingDate = postingDate;
     }
 
@@ -405,5 +410,29 @@ public class InputLog extends BaseDTO {
 
     public void setCreatDateBefore(String creatDateBefore) {
         this.creatDateBefore = creatDateBefore;
+    }
+
+    public String getDispatchLogicID() {
+        return dispatchLogicID;
+    }
+
+    public void setDispatchLogicID(String dispatchLogicID) {
+        this.dispatchLogicID = dispatchLogicID;
+    }
+
+    public String getMsgty() {
+        return msgty;
+    }
+
+    public void setMsgty(String msgty) {
+        this.msgty = msgty;
+    }
+
+    public String getMsgtx() {
+        return msgtx;
+    }
+
+    public void setMsgtx(String msgtx) {
+        this.msgtx = msgtx;
     }
 }

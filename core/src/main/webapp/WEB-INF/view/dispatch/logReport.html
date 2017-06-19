@@ -36,7 +36,7 @@
                     viewModel.model.set(k, null);
                 }
             },
-            queryResource: doQuery
+            queryGrid: doQuery
 
 
         });
@@ -189,7 +189,7 @@
         dataSource = new kendo.data.DataSource({
             transport: {
                 read: {
-                    url: BaseUrl + "/confirmation/input/log/queryResult",
+                    url: BaseUrl + "/confirmation/input/log/queryLog",
                     type: "POST",
                     dataType: "json"
                 },
@@ -222,20 +222,7 @@
                 }
             }
         });
-        //       var data = {};
-        //       $.ajax({
-        //           url:"${base.contextPath}/confirmation/input/log/query",
-        //           type:"post",
-        //           dataType : "json",
-        //           contentType :"application/json",
-        //           success:function (res){
-        //              //  alert(JSON.stringify(res.rows[0].creatDate))
-        //               data = JSON.stringify(res.rows)
-        //
-        //
-        //           }
-        //       });
-        //alert(JSON.stringify(dataSource.options.models))
+
         $("#Grid").kendoGrid({
             dataSource: dataSource,
             height: '100%',
@@ -310,12 +297,12 @@
                 },
 
                 {
-                    field: "yeild",
+                    field: "msgty",
                     title: '是否成功',
                     width: 120
                 },
                 {
-                    field: "workScrap",
+                    field: "msgtx",
                     title: '消息',
                     width: 120
                 },

@@ -30,7 +30,7 @@
                         viewModel.model.set(k, null);
                     }
                 },
-                queryResource: function (e) {
+                queryGrid: function (e) {
                     $('#Grid').data('kendoGrid').dataSource.page(1);
                 }
             });
@@ -187,7 +187,7 @@
         dataSource = new kendo.data.DataSource({
             transport: {
                 read: {
-                    url: BaseUrl + "/confirmation/input/log/queryWriteOff",
+                    url: BaseUrl + "/confirmation/input/log/queryResult",
                     type: "POST",
                     dataType: "json"
                 },

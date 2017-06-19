@@ -19,11 +19,11 @@
 
     <insert id="insertLog" parameterType="yj.core.dispatch.dto.Log">
         INSERT INTO confirmation_log(
-        id,tranType,refId,msgty,msgtx
+        tranType,refId,msgty,msgtx
 
         )
         VALUES (
-        #{id},#{tran_type}, #{ref_id},#{msgty},#{msgtx}
+        #{tran_type}, #{ref_id},#{msgty},#{msgtx}
       )
     </insert>
 </mapper>

@@ -22,9 +22,14 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
 
     //报功结果页面数据查询
      public  List<InputLog> queryAllBg(IRequest iRequest, InputLog inputLog, int page,int pageSize){
-         System.out.println("test!");
          return inputLogMapper.queryAllBg(inputLog);
      };
+
+    //报功日志界面数据查询
+    public List<InputLog> queryAllLog(IRequest iRequest,InputLog inputLog,int page,int pageSize){
+        return  inputLogMapper.queryAllLog(inputLog);
+    };
+
 
     //插入一条信息到confirmation_input_log
     public int insertInputLog(InputLog inputLog){

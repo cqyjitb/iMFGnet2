@@ -16,7 +16,7 @@
         <result column="shop_code" property="shopCode" jdbcType="VARCHAR" />
         <result column="line" property="line" jdbcType="VARCHAR" />
         <result column="model_no" property="modelNo" jdbcType="VARCHAR" />
-        <result column="posting_date" property="postingDate" jdbcType="DATE" />
+        <result column="posting_date" property="postingDate" jdbcType="VARCHAR" />
         <result column="plant" property="plant" jdbcType="VARCHAR" />
         <result column="attr1" property="attr1" jdbcType="VARCHAR" />
         <result column="attr2" property="attr2" jdbcType="VARCHAR" />
@@ -33,6 +33,8 @@
         <result column="attr13" property="attr13" jdbcType="VARCHAR" />
         <result column="attr14" property="attr14" jdbcType="VARCHAR" />
         <result column="attr15" property="attr15" jdbcType="VARCHAR" />
+        <result column="msgty" property="msgty" jdbcType="VARCHAR" />
+        <result column="msgtx" property="msgtx" jdbcType="VARCHAR" />
         <result column="CREATION_DATE" property="creatDate" jdbcType="VARCHAR" />
         <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
         <result column="mat_desc" property="matDesc" jdbcType="VARCHAR" />
@@ -53,7 +55,7 @@
         <result column="shop_code" property="shopCode" jdbcType="VARCHAR" />
         <result column="line" property="line" jdbcType="VARCHAR" />
         <result column="model_no" property="modelNo" jdbcType="VARCHAR" />
-        <result column="posting_date" property="postingDate" jdbcType="DATE" />
+        <result column="posting_date" property="postingDate" jdbcType="VARCHAR" />
         <result column="plant" property="plant" jdbcType="VARCHAR" />
         <result column="attr1" property="attr1" jdbcType="VARCHAR" />
         <result column="attr2" property="attr2" jdbcType="VARCHAR" />
@@ -81,16 +83,18 @@
 
     <insert id="insertInputLog" parameterType="yj.core.dispatch.dto.InputLog">
         INSERT INTO confirmation_input_log(
-        id,barcode,orderno,dispatch,operation,yeild,work_scrap,row_scrap,classno,classgrp,shop_code,line,model_no,posting_date,plant,
+        barcode,orderno,dispatch,operation,yeild,work_scrap,row_scrap,classno,classgrp,shop_code,line,model_no,posting_date,plant,
         attr1,attr2,attr3,attr4,attr5,attr6,attr7,attr8,attr9,attr10,attr11,attr12,attr13,attr14,attr15
         )
         VALUES (
-        #{id},#{barcode}, #{orderno},#{dispatch},
+        #{barcode}, #{orderno},#{dispatch},
         #{operation},#{yeild},#{workScrap},#{rowScrap},#{classno},#{classgrp},#{shopCode},#{line},#{modelNo},#{postingDate},#{plant},
         #{attr1},#{attr2},#{attr3},#{attr4},#{attr5},#{attr6},#{attr7},#{attr8},#{attr9},#{attr10},#{attr11},#{attr12},#{attr13},#{attr14},#{attr15}
         )
     </insert>
-
+<!--
+    报功结果/报功冲销
+-->
     <select id="queryAllBg" resultMap="BaseResultMap" parameterType="yj.core.dispatch.dto.InputLog">
         SELECT
         il.id,
@@ -131,26 +135,70 @@
             <if test="material != null">
                 and r.material = #{material}
             </if>
-            <if test="creatDate != null">
-                and il.creatDate = #{CREATION_DATE}
+            <if test="creatDateAfter != null and creatDateBefore != null">
+                and il.CREATION_DATE  >=  #{creatDateAfter}  and  #{creatDateBefore} > il.CREATION_DATE
             </if>
 
             <if test="postingDateAfter != null and postingDateBefore != null">
-                and posting_date BETWEEN  #{postingDateAfter} AND  #{postingDateBefore}
+                and  il.posting_date  >=  #{postingDateAfter} and #{postingDateBefore} > il.posting_date
             </if>
         </where>
-
-
-
-
-/*
-        FROM  confirmation_input_log il
-        LEFT OUTER JOIN confirmation_result r ON (
-         il.id= r.input_id ) LEFT OUTER JOIN sys_user u ON(
-        il.CREATED_BY = u.user_id
-       )*/
 
     </select>
 
 
+    <!--
+        报功日志
+    -->
+    <select id="queryAllLog" resultMap="BaseResultMap" parameterType="yj.core.dispatch.dto.InputLog">
+        SELECT
+        il.id,
+        il.plant,
+        il.orderno,
+        il.operation,
+        il.CREATION_DATE,
+        il.posting_date,
+        il.classgrp,
+        il.classgrp,
+        il.line,
+        il.model_no,
+        l.msgty,
+        l.msgtx,
+        il.CREATED_BY,
+        r.mat_desc,
+        r.material,
+        u.user_name
+
+        FROM confirmation_input_log il,confirmation_result r,sys_user u,confirmation_log l
+
+        <where>
+            il.id= r.input_id
+            AND il.CREATED_BY = u.user_id
+            AND l.ref_id = il.id
+            AND r.is_reversed ='0'
+            AND l.tran_type = '0'
+
+
+            <if test="plant != null">
+                and il.plant = #{plant}
+            </if>
+            <if test="orderno != null">
+                and il.orderno = #{orderno}
+            </if>
+            <if test="operation != null">
+                and il.operation = #{operation}
+            </if>
+            <if test="material != null">
+                and r.material = #{material}
+            </if>
+            <if test="creatDateAfter != null and creatDateBefore != null">
+                and il.CREATION_DATE  >=  #{creatDateAfter}  and  #{creatDateBefore} > il.CREATION_DATE
+            </if>
+
+            <if test="postingDateAfter != null and postingDateBefore != null">
+                and  il.posting_date  >=  #{postingDateAfter} and #{postingDateBefore} > il.posting_date
+            </if>
+        </where>
+
+    </select>
 </mapper>
