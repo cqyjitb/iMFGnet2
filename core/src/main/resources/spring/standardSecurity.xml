@@ -15,6 +15,7 @@
         <intercept-url pattern="/dispatch/dispatch.html" access="permitAll"/>
         <intercept-url pattern="/yjlogin.html" access="permitAll"/>
         <intercept-url pattern="/hr/employee/queryByCode" access="permitAll"/>
+        <intercept-url pattern="/confirmation/input/log/insertInputLog" access="permitAll"/>
         <intercept-url pattern="/yujiang/login" access="permitAll"/>
 
         <intercept-url pattern="/" access="permitAll"/>
