@@ -7,7 +7,8 @@ package yj.core.webservice.sender;
  */
 
 
-import yj.core.webservice.receiver.DTPP001RecRes;
+
+import yj.core.webservice.receiver.DTPP001SendRes;
 
 import javax.xml.namespace.QName;
 import java.io.File;
@@ -47,8 +48,8 @@ public final class SIPP001SenderSync_HTTPPort_Client {
         SIPP001SenderSync port = ss.getHTTPPort();
         // Set credentials
         Map<String, Object> reqCtxt = ((javax.xml.ws.BindingProvider) port).getRequestContext();
-        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
-        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "Yjsap123@CQ");
+        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "hand");
+        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "h@nd1234");
         
         {
             System.out.println("Invoking siPP001SenderSync...");
@@ -73,8 +74,8 @@ public final class SIPP001SenderSync_HTTPPort_Client {
             //
             _siPP001SenderSync_mtPP001SendReq.getITEM().add(item);
 
-            DTPP001RecRes _siPP001SenderSync__return = port.siPP001SenderSync(_siPP001SenderSync_mtPP001SendReq);
-            System.out.println("siPP001SenderSync.result=" + _siPP001SenderSync__return.getRETURN().getMESSAGE());
+            DTPP001SendRes _siPP001SenderSync__return = port.siPP001SenderSync(_siPP001SenderSync_mtPP001SendReq);
+            System.out.println("siPP001SenderSync.result=" + _siPP001SenderSync__return.getDETAIL().get(0).getMESSAGE());
         }
 
         System.exit(0);

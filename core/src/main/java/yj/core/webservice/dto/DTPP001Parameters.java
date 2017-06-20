@@ -4,6 +4,7 @@ package yj.core.webservice.dto;
  * Created by TFR on 2017/6/15.
  */
 public class DTPP001Parameters {
+
     private String PWERK;
     private String AUFNR;
     private String VORNR;

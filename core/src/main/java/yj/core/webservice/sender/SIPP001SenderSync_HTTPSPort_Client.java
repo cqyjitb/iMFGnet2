@@ -7,7 +7,7 @@ package yj.core.webservice.sender;
  */
 
 
-import yj.core.webservice.receiver.DTPP001RecRes;
+import yj.core.webservice.receiver.DTPP001SendRes;
 
 import javax.xml.namespace.QName;
 import java.io.File;
@@ -58,7 +58,7 @@ public final class SIPP001SenderSync_HTTPSPort_Client {
 
             DTPP001SendReq _siPP001SenderSync_mtPP001SendReq = new DTPP001SendReq();
 
-            DTPP001RecRes _siPP001SenderSync__return = port.siPP001SenderSync(_siPP001SenderSync_mtPP001SendReq);
+            DTPP001SendRes _siPP001SenderSync__return = port.siPP001SenderSync(_siPP001SenderSync_mtPP001SendReq);
             System.out.println("siPP001SenderSync.result=" + _siPP001SenderSync__return.getRETURN().getMESSAGE());
 
 
