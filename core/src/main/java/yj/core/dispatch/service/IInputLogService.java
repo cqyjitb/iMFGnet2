@@ -18,10 +18,11 @@ public interface IInputLogService extends IBaseService<InputLog>, ProxySelf<IInp
 
     int queryInputLogById(Long id);//根据ID查询表格confirmation_input_log
 
-    public DTPP001ReturnResult inputDispatch(InputLog input);
+    DTPP001ReturnResult inputDispatch(InputLog input);
 
-    public void nextId(InputLog input);
+    void nextId(InputLog input);
 
-    public DTPP001ReturnResult returnResultAndUpdateConfirmation(InputLog input);
+    DTPP001ReturnResult writeOffDispatch(InputLog input);
+
 
 }

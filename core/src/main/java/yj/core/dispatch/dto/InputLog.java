@@ -91,7 +91,6 @@ public class InputLog extends BaseDTO {
 
     private String creatDateBefore;
 
-
     @Transient
     private String matDesc;//产品名称
 
@@ -107,6 +106,16 @@ public class InputLog extends BaseDTO {
     @Transient
     private String msgtx;//信息
 
+    @Transient
+    private String created_by;
+
+    public String getCreated_by() {
+        return created_by;
+    }
+
+    public void setCreated_by(String created_by) {
+        this.created_by = created_by;
+    }
 
     public Long getId() {
         return id;

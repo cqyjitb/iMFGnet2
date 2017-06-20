@@ -17,6 +17,11 @@ public class DTPP001ReturnResult {
     private String MATNR;
 
     /**
+     * 物料描述
+     */
+    private String MAKTX;
+
+    /**
      *消息状态  S(成功)/E(失败)
      */
     private String MSGTY;
@@ -45,7 +50,13 @@ public class DTPP001ReturnResult {
     private String MESSAGE;
 
 
+    public String getMAKTX() {
+        return MAKTX;
+    }
 
+    public void setMAKTX(String MAKTX) {
+        this.MAKTX = MAKTX;
+    }
     public String getAUFNR() {
         return AUFNR;
     }

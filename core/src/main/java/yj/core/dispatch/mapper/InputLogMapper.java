@@ -26,7 +26,9 @@ public interface InputLogMapper extends Mapper<InputLog>{
      * @param inputLog 报工信息
      * @return
      */
-    public List<InputLog> confirmationMaxOperationInfo(InputLog inputLog);
+    List<InputLog> confirmationMaxOperationInfo(InputLog inputLog);
 
     Long selectNextId();
+
+    List<InputLog> queryAllGTOperation(InputLog inputLog);
 }

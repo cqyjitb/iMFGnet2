@@ -14,4 +14,6 @@ public interface ResultMapper extends Mapper<Result>{
     public DTPP001ReturnResult inputDispatch(InputLog input);
 
     public void nextId(InputLog input);
+
+    void updateReveseByInputId(Long inputId);
 }

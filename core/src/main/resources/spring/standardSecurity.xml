@@ -10,24 +10,32 @@
     <http security="none" pattern="/lib/**"/>
 
     <http access-decision-manager-ref="accessDecisionManager">
-        <csrf request-matcher-ref="csrfSecurityRequestMatcher" />
+        <csrf request-matcher-ref="csrfSecurityRequestMatcher"/>
         <!--<csrf disabled="true"/>-->
-        <intercept-url pattern="/login" access="permitAll" />
-        <intercept-url pattern="/login.html" access="permitAll" />
-        <intercept-url pattern="/verifiCode" access="permitAll" />
-        <intercept-url pattern="/common/**" access="permitAll" />
-        <intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
+        <intercept-url pattern="/dispatch/dispatch.html" access="permitAll"/>
+        <intercept-url pattern="/sys/userrole/queryByUserName" access="permitAll"/>
+        <intercept-url pattern="/yjlogin.html" access="permitAll"/>
+        <intercept-url pattern="/hr/employee/queryByCode" access="permitAll"/>
+        <intercept-url pattern="/confirmation/input/log/insertInputLog" access="permitAll"/>
+        <intercept-url pattern="/yujiang/login" access="permitAll"/>
+
+        <intercept-url pattern="/" access="permitAll"/>
+        <intercept-url pattern="/login" access="permitAll"/>
+        <intercept-url pattern="/login.html" access="permitAll"/>
+        <intercept-url pattern="/verifiCode" access="permitAll"/>
+        <intercept-url pattern="/common/**" access="permitAll"/>
+        <intercept-url pattern="/**" access="hasRole('ROLE_USER')"/>
 
         <access-denied-handler error-page="/403.html"/>
 
 
         <form-login login-page='/login' authentication-success-handler-ref="successHandler"
                     authentication-failure-handler-ref="loginFailureHandler"/>
-                    <!--authentication-failure-url="/login?error=true"/>-->
+        <!--authentication-failure-url="/login?error=true"/>-->
         <!-- 验证码拦截器 -->
         <custom-filter ref="captchaVerifierFilter" before="FORM_LOGIN_FILTER"/>
 
-        <logout logout-url="/logout" logout-success-url="/"/>
+        <logout logout-url="/logout"/>
 
         <headers defaults-disabled="true">
             <cache-control/>
@@ -42,7 +50,7 @@
         <!-- 投票器 -->
         <beans:constructor-arg>
             <beans:list>
-                
+
                 <beans:bean class="org.springframework.security.web.access.expression.WebExpressionVoter"/>
                 <beans:bean class="org.springframework.security.access.vote.RoleVoter"/>
                 <beans:bean class="org.springframework.security.access.vote.AuthenticatedVoter"/>
@@ -66,15 +74,15 @@
     </beans:bean>
 
     <beans:bean id="successHandler" class="com.hand.hap.security.CustomAuthenticationSuccessHandler">
-       <!-- <beans:property name="defaultTargetUrl" value="/index"/>-->
+        <!-- <beans:property name="defaultTargetUrl" value="/index"/>-->
     </beans:bean>
 
     <beans:bean id="csrfSecurityRequestMatcher" class="com.hand.hap.security.CsrfSecurityRequestMatcher">
-           <beans:property name="excludeUrls">
-                <beans:list>
-                   <beans:value>/login</beans:value>
-              </beans:list>
-            </beans:property>
+        <beans:property name="excludeUrls">
+            <beans:list>
+                <beans:value>/login</beans:value>
+            </beans:list>
+        </beans:property>
     </beans:bean>
 
 </beans:beans>
