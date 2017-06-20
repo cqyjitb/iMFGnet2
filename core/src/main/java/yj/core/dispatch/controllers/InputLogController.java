@@ -12,9 +12,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import yj.core.dispatch.dto.InputLog;
 import yj.core.dispatch.service.IInputLogService;
+import yj.core.dispatch.service.impl.InputLogServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 @Controller
@@ -46,15 +48,25 @@ private IInputLogService service;
                 dto.setPostingDateBefore(pdBefore);
             }
 
+        List obj = new ArrayList();
         List <InputLog> list = service.queryAllLog(requestContext,dto,page,pageSize);
+        int s = 0;
+        int e = 0 ;
+
         for (int i=0 ; i<list.size();i++){
             if (list.get(i).getMsgty().equals("S")){
                 list.get(i).setMsgty("成功");
+                s++;
             }else {
                 list.get(i).setMsgty("失败");
+                e++;
             }
         }
+        obj.add(list);
+        obj.add(s);
+        obj.add(e);
 
+        System.out.println("成功:"+s+"失败："+e);
         return new ResponseData(list);
     }
 
@@ -110,6 +122,8 @@ public ResponseData update(HttpServletRequest request, BindingResult result, @Re
     IRequest requestCtx = createRequestContext(request);
     return new ResponseData(service.batchUpdate(requestCtx, dto));
 }
+
+
 
 
 }

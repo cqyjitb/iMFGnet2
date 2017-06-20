@@ -72,6 +72,7 @@
         <result column="attr13" property="attr13" jdbcType="VARCHAR" />
         <result column="attr14" property="attr14" jdbcType="VARCHAR" />
         <result column="attr15" property="attr15" jdbcType="VARCHAR" />
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
     </resultMap>
 
 
@@ -84,13 +85,13 @@
     <insert id="insertInputLog" parameterType="yj.core.dispatch.dto.InputLog">
         INSERT INTO confirmation_input_log(
         barcode,orderno,dispatch,operation,yeild,work_scrap,row_scrap,classno,classgrp,shop_code,line,model_no,posting_date,plant,
-        attr1,attr2,attr3,attr4,attr5,attr6,attr7,attr8,attr9,attr10,attr11,attr12,attr13,attr14,attr15
+        attr1,attr2,attr3,attr4,attr5,attr6,attr7,attr8,attr9,attr10,attr11,attr12,attr13,attr14,attr15,CREATED_BY
         )
         VALUES (
         #{barcode}, #{orderno},#{dispatch},
         #{operation},#{yeild},#{workScrap},#{rowScrap},#{classno},#{classgrp},#{shopCode},#{line},#{modelNo},#{postingDate},#{plant},
-        #{attr1},#{attr2},#{attr3},#{attr4},#{attr5},#{attr6},#{attr7},#{attr8},#{attr9},#{attr10},#{attr11},#{attr12},#{attr13},#{attr14},#{attr15}
-        )
+        #{attr1},#{attr2},#{attr3},#{attr4},#{attr5},#{attr6},#{attr7},#{attr8},#{attr9},#{attr10},#{attr11},#{attr12},#{attr13},#{attr14},#{attr15},
+       #{createdBy} )
     </insert>
 <!--
     报功结果/报功冲销
