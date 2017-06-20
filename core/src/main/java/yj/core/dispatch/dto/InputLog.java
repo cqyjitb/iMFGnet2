@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.util.Date;
 
 
 @ExtensionAttribute(disable=true)
@@ -107,6 +106,16 @@ public class InputLog extends BaseDTO {
     @Transient
     private String msgtx;//信息
 
+    @Transient
+    private String created_by;
+
+    public String getCreated_by() {
+        return created_by;
+    }
+
+    public void setCreated_by(String created_by) {
+        this.created_by = created_by;
+    }
 
     public Long getId() {
         return id;

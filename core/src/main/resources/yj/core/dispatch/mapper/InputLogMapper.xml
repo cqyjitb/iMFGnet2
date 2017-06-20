@@ -90,8 +90,8 @@
         VALUES (
         #{barcode}, #{orderno},#{dispatch},
         #{operation},#{yeild},#{workScrap},#{rowScrap},#{classno},#{classgrp},#{shopCode},#{line},#{modelNo},#{postingDate},#{plant},
-        #{attr1},#{attr2},#{attr3},#{attr4},#{attr5},#{attr6},#{attr7},#{attr8},#{attr9},#{attr10},#{attr11},#{attr12},#{attr13},#{attr14},#{attr15},
-       #{createdBy} )
+        #{attr1},#{attr2},#{attr3},#{attr4},#{attr5},#{attr6},#{attr7},#{attr8},#{attr9},#{attr10},#{attr11},#{attr12},#{attr13},#{attr14},#{attr15},#{created_by}
+        )
     </insert>
 <!--
     报功结果/报功冲销
@@ -203,4 +203,49 @@
         </where>
 
     </select>
+    <select id="selectNextId" resultType="java.lang.Long">
+        SELECT LAST_INSERT_ID()
+    </select>
+    <select id="confirmationInfoByOrdernoAndOperation" resultMap="BaseResultMap1" parameterType="yj.core.dispatch.dto.InputLog">
+        select *
+        from confirmation_input_log i
+        inner join confirmation_result r on i.id = r.input_id
+        inner join confirmation_log l on i.id = l.ref_id
+        <where>
+            i.orderno = #{orderno} and i.operation = #{operation} and r.is_reversed = '0' and l.msgty = 'S' and l.tran_type = '0'
+        </where>
+    </select>
+
+    <select id="queryAllGTOperation" resultMap="BaseResultMap1" parameterType="yj.core.dispatch.dto.InputLog">
+        select *
+        from confirmation_input_log i
+        inner join confirmation_result r on i.id = r.input_id
+        inner join confirmation_log l on i.id = l.ref_id
+        <where>
+            i.orderno = #{orderno} and i.operation > #{operation} and r.is_reversed = '0' and l.msgty = 'S' and l.tran_type = '0'
+        </where>
+    </select>
+
+
+    <select id="confirmationMaxOperationInfo" resultMap="BaseResultMap1" parameterType="yj.core.dispatch.dto.InputLog">
+        select *
+        from confirmation_input_log i
+        <where>
+            i.orderno = #{orderno}
+            and i.operation
+            in(
+                select MAX(ci.operation) from confirmation_input_log ci
+                inner join confirmation_result r on ci.id = r.input_id
+                inner join confirmation_log l on ci.id = l.ref_id
+                where ci.orderno = #{orderno} and  #{operation} > ci.operation and r.is_reversed = '0' and l.msgty = 'S' and l.tran_type = '0'
+            )
+        </where>
+
+
+    </select>
+
+
+
+
+
 </mapper>

@@ -24,7 +24,23 @@
     <script type="text/javascript">
 
         function doQuery() {
+
             $('#Grid').data('kendoGrid').dataSource.page(1);
+
+            $.ajax({
+                url: '${base.contextPath}/test/form',
+                type: 'post',
+                success: function(data) {
+
+                    var s = JSON.stringify(data.rows[0]);
+                    var e = JSON.stringify(data.rows[1]);
+                    console.log("s:"+s);
+                    console.log("e:"+e);
+                   // document.getElementById('s').innerHTML=s;
+                    //document.getElementById('e').innerHTML=e;
+
+                },
+            });
 
 
         }
@@ -228,9 +244,27 @@
         });
 
 
+        dataSource.fetch(function(){
 
+            var data = dataSource.data();
+            var s = 0;
+            var e = 0;
+            for (var i = 0;i<data.length;i++){
+                if (data[i].msgty=="成功"){
+                    s++;
+                }else {
+                    e++;
+                }
+            }
+           // console.log(s);
+           // console.log(e);
+            var a=document.getElementById('s');
+            var b=document.getElementById('e');
+            a.innerHTML = s;
+            b.innerHTML = e;
+        });
 
-            $("#Grid").kendoGrid({
+         var gridTest = $("#Grid").kendoGrid({
                 dataSource: dataSource,
                 height: '100%',
                 resizable: true,
@@ -321,30 +355,29 @@
                 editable: false
             });
 
-                Hap.autoResizeGrid("#Grid");
-                console.log(dataSource);
-                var grid = $("#Grid").data("kendoGrid");
-                console.log(grid.dataSource.data.length);
-                console.log(grid);
-                 grid.dataSource.fetch(function(){
 
-                    var data = grid.dataSource.data();
-                    var s = 0;
-                    var e = 0;
-                    for (var i = 0;i<data.length;i++){
-                        if (data[i].msgty=="成功"){
-                            s++;
-                        }else {
-                            e++;
-                        }
-                    }
-                    console.log(s);
-                    console.log(e);
-                    var a=document.getElementById('s');
-                    var b=document.getElementById('e');
-                    a.append(s);
-                    b.append(e)
-                });
+
+
+                Hap.autoResizeGrid("#Grid");
+
+
+
+/*
+        var row = $("#grid .k-grid-content td:eq(2)");
+        var data = gridTest.data("kendoGrid").dataItem(row);
+        console.log(row);
+
+
+
+        var grid = $("#Grid").data("kendoGrid");
+
+                alert(dataSource);
+
+                 alert(grid.dataSource.data);
+
+                 alert.log(grid);*/
+
+
 
 
 

@@ -54,9 +54,7 @@ function getDispatchValues() {
     modelNo = document.getElementById("modelNo").value;
     plant = barcode.substring(0,4);
     dispatch = barcode.substring(4,barcode.length-4);
-    dispatchLogicNo = barcode.substring(barcode.length-8,barcode.length-4);;
-    creationDate = "";
-    createdBy = "";
+    dispatchLogicNo = barcode.substring(barcode.length-8,barcode.length-4);
 
     attr1 = document.getElementById("attr1").value;
     attr2 = document.getElementById("attr2").value;
@@ -113,8 +111,6 @@ function delDispatchValues() {
  */
 function checkDispatchValues() {
     if(barcode == "" || barcode == null){
-        var coBcd=document.getElementById("barcode");
-        coBcd.focus();
         return "请扫码";
     }
     if(yeild == "" || yeild == null){

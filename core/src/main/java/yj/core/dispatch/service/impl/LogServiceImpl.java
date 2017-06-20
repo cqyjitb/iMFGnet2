@@ -4,23 +4,26 @@ import com.hand.hap.system.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import yj.core.dispatch.dto.InputLog;
 import yj.core.dispatch.dto.Log;
+import yj.core.dispatch.mapper.LogMapper;
 import yj.core.dispatch.service.ILogService;
-import yj.core.webservice.components.ConfirmationWebserviceUtil;
-import yj.core.webservice.dto.DTPP001ReturnResult;
 
 @Service
 @Transactional
 public class LogServiceImpl extends BaseServiceImpl<Log> implements ILogService{
 
     @Autowired
-    ConfirmationWebserviceUtil webserviceUtil;
+    LogMapper logMapper;
 
     @Override
-    public DTPP001ReturnResult chargeAgainstConnector(InputLog input) {
-        DTPP001ReturnResult returnResult = webserviceUtil.receiveConfirmation(input);
-        //hap表数据修改
-        return returnResult;
-    }
+
+    //根据ID查询confirmation_log
+    public int queryLogById(Long id){
+        return logMapper.queryLogById(id);
+    };
+
+    //插入一条数据到confirmation_log
+    public int insertLog(Log log){
+        return logMapper.insertLog(log);
+    };
 }

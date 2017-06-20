@@ -24,11 +24,17 @@
     <insert id="insertResult" parameterType="yj.core.dispatch.dto.Result">
          INSERT INTO confirmation_result(
         inputId,confirmationNo,confirmationPos,plant,material,workcenter,isReversed,matDesc
-
         )
         VALUES (
        #{input_id}, #{confirmation_no},#{confirmation_pos},#{plant},#{material},
         #{workcenter},#{is_reversed},#{mat_desc}
       )
     </insert>
+
+    <update id="updateReveseByInputId" >
+        UPDATE confirmation_result
+        SET is_reversed = '1'
+        WHERE input_id = #{inputId}
+    </update>
+
 </mapper>
