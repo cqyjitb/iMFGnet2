@@ -113,6 +113,8 @@ function delDispatchValues() {
  */
 function checkDispatchValues() {
     if(barcode == "" || barcode == null){
+        var coBcd=document.getElementById("barcode");
+        coBcd.focus();
         return "请扫码";
     }
     if(yeild == "" || yeild == null){
