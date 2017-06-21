@@ -38,6 +38,7 @@
         <result column="CREATION_DATE" property="creatDate" jdbcType="VARCHAR" />
         <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
         <result column="mat_desc" property="matDesc" jdbcType="VARCHAR" />
+
         <result column="material" property="material" jdbcType="VARCHAR" />
         <result column="user_name" property="userName" jdbcType="VARCHAR" />
     </resultMap>

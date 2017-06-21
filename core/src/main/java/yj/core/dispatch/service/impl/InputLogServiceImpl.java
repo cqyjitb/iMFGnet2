@@ -86,6 +86,9 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
             }
         }
         currentInputSum = currentInputSum + input.getYeild() + input.getRowScrap() + input.getWorkScrap();
+
+        System.out.println(currentInputSum + historyMaxOperationYeildSum);
+
         if (maxInputLogs.size() > 0) {
             for (InputLog inputLog : maxInputLogs) {
                 historyMaxOperationYeildSum += inputLog.getYeild();
@@ -117,11 +120,11 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         param.setZMNUM(inputLog.getModelNo() == null ? "" : inputLog.getModelNo());
         param.setDATUM(df.format(new Date()));
         param.setZPGDBAR(inputLog.getDispatch());
-        param.setZPGDBH(inputLog.getDispatchLogicID());
+        param.setZPGDBH(inputLog.getDispatchLogicID() == null ? "" : inputLog.getDispatchLogicID());
 
         DTPP001ReturnResult returnResult = webserviceUtil.receiveConfirmation(param);
-        Log log = null;
-        Result result = null;
+        Log log = new Log();
+        Result result = new Result();
         if("S".equals(returnResult.getMSGTY())){
             //添加数据
             inputLogMapper.insertInputLog(inputLog);
@@ -163,17 +166,33 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         return returnWriteOffResultAndUpdateConfirmation(input);
     }
 
-    public DTPP001ReturnResult returnWriteOffResultAndUpdateConfirmation(InputLog input){
-        DTPP001ReturnResult returnResult = new DTPP001ReturnResult();
+    public DTPP001ReturnResult returnWriteOffResultAndUpdateConfirmation(InputLog inputLog){
+        DTPP001Parameters param = new DTPP001Parameters();
+        param.setPWERK(inputLog.getPlant());
+        param.setAUFNR(inputLog.getOrderno());
+        param.setVORNR(inputLog.getOperation());
+        param.setBUDAT(inputLog.getPostingDate().replaceAll("-",""));
+        param.setGMNGA(inputLog.getYeild().toString());
+        param.setXMNGA(inputLog.getWorkScrap().toString());
+        param.setRMNGA(inputLog.getRowScrap().toString());
+        param.setZSCBC(inputLog.getClassgrp() == null ? "" : inputLog.getClassgrp());
+        param.setZSCX(inputLog.getLine() == null ? "" : inputLog.getLine());
+        param.setZMNUM(inputLog.getModelNo() == null ? "" : inputLog.getModelNo());
+        param.setDATUM(df.format(new Date()));
+        param.setZPGDBAR(inputLog.getDispatch());
+        param.setZPGDBH(inputLog.getDispatchLogicID() == null ? "" : inputLog.getDispatchLogicID());
+
+        DTPP001ReturnResult returnResult = webserviceUtil.receiveConfirmation(param);
+
         Log log = null;
         if("S".equals(returnResult.getMSGTY())){
             log.setMsgtx(returnResult.getMESSAGE());
             log.setMsgty(returnResult.getMSGTY());
             log.setTranType("1");
-            log.setRefId(input.getId());
+            log.setRefId(inputLog.getId());
             logMapper.insertLog(log);
 
-            resultMapper.updateReveseByInputId(input.getId());
+            resultMapper.updateReveseByInputId(inputLog.getId());
 
         }
         return returnResult;
