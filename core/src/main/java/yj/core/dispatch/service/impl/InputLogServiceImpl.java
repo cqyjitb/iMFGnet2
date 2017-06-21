@@ -180,8 +180,8 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         param.setZSCX(inputLog.getLine() == null ? "" : inputLog.getLine());
         param.setZMNUM(inputLog.getModelNo() == null ? "" : inputLog.getModelNo());
         param.setDATUM(df.format(new Date()));
-        param.setZPGDBAR(inputLog.getDispatch());
-        param.setZPGDBH(inputLog.getDispatchLogicID());
+        param.setZPGDBAR(inputLog.getDispatch() == null ? "" : inputLog.getDispatch());
+        param.setZPGDBH(inputLog.getDispatchLogicID() == null ? "" : inputLog.getDispatchLogicID());
 
         DTPP001ReturnResult returnResult = webserviceUtil.receiveConfirmation(param);
         Log log = new Log();

@@ -283,21 +283,28 @@
                     setDispatchData();
                     $.ajax({
                         url:"${base.contextPath}/confirmation/input/log/insertInputLog",
+                        //url:"${base.contextPath}/confirmation/input/log/writeOff",
                         type:"post",
                         data : JSON.stringify(dispatchData),
                         dataType : "json",
                         contentType :"application/json; charset=utf-8",
                         success:function (res){
-                            if(!res.success){
-                                //openMsgDialog("成功","报工成功","M");
-                            }else{
-                                //openMsgDialog("成功","报工成功","M");
+                            if(res.success){
+                                var msgty = JSON.stringify(res.rows[0].MSGTY);
+                                if(msgty == "S"){
+                                    openMsgDialog("成功","报工成功","M");
+                                }else{
+                                    openMsgDialog("失败","报工失败","M");
+                                }
+                            } else {
+                                openMsgDialog("失败","报工失败","M");
                             }
                         },
                         error:function (res) {
                             //openMsgDialog("成功","报工成功","M");
                         }
                     });
+
                     //清空页面元素
                     delDispatchValues();
 
