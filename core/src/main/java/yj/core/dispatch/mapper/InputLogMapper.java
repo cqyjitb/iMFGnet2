@@ -14,4 +14,21 @@ public interface InputLogMapper extends Mapper<InputLog>{
 
     int queryInputLogById(Long id);//根据ID查询表格confirmation_input_log
 
+    /**
+     * 获取当前报工工序历史信息
+     * @param inputLog 报工信息
+     * @return
+     */
+    public List<InputLog> confirmationInfoByOrdernoAndOperation(InputLog inputLog);
+
+    /**
+     * 获取前工序成功报工信息
+     * @param inputLog 报工信息
+     * @return
+     */
+    List<InputLog> confirmationMaxOperationInfo(InputLog inputLog);
+
+    Long selectNextId();
+
+    List<InputLog> queryAllGTOperation(InputLog inputLog);
 }

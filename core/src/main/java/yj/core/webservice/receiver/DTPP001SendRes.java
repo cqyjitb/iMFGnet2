@@ -11,14 +11,14 @@ import java.util.List;
  * ����������������
  * 
  * <p>
- * Java class for DT_PP001_Rec_Res complex type.
+ * Java class for DT_PP001_Send_Res complex type.
  * 
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
  * 
  * <pre>
- * &lt;complexType name="DT_PP001_Rec_Res">
+ * &lt;complexType name="DT_PP001_Send_Res">
  *   &lt;complexContent>
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *       &lt;sequence>
@@ -40,12 +40,25 @@ import java.util.List;
  *             &lt;/complexContent>
  *           &lt;/complexType>
  *         &lt;/element>
- *         &lt;element name="DETAIL" maxOccurs="unbounded">
+ *         &lt;element name="DETAIL" maxOccurs="unbounded" minOccurs="0">
  *           &lt;complexType>
  *             &lt;complexContent>
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
  *                 &lt;sequence>
  *                   &lt;element name="AUFNR" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="MATNR" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="MAKT" maxOccurs="unbounded" minOccurs="0">
+ *                     &lt;complexType>
+ *                       &lt;complexContent>
+ *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                           &lt;sequence>
+ *                             &lt;element name="SPRAS" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                             &lt;element name="MAKTX" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                           &lt;/sequence>
+ *                         &lt;/restriction>
+ *                       &lt;/complexContent>
+ *                     &lt;/complexType>
+ *                   &lt;/element>
  *                   &lt;element name="MSGTY" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="MSGNO" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="MSGID" type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -68,12 +81,12 @@ import java.util.List;
  * 
  */
 @XmlAccessorType(XmlAccessType.FIELD)
-@XmlType(name = "DT_PP001_Rec_Res", propOrder = { "_return", "detail" })
-public class DTPP001RecRes {
+@XmlType(name = "DT_PP001_Send_Res", propOrder = { "_return", "detail" })
+public class DTPP001SendRes {
 
 	@XmlElement(name = "RETURN", required = true)
 	protected RETURN _return;
-	@XmlElement(name = "DETAIL", required = true)
+	@XmlElement(name = "DETAIL")
 	protected List<DETAIL> detail;
 
 	/**
@@ -141,6 +154,19 @@ public class DTPP001RecRes {
 	 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
 	 *       &lt;sequence>
 	 *         &lt;element name="AUFNR" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="MATNR" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="MAKT" maxOccurs="unbounded" minOccurs="0">
+	 *           &lt;complexType>
+	 *             &lt;complexContent>
+	 *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+	 *                 &lt;sequence>
+	 *                   &lt;element name="SPRAS" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *                   &lt;element name="MAKTX" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *                 &lt;/sequence>
+	 *               &lt;/restriction>
+	 *             &lt;/complexContent>
+	 *           &lt;/complexType>
+	 *         &lt;/element>
 	 *         &lt;element name="MSGTY" type="{http://www.w3.org/2001/XMLSchema}string"/>
 	 *         &lt;element name="MSGNO" type="{http://www.w3.org/2001/XMLSchema}string"/>
 	 *         &lt;element name="MSGID" type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -158,12 +184,16 @@ public class DTPP001RecRes {
 	 * 
 	 */
 	@XmlAccessorType(XmlAccessType.FIELD)
-	@XmlType(name = "", propOrder = { "aufnr", "msgty", "msgno", "msgid",
-			"msgv1", "msgv2", "msgv3", "msgv4", "message" })
+	@XmlType(name = "", propOrder = { "aufnr", "matnr", "makt", "msgty",
+			"msgno", "msgid", "msgv1", "msgv2", "msgv3", "msgv4", "message" })
 	public static class DETAIL {
 
 		@XmlElement(name = "AUFNR", required = true)
 		protected String aufnr;
+		@XmlElement(name = "MATNR", required = true)
+		protected String matnr;
+		@XmlElement(name = "MAKT")
+		protected List<MAKT> makt;
 		@XmlElement(name = "MSGTY", required = true)
 		protected String msgty;
 		@XmlElement(name = "MSGNO", required = true)
@@ -200,6 +230,57 @@ public class DTPP001RecRes {
 		 */
 		public void setAUFNR(String value) {
 			this.aufnr = value;
+		}
+
+		/**
+		 * Gets the value of the matnr property.
+		 * 
+		 * @return possible object is {@link String }
+		 * 
+		 */
+		public String getMATNR() {
+			return matnr;
+		}
+
+		/**
+		 * Sets the value of the matnr property.
+		 * 
+		 * @param value
+		 *            allowed object is {@link String }
+		 * 
+		 */
+		public void setMATNR(String value) {
+			this.matnr = value;
+		}
+
+		/**
+		 * Gets the value of the makt property.
+		 * 
+		 * <p>
+		 * This accessor method returns a reference to the live list, not a
+		 * snapshot. Therefore any modification you make to the returned list
+		 * will be present inside the JAXB object. This is why there is not a
+		 * <CODE>set</CODE> method for the makt property.
+		 * 
+		 * <p>
+		 * For example, to add a new item, do as follows:
+		 * 
+		 * <pre>
+		 * getMAKT().add(newItem);
+		 * </pre>
+		 * 
+		 * 
+		 * <p>
+		 * Objects of the following type(s) are allowed in the list
+		 * {@link MAKT }
+		 * 
+		 * 
+		 */
+		public List<MAKT> getMAKT() {
+			if (makt == null) {
+				makt = new ArrayList<MAKT>();
+			}
+			return this.makt;
 		}
 
 		/**
@@ -368,6 +449,82 @@ public class DTPP001RecRes {
 		 */
 		public void setMESSAGE(String value) {
 			this.message = value;
+		}
+
+		/**
+		 * <p>
+		 * Java class for anonymous complex type.
+		 * 
+		 * <p>
+		 * The following schema fragment specifies the expected content
+		 * contained within this class.
+		 * 
+		 * <pre>
+		 * &lt;complexType>
+		 *   &lt;complexContent>
+		 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+		 *       &lt;sequence>
+		 *         &lt;element name="SPRAS" type="{http://www.w3.org/2001/XMLSchema}string"/>
+		 *         &lt;element name="MAKTX" type="{http://www.w3.org/2001/XMLSchema}string"/>
+		 *       &lt;/sequence>
+		 *     &lt;/restriction>
+		 *   &lt;/complexContent>
+		 * &lt;/complexType>
+		 * </pre>
+		 * 
+		 * 
+		 */
+		@XmlAccessorType(XmlAccessType.FIELD)
+		@XmlType(name = "", propOrder = { "spras", "maktx" })
+		public static class MAKT {
+
+			@XmlElement(name = "SPRAS", required = true)
+			protected String spras;
+			@XmlElement(name = "MAKTX", required = true)
+			protected String maktx;
+
+			/**
+			 * Gets the value of the spras property.
+			 * 
+			 * @return possible object is {@link String }
+			 * 
+			 */
+			public String getSPRAS() {
+				return spras;
+			}
+
+			/**
+			 * Sets the value of the spras property.
+			 * 
+			 * @param value
+			 *            allowed object is {@link String }
+			 * 
+			 */
+			public void setSPRAS(String value) {
+				this.spras = value;
+			}
+
+			/**
+			 * Gets the value of the maktx property.
+			 * 
+			 * @return possible object is {@link String }
+			 * 
+			 */
+			public String getMAKTX() {
+				return maktx;
+			}
+
+			/**
+			 * Sets the value of the maktx property.
+			 * 
+			 * @param value
+			 *            allowed object is {@link String }
+			 * 
+			 */
+			public void setMAKTX(String value) {
+				this.maktx = value;
+			}
+
 		}
 
 	}

@@ -232,153 +232,118 @@
                         orderno:{type:"string"},
                         operation:{type:"string"},
                         postingDate:{type:"date"},
-                        creatDate:{type:"date"}
+                        creatDate:{type:"date"},
+                        logCreatDate:{type:"date"}
 
                     }
                 }
             }
         });
 
-
-    /*    dataSource.fetch(function(){
-
-            var data = dataSource.data();
-            var s = 0;
-            var e = 0;
-            for (var i = 0;i<data.length;i++){
-                if (data[i].msgty=="成功"){
-                    s++;
-                }else {
-                    e++;
-                }
-            }
-           // console.log(s);
-           // console.log(e);
-            var a=document.getElementById('s');
-            var b=document.getElementById('e');
-            a.innerHTML = s;
-            b.innerHTML = e;
-        });*/
-
-
-
-
-
         var leftGird=  $("#Grid").kendoGrid({
-                dataSource: dataSource,
-                height: '100%',
-                resizable: true,
-                scrollable: true,
-                navigatable: false,
+            dataSource: dataSource,
+            height: '100%',
+            resizable: true,
+            scrollable: true,
+            navigatable: false,
 
-                pageable: {
-                    pageSizes: [5, 10, 20, 50],
-                    refresh: true,
-                    buttonCount: 5
+            pageable: {
+                pageSizes: [5, 10, 20, 50],
+                refresh: true,
+                buttonCount: 5
+            },
+            columns: [
+                {
+                    field: "plant",
+                    title: '工厂',
+                    width: 120
                 },
-                columns: [
-                    {
-                        field: "plant",
-                        title: '工厂',
-                        width: 120
-                    },
-                    {
-                        field: "orderno",
-                        title: '订单号',
-                        width: 120
-                    },
-                    {
-                        field: "operation",
-                        title: '工序',
-                        width: 120
-                    },
-                    {
-                        field: "material",
-                        title: '产品物料号',
-                        width: 120
-                    },
-                    {
-                        field: "matDesc",
-                        title: '产品名称',
-                        width: 120
-                    },
-                    {
-                        field: "creatDate",
-                        title: '报功日期',
-                        width: 120,
-                        format:"{0:yyyy-MM-dd}"
-                    },
+                {
+                    field: "orderno",
+                    title: '订单号',
+                    width: 120
+                },
+                {
+                    field: "operation",
+                    title: '工序',
+                    width: 120
+                },
+                {
+                    field: "material",
+                    title: '产品物料号',
+                    width: 120
+                },
+                {
+                    field: "matDesc",
+                    title: '产品名称',
+                    width: 120
+                },
+                {
+                    field: "creatDate",
+                    title: '报工时间',
+                    width: 150,
+                    format:"{0: yyyy-MM-dd HH:mm:ss}"
+                },
 
-                    {
-                        field: "postingDate",
-                        title: '过账日期',
-                        width: 120,
-                        format:"{0:yyyy-MM-dd}"
-                    },
-                    {
-                        field: "classgrp",
-                        title: '班组',
-                        width: 120
-                    },
+                {
+                    field: "postingDate",
+                    title: '过账日期',
+                    width: 120,
+                    format:"{0:yyyy-MM-dd}"
+                },
+                {
+                    field: "classgrp",
+                    title: '班组',
+                    width: 120
+                },
 
-                    {
-                        field: "line",
-                        title: '生产线',
-                        width: 120
-                    },
-                    {
-                        field: "modelNo",
-                        title: '模号',
-                        width: 120
-                    },
-                    {
-                        field: "userName",
-                        title: '报功人',
-                        width: 120
-                    },
-
-                    {
-                        field: "msgty",
-                        title: '是否成功',
-                        width: 120
-                    },
-                    {
-                        field: "msgtx",
-                        title: '消息',
-                        width: 120
-                    },
-
+                {
+                    field: "line",
+                    title: '生产线',
+                    width: 120
+                },
+                {
+                    field: "modelNo",
+                    title: '模号',
+                    width: 120
+                },
+                {
+                    field: "userName",
+                    title: '报功人',
+                    width: 120
+                },
+                {
+                    field: "logCreatDate",
+                    title: '日志时间',
+                    width: 150,
+                    format:"{0: yyyy-MM-dd HH:mm:ss}"
+                },
+                {
+                    field: "msgty",
+                    title: '是否成功',
+                    width: 120
+                },
+                {
+                    field: "msgtx",
+                    title: '消息',
+                    width: 120
+                },
 
 
-                ],
-                editable: false
+
+            ],
+            editable: false
+        });
+
+        function deleteData() {
+
+            Hap.deleteGridSelection({
+                grid: $('#Grid')
             });
-                 Hap.autoResizeGrid("#Grid");
 
-            /*    var row = $("#Grid .k-grid-content tr:eq(2)");
-                console.log(row);
-                var data = leftGird.data("kendoGrid").dataItem(row);
-                console.log(data.orderno);*/
+        }
 
-
-
-/*
-        var row = $("#grid .k-grid-content td:eq(2)");
-        var data = gridTest.data("kendoGrid").dataItem(row);
-        console.log(row);
-
-
-
-        var grid = $("#Grid").data("kendoGrid");
-
-                alert(dataSource);
-
-                 alert(grid.dataSource.data);
-
-                 alert.log(grid);*/
-
-
-
+        Hap.autoResizeGrid("#Grid");
 
 
     </script>

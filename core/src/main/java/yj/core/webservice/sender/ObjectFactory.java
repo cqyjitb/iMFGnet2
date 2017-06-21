@@ -1,15 +1,12 @@
 package yj.core.webservice.sender;
 
-import yj.core.webservice.receiver.DTPP001RecRes;
+import yj.core.webservice.receiver.DTPP001SendRes;
 
-import javax.xml.bind.JAXBElement;
-import javax.xml.bind.annotation.XmlElementDecl;
 import javax.xml.bind.annotation.XmlRegistry;
-import javax.xml.namespace.QName;
 
 /**
  * This object contains factory methods for each Java content interface and Java
- * element interface generated in the com.cq_yj.hap.pp001.receiver package.
+ * element interface generated in the com.cq_yj.hap.pp001.sender package.
  * <p>
  * An ObjectFactory allows you to programatically construct new instances of the
  * Java representation for XML content. The Java representation of XML content
@@ -21,63 +18,60 @@ import javax.xml.namespace.QName;
 @XmlRegistry
 public class ObjectFactory {
 
-	private final static QName _MTPP001SendReq_QNAME = new QName(
-			"http://www.cq-yj.com/HAP/PP001/Receiver", "MT_PP001_Send_Req");
-	private final static QName _MTPP001SendRes_QNAME = new QName(
-			"http://www.cq-yj.com/HAP/PP001/Receiver", "MT_PP001_Send_Res");
-
 	/**
 	 * Create a new ObjectFactory that can be used to create new instances of
-	 * schema derived classes for package: com.cq_yj.hap.pp001.receiver
+	 * schema derived classes for package: com.cq_yj.hap.pp001.sender
 	 * 
 	 */
 	public ObjectFactory() {
 	}
 
 	/**
-	 * Create an instance of {@link DTPP001RecRes.DETAIL }
+	 * Create an instance of {@link DTPP001SendRes.DETAIL.MAKT }
 	 * 
 	 */
-	public DTPP001RecRes.DETAIL createDTPP001RecResDETAIL() {
-		return new DTPP001RecRes.DETAIL();
+	public DTPP001SendRes.DETAIL.MAKT createDTPP001SendResDETAILMAKT() {
+		return new DTPP001SendRes.DETAIL.MAKT();
 	}
 
 	/**
-	 * Create an instance of {@link DTPP001RecRes.RETURN }
+	 * Create an instance of {@link DTPP001SendRes }
 	 * 
 	 */
-	public DTPP001RecRes.RETURN createDTPP001RecResRETURN() {
-		return new DTPP001RecRes.RETURN();
+	public DTPP001SendRes createDTPP001SendRes() {
+		return new DTPP001SendRes();
 	}
 
 	/**
-	 * Create an instance of {@link DTPP001RecRes }
+	 * Create an instance of {@link DTPP001SendRes.DETAIL }
 	 * 
 	 */
-	public DTPP001RecRes createDTPP001RecRes() {
-		return new DTPP001RecRes();
+	public DTPP001SendRes.DETAIL createDTPP001SendResDETAIL() {
+		return new DTPP001SendRes.DETAIL();
 	}
 
 	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link DTPP001SendReq }
-	 * {@code >}
+	 * Create an instance of {@link DTPP001SendReq }
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://www.cq-yj.com/HAP/PP001/Receiver", name = "MT_PP001_Send_Req")
-	public JAXBElement<DTPP001SendReq> createMTPP001SendReq(DTPP001SendReq value) {
-		return new JAXBElement<DTPP001SendReq>(_MTPP001SendReq_QNAME,
-				DTPP001SendReq.class, null, value);
+	public DTPP001SendReq createDTPP001SendReq() {
+		return new DTPP001SendReq();
 	}
 
 	/**
-	 * Create an instance of {@link JAXBElement }{@code <}{@link DTPP001RecRes }
-	 * {@code >}
+	 * Create an instance of {@link DTPP001SendRes.RETURN }
 	 * 
 	 */
-	@XmlElementDecl(namespace = "http://www.cq-yj.com/HAP/PP001/Receiver", name = "MT_PP001_Send_Res")
-	public JAXBElement<DTPP001RecRes> createMTPP001SendRes(DTPP001RecRes value) {
-		return new JAXBElement<DTPP001RecRes>(_MTPP001SendRes_QNAME,
-				DTPP001RecRes.class, null, value);
+	public DTPP001SendRes.RETURN createDTPP001SendResRETURN() {
+		return new DTPP001SendRes.RETURN();
+	}
+
+	/**
+	 * Create an instance of {@link DTPP001SendReq.ITEM }
+	 * 
+	 */
+	public DTPP001SendReq.ITEM createDTPP001SendReqITEM() {
+		return new DTPP001SendReq.ITEM();
 	}
 
 }

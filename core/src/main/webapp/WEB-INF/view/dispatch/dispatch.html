@@ -1,23 +1,85 @@
-<html>
+t<html>
 <head>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"><!DOCTYPE html>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="X-CSRF-TOKEN" />
     <title>生产报工</title>
+
+    <!--
+        Created by Rebs on 2017/6/12.
+    -->
+
+    <!–[if lt IE 9]>
     <Script src="${base.contextPath}/resources/js/IE9.js"></Script>
+    <![endif]–>
+
     <Script src="${base.contextPath}/resources/js/yj-pda.js"></Script>
+    <Script src="${base.contextPath}/resources/js/json2.js"></Script>
+    <script src="${base.contextPath}/lib/kendoui/js/jquery.min.js"></script>
+    <script src="${base.contextPath}/lib/kendoui/js/kendo.all.min.js"></script>
+    <script src="${base.contextPath}/lib/kendoui/js/kendo.hap.js"></script>
+
     <style type="text/css">
-        #login-area{
+        #dispatch-area{
             width:220px;
             height:285px;
-            z-index:999;
+            z-index: 999;
         }
-        #close{
-            width:40px;
-            height:20px;
-            background-color: #A1A6A9;
-            float: right;
-            font-size: small;
-            font-family: "微软雅黑";
+        #otherInfo-area{
+            background-color: #CCCCCC;
+
+            position: absolute;
+            width:220px;
+            height:285px;
+            z-index: 998;
+            top: 0px;
+            left: 0px;
+        }
+        .dcp-label{
+            font-size: 10px;
+            width: 80px;
+            height: 20px;
+            display: inline-block;
+        }
+        .cls-attr-input{
+            font-size: 10px;
+            width: 120px;
+            height: 20px;
+        }
+        #mask{
+            background-color: #434343;
+            opacity:0.5;
+            filter: alpha(opacity=50);
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index:1000;
+        }
+        #msg-area{
+            background-color: white;
+            width: 200px;
+            height: 120px;
+            top: 150px;
+            left: 20px;
+            position: absolute;
+            z-index: 1001;
+        }
+        #msg1{
+            width:200px;
+            height:30px;
+            background-color:#F5F1DD;
+            border-radius: 5px;
+        }
+        #msg2{
+            width:200px;
+            height:60px;
+        }
+        #msg3{
+            width:200px;
+            height:30px;
         }
         #text{
             width:100%;
@@ -26,223 +88,77 @@
             font-size: medium;
             font-family: "微软雅黑";
         }
-        #info{
-            background-color: #CCCCCC;
-            position:fixed;
-            z-index:1001;
-        }
-        #mask{
-            background-color: #434343;
-            opacity:0.5;
-            filter: alpha(opacity=50);
-            position:absolute;
-            left:0;
-            top:0;
-            z-index:1000;
-        }
-        #login{
-            background-color:white;
-            position:fixed;
-            z-index:1001;
-        }
-        #login{
-            border-radius: 5px;
-            behavior: url(ie-css3.htc) /*css3圆角兼容IE6*/
-        }
-        #msga{
-            width:200px;
-            height:30px;
-            background-color:#F5F1DD;
-            border-radius: 5px;
-        }
-        #msg0{
-            width:200px;
-            height:60px;
-        }
-        #msg1{
-            width:200px;
-            height:30px;
-        }
-        #msg2{
-            width:200px;
-            height:1px;
-            background-color:#ccc;
-        }
-        #msg3{
-            width:200px;
-            height:53px;
-        }
-        #msg4{
-            width:200px;
-            height:1px;
-            background-color:#ccc;
-        }
-        #msg5{
-            width:200px;
-            height:5px;
-        }
-        #msg6{
-            width:200px;
-            height:30px;
-        }
-        #msg7{
-            width:150px;
-            height:30px;
-            float: left;
-        }
-        #close1{
-            width:40px;
-            height:20px;
-            float: left;
-            background-color:#169bd5;
-        }
-
     </style>
     <script>
-        /**
-         * a window for information incomplete
-         */
-        function openErrorDialog(msg) {
-        }
+        window.onload=function () {
 
-        /**
-         * a window for confirming to dispatch
-         */
-        function openConfirmDialog() {
-        }
+            //获取消息界面DIV页面元素
+            var dMsg=document.getElementById("msg-area");
+            //获取其他信息界面DIV页面元素
+            var dOin=document.getElementById("otherInfo-area");
+            //初始化隐藏消息界面
+            dMsg.style.display = "none";
+            //初始化隐藏其他信息界面
+            dOin.style.display = "none";
 
-        /**
-         * a window for dispatching success
-         */
-        function openSuccessDialog() {
-        }
+            /*用户登录相关操作*/
+            //获取当前登录用户用户名
+            var username = getCookie("username");
 
-        /**
-         * a window for dispatching failure
-         */
-        function openFailureDialog() {
-        }
-
-    </script>
-    <script>
-/*        Date.prototype.format = function(fmt) {
-            var o = {
-                "M+" : this.getMonth()+1,                 //月份
-                "d+" : this.getDate(),                    //日
-                "h+" : this.getHours(),                   //小时
-                "m+" : this.getMinutes(),                 //分
-                "s+" : this.getSeconds(),                 //秒
-                "q+" : Math.floor((this.getMonth()+3)/3), //季度
-                "S"  : this.getMilliseconds()             //毫秒
-            };
-            if(/(y+)/.test(fmt)) {
-                fmt=fmt.replace(RegExp.$1, (this.getFullYear()+"").substr(4 - RegExp.$1.length));
-            }
-            for(var k in o) {
-                if(new RegExp("("+ k +")").test(fmt)){
-                    fmt = fmt.replace(RegExp.$1, (RegExp.$1.length==1) ? (o[k]) : (("00"+ o[k]).substr((""+ o[k]).length)));
-                }
-            }
-            return fmt;
-        }*/
-
-        window.onload=function(){
-
-            //click for logout
-            var oLogout=document.getElementById("logout");
-            oLogout.onclick=function () {
-                //code for logout..
-                alert("logout");
-            }
-
-            var oBtn=document.getElementById("btnLogin");
-
-            //click for confirm
-            oBtn.onclick=function(){
-                openNewD();
-                return false;
-            }
-
-            var ootherInfo=document.getElementById("otherInfo");
-            ootherInfo.onclick=function () {
-                openNewOther();
-                return false;
-            }
-
-            var oIpt=document.getElementById("barcode");
-            oIpt.onpropertychange=function () {
-                //oIpt.onpropertychange=function () {
-
-                //get the past barcode length
-/*                var oldlen = parseInt(getCookie("lenbarcode"));*/
-
-
-/*                document.getElementById("order").value = document.getElementById("barcode").value;*/
-                var strBarcode = document.getElementById("barcode").value;
-                var lenbarcode = strBarcode.length;
-/*                document.getElementById("yeild").values=oldlen;
-
-                if(oldlen != null){
-/!*
-                    document.getElementById("yeild").values=oldlen;*!/
-                    if(oldlen>lenbarcode){
-                        strBarcode = "";
+            //用户登录判定操作
+            if(username == "" || username == null){
+                //当用户未登录,返回登录界面
+                window.location.href='/yjlogin.html';
+                return null;
+            } else {
+                //当用户登录，在界面展示用户信息，并记下用户id
+                document.getElementById("user").innerHTML = username;
+                /*var data = {"userName":username}*/
+                $.ajax({
+                    url:"${base.contextPath}/sys/userrole/queryByUserName",
+                    type:"post",
+                    data : JSON.stringify({"userName":username}),
+                    dataType : "json",
+                    contentType :"application/json; charset=utf-8",
+                    success:function (res){
+                        var userId = JSON.stringify(res.rows[0].userId);
+                        createdBy = userId;
                     }
-                    if(oldlen<lenbarcode) {
-                        strBarcode = strBarcode.substring(oldlen,lenbarcode);
-                    }
-                    if(oldlen != lenbarcode){
-                        document.getElementById("barcode").value = strBarcode;
-                        lenbarcode = strBarcode.length;
-
-
-                        document.getElementById("workscrap").values=oldlen;
-                    }
-                }*/
-
-                if (lenbarcode >= 12){
-                    document.getElementById("order").value = strBarcode.substring(0,6);
-                    document.getElementById("operation").value = strBarcode.substring(lenbarcode-4,lenbarcode);
-                } else {
-                    document.getElementById("order").value = "";
-                    document.getElementById("operation").value = "";
-                }
-
-/*                setCookie("lenbarcode",lenbarcode);*/
-
-            }
-            oIpt.focus();
-
-            var oPstd = document.getElementById("postdate");
-            oPstd.onblur=function () {
-                var strPostDate = oPstd.options[oPstd.selectedIndex].value;
-/*                document.cookie = "postdate="+strPostDate;*/
-                setCookie("postdate",strPostDate);
+                });
+                /*$.ajax({
+                 url:"${base.contextPath}/hr/employee/queryByCode",
+                 type:"get",
+                 data : {"code":username},
+                 contentType :"application/json; charset=utf-8",
+                 success:function (res){
+                 var name = JSON.stringify(res.rows[0].name);
+                 name = name.substring(1,name.length-1);
+                 document.getElementById("user").innerHTML = name;
+                 }
+                 });*/
             }
 
-/*            var today = new Date().format("yyyy-MM-dd");
-            oPstd.options[1].value=today;
-            oPstd.options[1].innerHTML=today;*/
+            /*用户注销相关操作*/
+            //获取注销页面元素
+            var cLot = document.getElementById("logout");
+
+            //注销点击事件
+            cLot.onclick=function () {
+                delCookie("username");
+                window.location.href='/yjlogin.html';
+                return null;
+            }
+
+            /*过账日期字段相关操作*/
+            //获取过账日期页面元素
+            var oPstd = document.getElementById("postingDate");
+
+            //初始化过账日期选项
             oPstd.options[1].value=oPstd.options[1].innerHTML=getTodayDate();
-
-/*            var yesterdayDate = new Date();
-             yesterdayDate.setDate(yesterdayDate.getDate()-1);
-             var yesterday = yesterdayDate.format("yyyy-MM-dd");
-             oPstd.options[0].value=yesterday;
-             oPstd.options[0].innerHTML=yesterday;*/
             oPstd.options[0].value=oPstd.options[0].innerHTML=getYesterdayDate();
 
-/*            var arr,reg=new RegExp("(^| )"+"postdate"+"=([^;]*)(;|$)");
-            if(arr=document.cookie.match(reg)){
-                var postdate = arr[2];
-                var lenOptions = oPstd.options.length;
-                for(var i=0 ; i<lenOptions ; i++){
-                    if(oPstd.options[i].value == postdate){
-                        oPstd.options[i].selected = true;
-                    }
-                }
-            }*/
-            var postdate = getCookie("postdate");
+            //初始化过账日期选择的值为上次选的值
+            var postdate = getCookie("postingDate");
             if(postdate != null){
                 var lenOptions = oPstd.options.length;
                 for(var i=0 ; i<lenOptions ; i++){
@@ -252,163 +168,225 @@
                 }
             }
 
+            //当过账日期修改时记录下选择的值
+            oPstd.onblur=function () {
+                var strPostDate = oPstd.options[oPstd.selectedIndex].value;
+                setCookie("postingDate",strPostDate);
+                var testCoo = document.cookie;
+            }
+
+            /*条码相关操作*/
+            //获取条码页面元素
+            var oBcd=document.getElementById("barcode");
+
+            //进入报工页面时，光标定位到条码输入框
+            oBcd.focus();
+
+            //当条码值改变时实时修改订单号和工序
+            oBcd.onpropertychange=function () {
+                var strBarcode = document.getElementById("barcode").value;
+                var lenBarcode = strBarcode.length;
+                if (lenBarcode > 12){
+                    document.getElementById("orderno").value = strBarcode.substring(4,lenBarcode-8);
+                    document.getElementById("operation").value = strBarcode.substring(lenBarcode-4,lenBarcode);
+                } else {
+                    document.getElementById("orderno").value = "";
+                    document.getElementById("operation").value = "";
+                }
+            }
+
+            /*报工主界面、报工其他信息界面切换*/
+
+            //获取主界面DIV页面元素
+            var dDpt=document.getElementById("dispatch-area");
+            //获取其他信息界面DIV页面元素
+            var dOin=document.getElementById("otherInfo-area");
+            //获取消息界面DIV页面元素
+            var dMsg=document.getElementById("msg-area");
+            //获取主界面其他信息按钮页面元素
+            var bOin=document.getElementById("otherInfo");
+            //获取其他信息界面返回按钮页面元素
+            var bBac=document.getElementById("back");
+
+            //初始化界面状态
+            dDpt.style.display = "";
+            dOin.style.display = "none";
+            dMsg.style.display = "none";
+            /*bOin.style.display = "none";//隐藏主界面其他信息按钮*/
+
+            //主界面其他信息按钮点击事件
+            bOin.onclick=function () {
+                dDpt.style.display = "none";
+                dOin.style.display = "";
+            }
+            //其他信息界面返回按钮点击事件
+            bBac.onclick=function () {
+                dDpt.style.display = "";
+                dOin.style.display = "none";
+            }
+
+            /*报工主界面确定按钮报工操作*/
+            //获取主界面确定按钮页面元素
+            var bCfr=document.getElementById("confirm");
+            bCfr.onclick=function () {
+                getDispatchValues();
+                //检查必输字段
+                var msg = checkDispatchValues();
+                if(msg == null){
+                    //检查通过 确认是否继续过账
+                    openMsgDialog("确认","是否继续过账","C");
+                } else {
+                    //检查未通过 报错
+                    openMsgDialog("错误",msg,"M");
+
+                    if(barcode == "" || barcode == null){
+                        oBcd.focus();
+                    }
+                }
+            }
+
         }
-        function openNewOther() {
+    </script>
+    <script>
+        //消息界面
+        //msgTitle:标题
+        //msgText：内容
+        //msgType：类型(M:提示消息;C:过账确认消息)
+        function openMsgDialog(msgTitle,msgText,msgType) {
+            appendMaskDialog();
+            disablePostdate();
+            var dMsg=document.getElementById("msg-area");
+            dMsg.style.display="";
+            document.getElementById("msg1").innerHTML="&nbsp"+msgTitle;
+            document.getElementById("msg2").innerHTML=msgText;
+            var bCan=document.getElementById("cancer");
+            var bCls=document.getElementById("close");
 
-            appendMaskDialog()
+            if(msgType == "M"){
+                bCan.style.display = "none";
+                bCls.onclick=function () {
+                    dMsg.style.display="none";
+                    ablePostdate();
+                    removeMaskDialog();
+                }
+            } else if(msgType == "C") {
+                bCan.style.display = "";
+                bCan.onclick=function () {
+                    dMsg.style.display="none";
+                    ablePostdate();
+                    removeMaskDialog();
+                }
+                bCls.onclick=function () {
+                    dMsg.style.display="none";
+                    ablePostdate();
+                    removeMaskDialog();
+                    setDispatchData();
+                    $.ajax({
+                        url:"${base.contextPath}/confirmation/input/log/insertInputLog",
+                        type:"post",
+                        data : JSON.stringify(dispatchData),
+                        dataType : "json",
+                        contentType :"application/json; charset=utf-8",
+                        success:function (res){
+                            if(!res.success){
+                                //openMsgDialog("成功","报工成功","M");
+                            }else{
+                                //openMsgDialog("成功","报工成功","M");
+                            }
+                        },
+                        error:function (res) {
+                            //openMsgDialog("成功","报工成功","M");
+                        }
+                    });
+                    //清空页面元素
+                    delDispatchValues();
 
-            var oPostdate=document.getElementById("postdate");
-            oPostdate.style.display="none";
+                    //获取条码页面元素
+                    var roBcd=document.getElementById("barcode");
 
-            var oOtherD=document.createElement("div");
-            oOtherD.id="info";
-            oOtherD.style.height="300px";
-            oOtherD.style.width="240px";
-            oOtherD.style.top="0px";
-            oOtherD.style.left="0px";
-            oOtherD.innerHTML=""
-                +"<div style='margin:15px 10px;width: 220px;height: 20px'>"
-                +"<div id='back' style='width:40px;height:20px;float: left;background-color:#169bd5;top: 0px'>返回</div>"
-                +"</div>"
-                +"<div style='margin-left: 10px;width: 220px;height: 265px'>"
-                +"<label style='font-size:10px;width: 80px;height: 20px;display: inline-block'>扩充字段1</label><input id='attribution1' style='font-size:10px;width: 120px;height: 20px' type='text'/>"+"<br>"
-                +"<label style='font-size:10px;width: 80px;height: 20px;display: inline-block'>扩充字段2</label><input id='attribution2' style='font-size:10px;width: 120px;height: 20px' type='text'/>"+"<br>"
-                +"<label style='font-size:10px;width: 80px;height: 20px;display: inline-block'>扩充字段3</label><input id='attribution3' style='font-size:10px;width: 120px;height: 20px' type='text'/>"+"<br>"
-                +"<label style='font-size:10px;width: 80px;height: 20px;display: inline-block'>扩充字段4</label><input id='attribution4' style='font-size:10px;width: 120px;height: 20px' type='text'/>"+"<br>"
-                +"<label style='font-size:10px;width: 80px;height: 20px;display: inline-block'>扩充字段5</label><input id='attribution5' style='font-size:10px;width: 120px;height: 20px' type='text'/>"+"<br>"
-                +"<label style='font-size:10px;width: 80px;height: 20px;display: inline-block'>扩充字段6</label><input id='attribution6' style='font-size:10px;width: 120px;height: 20px' type='text'/>"+"<br>"
-                +"<label style='font-size:10px;width: 80px;height: 20px;display: inline-block'>扩充字段7</label><input id='attribution7' style='font-size:10px;width: 120px;height: 20px' type='text'/>"+"<br>"
-                +"<label style='font-size:10px;width: 80px;height: 20px;display: inline-block'>扩充字段8</label><input id='attribution8' style='font-size:10px;width: 120px;height: 20px' type='text'/>"+"<br>"
-                +"</div>";
-
-            document.body.appendChild(oOtherD);
-
-            var oBack=document.getElementById("back");
-            oBack.onclick=function () {
-                document.body.removeChild(oOtherD);
-                oPostdate.style.display="";
-                removeMaskDialog()
+                    //进入报工页面时，光标定位到条码输入框
+                    roBcd.focus();
+                }
             }
         }
-        function openNewD() {
-/*            var oMaskD=document.createElement("div");
-            oMaskD.id="mask";
-            oMaskD.style.height="320px";
-            oMaskD.style.width="240px";
-            document.body.appendChild(oMaskD);*/
-            appendMaskDialog();
-            disablePostdate();
-
-            var oLoginD=document.createElement("div");
-            oLoginD.id="login";
-            oLoginD.style.height="120px";
-            oLoginD.style.width="200px";
-            oLoginD.style.top="150px";
-            oLoginD.style.left="20px";
-
-            oLoginD.innerHTML="<div class='loginCon'>"
-                +"<div id='msga'><label style='line-height: 25px'>&nbsp确认</label></div>"
-                +"<div id='msg0' style='text-align: center;line-height: 40px'>是否继续过账</div>"
-                +"<div id='msg6'>"
-                +"<button id='click1' style='float: right;width: auto;background-color: white'>取消</button>"
-                +"<button id='click2' style='float: right;width: auto;background-color: white'>确定</button>"
-                +"</div>"
-                +"</div>";
-
-            document.body.appendChild(oLoginD);
-
-            /*            var oClose=document.getElementById("close1");*/
-
-            var oClose1=document.getElementById("click1");
-
-            var oClose2=document.getElementById("click2");
-
-            //点击登陆框以外的区域也可以关闭登陆框
-            /*            oClose.onclick=function(){
-             document.body.removeChild(oLoginD);
-             document.body.removeChild(oMaskD);
-             };*/
-            oClose1.onclick=function(){
-                document.body.removeChild(oLoginD);
-/*                document.body.removeChild(oMaskD);*/
-                ablePostdate();
-                removeMaskDialog();
-            };
-            oClose2.onclick=function(){
-                document.body.removeChild(oLoginD);
-/*                document.body.removeChild(oMaskD);*/
-                ablePostdate();
-                removeMaskDialog();
-                openSuccess();
-            };
-        }
-        function openSuccess(){
-            appendMaskDialog();
-            disablePostdate();
-
-            var oLoginD=document.createElement("div");
-            oLoginD.id="login";
-            oLoginD.style.height="120px";
-            oLoginD.style.width="200px";
-            oLoginD.style.top="150px";
-            oLoginD.style.left="20px";
-
-            oLoginD.innerHTML="<div class='loginCon'>"
-                +"<div id='msga'><label style='line-height: 25px'>&nbsp成功</label></div>"
-                +"<div id='msg0' style='text-align: center;line-height: 40px'>报工成功</div>"
-                +"<div id='msg6'>"
-                +"<button id='click2' style='float: right;width: auto;background-color: white'>确定</button>"
-                +"</div>"
-                +"</div>";
-
-            document.body.appendChild(oLoginD);
-            var oClose2=document.getElementById("click2");
-            oClose2.onclick=function(){
-                document.body.removeChild(oLoginD);
-                /*                document.body.removeChild(oMaskD);*/
-                ablePostdate();
-                removeMaskDialog();
-            };
-
-        }
+        //过账日期字段不可编辑
         function disablePostdate() {
-            var oPostdate=document.getElementById("postdate");
+            var oPostdate=document.getElementById("postingDate");
             oPostdate.disabled="disabled";
             oPostdate.style.zIndex="-1";
         }
+        //过账日期字段可编辑
         function ablePostdate() {
-            var oPostdate=document.getElementById("postdate");
+            var oPostdate=document.getElementById("postingDate");
             oPostdate.disabled="";
             oPostdate.style.zIndex="-1";
         }
-
     </script>
 </head>
 <body>
-<div id="login-area">
+<!--报工主界面-->
+<div id="dispatch-area">
+
     <div style="width: 220px;height: 20px">
-        <div id="logout" style="width:40px;height:20px;float: left;background-color:#169bd5;top: 0px">注销</div>
+        <div id="logout" style="width:40px;height:20px;float: left;background-color:#169bd5;top: 0px">注销</div><div style="width:20px;height:20px;float: left;background-color:white;top: 0px"></div><div id="user" style="font-size:10px;height:20px;float: right;background-color:white;top: 0px"></div>
     </div>
+
     <div style="width: 220px;height: 235px">
         <input id="barcode" style="font-size:10px;width: 200px;height: 20px" type="text"><br>
-        <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">过账日期</label><select id="postdate"  style="font-size:10px;width: 120px;height: 20px"><option></option><option></option></select><br>
-        <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">订单号</label><input id="order" disabled="true" value="" style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" type="text"><br>
-        <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">工序</label><input id="operation" disabled="true" value="" style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" type="text"><br>
-        <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">合格数量</label><input id="yeild" style="font-size:10px;width: 120px;height: 20px" type="text"><br>
-        <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">工废数量</label><input id="workscrap" style="font-size:10px;width: 120px;height: 20px" type="text"><br>
-        <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">料废数量</label><input id="rowscrap" style="font-size:10px;width: 120px;height: 20px" type="text"><br>
-        <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">班次</label><input style="font-size:10px;width: 120px;height: 20px" type="text"><br>
-        <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">生产线</label><input style="font-size:10px;width: 120px;height: 20px" type="text"><br>
-        <label style="font-size:10px;width: 80px;height: 20px;display: inline-block">模号</label><input style="font-size:10px;width: 120px;height: 20px" type="text"><br>
-        <!--<button id="btnLogin" style="width: auto" hidefocus="true" class="login-btn">确认</button>-->
+        <label class="dcp-label">过账日期</label><select id="postingDate" class="cls-attr-input"><option></option><option></option></select><br>
+        <label class="dcp-label">订单号</label><input id="orderno" disabled="true" style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" type="text"><br>
+        <label class="dcp-label">工序</label><input id="operation" disabled="true" style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" type="text"><br>
+        <label class="dcp-label">合格数量</label><input id="yeild" class="cls-attr-input" type="text"><br>
+        <label class="dcp-label">工废数量</label><input id="workScrap" class="cls-attr-input" type="text"><br>
+        <label class="dcp-label">料废数量</label><input id="rowScrap" class="cls-attr-input" type="text"><br>
+        <label class="dcp-label">班组</label><input id="classgrp" class="cls-attr-input" type="text"><br>
+        <label class="dcp-label">生产线</label><input id="line" class="cls-attr-input" type="text"><br>
+        <label class="dcp-label">模号</label><input id="modelNo" class="cls-attr-input" type="text"><br>
     </div>
-    <div style="width: 220px;height: 30px">
 
-        <div style="width:50px;height:20px;float: left;"><button id="btnLogin" style="width: auto" hidefocus="true" class="login-btn" >确认</button></div>
+    <div style="width: 220px;height: 30px">
+        <div style="width:50px;height:20px;float: left;"><button id="confirm" style="width: auto" hidefocus="true" class="login-btn" >确认</button></div>
         <div style="width:100px;height:20px;float: left;"><button id="otherInfo" style="width: auto" hidefocus="true" class="login-btn" >其他信息</button></div>
-        <!--<div style="font-size:12px;width:80px;height:20px;float: left;background-color:#169bd5;"><label id="otherInfo">其他信息</label></div>-->
     </div>
 </div>
 
+<!--报工其他信息界面-->
+<div id="otherInfo-area">
+
+    <div style="margin: 15px 10px;width: 220px;height: 20px">
+        <div id="back" style="width:40px;height:20px;float: left;background-color:#169bd5;top: 0px">返回</div>
+    </div>
+
+    <div style="margin-left: 10px;width: 220px;height: 265px">
+        <label class="dcp-label">扩充字段1</label><input id="attr1" class="cls-attr-input" type="text"><br>
+        <label class="dcp-label">扩充字段2</label><input id="attr2" class="cls-attr-input" type="text"><br>
+        <label class="dcp-label">扩充字段3</label><input id="attr3" class="cls-attr-input" type="text"><br>
+        <label class="dcp-label">扩充字段4</label><input id="attr4" class="cls-attr-input" type="text"><br>
+        <label class="dcp-label">扩充字段5</label><input id="attr5" class="cls-attr-input" type="text"><br>
+        <label class="dcp-label">扩充字段6</label><input id="attr6" class="cls-attr-input"type="text"><br>
+        <label class="dcp-label">扩充字段7</label><input id="attr7" class="cls-attr-input" type="text"><br>
+        <label class="dcp-label">扩充字段8</label><input id="attr8" class="cls-attr-input" type="text"><br>
+        <label class="dcp-label">扩充字段9</label><input id="attr9" class="cls-attr-input" type="text"><br>
+        <label class="dcp-label">扩充字段10</label><input id="attr10" class="cls-attr-input" type="text"><br>
+        <label class="dcp-label">扩充字段11</label><input id="attr11" class="cls-attr-input" type="text"><br>
+        <label class="dcp-label">扩充字段12</label><input id="attr12" class="cls-attr-input" type="text"><br>
+        <label class="dcp-label" style="display: none">扩充字段13</label><input id="attr13" class="cls-attr-input" type="text"><br>
+        <label class="dcp-label" style="display: none">扩充字段14</label><input id="attr14" class="cls-attr-input" type="text"><br>
+        <label class="dcp-label" style="display: none">扩充字段15</label><input id="attr15" class="cls-attr-input" type="text"><br>
+    </div>
+
+</div>
+
+<!--消息界面-->
+<div id="msg-area">
+    <div>
+        <div id="msg1" style="line-height: 25px"></div>
+        <div id="msg2" style="text-align: center;line-height: 40px"></div>
+        <div id="msg3">
+            <button id="cancer" style="float: left;width: auto;background-color: white">取消</button>
+            <button id="close" style="float: right;width: auto;background-color: white">确定</button>
+        </div>
+    </div>
+</div>
 </body>
 </html>

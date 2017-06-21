@@ -5,51 +5,46 @@ import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.system.dto.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import yj.core.dispatch.dto.InputLog;
 import yj.core.dispatch.service.IInputLogService;
-import yj.core.dispatch.service.impl.InputLogServiceImpl;
+import yj.core.webservice.dto.DTPP001ReturnResult;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 @Controller
 public class InputLogController extends BaseController{
 
-@Autowired
-private IInputLogService service;
+    @Autowired
+    private IInputLogService service;
 
-/*
-*报功日志界面查询
- */
+    /*
+    *报功日志界面查询
+     */
     @RequestMapping(value = "/confirmation/input/log/queryLog")
     @ResponseBody
     public ResponseData queryWriteOff(final InputLog dto, @RequestParam(defaultValue = DEFAULT_PAGE)final int page,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE)final int pageSize, final HttpServletRequest request) {
+                                      @RequestParam(defaultValue = DEFAULT_PAGE_SIZE)final int pageSize, final HttpServletRequest request) {
         IRequest requestContext = createRequestContext(request);
 
-            if ( dto.getCreatDateBefore() !=null){
-                String cdBefore;
-                cdBefore = dto.getCreatDateBefore();
-                cdBefore = dto.getCreatDateBefore().replace("00:00:00","23:59:59");
-                dto.setCreatDateBefore(cdBefore);
+        if ( dto.getCreatDateBefore() !=null){
+            String cdBefore;
+            cdBefore = dto.getCreatDateBefore();
+            cdBefore = dto.getCreatDateBefore().replace("00:00:00","23:59:59");
+            dto.setCreatDateBefore(cdBefore);
 
-            }
-            if(dto.getPostingDateBefore() != null){
-                String pdBefore;
-                pdBefore = dto.getPostingDateBefore();
-                pdBefore = dto.getPostingDateBefore().replace("00:00:00","23:59:59");
-                dto.setPostingDateBefore(pdBefore);
-            }
+        }
+        if(dto.getPostingDateBefore() != null){
+            String pdBefore;
+            pdBefore = dto.getPostingDateBefore();
+            pdBefore = dto.getPostingDateBefore().replace("00:00:00","23:59:59");
+            dto.setPostingDateBefore(pdBefore);
+        }
 
 
         List <InputLog> list = service.queryAllLog(requestContext,dto,page,pageSize);
@@ -86,17 +81,17 @@ private IInputLogService service;
     @ResponseBody
     public ResponseData query(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
 
-            HttpSession session = request.getSession();
+        HttpSession session = request.getSession();
 
-              int s =  (int)session.getAttribute("sucess");
+        int s =  (int)session.getAttribute("sucess");
 
-              int e =  (int)session.getAttribute("flase");
+        int e =  (int)session.getAttribute("flase");
 
-            List list = new ArrayList();
+        List list = new ArrayList();
 
-            list.add(s);
+        list.add(s);
 
-            list .add(e);
+        list .add(e);
 
             /*session.removeAttribute("sucess");
 
@@ -108,14 +103,13 @@ private IInputLogService service;
     }
 
 
-
     /*
     *报功结果/报功冲销界面查询
      */
     @RequestMapping(value = "/confirmation/input/log/queryResult")
     @ResponseBody
     public ResponseData queryResult(InputLog dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
-                              @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize, HttpServletRequest request) {
+                                    @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize, HttpServletRequest request) {
         IRequest requestContext = createRequestContext(request);
         if ( dto.getCreatDateBefore() !=null){
             String cdBefore;
@@ -148,18 +142,23 @@ private IInputLogService service;
     }
 
 
-@RequestMapping(value = "/confirmation/input/log/submit")
-@ResponseBody
-public ResponseData update(HttpServletRequest request, BindingResult result, @RequestBody List<InputLog> dto){
-    getValidator().validate(dto, result);
-    if (result.hasErrors()) {
-        ResponseData rd = new ResponseData(false);
-        rd.setMessage(getErrorMessage(result, request));
-        return rd;
+    @RequestMapping(value = {"/confirmation/input/log/insertInputLog"}, method = {RequestMethod.POST})
+    @ResponseBody
+    public ResponseData inputDispatch( @RequestBody InputLog inputLog) {
+        List<DTPP001ReturnResult> list = new ArrayList<>();
+        DTPP001ReturnResult returnResult = service.inputDispatch(inputLog);
+        list.add(returnResult);
+        return new ResponseData(list);
     }
-    IRequest requestCtx = createRequestContext(request);
-    return new ResponseData(service.batchUpdate(requestCtx, dto));
-}
+
+    @RequestMapping(value = {"/confirmation/input/log/writeOff"}, method = {RequestMethod.POST})
+    @ResponseBody
+    public ResponseData writeOffDispatch( @RequestBody InputLog inputLog) {
+        List<DTPP001ReturnResult> list = new ArrayList<>();
+        DTPP001ReturnResult returnResult = service.writeOffDispatch(inputLog);
+        list.add(returnResult);
+        return new ResponseData(list);
+    }
 
 
 
