@@ -18,7 +18,7 @@ var modelNo;            //模号
 
 var plant;              //工厂
 var dispatch;           //报工单号
-var dispatchLogicNo;    //报工单流水号
+var dispatchLogicID;    //报工单流水号
 var creationDate;       //创建日期、报工日期
 var createdBy;          //创建人ID
 
@@ -54,7 +54,7 @@ function getDispatchValues() {
     modelNo = document.getElementById("modelNo").value;
     plant = barcode.substring(0,4);
     dispatch = barcode.substring(4,barcode.length-4);
-    dispatchLogicNo = barcode.substring(barcode.length-8,barcode.length-4);
+    dispatchLogicID = barcode.substring(barcode.length-8,barcode.length-4);
 
     attr1 = document.getElementById("attr1").value;
     attr2 = document.getElementById("attr2").value;
@@ -147,7 +147,7 @@ function setDispatchData() {
         "modelNo":modelNo,
         "plant":plant,
         "dispatch":dispatch,
-        "dispatchLogicNo":dispatchLogicNo,
+        "dispatchLogicID":dispatchLogicID,
         "creationDate":creationDate,
         "createdBy":createdBy,
         "attr1":attr1,

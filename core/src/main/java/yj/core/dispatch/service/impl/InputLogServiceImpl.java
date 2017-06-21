@@ -170,6 +170,7 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
     }
 
     public DTPP001ReturnResult returnWriteOffResultAndUpdateConfirmation(InputLog inputLog){
+
         DTPP001Parameters param = new DTPP001Parameters();
         param.setPWERK(inputLog.getPlant());
         param.setAUFNR(inputLog.getOrderno());
@@ -182,22 +183,22 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         param.setZSCX(inputLog.getLine() == null ? "" : inputLog.getLine());
         param.setZMNUM(inputLog.getModelNo() == null ? "" : inputLog.getModelNo());
         param.setDATUM(df.format(new Date()));
-        param.setZPGDBAR(inputLog.getDispatch());
+        param.setZPGDBAR(inputLog.getDispatch() == null ? "" : inputLog.getDispatch());
         param.setZPGDBH(inputLog.getDispatchLogicID() == null ? "" : inputLog.getDispatchLogicID());
 
         DTPP001ReturnResult returnResult = webserviceUtil.receiveConfirmation(param);
+        Log log = new Log();
+        log.setMsgtx(returnResult.getMESSAGE());
+        log.setMsgty(returnResult.getMSGTY());
+        log.setTranType("1");
+        log.setRefId(inputLog.getId());
 
-        Log log = null;
+        logMapper.insertLog(log);
         if("S".equals(returnResult.getMSGTY())){
-            log.setMsgtx(returnResult.getMESSAGE());
-            log.setMsgty(returnResult.getMSGTY());
-            log.setTranType("1");
-            log.setRefId(inputLog.getId());
-            logMapper.insertLog(log);
-
             resultMapper.updateReveseByInputId(inputLog.getId());
-
         }
+
+
         return returnResult;
     }
 

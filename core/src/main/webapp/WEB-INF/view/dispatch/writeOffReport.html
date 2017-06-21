@@ -32,8 +32,69 @@
             },
             queryGrid: function (e) {
                 $('#Grid').data('kendoGrid').dataSource.page(1);
+                console.log(e);
+            },
+            writeOff:function (){
+              /*  $('#Grid').data('kendoGrid').dataSource.page(2);
+                console.log(e);*/
+                commit()
             }
         });
+        function  commit() {
+
+            kendo.ui.showConfirmDialog({
+                title: '提示',
+                message: '确认冲销么?'
+            }).done(function (e) {
+
+                var grid = $("#Grid").data("kendoGrid");
+
+                var row = grid.select();
+                var data = grid.dataItem(row);
+
+                $.ajax({
+                    url:"${base.contextPath}/confirmation/input/log/writeOff",
+                    type:"post",
+                    data : JSON.stringify(data),
+                    dataType : "json",
+                    contentType :"application/json; charset=utf-8",
+                    success:function (res){
+                        if(res.success == false){
+                            var msg = res.message;
+                            alert(msg)
+                            return;
+                        }
+                            console.log(row);
+                            var str = res.rows[0].msgty;
+                            console.log(str);
+                            var str1 = res.rows[0].message;
+                           console.log(str1);
+                            if(str=="S"){
+                                kendo.ui.showInfoDialog({
+                                    title:'成功',
+                                    message:'已完成冲销操作！'
+                                })
+                                grid.refresh();
+                            }
+                            if(str=="E"){
+                                kendo.ui.showErrorDialog({
+                                    title:'失败',
+                                    message:str1
+                                })
+                            }
+
+
+
+                    }
+                });
+
+
+
+            })
+
+
+        }
+
     </script>
     <div id="content-container">
         <div id="page-content">
@@ -129,7 +190,7 @@
 
                         <div class="row" style="margin-top: 20px">
                             <div class="pull-left" style="margin-right:15px">
-                                 <span class="btn btn-danger"
+                                 <span class="btn btn-danger"  data-bind="click:writeOff"
                                        type="submit">
                                 <i class="fa fa-circle-o-notch" style="margin-right:3px;"></i>
                             冲销</span>
@@ -184,12 +245,17 @@
 
         }
         var BaseUrl = _basePath;
-        dataSource = new kendo.data.DataSource({
+        var dataSource = new kendo.data.DataSource({
             transport: {
                 read: {
                     url: BaseUrl + "/confirmation/input/log/queryResult",
                     type: "POST",
                     dataType: "json"
+                },
+                update: {
+                    url: BaseUrl + "/confirmation/input/log/queryResult",
+                    type: "POST",
+                    contentType: "application/json"
                 },
 
                 parameterMap: function (options, type) {
@@ -202,6 +268,7 @@
                     }
                 }
             },
+
             batch: true,
             serverPaging: true,
             pageSize: 10,
@@ -315,6 +382,8 @@
             ],
             editable: false
         });
+
+        dataSource.fetch();
 
         function deleteData() {
 
