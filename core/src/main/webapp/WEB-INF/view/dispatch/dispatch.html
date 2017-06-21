@@ -1,4 +1,4 @@
-t<html>
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1"><!DOCTYPE html>
@@ -90,6 +90,7 @@ t<html>
         }
     </style>
     <script>
+
         window.onload=function () {
 
             //获取消息界面DIV页面元素
@@ -108,7 +109,7 @@ t<html>
             //用户登录判定操作
             if(username == "" || username == null){
                 //当用户未登录,返回登录界面
-                window.location.href='/yjlogin.html';
+                window.location.href='${base.contextPath}/yjlogin.html';
                 return null;
             } else {
                 //当用户登录，在界面展示用户信息，并记下用户id
@@ -116,13 +117,13 @@ t<html>
                 /*var data = {"userName":username}*/
                 $.ajax({
                     url:"${base.contextPath}/sys/userrole/queryByUserName",
-                    type:"post",
-                    data : JSON.stringify({"userName":username}),
-                    dataType : "json",
+                    type:"get",
+                    data : {"username":username},
                     contentType :"application/json; charset=utf-8",
                     success:function (res){
                         var userId = JSON.stringify(res.rows[0].userId);
                         createdBy = userId;
+                        //document.getElementById("user").innerHTML = userId;
                     }
                 });
                 /*$.ajax({
@@ -145,7 +146,7 @@ t<html>
             //注销点击事件
             cLot.onclick=function () {
                 delCookie("username");
-                window.location.href='/yjlogin.html';
+                window.location.href='${base.contextPath}/yjlogin.html';
                 return null;
             }
 
@@ -248,6 +249,7 @@ t<html>
         }
     </script>
     <script>
+        var data = {"a":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"};
         //消息界面
         //msgTitle:标题
         //msgText：内容
@@ -281,18 +283,57 @@ t<html>
                     ablePostdate();
                     removeMaskDialog();
                     setDispatchData();
+                    //console.log(dispatchDataMin);
                     $.ajax({
                         url:"${base.contextPath}/confirmation/input/log/insertInputLog",
-                        //url:"${base.contextPath}/confirmation/input/log/writeOff",
-                        type:"post",
-                        data : JSON.stringify(dispatchData),
-                        dataType : "json",
+                        type:"get",
+                        //data : dispatchDataMin,
+                        //data : data,
+                        data : {"a":barcode,
+                            "b":postingDate,
+                            "c":orderno,
+                            "d":operation,
+                            "e":yeild,
+                            "f":workScrap,
+                            "g":rowScrap,
+                            "h":classgrp,
+                            "i":line,
+                            "j":modelNo,
+                            "k":plant,
+                            "l":dispatch,
+                            "m":dispatchLogicID,
+                            "n":createdBy,
+                            "1":attr1,
+                            "2":attr2,
+                            "3":attr3,
+                            "4":attr4,
+                            "5":attr5,
+                            "6":attr6,
+                            "7":attr7,
+                            "8":attr8,
+                            "9":attr9,
+                            "10":attr10,
+                            "11":attr11,
+                            "12":attr12,
+                            "13":attr13,
+                            "14":attr14,
+                            "15":attr15},
                         contentType :"application/json; charset=utf-8",
                         success:function (res){
                             if(res.success){
-                                var msgty = JSON.stringify(res.rows[0].MSGTY);
-                                if(msgty == "S"){
+                                var msgty = JSON.stringify(res.rows[0].msgty);
+                                var message = JSON.stringify(res.rows[0].message);
+                                if(msgty.substring(1,msgty.length-1) == "S"){
                                     openMsgDialog("成功","报工成功","M");
+
+                                    //清空页面元素
+                                    delDispatchValues();
+
+                                    //获取条码页面元素
+                                    var roBcd=document.getElementById("barcode");
+
+                                    //进入报工页面时，光标定位到条码输入框
+                                    roBcd.focus();
                                 }else{
                                     openMsgDialog("失败","报工失败","M");
                                 }
@@ -301,18 +342,9 @@ t<html>
                             }
                         },
                         error:function (res) {
-                            //openMsgDialog("成功","报工成功","M");
+                            openMsgDialog("失败","报工失败","M");
                         }
                     });
-
-                    //清空页面元素
-                    delDispatchValues();
-
-                    //获取条码页面元素
-                    var roBcd=document.getElementById("barcode");
-
-                    //进入报工页面时，光标定位到条码输入框
-                    roBcd.focus();
                 }
             }
         }
@@ -335,17 +367,17 @@ t<html>
 <div id="dispatch-area">
 
     <div style="width: 220px;height: 20px">
-        <div id="logout" style="width:40px;height:20px;float: left;background-color:#169bd5;top: 0px">注销</div><div style="width:20px;height:20px;float: left;background-color:white;top: 0px"></div><div id="user" style="font-size:10px;height:20px;float: right;background-color:white;top: 0px"></div>
+        <div id="logout" style="font-size: 14px;width:40px;height:20px;float: left;background-color:#169bd5;top: 0px">注销</div><div style="width:20px;height:20px;float: left;background-color:white;top: 0px"></div><div id="user" style="font-size:10px;height:20px;float: right;background-color:white;top: 0px"></div>
     </div>
 
     <div style="width: 220px;height: 235px">
         <input id="barcode" style="font-size:10px;width: 200px;height: 20px" type="text"><br>
         <label class="dcp-label">过账日期</label><select id="postingDate" class="cls-attr-input"><option></option><option></option></select><br>
-        <label class="dcp-label">订单号</label><input id="orderno"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" type="text"><br>
-        <label class="dcp-label">工序</label><input id="operation"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" type="text"><br>
-        <label class="dcp-label">合格数量</label><input id="yeild" class="cls-attr-input" type="text"><br>
-        <label class="dcp-label">工废数量</label><input id="workScrap" class="cls-attr-input" type="text"><br>
-        <label class="dcp-label">料废数量</label><input id="rowScrap" class="cls-attr-input" type="text"><br>
+        <label class="dcp-label">订单号</label><input id="orderno"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>
+        <label class="dcp-label">工序</label><input id="operation"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>
+        <label class="dcp-label">合格数量</label><input id="yeild" class="cls-attr-input" type="number"><br>
+        <label class="dcp-label">工废数量</label><input id="workScrap" class="cls-attr-input" type="number"><br>
+        <label class="dcp-label">料废数量</label><input id="rowScrap" class="cls-attr-input" type="number"><br>
         <label class="dcp-label">班组</label><input id="classgrp" class="cls-attr-input" type="text"><br>
         <label class="dcp-label">生产线</label><input id="line" class="cls-attr-input" type="text"><br>
         <label class="dcp-label">模号</label><input id="modelNo" class="cls-attr-input" type="text"><br>
@@ -361,7 +393,7 @@ t<html>
 <div id="otherInfo-area">
 
     <div style="margin: 15px 10px;width: 220px;height: 20px">
-        <div id="back" style="width:40px;height:20px;float: left;background-color:#169bd5;top: 0px">返回</div>
+        <div id="back" style="font-size: 14px;width:40px;height:20px;float: left;background-color:#169bd5;top: 0px">返回</div>
     </div>
 
     <div style="margin-left: 10px;width: 220px;height: 265px">
@@ -387,8 +419,8 @@ t<html>
 <!--消息界面-->
 <div id="msg-area">
     <div>
-        <div id="msg1" style="line-height: 25px"></div>
-        <div id="msg2" style="text-align: center;line-height: 40px"></div>
+        <div id="msg1" style="font-size: 16px; line-height: 25px"></div>
+        <div id="msg2" style="font-size: 16px; text-align: center;line-height: 40px"></div>
         <div id="msg3">
             <button id="cancer" style="float: left;width: auto;background-color: white">取消</button>
             <button id="close" style="float: right;width: auto;background-color: white">确定</button>

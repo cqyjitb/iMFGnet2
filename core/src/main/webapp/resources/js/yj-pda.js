@@ -129,11 +129,43 @@ function checkDispatchValues() {
  * 定义报工数据传递json
  */
 var dispatchData;
+var dispatchDataMin;
 
 /**
  * 设置报工数据传递json
  */
 function setDispatchData() {
+    dispatchDataMin={
+        "a":barcode,
+        "b":postingDate,
+        "c":orderno,
+        "d":operation,
+        "e":yeild,
+        "f":workScrap,
+        "g":rowScrap,
+        "h":classgrp,
+        "i":line,
+        "j":modelNo,
+        "k":plant,
+        "l":dispatch,
+        "m":dispatchLogicID,
+        "n":createdBy,
+        "1":attr1,
+        "2":attr2,
+        "3":attr3,
+        "4":attr4,
+        "5":attr5,
+        "6":attr6,
+        "7":attr7,
+        "8":attr8,
+        "9":attr9,
+        "10":attr10,
+        "11":attr11,
+        "12":attr12,
+        "13":attr13,
+        "14":attr14,
+        "15":attr15
+    };
     dispatchData={
         "barcode":barcode,
         "postingDate":postingDate,
@@ -148,7 +180,6 @@ function setDispatchData() {
         "plant":plant,
         "dispatch":dispatch,
         "dispatchLogicID":dispatchLogicID,
-        "creationDate":creationDate,
         "createdBy":createdBy,
         "attr1":attr1,
         "attr2":attr2,

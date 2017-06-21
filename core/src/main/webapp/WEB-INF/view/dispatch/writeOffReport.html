@@ -32,49 +32,48 @@
             },
             queryGrid: function (e) {
                 $('#Grid').data('kendoGrid').dataSource.page(1);
-                console.log(e);
+
+
+
             },
             writeOff:function (){
-              /*  $('#Grid').data('kendoGrid').dataSource.page(2);
-                console.log(e);*/
-                commit()
+               commit();
             }
         });
         function  commit() {
 
-            kendo.ui.showConfirmDialog({
-                title: '提示',
-                message: '确认冲销么?'
-            }).done(function (e) {
 
-                var grid = $("#Grid").data("kendoGrid");
+            var grid = $("#Grid").data("kendoGrid");
+            var row = grid.select();
+            var data = grid.dataItem(row);
+            if(grid.select().length == 0){
+                kendo.ui.showInfoDialog({
+                    message:"请先选一行!"
+                });
+            }else{
 
-                var row = grid.select();
-                var data = grid.dataItem(row);
-
-                $.ajax({
-                    url:"${base.contextPath}/confirmation/input/log/writeOff",
-                    type:"post",
-                    data : JSON.stringify(data),
-                    dataType : "json",
-                    contentType :"application/json; charset=utf-8",
-                    success:function (res){
-                        if(res.success == false){
-                            var msg = res.message;
-                            alert(msg)
-                            return;
-                        }
-                            console.log(row);
+                    $.ajax({
+                        url:"${base.contextPath}/confirmation/input/log/writeOff",
+                        type:"post",
+                        data : JSON.stringify(data),
+                        dataType : "json",
+                        contentType :"application/json; charset=utf-8",
+                        success:function (res){
+                           /* if(res.success == false){
+                                var msg = res.message;
+                                alert(msg);
+                                return;
+                            }
+*/
                             var str = res.rows[0].msgty;
-                            console.log(str);
                             var str1 = res.rows[0].message;
-                           console.log(str1);
+
                             if(str=="S"){
                                 kendo.ui.showInfoDialog({
                                     title:'成功',
                                     message:'已完成冲销操作！'
                                 })
-                                grid.refresh();
+                                $(".k-i-refresh").trigger("click");
                             }
                             if(str=="E"){
                                 kendo.ui.showErrorDialog({
@@ -83,14 +82,16 @@
                                 })
                             }
 
+                        }
+                    });
 
 
-                    }
-                });
 
 
 
-            })
+
+            }
+
 
 
         }
@@ -241,7 +242,7 @@
                 button_show.show();
                 apply.hide();     //如果元素为显现,则将其隐藏
             }
-
+            Hap.autoResizeGrid("#Grid");
 
         }
         var BaseUrl = _basePath;

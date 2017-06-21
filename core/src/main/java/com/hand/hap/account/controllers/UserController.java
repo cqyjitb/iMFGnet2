@@ -81,11 +81,12 @@ public class UserController extends BaseController {
         return users != null && users.size() != 0?new ResponseData(this.userService.selectUserAndRoles(iRequest, (User)users.get(0), page, pagesize)):new ResponseData((List)null);
     }
 
-    @RequestMapping(value = {"/sys/userrole/queryByUserName"}, method = {RequestMethod.POST})
+    @RequestMapping(value = {"/sys/userrole/queryByUserName"}, method = {RequestMethod.GET})
     @ResponseBody
-    public ResponseData selectByUserName( @RequestBody User user) {
+    public ResponseData selectByUserName(HttpServletRequest request) {
+        String username = (String) request.getParameter("username");
         List<User> list = new ArrayList<>();
-        User u = userService.selectByUserName(user.getUserName());
+        User u = userService.selectByUserName(username);
         list.add(u);
         return new ResponseData(list);
     }

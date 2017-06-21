@@ -46,7 +46,7 @@ public class InputLogController extends BaseController{
             dto.setPostingDateBefore(pdBefore);
         }
 
-
+        List obj = new ArrayList();
         List <InputLog> list = service.queryAllLog(requestContext,dto,page,pageSize);
         int s = 0;
         int e = 0 ;
@@ -93,14 +93,11 @@ public class InputLogController extends BaseController{
 
         list .add(e);
 
-            /*session.removeAttribute("sucess");
-
-            session.removeAttribute("flase");*/
-
 
         return new ResponseData(list);
 
     }
+
 
 
     /*
@@ -142,9 +139,74 @@ public class InputLogController extends BaseController{
     }
 
 
-    @RequestMapping(value = {"/confirmation/input/log/insertInputLog"}, method = {RequestMethod.POST})
+    @RequestMapping(value = {"/confirmation/input/log/insertInputLog"}, method = {RequestMethod.GET})
     @ResponseBody
-    public ResponseData inputDispatch( @RequestBody InputLog inputLog) {
+    public ResponseData inputDispatch( HttpServletRequest request) {
+        InputLog inputLog = new InputLog();
+        System.out.println(request.getParameter("a"));
+
+        String  barcode = request.getParameter("a");
+        String  postingDate =request.getParameter("b");
+        String  orderno = request.getParameter("c");
+        String  operation = request.getParameter("d");
+        String  yeild = request.getParameter("e");
+        String  workScrap = request.getParameter("f");
+        String  rowScrap =  request.getParameter("g");
+        String  classgrp =  request.getParameter("h");
+        String  line =  request.getParameter("i");
+        String  modelNo =  request.getParameter("j");
+        String  plant =  request.getParameter("k");
+        String  dispatch =  request.getParameter("l");
+        String  dispatchLogicID =  request.getParameter("m");
+        String  createdBy =  request.getParameter("n");
+/*
+        String  attr1 =  request.getParameter("1");
+        String  attr2 =  request.getParameter("2");
+        String  attr3 =  request.getParameter("3");
+        String  attr4 =  request.getParameter("4");
+        String  attr5 =  request.getParameter("5");
+        String  attr6 =  request.getParameter("6");
+        String  attr7 =  request.getParameter("7");
+        String  attr8 =  request.getParameter("8");
+        String  attr9 =  request.getParameter("9");
+        String  attr10 =  request.getParameter("10");
+        String  attr11 =  request.getParameter("11");
+        String  attr12 =  request.getParameter("12");
+        String  attr13 =  request.getParameter("13");
+        String  attr14 =  request.getParameter("14");
+        String  attr15 =  request.getParameter("15");*/
+
+        inputLog.setBarcode(barcode);
+        inputLog.setOrderno(orderno);
+        inputLog.setDispatch(dispatch);
+        inputLog.setOperation(operation);
+        inputLog.setYeild(Double.parseDouble(yeild));
+        inputLog.setWorkScrap(Double.parseDouble(workScrap));
+        inputLog.setRowScrap(Double.parseDouble(rowScrap));
+        inputLog.setClassgrp(classgrp);
+        inputLog.setLine(line);
+        inputLog.setModelNo(modelNo);
+        inputLog.setPlant(plant);
+        inputLog.setPostingDate(postingDate);
+        inputLog.setDispatchLogicID(dispatchLogicID);
+        inputLog.setCreated_by(createdBy);
+
+/*        inputLog.setAttr1(attr1);
+        inputLog.setAttr2(attr2);
+        inputLog.setAttr3(attr3);
+        inputLog.setAttr4(attr4);
+        inputLog.setAttr5(attr5);
+        inputLog.setAttr6(attr6);
+        inputLog.setAttr7(attr7);
+        inputLog.setAttr8(attr8);
+        inputLog.setAttr9(attr9);
+        inputLog.setAttr10(attr10);
+        inputLog.setAttr11(attr11);
+        inputLog.setAttr12(attr12);
+        inputLog.setAttr13(attr13);
+        inputLog.setAttr14(attr14);
+        inputLog.setAttr15(attr15);*/
+
         List<DTPP001ReturnResult> list = new ArrayList<>();
         DTPP001ReturnResult returnResult = service.inputDispatch(inputLog);
         list.add(returnResult);

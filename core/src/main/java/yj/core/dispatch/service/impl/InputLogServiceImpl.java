@@ -176,9 +176,9 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         param.setAUFNR(inputLog.getOrderno());
         param.setVORNR(inputLog.getOperation());
         param.setBUDAT(inputLog.getPostingDate().replaceAll("-",""));
-        param.setGMNGA(inputLog.getYeild().toString());
-        param.setXMNGA(inputLog.getWorkScrap().toString());
-        param.setRMNGA(inputLog.getRowScrap().toString());
+        param.setGMNGA("-"+inputLog.getYeild().toString());
+        param.setXMNGA("-"+inputLog.getWorkScrap().toString());
+        param.setRMNGA("-"+inputLog.getRowScrap().toString());
         param.setZSCBC(inputLog.getClassgrp() == null ? "" : inputLog.getClassgrp());
         param.setZSCX(inputLog.getLine() == null ? "" : inputLog.getLine());
         param.setZMNUM(inputLog.getModelNo() == null ? "" : inputLog.getModelNo());

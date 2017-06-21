@@ -24,6 +24,12 @@
     <script src="${base.contextPath}/lib/kendoui/js/kendo.hap.js"></script>
     <script src="${base.contextPath}/resources/js/yj-pda.js"></script>
     <script src="${base.contextPath}/common/prompts"></script>
+
+    <script>
+        window.onload=function () {
+            delCookie("username");
+        }
+    </script>
         </head>
 
         <style>
@@ -141,7 +147,7 @@
                         return
                     }else{
                         setCookie("username",userName)
-                        window.location.href='/dispatch/dispatch.html';
+                        window.location.href='${base.contextPath}/dispatch/dispatch.html';
                         // window.open("/dispatch/dispatch.html");
                     }
 
