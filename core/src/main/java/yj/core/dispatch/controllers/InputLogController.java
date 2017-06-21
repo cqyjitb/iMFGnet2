@@ -15,6 +15,9 @@ import yj.core.dispatch.service.IInputLogService;
 import yj.core.dispatch.service.impl.InputLogServiceImpl;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
@@ -48,10 +51,11 @@ private IInputLogService service;
                 dto.setPostingDateBefore(pdBefore);
             }
 
-        List obj = new ArrayList();
+
         List <InputLog> list = service.queryAllLog(requestContext,dto,page,pageSize);
         int s = 0;
         int e = 0 ;
+
 
         for (int i=0 ; i<list.size();i++){
             if (list.get(i).getMsgty().equals("S")){
@@ -62,13 +66,47 @@ private IInputLogService service;
                 e++;
             }
         }
-        obj.add(list);
-        obj.add(s);
-        obj.add(e);
 
-        System.out.println("成功:"+s+"失败："+e);
+        System.out.println(e);
+
+        System.out.println(s);
+        HttpSession session = request.getSession();
+
+        session.setAttribute("sucess", s);
+
+        session.setAttribute("flase", e);
+
+
         return new ResponseData(list);
     }
+
+
+
+    @RequestMapping(value = "/test/form")
+    @ResponseBody
+    public ResponseData query(final HttpServletRequest request, final HttpServletResponse response) throws IOException {
+
+            HttpSession session = request.getSession();
+
+              int s =  (int)session.getAttribute("sucess");
+
+              int e =  (int)session.getAttribute("flase");
+
+            List list = new ArrayList();
+
+            list.add(s);
+
+            list .add(e);
+
+            /*session.removeAttribute("sucess");
+
+            session.removeAttribute("flase");*/
+
+
+        return new ResponseData(list);
+
+    }
+
 
 
     /*

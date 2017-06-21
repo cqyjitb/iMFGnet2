@@ -32,6 +32,9 @@
                 },
                 queryGrid: function (e) {
                     $('#Grid').data('kendoGrid').dataSource.page(1);
+                },
+                writeOff:function (e){
+                    $('#Grid').data('kendoGrid').dataSource.page(2);
                 }
             });
         </script>
@@ -129,7 +132,7 @@
 
                             <div class="row" style="margin-top: 20px">
                                 <div class="pull-left" style="margin-right:15px">
-                                 <span class="btn btn-danger"
+                                 <span class="btn btn-danger" data-bind="click:writeOff"
                                        type="submit">
                                 <i class="fa fa-circle-o-notch" style="margin-right:3px;"></i>
                             冲销</span>
@@ -190,6 +193,11 @@
                     url: BaseUrl + "/confirmation/input/log/queryResult",
                     type: "POST",
                     dataType: "json"
+                },
+                update: {
+                    url: BaseUrl + "",
+                    type: "POST",
+                    contentType: "application/json"
                 },
 
                 parameterMap: function (options, type) {

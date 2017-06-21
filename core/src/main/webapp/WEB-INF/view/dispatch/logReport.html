@@ -22,12 +22,22 @@
 
     </style>
     <script type="text/javascript">
+        $(function(){
+            setInterval(function(){
+                $.ajax({
+                    url: '${base.contextPath}/test/form',
+                    async: false,
+                    success: function(data) {
+                        document.getElementById('s').innerHTML=JSON.stringify(data.rows[0]);
+                        document.getElementById('e').innerHTML=JSON.stringify(data.rows[1]);
 
-        function doQuery() {
-            $('#Grid').data('kendoGrid').dataSource.page(1);
+                    },
+                });
+            }, 1000);
+
+        });
 
 
-        }
 
         var viewModel = kendo.observable({
             model: {},
@@ -38,7 +48,9 @@
                     viewModel.model.set(k, null);
                 }
             },
-            queryGrid: doQuery
+            queryGrid: function (e) {
+                $('#Grid').data('kendoGrid').dataSource.page(1);
+            }
 
 
         });
@@ -137,7 +149,7 @@
 
                         <div class="row" style="margin-top: 20px">
                             <div class="pull-left" style="margin-right:15px;">
-                                <div style="margin-top: 6px"> <font size="3"><div style="float: left">成功：</div><div id="s" ></div><div style="float: left">失败：</div><div style="float: left" id="e"></div></font></div>
+                                <div style="margin-top: 6px"> <font size="3"><div style="float: left">成功：</div><div id="s" style="float: left;" >0</div><div style="float: left;margin-left: 20px">失败：</div><div style="float: left" id="e">0</div></font></div>
                             </div>
                             <div class="pull-right" style="margin-right:15px">
                                 <span class="btn btn-primary" data-bind="click:queryGrid"
@@ -228,9 +240,31 @@
         });
 
 
+    /*    dataSource.fetch(function(){
+
+            var data = dataSource.data();
+            var s = 0;
+            var e = 0;
+            for (var i = 0;i<data.length;i++){
+                if (data[i].msgty=="成功"){
+                    s++;
+                }else {
+                    e++;
+                }
+            }
+           // console.log(s);
+           // console.log(e);
+            var a=document.getElementById('s');
+            var b=document.getElementById('e');
+            a.innerHTML = s;
+            b.innerHTML = e;
+        });*/
 
 
-            $("#Grid").kendoGrid({
+
+
+
+        var leftGird=  $("#Grid").kendoGrid({
                 dataSource: dataSource,
                 height: '100%',
                 resizable: true,
@@ -316,35 +350,34 @@
 
 
 
-
                 ],
                 editable: false
             });
+                 Hap.autoResizeGrid("#Grid");
 
-                Hap.autoResizeGrid("#Grid");
-                console.log(dataSource);
-                var grid = $("#Grid").data("kendoGrid");
-                console.log(grid.dataSource.data.length);
-                console.log(grid);
-                 grid.dataSource.fetch(function(){
+            /*    var row = $("#Grid .k-grid-content tr:eq(2)");
+                console.log(row);
+                var data = leftGird.data("kendoGrid").dataItem(row);
+                console.log(data.orderno);*/
 
-                    var data = grid.dataSource.data();
-                    var s = 0;
-                    var e = 0;
-                    for (var i = 0;i<data.length;i++){
-                        if (data[i].msgty=="成功"){
-                            s++;
-                        }else {
-                            e++;
-                        }
-                    }
-                    console.log(s);
-                    console.log(e);
-                    var a=document.getElementById('s');
-                    var b=document.getElementById('e');
-                    a.append(s);
-                    b.append(e)
-                });
+
+
+/*
+        var row = $("#grid .k-grid-content td:eq(2)");
+        var data = gridTest.data("kendoGrid").dataItem(row);
+        console.log(row);
+
+
+
+        var grid = $("#Grid").data("kendoGrid");
+
+                alert(dataSource);
+
+                 alert(grid.dataSource.data);
+
+                 alert.log(grid);*/
+
+
 
 
 
