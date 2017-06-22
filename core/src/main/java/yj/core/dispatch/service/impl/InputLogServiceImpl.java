@@ -211,7 +211,7 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         log.setMsgty(returnResult.getMSGTY());
         log.setTranType("1");
         log.setRefId(inputLog.getId());
-
+        log.setCreatedBy(inputLog.getCreatedBy());
         logMapper.insertLog(log);
         if("S".equals(returnResult.getMSGTY())){
             resultMapper.updateReveseByInputId(inputLog.getId());
