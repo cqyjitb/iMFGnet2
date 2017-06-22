@@ -23,11 +23,11 @@
 
     <insert id="insertResult" parameterType="yj.core.dispatch.dto.Result">
          INSERT INTO confirmation_result(
-        input_id,confirmation_no,confirmation_pos,plant,material,workcenter,is_reversed,mat_desc
+        input_id,confirmation_no,confirmation_pos,plant,material,workcenter,is_reversed,mat_desc,CREATED_BY
         )
         VALUES (
        #{inputId}, #{confirmationNo},#{confirmationPos},#{plant},#{material},
-        #{workcenter},#{isReversed},#{matDesc}
+        #{workcenter},#{isReversed},#{matDesc},#{created_by}
       )
     </insert>
 
