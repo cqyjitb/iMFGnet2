@@ -9,7 +9,6 @@ import com.hand.hap.system.dto.BaseDTO;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
 
 @ExtensionAttribute(disable=true)
 @Table(name = "confirmation_log")

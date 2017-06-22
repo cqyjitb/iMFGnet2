@@ -51,7 +51,6 @@ public class InputLogController extends BaseController{
         int s = 0;
         int e = 0 ;
 
-
         for (int i=0 ; i<list.size();i++){
             if (list.get(i).getMsgty().equals("S")){
                 list.get(i).setMsgty("成功");
@@ -60,7 +59,14 @@ public class InputLogController extends BaseController{
                 list.get(i).setMsgty("失败");
                 e++;
             }
+
+            if (list.get(i).getTranType().equals("0")){
+                list.get(i).setTranType("报工");
+            }else {
+                list.get(i).setTranType("冲销");
+            }
         }
+
 
         System.out.println(e);
 

@@ -35,6 +35,7 @@
         <result column="attr15" property="attr15" jdbcType="VARCHAR" />
         <result column="msgty" property="msgty" jdbcType="VARCHAR" />
         <result column="msgtx" property="msgtx" jdbcType="VARCHAR" />
+        <result column="tran_type" property="tranType" jdbcType="VARCHAR" />
         <result column="CREATION_DATE" property="creatDate" jdbcType="VARCHAR" />
         <result column="LCREATION_DATE" property="logCreatDate" jdbcType="VARCHAR" />
         <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
@@ -169,6 +170,7 @@
         l.msgty,
         l.msgtx,
         l.CREATION_DATE  AS LCREATION_DATE,
+        l.tran_type,
         il.CREATED_BY,
         r.mat_desc,
         r.material,
@@ -180,8 +182,7 @@
             il.id= r.input_id
             AND il.CREATED_BY = u.user_id
             AND l.ref_id = il.id
-            AND r.is_reversed ='0'
-            AND l.tran_type = '0'
+
 
 
             <if test="plant != null">

@@ -52,39 +52,54 @@
                 });
             }else{
 
-                    $.ajax({
-                        url:"${base.contextPath}/confirmation/input/log/writeOff",
-                        type:"post",
-                        data : JSON.stringify(data),
-                        dataType : "json",
-                        contentType :"application/json; charset=utf-8",
-                        success:function (res){
-                           /* if(res.success == false){
-                                var msg = res.message;
-                                alert(msg);
-                                return;
-                            }
-*/
-                            var str = res.rows[0].msgty;
-                            var str1 = res.rows[0].message;
+                kendo.ui.showConfirmDialog({
+                    title:'提示',
+                    message:'确定冲销？'
+                }).done(function (e) {
+                    if(e.button == 'OK'){
 
-                            if(str=="S"){
-                                kendo.ui.showInfoDialog({
-                                    title:'成功',
-                                    message:'已完成冲销操作！'
-                                })
-                                $(".k-i-refresh").trigger("click");
-                            }
-                            if(str=="E"){
-                                kendo.ui.showErrorDialog({
-                                    title:'失败',
-                                    message:str1
-                                })
-                            }
 
-                        }
-                    });
+                        $.ajax({
+                            url:"${base.contextPath}/confirmation/input/log/writeOff",
+                            type:"post",
+                            data : JSON.stringify(data),
+                            dataType : "json",
+                            contentType :"application/json; charset=utf-8",
+                            success:function (res){
+                                if(res.success == false){
 
+                                    kendo.ui.showErrorDialog({
+                                        title:'冲销失败',
+                                        message:'数据问题，无法冲销！',
+                                    })
+                                }
+
+                                var str = res.rows[0].msgty;
+                                var str1 = res.rows[0].message;
+
+                                if(str=="S"){
+                                    kendo.ui.showInfoDialog({
+                                        title:'成功',
+                                        message:'已完成冲销操作！'
+                                    })
+                                    $(".k-i-refresh").trigger("click");
+                                }
+                                if(str=="E"){
+                                    kendo.ui.showErrorDialog({
+                                        title:'冲销失败',
+                                        message:str1
+                                    })
+                                }
+
+                            },
+                            error:{
+
+                            }
+                        });
+
+
+                    }
+                });
 
 
 
@@ -219,7 +234,7 @@
             </div>
 
             <div style="clear:both">
-                <div id="Grid"  class="table"></div>
+                <div id="Grid"></div>
             </div>
 
         </div>
@@ -305,28 +320,55 @@
                 {
                     field: "plant",
                     title: '工厂',
-                    width: 120
+                    width: 70,
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    },
+                    attributes: {
+                        style: "text-align: center;"
+                    }
                 },
                 {
                     field: "orderno",
                     title: '订单号',
-                    width: 120
+                    width: 120,
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    },
+                    attributes: {
+                        style: "text-align: center;"
+                    }
                 },
                 {
                     field: "operation",
                     title: '工序',
-                    width: 120
+                    width: 70,
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    },
+                    attributes: {
+                        style: "text-align: center;"
+                    }
                 },
-
                 {
                     field: "material",
                     title: '产品物料号',
-                    width: 120
+                    width: 95,
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    },
+                    attributes: {
+                        style: "text-align: center;"
+                    }
                 },
                 {
                     field: "matDesc",
                     title: '产品名称',
-                    width: 120
+                    width: 350,
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    }
+
                 },
 
 
@@ -334,47 +376,93 @@
                     field: "creatDate",
                     title: '报工时间',
                     width: 150,
-                    format:"{0: yyyy-MM-dd HH:mm:ss}"
+                    format:"{0: yyyy-MM-dd HH:mm:ss}",
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    },
+                    attributes: {
+                        style: "text-align: center;"
+                    }
                 },
 
                 {
                     field: "postingDate",
                     title: '过账日期',
-                    width: 120,
-                    format:"{0:yyyy-MM-dd}"
+                    width: 100,
+                    format:"{0:yyyy-MM-dd}",
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    },
+                    attributes: {
+                        style: "text-align: center;"
+                    }
                 },
                 {
                     field: "yeild",
                     title: '合格数量',
-                    width: 120
+                    width: 120,
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    },
+                    attributes: {
+                        style: "text-align: center;"
+                    }
                 },
                 {
                     field: "workScrap",
                     title: '工废数量',
-                    width: 120
+                    width: 120,
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    },
+                    attributes: {
+                        style: "text-align: center;"
+                    }
                 },
-
-
 
                 {
                     field: "classgrp",
                     title: '班组',
-                    width: 120
+                    width: 120,
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    },
+                    attributes: {
+                        style: "text-align: center;"
+                    }
                 },
                 {
                     field: "line",
                     title: '生产线',
-                    width: 120
+                    width: 120,
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    },
+                    attributes: {
+                        style: "text-align: center;"
+                    }
                 },
                 {
                     field: "modelNo",
                     title: '模号',
-                    width: 120
+                    width: 120,
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    },
+                    attributes: {
+                        style: "text-align: center;"
+                    }
                 },
                 {
                     field: "userName",
                     title: '报功人',
-                    width: 120
+                    width: 120,
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    },
+                    attributes: {
+                        style: "text-align: center;"
+                    }
                 },
 
 

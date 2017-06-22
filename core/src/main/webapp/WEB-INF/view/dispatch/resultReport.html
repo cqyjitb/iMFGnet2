@@ -130,7 +130,7 @@
 
                         </div>
 
-                        <div class="row" style="margin-top: 20px">
+                        <div class="row">
 
                             <div class="pull-right" style="margin-right:15px">
                                 <span class="btn btn-primary" data-bind="click:queryGrid"
@@ -225,7 +225,6 @@
 
        $("#Grid").kendoGrid({
            dataSource: dataSource,
-
            height: '100%',
            resizable: true,
            scrollable: true,
@@ -240,27 +239,55 @@
                {
                    field: "plant",
                    title: '工厂',
-                   width: 120
+                   width: 70,
+                   headerAttributes: {
+                       style: "text-align: center;"
+                   },
+                   attributes: {
+                       style: "text-align: center;"
+                   }
                },
                {
                    field: "orderno",
                    title: '订单号',
-                   width: 120
+                   width: 120,
+                   headerAttributes: {
+                       style: "text-align: center;"
+                   },
+                   attributes: {
+                       style: "text-align: center;"
+                   }
                },
                {
                    field: "operation",
                    title: '工序',
-                   width: 120
+                   width: 70,
+                   headerAttributes: {
+                       style: "text-align: center;"
+                   },
+                   attributes: {
+                       style: "text-align: center;"
+                   }
                },
                {
                    field: "material",
                    title: '产品物料号',
-                   width: 120
+                   width: 95,
+                   headerAttributes: {
+                       style: "text-align: center;"
+                   },
+                   attributes: {
+                       style: "text-align: center;"
+                   }
                },
                {
                    field: "matDesc",
                    title: '产品名称',
-                   width: 120
+                   width: 350,
+                   headerAttributes: {
+                       style: "text-align: center;"
+                   }
+
                },
 
 
@@ -268,48 +295,94 @@
                    field: "creatDate",
                    title: '报工时间',
                    width: 150,
-                   format:"{0: yyyy-MM-dd HH:mm:ss}"
+                   format:"{0: yyyy-MM-dd HH:mm:ss}",
+                   headerAttributes: {
+                       style: "text-align: center;"
+                   },
+                   attributes: {
+                       style: "text-align: center;"
+                   }
                },
 
                {
                    field: "postingDate",
                    title: '过账日期',
-                   width: 120,
-                   format:"{0:yyyy-MM-dd}"
+                   width: 100,
+                   format:"{0:yyyy-MM-dd}",
+                   headerAttributes: {
+                       style: "text-align: center;"
+                   },
+                   attributes: {
+                       style: "text-align: center;"
+                   }
                },
                {
                    field: "yeild",
                    title: '合格数量',
-                   width: 120
+                   width: 120,
+                   headerAttributes: {
+                       style: "text-align: center;"
+                   },
+                   attributes: {
+                       style: "text-align: center;"
+                   }
                },
                {
                    field: "workScrap",
                    title: '工废数量',
-                   width: 120
+                   width: 120,
+                   headerAttributes: {
+                       style: "text-align: center;"
+                   },
+                   attributes: {
+                       style: "text-align: center;"
+                   }
                },
-
 
                {
                    field: "classgrp",
                    title: '班组',
-                   width: 120
+                   width: 120,
+                   headerAttributes: {
+                       style: "text-align: center;"
+                   },
+                   attributes: {
+                       style: "text-align: center;"
+                   }
                },
                {
                    field: "line",
                    title: '生产线',
-                   width: 120
+                   width: 120,
+                   headerAttributes: {
+                       style: "text-align: center;"
+                   },
+                   attributes: {
+                       style: "text-align: center;"
+                   }
                },
                {
                    field: "modelNo",
                    title: '模号',
-                   width: 120
+                   width: 120,
+                   headerAttributes: {
+                       style: "text-align: center;"
+                   },
+                   attributes: {
+                       style: "text-align: center;"
+                   }
                },
                {
                    field: "userName",
                    title: '报功人',
-                   width: 120
+                   width: 120,
+                   headerAttributes: {
+                       style: "text-align: center;"
+                   },
+                   attributes: {
+                       style: "text-align: center;"
+                   }
                },
-
 
 
 
