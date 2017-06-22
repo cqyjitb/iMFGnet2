@@ -1,7 +1,8 @@
 package yj.core.webservice.components;
 
 
-import yj.core.webservice.dto.DTPP001Parameters;
+import java.io.File;
+
 
 /**
  * Created by TFR on 2017/6/14.
@@ -11,7 +12,7 @@ public class test {
     public static void main(String[] args) {
         ConfirmationWebserviceUtil util = new ConfirmationWebserviceUtil();
         //InputLog inputLog = new InputLog();
-        DTPP001Parameters param = new DTPP001Parameters();
+       /* DTPP001Parameters param = new DTPP001Parameters();
         param.setPWERK("1001");
         param.setAUFNR("12131423545346");
         param.setVORNR("1010");
@@ -24,7 +25,7 @@ public class test {
         param.setZMNUM("");
         param.setDATUM("");
         param.setZPGDBAR("");
-        param.setZPGDBH("");
+        param.setZPGDBH("");*/
 
         /*inputLog.setPlant("1001");
         inputLog.setOrderno("12131423545346");
@@ -38,7 +39,15 @@ public class test {
         inputLog.setModelNo("");
         inputLog.setDispatch("");
         inputLog.setDispatchLogicID("");*/
-        util.receiveConfirmation(param);
+        //util.receiveConfirmation(param);
+
+        System.out.println(Thread.currentThread().getContextClassLoader().getResource(""));
+        System.out.println(test.class.getClassLoader().getResource(""));
+        System.out.println(ClassLoader.getSystemResource(""));
+        System.out.println(test.class.getResource(""));
+        System.out.println(test.class.getResource("/")); //Class文件所在路径
+        System.out.println(new File("/").getAbsolutePath());
+        System.out.println(System.getProperty("user.dir"));
 
     }
 }
