@@ -159,7 +159,6 @@ public class InputLogController extends BaseController{
         String  dispatch =  request.getParameter("l");
         String  dispatchLogicID =  request.getParameter("m");
         String  createdBy =  request.getParameter("n");
-/*
         String  attr1 =  request.getParameter("1");
         String  attr2 =  request.getParameter("2");
         String  attr3 =  request.getParameter("3");
@@ -174,7 +173,7 @@ public class InputLogController extends BaseController{
         String  attr12 =  request.getParameter("12");
         String  attr13 =  request.getParameter("13");
         String  attr14 =  request.getParameter("14");
-        String  attr15 =  request.getParameter("15");*/
+        String  attr15 =  request.getParameter("15");
 
         inputLog.setBarcode(barcode);
         inputLog.setOrderno(orderno);
@@ -191,7 +190,7 @@ public class InputLogController extends BaseController{
         inputLog.setDispatchLogicID(dispatchLogicID);
         inputLog.setCreated_by(createdBy);
 
-/*        inputLog.setAttr1(attr1);
+        inputLog.setAttr1(attr1);
         inputLog.setAttr2(attr2);
         inputLog.setAttr3(attr3);
         inputLog.setAttr4(attr4);
@@ -205,7 +204,7 @@ public class InputLogController extends BaseController{
         inputLog.setAttr12(attr12);
         inputLog.setAttr13(attr13);
         inputLog.setAttr14(attr14);
-        inputLog.setAttr15(attr15);*/
+        inputLog.setAttr15(attr15);
 
         List<DTPP001ReturnResult> list = new ArrayList<>();
         DTPP001ReturnResult returnResult = service.inputDispatch(inputLog);
