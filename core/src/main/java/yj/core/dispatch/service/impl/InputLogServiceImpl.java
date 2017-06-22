@@ -128,7 +128,24 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         DTPP001ReturnResult returnResult = webserviceUtil.receiveConfirmation(param);
         Log log = new Log();
         Result result = new Result();
-        if("S".equals(returnResult.getMSGTY())){
+        inputLog.setMaterial(returnResult.getMATNR());
+        inputLog.setMatDesc(returnResult.getMAKTX());
+        inputLogMapper.insertInputLog(inputLog);
+        Long id = inputLogMapper.selectNextId();
+        //System.out.println(id);
+        result.setPlant(inputLog.getPlant());
+        result.setInputId(id);
+        result.setIsReversed("0");
+        result.setMaterial(inputLog.getMaterial());
+        result.setMatDesc(inputLog.getMatDesc());
+        log.setMsgty(returnResult.getMSGTY());
+        log.setMsgtx(returnResult.getMESSAGE());
+        log.setTranType("0");
+        log.setRefId(id);
+        resultMapper.insertResult(result);
+        logMapper.insertLog(log);
+
+        /*if("S".equals(returnResult.getMSGTY())){
             //添加数据
             inputLogMapper.insertInputLog(inputLog);
             Long id = inputLogMapper.selectNextId();
@@ -151,7 +168,7 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
             log.setMsgtx(returnResult.getMESSAGE());
             log.setTranType("0");
             logMapper.insertLog(log);
-        }
+        }*/
         return returnResult;
 
     }
