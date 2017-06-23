@@ -103,6 +103,8 @@
         SELECT
         DISTINCT
         il.id,
+        il.barcode,
+        il.dispatch,
         il.orderno,
         il.operation,
         il.CREATION_DATE,
@@ -159,6 +161,8 @@
         DISTINCT
         il.id,
         il.orderno,
+        il.barcode,
+        il.dispatch,
         il.operation,
         il.CREATION_DATE,
         il.posting_date,
@@ -219,6 +223,8 @@
         il.id,
         il.plant,
         il.orderno,
+        il.barcode,
+        il.dispatch,
         il.operation,
         il.CREATION_DATE,
         il.posting_date,

@@ -80,7 +80,7 @@ public class ConfirmationWebserviceUtil{
         _siPP001SenderSync_mtPP001SendReq.getITEM().add(item);
 
         DTPP001SendRes _siPP001SenderSync__return = port.siPP001SenderSync(_siPP001SenderSync_mtPP001SendReq);
-        System.out.println(_siPP001SenderSync__return.getDETAIL().get(0).getMESSAGE());
+       // System.out.println(_siPP001SenderSync__return.getDETAIL().get(0).getMESSAGE());
         String aufnr = _siPP001SenderSync__return.getDETAIL().get(0).getAUFNR();//订单号
         String matnr = _siPP001SenderSync__return.getDETAIL().get(0).getMATNR();//物料号
         String msgTy = _siPP001SenderSync__return.getDETAIL().get(0).getMSGTY();//信息状态  S(成功)/E(失败)

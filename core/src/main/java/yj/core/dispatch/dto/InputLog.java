@@ -116,7 +116,7 @@ public class InputLog extends BaseDTO {
     private String logCreatDate;//日志时间
 
     @Transient
-    private String tranType;//报工or冲销
+    private String tranType;  //报工or冲销
 
 
     public String getCreated_by() {

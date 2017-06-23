@@ -71,23 +71,25 @@
                                         title:'冲销失败',
                                         message: str2 ,
                                     })
-                                }
+                                } else {
 
-                                var str = res.rows[0].msgty;
-                                var str1 = res.rows[0].message;
+                                    var str = res.rows[0].msgty;
+                                    var str1 = res.rows[0].message;
 
-                                if(str=="S"){
-                                    kendo.ui.showInfoDialog({
-                                        title:'成功',
-                                        message:'已完成冲销操作！'
-                                    })
-                                    $(".k-i-refresh").trigger("click");
-                                }
-                                if(str=="E"){
-                                    kendo.ui.showErrorDialog({
-                                        title:'冲销失败',
-                                        message:str1
-                                    })
+                                    if(str=="S"){
+                                        kendo.ui.showInfoDialog({
+                                            title:'成功',
+                                            message:'已完成冲销操作！'
+                                        })
+                                        $(".k-i-refresh").trigger("click");
+                                    }
+                                    if(str=="E"){
+                                        kendo.ui.showErrorDialog({
+                                            title:'冲销失败',
+                                            message:str1
+                                        })
+                                    }
+
                                 }
 
                             },
