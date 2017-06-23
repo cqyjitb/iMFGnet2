@@ -92,6 +92,9 @@ public class InputLog extends BaseDTO {
     private String creatDateBefore;
 
     @Transient
+    private String isReversed;//冲销or未冲销
+
+    @Transient
     private String matDesc;//产品名称
 
     @Transient
@@ -466,5 +469,13 @@ public class InputLog extends BaseDTO {
 
     public void setTranType(String tranType) {
         this.tranType = tranType;
+    }
+
+    public String getIsReversed() {
+        return isReversed;
+    }
+
+    public void setIsReversed(String isReversed) {
+        this.isReversed = isReversed;
     }
 }

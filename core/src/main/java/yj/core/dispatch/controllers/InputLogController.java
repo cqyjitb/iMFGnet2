@@ -28,7 +28,7 @@ public class InputLogController extends BaseController{
      */
     @RequestMapping(value = "/confirmation/input/log/queryLog")
     @ResponseBody
-    public ResponseData queryWriteOff(final InputLog dto, @RequestParam(defaultValue = DEFAULT_PAGE)final int page,
+    public ResponseData queryLog(final InputLog dto, @RequestParam(defaultValue = DEFAULT_PAGE)final int page,
                                       @RequestParam(defaultValue = DEFAULT_PAGE_SIZE)final int pageSize, final HttpServletRequest request) {
         IRequest requestContext = createRequestContext(request);
 
@@ -45,8 +45,17 @@ public class InputLogController extends BaseController{
             pdBefore = dto.getPostingDateBefore().replace("00:00:00","23:59:59");
             dto.setPostingDateBefore(pdBefore);
         }
+        if(dto.getTranType() != null){
+            String tranType;
+            tranType = dto.getTranType();
+          if(tranType.equals("报工")){
+                dto.setTranType("0");
+          }else if(tranType.equals("冲销")){
+              dto.setTranType("1");
+          }
+        }
 
-        List obj = new ArrayList();
+
         List <InputLog> list = service.queryAllLog(requestContext,dto,page,pageSize);
         int s = 0;
         int e = 0 ;
@@ -105,8 +114,38 @@ public class InputLogController extends BaseController{
 
 
     /*
-    *报功结果/报功冲销界面查询
+    *报工冲销
      */
+
+    @RequestMapping(value = "/confirmation/input/log/queryWriteOff")
+    @ResponseBody
+    public ResponseData queryWriteOff(InputLog dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
+                                    @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize, HttpServletRequest request) {
+        IRequest requestContext = createRequestContext(request);
+        if ( dto.getCreatDateBefore() !=null){
+            String cdBefore;
+            cdBefore = dto.getCreatDateBefore();
+            cdBefore = dto.getCreatDateBefore().replace("00:00:00","23:59:59");
+            dto.setCreatDateBefore(cdBefore);
+
+        }
+        if(dto.getPostingDateBefore() != null){
+            String pdBefore;
+            pdBefore = dto.getPostingDateBefore();
+            pdBefore = dto.getPostingDateBefore().replace("00:00:00","23:59:59");
+            dto.setPostingDateBefore(pdBefore);
+        }
+
+        List<InputLog> list = service.queryAllWriteOff(requestContext,dto,page,pageSize);
+
+        return new ResponseData(list);
+    }
+
+
+    /*
+    *报工结果
+     */
+
     @RequestMapping(value = "/confirmation/input/log/queryResult")
     @ResponseBody
     public ResponseData queryResult(InputLog dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
@@ -125,22 +164,31 @@ public class InputLogController extends BaseController{
             pdBefore = dto.getPostingDateBefore().replace("00:00:00","23:59:59");
             dto.setPostingDateBefore(pdBefore);
         }
+        if (dto.getIsReversed() != null){
+            if (dto.getIsReversed().equals("未冲销")){
+                dto.setIsReversed("0");
+            }else {
+                dto.setIsReversed("1");
+            }
 
-        List<InputLog> list = service.queryAllBg(requestContext,dto,page,pageSize);
-/*
 
-        for (InputLog i:list
-             ) {
-            System.out.println(i.getPostingDate());
-            SimpleDateFormat dateFormat=new SimpleDateFormat("yyyy-MM-dd");
-            String d = dateFormat.format(i.getPostingDate());
-            System.out.println(d);
-            System.out.println(i);
         }
-*/
+
+        List<InputLog> list = service.queryAllResult(requestContext,dto,page,pageSize);
+
+
+        for (int i=0 ; i<list.size();i++){
+            if(list.get(i).getIsReversed().equals("0")){
+                list.get(i).setIsReversed("未冲销");
+            }else {
+                list.get(i).setIsReversed("已冲销");
+            }
+        }
+
 
         return new ResponseData(list);
     }
+
 
 
     @RequestMapping(value = {"/confirmation/input/log/insertInputLog"}, method = {RequestMethod.GET})

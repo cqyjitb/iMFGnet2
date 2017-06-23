@@ -40,16 +40,20 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
 
     DateFormat df=new SimpleDateFormat("yyyyMMdd");
 
-    //报功结果&冲销页面数据查询
+    //报工冲销页面数据查询
     @Override
-    public List<InputLog> queryAllBg(IRequest iRequest, InputLog inputLog, int page, int pageSize) {
+    public List<InputLog> queryAllWriteOff(IRequest iRequest, InputLog inputLog, int page, int pageSize) {
         PageHelper.startPage(page, pageSize);
-        return inputLogMapper.queryAllBg(inputLog);
+        return inputLogMapper.queryAllWriteOff(inputLog);
     }
 
+    //报工结果
+    public List<InputLog> queryAllResult(IRequest iRequest, InputLog inputLog, int page, int pageSize){
+        PageHelper.startPage(page, pageSize);
+        return inputLogMapper.queryAllResult(inputLog);
+    };
 
-
-    //报功日志界面数据查询
+    //报工日志界面数据查询
     public List<InputLog> queryAllLog(IRequest iRequest, InputLog inputLog, int page, int pageSize) {
         PageHelper.startPage(page, pageSize);
         return inputLogMapper.queryAllLog(inputLog);

@@ -40,7 +40,7 @@
         <result column="LCREATION_DATE" property="logCreatDate" jdbcType="VARCHAR" />
         <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
         <result column="mat_desc" property="matDesc" jdbcType="VARCHAR" />
-
+        <result column="is_reversed" property="isReversed" jdbcType="VARCHAR" />
         <result column="material" property="material" jdbcType="VARCHAR" />
         <result column="user_name" property="userName" jdbcType="VARCHAR" />
     </resultMap>
@@ -97,9 +97,9 @@
         )
     </insert>
 <!--
-    报功结果/报功冲销
+    报功冲销
 -->
-    <select id="queryAllBg" resultMap="BaseResultMap" parameterType="yj.core.dispatch.dto.InputLog">
+    <select id="queryAllWriteOff" resultMap="BaseResultMap" parameterType="yj.core.dispatch.dto.InputLog">
         SELECT
         DISTINCT
         il.id,
@@ -152,6 +152,65 @@
     </select>
 
 
+
+<!--报功结果-->
+    <select id="queryAllResult" resultMap="BaseResultMap" parameterType="yj.core.dispatch.dto.InputLog">
+        SELECT
+        DISTINCT
+        il.id,
+        il.orderno,
+        il.operation,
+        il.CREATION_DATE,
+        il.posting_date,
+        il.yeild,
+        il.work_scrap,
+        il.row_scrap,
+        il.classgrp,
+        il.model_no,
+        il.line,
+        il.plant,
+        il.CREATED_BY,
+        r.is_reversed,
+        r.mat_desc,
+        r.material,
+        u.user_name
+
+        FROM confirmation_input_log il,confirmation_result r,sys_user u,confirmation_log l
+        <where>
+            il.id= r.input_id
+            AND il.CREATED_BY = u.user_id
+            AND l.ref_id = il.id
+            AND l.tran_type = '0'
+            AND l.msgty = 'S'
+            <if test="plant != null">
+                and il.plant = #{plant}
+            </if>
+            <if test="orderno != null">
+                and il.orderno = #{orderno}
+            </if>
+            <if test="operation != null">
+                and il.operation = #{operation}
+            </if>
+            <if test="material != null">
+                and r.material = #{material}
+            </if>
+            <if test="isReversed != null">
+                and r.is_reversed = #{isReversed}
+            </if>
+
+            <if test="creatDateAfter != null and creatDateBefore != null">
+                and il.CREATION_DATE  >=  #{creatDateAfter}  and  #{creatDateBefore} > il.CREATION_DATE
+            </if>
+
+            <if test="postingDateAfter != null and postingDateBefore != null">
+                and  il.posting_date  >=  #{postingDateAfter} and #{postingDateBefore} > il.posting_date
+            </if>
+        </where>
+
+    </select>
+
+
+
     <!--
         报功日志
     -->
@@ -167,6 +226,9 @@
         il.classgrp,
         il.line,
         il.model_no,
+        il.work_scrap,
+        il.row_scrap,
+        il.yeild,
         l.msgty,
         l.msgtx,
         l.CREATION_DATE  AS LCREATION_DATE,
@@ -196,6 +258,9 @@
             </if>
             <if test="material != null">
                 and r.material = #{material}
+            </if>
+            <if test="tranType != null">
+                and l.tran_type = #{tranType}
             </if>
             <if test="creatDateAfter != null and creatDateBefore != null">
                 and il.CREATION_DATE  >=  #{creatDateAfter}  and  #{creatDateBefore} > il.CREATION_DATE
