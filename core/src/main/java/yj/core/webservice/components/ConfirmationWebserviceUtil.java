@@ -95,6 +95,13 @@ public class ConfirmationWebserviceUtil{
         if(_siPP001SenderSync__return.getDETAIL().get(0).getMAKT().size() > 0){
             maktx = _siPP001SenderSync__return.getDETAIL().get(0).getMAKT().get(0).getMAKTX();
         }
+
+        msgTy = _siPP001SenderSync__return.getRETURN().getMSGTY();//信息状态  S(成功)/E(失败)
+        message = _siPP001SenderSync__return.getDETAIL().get(0).getMESSAGE();//信息
+        for(int i = 1 ; i < _siPP001SenderSync__return.getDETAIL().size() ; i++){
+            message = message + "/" + _siPP001SenderSync__return.getDETAIL().get(i).getMESSAGE();
+        }
+
         DTPP001ReturnResult returnResult = new DTPP001ReturnResult();
         returnResult.setAUFNR(aufnr);
         returnResult.setMATNR(matnr);
