@@ -95,12 +95,18 @@
 		
 			//获取确认页面元素
             var cConfirm = document.getElementById("confirm");
+            var cClose = document.getElementById("close");
 		
 			//获取模号页面元素
             var cModelNo = document.getElementById("modelNo");
             cModelNo.onkeydown=function () {
+				var cdMsg=document.getElementById("msg-area")
                 if(event.keyCode == 13){
-                    cConfirm.oncli();
+				    if(cdMsg.style.display == "none"){
+                        cConfirm.onclick();
+                    } else {
+                        cClose.onclick();
+                    }
                 }
             }
 			
@@ -148,6 +154,15 @@
             var cBarcode = document.getElementById("barcode");
             cBarcode.onkeydown=function () {
                 if(event.keyCode == 13){
+					var strBarcode = document.getElementById("barcode").value;
+					var lenBarcode = strBarcode.length;
+					if (lenBarcode > 12){
+						document.getElementById("orderno").value = strBarcode.substring(4,lenBarcode-8);
+						document.getElementById("operation").value = strBarcode.substring(lenBarcode-4,lenBarcode);
+					} else {
+						document.getElementById("orderno").value = "";
+						document.getElementById("operation").value = "";
+					}
                     cYeild.focus();
                 }
             }
@@ -300,10 +315,6 @@
                 } else {
                     //检查未通过 报错
                     openMsgDialog("错误",msg,"M");
-
-                    if(barcode == "" || barcode == null){
-                        oBcd.focus();
-                    }
                 }
             }
 
@@ -331,6 +342,26 @@
                     dMsg.style.display="none";
                     ablePostdate();
                     removeMaskDialog();
+
+                    if(msgTitle == "成功"){
+                        //清空页面元素
+                        delDispatchValues();
+
+                        //获取条码页面元素
+                        var roBcd=document.getElementById("barcode");
+
+                        //进入报工页面时，光标定位到条码输入框
+                        roBcd.focus();
+                    }
+                    if(barcode == "" || barcode == null){
+
+                        //获取条码页面元素
+                        var roBcd=document.getElementById("barcode");
+
+                        //进入报工页面时，光标定位到条码输入框
+                        roBcd.focus();
+                    }
+
                 }
             } else if(msgType == "C") {
                 bCan.style.display = "";
@@ -388,20 +419,16 @@
                                 eval("var strmessage = '" + message + "';")
                                 if(msgty.substring(1,msgty.length-1) == "S"){
                                     openMsgDialog("成功",strmessage,"M");
-
-                                    //清空页面元素
-                                    delDispatchValues();
-
-                                    //获取条码页面元素
-                                    var roBcd=document.getElementById("barcode");
-
-                                    //进入报工页面时，光标定位到条码输入框
-                                    roBcd.focus();
                                 }else{
                                     openMsgDialog("失败",strmessage,"M");
                                 }
                             } else {
-                                openMsgDialog("失败","报工失败","M");
+                                var falsemsg = JSON.stringify(res.message);
+								falsemsg = falsemsg.substring(1,falsemsg.length-1);
+								if(falsemsg == "Read timed out"){
+									falsemsg = "请求超时-";
+								}
+                                openMsgDialog("失败",falsemsg + "报工失败","M");
                             }
                         },
                         error:function (res) {

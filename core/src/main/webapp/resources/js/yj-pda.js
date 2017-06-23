@@ -53,8 +53,17 @@ function getDispatchValues() {
     line = document.getElementById("line").value;
     modelNo = document.getElementById("modelNo").value;
     plant = barcode.substring(0,4);
-    dispatch = barcode.substring(4,barcode.length-4);
+    dispatch = barcode.substring(0,barcode.length-4);
     dispatchLogicID = barcode.substring(barcode.length-8,barcode.length-4);
+    if(yeild == "" || yeild == null){
+        yeild = "0";
+    }
+    if(workScrap == "" || workScrap == null){
+        workScrap = "0";
+    }
+    if(rowScrap == "" || rowScrap == null){
+        rowScrap = "0";
+    }
 
     attr1 = document.getElementById("attr1").value;
     attr2 = document.getElementById("attr2").value;
@@ -110,17 +119,21 @@ function delDispatchValues() {
  * 检查报工过账必输字段 及字段格式
  */
 function checkDispatchValues() {
+    var a = 0;
     if(barcode == "" || barcode == null){
         return "请扫码";
     }
-    if(yeild == "" || yeild == null){
-        return "请输入合格数量";
+    if(yeild == "" || yeild == null || yeild == "0"){
+        a = a + 1;
     }
-    if(workScrap == "" || workScrap == null){
-        return "请输入工废数量";
+    if(workScrap == "" || workScrap == null || workScrap == "0"){
+        a = a + 1;
     }
-    if(rowScrap == "" || rowScrap == null){
-        return "请输入料废数量";
+    if(rowScrap == "" || rowScrap == null || rowScrap == "0"){
+        a = a + 1;
+    }
+    if( a == 3){
+        return "请输入数量";
     }
     return null;
 }
