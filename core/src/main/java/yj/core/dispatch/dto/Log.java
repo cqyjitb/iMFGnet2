@@ -25,10 +25,17 @@ public class Log extends BaseDTO {
 
       private String msgtx; //消息内容
 
+      private String created_by;
 
+    public String getCreated_by() {
+        return created_by;
+    }
 
+    public void setCreated_by(String created_by) {
+        this.created_by = created_by;
+    }
 
-     public void setId(Long id){
+    public void setId(Long id){
          this.id = id;
      }
 

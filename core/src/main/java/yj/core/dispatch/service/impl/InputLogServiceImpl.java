@@ -138,12 +138,12 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         result.setIsReversed("0");
         result.setMaterial(inputLog.getMaterial());
         result.setMatDesc(inputLog.getMatDesc());
-        result.setCreatedBy(inputLog.getCreatedBy());
+        result.setCreated_by(inputLog.getCreated_by());
         log.setMsgty(returnResult.getMSGTY());
         log.setMsgtx(returnResult.getMESSAGE());
         log.setTranType("0");
         log.setRefId(id);
-        log.setCreatedBy(inputLog.getCreatedBy());
+        log.setCreated_by(inputLog.getCreated_by());
         resultMapper.insertResult(result);
         logMapper.insertLog(log);
 
@@ -211,7 +211,7 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         log.setMsgty(returnResult.getMSGTY());
         log.setTranType("1");
         log.setRefId(inputLog.getId());
-        log.setCreatedBy(inputLog.getCreatedBy());
+        log.setCreated_by(inputLog.getCreated_by());
         logMapper.insertLog(log);
         if("S".equals(returnResult.getMSGTY())){
             resultMapper.updateReveseByInputId(inputLog.getId());

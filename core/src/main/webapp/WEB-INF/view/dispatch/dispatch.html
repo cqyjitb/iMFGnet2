@@ -62,7 +62,7 @@
             background-color: white;
             width: 200px;
             height: 120px;
-            top: 150px;
+            top: 100px;
             left: 20px;
             position: absolute;
             z-index: 1001;
@@ -92,6 +92,65 @@
     <script>
 
         window.onload=function () {
+		
+			//获取确认页面元素
+            var cConfirm = document.getElementById("confirm");
+		
+			//获取模号页面元素
+            var cModelNo = document.getElementById("modelNo");
+            cModelNo.onkeydown=function () {
+                if(event.keyCode == 13){
+                    cConfirm.oncli();
+                }
+            }
+			
+			//获取生产线页面元素
+            var cLine = document.getElementById("line");
+            cLine.onkeydown=function () {
+                if(event.keyCode == 13){
+                    cModelNo.focus();
+                }
+            }
+			
+			//获取班组页面元素
+            var cClassgrp = document.getElementById("classgrp");
+            cClassgrp.onkeydown=function () {
+                if(event.keyCode == 13){
+                    cLine.focus();
+                }
+            }
+		
+			//获取料废数量页面元素
+            var cRowScrap = document.getElementById("rowScrap");
+            cRowScrap.onkeydown=function () {
+                if(event.keyCode == 13){
+                    cClassgrp.focus();
+                }
+            }
+		
+			//获取工废数量页面元素
+            var cWorkScrap = document.getElementById("workScrap");
+            cWorkScrap.onkeydown=function () {
+                if(event.keyCode == 13){
+                    cRowScrap.focus();
+                }
+            }
+
+            //获取合格数量页面元素
+            var cYeild = document.getElementById("yeild");
+            cYeild.onkeydown=function () {
+                if(event.keyCode == 13){
+                    cWorkScrap.focus();
+                }
+            }
+
+            //获取条码页面元素
+            var cBarcode = document.getElementById("barcode");
+            cBarcode.onkeydown=function () {
+                if(event.keyCode == 13){
+                    cYeild.focus();
+                }
+            }
 
             //获取消息界面DIV页面元素
             var dMsg=document.getElementById("msg-area");
@@ -126,17 +185,19 @@
                         //document.getElementById("user").innerHTML = userId;
                     }
                 });
-                /*$.ajax({
-                 url:"${base.contextPath}/hr/employee/queryByCode",
-                 type:"get",
-                 data : {"code":username},
-                 contentType :"application/json; charset=utf-8",
-                 success:function (res){
-                 var name = JSON.stringify(res.rows[0].name);
-                 name = name.substring(1,name.length-1);
-                 document.getElementById("user").innerHTML = name;
-                 }
-                 });*/
+                $.ajax({
+                     url:"${base.contextPath}/hr/employee/queryByCode",
+                     type:"get",
+                     data : {"code":username},
+                     contentType :"application/json; charset=utf-8",
+                     success:function (res){
+                         var name = JSON.stringify(res.rows[0].name);
+                         name = name.substring(1,name.length-1);
+                         /*document.getElementById("user").innerHTML = name;*/
+                         eval("var strname = '" + name + "';")
+                         document.getElementById("user").innerHTML = strname;
+                     }
+                 });
             }
 
             /*用户注销相关操作*/
@@ -323,8 +384,10 @@
                             if(res.success){
                                 var msgty = JSON.stringify(res.rows[0].msgty);
                                 var message = JSON.stringify(res.rows[0].message);
+                                message = message.substring(1,message.length-1);
+                                eval("var strmessage = '" + message + "';")
                                 if(msgty.substring(1,msgty.length-1) == "S"){
-                                    openMsgDialog("成功","报工成功","M");
+                                    openMsgDialog("成功",strmessage,"M");
 
                                     //清空页面元素
                                     delDispatchValues();
@@ -335,7 +398,7 @@
                                     //进入报工页面时，光标定位到条码输入框
                                     roBcd.focus();
                                 }else{
-                                    openMsgDialog("失败","报工失败","M");
+                                    openMsgDialog("失败",strmessage,"M");
                                 }
                             } else {
                                 openMsgDialog("失败","报工失败","M");
@@ -420,7 +483,7 @@
 <div id="msg-area">
     <div>
         <div id="msg1" style="font-size: 16px; line-height: 25px"></div>
-        <div id="msg2" style="font-size: 16px; text-align: center;line-height: 40px"></div>
+        <div id="msg2" style="font-size: 10px; text-align: center;line-height: 20px"></div>
         <div id="msg3">
             <button id="cancer" style="float: left;width: auto;background-color: white">取消</button>
             <button id="close" style="float: right;width: auto;background-color: white">确定</button>

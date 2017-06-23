@@ -68,9 +68,7 @@ public class InputLogController extends BaseController{
         }
 
 
-        System.out.println(e);
 
-        System.out.println(s);
         HttpSession session = request.getSession();
 
         session.setAttribute("sucess", s);

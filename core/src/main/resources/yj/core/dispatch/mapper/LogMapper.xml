@@ -22,7 +22,7 @@
         tran_type,ref_id,msgty,msgtx,CREATED_BY
         )
         VALUES (
-        #{tranType}, #{refId},#{msgty},#{msgtx},#{createdBy}
+        #{tranType}, #{refId},#{msgty},#{msgtx},#{created_by}
       )
     </insert>
 </mapper>

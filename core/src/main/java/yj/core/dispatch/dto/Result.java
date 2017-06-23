@@ -33,6 +33,16 @@ public class Result extends BaseDTO {
 
       private String matDesc; //产品名称
 
+    public String getCreated_by() {
+        return created_by;
+    }
+
+    public void setCreated_by(String created_by) {
+        this.created_by = created_by;
+    }
+
+    private String created_by;
+
 
 
 
