@@ -118,6 +118,12 @@ public class InputLog extends BaseDTO {
     @Transient
     private String tranType;  //报工or冲销
 
+    @Transient
+    private String confirmationNo; //确认号
+
+    @Transient
+    private String confirmationPos; //确认号计数
+
 
     public String getCreated_by() {
         return created_by;
@@ -477,5 +483,21 @@ public class InputLog extends BaseDTO {
 
     public void setIsReversed(String isReversed) {
         this.isReversed = isReversed;
+    }
+
+    public String getConfirmationNo() {
+        return confirmationNo;
+    }
+
+    public void setConfirmationNo(String confirmationNo) {
+        this.confirmationNo = confirmationNo;
+    }
+
+    public String getConfirmationPos() {
+        return confirmationPos;
+    }
+
+    public void setConfirmationPos(String confirmationPos) {
+        this.confirmationPos = confirmationPos;
     }
 }

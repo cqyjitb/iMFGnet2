@@ -1,11 +1,11 @@
 package yj.core.webservice.sender;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * �����������ݽṹ
@@ -40,6 +40,9 @@ import java.util.List;
  *                   &lt;element name="DATUM" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="ZPGDBAR" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="ZPGDBH" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="RSNUM" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="RSPOS" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="REVERSE" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                 &lt;/sequence>
  *               &lt;/restriction>
  *             &lt;/complexContent>
@@ -116,6 +119,9 @@ public class DTPP001SendReq {
 	 *         &lt;element name="DATUM" type="{http://www.w3.org/2001/XMLSchema}string"/>
 	 *         &lt;element name="ZPGDBAR" type="{http://www.w3.org/2001/XMLSchema}string"/>
 	 *         &lt;element name="ZPGDBH" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="RSNUM" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="RSPOS" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="REVERSE" type="{http://www.w3.org/2001/XMLSchema}string"/>
 	 *       &lt;/sequence>
 	 *     &lt;/restriction>
 	 *   &lt;/complexContent>
@@ -127,7 +133,7 @@ public class DTPP001SendReq {
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@XmlType(name = "", propOrder = { "pwerk", "aufnr", "vornr", "budat",
 			"gmnga", "xmnga", "rmnga", "zscbc", "zscx", "zmnum", "datum",
-			"zpgdbar", "zpgdbh" })
+			"zpgdbar", "zpgdbh", "rsnum", "rspos", "reverse" })
 	public static class ITEM {
 
 		@XmlElement(name = "PWERK", required = true)
@@ -156,6 +162,12 @@ public class DTPP001SendReq {
 		protected String zpgdbar;
 		@XmlElement(name = "ZPGDBH", required = true)
 		protected String zpgdbh;
+		@XmlElement(name = "RSNUM", required = true)
+		protected String rsnum;
+		@XmlElement(name = "RSPOS", required = true)
+		protected String rspos;
+		@XmlElement(name = "REVERSE", required = true)
+		protected String reverse;
 
 		/**
 		 * Gets the value of the pwerk property.
@@ -428,6 +440,69 @@ public class DTPP001SendReq {
 		 */
 		public void setZPGDBH(String value) {
 			this.zpgdbh = value;
+		}
+
+		/**
+		 * Gets the value of the rsnum property.
+		 * 
+		 * @return possible object is {@link String }
+		 * 
+		 */
+		public String getRSNUM() {
+			return rsnum;
+		}
+
+		/**
+		 * Sets the value of the rsnum property.
+		 * 
+		 * @param value
+		 *            allowed object is {@link String }
+		 * 
+		 */
+		public void setRSNUM(String value) {
+			this.rsnum = value;
+		}
+
+		/**
+		 * Gets the value of the rspos property.
+		 * 
+		 * @return possible object is {@link String }
+		 * 
+		 */
+		public String getRSPOS() {
+			return rspos;
+		}
+
+		/**
+		 * Sets the value of the rspos property.
+		 * 
+		 * @param value
+		 *            allowed object is {@link String }
+		 * 
+		 */
+		public void setRSPOS(String value) {
+			this.rspos = value;
+		}
+
+		/**
+		 * Gets the value of the reverse property.
+		 * 
+		 * @return possible object is {@link String }
+		 * 
+		 */
+		public String getREVERSE() {
+			return reverse;
+		}
+
+		/**
+		 * Sets the value of the reverse property.
+		 * 
+		 * @param value
+		 *            allowed object is {@link String }
+		 * 
+		 */
+		public void setREVERSE(String value) {
+			this.reverse = value;
 		}
 
 	}

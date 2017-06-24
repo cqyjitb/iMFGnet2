@@ -266,7 +266,10 @@ public class InputLogController extends BaseController{
 
     @RequestMapping(value = {"/confirmation/input/log/writeOff"}, method = {RequestMethod.POST})
     @ResponseBody
-    public ResponseData writeOffDispatch( @RequestBody InputLog inputLog) {
+    public ResponseData writeOffDispatch( @RequestBody InputLog inputLog,HttpServletRequest request) {
+        String createdBy = "" + request.getSession().getAttribute("userId");
+        System.out.println(createdBy);
+        inputLog.setCreated_by(createdBy);
         List<DTPP001ReturnResult> list = new ArrayList<>();
         DTPP001ReturnResult returnResult = service.writeOffDispatch(inputLog);
         list.add(returnResult);

@@ -59,6 +59,9 @@ public class ConfirmationWebserviceUtil{
         item.setDATUM(params.getDATUM());
         item.setZPGDBAR(params.getZPGDBAR());
         item.setZPGDBH(params.getZPGDBH());
+        item.setRSPOS(params.getRSPOS());
+        item.setRSNUM(params.getRSNUM());
+        item.setREVERSE(params.getREVERSE());
 
         /*item.setPWERK(inputLog.getPlant());
         item.setAUFNR(inputLog.getOrderno());
@@ -90,6 +93,9 @@ public class ConfirmationWebserviceUtil{
         String msgV2 = _siPP001SenderSync__return.getDETAIL().get(0).getMSGV2();
         String msgV3 = _siPP001SenderSync__return.getDETAIL().get(0).getMSGV3();
         String msgV4 = _siPP001SenderSync__return.getDETAIL().get(0).getMSGV4();
+        String rsnum = _siPP001SenderSync__return.getDETAIL().get(0).getRSNUM();
+        String rspos = _siPP001SenderSync__return.getDETAIL().get(0).getRSPOS();
+
         String message = _siPP001SenderSync__return.getDETAIL().get(0).getMESSAGE();//信息
         String maktx = "";
         if(_siPP001SenderSync__return.getDETAIL().get(0).getMAKT().size() > 0){
@@ -114,6 +120,8 @@ public class ConfirmationWebserviceUtil{
         returnResult.setMSGV4(msgV4);
         returnResult.setMAKTX(maktx);
         returnResult.setMESSAGE(message);
+        returnResult.setRSNUM(rsnum);
+        returnResult.setRSPOS(rspos);
         return returnResult;
 
     }

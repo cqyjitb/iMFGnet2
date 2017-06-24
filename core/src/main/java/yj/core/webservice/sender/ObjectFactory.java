@@ -27,11 +27,11 @@ public class ObjectFactory {
 	}
 
 	/**
-	 * Create an instance of {@link DTPP001SendRes.DETAIL.MAKT }
+	 * Create an instance of {@link DTPP001SendReq }
 	 * 
 	 */
-	public DTPP001SendRes.DETAIL.MAKT createDTPP001SendResDETAILMAKT() {
-		return new DTPP001SendRes.DETAIL.MAKT();
+	public DTPP001SendReq createDTPP001SendReq() {
+		return new DTPP001SendReq();
 	}
 
 	/**
@@ -43,6 +43,14 @@ public class ObjectFactory {
 	}
 
 	/**
+	 * Create an instance of {@link DTPP001SendRes.RETURN }
+	 * 
+	 */
+	public DTPP001SendRes.RETURN createDTPP001SendResRETURN() {
+		return new DTPP001SendRes.RETURN();
+	}
+
+	/**
 	 * Create an instance of {@link DTPP001SendRes.DETAIL }
 	 * 
 	 */
@@ -51,19 +59,11 @@ public class ObjectFactory {
 	}
 
 	/**
-	 * Create an instance of {@link DTPP001SendReq }
+	 * Create an instance of {@link DTPP001SendRes.DETAIL.MAKT }
 	 * 
 	 */
-	public DTPP001SendReq createDTPP001SendReq() {
-		return new DTPP001SendReq();
-	}
-
-	/**
-	 * Create an instance of {@link DTPP001SendRes.RETURN }
-	 * 
-	 */
-	public DTPP001SendRes.RETURN createDTPP001SendResRETURN() {
-		return new DTPP001SendRes.RETURN();
+	public DTPP001SendRes.DETAIL.MAKT createDTPP001SendResDETAILMAKT() {
+		return new DTPP001SendRes.DETAIL.MAKT();
 	}
 
 	/**

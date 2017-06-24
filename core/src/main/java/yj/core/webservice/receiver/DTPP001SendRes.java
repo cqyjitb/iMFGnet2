@@ -1,11 +1,11 @@
 package yj.core.webservice.receiver;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * ����������������
@@ -47,6 +47,8 @@ import java.util.List;
  *                 &lt;sequence>
  *                   &lt;element name="AUFNR" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="MATNR" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="RSNUM" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="RSPOS" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="MAKT" maxOccurs="unbounded" minOccurs="0">
  *                     &lt;complexType>
  *                       &lt;complexContent>
@@ -155,6 +157,8 @@ public class DTPP001SendRes {
 	 *       &lt;sequence>
 	 *         &lt;element name="AUFNR" type="{http://www.w3.org/2001/XMLSchema}string"/>
 	 *         &lt;element name="MATNR" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="RSNUM" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="RSPOS" type="{http://www.w3.org/2001/XMLSchema}string"/>
 	 *         &lt;element name="MAKT" maxOccurs="unbounded" minOccurs="0">
 	 *           &lt;complexType>
 	 *             &lt;complexContent>
@@ -184,14 +188,19 @@ public class DTPP001SendRes {
 	 * 
 	 */
 	@XmlAccessorType(XmlAccessType.FIELD)
-	@XmlType(name = "", propOrder = { "aufnr", "matnr", "makt", "msgty",
-			"msgno", "msgid", "msgv1", "msgv2", "msgv3", "msgv4", "message" })
+	@XmlType(name = "", propOrder = { "aufnr", "matnr", "rsnum", "rspos",
+			"makt", "msgty", "msgno", "msgid", "msgv1", "msgv2", "msgv3",
+			"msgv4", "message" })
 	public static class DETAIL {
 
 		@XmlElement(name = "AUFNR", required = true)
 		protected String aufnr;
 		@XmlElement(name = "MATNR", required = true)
 		protected String matnr;
+		@XmlElement(name = "RSNUM", required = true)
+		protected String rsnum;
+		@XmlElement(name = "RSPOS", required = true)
+		protected String rspos;
 		@XmlElement(name = "MAKT")
 		protected List<MAKT> makt;
 		@XmlElement(name = "MSGTY", required = true)
@@ -251,6 +260,48 @@ public class DTPP001SendRes {
 		 */
 		public void setMATNR(String value) {
 			this.matnr = value;
+		}
+
+		/**
+		 * Gets the value of the rsnum property.
+		 * 
+		 * @return possible object is {@link String }
+		 * 
+		 */
+		public String getRSNUM() {
+			return rsnum;
+		}
+
+		/**
+		 * Sets the value of the rsnum property.
+		 * 
+		 * @param value
+		 *            allowed object is {@link String }
+		 * 
+		 */
+		public void setRSNUM(String value) {
+			this.rsnum = value;
+		}
+
+		/**
+		 * Gets the value of the rspos property.
+		 * 
+		 * @return possible object is {@link String }
+		 * 
+		 */
+		public String getRSPOS() {
+			return rspos;
+		}
+
+		/**
+		 * Sets the value of the rspos property.
+		 * 
+		 * @param value
+		 *            allowed object is {@link String }
+		 * 
+		 */
+		public void setRSPOS(String value) {
+			this.rspos = value;
 		}
 
 		/**

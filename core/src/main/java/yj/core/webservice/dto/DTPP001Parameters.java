@@ -18,6 +18,12 @@ public class DTPP001Parameters {
     private String DATUM;
     private String ZPGDBAR;
     private String ZPGDBH;
+    private String RSNUM;
+    private String RSPOS;
+    private String REVERSE;
+
+
+
     public DTPP001Parameters(){
 
     }
@@ -38,6 +44,29 @@ public class DTPP001Parameters {
         this.ZPGDBH = ZPGDBH;
     }
 
+    public String getRSPOS() {
+        return RSPOS;
+    }
+
+    public void setRSPOS(String RSPOS) {
+        this.RSPOS = RSPOS;
+    }
+
+    public String getREVERSE() {
+        return REVERSE;
+    }
+
+    public void setREVERSE(String REVERSE) {
+        this.REVERSE = REVERSE;
+    }
+
+    public String getRSNUM() {
+
+        return RSNUM;
+    }
+    public void setRSNUM(String RSNUM) {
+        this.RSNUM = RSNUM;
+    }
     public String getPWERK() {
         return PWERK;
     }

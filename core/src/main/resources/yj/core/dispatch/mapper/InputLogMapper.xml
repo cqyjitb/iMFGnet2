@@ -43,6 +43,8 @@
         <result column="is_reversed" property="isReversed" jdbcType="VARCHAR" />
         <result column="material" property="material" jdbcType="VARCHAR" />
         <result column="user_name" property="userName" jdbcType="VARCHAR" />
+        <result column="confirmation_no" property="confirmationNo" jdbcType="VARCHAR" />
+        <result column="confirmation_pos" property="confirmationPos" jdbcType="VARCHAR" />
     </resultMap>
     <resultMap id="BaseResultMap1" type="yj.core.dispatch.dto.InputLog">
         <result column="id" property="id" jdbcType="DECIMAL" />
@@ -119,6 +121,8 @@
         il.CREATED_BY,
         r.mat_desc,
         r.material,
+        r.confirmation_no,
+        r.confirmation_pos,
         u.user_name
 
         FROM confirmation_input_log il,confirmation_result r,sys_user u,confirmation_log l

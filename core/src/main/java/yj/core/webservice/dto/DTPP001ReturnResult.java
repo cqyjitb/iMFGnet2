@@ -49,6 +49,31 @@ public class DTPP001ReturnResult {
      */
     private String MESSAGE;
 
+    /**
+     * 确认号
+     */
+    private String RSNUM;
+
+    /**
+     * 计数器
+     */
+    private String RSPOS;
+
+    public String getRSNUM() {
+        return RSNUM;
+    }
+
+    public void setRSNUM(String RSNUM) {
+        this.RSNUM = RSNUM;
+    }
+
+    public String getRSPOS() {
+        return RSPOS;
+    }
+
+    public void setRSPOS(String RSPOS) {
+        this.RSPOS = RSPOS;
+    }
 
     public String getMAKTX() {
         return MAKTX;
