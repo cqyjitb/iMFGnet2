@@ -315,3 +315,19 @@ function removeMaskDialog() {
     var oMaskD=document.getElementById("mask");
     document.body.removeChild(oMaskD);
 }
+
+/**
+ * using for appending the mask Dialog
+ */
+function appendMask2Dialog() {
+    var oMaskD2=document.getElementById("mask2");
+    oMaskD2.style.display = "";
+}
+
+/**
+ * using for removing the mask Dialog
+ */
+function removeMask2Dialog() {
+    var oMaskD2=document.getElementById("mask2");
+    oMaskD2.style.display = "none";
+}

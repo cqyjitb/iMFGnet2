@@ -58,6 +58,17 @@
             top: 0;
             z-index:1000;
         }
+        #mask2{
+            background-color: #434343;
+            opacity:0.5;
+            filter: alpha(opacity=50);
+            position: absolute;
+            width: 240px;
+            height: 320px;
+            left: 0;
+            top: 0;
+            z-index:1001;
+        }
         #msg-area{
             background-color: white;
             width: 200px;
@@ -65,7 +76,7 @@
             top: 100px;
             left: 20px;
             position: absolute;
-            z-index: 1001;
+            z-index: 1002;
         }
         #msg1{
             width:200px;
@@ -101,9 +112,12 @@
             var cModelNo = document.getElementById("modelNo");
             cModelNo.onkeydown=function () {
 				var cdMsg=document.getElementById("msg-area")
+                var oMaskD2=document.getElementById("mask2");
                 if(event.keyCode == 13){
 				    if(cdMsg.style.display == "none"){
-                        cConfirm.onclick();
+				        if(oMaskD2.style.display == "none"){
+                            cConfirm.onclick();
+                        }
                     } else {
                         cClose.onclick();
                     }
@@ -208,7 +222,6 @@
                      success:function (res){
                          var name = JSON.stringify(res.rows[0].name);
                          name = name.substring(1,name.length-1);
-                         /*document.getElementById("user").innerHTML = name;*/
                          eval("var strname = '" + name + "';")
                          document.getElementById("user").innerHTML = strname;
                      }
@@ -280,6 +293,8 @@
             var dOin=document.getElementById("otherInfo-area");
             //获取消息界面DIV页面元素
             var dMsg=document.getElementById("msg-area");
+            //获取遮罩层2DIV页面元素
+            var dMask2=document.getElementById("mask2");
             //获取主界面其他信息按钮页面元素
             var bOin=document.getElementById("otherInfo");
             //获取其他信息界面返回按钮页面元素
@@ -289,6 +304,7 @@
             dDpt.style.display = "";
             dOin.style.display = "none";
             dMsg.style.display = "none";
+            dMask2.style.display = "none";
             /*bOin.style.display = "none";//隐藏主界面其他信息按钮*/
 
             //主界面其他信息按钮点击事件
@@ -321,7 +337,6 @@
         }
     </script>
     <script>
-        var data = {"a":"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"};
         //消息界面
         //msgTitle:标题
         //msgText：内容
@@ -361,6 +376,15 @@
                         //进入报工页面时，光标定位到条码输入框
                         roBcd.focus();
                     }
+                    if(msgText == "请输入数量"){
+
+                        //获取条码页面元素
+                        var roYed=document.getElementById("yeild");
+
+                        //进入报工页面时，光标定位到条码输入框
+                        roYed.focus();
+
+                    }
 
                 }
             } else if(msgType == "C") {
@@ -375,12 +399,11 @@
                     ablePostdate();
                     removeMaskDialog();
                     setDispatchData();
-                    //console.log(dispatchDataMin);
+                    appendMask2Dialog();
                     $.ajax({
                         url:"${base.contextPath}/confirmation/input/log/insertInputLog",
                         type:"get",
                         //data : dispatchDataMin,
-                        //data : data,
                         data : {"a":barcode,
                             "b":postingDate,
                             "c":orderno,
@@ -412,6 +435,7 @@
                             "15":attr15},
                         contentType :"application/json; charset=utf-8",
                         success:function (res){
+                            removeMask2Dialog();
                             if(res.success){
                                 var msgty = JSON.stringify(res.rows[0].msgty);
                                 var message = JSON.stringify(res.rows[0].message);
@@ -516,6 +540,10 @@
             <button id="close" style="float: right;width: auto;background-color: white">确定</button>
         </div>
     </div>
+</div>
+
+<!--遮罩层-->
+<div id="mask2">
 </div>
 </body>
 </html>

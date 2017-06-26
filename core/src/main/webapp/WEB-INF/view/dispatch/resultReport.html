@@ -64,7 +64,7 @@
                                 </div>
                             </div>  <div class="col-sm-4">
                             <div class="form-group">
-                                <label class="col-sm-4 control-label">冲销状态</label>
+                                <label class="col-sm-4 control-label">报工状态</label>
                                 <div class="col-sm-8">
 
                                     <input id="combobox"    data-bind="value:model.isReversed"
@@ -72,7 +72,7 @@
                                     <script>
                                         $("#combobox").kendoComboBox({
                                             dataSource: [
-                                                "未冲销", "已冲销"
+                                                "正常", "已冲销"
                                             ],
                                         });
                                     </script>
@@ -418,7 +418,7 @@
                },
                {
                    field: "isReversed",
-                   title: '未冲销/已冲销',
+                   title: '报工状态',
                    width: 120,
                    headerAttributes: {
                        style: "text-align: center;"

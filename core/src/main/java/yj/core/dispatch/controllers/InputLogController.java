@@ -165,7 +165,7 @@ public class InputLogController extends BaseController{
             dto.setPostingDateBefore(pdBefore);
         }
         if (dto.getIsReversed() != null){
-            if (dto.getIsReversed().equals("未冲销")){
+            if (dto.getIsReversed().equals("正常")){
                 dto.setIsReversed("0");
             }else {
                 dto.setIsReversed("1");
@@ -179,7 +179,7 @@ public class InputLogController extends BaseController{
 
         for (int i=0 ; i<list.size();i++){
             if(list.get(i).getIsReversed().equals("0")){
-                list.get(i).setIsReversed("未冲销");
+                list.get(i).setIsReversed("正常");
             }else {
                 list.get(i).setIsReversed("已冲销");
             }
@@ -196,6 +196,10 @@ public class InputLogController extends BaseController{
     public ResponseData inputDispatch( HttpServletRequest request) {
         InputLog inputLog = new InputLog();
         System.out.println(request.getParameter("a"));
+
+        String createdBy1 = "" + request.getSession().getAttribute("userId");
+        System.out.println(createdBy1);
+        inputLog.setCreated_by(createdBy1);
 
         String  barcode = request.getParameter("a");
         String  postingDate =request.getParameter("b");
