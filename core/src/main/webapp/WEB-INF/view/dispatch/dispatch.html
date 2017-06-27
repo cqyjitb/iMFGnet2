@@ -142,19 +142,19 @@
                 }
             }
 			
-			//获取班组页面元素
+/*			//获取班组页面元素
             var cClassgrp = document.getElementById("classgrp");
             cClassgrp.onkeydown=function () {
                 if(event.keyCode == 13){
                     cLine.focus();
                 }
-            }
+            }*/
 		
 			//获取料废数量页面元素
             var cRowScrap = document.getElementById("rowScrap");
             cRowScrap.onkeydown=function () {
                 if(event.keyCode == 13){
-                    cClassgrp.focus();
+                    cLine.focus();
                 }
             }
 		
@@ -272,7 +272,27 @@
             oPstd.onblur=function () {
                 var strPostDate = oPstd.options[oPstd.selectedIndex].value;
                 setCookie("postingDate",strPostDate);
-                var testCoo = document.cookie;
+            }
+
+            /*班组字段相关操作*/
+            //获取班组页面元素
+            var oClassgrp = document.getElementById("classgrp");
+
+            //初始化班组选择的值为上次选的值
+            var classGroup = getCookie("classgrp");
+            if(classGroup != null){
+                var lenOptions = oClassgrp.options.length;
+                for(var i=0 ; i<lenOptions ; i++){
+                    if(oClassgrp.options[i].value == classGroup){
+                        oClassgrp.options[i].selected = true;
+                    }
+                }
+            }
+
+            //当班组修改时记录下选择的值
+            oClassgrp.onblur=function () {
+                var strClassGroup = oClassgrp.options[oClassgrp.selectedIndex].value;
+                setCookie("classgrp",strClassGroup);
             }
 
             /*条码相关操作*/
@@ -354,6 +374,7 @@
         function openMsgDialog(msgTitle,msgText,msgType) {
             appendMaskDialog();
             disablePostdate();
+            disableClassgrp();
             var dMsg=document.getElementById("msg-area");
             dMsg.style.display="";
             document.getElementById("msg1").innerHTML="&nbsp"+msgTitle;
@@ -366,6 +387,7 @@
                 bCls.onclick=function () {
                     dMsg.style.display="none";
                     ablePostdate();
+                    ableClassgrp();
                     removeMaskDialog();
 
                     if(msgTitle == "成功"){
@@ -402,11 +424,13 @@
                 bCan.onclick=function () {
                     dMsg.style.display="none";
                     ablePostdate();
+                    ableClassgrp();
                     removeMaskDialog();
                 }
                 bCls.onclick=function () {
                     dMsg.style.display="none";
                     ablePostdate();
+                    ableClassgrp();
                     removeMaskDialog();
                     setDispatchData();
                     appendMask2Dialog();
@@ -484,6 +508,20 @@
             oPostdate.disabled="";
             oPostdate.style.zIndex="-1";
         }
+        //过账日期字段不可编辑
+        function disableClassgrp() {
+            var oClassgrp=document.getElementById("classgrp");
+            oClassgrp.disabled="disabled";
+            oClassgrp.style.display="none";
+            oClassgrp.style.zIndex="-1";
+        }
+        //过账日期字段可编辑
+        function ableClassgrp() {
+            var oClassgrp=document.getElementById("classgrp");
+            oClassgrp.disabled="";
+            oClassgrp.style.display="";
+            oClassgrp.style.zIndex="-1";
+        }
     </script>
 </head>
 <body>
@@ -502,7 +540,12 @@
         <label class="dcp-label">合格数量</label><input id="yeild" class="cls-attr-input" type="number"><br>
         <label class="dcp-label">工废数量</label><input id="workScrap" class="cls-attr-input" type="number"><br>
         <label class="dcp-label">料废数量</label><input id="rowScrap" class="cls-attr-input" type="number"><br>
-        <label class="dcp-label">班组</label><input id="classgrp" class="cls-attr-input" type="text"><br>
+        <!--<label class="dcp-label">班组</label><input id="classgrp" class="cls-attr-input" type="text"><br>-->
+        <label class="dcp-label">班组</label><select id="classgrp" class="cls-attr-input">
+            <option value="A">A</option>
+            <option value="B">B</option>
+            <option value="C">C</option>
+        </select><br>
         <label class="dcp-label">生产线</label><input id="line" class="cls-attr-input" type="text"><br>
         <label class="dcp-label">模号</label><input id="modelNo" class="cls-attr-input" type="text"><br>
     </div>

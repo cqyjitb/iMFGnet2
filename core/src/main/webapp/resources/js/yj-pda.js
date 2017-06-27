@@ -49,7 +49,8 @@ function getDispatchValues() {
     yeild = document.getElementById("yeild").value;
     workScrap = document.getElementById("workScrap").value;
     rowScrap = document.getElementById("rowScrap").value;
-    classgrp = document.getElementById("classgrp").value;
+/*    classgrp = document.getElementById("classgrp").value;*/
+    classgrp = document.getElementById("classgrp").options[document.getElementById("classgrp").selectedIndex].value;
     line = document.getElementById("line").value;
     modelNo = document.getElementById("modelNo").value;
     plant = barcode.substring(0,4);
@@ -93,7 +94,7 @@ function delDispatchValues() {
     document.getElementById("yeild").value = "";
     document.getElementById("workScrap").value = "";
     document.getElementById("rowScrap").value = "";
-    document.getElementById("classgrp").value = "";
+/*    document.getElementById("classgrp").value = "";*/
     document.getElementById("line").value = "";
     document.getElementById("modelNo").value = "";
 
