@@ -101,6 +101,16 @@
         }
     </style>
     <script>
+/*
+        window.onunload=function () {
+            var n = window.event.screenX - window.screenLeft;
+            var b = n > document.documentElement.scrollWidth-20;
+
+            if(b && window.event.clientY < 0 || window.event.altKey){
+                // 这个可以排除刷新 关闭的时候触发
+                delCookie("username");
+            }
+        }*/
 
         window.onload=function () {
 		
