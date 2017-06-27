@@ -161,6 +161,9 @@
             <if test="material != null">
                 and r.material = #{material}
             </if>
+            <if test="dispatch != null">
+                and il.dispatch = #{dispatch}
+            </if>
             <if test="creatDateAfter != null and creatDateBefore != null">
                 and il.CREATION_DATE  >=  #{creatDateAfter}  and  #{creatDateBefore} > il.CREATION_DATE
             </if>
@@ -234,6 +237,9 @@
             </if>
             <if test="isReversed != null">
                 and r.is_reversed = #{isReversed}
+            </if>
+            <if test="dispatch != null">
+                and il.dispatch = #{dispatch}
             </if>
 
             <if test="creatDateAfter != null and creatDateBefore != null">
@@ -316,6 +322,9 @@
             </if>
             <if test="tranType != null">
                 and l.tran_type = #{tranType}
+            </if>
+            <if test="dispatch != null">
+                and il.dispatch = #{dispatch}
             </if>
             <if test="creatDateAfter != null and creatDateBefore != null">
                 and il.CREATION_DATE  >=  #{creatDateAfter}  and  #{creatDateBefore} > il.CREATION_DATE
