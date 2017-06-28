@@ -360,22 +360,29 @@
     </select>
 
 
-    <select id="confirmationMaxOperationInfo" resultMap="BaseResultMap1" parameterType="yj.core.dispatch.dto.InputLog">
+    <select id="confirmationBeforeMaxOperation" resultType="java.lang.String" parameterType="yj.core.dispatch.dto.InputLog">
+        select MAX(ci.operation) from confirmation_input_log ci
+        inner join confirmation_result r on ci.id = r.input_id
+        inner join confirmation_log l on ci.id = l.ref_id
+        <where>
+            ci.orderno = #{orderno}
+            and  #{operation} > ci.operation
+            and r.is_reversed = '0'
+            and l.msgty = 'S'
+            and l.tran_type = '0'
+        </where>
+    </select>
+
+    <select id="confirmationExistMaxOperaInfo" resultMap="BaseResultMap1">
         select *
         from confirmation_input_log i
         <where>
             i.dispatch = #{dispatch}
-            and i.operation
-            in(
-                select MAX(ci.operation) from confirmation_input_log ci
-                inner join confirmation_result r on ci.id = r.input_id
-                inner join confirmation_log l on ci.id = l.ref_id
-                where ci.dispatch = #{dispatch} and  #{operation} > ci.operation and r.is_reversed = '0' and l.msgty = 'S' and l.tran_type = '0'
-            )
+            and i.operation = #{operation}
         </where>
 
-
     </select>
+
 
 
 

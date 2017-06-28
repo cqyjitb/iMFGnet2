@@ -86,28 +86,32 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         Double currentInputSum = 0d;
         Double historyMaxOperationYeildSum = 0d;
         List<InputLog> inputLogs = inputLogMapper.confirmationInfoByOrdernoAndOperation(input);
-        List<InputLog> maxInputLogs = inputLogMapper.confirmationMaxOperationInfo(input);
+        String beforeMaxOpera = inputLogMapper.confirmationBeforeMaxOperation(input);
         if (inputLogs.size() > 0) {
             for (InputLog inputLog : inputLogs) {
                 currentInputSum += inputLog.getYeild() + inputLog.getRowScrap() + inputLog.getWorkScrap();
             }
         }
         currentInputSum = currentInputSum + input.getYeild() + input.getRowScrap() + input.getWorkScrap();
-
-        System.out.println(currentInputSum + historyMaxOperationYeildSum);
-
-        if (maxInputLogs.size() > 0) {
-            for (InputLog inputLog : maxInputLogs) {
-                historyMaxOperationYeildSum += inputLog.getYeild();
-            }
-            if (historyMaxOperationYeildSum >= currentInputSum) {
-                 return returnResultAndUpdateConfirmation(input);
+        if("".equals(beforeMaxOpera) || beforeMaxOpera == null){
+            return returnResultAndUpdateConfirmation(input);
+        } else {
+            List<InputLog> maxInputLogs = inputLogMapper.confirmationExistMaxOperaInfo(input.getDispatch(),beforeMaxOpera);
+            if (maxInputLogs.size() > 0) {
+                for (InputLog inputLog : maxInputLogs) {
+                    historyMaxOperationYeildSum += inputLog.getYeild();
+                }
+                System.out.println(currentInputSum +"//"+ historyMaxOperationYeildSum);
+                if (historyMaxOperationYeildSum >= currentInputSum) {
+                    return returnResultAndUpdateConfirmation(input);
+                } else {
+                    //不允许报工，错误提示信息（报工失败！当前工序报工数量大于前工序合格数量。）
+                    return returnResult;
+                }
             } else {
-                //不允许报工，错误提示信息（报工失败！当前工序报工数量大于前工序合格数量。）
+                returnResult.setMESSAGE("存在前置工序未报工");
                 return returnResult;
             }
-        } else {
-            return returnResultAndUpdateConfirmation(input);
         }
     }
 

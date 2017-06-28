@@ -32,60 +32,13 @@ public class InputLogController extends BaseController{
                                       @RequestParam(defaultValue = DEFAULT_PAGE_SIZE)final int pageSize, final HttpServletRequest request) {
         IRequest requestContext = createRequestContext(request);
 
-        if ( dto.getCreatDateBefore() !=null){
-            String cdBefore;
-            cdBefore = dto.getCreatDateBefore();
-            cdBefore = dto.getCreatDateBefore().replace("00:00:00","23:59:59");
-            dto.setCreatDateBefore(cdBefore);
+        InputLog inputLog =logFormat(dto);
 
-        }
-        if(dto.getPostingDateBefore() != null){
-            String pdBefore;
-            pdBefore = dto.getPostingDateBefore();
-            pdBefore = dto.getPostingDateBefore().replace("00:00:00","23:59:59");
-            dto.setPostingDateBefore(pdBefore);
-        }
-        if(dto.getTranType() != null){
-            String tranType;
-            tranType = dto.getTranType();
-          if(tranType.equals("报工")){
-                dto.setTranType("0");
-          }else if(tranType.equals("冲销")){
-              dto.setTranType("1");
-          }
-        }
+        List <InputLog> list = service.queryAllLog(requestContext,inputLog,page,pageSize);
 
+        List <InputLog> list1  = sessionSet(list,request);
 
-        List <InputLog> list = service.queryAllLog(requestContext,dto,page,pageSize);
-        int s = 0;
-        int e = 0 ;
-
-        for (int i=0 ; i<list.size();i++){
-            if (list.get(i).getMsgty().equals("S")){
-                list.get(i).setMsgty("成功");
-                s++;
-            }else {
-                list.get(i).setMsgty("失败");
-                e++;
-            }
-
-            if (list.get(i).getTranType().equals("0")){
-                list.get(i).setTranType("报工");
-            }else {
-                list.get(i).setTranType("冲销");
-            }
-        }
-
-
-
-        HttpSession session = request.getSession();
-
-        session.setAttribute("sucess", s);
-
-        session.setAttribute("flase", e);
-
-
-        return new ResponseData(list);
+        return new ResponseData(list1);
     }
 
 
@@ -96,9 +49,9 @@ public class InputLogController extends BaseController{
 
         HttpSession session = request.getSession();
 
-        int s =  (int)session.getAttribute("sucess");
+        int s =  (int)session.getAttribute("success");
 
-        int e =  (int)session.getAttribute("flase");
+        int e =  (int)session.getAttribute("false");
 
         List list = new ArrayList();
 
@@ -122,21 +75,10 @@ public class InputLogController extends BaseController{
     public ResponseData queryWriteOff(InputLog dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
                                     @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize, HttpServletRequest request) {
         IRequest requestContext = createRequestContext(request);
-        if ( dto.getCreatDateBefore() !=null){
-            String cdBefore;
-            cdBefore = dto.getCreatDateBefore();
-            cdBefore = dto.getCreatDateBefore().replace("00:00:00","23:59:59");
-            dto.setCreatDateBefore(cdBefore);
 
-        }
-        if(dto.getPostingDateBefore() != null){
-            String pdBefore;
-            pdBefore = dto.getPostingDateBefore();
-            pdBefore = dto.getPostingDateBefore().replace("00:00:00","23:59:59");
-            dto.setPostingDateBefore(pdBefore);
-        }
+        InputLog inputLog = writeOffFormat(dto);
 
-        List<InputLog> list = service.queryAllWriteOff(requestContext,dto,page,pageSize);
+        List<InputLog> list = service.queryAllWriteOff(requestContext,inputLog,page,pageSize);
 
         return new ResponseData(list);
     }
@@ -151,30 +93,10 @@ public class InputLogController extends BaseController{
     public ResponseData queryResult(InputLog dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
                                     @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize, HttpServletRequest request) {
         IRequest requestContext = createRequestContext(request);
-        if ( dto.getCreatDateBefore() !=null){
-            String cdBefore;
-            cdBefore = dto.getCreatDateBefore();
-            cdBefore = dto.getCreatDateBefore().replace("00:00:00","23:59:59");
-            dto.setCreatDateBefore(cdBefore);
 
-        }
-        if(dto.getPostingDateBefore() != null){
-            String pdBefore;
-            pdBefore = dto.getPostingDateBefore();
-            pdBefore = dto.getPostingDateBefore().replace("00:00:00","23:59:59");
-            dto.setPostingDateBefore(pdBefore);
-        }
-        if (dto.getIsReversed() != null){
-            if (dto.getIsReversed().equals("正常")){
-                dto.setIsReversed("0");
-            }else {
-                dto.setIsReversed("1");
-            }
+        InputLog inputLog  = resultFormat(dto);
 
-
-        }
-
-        List<InputLog> list = service.queryAllResult(requestContext,dto,page,pageSize);
+        List<InputLog> list = service.queryAllResult(requestContext,inputLog,page,pageSize);
 
 
         for (int i=0 ; i<list.size();i++){
@@ -281,6 +203,150 @@ public class InputLogController extends BaseController{
     }
 
 
+    public InputLog logFormat(InputLog dto){
+        if(dto.getCreatDateAfter()==null){
+            dto.setCreatDateAfter("0000-00-00 00:00:00");
+        }
+        if (dto.getCreatDateBefore()==null){
+            dto.setCreatDateBefore("9999-01-01 23:59:59");
+        }
+        if(dto.getPostingDateAfter()==null){
+            dto.setPostingDateAfter("0000-00-00");
 
+        }
+        if(dto.getPostingDateBefore() ==null){
+            dto.setPostingDateBefore("9999-01-01");
+        }
+
+        if ( dto.getCreatDateBefore() !=null){
+            String cdBefore;
+            cdBefore = dto.getCreatDateBefore();
+            cdBefore = dto.getCreatDateBefore().replace("00:00:00","23:59:59");
+            dto.setCreatDateBefore(cdBefore);
+
+        }
+        if(dto.getPostingDateBefore() != null){
+            String pdBefore;
+            pdBefore = dto.getPostingDateBefore();
+            pdBefore = dto.getPostingDateBefore().replace("00:00:00","23:59:59");
+            dto.setPostingDateBefore(pdBefore);
+        }
+        if(dto.getTranType() != null){
+            String tranType;
+            tranType = dto.getTranType();
+            if(tranType.equals("报工")){
+                dto.setTranType("0");
+            }else if(tranType.equals("冲销")){
+                dto.setTranType("1");
+            }
+        }
+        return dto;
+
+    }
+    public InputLog resultFormat(InputLog dto){
+        if(dto.getCreatDateAfter()==null){
+            dto.setCreatDateAfter("0000-00-00 00:00:00");
+        }
+        if (dto.getCreatDateBefore()==null){
+            dto.setCreatDateBefore("9999-01-01 23:59:59");
+        }
+        if(dto.getPostingDateAfter()==null){
+            dto.setPostingDateAfter("0000-00-00");
+
+        }
+        if(dto.getPostingDateBefore() ==null){
+            dto.setPostingDateBefore("9999-01-01");
+        }
+
+        if ( dto.getCreatDateBefore() !=null){
+            String cdBefore;
+            cdBefore = dto.getCreatDateBefore();
+            cdBefore = dto.getCreatDateBefore().replace("00:00:00","23:59:59");
+            dto.setCreatDateBefore(cdBefore);
+
+        }
+        if(dto.getPostingDateBefore() != null){
+            String pdBefore;
+            pdBefore = dto.getPostingDateBefore();
+            pdBefore = dto.getPostingDateBefore().replace("00:00:00","23:59:59");
+            dto.setPostingDateBefore(pdBefore);
+        }
+        if (dto.getIsReversed() != null){
+            if (dto.getIsReversed().equals("正常")){
+                dto.setIsReversed("0");
+            }else {
+                dto.setIsReversed("1");
+            }
+
+
+        }
+
+        return dto;
+
+    }
+    public InputLog writeOffFormat(InputLog dto){
+
+        if(dto.getCreatDateAfter()==null){
+            dto.setCreatDateAfter("0000-00-00 00:00:00");
+        }
+        if (dto.getCreatDateBefore()==null){
+            dto.setCreatDateBefore("9999-01-01 23:59:59");
+        }
+        if(dto.getPostingDateAfter()==null){
+            dto.setPostingDateAfter("0000-00-00");
+
+        }
+        if(dto.getPostingDateBefore() ==null){
+            dto.setPostingDateBefore("9999-01-01");
+        }
+
+        if ( dto.getCreatDateBefore() !=null){
+            String cdBefore;
+            cdBefore = dto.getCreatDateBefore();
+            cdBefore = dto.getCreatDateBefore().replace("00:00:00","23:59:59");
+            dto.setCreatDateBefore(cdBefore);
+
+        }
+        if(dto.getPostingDateBefore() != null){
+            String pdBefore;
+            pdBefore = dto.getPostingDateBefore();
+            pdBefore = dto.getPostingDateBefore().replace("00:00:00","23:59:59");
+            dto.setPostingDateBefore(pdBefore);
+        }
+
+        return dto;
+    }
+
+    public List<InputLog> sessionSet(List<InputLog> list,final HttpServletRequest request){
+
+        int s = 0;
+        int e = 0 ;
+
+        for (int i=0 ; i<list.size();i++){
+            if (list.get(i).getMsgty().equals("S")){
+                list.get(i).setMsgty("成功");
+                s++;
+            }else {
+                list.get(i).setMsgty("失败");
+                e++;
+            }
+
+            if (list.get(i).getTranType().equals("0")){
+                list.get(i).setTranType("报工");
+            }else {
+                list.get(i).setTranType("冲销");
+            }
+        }
+
+
+        HttpSession session = request.getSession();
+
+        session.setAttribute("success", s);
+
+        session.setAttribute("false", e);
+
+        return list;
+
+    }
 
 }

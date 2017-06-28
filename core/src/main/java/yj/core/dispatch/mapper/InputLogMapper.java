@@ -1,6 +1,7 @@
 package yj.core.dispatch.mapper;
 
 import com.hand.hap.mybatis.common.Mapper;
+import org.apache.ibatis.annotations.Param;
 import yj.core.dispatch.dto.InputLog;
 import java.util.List;
 
@@ -24,11 +25,19 @@ public interface InputLogMapper extends Mapper<InputLog>{
     public List<InputLog> confirmationInfoByOrdernoAndOperation(InputLog inputLog);
 
     /**
-     * 获取前工序成功报工信息
+     * 获取前工序最大工序
      * @param inputLog 报工信息
      * @return
      */
-    List<InputLog> confirmationMaxOperationInfo(InputLog inputLog);
+    String confirmationBeforeMaxOperation(InputLog inputLog);
+
+    /**
+     * 存在最大工序时，按派工单号和工序号查询信息
+     * @param dispatch 派工单号
+     * @param operation 工序号
+     * @return
+     */
+    List<InputLog> confirmationExistMaxOperaInfo(@Param("dispatch") String dispatch, @Param("operation") String operation);
 
     Long selectNextId();
 
