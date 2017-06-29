@@ -124,6 +124,15 @@ public class InputLog extends BaseDTO {
     @Transient
     private String confirmationPos; //确认号计数
 
+    @Transient
+    private String operationDesc; //工序描述
+
+    @Transient
+    private String fevor; //生产管理员
+
+    @Transient
+    private String fevorTxt; //生产管理员名称
+
 
     public String getCreated_by() {
         return created_by;
@@ -499,5 +508,29 @@ public class InputLog extends BaseDTO {
 
     public void setConfirmationPos(String confirmationPos) {
         this.confirmationPos = confirmationPos;
+    }
+
+    public String getOperationDesc() {
+        return operationDesc;
+    }
+
+    public void setOperationDesc(String operationDesc) {
+        this.operationDesc = operationDesc;
+    }
+
+    public String getFevor() {
+        return fevor;
+    }
+
+    public void setFevor(String fevor) {
+        this.fevor = fevor;
+    }
+
+    public String getFevorTxt() {
+        return fevorTxt;
+    }
+
+    public void setFevorTxt(String fevorTxt) {
+        this.fevorTxt = fevorTxt;
     }
 }

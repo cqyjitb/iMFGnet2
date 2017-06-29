@@ -1,14 +1,14 @@
 package yj.core.webservice.receiver;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * ����������������
+ * 生产订单报工返回
  * 
  * <p>
  * Java class for DT_PP001_Send_Res complex type.
@@ -49,6 +49,8 @@ import javax.xml.bind.annotation.XmlType;
  *                   &lt;element name="MATNR" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="RSNUM" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="RSPOS" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="FEVOR" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="TXT" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="MAKT" maxOccurs="unbounded" minOccurs="0">
  *                     &lt;complexType>
  *                       &lt;complexContent>
@@ -56,6 +58,18 @@ import javax.xml.bind.annotation.XmlType;
  *                           &lt;sequence>
  *                             &lt;element name="SPRAS" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                             &lt;element name="MAKTX" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                           &lt;/sequence>
+ *                         &lt;/restriction>
+ *                       &lt;/complexContent>
+ *                     &lt;/complexType>
+ *                   &lt;/element>
+ *                   &lt;element name="AFVC" maxOccurs="unbounded" minOccurs="0">
+ *                     &lt;complexType>
+ *                       &lt;complexContent>
+ *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+ *                           &lt;sequence>
+ *                             &lt;element name="VORNR" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                             &lt;element name="LTXA1" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                           &lt;/sequence>
  *                         &lt;/restriction>
  *                       &lt;/complexContent>
@@ -159,6 +173,8 @@ public class DTPP001SendRes {
 	 *         &lt;element name="MATNR" type="{http://www.w3.org/2001/XMLSchema}string"/>
 	 *         &lt;element name="RSNUM" type="{http://www.w3.org/2001/XMLSchema}string"/>
 	 *         &lt;element name="RSPOS" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="FEVOR" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="TXT" type="{http://www.w3.org/2001/XMLSchema}string"/>
 	 *         &lt;element name="MAKT" maxOccurs="unbounded" minOccurs="0">
 	 *           &lt;complexType>
 	 *             &lt;complexContent>
@@ -166,6 +182,18 @@ public class DTPP001SendRes {
 	 *                 &lt;sequence>
 	 *                   &lt;element name="SPRAS" type="{http://www.w3.org/2001/XMLSchema}string"/>
 	 *                   &lt;element name="MAKTX" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *                 &lt;/sequence>
+	 *               &lt;/restriction>
+	 *             &lt;/complexContent>
+	 *           &lt;/complexType>
+	 *         &lt;/element>
+	 *         &lt;element name="AFVC" maxOccurs="unbounded" minOccurs="0">
+	 *           &lt;complexType>
+	 *             &lt;complexContent>
+	 *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+	 *                 &lt;sequence>
+	 *                   &lt;element name="VORNR" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *                   &lt;element name="LTXA1" type="{http://www.w3.org/2001/XMLSchema}string"/>
 	 *                 &lt;/sequence>
 	 *               &lt;/restriction>
 	 *             &lt;/complexContent>
@@ -189,8 +217,8 @@ public class DTPP001SendRes {
 	 */
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@XmlType(name = "", propOrder = { "aufnr", "matnr", "rsnum", "rspos",
-			"makt", "msgty", "msgno", "msgid", "msgv1", "msgv2", "msgv3",
-			"msgv4", "message" })
+			"fevor", "txt", "makt", "afvc", "msgty", "msgno", "msgid", "msgv1",
+			"msgv2", "msgv3", "msgv4", "message" })
 	public static class DETAIL {
 
 		@XmlElement(name = "AUFNR", required = true)
@@ -201,8 +229,14 @@ public class DTPP001SendRes {
 		protected String rsnum;
 		@XmlElement(name = "RSPOS", required = true)
 		protected String rspos;
+		@XmlElement(name = "FEVOR", required = true)
+		protected String fevor;
+		@XmlElement(name = "TXT", required = true)
+		protected String txt;
 		@XmlElement(name = "MAKT")
 		protected List<MAKT> makt;
+		@XmlElement(name = "AFVC")
+		protected List<AFVC> afvc;
 		@XmlElement(name = "MSGTY", required = true)
 		protected String msgty;
 		@XmlElement(name = "MSGNO", required = true)
@@ -305,6 +339,48 @@ public class DTPP001SendRes {
 		}
 
 		/**
+		 * Gets the value of the fevor property.
+		 * 
+		 * @return possible object is {@link String }
+		 * 
+		 */
+		public String getFEVOR() {
+			return fevor;
+		}
+
+		/**
+		 * Sets the value of the fevor property.
+		 * 
+		 * @param value
+		 *            allowed object is {@link String }
+		 * 
+		 */
+		public void setFEVOR(String value) {
+			this.fevor = value;
+		}
+
+		/**
+		 * Gets the value of the txt property.
+		 * 
+		 * @return possible object is {@link String }
+		 * 
+		 */
+		public String getTXT() {
+			return txt;
+		}
+
+		/**
+		 * Sets the value of the txt property.
+		 * 
+		 * @param value
+		 *            allowed object is {@link String }
+		 * 
+		 */
+		public void setTXT(String value) {
+			this.txt = value;
+		}
+
+		/**
 		 * Gets the value of the makt property.
 		 * 
 		 * <p>
@@ -332,6 +408,36 @@ public class DTPP001SendRes {
 				makt = new ArrayList<MAKT>();
 			}
 			return this.makt;
+		}
+
+		/**
+		 * Gets the value of the afvc property.
+		 * 
+		 * <p>
+		 * This accessor method returns a reference to the live list, not a
+		 * snapshot. Therefore any modification you make to the returned list
+		 * will be present inside the JAXB object. This is why there is not a
+		 * <CODE>set</CODE> method for the afvc property.
+		 * 
+		 * <p>
+		 * For example, to add a new item, do as follows:
+		 * 
+		 * <pre>
+		 * getAFVC().add(newItem);
+		 * </pre>
+		 * 
+		 * 
+		 * <p>
+		 * Objects of the following type(s) are allowed in the list
+		 * {@link AFVC }
+		 * 
+		 * 
+		 */
+		public List<AFVC> getAFVC() {
+			if (afvc == null) {
+				afvc = new ArrayList<AFVC>();
+			}
+			return this.afvc;
 		}
 
 		/**
@@ -500,6 +606,82 @@ public class DTPP001SendRes {
 		 */
 		public void setMESSAGE(String value) {
 			this.message = value;
+		}
+
+		/**
+		 * <p>
+		 * Java class for anonymous complex type.
+		 * 
+		 * <p>
+		 * The following schema fragment specifies the expected content
+		 * contained within this class.
+		 * 
+		 * <pre>
+		 * &lt;complexType>
+		 *   &lt;complexContent>
+		 *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType">
+		 *       &lt;sequence>
+		 *         &lt;element name="VORNR" type="{http://www.w3.org/2001/XMLSchema}string"/>
+		 *         &lt;element name="LTXA1" type="{http://www.w3.org/2001/XMLSchema}string"/>
+		 *       &lt;/sequence>
+		 *     &lt;/restriction>
+		 *   &lt;/complexContent>
+		 * &lt;/complexType>
+		 * </pre>
+		 * 
+		 * 
+		 */
+		@XmlAccessorType(XmlAccessType.FIELD)
+		@XmlType(name = "", propOrder = { "vornr", "ltxa1" })
+		public static class AFVC {
+
+			@XmlElement(name = "VORNR", required = true)
+			protected String vornr;
+			@XmlElement(name = "LTXA1", required = true)
+			protected String ltxa1;
+
+			/**
+			 * Gets the value of the vornr property.
+			 * 
+			 * @return possible object is {@link String }
+			 * 
+			 */
+			public String getVORNR() {
+				return vornr;
+			}
+
+			/**
+			 * Sets the value of the vornr property.
+			 * 
+			 * @param value
+			 *            allowed object is {@link String }
+			 * 
+			 */
+			public void setVORNR(String value) {
+				this.vornr = value;
+			}
+
+			/**
+			 * Gets the value of the ltxa1 property.
+			 * 
+			 * @return possible object is {@link String }
+			 * 
+			 */
+			public String getLTXA1() {
+				return ltxa1;
+			}
+
+			/**
+			 * Sets the value of the ltxa1 property.
+			 * 
+			 * @param value
+			 *            allowed object is {@link String }
+			 * 
+			 */
+			public void setLTXA1(String value) {
+				this.ltxa1 = value;
+			}
+
 		}
 
 		/**

@@ -1,14 +1,14 @@
 package yj.core.webservice.sender;
 
-import java.util.ArrayList;
-import java.util.List;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
- * �����������ݽṹ
+ * 报工接收数据结构
  * 
  * <p>
  * Java class for DT_PP001_Send_Req complex type.

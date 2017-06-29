@@ -59,6 +59,46 @@ public class DTPP001ReturnResult {
      */
     private String RSPOS;
 
+    /**
+     * 工序管理员
+     */
+    private String FEVOR;
+
+    /**
+     * 工序管理员描述
+     */
+    private String TXT;
+
+    /**
+     * 工序描述
+     */
+    private String LTXA1;
+
+
+    public String getFEVOR() {
+        return FEVOR;
+    }
+
+    public void setFEVOR(String FEVOR) {
+        this.FEVOR = FEVOR;
+    }
+
+    public String getTXT() {
+        return TXT;
+    }
+
+    public void setTXT(String TXT) {
+        this.TXT = TXT;
+    }
+
+    public String getLTXA1() {
+        return LTXA1;
+    }
+
+    public void setLTXA1(String LTXA1) {
+        this.LTXA1 = LTXA1;
+    }
+
     public String getRSNUM() {
         return RSNUM;
     }

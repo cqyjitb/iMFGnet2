@@ -45,6 +45,9 @@
         <result column="user_name" property="userName" jdbcType="VARCHAR" />
         <result column="confirmation_no" property="confirmationNo" jdbcType="VARCHAR" />
         <result column="confirmation_pos" property="confirmationPos" jdbcType="VARCHAR" />
+        <result column="operation_desc" property="operationDesc" jdbcType="VARCHAR" />
+        <result column="fevor" property="fevor" jdbcType="VARCHAR" />
+        <result column="fevor_txt" property="fevorTxt" jdbcType="VARCHAR" />
     </resultMap>
     <resultMap id="BaseResultMap1" type="yj.core.dispatch.dto.InputLog">
         <result column="id" property="id" jdbcType="DECIMAL" />
@@ -138,7 +141,10 @@
         r.material,
         r.confirmation_no,
         r.confirmation_pos,
-        u.user_name
+        u.user_name,
+        r.operation_desc,
+        r.fevor,
+        r.fevor_txt
 
         FROM confirmation_input_log il,confirmation_result r,sys_user u,confirmation_log l
         <where>
@@ -163,6 +169,9 @@
             </if>
             <if test="dispatch != null">
                 and il.dispatch = #{dispatch}
+            </if>
+            <if test="fevor != null">
+                and r.fevor = #{fevor}
             </if>
             <if test="creatDateAfter != null and creatDateBefore != null">
                 and il.CREATION_DATE  >=  #{creatDateAfter}  and  #{creatDateBefore} > il.CREATION_DATE
@@ -214,7 +223,10 @@
         r.is_reversed,
         r.mat_desc,
         r.material,
-        u.user_name
+        u.user_name,
+        r.operation_desc,
+        r.fevor,
+        r.fevor_txt
 
         FROM confirmation_input_log il,confirmation_result r,sys_user u,confirmation_log l
         <where>
@@ -240,6 +252,9 @@
             </if>
             <if test="dispatch != null">
                 and il.dispatch = #{dispatch}
+            </if>
+            <if test="fevor != null">
+                and r.fevor = #{fevor}
             </if>
 
             <if test="creatDateAfter != null and creatDateBefore != null">
@@ -297,7 +312,10 @@
         il.CREATED_BY,
         r.mat_desc,
         r.material,
-        u.user_name
+        u.user_name,
+        r.operation_desc,
+        r.fevor,
+        r.fevor_txt
 
         FROM confirmation_input_log il,confirmation_result r,sys_user u,confirmation_log l
 
@@ -325,6 +343,9 @@
             </if>
             <if test="dispatch != null">
                 and il.dispatch = #{dispatch}
+            </if>
+            <if test="fevor != null">
+                and r.fevor = #{fevor}
             </if>
             <if test="creatDateAfter != null and creatDateBefore != null">
                 and il.CREATION_DATE  >=  #{creatDateAfter}  and  #{creatDateBefore} > il.CREATION_DATE
@@ -361,7 +382,7 @@
 
 
     <select id="confirmationBeforeMaxOperation" resultType="java.lang.String" parameterType="yj.core.dispatch.dto.InputLog">
-        select MAX(ci.operation) from confirmation_input_log ci
+        select MAX(ci.operation) as opera  from confirmation_input_log ci
         inner join confirmation_result r on ci.id = r.input_id
         inner join confirmation_log l on ci.id = l.ref_id
         <where>

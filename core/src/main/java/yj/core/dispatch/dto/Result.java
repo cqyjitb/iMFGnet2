@@ -13,25 +13,31 @@ import javax.persistence.Table;
 @ExtensionAttribute(disable=true)
 @Table(name = "confirmation_result")
 public class Result extends BaseDTO {
-     @Id
-     @GeneratedValue
-      private Long id;
+    @Id
+    @GeneratedValue
+    private Long id;
 
-      private Long inputId; //录入日志ID
+    private Long inputId; //录入日志ID
 
-      private String confirmationNo; //确认号
+    private String confirmationNo; //确认号
 
-      private String confirmationPos; //确认号计数
+    private String confirmationPos; //确认号计数
 
-      private String plant; //工厂
+    private String plant; //工厂
 
-      private String material; //物料
+    private String material; //物料
 
-      private String workcenter; //工作中心
+    private String workcenter; //工作中心
 
-      private String isReversed;
+    private String isReversed;
 
-      private String matDesc; //产品名称
+    private String matDesc; //产品名称
+
+    private String operationDesc; //工序描述
+
+    private String fevor; //生产管理员
+
+    private String fevorTxt; //生产管理员名称
 
     public String getCreated_by() {
         return created_by;
@@ -119,7 +125,27 @@ public class Result extends BaseDTO {
      }
 
 
+    public String getOperationDesc() {
+        return operationDesc;
+    }
 
+    public void setOperationDesc(String operationDesc) {
+        this.operationDesc = operationDesc;
+    }
 
+    public String getFevor() {
+        return fevor;
+    }
 
-     }
+    public void setFevor(String fevor) {
+        this.fevor = fevor;
+    }
+
+    public String getFevorTxt() {
+        return fevorTxt;
+    }
+
+    public void setFevorTxt(String fevorTxt) {
+        this.fevorTxt = fevorTxt;
+    }
+}

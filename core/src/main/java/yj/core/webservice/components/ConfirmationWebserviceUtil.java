@@ -95,11 +95,16 @@ public class ConfirmationWebserviceUtil{
         String msgV4 = _siPP001SenderSync__return.getDETAIL().get(0).getMSGV4();
         String rsnum = _siPP001SenderSync__return.getDETAIL().get(0).getRSNUM();
         String rspos = _siPP001SenderSync__return.getDETAIL().get(0).getRSPOS();
-
+        String fevor = _siPP001SenderSync__return.getDETAIL().get(0).getFEVOR();//工序管理员
+        String txt = _siPP001SenderSync__return.getDETAIL().get(0).getTXT();//工序管理员描述
         String message = _siPP001SenderSync__return.getDETAIL().get(0).getMESSAGE();//信息
         String maktx = "";
+        String ltxa1 = "";
         if(_siPP001SenderSync__return.getDETAIL().get(0).getMAKT().size() > 0){
             maktx = _siPP001SenderSync__return.getDETAIL().get(0).getMAKT().get(0).getMAKTX();
+        }
+        if(_siPP001SenderSync__return.getDETAIL().get(0).getAFVC().size() > 0){
+            ltxa1 = _siPP001SenderSync__return.getDETAIL().get(0).getAFVC().get(0).getLTXA1();
         }
 
         msgTy = _siPP001SenderSync__return.getRETURN().getMSGTY();//信息状态  S(成功)/E(失败)
@@ -122,6 +127,9 @@ public class ConfirmationWebserviceUtil{
         returnResult.setMESSAGE(message);
         returnResult.setRSNUM(rsnum);
         returnResult.setRSPOS(rspos);
+        returnResult.setFEVOR(fevor);
+        returnResult.setTXT(txt);
+        returnResult.setLTXA1(ltxa1);
         return returnResult;
 
     }

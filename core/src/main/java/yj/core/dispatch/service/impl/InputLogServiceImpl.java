@@ -151,6 +151,9 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         result.setCreated_by(inputLog.getCreated_by());
         result.setConfirmationNo(returnResult.getRSNUM());
         result.setConfirmationPos(returnResult.getRSPOS());
+        result.setFevor(returnResult.getFEVOR());
+        result.setFevorTxt(returnResult.getTXT());
+        result.setOperationDesc(returnResult.getLTXA1());
         log.setMsgty(returnResult.getMSGTY());
         log.setMsgtx(returnResult.getMESSAGE());
         log.setTranType("0");

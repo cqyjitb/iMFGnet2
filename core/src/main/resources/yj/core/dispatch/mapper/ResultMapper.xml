@@ -12,10 +12,13 @@
         <result column="workcenter" property="workcenter" jdbcType="VARCHAR" />
         <result column="is_reversed" property="isReversed" jdbcType="VARCHAR" />
         <result column="mat_desc" property="matDesc" jdbcType="VARCHAR" />
+        <result column="operation_desc" property="operationDesc" jdbcType="VARCHAR" />
+        <result column="fevor" property="fevor" jdbcType="VARCHAR" />
+        <result column="fevor_txt" property="fevorTxt" jdbcType="VARCHAR" />
 
     </resultMap>
 
-    <select id="queryResultById" resultMap="BaseResultMap">
+    <select id="queryResultById" resultMap="BaseResultMap" parameterType="java.lang.Long">
         SELECT *
         FROM confirmation_result
         WHERE id=#{id}
@@ -23,11 +26,11 @@
 
     <insert id="insertResult" parameterType="yj.core.dispatch.dto.Result">
          INSERT INTO confirmation_result(
-        input_id,confirmation_no,confirmation_pos,plant,material,workcenter,is_reversed,mat_desc,CREATED_BY
+        input_id,confirmation_no,confirmation_pos,plant,material,workcenter,is_reversed,mat_desc,operation_desc,fevor,fevor_txt,CREATED_BY
         )
         VALUES (
        #{inputId}, #{confirmationNo},#{confirmationPos},#{plant},#{material},
-        #{workcenter},#{isReversed},#{matDesc},#{created_by}
+        #{workcenter},#{isReversed},#{matDesc},#{operationDesc},#{fevor},#{fevorTxt},#{created_by}
       )
     </insert>
 
