@@ -22,7 +22,7 @@ public interface InputLogMapper extends Mapper<InputLog>{
      * @param inputLog 报工信息
      * @return
      */
-    public List<InputLog> confirmationInfoByOrdernoAndOperation(InputLog inputLog);
+    List<InputLog> confirmationInfoByOrdernoAndOperation(InputLog inputLog);
 
     /**
      * 获取前工序最大工序
@@ -42,4 +42,12 @@ public interface InputLogMapper extends Mapper<InputLog>{
     Long selectNextId();
 
     List<InputLog> queryAllGTOperation(InputLog inputLog);
+
+    /*add furong.tang*/
+
+    /**
+     * 查询当前条码是否存在未冲销的报工数据
+     * @return
+     */
+    List<InputLog> queryBybarcodeAndisReversed(InputLog inputLog);
 }

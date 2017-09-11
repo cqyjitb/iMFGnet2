@@ -19,11 +19,11 @@
     <Script src="${base.contextPath}/resources/js/yj-pda.js?v=201706261447"></Script>
     <Script src="${base.contextPath}/resources/js/json2.js"></Script>
     <script src="${base.contextPath}/lib/kendoui/js/jquery.min.js"></script>
-    <script src="${base.contextPath}/lib/kendoui/js/kendo.all.min.js"></script>
-    <script src="${base.contextPath}/lib/kendoui/js/kendo.hap.js"></script>
+
 
     <style type="text/css">
         #dispatch-area{
+            margin-top:-7px;
             width:220px;
             height:285px;
             z-index: 999;
@@ -39,15 +39,16 @@
             left: 0px;
         }
         .dcp-label{
-            font-size: 10px;
+            font-size: 16px;
             width: 80px;
             height: 20px;
             display: inline-block;
         }
         .cls-attr-input{
-            font-size: 10px;
+            font-size: 16px;
             width: 120px;
-            height: 20px;
+            height: 23px;
+            margin-bottom: 1px;
         }
         #mask{
             background-color: #434343;
@@ -117,7 +118,9 @@
 			//获取确认页面元素
             var cConfirm = document.getElementById("confirm");
             var cClose = document.getElementById("close");
-		
+
+
+
 			//获取模号页面元素
             var cModelNo = document.getElementById("modelNo");
             cModelNo.onkeydown=function () {
@@ -364,6 +367,23 @@
                 }
             }
 
+            //add furong.tang
+            //获取页面清空按钮元素
+            var cCleanData = document.getElementById("cleanData");
+            cCleanData.onclick=function () {
+
+                //清空页面元素
+                delDispatchValues();
+
+                //获取条码页面元素
+                var roBcd=document.getElementById("barcode");
+
+                //进入报工页面时，光标定位到条码输入框
+                roBcd.focus();
+
+            }
+            //add furong.tang
+
         }
     </script>
     <script>
@@ -390,7 +410,7 @@
                     ableClassgrp();
                     removeMaskDialog();
 
-                    if(msgTitle == "成功"){
+                    if(msgTitle == "成功" || msgTitle == "失败"){
                         //清空页面元素
                         delDispatchValues();
 
@@ -523,17 +543,21 @@
             oClassgrp.style.zIndex="-1";
         }
     </script>
+
+
 </head>
 <body>
 <!--报工主界面-->
 <div id="dispatch-area">
 
     <div style="width: 220px;height: 20px">
-        <div id="logout" style="font-size: 14px;width:40px;height:20px;float: left;background-color:#169bd5;top: 0px">注销</div><div style="width:20px;height:20px;float: left;background-color:white;top: 0px"></div><div id="user" style="font-size:10px;height:20px;float: right;background-color:white;top: 0px"></div>
+        <div id="logout" style="font-size: 16px;width:40px;height:20px;float: left;background-color:#169bd5;top: 0px;margin-bottom: 1px">&nbsp;注销</div>
+        <div style="width:20px;height:20px;float: left;background-color:white;top: 0px"></div>
+        <div id="user" style="margin-right: 25px;font-size:14px;height:20px;float: right;background-color:white;top: 0px"></div>
     </div>
 
     <div style="width: 220px;height: 235px">
-        <input id="barcode" style="font-size:10px;width: 200px;height: 20px" type="text"><br>
+        <input id="barcode" style="font-size:16px;width: 200px;height: 22px;margin-bottom: 1px;" type="text"><br>
         <label class="dcp-label">过账日期</label><select id="postingDate" class="cls-attr-input"><option></option><option></option></select><br>
         <label class="dcp-label">订单号</label><input id="orderno"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>
         <label class="dcp-label">工序</label><input id="operation"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>
@@ -550,9 +574,12 @@
         <label class="dcp-label">模号</label><input id="modelNo" class="cls-attr-input" type="text"><br>
     </div>
 
-    <div style="width: 220px;height: 30px">
+    <div style="width: 220px;height: 30px;margin-top: 10px">
         <div style="width:50px;height:20px;float: left;"><button id="confirm" style="width: auto" hidefocus="true" class="login-btn" >确认</button></div>
         <div style="width:100px;height:20px;float: left;"><button id="otherInfo" style="width: auto" hidefocus="true" class="login-btn" >其他信息</button></div>
+        <!--add furong.tang-->
+        <div style="width:50px;height:20px;float: left;"><button id="cleanData" style="width: auto" hidefocus="true" class="login-btn" >清空</button></div>
+        <!--add furong.tang-->
     </div>
 </div>
 
@@ -564,7 +591,7 @@
     </div>
 
     <div style="margin-left: 10px;width: 220px;height: 265px">
-        <label class="dcp-label">扩充字段1</label><input id="attr1" class="cls-attr-input" type="text"><br>
+        <label class="dcp-label">操作人</label><input id="attr1" class="cls-attr-input" type="text"><br>
         <label class="dcp-label">扩充字段2</label><input id="attr2" class="cls-attr-input" type="text"><br>
         <label class="dcp-label">扩充字段3</label><input id="attr3" class="cls-attr-input" type="text"><br>
         <label class="dcp-label">扩充字段4</label><input id="attr4" class="cls-attr-input" type="text"><br>

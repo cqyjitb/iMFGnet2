@@ -85,6 +85,11 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         returnResult.setMSGTY("E");
         Double currentInputSum = 0d;
         Double historyMaxOperationYeildSum = 0d;
+        /*add furong.tang*/
+        Long IOrderno = Long.parseLong(input.getOrderno());
+        //查询当前条码是否存在未冲销数据
+        List<InputLog> existReversedInputLogs = inputLogMapper.queryBybarcodeAndisReversed(input);
+        /*add furong.tang*/
         List<InputLog> inputLogs = inputLogMapper.confirmationInfoByOrdernoAndOperation(input);
         String beforeMaxOpera = inputLogMapper.confirmationBeforeMaxOperation(input);
         if (inputLogs.size() > 0) {
@@ -93,26 +98,45 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
             }
         }
         currentInputSum = currentInputSum + input.getYeild() + input.getRowScrap() + input.getWorkScrap();
-        if("".equals(beforeMaxOpera) || beforeMaxOpera == null){
-            return returnResultAndUpdateConfirmation(input);
-        } else {
-            List<InputLog> maxInputLogs = inputLogMapper.confirmationExistMaxOperaInfo(input.getDispatch(),beforeMaxOpera);
-            if (maxInputLogs.size() > 0) {
-                for (InputLog inputLog : maxInputLogs) {
-                    historyMaxOperationYeildSum += inputLog.getYeild();
-                }
-                System.out.println(currentInputSum +"//"+ historyMaxOperationYeildSum);
-                if (historyMaxOperationYeildSum >= currentInputSum) {
+
+        /*update furong.tang*/
+        //生产订单号的号码范围为：1000000000至2999999999，或9300000000至9499999999
+        if((IOrderno >= 1000000000L && IOrderno <= 2999999999L) || (IOrderno >= 9300000000L && IOrderno <= 9499999999L)){
+            //此派工单是否是未冲销的
+            if(existReversedInputLogs.size() == 0 || existReversedInputLogs == null){
+                /*before*/
+                if("".equals(beforeMaxOpera) || beforeMaxOpera == null){
                     return returnResultAndUpdateConfirmation(input);
                 } else {
-                    //不允许报工，错误提示信息（报工失败！当前工序报工数量大于前工序合格数量。）
-                    return returnResult;
+                    List<InputLog> maxInputLogs = inputLogMapper.confirmationExistMaxOperaInfo(input.getDispatch(),beforeMaxOpera);
+                    if (maxInputLogs.size() > 0) {
+                        for (InputLog inputLog : maxInputLogs) {
+                            historyMaxOperationYeildSum += inputLog.getYeild();
+                        }
+                        //System.out.println(currentInputSum +"//"+ historyMaxOperationYeildSum);
+                        if (historyMaxOperationYeildSum >= currentInputSum) {
+                            return returnResultAndUpdateConfirmation(input);
+                        } else {
+                            //不允许报工，错误提示信息（报工失败！当前工序报工数量大于前工序合格数量。）
+                            return returnResult;
+                        }
+                    } else {
+                        returnResult.setMESSAGE("存在前置工序未报工");
+                        return returnResult;
+                    }
                 }
-            } else {
-                returnResult.setMESSAGE("存在前置工序未报工");
+                /*before*/
+            }else{
+                returnResult.setMESSAGE("此派工单的该工序已经报工，请勿重复报工");
                 return returnResult;
             }
+
+        }else{
+            returnResult.setMESSAGE("生产订单号不合法！");
+            return returnResult;
         }
+        /*update furong.tang*/
+
     }
 
 
@@ -136,7 +160,11 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         param.setRSPOS("");
         param.setREVERSE("");
 
+        /*//test furong.tang
+        DTPP001ReturnResult returnResult = new DTPP001ReturnResult();*/
+
         DTPP001ReturnResult returnResult = webserviceUtil.receiveConfirmation(param);
+
         Log log = new Log();
         Result result = new Result();
         inputLog.setMaterial(returnResult.getMATNR());

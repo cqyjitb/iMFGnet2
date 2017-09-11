@@ -180,6 +180,10 @@
             <if test="postingDateAfter != null and postingDateBefore != null">
                 and  il.posting_date  >=  #{postingDateAfter} and #{postingDateBefore} > il.posting_date
             </if>
+            <!--add furong.tang-->
+            <if test="attr1 != null">
+                and il.attr1 = #{attr1}
+            </if>
         </where>
 
     </select>
@@ -263,6 +267,10 @@
 
             <if test="postingDateAfter != null and postingDateBefore != null">
                 and  il.posting_date  >=  #{postingDateAfter} and #{postingDateBefore} > il.posting_date
+            </if>
+            <!--add furong.tang-->
+            <if test="attr1 != null">
+                and il.attr1 = #{attr1}
             </if>
         </where>
 
@@ -354,6 +362,10 @@
             <if test="postingDateAfter != null and postingDateBefore != null">
                 and  il.posting_date  >=  #{postingDateAfter} and #{postingDateBefore} > il.posting_date
             </if>
+            <!--add furong.tang-->
+            <if test="attr1 != null">
+                and il.attr1 = #{attr1}
+            </if>
         </where>
 
     </select>
@@ -404,8 +416,20 @@
 
     </select>
 
-
-
+    <!--add furong.tang-->
+    <select id="queryBybarcodeAndisReversed" resultMap="BaseResultMap1" parameterType="yj.core.dispatch.dto.InputLog">
+        select *
+        from confirmation_input_log i
+        inner join confirmation_result r on i.id = r.input_id
+        inner join confirmation_log l on i.id = l.ref_id
+        <where>
+            i.barcode = #{barcode}
+            and r.is_reversed = "0"
+            and l.msgty = 'S'
+            and l.tran_type = '0'
+        </where>
+    </select>
+    <!--add furong.tang-->
 
 
 

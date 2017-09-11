@@ -26,8 +26,13 @@ public class ConfirmationWebserviceUtil{
         SIPP001SenderSyncService ss = new SIPP001SenderSyncService(wsdlURL, SERVICE_NAME);
         SIPP001SenderSync port = ss.getHTTPPort();
         Map<String, Object> reqCtxt = ((javax.xml.ws.BindingProvider) port).getRequestContext();
-        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "hand");
-        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "h@nd1234");
+        //pro
+        /*reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
+        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "YJhap201707@CQ");*/
+
+        //pro
+        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
+        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "Yjsap123@CQ");
 
 
 
