@@ -173,17 +173,33 @@
             <if test="fevor != null">
                 and r.fevor = #{fevor}
             </if>
+            <!--
             <if test="creatDateAfter != null and creatDateBefore != null">
                 and il.CREATION_DATE  >=  #{creatDateAfter}  and  #{creatDateBefore} > il.CREATION_DATE
             </if>
+            -->
+            <!--update furong.tang-->
+            <if test="creatDateAfter != null">
+                and il.CREATION_DATE  >=  #{creatDateAfter}
+            </if>
+            <if test="creatDateBefore != null">
+                and #{creatDateBefore} > il.CREATION_DATE
+            </if>
+            <!--update furong.tang-->
 
+            <!--
             <if test="postingDateAfter != null and postingDateBefore != null">
                 and  il.posting_date  >=  #{postingDateAfter} and #{postingDateBefore} > il.posting_date
             </if>
-            <!--add furong.tang-->
-            <if test="attr1 != null">
-                and il.attr1 = #{attr1}
+            -->
+            <!--update furong.tang-->
+            <if test="postingDateAfter != null">
+                and  il.posting_date  >=  #{postingDateAfter}
             </if>
+            <if test="postingDateBefore != null">
+                and #{postingDateBefore} > il.posting_date
+            </if>
+            <!--update furong.tang-->
         </where>
 
     </select>
@@ -261,17 +277,51 @@
                 and r.fevor = #{fevor}
             </if>
 
+            <!--
             <if test="creatDateAfter != null and creatDateBefore != null">
                 and il.CREATION_DATE  >=  #{creatDateAfter}  and  #{creatDateBefore} > il.CREATION_DATE
             </if>
+            -->
+            <!--update furong.tang-->
+            <if test="creatDateAfter != null">
+                and il.CREATION_DATE  >=  #{creatDateAfter}
+            </if>
+            <if test="creatDateBefore != null">
+                and #{creatDateBefore} > il.CREATION_DATE
+            </if>
+            <!--update furong.tang-->
 
+            <!--
             <if test="postingDateAfter != null and postingDateBefore != null">
                 and  il.posting_date  >=  #{postingDateAfter} and #{postingDateBefore} > il.posting_date
             </if>
+            -->
+            <!--update furong.tang-->
+            <if test="postingDateAfter != null">
+                and  il.posting_date  >=  #{postingDateAfter}
+            </if>
+            <if test="postingDateBefore != null">
+                and #{postingDateBefore} > il.posting_date
+            </if>
+            <!--update furong.tang-->
+
             <!--add furong.tang-->
             <if test="attr1 != null">
                 and il.attr1 = #{attr1}
             </if>
+            <if test="attr2 != null">
+                and il.attr2 = #{attr2}
+            </if>
+            <if test="attr3 != null">
+                and il.attr3 = #{attr3}
+            </if>
+            <if test="attr4 != null">
+                and il.attr4 = #{attr4}
+            </if>
+            <if test="attr5 != null">
+                and il.attr5 = #{attr5}
+            </if>
+            <!--add furong.tang-->
         </where>
 
     </select>
@@ -355,17 +405,51 @@
             <if test="fevor != null">
                 and r.fevor = #{fevor}
             </if>
+            <!--
             <if test="creatDateAfter != null and creatDateBefore != null">
                 and il.CREATION_DATE  >=  #{creatDateAfter}  and  #{creatDateBefore} > il.CREATION_DATE
             </if>
+            -->
+            <!--update furong.tang-->
+            <if test="creatDateAfter != null">
+                and il.CREATION_DATE  >=  #{creatDateAfter}
+            </if>
+            <if test="creatDateBefore != null">
+                and #{creatDateBefore} > il.CREATION_DATE
+            </if>
+            <!--update furong.tang-->
 
+            <!--
             <if test="postingDateAfter != null and postingDateBefore != null">
                 and  il.posting_date  >=  #{postingDateAfter} and #{postingDateBefore} > il.posting_date
             </if>
+            -->
+            <!--update furong.tang-->
+            <if test="postingDateAfter != null">
+                and  il.posting_date  >=  #{postingDateAfter}
+            </if>
+            <if test="postingDateBefore != null">
+                and #{postingDateBefore} > il.posting_date
+            </if>
+            <!--update furong.tang-->
+
             <!--add furong.tang-->
             <if test="attr1 != null">
                 and il.attr1 = #{attr1}
             </if>
+            <if test="attr2 != null">
+                and il.attr2 = #{attr2}
+            </if>
+            <if test="attr3 != null">
+                and il.attr3 = #{attr3}
+            </if>
+            <if test="attr4 != null">
+                and il.attr4 = #{attr4}
+            </if>
+            <if test="attr5 != null">
+                and il.attr5 = #{attr5}
+            </if>
+            <!--add furong.tang-->
         </where>
 
     </select>

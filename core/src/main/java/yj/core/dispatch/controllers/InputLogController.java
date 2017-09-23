@@ -35,9 +35,10 @@ public class InputLogController extends BaseController{
         InputLog inputLog =logFormat(dto);
 
         List <InputLog> list = service.queryAllLog(requestContext,inputLog,page,pageSize);
-
-        List <InputLog> list1  = sessionSet(list,request);
-
+        List <InputLog> list1 = new ArrayList<>();
+        if(list.size() != 0 || list != null){
+            list1  = sessionSet(list,request);
+        }
         return new ResponseData(list1);
     }
 
@@ -204,19 +205,19 @@ public class InputLogController extends BaseController{
 
 
     public InputLog logFormat(InputLog dto){
-        if(dto.getCreatDateAfter()==null){
+        /*if(dto.getCreatDateAfter()==null){
             dto.setCreatDateAfter("0000-00-00 00:00:00");
         }
         if (dto.getCreatDateBefore()==null){
             dto.setCreatDateBefore("9999-01-01 23:59:59");
-        }
-        if(dto.getPostingDateAfter()==null){
+        }*/
+        /*if(dto.getPostingDateAfter()==null){
             dto.setPostingDateAfter("0000-00-00");
 
         }
         if(dto.getPostingDateBefore() ==null){
             dto.setPostingDateBefore("9999-01-01");
-        }
+        }*/
 
         if ( dto.getCreatDateBefore() !=null){
             String cdBefore;
@@ -244,7 +245,7 @@ public class InputLogController extends BaseController{
 
     }
     public InputLog resultFormat(InputLog dto){
-        if(dto.getCreatDateAfter()==null){
+       /* if(dto.getCreatDateAfter()==null){
             dto.setCreatDateAfter("0000-00-00 00:00:00");
         }
         if (dto.getCreatDateBefore()==null){
@@ -257,7 +258,7 @@ public class InputLogController extends BaseController{
         if(dto.getPostingDateBefore() ==null){
             dto.setPostingDateBefore("9999-01-01");
         }
-
+*/
         if ( dto.getCreatDateBefore() !=null){
             String cdBefore;
             cdBefore = dto.getCreatDateBefore();
@@ -286,7 +287,7 @@ public class InputLogController extends BaseController{
     }
     public InputLog writeOffFormat(InputLog dto){
 
-        if(dto.getCreatDateAfter()==null){
+        /*if(dto.getCreatDateAfter()==null){
             dto.setCreatDateAfter("0000-00-00 00:00:00");
         }
         if (dto.getCreatDateBefore()==null){
@@ -298,7 +299,7 @@ public class InputLogController extends BaseController{
         }
         if(dto.getPostingDateBefore() ==null){
             dto.setPostingDateBefore("9999-01-01");
-        }
+        }*/
 
         if ( dto.getCreatDateBefore() !=null){
             String cdBefore;
@@ -323,7 +324,7 @@ public class InputLogController extends BaseController{
         int e = 0 ;
 
         for (int i=0 ; i<list.size();i++){
-            if (list.get(i).getMsgty().equals("S")){
+            if ("S".equals(list.get(i).getMsgty())){
                 list.get(i).setMsgty("成功");
                 s++;
             }else {

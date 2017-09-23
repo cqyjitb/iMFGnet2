@@ -44,18 +44,32 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
     @Override
     public List<InputLog> queryAllWriteOff(IRequest iRequest, InputLog inputLog, int page, int pageSize) {
         PageHelper.startPage(page, pageSize);
+        //Long before = System.currentTimeMillis();
+        //List<InputLog> inputLogs = inputLogMapper.queryAllWriteOff(inputLog);
+        //Long after = System.currentTimeMillis();
+        //System.out.println(after-before);
+
         return inputLogMapper.queryAllWriteOff(inputLog);
+
     }
 
     //报工结果
     public List<InputLog> queryAllResult(IRequest iRequest, InputLog inputLog, int page, int pageSize){
         PageHelper.startPage(page, pageSize);
+        /*Long before = System.currentTimeMillis();
+        List<InputLog> inputLogs = inputLogMapper.queryAllResult(inputLog);
+        Long after = System.currentTimeMillis();
+        System.out.println(after-before);*/
         return inputLogMapper.queryAllResult(inputLog);
     };
 
     //报工日志界面数据查询
     public List<InputLog> queryAllLog(IRequest iRequest, InputLog inputLog, int page, int pageSize) {
         PageHelper.startPage(page, pageSize);
+       /* Long before = System.currentTimeMillis();
+        List<InputLog> inputLogs = inputLogMapper.queryAllLog(inputLog);
+        Long after = System.currentTimeMillis();
+        System.out.println(after-before);*/
         return inputLogMapper.queryAllLog(inputLog);
     }
     //插入一条信息到confirmation_input_log
@@ -105,26 +119,7 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
             //此派工单是否是未冲销的
             if(existReversedInputLogs.size() == 0 || existReversedInputLogs == null){
                 /*before*/
-                if("".equals(beforeMaxOpera) || beforeMaxOpera == null){
-                    return returnResultAndUpdateConfirmation(input);
-                } else {
-                    List<InputLog> maxInputLogs = inputLogMapper.confirmationExistMaxOperaInfo(input.getDispatch(),beforeMaxOpera);
-                    if (maxInputLogs.size() > 0) {
-                        for (InputLog inputLog : maxInputLogs) {
-                            historyMaxOperationYeildSum += inputLog.getYeild();
-                        }
-                        //System.out.println(currentInputSum +"//"+ historyMaxOperationYeildSum);
-                        if (historyMaxOperationYeildSum >= currentInputSum) {
-                            return returnResultAndUpdateConfirmation(input);
-                        } else {
-                            //不允许报工，错误提示信息（报工失败！当前工序报工数量大于前工序合格数量。）
-                            return returnResult;
-                        }
-                    } else {
-                        returnResult.setMESSAGE("存在前置工序未报工");
-                        return returnResult;
-                    }
-                }
+                return before(input,returnResult,currentInputSum,historyMaxOperationYeildSum,beforeMaxOpera);
                 /*before*/
             }else{
                 returnResult.setMESSAGE("此派工单的该工序已经报工，请勿重复报工");
@@ -132,11 +127,35 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
             }
 
         }else{
-            returnResult.setMESSAGE("生产订单号不合法！");
-            return returnResult;
+            return before(input,returnResult,currentInputSum,historyMaxOperationYeildSum,beforeMaxOpera);
         }
         /*update furong.tang*/
 
+    }
+
+    public DTPP001ReturnResult before(InputLog input,DTPP001ReturnResult returnResult, Double currentInputSum,Double historyMaxOperationYeildSum,String beforeMaxOpera){
+         /*before*/
+        if("".equals(beforeMaxOpera) || beforeMaxOpera == null){
+            return returnResultAndUpdateConfirmation(input);
+        } else {
+            List<InputLog> maxInputLogs = inputLogMapper.confirmationExistMaxOperaInfo(input.getDispatch(),beforeMaxOpera);
+            if (maxInputLogs.size() > 0) {
+                for (InputLog inputLog : maxInputLogs) {
+                    historyMaxOperationYeildSum += inputLog.getYeild();
+                }
+                //System.out.println(currentInputSum +"//"+ historyMaxOperationYeildSum);
+                if (historyMaxOperationYeildSum >= currentInputSum) {
+                    return returnResultAndUpdateConfirmation(input);
+                } else {
+                    //不允许报工，错误提示信息（报工失败！当前工序报工数量大于前工序合格数量。）
+                    return returnResult;
+                }
+            } else {
+                returnResult.setMESSAGE("存在前置工序未报工");
+                return returnResult;
+            }
+        }
+        /*before*/
     }
 
 

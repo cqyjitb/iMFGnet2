@@ -321,6 +321,7 @@
         });
 
         $("#Grid").kendoGrid({
+            autoBind:false,
             dataSource: dataSource,
             height: '100%',
             resizable: true,
@@ -541,7 +542,7 @@
             editable: false
         });
 
-        dataSource.fetch();
+        //dataSource.fetch();
 
         function deleteData() {
 
