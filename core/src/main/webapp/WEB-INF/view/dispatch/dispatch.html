@@ -15,8 +15,10 @@
     <!–[if lt IE 9]>
     <Script src="${base.contextPath}/resources/js/IE9.js"></Script>
     <![endif]–>
-
+    <!--
     <Script src="${base.contextPath}/resources/js/yj-pda.js?v=201706261447"></Script>
+    -->
+    <Script src="${base.contextPath}/resources/js/yj-pda.js"></Script>
     <Script src="${base.contextPath}/resources/js/json2.js"></Script>
     <script src="${base.contextPath}/lib/kendoui/js/jquery.min.js"></script>
 
@@ -114,21 +116,27 @@
         }*/
 
         window.onload=function () {
-		
-			//获取确认页面元素
-            var cConfirm = document.getElementById("confirm");
+
+            //定义三个变量保存首工序扫描结果的模号，生产线，班标
+            var tmpmodeNo = null;
+            var tmpline = null;
+            var tmpattr7 = null;
+            var newZPGDBAR = null;
+            var year = getTodayDate().toString().substring(0,4);
+            var tyear = parseInt(year) + 1;
+            //获取确认页面元素
+            var cConfirm = document.getElementById("confirm2");
             var cClose = document.getElementById("close");
 
 
-
-			//获取模号页面元素
+            //获取模号页面元素
             var cModelNo = document.getElementById("modelNo");
-            cModelNo.onkeydown=function () {
-				var cdMsg=document.getElementById("msg-area")
-                var oMaskD2=document.getElementById("mask2");
-                if(event.keyCode == 13){
-				    if(cdMsg.style.display == "none"){
-				        if(oMaskD2.style.display == "none"){
+            cModelNo.onkeydown = function () {
+                var cdMsg = document.getElementById("msg-area")
+                var oMaskD2 = document.getElementById("mask2");
+                if (event.keyCode == 13) {
+                    if (cdMsg.style.display == "none") {
+                        if (oMaskD2.style.display == "none") {
                             cConfirm.onclick();
                         }
                     } else {
@@ -136,68 +144,140 @@
                     }
                 }
             }
-			
-			//获取生产线页面元素
+
+            //获取生产线页面元素
             var cLine = document.getElementById("line");
-            cLine.onkeydown=function () {
-                if(event.keyCode == 13){
+            cLine.onkeydown = function () {
+                if (event.keyCode == 13) {
                     cModelNo.focus();
                 }
             }
-			
-/*			//获取班组页面元素
+
+            /*			//获取班组页面元素
             var cClassgrp = document.getElementById("classgrp");
             cClassgrp.onkeydown=function () {
                 if(event.keyCode == 13){
                     cLine.focus();
                 }
             }*/
-		
-			//获取料废数量页面元素
+
+            //获取料废数量页面元素
             var cRowScrap = document.getElementById("rowScrap");
-            cRowScrap.onkeydown=function () {
-                if(event.keyCode == 13){
+            cRowScrap.onkeydown = function () {
+                if (event.keyCode == 13) {
                     cLine.focus();
                 }
             }
-		
-			//获取工废数量页面元素
+
+            //获取工废数量页面元素
             var cWorkScrap = document.getElementById("workScrap");
-            cWorkScrap.onkeydown=function () {
-                if(event.keyCode == 13){
+            cWorkScrap.onkeydown = function () {
+                if (event.keyCode == 13) {
                     cRowScrap.focus();
                 }
             }
 
             //获取合格数量页面元素
             var cYeild = document.getElementById("yeild");
-            cYeild.onkeydown=function () {
-                if(event.keyCode == 13){
+            cYeild.onkeydown = function () {
+                if (event.keyCode == 13) {
                     cWorkScrap.focus();
                 }
             }
 
             //获取条码页面元素
             var cBarcode = document.getElementById("barcode");
-            cBarcode.onkeydown=function () {
-                if(event.keyCode == 13){
-					var strBarcode = document.getElementById("barcode").value;
-					var lenBarcode = strBarcode.length;
-					if (lenBarcode > 12){
-						document.getElementById("orderno").value = strBarcode.substring(4,lenBarcode-8);
-						document.getElementById("operation").value = strBarcode.substring(lenBarcode-4,lenBarcode);
-					} else {
-						document.getElementById("orderno").value = "";
-						document.getElementById("operation").value = "";
-					}
+            cBarcode.onkeydown = function () {
+                if (event.keyCode == 13) {
+                    var strBarcode = document.getElementById("barcode").value;
+                    var lenBarcode = strBarcode.length;
+                    newZPGDBAR = null;
+                    if (lenBarcode > 12) {
+                        //添加逻辑针对2018.5.1专项（派工单条码查询自建表，如果存在记录，则替换成新的派工单）
+                        var oldZPGDBAR = strBarcode.substring(0,lenBarcode - 4);
+                        var oldoperation = strBarcode.substring(lenBarcode - 4,lenBarcode);
+                        $.ajax({
+                            url: "${base.contextPath}/bartobar/getnewbar",
+                            type: "get",
+                            data: {"wipZpgdbar":oldZPGDBAR},
+                            contentType: "application/json; charset=utf-8",
+                            success: function (data) {
+                                if (data.success) {
+                                    if(data.rows.length > 0)
+                                    {
+                                        newZPGDBAR = JSON.stringify(data.rows[0].newZpgdbar);
+                                    }
+
+                                    if(newZPGDBAR != null)
+                                    {
+                                        newZPGDBAR = newZPGDBAR.substring(1,newZPGDBAR.length-1);
+                                        document.getElementById("barcode").value = newZPGDBAR + oldoperation;//替换
+                                        strBarcode = newZPGDBAR + oldoperation;//替换
+                                        document.getElementById("orderno").value = strBarcode.substring(4, lenBarcode - 8);
+                                        document.getElementById("operation").value = strBarcode.substring(lenBarcode - 4, lenBarcode);
+                                    }else{
+                                        document.getElementById("orderno").value = strBarcode.substring(4, lenBarcode - 8);
+                                        document.getElementById("operation").value = strBarcode.substring(lenBarcode - 4, lenBarcode);
+                                    }
+                                    // document.getElementById("orderno").value = strBarcode.substring(4, lenBarcode - 8);
+                                    // document.getElementById("operation").value = strBarcode.substring(lenBarcode - 4, lenBarcode);
+                                    //add by 张滔 2017-12-5 添加扫描条码后判断如果不是首工序，查询首工序扫描记录中输入的 模号，生产线，班标
+                                    //同时锁定 模号 生产线 班组 班标不允许编辑。
+                                    var ordernotmp = strBarcode.substring(4, lenBarcode - 8);
+                                    if (strBarcode.substring(lenBarcode - 4, lenBarcode) != "0010" && (ordernotmp >= "1000000000" && ordernotmp <= "2999999999")) {//只针对压铸生产订单
+                                        //如果不是首工序 锁定模号字段，生产线字段，班标字段 不允许修改
+                                        //disableModelNo();//模号不允许编辑   暂时允许输入先运行一段时间再做管控
+                                        //disableLine();//生产线不允许编辑
+                                        var firstDispatch = strBarcode.substring(0, strBarcode.length - 4);
+                                        var firstOperation = "0010";
+                                        $.ajax({
+                                            url: "${base.contextPath}/confirmation/input/log/inputFindHistory",
+                                            type: "get",
+                                            data: {
+                                                "dispatch": firstDispatch,
+                                                "operation": firstOperation
+                                            },
+                                            contentType: "application/json; charset=utf-8",
+                                            success: function (res) {
+                                                if (res.success) {
+                                                    if(res.rows.length > 0)
+                                                    {
+                                                        tmpmodeNo = JSON.stringify(res.rows[0].modelNo);
+                                                        tmpmodeNo = tmpmodeNo.substring(1, tmpmodeNo.length - 1);
+                                                        tmpline = JSON.stringify(res.rows[0].line);
+                                                        tmpline = tmpline.substring(1, tmpline.length - 1);
+                                                        tmpattr7 = JSON.stringify(res.rows[0].attr7);
+                                                        tmpattr7 = tmpattr7.substring(1, tmpattr7.length - 1);
+                                                        //设置模号的值
+                                                        document.getElementById("modelNo").value = tmpmodeNo;
+                                                        document.getElementById("line").value = tmpline;
+                                                    }
+
+                                                }
+                                            }
+
+                                        });
+                                    } else {
+                                        ableModelNo();
+                                        ableLine();
+                                    }
+                                }
+                            }
+                        });
+
+
+                    } else {
+                        document.getElementById("orderno").value = "";
+                        document.getElementById("operation").value = "";
+                    }
                     cYeild.focus();
                 }
             }
 
             //获取消息界面DIV页面元素
-            var dMsg=document.getElementById("msg-area");
+            var dMsg = document.getElementById("msg-area");
             //获取其他信息界面DIV页面元素
-            var dOin=document.getElementById("otherInfo-area");
+            var dOin = document.getElementById("otherInfo-area");
             //初始化隐藏消息界面
             dMsg.style.display = "none";
             //初始化隐藏其他信息界面
@@ -208,37 +288,37 @@
             var username = getCookie("username");
 
             //用户登录判定操作
-            if(username == "" || username == null){
+            if (username == "" || username == null) {
                 //当用户未登录,返回登录界面
-                window.location.href='${base.contextPath}/yjlogin.html';
+                window.location.href = '${base.contextPath}/yjlogin.html';
                 return null;
             } else {
                 //当用户登录，在界面展示用户信息，并记下用户id
                 document.getElementById("user").innerHTML = username;
                 /*var data = {"userName":username}*/
                 $.ajax({
-                    url:"${base.contextPath}/sys/userrole/queryByUserName",
-                    type:"get",
-                    data : {"username":username},
-                    contentType :"application/json; charset=utf-8",
-                    success:function (res){
+                    url: "${base.contextPath}/sys/userrole/queryByUserName",
+                    type: "get",
+                    data: {"username": username},
+                    contentType: "application/json; charset=utf-8",
+                    success: function (res) {
                         var userId = JSON.stringify(res.rows[0].userId);
                         createdBy = userId;
                         //document.getElementById("user").innerHTML = userId;
                     }
                 });
                 $.ajax({
-                     url:"${base.contextPath}/hr/employee/queryByCode",
-                     type:"get",
-                     data : {"code":username},
-                     contentType :"application/json; charset=utf-8",
-                     success:function (res){
-                         var name = JSON.stringify(res.rows[0].name);
-                         name = name.substring(1,name.length-1);
-                         eval("var strname = '" + name + "';")
-                         document.getElementById("user").innerHTML = strname;
-                     }
-                 });
+                    url: "${base.contextPath}/hr/employee/queryByCode",
+                    type: "get",
+                    data: {"code": username},
+                    contentType: "application/json; charset=utf-8",
+                    success: function (res) {
+                        var name = JSON.stringify(res.rows[0].name);
+                        name = name.substring(1, name.length - 1);
+                        eval("var strname = '" + name + "';")
+                        document.getElementById("user").innerHTML = strname;
+                    }
+                });
             }
 
             /*用户注销相关操作*/
@@ -246,9 +326,9 @@
             var cLot = document.getElementById("logout");
 
             //注销点击事件
-            cLot.onclick=function () {
+            cLot.onclick = function () {
                 delCookie("username");
-                window.location.href='${base.contextPath}/yjlogin.html';
+                window.location.href = '${base.contextPath}/yjlogin.html';
                 return null;
             }
 
@@ -257,24 +337,24 @@
             var oPstd = document.getElementById("postingDate");
 
             //初始化过账日期选项
-            oPstd.options[1].value=oPstd.options[1].innerHTML=getTodayDate();
-            oPstd.options[0].value=oPstd.options[0].innerHTML=getYesterdayDate();
+            oPstd.options[1].value = oPstd.options[1].innerHTML = getTodayDate();
+            oPstd.options[0].value = oPstd.options[0].innerHTML = getYesterdayDate();
 
             //初始化过账日期选择的值为上次选的值
             var postdate = getCookie("postingDate");
-            if(postdate != null){
+            if (postdate != null) {
                 var lenOptions = oPstd.options.length;
-                for(var i=0 ; i<lenOptions ; i++){
-                    if(oPstd.options[i].value == postdate){
+                for (var i = 0; i < lenOptions; i++) {
+                    if (oPstd.options[i].value == postdate) {
                         oPstd.options[i].selected = true;
                     }
                 }
             }
 
             //当过账日期修改时记录下选择的值
-            oPstd.onblur=function () {
+            oPstd.onblur = function () {
                 var strPostDate = oPstd.options[oPstd.selectedIndex].value;
-                setCookie("postingDate",strPostDate);
+                setCookie("postingDate", strPostDate);
             }
 
             /*班组字段相关操作*/
@@ -283,35 +363,35 @@
 
             //初始化班组选择的值为上次选的值
             var classGroup = getCookie("classgrp");
-            if(classGroup != null){
+            if (classGroup != null) {
                 var lenOptions = oClassgrp.options.length;
-                for(var i=0 ; i<lenOptions ; i++){
-                    if(oClassgrp.options[i].value == classGroup){
+                for (var i = 0; i < lenOptions; i++) {
+                    if (oClassgrp.options[i].value == classGroup) {
                         oClassgrp.options[i].selected = true;
                     }
                 }
             }
 
             //当班组修改时记录下选择的值
-            oClassgrp.onblur=function () {
+            oClassgrp.onblur = function () {
                 var strClassGroup = oClassgrp.options[oClassgrp.selectedIndex].value;
-                setCookie("classgrp",strClassGroup);
+                setCookie("classgrp", strClassGroup);
             }
 
             /*条码相关操作*/
             //获取条码页面元素
-            var oBcd=document.getElementById("barcode");
+            var oBcd = document.getElementById("barcode");
 
             //进入报工页面时，光标定位到条码输入框
             oBcd.focus();
 
             //当条码值改变时实时修改订单号和工序
-            oBcd.onpropertychange=function () {
+            oBcd.onpropertychange = function () {
                 var strBarcode = document.getElementById("barcode").value;
                 var lenBarcode = strBarcode.length;
-                if (lenBarcode > 12){
-                    document.getElementById("orderno").value = strBarcode.substring(4,lenBarcode-8);
-                    document.getElementById("operation").value = strBarcode.substring(lenBarcode-4,lenBarcode);
+                if (lenBarcode > 12) {
+                    document.getElementById("orderno").value = strBarcode.substring(4, lenBarcode - 8);
+                    document.getElementById("operation").value = strBarcode.substring(lenBarcode - 4, lenBarcode);
                 } else {
                     document.getElementById("orderno").value = "";
                     document.getElementById("operation").value = "";
@@ -321,17 +401,17 @@
             /*报工主界面、报工其他信息界面切换*/
 
             //获取主界面DIV页面元素
-            var dDpt=document.getElementById("dispatch-area");
+            var dDpt = document.getElementById("dispatch-area");
             //获取其他信息界面DIV页面元素
-            var dOin=document.getElementById("otherInfo-area");
+            var dOin = document.getElementById("otherInfo-area");
             //获取消息界面DIV页面元素
-            var dMsg=document.getElementById("msg-area");
+            var dMsg = document.getElementById("msg-area");
             //获取遮罩层2DIV页面元素
-            var dMask2=document.getElementById("mask2");
+            var dMask2 = document.getElementById("mask2");
             //获取主界面其他信息按钮页面元素
-            var bOin=document.getElementById("otherInfo");
+            var bOin = document.getElementById("otherInfo");
             //获取其他信息界面返回按钮页面元素
-            var bBac=document.getElementById("back");
+            var bBac = document.getElementById("back");
 
             //初始化界面状态
             dDpt.style.display = "";
@@ -339,12 +419,119 @@
             dMsg.style.display = "none";
             dMask2.style.display = "none";
             /*bOin.style.display = "none";//隐藏主界面其他信息按钮*/
+            var Oattr6 = document.getElementById("attr6");
+            var Oattr8 = document.getElementById("attr8");
+            Oattr6.options[0].value = Oattr6.options[0].innerHTML = getTodayDate();
+            Oattr6.options[1].value = Oattr6.options[1].innerHTML = getDate(1);
+            Oattr6.options[2].value = Oattr6.options[2].innerHTML = getDate(2);
+            Oattr6.options[3].value = Oattr6.options[3].innerHTML = getDate(3);
+            Oattr6.options[4].value = Oattr6.options[4].innerHTML = getDate(4);
+            var myDate = new Date();
+            var Hours = myDate.getHours();
+            var Minutes = myDate.getMinutes();
+            var seconds = myDate.getSeconds();
+            if(Hours > 0 && Hours < 7) {
+                Oattr6.options[1].selected = true;
+                attr6 = Oattr6.value;
+            }
+
+            Oattr8.options[0].value = Oattr8.options[0].innerHTML = " ";
+            //Oattr8.options[1].value = Oattr8.options[1].innerHTML = getDateAdd(1);
+            //Oattr8.options[2].value = Oattr8.options[2].innerHTML = getDateAdd(2);
+            //Oattr8.options[3].value = Oattr8.options[3].innerHTML = getDateAdd(3);
+            //Oattr8.options[4].value = Oattr8.options[4].innerHTML = getDateAdd(4);
+            //Oattr8.options[5].value = Oattr8.options[5].innerHTML = getDateAdd(5);
+            //Oattr8.options[6].value = Oattr8.options[6].innerHTML = getDateAdd(6);
+            Oattr8.options[1].value = Oattr8.options[1].innerHTML = tyear.toString() + "-01-01";
+            Oattr8.options[2].value = Oattr8.options[2].innerHTML = tyear.toString() + "-01-02";
+            Oattr8.options[3].value = Oattr8.options[3].innerHTML = tyear.toString() + "-01-03";
+            Oattr8.options[4].value = Oattr8.options[4].innerHTML = tyear.toString() + "-01-04";
+            Oattr8.options[5].value = Oattr8.options[5].innerHTML = tyear.toString() + "-01-05";
+            Oattr8.options[6].value = Oattr8.options[6].innerHTML = tyear.toString() + "-01-06";
 
             //主界面其他信息按钮点击事件
-            bOin.onclick=function () {
+            bOin.onclick = function () {
+                var td = getTodayDate().toString();
+                var bg = td.substring(0,4) + "-12-25";
+                var end = td.substring(0,4) + "-12-31";
+                if( td >= bg && td <= end ){//是否启用更换年标
+                    Oattr8.removeAttribute("disable");
+                }else{
+                    Oattr8.setAttribute("disabled","true");
+                }
+                classgrp = document.getElementById("classgrp").options[document.getElementById("classgrp").selectedIndex].value;
                 dDpt.style.display = "none";
                 dOin.style.display = "";
+
+                /**
+                 * add by 张滔 2017-12-01
+                 * for 添加针对订单类型YZ01 YZ04 YZ06
+                 **/
+
+                var strBarcode = document.getElementById("barcode").value;
+                orderno = strBarcode.substring(4, strBarcode.length - 8);
+                if (orderno >= "1000000000" && orderno <= "2999999999") {
+                    getDispatchValues();
+
+                    if (operation == "0010")//只有在首工序的时候才允许设置模号，生产线
+                    {
+                        attr6 = document.getElementById("attr6").value;
+                        attr8 = document.getElementById("attr8").value;
+                        if (attr8 == " " || attr8 == "" || attr8 == null) {
+                            attr7 = attr6.substring(2, attr6.length - 6) + attr6.substring(5, attr6.length - 3) + attr6.substring(8, attr6.length) + classgrp.toLowerCase();
+                        } else {
+                            attr7 = attr8.substring(2, attr8.length - 6) + attr8.substring(5, attr8.length - 3) + attr8.substring(8, attr8.length) + classgrp.toLowerCase();
+                        }
+
+                        document.getElementById("attr7").value = attr7;//班标
+                    } else {//非首工序模号，生产线，班标都使用首工序录入的数据
+                        attr6 = document.getElementById("attr6").value;
+                        attr7 = tmpattr7;
+                        document.getElementById("attr7").value = attr7;
+                    }
+
+                } else {
+                    getDispatchValues();
+                }
+
             }
+            //当生产日期修改时记录下选择的值
+            Oattr6.onchange = function () {
+                var strattr6 = Oattr6.options[Oattr6.selectedIndex].value;
+                if (operation == "0010")//只针对首工序 生产日期修改会影响班标
+                {
+                    if (attr8 == " ") {
+                        attr7 = strattr6.substring(2, strattr6.length - 6) + strattr6.substring(5, strattr6.length - 3) + strattr6.substring(8, strattr6.length) + classgrp.toLowerCase();
+                    }
+
+                    document.getElementById("attr7").value = attr7;//修改生产日期之后重新生成班标
+                    setCookie("attr6", strattr6);
+                } else {
+                    setCookie("attr6", strattr6);
+                }
+
+            }
+
+            Oattr8.onchange = function () {
+                var strattr8 = Oattr8.options[Oattr8.selectedIndex].value;
+                var strattr6 = Oattr6.options[Oattr6.selectedIndex].value;
+                if (operation == "0010") {
+                    if ( strattr8 == " " || strattr8 == "" || strattr8 == null )
+                    {
+                        attr7 = strattr6.substring(2, strattr6.length - 6) + strattr6.substring(5, strattr6.length - 3) + strattr6.substring(8, strattr6.length) + classgrp.toLowerCase();
+                    }else{
+                        attr7 = strattr8.substring(2, strattr8.length - 6) + strattr8.substring(5, strattr8.length - 3) + strattr8.substring(8, strattr8.length) + classgrp.toLowerCase();
+                    }
+                    document.getElementById("attr7").value = attr7;//修改生产日期之后重新生成班标
+                    setCookie("attr8", strattr8);
+                }else{
+                    setCookie("attr8", strattr8);
+                }
+
+            }
+
+
+
             //其他信息界面返回按钮点击事件
             bBac.onclick=function () {
                 dDpt.style.display = "";
@@ -353,9 +540,13 @@
 
             /*报工主界面确定按钮报工操作*/
             //获取主界面确定按钮页面元素
-            var bCfr=document.getElementById("confirm");
+            var bCfr=document.getElementById("confirm2");
             bCfr.onclick=function () {
                 getDispatchValues();
+                //针对后面工序可能不会去点击其他信息页面，这里再次对班标进行赋值
+                if(tmpattr7 != " " && tmpattr7 != null ){
+                    attr7 = tmpattr7;
+                }
                 //检查必输字段
                 var msg = checkDispatchValues();
                 if(msg == null){
@@ -401,7 +592,7 @@
             document.getElementById("msg2").innerHTML=msgText;
             var bCan=document.getElementById("cancer");
             var bCls=document.getElementById("close");
-
+            var userName = getCookie("username");
             if(msgType == "M"){
                 bCan.style.display = "none";
                 bCls.onclick=function () {
@@ -486,7 +677,8 @@
                             "12":attr12,
                             "13":attr13,
                             "14":attr14,
-                            "15":attr15},
+                            "15":attr15,
+                            "16":userName},
                         contentType :"application/json; charset=utf-8",
                         success:function (res){
                             removeMask2Dialog();
@@ -528,19 +720,51 @@
             oPostdate.disabled="";
             oPostdate.style.zIndex="-1";
         }
-        //过账日期字段不可编辑
+        //班组字段不可编辑
         function disableClassgrp() {
             var oClassgrp=document.getElementById("classgrp");
             oClassgrp.disabled="disabled";
             oClassgrp.style.display="none";
             oClassgrp.style.zIndex="-1";
         }
-        //过账日期字段可编辑
+        //班组字段可编辑
         function ableClassgrp() {
             var oClassgrp=document.getElementById("classgrp");
             oClassgrp.disabled="";
             oClassgrp.style.display="";
             oClassgrp.style.zIndex="-1";
+        }
+
+        //模号字段可编辑
+        function ableModelNo() {
+            var oModelNo = document.getElementById("modelNo");
+            oModelNo.disabled = "";
+            oModelNo.style.display = "";
+            oModelNo.style.zIndex = "-1";
+        }
+
+        //模号字段不可编辑
+        function disableModelNo() {
+            var oModelNo=document.getElementById("modelNo");
+            oModelNo.disabled="disabled";
+            oModelNo.style.display="";
+            oModelNo.style.zIndex="-1";
+        }
+
+        //生产线字段可编辑
+        function ableLine() {
+            var oLine = document.getElementById("line");
+            oLine.disabled = "";
+            oLine.style.display = "";
+            oLine.style.zIndex = "-1";
+        }
+
+        //生产线字段不可编辑
+        function disableLine() {
+            var oLine=document.getElementById("line");
+            oLine.disabled="disabled";
+            oLine.style.display="";
+            oLine.style.zIndex="-1";
         }
     </script>
 
@@ -575,7 +799,7 @@
     </div>
 
     <div style="width: 220px;height: 30px;margin-top: 2px">
-        <div style="width:50px;height:20px;float: left;"><button id="confirm" style="width: auto;height: 27px" hidefocus="true" class="login-btn" >确认</button></div>
+        <div style="width:50px;height:20px;float: left;"><button id="confirm2" style="width: auto;height: 27px" hidefocus="true" class="login-btn" >确认</button></div>
         <div style="width:100px;height:20px;float: left;"><button id="otherInfo" style="width: auto;height: 27px" hidefocus="true" class="login-btn" >其他信息</button></div>
         <!--add furong.tang-->
         <div style="width:50px;height:20px;float: left;"><button id="cleanData" style="width: auto;height: 27px" hidefocus="true" class="login-btn" >清空</button></div>
@@ -596,10 +820,24 @@
         <label class="dcp-label">操作人3</label><input id="attr3" class="cls-attr-input" type="text"><br>
         <label class="dcp-label">操作人4</label><input id="attr4" class="cls-attr-input" type="text"><br>
         <label class="dcp-label">操作人5</label><input id="attr5" class="cls-attr-input" type="text"><br>
-        <label class="dcp-label">扩充字段6</label><input id="attr6" class="cls-attr-input"type="text"><br>
-        <label class="dcp-label">扩充字段7</label><input id="attr7" class="cls-attr-input" type="text"><br>
-        <label class="dcp-label">扩充字段8</label><input id="attr8" class="cls-attr-input" type="text"><br>
-        <label class="dcp-label">扩充字段9</label><input id="attr9" class="cls-attr-input" type="text"><br>
+        <label class="dcp-label">生产日期</label><select id="attr6" class="cls-attr-input"type="text">
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+            </select><br>
+        <label class="dcp-label">班标</label><input id="attr7" class="cls-attr-input" disabled="true" type="text"><br>
+        <label class="dcp-label">年标日期</label><select id="attr8" class="cls-attr-input" type="text">
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        </select><br>
+        <label class="dcp-label">质量问题</label><input id="attr9" class="cls-attr-input" type="text"><br>
         <label class="dcp-label">扩充字段10</label><input id="attr10" class="cls-attr-input" type="text"><br>
         <label class="dcp-label">扩充字段11</label><input id="attr11" class="cls-attr-input" type="text"><br>
         <label class="dcp-label">扩充字段12</label><input id="attr12" class="cls-attr-input" type="text"><br>

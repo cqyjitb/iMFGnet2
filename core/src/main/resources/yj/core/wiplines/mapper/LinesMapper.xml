@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.wiplines.mapper.LinesMapper">
+    <resultMap id="BaseResultMap" type="yj.core.wiplines.dto.Lines">
+        <result column="WERKS" property="werks" jdbcType="VARCHAR" />
+        <result column="DEPT_ID" property="deptId" jdbcType="VARCHAR" />
+        <result column="LINE_ID" property="lineId" jdbcType="DECIMAL" />
+        <result column="LINE_CODE" property="lineCode" jdbcType="VARCHAR" />
+        <result column="DESCRIPTIONS" property="descriptions" jdbcType="VARCHAR" />
+        <result column="PLINE_ID" property="plineId" jdbcType="DECIMAL" />
+        <result column="ARBPL" property="arbpl" jdbcType="VARCHAR" />
+        <result column="ENABLE_FLAG" property="enableFlag" jdbcType="VARCHAR" />
+        <result column="START_DATE" property="startDate" jdbcType="DATE" />
+        <result column="END_DATE" property="endDate" jdbcType="DATE" />
+        <result column="TAKT_TIME" property="taktTime" jdbcType="DECIMAL" />
+        <result column="ONLINETYPE" property="onlinetype" jdbcType="VARCHAR" />
+        <result column="SEG_OPR_NAME" property="segOprName" jdbcType="VARCHAR"/>
+        <result column="POINT_NUM" property="pointNum" jdbcType="DECIMAL" />
+        <result column="CREATION_DATE" property="creationDate" jdbcType="DATE" />
+        <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
+        <result column="LAST_UPDATED_DATE" property="lastUpdatedDate" jdbcType="DATE" />
+        <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
+    </resultMap>
+
+    <select id="selectById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select * FROM  wip_lines
+        <where>
+            LINE_ID = #{line_id}
+        </where>
+    </select>
+
+    <select id="selectAll" resultMap="BaseResultMap">
+        select LINE_ID,
+               LINE_CODE,
+               DESCRIPTIONS
+               FROM wip_lines
+         <where>
+             <if test="lineId != null">
+                 LINE_ID = #{lineId}
+             </if>
+         </where>
+    </select>
+
+</mapper>

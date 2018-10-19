@@ -13,6 +13,10 @@ public interface InputLogMapper extends Mapper<InputLog>{
 
     List<InputLog> queryAllResult(InputLog inputLog);//报工结果
 
+    List<InputLog> queryFirstResult(@Param("dispatch") String dispatch, @Param("operation") String operation);
+
+    List<InputLog> queryBeforeResult(@Param("dispatch") String dispatch,@Param("operation") String operation);
+
     int insertInputLog(InputLog inputLog);//插入一条信息到confirmation_input_log
 
     int queryInputLogById(Long id);//根据ID查询表格confirmation_input_log
@@ -50,4 +54,15 @@ public interface InputLogMapper extends Mapper<InputLog>{
      * @return
      */
     List<InputLog> queryBybarcodeAndisReversed(InputLog inputLog);
+
+    /**
+     * 获取字段派工单，指定工序的报工成功结果
+     * @param inputLog
+     * @return
+     */
+    InputLog selectConfirmationSuccess(InputLog inputLog);
+
+    String queryDispatchMaxOperation (String dispatch);
+
+    InputLog queryByDispatchAndOperation (InputLog inputLog);
 }

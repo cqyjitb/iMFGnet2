@@ -1,0 +1,262 @@
+<#include "../include/header.html">
+<script type="text/javascript">
+    var viewModel = kendo.observable({
+        model: {},
+        createFunction: function () {
+            $('#Grid').data('kendoGrid').addRow();
+        },
+        saveFunction: function () {
+            $('#Grid').data('kendoGrid').saveChanges();
+        },
+        queryResource: function (e) {
+            $('#Grid').data('kendoGrid').dataSource.page(1);
+        }
+    });
+</script>
+<body>
+<div id="page-content">
+    <div class="pull-left" id="toolbar-btn" style="padding-bottom:10px;">
+        <span class="btn btn-primary k-grid-add" style="float:left;margin-right:5px;" data-bind="click:createFunction"><@spring.message "hap.new"/></span>
+        <span class="btn btn-success k-grid-save-changes" data-bind="click:saveFunction" style="float:left;margin-right:5px;"><@spring.message "hap.save"/></span>
+        <span onclick="deleteData()" class="btn btn-danger" style="float:left;"><@spring.message "hap.delete"/></span>
+    </div>
+    <script>kendo.bind($('#toolbar-btn'), viewModel);</script>
+    <div class="pull-right" id="query-form" style="padding-bottom:10px;">
+            <input type="text" id="role" data-role="maskedtextbox" style="float:left;width:150px;margin-right:5px;" placeholder='<@spring.message "Tcode.userName"/>'
+                   data-bind="value:model.userName" class="k-textbox">
+            <script>
+                $("#role").kendoLov(${lovProvider.getLov(base.contextPath, base.locale, "user_lov")})
+            </script>
+
+        <span class="btn btn-primary" style="float:left;width:70px" data-bind="click:queryResource" type="submit"><@spring.message "hap.query"/></span>
+        <div style="clear:both"></div>
+    </div>
+    <script>kendo.bind($('#query-form'), viewModel);</script>
+    <div style="clear:both">
+        <div id="Grid"></div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+    var BaseUrl = _basePath;
+    dataSource = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: BaseUrl + "/sap/tcode/query",
+                type: "POST",
+                dataType: "json"
+            },
+            update: {
+                url: BaseUrl + "/sap/tcode/submit",
+                type: "POST",
+                contentType: "application/json"
+            },
+            destroy: {
+                url: BaseUrl + "/sap/tcode/remove",
+                type: "POST",
+                contentType: "application/json"
+            },
+            create: {
+                url: BaseUrl + "/sap/tcode/submit",
+                type: "POST",
+                contentType: "application/json"
+            },
+            parameterMap: function (options, type) {
+                if (type !== "read" && options.models) {
+                    var datas = Hap.prepareSubmitParameter(options, type)
+                    return kendo.stringify(datas);
+                } else if (type === "read") {
+                    return Hap.prepareQueryParameter(viewModel.model.toJSON(), options)
+                }
+            }
+        },
+        batch: true,
+        serverPaging: true,
+        pageSize: 10,
+        schema: {
+            data: 'rows',
+            total: 'total',
+            model: {
+                id: "userName",
+
+                fields: {
+                    userName:{type: "string", editable: true,validation:{ required:true }},
+                    app0001:{defaultValue: 'N', type: 'boolean', checkedValue: 'Y', uncheckedValue: 'N', editable:true},
+                    app0002:{defaultValue: 'N', type: 'boolean', checkedValue: 'Y', uncheckedValue: 'N', editable:true},
+                    app0003:{defaultValue: 'N', type: 'boolean', checkedValue: 'Y', uncheckedValue: 'N', editable:true},
+                    app0004:{defaultValue: 'N', type: 'boolean', checkedValue: 'Y', uncheckedValue: 'N', editable:true},
+                    app0005:{defaultValue: 'N', type: 'boolean', checkedValue: 'Y', uncheckedValue: 'N', editable:true},
+                    app0006:{defaultValue: 'N', type: 'boolean', checkedValue: 'Y', uncheckedValue: 'N', editable:true},
+                    app0007:{defaultValue: 'N', type: 'boolean', checkedValue: 'Y', uncheckedValue: 'N', editable:true},
+                    app0009:{defaultValue: 'N', type: 'boolean', checkedValue: 'Y', uncheckedValue: 'N', editable:true},
+                    app0010:{defaultValue: 'N', type: 'boolean', checkedValue: 'Y', uncheckedValue: 'N', editable:true},
+                    app0014:{defaultValue: 'N', type: 'boolean', checkedValue: 'Y', uncheckedValue: 'N', editable:true},
+                    app0015:{defaultValue: 'N', type: 'boolean', checkedValue: 'Y', uncheckedValue: 'N', editable:true},
+                }
+            }
+        }
+    });
+
+    $("#Grid").kendoGrid({
+        dataSource: dataSource,
+        height: '100%',
+        resizable: true,
+        scrollable: true,
+        navigatable: false,
+        selectable: 'multiple, rowbox',
+        pageable: {
+            pageSizes: [5, 10, 20, 50],
+            refresh: true,
+            buttonCount: 5
+        },
+        columns: [
+            {
+                field: "userName",
+                title: "用户名",
+                width: 120,
+                template:function (dataItem) {
+                    return dataItem['userName'] || ''
+                } ,
+                editor:function (container, options){
+                    $('<input name="' + options.field + '"/>')
+                        .appendTo(container)
+                        .kendoLov($.extend(<@lov "user_lov"/>,{
+                        textField:"userName",
+                        model: options.model
+                    }));
+                }
+            },
+//                    {
+//                field: "tcode",
+//                title: '功能代码',
+//                width: 40,
+//                editable:true
+//            },
+            { field: "app0001",
+                title: "压铸报工",
+                width: 80,
+                editable:true,
+                headerAttributes: {
+                    style: "text-align:center"
+                },
+                attributes: {
+                    style: "text-align:center"
+                }
+            },
+            { field: "app0002",
+                title: "表处报工",
+                width: 80,
+                editable:true,
+                headerAttributes: {
+                    style: "text-align:center"
+                },
+                attributes: {
+                    style: "text-align:center"
+                }
+            },
+            { field: "app0003",
+                title: "清理报工",
+                width: 80,
+                editable:true,
+                headerAttributes: {
+                    style: "text-align:center"
+                },
+                attributes: {
+                    style: "text-align:center"
+                }
+            },
+            { field: "app0004",
+                title: "机加上线",
+                width: 80,
+                editable:true,
+                headerAttributes: {
+                    style: "text-align:center"
+                },
+                attributes: {
+                    style: "text-align:center"
+                }
+            },
+            { field: "app0005",
+                title: "暂存区移入",
+                width: 80,
+                editable:true,
+                headerAttributes: {
+                    style: "text-align:center"
+                },
+                attributes: {
+                    style: "text-align:center"
+                }
+            },
+            { field: "app0006",
+                title: "暂存区移出",
+                width: 80,
+                editable:true,
+                headerAttributes: {
+                    style: "text-align:center"
+                },
+                attributes: {
+                    style: "text-align:center"
+                }
+            },
+            { field: "app0007",
+                title: "品质处理",
+                width: 80,
+                editable:true,
+                headerAttributes: {
+                    style: "text-align:center"
+                },
+                attributes: {
+                    style: "text-align:center"
+                }
+            },{ field: "app0010",
+                title: "机加下线",
+                width: 80,
+                editable:true,
+                headerAttributes: {
+                    style: "text-align:center"
+                },
+                attributes: {
+                    style: "text-align:center"
+                }
+            },
+            { field: "app0014",
+                title: "机加取件",
+                width: 80,
+                editable:true,
+                headerAttributes: {
+                    style: "text-align:center"
+                },
+                attributes: {
+                    style: "text-align:center"
+                }
+            },{ field: "app0015",
+                title: "机加还件",
+                width: 80,
+                editable:true,
+                headerAttributes: {
+                    style: "text-align:center"
+                },
+                attributes: {
+                    style: "text-align:center"
+                }
+            }
+
+        ],
+        editable:true
+    });
+
+    function deleteData() {
+
+        Hap.deleteGridSelection({
+            grid: $('#Grid')
+        });
+
+    }
+
+    Hap.autoResizeGrid("#Grid");
+
+
+</script>
+</body>
+</html>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.zudhead.mapper.ZudheadMapper">
+    <resultMap id="BaseResultMap" type="yj.core.zudhead.dto.Zudhead">
+        <result column="ZUDNUM" property="zudnum" jdbcType="VARCHAR" />
+        <result column="UDTYPE" property="udtype" jdbcType="VARCHAR" />
+        <result column="LINE_ID" property="lineId" jdbcType="VARCHAR" />
+        <result column="CRDAT" property="crdat" jdbcType="VARCHAR" />
+        <result column="ARBPR" property="arbpr" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="selectMaxNo" parameterType="java.lang.String" resultType="java.lang.String">
+        select MAX(ZUDNUM)
+          FROM wip_zudhead
+          <where>
+              CRDAT = #{crdat}
+          </where>
+    </select>
+    <insert id="insertHead" parameterType="yj.core.zudhead.dto.Zudhead">
+        insert INTO wip_zudhead(ZUDNUM,UDTYPE,LINE_ID,CRDAT,ARBPR,CREATION_DATE,CREATED_BY)VALUES (#{zudnum},#{udtype},#{lineId},#{crdat},#{arbpr},#{creationDate},#{createdBy})
+    </insert>
+</mapper>

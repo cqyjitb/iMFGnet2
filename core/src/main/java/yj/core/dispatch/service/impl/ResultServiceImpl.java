@@ -24,7 +24,7 @@ public class ResultServiceImpl extends BaseServiceImpl<Result> implements IResul
 
     //插入一条数据到confirmation_result
     public int insertResult(Result result){
-        return insertResult(result);
+        return resultMapper.insertResult(result);
     };
 
 }

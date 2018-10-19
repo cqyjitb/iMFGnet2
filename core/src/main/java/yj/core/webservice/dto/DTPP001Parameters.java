@@ -21,6 +21,14 @@ public class DTPP001Parameters {
     private String RSNUM;
     private String RSPOS;
     private String REVERSE;
+    private String ATTR1;
+    private String ATTR2;
+    private String ATTR3;
+    private String ATTR4;
+    private String ATTR5;
+    private String ATTR6;
+    private String ATTR7;
+    private String USERNAME;
 
 
 
@@ -42,6 +50,14 @@ public class DTPP001Parameters {
         this.DATUM = DATUM;
         this.ZPGDBAR = ZPGDBAR;
         this.ZPGDBH = ZPGDBH;
+        this.ATTR1 = ATTR1;
+        this.ATTR2 = ATTR2;
+        this.ATTR3 = ATTR3;
+        this.ATTR4 = ATTR4;
+        this.ATTR5 = ATTR5;
+        this.ATTR6 = ATTR6;
+        this.ATTR7 = ATTR7;
+        this.USERNAME = USERNAME;
     }
 
     public String getRSPOS() {
@@ -169,5 +185,69 @@ public class DTPP001Parameters {
 
     public void setZPGDBH(String ZPGDBH) {
         this.ZPGDBH = ZPGDBH;
+    }
+
+    public String getATTR1() {
+        return ATTR1;
+    }
+
+    public void setATTR1(String ATTR1) {
+        this.ATTR1 = ATTR1;
+    }
+
+    public String getATTR2() {
+        return ATTR2;
+    }
+
+    public void setATTR2(String ATTR2) {
+        this.ATTR2 = ATTR2;
+    }
+
+    public String getATTR3() {
+        return ATTR3;
+    }
+
+    public void setATTR3(String ATTR3) {
+        this.ATTR3 = ATTR3;
+    }
+
+    public String getATTR4() {
+        return ATTR4;
+    }
+
+    public void setATTR4(String ATTR4) {
+        this.ATTR4 = ATTR4;
+    }
+
+    public String getATTR5() {
+        return ATTR5;
+    }
+
+    public void setATTR5(String ATTR5) {
+        this.ATTR5 = ATTR5;
+    }
+
+    public String getATTR6() {
+        return ATTR6;
+    }
+
+    public void setATTR6(String ATTR6) {
+        this.ATTR6 = ATTR6;
+    }
+
+    public String getATTR7() {
+        return ATTR7;
+    }
+
+    public void setATTR7(String ATTR7) {
+        this.ATTR7 = ATTR7;
+    }
+
+    public String getUSERNAME() {
+        return USERNAME;
+    }
+
+    public void setUSERNAME(String USERNAME) {
+        this.USERNAME = USERNAME;
     }
 }

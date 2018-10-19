@@ -145,7 +145,6 @@
         r.operation_desc,
         r.fevor,
         r.fevor_txt
-
         FROM confirmation_input_log il,confirmation_result r,sys_user u,confirmation_log l
         <where>
             il.id= r.input_id
@@ -154,7 +153,6 @@
             AND r.is_reversed ='0'
             AND l.tran_type = '0'
             AND l.msgty = 'S'
-
             <if test="plant != null">
                  and il.plant = #{plant}
             </if>
@@ -321,11 +319,67 @@
             <if test="attr5 != null">
                 and il.attr5 = #{attr5}
             </if>
+            <if test="attr6 != null">
+                and il.attr6 = #{attr6}
+            </if>
+            <if test="attr7 != null">
+                and il.attr7 = #{attr7}
+            </if>
             <!--add furong.tang-->
         </where>
 
     </select>
 
+    <!--
+        首工序报工记录查询
+    -->
+    <select id="queryFirstResult" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        il.orderno,
+        il.barcode,
+        il.dispatch,
+        il.operation,
+        il.classgrp,
+        il.model_no,
+        il.line,
+        il.attr6,
+        il.attr7
+        FROM confirmation_input_log il,confirmation_result r,confirmation_log l
+        <where>
+                il.dispatch = #{dispatch}
+            AND il.operation = #{operation}
+            AND il.id= r.input_id
+            AND l.ref_id = il.id
+            AND l.tran_type = '0'
+            AND l.msgty = 'S'
+            AND r.is_reversed = '0'
+        </where>
+    </select>
+
+    <!-- 查询当前工序之前的报工成功记录 -->
+    <select id="queryBeforeResult" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        il.orderno,
+        il.barcode,
+        il.dispatch,
+        il.operation,
+        il.classgrp,
+        il.model_no,
+        il.line,
+        il.attr6,
+        il.attr7
+        FROM confirmation_input_log il,confirmation_result r,confirmation_log l
+        <where>
+            il.dispatch = #{dispatch}
+            and #{operation} > il.operation
+            AND il.id= r.input_id
+            AND l.ref_id = il.id
+            AND l.tran_type = '0'
+            AND l.msgty = 'S'
+            AND r.is_reversed = '0'
+        </where>
+        order by il.operation ASC ;
+    </select>
 
 
     <!--
@@ -374,16 +428,12 @@
         r.operation_desc,
         r.fevor,
         r.fevor_txt
-
         FROM confirmation_input_log il,confirmation_result r,sys_user u,confirmation_log l
 
         <where>
             il.id= r.input_id
             AND il.CREATED_BY = u.user_id
             AND l.ref_id = il.id
-
-
-
             <if test="plant != null">
                 and il.plant = #{plant}
             </if>
@@ -478,24 +528,26 @@
 
 
     <select id="confirmationBeforeMaxOperation" resultType="java.lang.String" parameterType="yj.core.dispatch.dto.InputLog">
-        select MAX(ci.operation) as opera  from confirmation_input_log ci
-        inner join confirmation_result r on ci.id = r.input_id
-        inner join confirmation_log l on ci.id = l.ref_id
+        select MAX(ci.operation) as operation  from confirmation_input_log ci
+          inner join confirmation_log l on l.ref_id = ci.id
         <where>
             ci.orderno = #{orderno}
-            and  #{operation} > ci.operation
-            and r.is_reversed = '0'
+            and #{operation} > ci.operation
             and l.msgty = 'S'
-            and l.tran_type = '0'
         </where>
     </select>
 
     <select id="confirmationExistMaxOperaInfo" resultMap="BaseResultMap1">
         select *
         from confirmation_input_log i
+        inner join confirmation_result r on i.id = r.input_id
+        inner join confirmation_log l on i.id = l.ref_id
         <where>
             i.dispatch = #{dispatch}
             and i.operation = #{operation}
+            and r.is_reversed = '0'
+            and l.msgty = 'S'
+            and l.tran_type = '0'
         </where>
 
     </select>
@@ -515,6 +567,83 @@
     </select>
     <!--add furong.tang-->
 
+    <select id="selectConfirmationSuccess" resultMap="BaseResultMap1" parameterType="yj.core.dispatch.dto.InputLog">
+        select *
+        from confirmation_input_log i
+        inner join confirmation_result r on i.id = r.input_id
+        inner join confirmation_log l on i.id = l.ref_id
+        <where>
+            i.dispatch = #{dispatch} and i.operation = #{operation} and r.is_reversed = '0' and l.msgty = 'S' and l.tran_type = '0'
+        </where>
+    </select>
 
+    <!-- 查询派工单的当前工序-->
+    <select id="queryDispatchMaxOperation" parameterType="java.lang.String" resultType="java.lang.String">
+        SELECT MAX(il.operation) AS operation
+        from confirmation_input_log il
+        INNER JOIN confirmation_result r on il.id = r.input_id
+        INNER JOIN confirmation_log l on l.ref_id = il.id
+        <where>
+            r.is_reversed = '0'
+            and l.tran_type = '0'
+            and l.msgty = 'S'
+            and il.dispatch = #{dispatch}
+        </where>
+
+    </select>
+
+    <select id="queryByDispatchAndOperation" resultMap="BaseResultMap" parameterType="yj.core.dispatch.dto.InputLog">
+        SELECT
+        DISTINCT
+        il.id,
+        il.barcode,
+        il.dispatch,
+        il.orderno,
+        il.operation,
+        il.CREATION_DATE,
+        il.posting_date,
+        il.yeild,
+        il.work_scrap,
+        il.row_scrap,
+        il.classgrp,
+        il.model_no,
+        il.line,
+        il.plant,
+        il.CREATED_BY,
+        il.attr1,
+        il.attr2,
+        il.attr3,
+        il.attr4,
+        il.attr5,
+        il.attr6,
+        il.attr7,
+        il.attr8,
+        il.attr9,
+        il.attr10,
+        il.attr11,
+        il.attr12,
+        il.attr13,
+        il.attr14,
+        il.attr15,
+        r.mat_desc,
+        r.material,
+        r.confirmation_no,
+        r.confirmation_pos,
+        u.user_name,
+        r.operation_desc,
+        r.fevor,
+        r.fevor_txt
+        FROM confirmation_input_log il,confirmation_result r,sys_user u,confirmation_log l
+        <where>
+            il.id= r.input_id
+            AND il.CREATED_BY = u.user_id
+            AND l.ref_id = il.id
+            AND r.is_reversed ='0'
+            AND l.tran_type = '0'
+            AND l.msgty = 'S'
+            AND il.dispatch = #{dispatch}
+            and il.operation = #{operation}
+        </where>
+    </select>
 
 </mapper>

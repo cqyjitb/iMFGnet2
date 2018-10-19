@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.inoutrecord.mapper.InOutRecordMapper">
+    <resultMap id="BaseResultMap" type="yj.core.inoutrecord.dto.InOutRecord">
+        <result column="ZQJJLH" property="zqjjlh" jdbcType="VARCHAR"/>
+        <result column="ZWIPQID" property="zwipqid" jdbcType="VARCHAR"/>
+        <result column="LINE_ID" property="lineId" jdbcType="VARCHAR"/>
+        <result column="ARBPR" property="arbpr" jdbcType="VARCHAR"/>
+        <result column="ZBANZ" property="zbanz" jdbcType="VARCHAR"/>
+        <result column="ZBANC" property="zbanc" jdbcType="VARCHAR"/>
+        <result column="ZPGDBAR" property="zpgdbar" jdbcType="VARCHAR"/>
+        <result column="VORNR" property="vornr" jdbcType="VARCHAR"/>
+        <result column="ZXHBAR" property="zxhbar" jdbcType="VARCHAR"/>
+        <result column="ZPGDBAR2" property="zpgdbar2" jdbcType="VARCHAR"/>
+        <result column="MATNR" property="matnr" jdbcType="VARCHAR"/>
+        <result column="MATNR2" property="matnr2" jdbcType="VARCHAR"/>
+        <result column="ZGJBAR" property="zgjbar" jdbcType="VARCHAR"/>
+        <result column="ZOUTNUM" property="zoutnum" jdbcType="DECIMAL"/>
+        <result column="REFLAG" property="reflag" jdbcType="DECIMAL"/>
+        <result column="GMEIN" property="gmein" jdbcType="VARCHAR"/>
+        <result column="CHARG" property="charg" jdbcType="VARCHAR"/>
+        <result column="ZREMADE" property="zremade" jdbcType="DECIMAL"/>
+        <result column="DIECD" property="diecd" jdbcType="VARCHAR"/>
+        <result column="SFFLG" property="sfflg" jdbcType="VARCHAR"/>
+        <result column="ZOTYPE" property="zotype" jdbcType="VARCHAR"/>
+        <result column="ZQXDM" property="zqxdm" jdbcType="VARCHAR"/>
+        <result column="ZISSUETXT" property="zissuetxt" jdbcType="VARCHAR"/>
+        <result column="ZBPJC" property="zbpjc" jdbcType="VARCHAR"/>
+        <result column="ZJTGX" property="zjtgx" jdbcType="VARCHAR"/>
+        <result column="ZOPLO" property="zoplo" jdbcType="VARCHAR"/>
+        <result column="OUTDAT" property="outdat" jdbcType="DATE"/>
+        <result column="OUTNAM" property="outnam" jdbcType="DECIMAL"/>
+        <result column="REDAT" property="redat" jdbcType="DATE"/>
+        <result column="RENAM" property="renam" jdbcType="DECIMAL"/>
+        <result column="CREATION_DATE" property="creationDate" jdbcType="VARCHAR"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL"/>
+        <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="VARCHAR"/>
+        <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL"/>
+    </resultMap>
+    <insert id="insertQjrecode" parameterType="yj.core.inoutrecord.dto.InOutRecord">
+        insert INTO wip_in_out_record (ZQJJLH,ZWIPQID,LINE_ID,ARBPR,ZBANZ,ZBANC,ZPGDBAR,VORNR,ZXHBAR,ZPGDBAR2,MATNR,MATNR2,ZGJBAR,ZOUTNUM,REFLAG,GMEIN,CHARG,DIECD,SFFLG,
+        ZOTYPE,ZQXDM,ZISSUETXT,ZBPJC,ZJTGX,ZOPLO,OUTDAT,OUTNAM,REDAT,RENAM,ZREMADE,CREATION_DATE,CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY)VALUES (#{zqjjlh},#{zwipqid},#{lineId},#{arbpr},#{zbanz},#{zbanc},#{zpgdbar},#{vornr},#{zxhbar},#{zpgdbar2},#{matnr},#{matnr2},
+        #{zgjbar},#{zoutnum},#{reflag},#{gmein},#{charg},#{diecd},#{sfflg},#{zotype},#{zqxdm},#{zissuetxt},#{zbpjc},#{zjtgx},#{zoplo},#{outdat},#{outnam},#{redat},#{renam},#{zremade},#{creationDate},#{createdBy},#{lastUpdateDate},#{lastUpdatedBy})
+    </insert>
+
+    <select id="selectforjjhj" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_in_out_record
+        <where>
+            LINE_ID = #{line_id}
+            and ZOTYPE = #{qjcodeval}
+            and VORNR = #{lineiocfgval}
+            and MATNR2 = #{matnr}
+            and REFLAG = #{hjtype}
+            and ZREMADE = 0
+            and ZGJBAR IS NULL
+        </where>
+        order by SFFLG asc;
+    </select>
+
+    <select id="selectNoReflg" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_in_out_record
+        <where>
+            LINE_ID = #{line_id}
+            and ZOTYPE = #{zotype}
+            and VORNR = #{vornr}
+            and MATNR2 = #{matnr}
+            and SFFLG = #{sfflg}
+            and REFLAG = #{hjtype}
+            AND ZREMADE = 0
+        </where>
+        order by SFFLG asc;
+    </select>
+    <update id="updateReflag" parameterType="yj.core.inoutrecord.dto.InOutRecord">
+        update wip_in_out_record set REFLAG = #{reflag}
+        <if test="outdat != null">
+            ,OUTDAT = #{outdat}
+        </if>
+        <if test="outnam != null">
+            ,OUTNAM = #{outnam}
+        </if>
+        <if test="redat != null">
+            ,REDAT = #{redat}
+        </if>
+        <if test="renam != null">
+            ,RENAM = #{renam}
+        </if>
+        <if test="createdBy != null">
+            ,CREATED_BY = #{createdBy}
+        </if>
+        <if test="creationDate != null">
+            ,CREATION_DATE = #{creationDate}
+        </if>
+        <if test="lastUpdateDate != null">
+            ,LAST_UPDATE_DATE = #{lastUpdateDate}
+        </if>
+        <if test="lastUpdatedBy != null">
+            ,LAST_UPDATED_BY = #{lastUpdatedBy}
+        </if>
+        <where>
+            ZQJJLH = #{zqjjlh}
+        </where>
+    </update>
+
+    <select id="selectforZud" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select a.*
+               from wip_in_out_record a,wip_qjcode b
+        <where>
+            a.ZOTYPE = b.ID
+            AND b.SLD1 = 'X'
+            AND REFLAG = 0
+            <if test="line_id != null">
+                and LINE_ID = #{line_id}
+            </if>
+            <if test="classgrp != null">
+                and ZBANZ = #{classgrp}
+            </if>
+
+        </where>
+    </select>
+
+    <select id="selectforZrwk" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select a.* from wip_in_out_record a,wip_qjcode b
+        <where>
+            a.ZOTYPE = b.ID
+            AND b.SLD2 = 'X'
+            AND REFLAG = 0
+            <if test="line_id != null">
+                and LINE_ID = #{line_id}
+            </if>
+            <if test="classgrp != null">
+                and ZBANZ = #{classgrp}
+            </if>
+            <if test="zotype != null">
+                and ZOTYPE = #{zotype}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectById" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_in_out_record
+        <where>
+            ZQJJLH = #{zqjjlh}
+        </where>
+    </select>
+</mapper>

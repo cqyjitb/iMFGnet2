@@ -3,8 +3,12 @@ package yj.core.dispatch.service;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.core.ProxySelf;
 import com.hand.hap.system.service.IBaseService;
+import yj.core.appidconf.dto.Appidconf;
+import yj.core.cardh.dto.Cardh;
+import yj.core.cardt.dto.Cardt;
 import yj.core.dispatch.dto.InputLog;
 import yj.core.webservice.dto.DTPP001ReturnResult;
+import yj.core.webservice_newbg.dto.DTBAOGONGReturnResult;
 
 import java.util.List;
 
@@ -20,11 +24,25 @@ public interface IInputLogService extends IBaseService<InputLog>, ProxySelf<IInp
 
     int queryInputLogById(Long id);//根据ID查询表格confirmation_input_log
 
+    List<InputLog> queryFirstResult(IRequest iRequest, String dispatch, String operation);
+
     DTPP001ReturnResult inputDispatch(InputLog input);
 
     void nextId(InputLog input);
 
     DTPP001ReturnResult writeOffDispatch(InputLog input);
 
+    DTBAOGONGReturnResult writeOffDispatchNew(InputLog input);
 
+    InputLog selectConfirmationSuccess(InputLog inputLog);
+
+    DTBAOGONGReturnResult inputDispatchNew(InputLog input, Cardh cardh, Cardt cardt, Appidconf appidconf,String isfirst);
+
+    List<InputLog> queryBeforeResult(IRequest iRequest, String dispatch, String operation);
+
+    Long selectNextId();
+
+    String queryDispatchMaxOperation (String dispatch);
+
+    InputLog queryByDispatchAndOperation(InputLog inputLog);
 }

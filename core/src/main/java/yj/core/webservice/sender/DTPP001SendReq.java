@@ -133,7 +133,7 @@ public class DTPP001SendReq {
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@XmlType(name = "", propOrder = { "pwerk", "aufnr", "vornr", "budat",
 			"gmnga", "xmnga", "rmnga", "zscbc", "zscx", "zmnum", "datum",
-			"zpgdbar", "zpgdbh", "rsnum", "rspos", "reverse" })
+			"zpgdbar", "zpgdbh", "rsnum", "rspos", "reverse", "attr1", "attr2", "attr3", "attr4", "attr5", "attr6", "attr7", "userName" })
 	public static class ITEM {
 
 		@XmlElement(name = "PWERK", required = true)
@@ -168,6 +168,22 @@ public class DTPP001SendReq {
 		protected String rspos;
 		@XmlElement(name = "REVERSE", required = true)
 		protected String reverse;
+		@XmlElement(name="ATTR1", required=true)
+		protected String attr1;
+		@XmlElement(name="ATTR2", required=true)
+		protected String attr2;
+		@XmlElement(name="ATTR3", required=true)
+		protected String attr3;
+		@XmlElement(name="ATTR4", required=true)
+		protected String attr4;
+		@XmlElement(name="ATTR5", required=true)
+		protected String attr5;
+		@XmlElement(name="ATTR6", required=true)
+		protected String attr6;
+		@XmlElement(name="ATTR7", required=true)
+		protected String attr7;
+		@XmlElement(name="USERNAME", required=true)
+		protected String userName;
 
 		/**
 		 * Gets the value of the pwerk property.
@@ -503,6 +519,86 @@ public class DTPP001SendReq {
 		 */
 		public void setREVERSE(String value) {
 			this.reverse = value;
+		}
+
+		public String getAttr1()
+		{
+			return this.attr1;
+		}
+
+		public String getAttr2()
+		{
+			return this.attr2;
+		}
+
+		public String getAttr3()
+		{
+			return this.attr3;
+		}
+
+		public String getAttr4()
+		{
+			return this.attr4;
+		}
+
+		public String getAttr5()
+		{
+			return this.attr5;
+		}
+
+		public String getAttr6()
+		{
+			return this.attr6;
+		}
+
+		public String getAttr7()
+		{
+			return this.attr7;
+		}
+
+		public String getUserName()
+		{
+			return this.userName;
+		}
+
+		public void setAttr1(String attr1)
+		{
+			this.attr1 = attr1;
+		}
+
+		public void setAttr2(String attr2)
+		{
+			this.attr2 = attr2;
+		}
+
+		public void setAttr3(String attr3)
+		{
+			this.attr3 = attr3;
+		}
+
+		public void setAttr4(String attr4)
+		{
+			this.attr4 = attr4;
+		}
+
+		public void setAttr5(String attr5)
+		{
+			this.attr5 = attr5;
+		}
+
+		public void setAttr6(String attr6)
+		{
+			this.attr6 = attr6;
+		}
+
+		public void setAttr7(String attr7)
+		{
+			this.attr7 = attr7;
+		}
+
+		public void setUserName(String userName)
+		{
+			this.userName = userName;
 		}
 
 	}

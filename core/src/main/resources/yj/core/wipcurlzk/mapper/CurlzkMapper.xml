@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.wipcurlzk.mapper.CurlzkMapper">
+    <resultMap id="BaseResultMap" type="yj.core.wipcurlzk.dto.Curlzk">
+        <result column="LINE_ID" property="lineId" jdbcType="VARCHAR" />
+        <result column="LINE_CODE" property="lineCode" jdbcType="VARCHAR" />
+        <result column="DESCRIPTIONS" property="descriptions" jdbcType="VARCHAR" />
+        <result column="ZPGDBAR" property="zpgdbar" jdbcType="VARCHAR" />
+        <result column="ZXHBAR" property="zxhbar" jdbcType="VARCHAR" />
+        <result column="SHIFT" property="shift" jdbcType="VARCHAR" />
+        <result column="ERDAT" property="erdat" jdbcType="DATE" />
+        <result column="CREATION_DATE" property="creationDate" jdbcType="DATE" />
+        <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
+        <result column="LAST_UPDATED_DATE" property="lastUpdateDate" jdbcType="DATE" />
+        <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
+    </resultMap>
+
+    <select id="selectById" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_curlzk
+        <where>
+            LINE_ID = #{line_id}
+            and SHIFT = #{classgrp}
+        </where>
+    </select>
+    <update id="updateZxhbar" parameterType="yj.core.wipcurlzk.dto.Curlzk">
+        UPDATE wip_curlzk set ZXHBAR = #{zxhbar}
+        <if test="lastUpdateDate != null">
+            ,LAST_UPDATED_DATE = #{lastUpdateDate}
+        </if>
+        <if test="lastUpdatedBy != null">
+            ,LAST_UPDATED_BY = #{lastUpdatedBy}
+        </if>
+        <where>
+            LINE_ID = #{lineId}
+            and SHIFT = #{shift}
+        </where>
+    </update>
+
+    <select id="selectAllLinesforZxhbar" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_curlzk
+        <!--<where>-->
+            <!--LINE_ID != #{lineId}-->
+        <!--</where>-->
+    </select>
+</mapper>

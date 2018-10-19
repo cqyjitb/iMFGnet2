@@ -37,13 +37,37 @@ var attr12;             //扩充字段12
 var attr13;             //扩充字段13
 var attr14;             //扩充字段14
 var attr15;             //扩充字段15
-
+var tm;
 /**
  * 获取报工过账字段的值
  */
+
+/**
+ * 定义对照表字段
+ */
+var wipZpgdbar;
+var wipAufnr;
+var wipAuart;
+var wipArbpl;
+var wipMatnr;
+var newAufnr;
+var newZpgdbar;
+
+var pd_sum;
+
 function getDispatchValues() {
+    tm = new Date().format("yyyy-MM-dd hh:mm:ss");
+    var bg = getTodayDate() + " 23:59:59" ;
+    var ed = getDateAdd(1) + " 07:20:00";
     barcode = document.getElementById("barcode").value;
-    postingDate = document.getElementById("postingDate").options[document.getElementById("postingDate").selectedIndex].value;
+    if(document.getElementById("postingDate").selectedIndex == "")
+    {
+
+        postingDate = document.getElementById("postingDate").options[0].value;
+    }else{
+        postingDate = document.getElementById("postingDate").options[document.getElementById("postingDate").selectedIndex].value;
+    }
+
     orderno = document.getElementById("orderno").value;
     operation = document.getElementById("operation").value;
     yeild = document.getElementById("yeild").value;
@@ -71,9 +95,58 @@ function getDispatchValues() {
     attr3 = document.getElementById("attr3").value;
     attr4 = document.getElementById("attr4").value;
     attr5 = document.getElementById("attr5").value;
-    attr6 = document.getElementById("attr6").value;
-    attr7 = document.getElementById("attr7").value;
-    attr8 = document.getElementById("attr8").value;
+    /**
+     * add by 张滔 2017-12-01
+     * for 添加逻辑 针对订单类型YZ01 YZ04 YZ06
+     */
+    if(orderno >= "1000000000" && orderno <= "2999999999"){
+            if(document.getElementById("attr6").selectedIndex == "" || document.getElementById("attr6").selectedIndex < "0")
+            {
+                attr6 =  document.getElementById("attr6").options[0].value;
+
+            }else{
+                attr6 =  document.getElementById("attr6").options[document.getElementById("attr6").selectedIndex].value;
+            }
+
+            if( tm >= bg && tm <= ed){//晚班0点-早上八点 生产日期为前一日日期
+                if( document.getElementById("attr6").selectedIndex == "0" ) {
+                    attr6 =  document.getElementById("attr6").options[1].value;
+                }
+
+            }else{
+                if( document.getElementById("attr6").selectedIndex == "0" ){
+                    attr6 =  document.getElementById("attr6").options[0].value;
+                }
+
+            }
+
+            document.getElementById("attr6").value = attr6;
+
+        if(operation =="0010"){
+            if(document.getElementById("attr8").value == " " || document.getElementById("attr8").value == "" ){
+                attr8 = " "
+            }else{
+                attr8 = document.getElementById("attr8").options[document.getElementById("attr8").selectedIndex].value;
+            }
+
+            if(attr8 == " " || attr8 == "" || attr8 == null ){
+
+                attr7 =  attr6.substring(2,attr6.length-6) + attr6.substring(5,attr6.length-3) + attr6.substring(8,attr6.length) + classgrp.toLowerCase();
+            }else{
+                attr7 =  attr8.substring(2,attr8.length-6) + attr8.substring(5,attr8.length-3) + attr8.substring(8,attr8.length) + classgrp.toLowerCase();
+            }
+
+        }else{
+            attr8 = " "
+            attr7 = document.getElementById("attr7").value;
+        }
+
+    }else{
+        attr6 = document.getElementById("attr6").value;
+        attr7 = document.getElementById("attr7").value;
+        attr8 = document.getElementById("attr8").value;
+    }
+
     attr9 = document.getElementById("attr9").value;
     attr10 = document.getElementById("attr10").value;
     attr11 = document.getElementById("attr11").value;
@@ -120,25 +193,89 @@ function delDispatchValues() {
  * 检查报工过账必输字段 及字段格式
  */
 function checkDispatchValues() {
+    orderno = document.getElementById("orderno").value;
     var a = 0;
-    if(barcode == "" || barcode == null){
+    if(barcode == " " || barcode == null){
         return "请扫码";
     }
-    if(yeild == "" || yeild == null || yeild == "0"){
+    if(yeild == " " || yeild == null || yeild == "0"){
         a = a + 1;
     }
-    if(workScrap == "" || workScrap == null || workScrap == "0"){
+    if(workScrap == " " || workScrap == null || workScrap == "0"){
         a = a + 1;
     }
-    if(rowScrap == "" || rowScrap == null || rowScrap == "0"){
+    if(rowScrap == " " || rowScrap == null || rowScrap == "0"){
         a = a + 1;
     }
     if( a == 3){
         return "请输入数量";
     }
+
+    if ((orderno >= "1000000000" && orderno <= "2999999999") || (orderno >= "3000000000" && orderno <= "4999999999")){
+        /**
+         * add by 张滔 2017年11月30日
+         * for 生产线输入校验(只针对订单类型QP01 YZ01 YZ04 YZ06)
+         */
+        if (line == " " || line == null || line == "0" || line.length == 0){
+            return "生产线必输"
+        }
+        /**
+         *  add by 张滔 2017年11月30日
+         *  for 模号必输校验(只针对订单类型QP01 YZ01 YZ04 YZ06)
+         */
+        if (modelNo == " " || modelNo == null || modelNo == "0" || modelNo.length == 0){
+            return "模号必输"
+        }
+    }
+    /**
+        if  (attr9.length == 0 || attr9.length == 4)
+        {
+            if (attr9.length != 0)
+            {
+                var regpos = /\d{4}/g
+
+                if( regpos.test(attr9)) {
+
+                }else{
+                    return "原因代码错误"
+                }
+            }
+
+        }else{
+                return "原因代码错误"
+        }
+     **/
     return null;
 }
+/**
+ * 校验质量原因代码
+ */
+function isNumber(val) {
+    var regpos = /\d{4}/g
 
+    if( regpos.test(regpos)) {
+        return null
+    }else{
+        return "原因代码错误"
+    }
+}
+
+/**
+ * 定义新旧对照表数据传递JSON
+ */
+var bartobar;
+function setBartobar() {
+
+    bartobar={
+        "wipZpgdbar":wipZpgdbar,
+        "wipAufnr":wipAufnr,
+        "wipAuart":wipAuart,
+        "wipArbpl":wipArbpl,
+        "wipMatnr":wipMatnr,
+        "newAufnr":newAufnr,
+        "newZpgdbar":newZpgdbar
+    };
+}
 /**
  * 定义报工数据传递json
  */
@@ -296,6 +433,18 @@ function getYesterdayDate() {
     var yesterday = new Date();
     yesterday.setDate(yesterday.getDate()-1);
     return yesterday.format("yyyy-MM-dd");
+}
+
+function getDate(i){
+    var tmpday = new Date();
+    tmpday.setDate(tmpday.getDate()-i);
+    return tmpday.format("yyyy-MM-dd");
+}
+
+function getDateAdd(i){
+    var tom = new Date();
+    tom.setDate(tom.getDate()+i);
+    return tom.format("yyyy-MM-dd");
 }
 
 /**

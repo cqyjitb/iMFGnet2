@@ -21,11 +21,11 @@ public class InputLog extends BaseDTO {
     /**
      *条码
      */
-    private String barcode; //条码
+    private String barcode; //机加流转卡号
 
     private String orderno; //订单
 
-    private String dispatch; //派工单号
+    private String dispatch; //机加流转卡号
 
     private String operation; //工序
 
@@ -133,6 +133,36 @@ public class InputLog extends BaseDTO {
     @Transient
     private String fevorTxt; //生产管理员名称
 
+    //---------------------------------------------新版报工增加字段
+    @Transient
+    private String ztpbar;//托盘编码（机加）
+
+    @Transient
+    private String arbpl;
+
+    @Transient
+    private String zprtp;
+
+    @Transient
+    private String auart;
+
+    @Transient
+    private String fstvor;
+
+    @Transient
+    private String lstvor;
+
+    @Transient
+    private String charg;
+
+
+    public String getCharg() {
+        return charg;
+    }
+
+    public void setCharg(String charg) {
+        this.charg = charg;
+    }
 
     public String getCreated_by() {
         return created_by;
@@ -532,5 +562,53 @@ public class InputLog extends BaseDTO {
 
     public void setFevorTxt(String fevorTxt) {
         this.fevorTxt = fevorTxt;
+    }
+
+    public String getZtpbar() {
+        return ztpbar;
+    }
+
+    public void setZtpbar(String ztpbar) {
+        this.ztpbar = ztpbar;
+    }
+
+    public String getArbpl() {
+        return arbpl;
+    }
+
+    public void setArbpl(String arbpl) {
+        this.arbpl = arbpl;
+    }
+
+    public String getZprtp() {
+        return zprtp;
+    }
+
+    public void setZprtp(String zprtp) {
+        this.zprtp = zprtp;
+    }
+
+    public String getAuart() {
+        return auart;
+    }
+
+    public void setAuart(String auart) {
+        this.auart = auart;
+    }
+
+    public String getFstvor() {
+        return fstvor;
+    }
+
+    public void setFstvor(String fstvor) {
+        this.fstvor = fstvor;
+    }
+
+    public String getLstvor() {
+        return lstvor;
+    }
+
+    public void setLstvor(String lstvor) {
+        this.lstvor = lstvor;
     }
 }

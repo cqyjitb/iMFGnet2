@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.zudlist.mapper.ZudlistMapper">
+    <resultMap id="BaseResultMap" type="yj.core.zudlist.dto.Zudlist">
+        <result column="ZUDNUM" property="zudnum" jdbcType="VARCHAR" />
+        <result column="ITEM" property="item" jdbcType="VARCHAR" />
+        <result column="ZQJJLH" property="zqjjlh" jdbcType="VARCHAR" />
+        <result column="ZPGDBAR" property="zpgdbar" jdbcType="VARCHAR" />
+        <result column="VORNR" property="vornr" jdbcType="VARCHAR" />
+        <result column="ZXHBAR" property="zxhbar" jdbcType="VARCHAR" />
+        <result column="ZPGDBAR2" property="zpgdbar2" jdbcType="VARCHAR" />
+        <result column="MATNR" property="matnr" jdbcType="VARCHAR" />
+        <result column="MATNR2" property="matnr2" jdbcType="VARCHAR" />
+        <result column="ZGJBAR" property="zgjbar" jdbcType="VARCHAR" />
+        <result column="ZDNUM" property="zdnum" jdbcType="DECIMAL" />
+        <result column="GMEIN" property="gmein" jdbcType="VARCHAR" />
+        <result column="CHARG2" property="charg2" jdbcType="VARCHAR" />
+        <result column="CHARG" property="charg" jdbcType="VARCHAR" />
+        <result column="DIECD" property="diecd" jdbcType="VARCHAR" />
+        <result column="SFFLG" property="sfflg" jdbcType="VARCHAR" />
+        <result column="ZQXDM" property="zqxdm" jdbcType="VARCHAR" />
+        <result column="ZISSUETXT" property="zissuetxt" jdbcType="VARCHAR" />
+        <result column="ZBPJC" property="zbpjc" jdbcType="VARCHAR" />
+        <result column="ZOPLO" property="zoplo" jdbcType="VARCHAR" />
+        <result column="ZBANZ" property="zbanz" jdbcType="VARCHAR" />
+        <result column="ZBANC" property="zbanc" jdbcType="VARCHAR" />
+        <result column="RSPART" property="rspart" jdbcType="VARCHAR" />
+        <result column="RSNAME" property="rsname" jdbcType="VARCHAR" />
+        <result column="REVIEWC" property="reviewc" jdbcType="VARCHAR" />
+        <result column="GSTRP" property="gstrp" jdbcType="VARCHAR" />
+        <result column="MARK" property="mark" jdbcType="VARCHAR" />
+        <result column="RUECK" property="rueck" jdbcType="VARCHAR" />
+        <result column="RMZHL" property="rmzhl" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <insert id="insertItem" parameterType="yj.core.zudlist.dto.Zudlist">
+        insert INTO  wip_zudlist(ZUDNUM,ITEM,ZQJJLH,ZPGDBAR,VORNR,ZXHBAR,ZPGDBAR2,MATNR,MATNR2,ZGJBAR,ZDNUM,GMEIN,CHARG2,CHARG,DIECD,SFFLG,ZQXDM,
+        ZISSUETXT,ZBPJC,ZOPLO,ZBANZ,ZBANC,RSPART,RSNAME,REVIEWC,GSTRP,MARK,RUECK,RMZHL,CREATION_DATE,CREATED_BY)VALUES (#{zudnum},#{item},#{zqjjlh},#{zpgdbar},#{vornr},#{zxhbar},#{zpgdbar2},#{matnr},
+        #{matnr2},#{zgjbar},#{zdnum},#{gmein},#{charg2},#{charg},#{diecd},
+        #{sfflg},#{zqxdm},#{zissuetxt},#{zbpjc},#{zoplo},#{zbanz},#{zbanc},#{rspart},#{rsname},#{reviewc},#{gstrp},#{mark},#{rueck},#{rmzhl},#{creationDate},#{createdBy})
+    </insert>
+
+</mapper>

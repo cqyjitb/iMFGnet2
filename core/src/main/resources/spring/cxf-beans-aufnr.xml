@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ~ Copyright Hand China Co.,Ltd.
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+       http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd ">
+
+    <bean id="service2" class="yj.core.webservice_server.SyncAufnrImp"/>
+    <jaxws:endpoint id="syncaufnr" implementor="#service2" address="/SyncAufnr" >
+    </jaxws:endpoint>
+
+    <bean id="service3" class="yj.core.webservice_server.SyncZtpp0023"/>
+    <jaxws:endpoint id="syncztpp0023" implementor="#service3" address="/SyncZtpp0023" >
+    </jaxws:endpoint>
+
+    <!--<bean id="service5" class="yj.core.webservice_server.QueryXhcardImp" />-->
+    <!--<jaxws:endpoint id="queryxhcard" implementor="#service5" address="/QueryXhcard">-->
+    <!--</jaxws:endpoint>-->
+</beans>

@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.zwipq.mapper.ZwipqMapper">
+    <resultMap id="BaseResultMap" type="yj.core.zwipq.dto.Zwipq">
+        <result column="ZSXJLH" property="zsxjlh" jdbcType="VARCHAR" />
+        <result column="LINE_ID" property="lineId" jdbcType="VARCHAR" />
+        <result column="ARBPR" property="arbpr" jdbcType="VARCHAR" />
+        <result column="SEG_OPR_NAME" property="segOprName" jdbcType="VARCHAR" />
+        <result column="PKG_LINE_ID" property="pkgLineId" jdbcType="VARCHAR" />
+        <result column="SHIFT" property="shift" jdbcType="VARCHAR" />
+        <result column="ZPGDBAR" property="zpgdbar" jdbcType="VARCHAR" />
+        <result column="ZPGDBAR1" property="zpgdbar1" jdbcType="VARCHAR" />
+        <result column="VORNR" property="vornr" jdbcType="VARCHAR" />
+        <result column="ZXHBAR" property="zxhbar" jdbcType="VARCHAR" />
+        <result column="MATNR" property="matnr" jdbcType="VARCHAR" />
+        <result column="MATNR2" property="matnr2" jdbcType="VARCHAR" />
+        <result column="ZPGDBAR2" property="zpgdbar2" jdbcType="VARCHAR" />
+        <result column="ZGJBAR" property="zgjbar" jdbcType="VARCHAR" />
+        <result column="ZSXNUM" property="zsxnum" jdbcType="DECIMAL" />
+        <result column="GMEIN" property="gmein" jdbcType="VARCHAR" />
+        <result column="LGORT" property="lgort" jdbcType="VARCHAR" />
+        <result column="CHARG" property="charg" jdbcType="VARCHAR" />
+        <result column="ZREMADE" property="zremade" jdbcType="DECIMAL" />
+        <result column="ZZXKL" property="zzxkl" jdbcType="DECIMAL" />
+        <result column="ZQJKL" property="zqjkl" jdbcType="DECIMAL" />
+        <result column="ZOFFL" property="zoffl" jdbcType="DECIMAL" />
+        <result column="SFFLG" property="sfflg" jdbcType="VARCHAR" />
+        <result column="DIECD" property="diecd" jdbcType="VARCHAR" />
+        <result column="Q_SENQ" property="qsenq" jdbcType="DECIMAL"/>
+        <result column="CREATION_DATE" property="creationDate" jdbcType="DATE" />
+        <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
+        <result column="LAST_UPDATED_DATE" property="lastUpdatedDate" jdbcType="DATE" />
+        <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
+        <result column="OFF_UPDATED_DATE" property="offUpdatedDate" jdbcType="DATE" />
+        <result column="OFF_UPDATED_BY" property="offUpdatedBy" jdbcType="DECIMAL" />
+    </resultMap>
+
+    <resultMap id="BaseResultMap2" type="yj.core.zwipq.dto.Zwipq">
+        <result column="ZSXJLH" property="zsxjlh" jdbcType="VARCHAR" />
+        <result column="LINE_ID" property="lineId" jdbcType="VARCHAR" />
+        <result column="ARBPR" property="arbpr" jdbcType="VARCHAR" />
+        <result column="SEG_OPR_NAME" property="segOprName" jdbcType="VARCHAR" />
+        <result column="PKG_LINE_ID" property="pkgLineId" jdbcType="VARCHAR" />
+        <result column="SHIFT" property="shift" jdbcType="VARCHAR" />
+        <result column="ZPGDBAR" property="zpgdbar" jdbcType="VARCHAR" />
+        <result column="ZPGDBAR1" property="zpgdbar1" jdbcType="VARCHAR" />
+        <result column="VORNR" property="vornr" jdbcType="VARCHAR" />
+        <result column="ZXHBAR" property="zxhbar" jdbcType="VARCHAR" />
+        <result column="MATNR" property="matnr" jdbcType="VARCHAR" />
+        <result column="MATNR2" property="matnr2" jdbcType="VARCHAR" />
+        <result column="ZPGDBAR2" property="zpgdbar2" jdbcType="VARCHAR" />
+        <result column="ZGJBAR" property="zgjbar" jdbcType="VARCHAR" />
+        <result column="ZSXNUM" property="zsxnum" jdbcType="DECIMAL" />
+        <result column="GMEIN" property="gmein" jdbcType="VARCHAR" />
+        <result column="LGORT" property="lgort" jdbcType="VARCHAR" />
+        <result column="CHARG" property="charg" jdbcType="VARCHAR" />
+        <result column="ZREMADE" property="zremade" jdbcType="DECIMAL" />
+        <result column="ZZXKL" property="zzxkl" jdbcType="DECIMAL" />
+        <result column="ZQJKL" property="zqjkl" jdbcType="DECIMAL" />
+        <result column="ZOFFL" property="zoffl" jdbcType="DECIMAL" />
+        <result column="STATUS" property="status" jdbcType="DECIMAL" />
+        <result column="SFFLG" property="sfflg" jdbcType="VARCHAR" />
+        <result column="DIECD" property="diecd" jdbcType="VARCHAR" />
+        <result column="Q_SENQ" property="qsenq" jdbcType="DECIMAL"/>
+        <result column="CREATION_DATE" property="creationDate" jdbcType="DATE" />
+        <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
+        <result column="LAST_UPDATED_DATE" property="lastUpdatedDate" jdbcType="DATE" />
+        <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
+        <result column="OFF_UPDATED_DATE" property="offUpdatedDate" jdbcType="DATE" />
+        <result column="OFF_UPDATED_BY" property="offUpdatedBy" jdbcType="DECIMAL" />
+        <result column="ATTR7" property="attr7" jdbcType="VARCHAR"/>
+        <result column="CHECK" property="check" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="selectByLineIdAndZxhbar" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from zwipq
+        <where>
+            LINE_ID = #{line_id}
+            AND ZXHBAR = #{zxhbar}
+        </where>
+    </select>
+
+    <select id="selectMaxQsenq" parameterType="map" statementType="CALLABLE">
+      {
+        #{p3,mode=OUT,mode=OUT,jdbcType=NUMERIC} = call WIP_SEQ_NEXT_VAL(
+          #{p1,mode=IN,jdbcType=VARCHAR},#{p2,mode=IN,jdbcType=NUMERIC}
+        )
+      }
+    </select>
+
+    <insert id="InsertIntoZwipq" parameterType="yj.core.zwipq.dto.Zwipq">
+        insert into zwipq (ZSXJLH,LINE_ID,ARBPR,SEG_OPR_NAME,PKG_LINE_ID,SHIFT,ZPGDBAR,ZPGDBAR1,VORNR,ZXHBAR,MATNR,MATNR2,ZPGDBAR2,ZGJBAR,ZREMADE,
+        ZSXNUM,GMEIN,LGORT,CHARG,ZZXKL,ZQJKL,ZOFFL,SFFLG,STATUS,DIECD,Q_SENQ,CREATION_DATE,CREATED_BY,LAST_UPDATED_DATE,LAST_UPDATED_BY,OFF_UPDATED_DATE,OFF_UPDATED_BY)
+        VALUES (#{zsxjlh},#{lineId},#{arbpr},#{segOprName},#{pkgLineId},#{shift},#{zpgdbar},#{zpgdbar1},#{vornr},#{zxhbar},#{matnr},#{matnr2},#{zpgdbar2},#{zgjbar},#{zremade},#{zsxnum},#{gmein},#{lgort},
+        #{charg},#{zzxkl},#{zqjkl},#{zoffl},#{sfflg},#{status},#{diecd},#{qsenq},#{creationDate},#{createdBy},#{lastUpdatedDate},#{lastUpdatedBy},#{offUpdatedDate},#{offUpdatedBy})
+    </insert>
+
+    <select id="selectBylineidAndZxhbarAndZpgdbar" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from zwipq
+        <where>
+            LINE_ID = #{line_id}
+            and ZXHBAR = #{zxhbar}
+            and ZPGDBAR = #{zpgdbar}
+            and ZREMADE = 0
+        </where>
+        ORDER BY Q_SENQ DESC ;
+    </select>
+
+    <select id="selectBylineforjjqj" parameterType="yj.core.zwipq.dto.Zwipq" resultMap="BaseResultMap2">
+        SELECT * FROM zwipq
+        <where>
+            LINE_ID = #{lineId}
+            and ZZXKL = 0
+            and ZQJKL = 0
+            and ZOFFL = 0
+            and STATUS = 0
+            and ZGJBAR is NULL
+            AND ZREMADE = 0
+        </where>
+        order by SFFLG asc;
+    </select>
+
+    <select id="selectForqj" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from zwipq
+        <where>
+            LINE_ID = #{line_id}
+            and SFFLG = #{sfflg}
+            and ZZXKL = 0
+            AND ZQJKL = 0
+            AND ZOFFL = 0
+            AND STATUS = 0
+            and ZGJBAR is NULL
+            AND ZREMADE = 0
+        </where>
+        ORDER  BY Q_SENQ DESC ;
+    </select>
+
+    <update id="updateForQj" parameterType="yj.core.zwipq.dto.Zwipq">
+        update zwipq set ZQJKL = #{zqjkl},
+        LAST_UPDATED_BY = #{lastUpdatedBy},
+        LAST_UPDATED_DATE = #{lastUpdatedDate}
+        <where>
+            ZSXJLH = #{zsxjlh}
+        </where>
+    </update>
+
+    <select id="selectByLineid" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from zwipq
+        <where>
+            LINE_ID = #{line_id}
+            and ZZXKL = 0
+            AND ZQJKL = 0
+            AND ZOFFL = 0
+            AND STATUS = 0
+            and ZGJBAR IS NULL
+            AND ZREMADE = 0
+        </where>
+        ORDER BY Q_SENQ DESC;
+    </select>
+
+    <update id="updateZqjklAndQenq" parameterType="yj.core.zwipq.dto.Zwipq">
+        update zwipq set ZQJKL = #{zqjkl},
+                         Q_SENQ = #{qsenq},
+                LAST_UPDATED_DATE = #{lastUpdatedDate},
+                LAST_UPDATED_BY  = #{lastUpdatedBy}
+        <where>
+            ZSXJLH = #{zsxjlh}
+        </where>
+    </update>
+
+    <update id="updateQsenq" parameterType="yj.core.zwipq.dto.Zwipq">
+        update zwipq set Q_SENQ = #{qsenq},
+                        LAST_UPDATED_DATE = #{lastUpdatedDate},
+                LAST_UPDATED_BY  = #{lastUpdatedBy}
+                <where>
+                    ZSXJLH = #{zsxjlh}
+                </where>
+    </update>
+
+    <select id="selectById" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from zwipq
+        <where>ZSXJLH = #{zwipqid}</where>
+    </select>
+
+    <select id="selectForJjxx" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from zwipq
+        <where>
+            LINE_ID = #{line_id}
+            and SHIFT = #{classgrp}
+            and ZZXKL != 1
+            AND ZOFFL != 1
+            AND ZQJKL != 1
+            AND STATUS != 1
+            AND ZREMADE = 0
+        </where>
+        order by Q_SENQ ASC;
+    </select>
+
+    <update id="updateZoffl" parameterType="yj.core.zwipq.dto.Zwipq">
+        update zwipq set ZOFFL = #{zoffl},
+                         LAST_UPDATED_DATE = #{lastUpdatedDate},
+                         LAST_UPDATED_BY = #{lastUpdatedBy}
+                         <where>
+                             ZSXJLH = #{zsxjlh}
+                         </where>
+    </update>
+</mapper>

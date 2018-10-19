@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.crhd.mapper.CrhdMapper">
+    <resultMap id="BaseResultMap" type="yj.core.crhd.dto.Crhd">
+        <result column="OBJID" property="objid" jdbcType="VARCHAR" />
+        <result column="WERKS" property="werks" jdbcType="VARCHAR" />
+        <result column="ARBPL" property="arbpl" jdbcType="VARCHAR" />
+        <result column="VERWE" property="verwe" jdbcType="VARCHAR" />
+        <result column="LVORM" property="lvorm" jdbcType="VARCHAR" />
+        <result column="AEDAT" property="aedat" jdbcType="DATE" />
+        <result column="VERAN" property="veran" jdbcType="VARCHAR" />
+        <result column="KETXT" property="ketxt" jdbcType="VARCHAR" />
+        <result column="ATTR1" property="attr1" jdbcType="VARCHAR" />
+        <result column="ATTR2" property="attr2" jdbcType="VARCHAR" />
+        <result column="ATTR3" property="attr3" jdbcType="VARCHAR" />
+        <result column="ATTR4" property="attr4" jdbcType="VARCHAR" />
+        <result column="ATTR5" property="attr5" jdbcType="VARCHAR" />
+        <result column="ATTR6" property="attr6" jdbcType="VARCHAR" />
+        <result column="ATTR7" property="attr7" jdbcType="VARCHAR" />
+    </resultMap>
+
+
+</mapper>

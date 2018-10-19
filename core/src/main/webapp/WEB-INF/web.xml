@@ -176,6 +176,31 @@
         <url-pattern>/</url-pattern>
     </servlet-mapping>
 
+
+    <!--<servlet>-->
+        <!--<servlet-name>CxfPublishServlet</servlet-name>-->
+        <!--<servlet-class>yj.core.webservice_server.CxfPublishServlet</servlet-class>-->
+        <!--<load-on-startup>1</load-on-startup>-->
+    <!--</servlet>-->
+
+    <!--<servlet-mapping>-->
+        <!--<servlet-name>CxfPublishServlet</servlet-name>-->
+        <!--<url-pattern>/ws1/*</url-pattern>-->
+    <!--</servlet-mapping>-->
+
+    <servlet>
+        <servlet-name>CxfPublishServlet</servlet-name>
+        <servlet-class>yj.core.webservice_server.WebServlet</servlet-class>
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>CxfPublishServlet</servlet-name>
+        <url-pattern>/ws1/*</url-pattern>
+    </servlet-mapping>
+
+
+
     <!-- metrics.servlet -->
     <servlet>
         <servlet-name>metrics</servlet-name>

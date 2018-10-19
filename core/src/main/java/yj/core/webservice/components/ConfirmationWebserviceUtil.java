@@ -27,12 +27,12 @@ public class ConfirmationWebserviceUtil{
         SIPP001SenderSync port = ss.getHTTPPort();
         Map<String, Object> reqCtxt = ((javax.xml.ws.BindingProvider) port).getRequestContext();
         //pro
-        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
-        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "YJhap201707@CQ");
+//        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
+//        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "YJhap201707@CQ");
 
         //dev
-        /*reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
-        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "Yjsap123@CQ");*/
+        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
+        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "Yjsap123@CQ");
 
 
 
@@ -67,6 +67,14 @@ public class ConfirmationWebserviceUtil{
         item.setRSPOS(params.getRSPOS());
         item.setRSNUM(params.getRSNUM());
         item.setREVERSE(params.getREVERSE());
+        item.setAttr1(params.getATTR1());
+        item.setAttr2(params.getATTR2());
+        item.setAttr3(params.getATTR3());
+        item.setAttr4(params.getATTR4());
+        item.setAttr5(params.getATTR5());
+        item.setAttr6(params.getATTR6());
+        item.setAttr7(params.getATTR7());
+        item.setUserName(params.getUSERNAME());
 
         /*item.setPWERK(inputLog.getPlant());
         item.setAUFNR(inputLog.getOrderno());

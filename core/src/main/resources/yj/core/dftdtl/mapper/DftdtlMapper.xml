@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.dftdtl.mapper.DftdtlMapper">
+    <resultMap id="BaseResultMap" type="yj.core.dftdtl.dto.Dftdtl">
+        <result column="WERKS" property="werks" jdbcType="VARCHAR" />
+        <result column="MATNR" property="matnr" jdbcType="VARCHAR" />
+        <result column="TLEVELCODE" property="tlevelcode" jdbcType="VARCHAR" />
+        <result column="ZTEXT" property="ztext" jdbcType="VARCHAR" />
+        <result column="CODE" property="code" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="selectForLov" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select TLEVELCODE,
+                ZTEXT,
+               MATNR
+               FROM  sap_dftdtl
+               <where>
+                   1 = 1
+                   <if test="matnr != null">
+                       and MATNR = #{matnr}
+                   </if>
+                   <if test="tlevelcode != null">
+                       and TLEVELCODE = #{tlevelcode}
+                   </if>
+                   <if test="code != null">
+                       and CODE = #{code}
+                   </if>
+               </where>
+    </select>
+</mapper>

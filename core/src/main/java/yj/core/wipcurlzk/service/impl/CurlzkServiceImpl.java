@@ -1,0 +1,33 @@
+package yj.core.wipcurlzk.service.impl;
+
+import com.hand.hap.system.service.impl.BaseServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import yj.core.wipcurlzk.dto.Curlzk;
+import yj.core.wipcurlzk.mapper.CurlzkMapper;
+import yj.core.wipcurlzk.service.ICurlzkService;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
+import java.util.List;
+
+@Service
+@Transactional
+public class CurlzkServiceImpl extends BaseServiceImpl<Curlzk> implements ICurlzkService{
+    @Autowired
+    private CurlzkMapper curlzkMapper;
+    @Override
+    public Curlzk selectById(Long line_id,String classgrp) {
+        return curlzkMapper.selectById(line_id,classgrp);
+    }
+
+    @Override
+    public int updateZxhbar(Curlzk dto) {
+        return curlzkMapper.updateZxhbar(dto);
+    }
+
+    @Override
+    public List<Curlzk> selectAllLinesforZxhbar(Long line_id) {
+        return curlzkMapper.selectAllLinesforZxhbar(line_id);
+    }
+}

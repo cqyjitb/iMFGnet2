@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.xhcard.mapper.XhcardMapper">
+    <resultMap id="BaseResultMap" type="yj.core.xhcard.dto.Xhcard">
+        <result column="WERKS" property="werks" jdbcType="VARCHAR" />
+        <result column="MATNR" property="matnr" jdbcType="VARCHAR" />
+        <result column="CHARG" property="charg" jdbcType="VARCHAR" />
+        <result column="ZXHNUM" property="zxhnum" jdbcType="VARCHAR" />
+        <result column="ZXHZT" property="zxhzt" jdbcType="VARCHAR" />
+        <result column="ZXHZT2" property="zxhzt2" jdbcType="VARCHAR" />
+        <result column="LGORT" property="lgort" jdbcType="VARCHAR" />
+        <result column="MENGE" property="menge" jdbcType="VARCHAR" />
+        <result column="MEINS" property="meins" jdbcType="VARCHAR" />
+        <result column="ZXHWZ" property="zxhwz" jdbcType="VARCHAR" />
+        <result column="AUFNR" property="aufnr" jdbcType="VARCHAR" />
+        <result column="ZXHBAR" property="zxhbar" jdbcType="VARCHAR" />
+        <result column="ZJYY" property="zjyy" jdbcType="VARCHAR" />
+        <result column="ZSCBC" property="zscbc" jdbcType="VARCHAR" />
+        <result column="ZSCX" property="zscx" jdbcType="VARCHAR" />
+        <result column="ZMNUM" property="zmnum" jdbcType="VARCHAR" />
+        <result column="ZSCTPTM" property="zsctptm" jdbcType="VARCHAR" />
+        <result column="ZTXT" property="ztxt" jdbcType="VARCHAR" />
+        <result column="ZBQBD" property="zbqbd" jdbcType="VARCHAR" />
+        <result column="CHARGKC" property="chargkc" jdbcType="VARCHAR" />
+        <result column="ZSXWC" property="zsxwc" jdbcType="VARCHAR" />
+        <result column="LINE_ID" property="lineid" jdbcType="VARCHAR" />
+        <result column="CREATION_DATE" property="creationDate" jdbcType="DATE" />
+        <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
+        <result column="LAST_UPDATE_DATE" property="lastUpdatedDate" jdbcType="DATE" />
+        <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
+    </resultMap>
+
+    <insert id="insertXhcard" parameterType="yj.core.xhcard.dto.Xhcard">
+        INSERT INTO sap_xhcard(WERKS,MATNR,CHARG,ZXHNUM,ZXHZT,ZXHZT2,LGORT,MENGE,MEINS,ZXHWZ,AUFNR,ZXHBAR,ZJYY,ZSCBC,ZSCX,ZMNUM,ZSCTPTM,ZTXT,ZBQBD,CHARGKC,CREATION_DATE,CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY)VALUES
+        (#{werks},#{matnr},#{charg},#{zxhnum},#{zxhzt},#{zxhzt2},#{lgort},#{menge},#{meins},#{zxhwz},#{aufnr},#{zxhbar},#{zjyy},#{zscbc},#{zscx},#{zmnum},#{zsctptm},#{ztxt},#{zbqbd},#{chargkc},#{creationDate},#{createdBy},#{lastUpdatedDate},#{lastUpdatedBy})
+    </insert>
+
+    <update id="updateXhcard" parameterType="yj.core.xhcard.dto.Xhcard">
+        update sap_xhcard set WERKS = #{werks},
+                              MATNR = #{matnr},
+                              CHARG = #{charg},
+                              ZXHNUM = #{zxhnum},
+                              ZXHZT = #{zxhzt},
+                              ZXHZT2 = #{zxhzt2},
+                              LGORT = #{lgort},
+                              MENGE = #{menge},
+                              MEINS = #{meins},
+                              ZXHWZ = #{zxhwz},
+                              AUFNR = #{aufnr},
+                              ZXHBAR = #{zxhbar},
+                              ZJYY = #{zjyy},
+                              ZSCBC = #{zscbc},
+                              ZSCX = #{zscx},
+                              ZMNUM = #{zmnum},
+                              ZSCTPTM = #{zsctptm},
+                              ZTXT = #{ztxt},
+                              ZBQBD = #{zbqbd},
+                              CHARGKC = #{chargkc},
+                              CREATION_DATE = #{creationDate},
+                              CREATED_BY = #{createdBy}
+                              <where>
+                                  WERKS = #{werks}
+                                  and MATNR = #{matnr}
+                                  and CHARG = #{charg}
+                                  and ZXHNUM = #{zxhnum}
+                              </where>
+
+    </update>
+    <delete id="deleteXhcard" parameterType="yj.core.xhcard.dto.Xhcard">
+        DELETE FROM sap_xhcard
+        <where>
+            WERKS = #{werks}
+            and MATNR = #{matnr}
+            and CHARG = #{charg}
+            and ZXHNUM = #{zxhnum}
+            and AUFNR = #{aufnr}
+        </where>
+    </delete>
+
+    <select id="queryAfterSort" parameterType="yj.core.xhcard.dto.Xhcard" resultMap="BaseResultMap">
+        SELECT
+        DISTINCT
+        *
+        FROM sap_xhcard
+        <where>
+            1 = 1
+            <if test="zxhbar != null">
+              and ZXHBAR = #{zxhbar}
+            </if>
+            <if test="matnr != null">
+              AND MATNR = #{matnr}
+            </if>
+            <if test="aufnr != null">
+             AND  AUFNR = #{aufnr}
+            </if>
+            <if test="lgort != null">
+            AND  LGORT = #{lgort}
+            </if>
+            <if test="zscbc != null">
+            AND ZSCBC = #{zscbc}
+            </if>
+            <if test="zmnum != null">
+            AND ZMNUM = #{zmnum}
+            </if>
+            <if test="datestr != null">
+                and CREATION_DATE = #{datestr}
+            </if>
+            ORDER BY WERKS,MATNR,AUFNR,ZXHBAR ASC
+        </where>
+    </select>
+
+    <select id="selectByXhAndAufnr" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT * FROM sap_xhcard
+        <where>
+          ZXHBAR = #{zxhbar}
+        </where>
+    </select>
+
+    <select id="selectByBacode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT * FROM sap_xhcard
+        <where>
+            ZXHBAR = #{zxhbar}
+        </where>
+    </select>
+
+    <select id="selectByMatnrAndLgortSort" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT * FROM  sap_xhcard
+        <where>
+            MATNR = #{matnr}
+            and LGORT = #{lgort}
+            and ( ZSXWC IS  NULL OR ZSXWC = '')
+        </where>
+        ORDER BY CHARGKC ASC;
+    </select>
+
+    <select id="selectMaxCharg" parameterType="java.lang.String" resultType="java.lang.String">
+        select MAX(CHARG) FROM sap_xhcard
+        <where>
+            MATNR = #{matnr}
+            and CHARG like #{charg}
+        </where>
+    </select>
+    <update id="updateZsxwc" parameterType="yj.core.xhcard.dto.Xhcard">
+        UPDATE sap_xhcard SET ZSXWC = #{zsxwc}
+        <where>
+            WERKS = #{werks}
+            and MATNR = #{matnr}
+            and CHARG = #{charg}
+            and ZXHNUM = #{zxhnum}
+        </where>
+    </update>
+
+</mapper>

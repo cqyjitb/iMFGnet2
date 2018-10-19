@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.zrwklist.mapper.ZrwklistMapper">
+    <resultMap id="BaseResultMap" type="yj.core.zrwklist.dto.Zrwklist">
+        <result column="ZRWKNUM" property="zrwknum" jdbcType="VARCHAR" />
+        <result column="ITEM" property="item" jdbcType="VARCHAR" />
+        <result column="ZQJJLH" property="zqjjlh" jdbcType="VARCHAR" />
+        <result column="ZPGDBAR" property="zpgdbar" jdbcType="VARCHAR" />
+        <result column="VORNR" property="vornr" jdbcType="VARCHAR" />
+        <result column="ZXHBAR" property="zxhbar" jdbcType="VARCHAR" />
+        <result column="ZPGDBAR2" property="zpgdbar2" jdbcType="VARCHAR" />
+        <result column="MATNR" property="matnr" jdbcType="VARCHAR" />
+        <result column="MATNR2" property="matnr2" jdbcType="VARCHAR" />
+        <result column="ZGJBAR" property="zgjbar" jdbcType="VARCHAR" />
+        <result column="ZRNUM" property="zrnum" jdbcType="DECIMAL" />
+        <result column="GMEIN" property="gmein" jdbcType="VARCHAR" />
+        <result column="CHARG2" property="charg2" jdbcType="VARCHAR" />
+        <result column="CHARG" property="charg" jdbcType="VARCHAR" />
+        <result column="DIECD" property="diecd" jdbcType="VARCHAR" />
+        <result column="SFFLG" property="sfflg" jdbcType="VARCHAR" />
+        <result column="ZQXDM" property="zqxdm" jdbcType="VARCHAR" />
+        <result column="GSTRP" property="gstrp" jdbcType="DATE" />
+        <result column="ZBANZ" property="zbanz" jdbcType="VARCHAR" />
+        <result column="ZBANC" property="zbanc" jdbcType="VARCHAR" />
+        <result column="ZRWKTIMES" property="zrwktimes" jdbcType="DECIMAL" />
+        <result column="REVIEWC" property="reviewc" jdbcType="VARCHAR" />
+        <result column="MARK" property="mark" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <insert id="insertItem" parameterType="yj.core.zrwklist.dto.Zrwklist">
+        insert into wip_zrwklist(ZRWKNUM,ITEM,ZQJJLH,ZPGDBAR,VORNR,ZXHBAR,ZPGDBAR2,MATNR,MATNR2,ZGJBAR,ZRNUM,GMEIN,CHARG2,CHARG,DIECD,SFFLG,ZQXDM,GSTRP,ZBANZ,ZBANC,ZRWKTIMES,REVIEWC,MARK,CREATION_DATE,CREATED_BY)
+        VALUES (#{zrwknum},#{item},#{zqjjlh},#{zpgdbar},#{vornr},#{zxhbar},#{zpgdbar2},#{matnr},#{matnr2},#{zgjbar},#{zrnum},#{gmein},#{charg2},#{charg},#{diecd},#{sfflg},
+        #{zqxdm},#{gstrp},#{zbanz},#{zbanc},#{zrwktimes},#{reviewc},#{mark},#{creationDate},#{createdBy})
+    </insert>
+
+
+</mapper>
