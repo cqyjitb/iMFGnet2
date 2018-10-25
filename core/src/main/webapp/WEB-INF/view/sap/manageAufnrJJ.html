@@ -689,6 +689,17 @@
                                                     }
                                                 },
                                                 {
+                                                    field: "attr1",
+                                                    title: '生产日期',
+                                                    width: 120,
+                                                    headerAttributes: {
+                                                        style: "text-align: center;"
+                                                    },
+                                                    attributes: {
+                                                        style: "text-align: center;"
+                                                    }
+                                                },
+                                                {
                                                     field: "werks",
                                                     title: '工厂',
                                                     width: 80,
@@ -1021,7 +1032,8 @@
                                                             relaufnr:selections2[index].relaufnr,
                                                             relzpgdbar:selections2[index].relzpgdbar,
                                                             ztype:selections2[index].ztype,
-                                                            mtlbd:selections2[index].mtlbd
+                                                            mtlbd:selections2[index].mtlbd,
+                                                            attr1:selections2[index].attr1
                                                         }
                                                     });
                                                     dataarray[i] = viewModel3.model.toJSON();

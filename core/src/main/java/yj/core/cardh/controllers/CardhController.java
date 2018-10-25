@@ -297,6 +297,7 @@ public class CardhController
                 cardh.setStatus("CRTD");
                 cardh.setStatus2("");
                 cardh.setShift("A");
+                cardh.setAttr1(afko.getProductdate().substring(0,10));
                 listCardh.add(cardh);
             }
 
@@ -334,6 +335,7 @@ public class CardhController
                 cardh.setStatus("CRTD");
                 cardh.setStatus2("");
                 cardh.setShift("B");
+                cardh.setAttr1(afko.getProductdate().substring(0,10));
                 listCardh.add(cardh);
             }
             if (afko.getIsC().equals("Y")) {
@@ -370,6 +372,7 @@ public class CardhController
                 cardh.setStatus("CRTD");
                 cardh.setStatus2("");
                 cardh.setShift("C");
+                cardh.setAttr1(afko.getProductdate().substring(0,10));
                 listCardh.add(cardh);
             }
             return new ResponseData(listCardh);
@@ -990,7 +993,7 @@ public class CardhController
                 cardh.setShift(dto.get(i).getShift());
                 cardh.setCreatedBy(Long.valueOf(createdBy));
                 cardh.setCreationDate(new Date());
-
+                cardh.setAttr1(dto.get(i).getAttr1());
 
                 Cardhst cardhst = new Cardhst();
                 cardhst.setZpgdbar(dto.get(i).getZpgdbar());
@@ -1007,7 +1010,7 @@ public class CardhController
                         if (j ==  0){
                             cardh.setStwks(listAfvc.get(j).getArbpl());
                         }
-
+                         if (listAfvc.get(j).getSteus().equals("ZP04")){
                             Cardt cardt = new Cardt();
                             cardt.setZpgdbar(cardh.getZpgdbar());
                             cardt.setZpgdbh(cardh.getZpgdbh());
@@ -1025,7 +1028,7 @@ public class CardhController
                             cardt.setCreationDate(new Date());
                             cardt.setConfirmed("");
                             listCardt.add(cardt);
-                       // }
+                        }
                     }
                 }
                 listCardh.add(cardh);

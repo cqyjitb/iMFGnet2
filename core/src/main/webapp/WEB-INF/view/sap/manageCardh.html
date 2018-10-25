@@ -463,6 +463,17 @@
                         style: "text-align: center;"
                     }
                 },{
+                    field: "attr1",
+                    title: '生产日期',
+                    width: 100,
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    },
+                    attributes: {
+                        style: "text-align: center;"
+                    }
+                },
+                {
                     field: "gstrp",
                     title: '订单开始日期',
                     width: 100,
@@ -744,7 +755,12 @@
                                          LODOP.ADD_PRINT_TEXTA("V_MATNR","32.81mm","21.17mm","37.57mm","5.29mm",matnr);
                                          LODOP.ADD_PRINT_TEXT("42.6mm","21.96mm","102.39mm","5.29mm",maktx);
                                          LODOP.ADD_PRINT_TEXT("52.39mm","23.55mm","26.46mm","5.29mm",printdate);
-                                         LODOP.ADD_PRINT_TEXT("52.12mm","83.61mm","26.46mm","5.29mm",rows[0].gltrp);
+                                         if (auart.substring(0,1) == "Y"){
+                                             LODOP.ADD_PRINT_TEXT("52.12mm","83.61mm","26.46mm","5.29mm",rows[0].gltrp);
+                                         }else{
+                                             LODOP.ADD_PRINT_TEXT("52.12mm","83.61mm","26.46mm","5.29mm",rows[0].attr1);
+                                         }
+
 
                                          LODOP.ADD_PRINT_TEXT("62.44mm","2.91mm","16.93mm","5.29mm","铝液批次");
                                          LODOP.ADD_PRINT_TEXT("62.18mm","61.65mm","17.2mm","5.29mm","熔炼炉号");
