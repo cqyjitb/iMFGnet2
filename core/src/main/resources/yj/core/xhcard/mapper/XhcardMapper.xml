@@ -184,6 +184,7 @@
     <!-- 查询机加线边库库存 -->
     <select id="selectXbkc" parameterType="yj.core.xhcard.dto.Xhcard" resultMap="BaseResultMap1">
         select sap_xhcard.ZXHBAR as bar,
+               sap_xhcard.WERKS as werks,
                sap_xhcard.MATNR as matnr,
                sap_xhcard.ZXHNUM as zxhnum,
                sap_xhcard.AUFNR as aufnr,
