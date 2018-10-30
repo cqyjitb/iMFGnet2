@@ -258,6 +258,10 @@ public class XhcardController
         if (curxhcard == null) {
             //第二步 根据箱号获取流转卡记录
             cardh = cardhService.selectByZxhbar(xhcard.getAufnr(), xhcard.getZxhnum());
+            if (cardh.getStatus().equals("HOLD")){
+                rs.setMessage("当前箱号对应的流转卡处于HOLD状态，不允许继续上线！");
+                rs.setSuccess(false);
+            }
             cardhjj = cardhService.selectByBarcode(zpgdbar);
 
             //第三步 根据订单查询末工序记录
@@ -354,17 +358,21 @@ public class XhcardController
                 //取当前毛坯框流转卡
                 Cardh curcardh = cardhService.selectByZxhbar(curxhcard.getAufnr(),curxhcard.getZxhnum());
                 //判断当前毛坯框码是否完成上线
-                if (curxhcard.getZsxwc() == null && !curcardh.getStatus().equals("HOLD")) {
-                    rs.setSuccess(false);
-                    rs.setMessage("上一毛坯框：" + curlzk.getZxhbar() + " 未完成上线！请使用该框码继续上线！");
-                    return rs;
+
+                if (!curcardh.getStatus().equals("HOLD")){
+                    if (curxhcard.getZsxwc() == null ) {
+                        rs.setSuccess(false);
+                        rs.setMessage("上一毛坯框：" + curlzk.getZxhbar() + " 未完成上线！请使用该框码继续上线！");
+                        return rs;
+                    }
+
+                    if (!curxhcard.getZsxwc().equals("X")) {
+                        rs.setSuccess(false);
+                        rs.setMessage("上一毛坯框：" + curlzk.getZxhbar() + " 未完成上线！请使用该框码继续上线！");
+                        return rs;
+                    }
                 }
 
-                if (!curxhcard.getZsxwc().equals("X") && !curcardh.getStatus().equals("HOLD")) {
-                    rs.setSuccess(false);
-                    rs.setMessage("上一毛坯框：" + curlzk.getZxhbar() + " 未完成上线！请使用该框码继续上线！");
-                    return rs;
-                }
             }
             //第二步 根据箱号获取流转卡记录
 
