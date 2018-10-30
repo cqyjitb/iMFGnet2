@@ -448,7 +448,7 @@
     $('#createZrwk').on('click', function (){
         //检查是否勾选记录
         var l_error = ""
-        var a = [];
+        var dataarray = new Array();
         var grid =  $("#Grid").data("kendoGrid"),
             selections = grid.selectedDataItems();
         if (selections.length > 0){
@@ -467,38 +467,40 @@
                         };
                     }
                 }
-                var data={
-                    lineId:selections[i].lineId,
-                    zbanz:selections[i].zbanz,
-                    zbanc:selections[i].zbanc,
-                    zpgdbar:selections[i].zpgdbar,
-                    zbpjc:selections[i].zbpjc,
-                    matnr2:selections[i].matnr2,
-                    zgjbar:selections[i].zgjbar,
-                    sfflg:selections[i].sfflg,
-                    diecd:selections[i].diecd,
-                    charg2:selections[i].charg2,
-                    charg:selections[i].charg,
-                    zrnum:selections[i].zrnum,
-                    rcode:selections[i].rcode,
-                    vornr_old:selections[i].vornr_old,
-                    vornr:selections[i].vornr,
-                    reviewc:selections[i].reviewc,
-                    mark:selections[i].mark,
-                    zxhbar:selections[i].zxhbar,
-                    zpgdbar2:selections[i].zpgdbar2,
-                    arbpr:selections[i].arbpr,
-                    zoplo:selections[i].zoplo,
-                    zqjjlh:selections[i].zqjjlh,
-                    udtype:selections[i].udtype,
-                    matnr:selections[i].matnr,
-                    gmein:selections[i].gmein,
-                    gstrp:selections[i].gstrp,
-                    zotype:selections[i].zotype,
-                    zqxdm:selections[i].zqxdm,
-                    zrwktimes:selections[i].zrwktimes
-                };
-                a.push(data);
+                var viewModel3 = kendo.observable({
+                    model: {
+                        lineId:selections[i].lineId,
+                        zbanz:selections[i].zbanz,
+                        zbanc:selections[i].zbanc,
+                        zpgdbar:selections[i].zpgdbar,
+                        zbpjc:selections[i].zbpjc,
+                        matnr2:selections[i].matnr2,
+                        zgjbar:selections[i].zgjbar,
+                        sfflg:selections[i].sfflg,
+                        diecd:selections[i].diecd,
+                        charg2:selections[i].charg2,
+                        charg:selections[i].charg,
+                        zrnum:selections[i].zrnum,
+                        rcode:selections[i].rcode,
+                        vornr_old:selections[i].vornr_old,
+                        vornr:selections[i].vornr,
+                        reviewc:selections[i].reviewc,
+                        mark:selections[i].mark,
+                        zxhbar:selections[i].zxhbar,
+                        zpgdbar2:selections[i].zpgdbar2,
+                        arbpr:selections[i].arbpr,
+                        zoplo:selections[i].zoplo,
+                        zqjjlh:selections[i].zqjjlh,
+                        udtype:selections[i].udtype,
+                        matnr:selections[i].matnr,
+                        gmein:selections[i].gmein,
+                        gstrp:selections[i].gstrp,
+                        zotype:selections[i].zotype,
+                        zqxdm:selections[i].zqxdm,
+                        zrwktimes:selections[i].zrwktimes
+                    }
+                });
+                dataarray[i] = viewModel3.model.toJSON();
             }
             if (l_error != ""){
                 kendo.ui.showErrorDialog({
@@ -506,16 +508,14 @@
                     message: l_error
                 });
             }else{
+                var data = JSON.stringify(dataarray);
                 dMask2.style.display = "";//添加遮罩
                 $.ajax({
                     url:"${base.contextPath}/wip/zrwkhead/createZrwk",
-                    type: "get",
-                    data:{
-                        "dto":kendo.stringify(a)
-                    },
+                    type: "POST",
+                    data:data,
                     async: false,
                     contentType: "application/json; charset=utf-8",
-                    datatype:"json",
                     success: function (res) {
                         if (res.code == 'S'){
                             $('#Grid').data('kendoGrid').dataSource.page(1);
@@ -533,6 +533,7 @@
                                 title: '错误',
                                 message: res.message
                             });
+                            dMask2.style.display = "none"
                         }
                     },
                     error:function (res) {
@@ -545,6 +546,7 @@
                 title: '错误',
                 message: "请选择需要进行返工返修处理的记录！"
             });
+            dMask2.style.display = "none"
         }
     });
 

@@ -530,7 +530,7 @@
     $('#createZud').on('click', function (){
         //检查是否勾选记录
         var l_error = ""
-        var a = [];
+        var dataarray = new Array();
         var grid =  $("#Grid").data("kendoGrid"),
             selections = grid.selectedDataItems();
         if (selections.length > 0){
@@ -555,7 +555,8 @@
                     l_error = "不合格品描述为必输选项！"
                     break;
                 }
-                    var data={
+                var viewModel3 = kendo.observable({
+                    model: {
                         lineId:selections[i].lineId,
                         zbanz:selections[i].zbanz,
                         zbanc:selections[i].zbanc,
@@ -587,7 +588,9 @@
                         gmein:selections[i].gmein,
                         gstrp:selections[i].gstrp
                     }
-                    a.push(data);
+                });
+                    dataarray[i] = viewModel3.model.toJSON();
+
             }
                 if (l_error != ""){
                     kendo.ui.showErrorDialog({
@@ -595,16 +598,14 @@
                         message: l_error
                     });
                 }else{
+                    var data = JSON.stringify(dataarray);
                     dMask2.style.display = "";//添加遮罩
                     $.ajax({
                         url:"${base.contextPath}/wip/zudhead/createZud",
-                        type: "get",
-                        data:{
-                            "dto":kendo.stringify(a)
-                        },
+                        type: "POST",
+                        data:data,
                         async: false,
                         contentType: "application/json; charset=utf-8",
-                        datatype:"json",
                         success: function (res) {
                             if (res.code == 'S'){
                                 $('#Grid').data('kendoGrid').dataSource.page(1);
@@ -622,6 +623,7 @@
                                     title: '错误',
                                     message: res.message
                                 });
+                                dMask2.style.display = "none"
                                 $('#Grid').data('kendoGrid').dataSource.page(1);
                                 Hap.autoResizeGrid("#Grid");
                             }
@@ -636,6 +638,7 @@
                 title: '错误',
                 message: "请选择需要进行处理的不合格品记录！"
             });
+            dMask2.style.display = "none"
         }
     });
 </script>
