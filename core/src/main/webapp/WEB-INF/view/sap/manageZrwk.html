@@ -203,7 +203,8 @@
             }
         },
         batch: true,
-        pageSize: 10,
+        serverPaging: true,
+        //pageSize: 10,
         schema: {
             data: 'rows',
             total: 'total',
@@ -241,8 +242,9 @@
         scrollable: true,
         navigatable: false,
         selectable: 'rowbox,multiple',
-        pageable: {
-            pageSizes: [20, 50, 100, 500, 1000],
+        pageable:{
+            pageSizes: ['all'],
+            refresh: true
         },
         toolbar: [
             {
@@ -534,6 +536,8 @@
                                 message: res.message
                             });
                             dMask2.style.display = "none"
+                            $('#Grid').data('kendoGrid').dataSource.page(1);
+                            Hap.autoResizeGrid("#Grid");
                         }
                     },
                     error:function (res) {
