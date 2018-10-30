@@ -30,6 +30,25 @@
         <result column="LAST_UPDATE_DATE" property="lastUpdatedDate" jdbcType="DATE" />
         <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
     </resultMap>
+    <resultMap id="BaseResultMap1" type="yj.core.xhcard.dto.Xhcard">
+        <result column="WERKS" property="werks" jdbcType="VARCHAR" />
+        <result column="MATNR" property="matnr" jdbcType="VARCHAR" />
+        <result column="ZXHNUM" property="zxhnum" jdbcType="VARCHAR" />
+        <result column="AUFNR" property="aufnr" jdbcType="VARCHAR" />
+        <result column="ZMNUM" property="zmnum" jdbcType="VARCHAR" />
+        <result column="CHARGKC" property="chargkc" jdbcType="VARCHAR" />
+        <result column="ZSXWC" property="zsxwc" jdbcType="VARCHAR" />
+        <result column="ZSXNUM" property="zsxnum" jdbcType="VARCHAR" />
+        <result column="PKG_LINE_ID" property="pkgLineId" jdbcType="VARCHAR" />
+        <result column="SMENGE" property="smenge" jdbcType="VARCHAR" />
+        <result column="BMENGE" property="bmenge" jdbcType="VARCHAR" />
+        <result column="ZPGDBAR" property="zpgdbar" jdbcType="VARCHAR" />
+        <result column="SFFLG" property="sfflg" jdbcType="VARCHAR" />
+        <result column="ATTR1" property="attr1" jdbcType="VARCHAR" />
+        <result column="MAKTX" property="maktx" jdbcType="VARCHAR" />
+        <result column="DLSUM" property="dlsum" jdbcType="VARCHAR" />
+        <result column="DESCRIPTIONS" property="descriptions" jdbcType="VARCHAR" />
+    </resultMap>
 
     <insert id="insertXhcard" parameterType="yj.core.xhcard.dto.Xhcard">
         INSERT INTO sap_xhcard(WERKS,MATNR,CHARG,ZXHNUM,ZXHZT,ZXHZT2,LGORT,MENGE,MEINS,ZXHWZ,AUFNR,ZXHBAR,ZJYY,ZSCBC,ZSCX,ZMNUM,ZSCTPTM,ZTXT,ZBQBD,CHARGKC,CREATION_DATE,CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY)VALUES
@@ -56,9 +75,20 @@
                               ZSCTPTM = #{zsctptm},
                               ZTXT = #{ztxt},
                               ZBQBD = #{zbqbd},
-                              CHARGKC = #{chargkc},
-                              CREATION_DATE = #{creationDate},
-                              CREATED_BY = #{createdBy}
+                              CHARGKC = #{chargkc}
+                              <if test="creationDate != null">
+                                  ,CREATION_DATE = #{creationDate}
+                              </if>
+                              <if test="createdBy != null">
+                                  ,CREATED_BY = #{createdBy}
+                              </if>
+                              <if test="lastUpdatedDate != null">
+                                  ,LAST_UPDATE_DATE = #{lastUpdatedDate}
+                              </if>
+                              <if test="lastUpdatedBy != null">
+                                  ,LAST_UPDATED_BY = #{lastUpdatedBy}
+                              </if>
+
                               <where>
                                   WERKS = #{werks}
                                   and MATNR = #{matnr}
@@ -150,5 +180,53 @@
             and ZXHNUM = #{zxhnum}
         </where>
     </update>
+
+    <!-- 查询机加线边库库存 -->
+    <select id="selectXbkc" parameterType="yj.core.xhcard.dto.Xhcard" resultMap="BaseResultMap1">
+        select sap_xhcard.ZXHBAR as bar,
+               sap_xhcard.MATNR as matnr,
+               sap_xhcard.ZXHNUM as zxhnum,
+               sap_xhcard.AUFNR as aufnr,
+			   sap_xhcard.ZMNUM as zmnum,
+               sap_xhcard.CHARGKC as chargkc,
+               sap_xhcard.ZSXWC as zsxwc,
+               sap_xhcard.LGORT as lgort,
+               sap_xhcard.MENGE as menge,
+             ( select sum(ZSXNUM) from zwipq WHERE ZXHBAR = bar  ) AS zsxnum,
+             ( select sum(ZSXNUM) from zwipq where ZXHBAR = bar and ZREMADE = 0 AND ZZXKL = 0 AND ZQJKL = 0 ) AS dlsum,
+             ( select PKG_LINE_ID FROM zwipq where ZXHBAR = bar LIMIT 1) as pkgLineId,
+             ( select DESCRIPTIONS FROM wip_lines WHERE LINE_ID = pkgLineId) as descriptions,
+			 ( select sum(SMENGE) FROM sap_ztbc0018 where ZXHBAR = bar) AS smenge,
+			 ( select sum(BMENGE) FROM sap_ztbc0018 where ZXHBAR = bar) AS bmenge,
+             ( select CREATION_DATE FROM zwipq where ZXHBAR = bar ORDER by CREATION_DATE ASC LIMIT 1) AS attr1,
+			   sap_cardh.ZPGDBAR as zpgdbar,
+               sap_cardh.SFFLG as sfflg,
+               sap_marc.MAKTX as maktx
+               from sap_xhcard
+               LEFT JOIN sap_cardh on ( sap_cardh.AUFNR = sap_xhcard.AUFNR AND sap_cardh.MATNR = sap_xhcard.MATNR AND sap_cardh.ZXHNUM = sap_xhcard.ZXHNUM )
+               LEFT JOIN sap_marc on (sap_marc.MATNR = sap_xhcard.MATNR)
+               <where>
+                  1 = 1
+                   <if test="werks != null">
+                       and sap_xhcard.WERKS = #{werks}
+                   </if>
+                   <if test="lgort != null">
+                       and sap_xhcard.LGORT = #{lgort}
+                   </if>
+                   <if test="zxhbar != null">
+                       and sap_xhcard.ZXHBAR = #{zxhbar}
+                   </if>
+                   <if test="sfflg != null">
+                       and sap_xhcard.SFFLG = #{sfflg}
+                   </if>
+                   <if test="zsxwc != null">
+                       and ( sap_xhcard.ZSXWC IS NULL OR sap_xhcard.ZSXWC = '' )
+                   </if>
+                   <if test="matnr != null">
+                       and sap_xhcard.MATNR = #{matnr}
+                   </if>
+               </where>
+
+    </select>
 
 </mapper>
