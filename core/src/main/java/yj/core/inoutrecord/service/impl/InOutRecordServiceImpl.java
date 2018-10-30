@@ -123,8 +123,7 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
     }
 
     @Override
-    public List<InOutRecord> selectforZrwk(String line_id, String classgrp, String zotype, int page, int pagesize, IRequest iRequest) {
-        PageHelper.startPage(page, pagesize);
+    public List<InOutRecord> selectforZrwk(String line_id, String classgrp, String zotype,IRequest iRequest) {
         return inOutRecordMapper.selectforZrwk(line_id,classgrp,zotype);
     }
 }

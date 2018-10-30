@@ -54,7 +54,7 @@ import java.util.Map;
         service.batchDelete(dto);
         return new ResponseData();
     }
-    @RequestMapping(value = {"/wip/zrwkhead/createZrwk"},method = {RequestMethod.GET})
+    @RequestMapping(value = {"/wip/zrwkhead/createZrwk"},method = {RequestMethod.POST})
         @ResponseBody
         public ResponseData createZrwk(HttpServletRequest request,@RequestBody List<recPageDate> dto){
         ResponseData responseData = new ResponseData();

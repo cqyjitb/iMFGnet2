@@ -17,6 +17,6 @@ public interface IInOutRecordService extends IBaseService<InOutRecord>, ProxySel
     List<Zudlist> selectforZud(String line_id, String classgrp);
     InOutRecord selectById(String zqjjlh);
     int batchUpdateReflag(List<InOutRecord> list);
-    List<InOutRecord> selectforZrwk(String line_id,String classgrp,String zotype,int page,int pagesize,IRequest iRequest);
+    List<InOutRecord> selectforZrwk(String line_id,String classgrp,String zotype,IRequest iRequest);
 
 }

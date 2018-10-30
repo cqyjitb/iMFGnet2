@@ -101,14 +101,14 @@ public class InOutRecordController extends BaseController {
 
     @RequestMapping(value = "/inoutrecord/selectforZrwk")
     @ResponseBody
-    public ResponseData selectforZrwk(HttpServletRequest request,@RequestParam(defaultValue="1") int page, @RequestParam(defaultValue="10") int pageSize){
+    public ResponseData selectforZrwk(HttpServletRequest request){
         String line_id = request.getParameter("line_id");
         String classgrp = request.getParameter("classgrp");
         String zotype = request.getParameter("zotype");
         List<InOutRecord> list = new ArrayList<>();
         List<Zrwklist> listzrwk = new ArrayList<>();
         IRequest requestContext = createRequestContext(request);
-        list = service.selectforZrwk(line_id,classgrp,zotype,page,pageSize,requestContext);
+        list = service.selectforZrwk(line_id,classgrp,zotype,requestContext);
         if (list.size() > 0){
             for (int i = 0;i<list.size();i++){
                 Zrwklist zrwklist = new Zrwklist();
