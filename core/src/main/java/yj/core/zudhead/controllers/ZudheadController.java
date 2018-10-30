@@ -88,56 +88,15 @@ public class ZudheadController extends BaseController {
         return new ResponseData();
     }
 
-    @RequestMapping(value = {"/wip/zudhead/createZud"}, method = {RequestMethod.GET})
+    @RequestMapping(value = {"/wip/zudhead/createZud"}, method = {RequestMethod.POST})
     @ResponseBody
-    public ResponseData createZud(HttpServletRequest request) {
+    public ResponseData createZud(HttpServletRequest request,@RequestBody List<recPageData> a) {
         ResponseData responseData = new ResponseData();
         String createdBy = "" + request.getSession().getAttribute("userId");
-        String dto = request.getParameter("dto");
-        JSONArray jsonArray = JSONArray.fromObject(dto);
-        List<Map<String, Object>> mapListJson = (List) jsonArray;
-        List<recPageData> listrec = new ArrayList<>();
         List<Zudlist> listitem = new ArrayList<>();
         List<DTBAOGONGParameters> listparam = new ArrayList<>();
 
-
-        for (int i = 0; i < mapListJson.size(); i++) {
-            Map<String, Object> obj = mapListJson.get(i);
-            recPageData rec = new recPageData();
-            rec.setLineId(obj.get("lineId").equals("null") ? "" : obj.get("lineId").toString());
-            rec.setZbanc(obj.get("zbanc").equals("null") ? "" : obj.get("zbanc").toString());
-            rec.setZbanz(obj.get("zbanz").equals("null") ? "" : obj.get("zbanz").toString());
-            rec.setCharg(obj.get("charg").equals("null") ? "" : obj.get("charg").toString());
-            rec.setCharg2(obj.get("charg2").equals("null") ? "" : obj.get("charg2").toString());
-            rec.setDiecd(obj.get("diecd").equals("null") ? "" : obj.get("diecd").toString());
-            rec.setMark(obj.get("mark").toString().equals("null") ? "" : obj.get("mark").toString());
-            rec.setMatnr2(obj.get("matnr2").equals("null") ? "" : obj.get("matnr2").toString());
-            rec.setRcode(obj.get("rcode").equals("null") ? "" : obj.get("rcode").toString());
-            rec.setReviewc(obj.get("reviewc").equals("null") ? "" : obj.get("reviewc").toString());
-            rec.setRsname(obj.get("rsname").equals("null") ? "" : obj.get("rsname").toString());
-            rec.setZoplo(obj.get("zoplo").equals("null") ? "" : obj.get("zoplo").toString());
-            rec.setRspart(obj.get("rspart").equals("null") ? "" : obj.get("rspart").toString());
-            rec.setSfflg(obj.get("sfflg").equals("null") ? "" : obj.get("sfflg").toString());
-            rec.setVornr(obj.get("vornr").equals("null") ? "" : obj.get("vornr").toString());
-            rec.setVornr_old(obj.get("vornr_old").equals("null") ? "" : obj.get("vornr_old").toString());
-            rec.setZbpjc(obj.get("zbpjc").equals("null") ? "" : obj.get("zbpjc").toString());
-            rec.setZdnum(obj.get("zdnum").equals("null") ? "" : obj.get("zdnum").toString());
-            rec.setZgjbar(obj.get("zgjbar").equals("null") ? "" : obj.get("zgjbar").toString());
-            rec.setZissuetxt(obj.get("zissuetxt").equals("null") ? "" : obj.get("zissuetxt").toString());
-            rec.setZpgdbar(obj.get("zpgdbar").equals("null") ? "" : obj.get("zpgdbar").toString());
-            rec.setZxhbar(obj.get("zxhbar").equals("null") ? "" : obj.get("zxhbar").toString());
-            rec.setMatnr(obj.get("matnr").equals("null") ? "" : obj.get("matnr").toString());
-            rec.setArbpr(obj.get("arbpr").equals("null") ? "" : obj.get("arbpr").toString());
-            rec.setZqjjlh(obj.get("zqjjlh").equals("null") ? "" : obj.get("zqjjlh").toString());
-            rec.setZpgdbar2(obj.get("zpgdbar2").equals("null") ? "" : obj.get("zpgdbar2").toString());
-            rec.setUdtype(obj.get("udtype").equals("null") ? "" : obj.get("udtype").toString());
-            rec.setGmein(obj.get("gmein").equals("null") ? "" : obj.get("gmein").toString());
-            rec.setGstrp(obj.get("gstrp").equals("null") ? "" : obj.get("gstrp").toString());
-            rec.setReviewc(obj.get("reviewc").equals("null") ? "" : obj.get("reviewc").toString());
-            rec.setZqxdm(obj.get("zqxdm").equals("null") ? "" : obj.get("zqxdm").toString());
-            listrec.add(rec);
-        }
-        if (listrec.size() > 0) {
+        if (a.size() > 0) {
             //创建不合格审理单表头
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String curdate = df.format(new Date()).substring(0, 10).replaceAll("-", "");
@@ -160,63 +119,75 @@ public class ZudheadController extends BaseController {
             }
             zudhead.setZudnum(zudnum);
             zudhead.setUdtype("1");
-            zudhead.setLineId(listrec.get(0).getLineId());
-            zudhead.setArbpr(listrec.get(0).getArbpr());
+            zudhead.setLineId(a.get(0).getLineId());
+            zudhead.setArbpr(a.get(0).getArbpr());
             zudhead.setCrdat(curdate);
             zudhead.setCreatedBy(Long.valueOf(createdBy));
             zudhead.setCreationDate(new Date());
             List<ParamAndQjjlh> listparamQjjlh = new ArrayList<>();
             //准备审理单行数据 和 报工数据
-            for (int i = 0; i < listrec.size(); i++) {
+            for (int i = 0; i < a.size(); i++) {
                 //审理单行数据
                 Zudlist zudlist = new Zudlist();
                 zudlist.setZudnum(zudhead.getZudnum());
                 zudlist.setItem(Integer.valueOf(i + 1).toString());
-                zudlist.setZqjjlh(listrec.get(i).getZqjjlh());
-                zudlist.setZpgdbar(listrec.get(i).getZpgdbar());
-                zudlist.setVornr(listrec.get(i).getVornr());
-                zudlist.setZxhbar(listrec.get(i).getZxhbar());
-                zudlist.setZpgdbar2(listrec.get(i).getZpgdbar2());
-                zudlist.setGstrp(listrec.get(i).getGstrp());
-                zudlist.setMatnr(listrec.get(i).getMatnr());
-                zudlist.setMatnr2(listrec.get(i).getMatnr2());
-                zudlist.setZgjbar(listrec.get(i).getZgjbar());
-                zudlist.setZdnum(Long.valueOf(listrec.get(i).getZdnum()));
-                zudlist.setGmein(listrec.get(i).getGmein());
-                zudlist.setCharg2(listrec.get(i).getCharg2());
-                zudlist.setCharg(listrec.get(i).getCharg());
-                zudlist.setDiecd(listrec.get(i).getDiecd());
-                zudlist.setSfflg(listrec.get(i).getSfflg());
-                zudlist.setZqxdm(listrec.get(i).getZqxdm());
-                zudlist.setZissuetxt(listrec.get(i).getZissuetxt());
-                zudlist.setZbpjc(listrec.get(i).getZbpjc());
-                zudlist.setZoplo(listrec.get(i).getZoplo());
-                zudlist.setZbanc(listrec.get(i).getZbanc());
-                zudlist.setZbanz(listrec.get(i).getZbanz());
-                zudlist.setRspart(listrec.get(i).getRspart());
-                zudlist.setRsname(listrec.get(i).getRsname());
+                zudlist.setZqjjlh(a.get(i).getZqjjlh());
+                zudlist.setZpgdbar(a.get(i).getZpgdbar());
+                zudlist.setVornr(a.get(i).getVornr());
+                zudlist.setZxhbar(a.get(i).getZxhbar());
+                zudlist.setZpgdbar2(a.get(i).getZpgdbar2());
+                zudlist.setGstrp(a.get(i).getGstrp());
+                zudlist.setMatnr(a.get(i).getMatnr());
+                zudlist.setMatnr2(a.get(i).getMatnr2());
+                zudlist.setZgjbar(a.get(i).getZgjbar());
+                zudlist.setZdnum(Long.valueOf(a.get(i).getZdnum()));
+                zudlist.setGmein(a.get(i).getGmein());
+                zudlist.setCharg2(a.get(i).getCharg2());
+                zudlist.setCharg(a.get(i).getCharg());
+                zudlist.setDiecd(a.get(i).getDiecd());
+                zudlist.setSfflg(a.get(i).getSfflg());
+                zudlist.setZqxdm(a.get(i).getZqxdm());
+                zudlist.setZissuetxt(a.get(i).getZissuetxt());
+                zudlist.setZbpjc(a.get(i).getZbpjc());
+                zudlist.setZoplo(a.get(i).getZoplo());
+                zudlist.setZbanc(a.get(i).getZbanc());
+                zudlist.setZbanz(a.get(i).getZbanz());
+                zudlist.setRspart(a.get(i).getRspart());
+                zudlist.setRsname(a.get(i).getRsname());
                 zudlist.setReviewc("F");
-                zudlist.setMark(listrec.get(i).getMark());
+                zudlist.setMark(a.get(i).getMark());
                 zudlist.setCreatedBy(Long.valueOf(createdBy));
-                zudlist.setReviewc(listrec.get(i).getReviewc());
+                zudlist.setReviewc(a.get(i).getReviewc());
                 zudlist.setCreationDate(new Date());
+                if (a.get(i).getVornr() == null){
+                    zudlist.setVornr("");
+                }else{
+                    zudlist.setVornr(a.get(i).getVornr());
+                }
+
+                if ( a.get(i).getVornr_old() == null){
+                    zudlist.setVornr_old("");
+                }else{
+                    zudlist.setVornr_old(a.get(i).getVornr_old());
+                }
+
                 listitem.add(zudlist);
 
 
                 //报工数据
                 Cardh cardhjj = new Cardh();
-                cardhjj = cardhService.selectByBarcode(listrec.get(i).getZpgdbar());
+                cardhjj = cardhService.selectByBarcode(a.get(i).getZpgdbar());
                 if (listparam.size() > 0) {
                     DTBAOGONGParameters parameters = new DTBAOGONGParameters();
                     String flg = "";
 
                     for (int j = 0; j < listparam.size(); j++) {
 
-                        if (listparam.get(j).getZPGDBAR().equals(listrec.get(i).getZpgdbar())) {
+                        if (listparam.get(j).getZPGDBAR().equals(a.get(i).getZpgdbar())) {
                             //重复机加流转卡取件记录
                             //数量直接累计
                             flg = "X";
-                            if (listrec.get(i).getZqxdm().substring(0, 1).equals("M")) {
+                            if (a.get(i).getZqxdm().substring(0, 1).equals("M")) {
                                 Double num = Double.valueOf(listparam.get(j).getRMNGA()) + 1;
                                 listparam.get(j).setRMNGA(num.toString());
                             } else {
@@ -225,7 +196,7 @@ public class ZudheadController extends BaseController {
                             }
                             ParamAndQjjlh paramAndQjjlh = new ParamAndQjjlh();
                             paramAndQjjlh.setNum(listparam.size() - 1);
-                            paramAndQjjlh.setQjjlh(listrec.get(i).getZqjjlh());
+                            paramAndQjjlh.setQjjlh(a.get(i).getZqjjlh());
                             listparamQjjlh.add(paramAndQjjlh);
                         }
                     }
@@ -243,7 +214,7 @@ public class ZudheadController extends BaseController {
                         parameters.setGMNGA("0");
                         parameters.setRMNGA("0");
                         parameters.setXMNGA("0");
-                        if (listrec.get(i).getZqxdm().substring(0, 1).equals("M")) {
+                        if (a.get(i).getZqxdm().substring(0, 1).equals("M")) {
                             parameters.setRMNGA("1");
                         } else {
                             parameters.setXMNGA("1");
@@ -274,7 +245,7 @@ public class ZudheadController extends BaseController {
                         listparam.add(parameters);
                         ParamAndQjjlh paramAndQjjlh = new ParamAndQjjlh();
                         paramAndQjjlh.setNum(listparam.size() - 1);
-                        paramAndQjjlh.setQjjlh(listrec.get(i).getZqjjlh());
+                        paramAndQjjlh.setQjjlh(a.get(i).getZqjjlh());
                         listparamQjjlh.add(paramAndQjjlh);
                     }
 
@@ -293,7 +264,7 @@ public class ZudheadController extends BaseController {
                     parameters.setGMNGA("0");
                     parameters.setRMNGA("0");
                     parameters.setXMNGA("0");
-                    if (listrec.get(i).getZqxdm().substring(0, 1).equals("M")) {
+                    if (a.get(i).getZqxdm().substring(0, 1).equals("M")) {
                         parameters.setRMNGA("1");
                     } else {
                         parameters.setXMNGA("1");
@@ -324,7 +295,7 @@ public class ZudheadController extends BaseController {
                     listparam.add(parameters);
                     ParamAndQjjlh paramAndQjjlh = new ParamAndQjjlh();
                     paramAndQjjlh.setNum(listparam.size() - 1);
-                    paramAndQjjlh.setQjjlh(listrec.get(i).getZqjjlh());
+                    paramAndQjjlh.setQjjlh(a.get(i).getZqjjlh());
                     listparamQjjlh.add(paramAndQjjlh);
 
                 }
@@ -337,16 +308,16 @@ public class ZudheadController extends BaseController {
 
                     List<DTBAOGONGParametersitem> parametersitems = new ArrayList<>();
                     List<InOutRecord> listinoutRecord = new ArrayList<>();
-                    for (int j = 0; j < listrec.size(); j++) {
+                    for (int j = 0; j < a.size(); j++) {
                         String flg = "";
                         //准备领料明细数据
                         String pZpgdbar = listparam.get(i).getZPGDBAR();
-                        String recZpgdbar = listrec.get(j).getZpgdbar();
-                        if (listparam.get(i).getZPGDBAR().equals(listrec.get(j).getZpgdbar())) {
+                        String recZpgdbar = a.get(j).getZpgdbar();
+                        if (listparam.get(i).getZPGDBAR().equals(a.get(j).getZpgdbar())) {
                             //取箱号信息
                             DTBAOGONGParametersitem parametersitem = new DTBAOGONGParametersitem();
                             Xhcard xhcard = new Xhcard();
-                            xhcard = xhcardService.selectByBacode(listrec.get(j).getZxhbar());
+                            xhcard = xhcardService.selectByBacode(a.get(j).getZxhbar());
                             if (parametersitems.size() > 0) {
                                 for (int y = 0; y < parametersitems.size(); y++) {
                                     if (parametersitems.get(y).getCHARG().equals(xhcard.getChargkc())) {

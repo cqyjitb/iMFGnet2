@@ -56,46 +56,13 @@ import java.util.Map;
     }
     @RequestMapping(value = {"/wip/zrwkhead/createZrwk"},method = {RequestMethod.GET})
         @ResponseBody
-        public ResponseData createZrwk(HttpServletRequest request){
+        public ResponseData createZrwk(HttpServletRequest request,@RequestBody List<recPageDate> dto){
         ResponseData responseData = new ResponseData();
         String createdBy = "" + request.getSession().getAttribute("userId");
-        String dto = request.getParameter("dto");
-        JSONArray jsonArray = JSONArray.fromObject(dto);
-        List<Map<String, Object>> mapListJson = (List) jsonArray;
-        List<recPageDate> listrec = new ArrayList<>();
         List<Zrwklist> listitem = new ArrayList<>();
         List<InOutRecord> listinoutRecord = new ArrayList<>();
 
-        for (int i = 0; i < mapListJson.size(); i++) {
-            Map<String, Object> obj = mapListJson.get(i);
-            recPageDate rec = new recPageDate();
-            rec.setLineId(obj.get("lineId").equals("null") ? "" : obj.get("lineId").toString());
-            rec.setArbpr(obj.get("arbpr").equals("null") ? "" : obj.get("arbpr").toString());
-            rec.setCharg(obj.get("charg").equals("null") ? "" : obj.get("charg").toString());
-            rec.setCharg2(obj.get("charg2").equals("null") ? "" : obj.get("charg2").toString());
-            rec.setDiecd(obj.get("diecd").equals("null") ? "" : obj.get("diecd").toString());
-            rec.setGmein(obj.get("gmein").equals("null") ? "" : obj.get("gmein").toString());
-            rec.setGstrp(obj.get("gstrp").equals("null") ? "" : obj.get("gstrp").toString());
-            rec.setMark(obj.get("mark").equals("null") ? "" : obj.get("mark").toString());
-            rec.setMatnr(obj.get("matnr").equals("null") ? "" : obj.get("matnr").toString());
-            rec.setMatnr2(obj.get("matnr2").equals("null") ? "" : obj.get("matnr2").toString());
-            rec.setReviewc(obj.get("reviewc").equals("null") ? "" : obj.get("reviewc").toString());
-            rec.setSfflg(obj.get("sfflg").equals("null") ? "" : obj.get("sfflg").toString());
-            rec.setVornr(obj.get("vornr").equals("null") ? "" : obj.get("vornr").toString());
-            rec.setZbanc(obj.get("zbanc").equals("null") ? "" : obj.get("zbanc").toString());
-            rec.setZbanz(obj.get("zbanz").equals("null") ? "" : obj.get("zbanz").toString());
-            rec.setZgjbar(obj.get("zgjbar").equals("null") ? "" : obj.get("zgjbar").toString());
-            rec.setZotype(obj.get("zotype").equals("null") ? "" : obj.get("zotype").toString());
-            rec.setZpgdbar(obj.get("zpgdbar").equals("null") ? "" : obj.get("zpgdbar").toString());
-            rec.setZpgdbar2(obj.get("zpgdbar2").equals("null") ? "" : obj.get("zpgdbar2").toString());
-            rec.setZqjjlh(obj.get("zqjjlh").equals("null") ? "" : obj.get("zqjjlh").toString());
-            rec.setZqxdm(obj.get("zqxdm").equals("null") ? "" : obj.get("zqxdm").toString());
-            rec.setZrnum(obj.get("zrnum").equals("null") ? "" : obj.get("zrnum").toString());
-            rec.setZrwktimes(obj.get("zrwktimes").equals("null") ? "" : obj.get("zrwktimes").toString());
-            rec.setZxhbar(obj.get("zxhbar").equals("null") ? "" : obj.get("zxhbar").toString());
-            listrec.add(rec);
-        }
-        if (listrec.size() > 0) {
+        if (dto.size() > 0) {
             //创建返工返修审理单表头
             SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String curdate = df.format(new Date()).substring(0, 10).replaceAll("-", "");
@@ -116,49 +83,69 @@ import java.util.Map;
                 zudnum = "J" + curdate.substring(2, 8) + no;
             }
             zrwkhead.setZrwknum(zudnum);
-            zrwkhead.setArbpr(listrec.get(0).getArbpr());
+            zrwkhead.setArbpr(dto.get(0).getArbpr());
             zrwkhead.setCrdat(curdate);
-            zrwkhead.setLineId(listrec.get(0).getLineId());
-            zrwkhead.setZotype(listrec.get(0).getZotype());
+            zrwkhead.setLineId(dto.get(0).getLineId());
+            zrwkhead.setZotype(dto.get(0).getZotype());
             zrwkhead.setCreatedBy(Long.valueOf(createdBy));
             zrwkhead.setCreationDate(new Date());
             //准备审理单行数据
-            for (int i = 0; i < listrec.size(); i++) {
+            for (int i = 0; i < dto.size(); i++) {
                 Zrwklist zrwklist = new Zrwklist();
                 zrwklist.setZrwknum(zudnum);
                 zrwklist.setItem(Integer.valueOf(i + 1).toString());
-                zrwklist.setZqjjlh(listrec.get(i).getZqjjlh());
-                zrwklist.setZpgdbar(listrec.get(i).getZpgdbar());
-                zrwklist.setVornr(listrec.get(i).getVornr());
-                zrwklist.setZxhbar(listrec.get(i).getZxhbar());
-                zrwklist.setZpgdbar2(listrec.get(i).getZpgdbar2());
-                zrwklist.setGstrp(listrec.get(i).getGstrp());
-                zrwklist.setMatnr(listrec.get(i).getMatnr());
-                zrwklist.setMatnr2(listrec.get(i).getMatnr2());
-                zrwklist.setZgjbar(listrec.get(i).getZgjbar());
-                if (listrec.get(i).getZrwktimes().equals("")){
+                zrwklist.setZqjjlh(dto.get(i).getZqjjlh());
+                zrwklist.setZpgdbar(dto.get(i).getZpgdbar());
+                if (dto.get(i).getVornr() == null){
+                    zrwklist.setVornr("");
+                }else{
+                    zrwklist.setVornr(dto.get(i).getVornr());
+                }
+
+                zrwklist.setZxhbar(dto.get(i).getZxhbar());
+                if (zrwklist.getZpgdbar2() == null){
+                    zrwklist.setZpgdbar2("");
+                }else{
+                    zrwklist.setZpgdbar2(dto.get(i).getZpgdbar2());
+                }
+                zrwklist.setGstrp(dto.get(i).getGstrp());
+                zrwklist.setMatnr(dto.get(i).getMatnr());
+                zrwklist.setMatnr2(dto.get(i).getMatnr2());
+                if (dto.get(i).getZgjbar() == null){
+                    zrwklist.setZgjbar("");
+                }else{
+                    zrwklist.setZgjbar(dto.get(i).getZgjbar());
+                }
+                zrwklist.setZgjbar(dto.get(i).getZgjbar());
+                if (dto.get(i).getZrwktimes() == null){
                     zrwklist.setZrwktimes(0L);
                 }else{
-                    zrwklist.setZrwktimes(Long.valueOf(listrec.get(i).getZrwktimes()));
+                    zrwklist.setZrwktimes(Long.valueOf(dto.get(i).getZrwktimes()));
                 }
-                zrwklist.setZrnum(Long.valueOf(listrec.get(i).getZrnum()));
-                zrwklist.setGmein(listrec.get(i).getGmein());
-                zrwklist.setCharg2(listrec.get(i).getCharg2());
-                zrwklist.setCharg(listrec.get(i).getCharg());
-                zrwklist.setDiecd(listrec.get(i).getDiecd());
-                zrwklist.setSfflg(listrec.get(i).getSfflg());
-                zrwklist.setZqxdm(listrec.get(i).getZqxdm());
-                zrwklist.setZbanc(listrec.get(i).getZbanc());
-                zrwklist.setZbanz(listrec.get(i).getZbanz());
+                zrwklist.setZrnum(Long.valueOf(dto.get(i).getZrnum()));
+                zrwklist.setGmein(dto.get(i).getGmein());
+                zrwklist.setCharg2(dto.get(i).getCharg2());
+                zrwklist.setCharg(dto.get(i).getCharg());
+                zrwklist.setDiecd(dto.get(i).getDiecd());
+                zrwklist.setSfflg(dto.get(i).getSfflg());
+                if (dto.get(i).getZqxdm() == null){
+                    zrwklist.setZqxdm("");
+                }else{
+                    zrwklist.setZqxdm(dto.get(i).getZqxdm());
+                }
+
+                zrwklist.setZbanc(dto.get(i).getZbanc());
+                zrwklist.setZbanz(dto.get(i).getZbanz());
                 zrwklist.setReviewc("G");
-                zrwklist.setMark(listrec.get(i).getMark());
+
+                zrwklist.setMark(dto.get(i).getMark());
                 zrwklist.setCreatedBy(Long.valueOf(createdBy));
-                zrwklist.setReviewc(listrec.get(i).getReviewc());
+                zrwklist.setReviewc(dto.get(i).getReviewc());
                 zrwklist.setCreationDate(new Date());
                 listitem.add(zrwklist);
 
                 InOutRecord inOutRecord = new InOutRecord();
-                inOutRecord = iInOutRecordService.selectById(listrec.get(i).getZqjjlh());
+                inOutRecord = iInOutRecordService.selectById(dto.get(i).getZqjjlh());
                 inOutRecord.setReflag(3L);
                 inOutRecord.setLastUpdatedBy(Long.valueOf(createdBy));
                 inOutRecord.setLastUpdateDate(new Date());
