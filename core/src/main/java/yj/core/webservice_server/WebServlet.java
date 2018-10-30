@@ -75,5 +75,13 @@ public class WebServlet extends CXFNonSpringServlet {
         serverFactoryBean6.setAddress("/ReadTp"); //服务请求路径
         serverFactoryBean6.setServiceBean(readTp);
         serverFactoryBean6.create();
+
+        //发布的查询托盘状态接口
+        ServerFactoryBean serverFactoryBean7 = new ServerFactoryBean(); //server工厂
+        SyncXhcardImpl syncXhcard = new SyncXhcardImpl();
+        serverFactoryBean7.setServiceClass(IsyncXhcard.class);
+        serverFactoryBean7.setAddress("/SyncXhcard"); //服务请求路径
+        serverFactoryBean7.setServiceBean(syncXhcard);
+        serverFactoryBean7.create();
     }
 }
