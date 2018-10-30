@@ -3,8 +3,14 @@ package yj.core.xhcard.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.service.impl.BaseServiceImpl;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
+import com.sun.corba.se.spi.ior.IdentifiableFactory;
+import groovy.json.internal.Dates;
 import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -206,5 +212,114 @@ public class XhcardServiceImpl
     @Override
     public int updateZsxwc(Xhcard xhcard) {
         return xhcardMapper.updateZsxwc(xhcard);
+    }
+
+    @Override
+    public List<Xhcard> selectXbkc(Xhcard dto) {
+        //PageHelper.startPage(page, pageSize);
+
+        List<Xhcard> list =  xhcardMapper.selectXbkc(dto);
+        List<Xhcard> listresult = new ArrayList<>();
+        if (list.size() > 0){
+            for (int i=0;i<list.size();i++){
+                if (list.get(i).getMenge() == null || list.get(i).getMenge().equals("")){
+                    list.get(i).setMenge("0");
+                }else{
+                    int index = list.get(i).getMenge().indexOf(".");
+                    list.get(i).setMenge(list.get(i).getMenge().substring(0,index));
+                }
+
+                if (list.get(i).getBmenge() == null ){
+                    list.get(i).setBmenge(0L);
+                }
+
+                if (list.get(i).getSmenge() == null){
+                    list.get(i).setSmenge(0L);
+                }
+
+                if (list.get(i).getPkgLineId() != null){
+                    list.get(i).setChangeNum(list.get(i).getSmenge() - list.get(i).getBmenge());
+                    list.get(i).setSjjcNum( Long.valueOf(list.get(i).getMenge()) - list.get(i).getZsxnum() + list.get(i).getChangeNum());
+                }else{
+                    list.get(i).setSjjcNum(Long.valueOf(list.get(i).getMenge()));
+                }
+            }
+        }
+
+        if (dto.getDates() != null && dto.getDatee() != null){
+            Date dates = null;
+            Date datee = null;
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            try {
+                 dates = sdf.parse(dto.getDates());
+                 datee = sdf.parse(dto.getDatee());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+
+
+            for (int i =0;i<list.size();i++){
+                if (list.get(i).getAttr1() == null){
+                    continue;
+                }else{
+                    if (list.get(i).getAttr1().getTime() < dates.getTime() || list.get(i).getAttr1().getTime() > datee.getTime()){
+
+                        continue;
+                    }else{
+                        listresult.add(list.get(i));
+                    }
+                }
+            }
+        }
+
+        if (dto.getDates() != null && dto.getDatee() == null ){
+            Date dates = null;
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            try {
+                dates = sdf.parse(dto.getDates());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            for (int i=0;i<list.size();i++){
+                if (list.get(i).getAttr1() == null){
+                    continue;
+                }else{
+                    if (list.get(i).getAttr1().getTime() < dates.getTime()){
+                        continue;
+                    }else{
+                        listresult.add(list.get(i));
+                    }
+                }
+            }
+        }
+
+        if (dto.getDatee() != null && dto.getDates() == null){
+            Date datee = null;
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+            try {
+                datee = sdf.parse(dto.getDatee());
+            }catch (Exception e){
+                e.printStackTrace();
+            }
+            for (int i = 0;i<list.size();i++){
+                if (list.get(i).getAttr1() == null){
+
+                    continue;
+                }else{
+                    if (list.get(i).getAttr1().getTime() > datee.getTime()){
+
+                        continue;
+                    }else{
+                        listresult.add(list.get(i));
+                    }
+                }
+            }
+        }
+
+        if (dto.getDatee() == null && dto.getDates() == null){
+            return list;
+        }else{
+            return listresult;
+        }
     }
 }

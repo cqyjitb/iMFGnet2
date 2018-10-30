@@ -36,5 +36,6 @@ public  interface IXhcardService
 
      int updateZsxwc(Xhcard xhcard);
 
+     List<Xhcard> selectXbkc(Xhcard dto);
 
 }

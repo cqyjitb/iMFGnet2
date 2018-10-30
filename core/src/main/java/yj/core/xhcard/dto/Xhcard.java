@@ -57,6 +57,68 @@ public class Xhcard
 
     private Long lastUpdatedBy; //更新人
 
+    @Transient
+    private String bar;
+    @Transient
+    private Long zsxnum;
+    @Transient
+    private Long smenge;
+    @Transient
+    private Long bmenge;
+    @Transient
+    private Date  attr1;
+    @Transient
+    private  String maktx;
+    @Transient
+    private String pkgLineId;
+    @Transient
+    private String sfflg;
+    @Transient
+    private String zpgdbar;
+    @Transient
+    private Long changeNum;//调整数量
+    @Transient
+    private Long sjjcNum;//实际结存数量
+    @Transient
+    private Long dlsum;//队列数量
+    @Transient
+    private String descriptions;
+    @Transient
+    private String dates;
+    @Transient
+    private String datee;
+
+    public String getDates() {
+        return dates;
+    }
+
+    public void setDates(String dates) {
+        this.dates = dates;
+    }
+
+    public String getDatee() {
+        return datee;
+    }
+
+    public void setDatee(String datee) {
+        this.datee = datee;
+    }
+
+    public String getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(String descriptions) {
+        this.descriptions = descriptions;
+    }
+
+    public Long getDlsum() {
+        return dlsum;
+    }
+
+    public void setDlsum(Long dlsum) {
+        this.dlsum = dlsum;
+    }
 
     public void setWerks(String werks)
     {
@@ -318,5 +380,93 @@ public class Xhcard
 
     public void setDatestr(String datestr) {
         this.datestr = datestr;
+    }
+
+    public String getBar() {
+        return bar;
+    }
+
+    public void setBar(String bar) {
+        this.bar = bar;
+    }
+
+    public Long getZsxnum() {
+        return zsxnum;
+    }
+
+    public void setZsxnum(Long zsxnum) {
+        this.zsxnum = zsxnum;
+    }
+
+    public Long getSmenge() {
+        return smenge;
+    }
+
+    public void setSmenge(Long smenge) {
+        this.smenge = smenge;
+    }
+
+    public Long getBmenge() {
+        return bmenge;
+    }
+
+    public void setBmenge(Long bmenge) {
+        this.bmenge = bmenge;
+    }
+
+    public Date getAttr1() {
+        return attr1;
+    }
+
+    public void setAttr1(Date attr1) {
+        this.attr1 = attr1;
+    }
+
+    public String getMaktx() {
+        return maktx;
+    }
+
+    public void setMaktx(String maktx) {
+        this.maktx = maktx;
+    }
+
+    public String getPkgLineId() {
+        return pkgLineId;
+    }
+
+    public void setPkgLineId(String pkgLineId) {
+        this.pkgLineId = pkgLineId;
+    }
+
+    public String getSfflg() {
+        return sfflg;
+    }
+
+    public void setSfflg(String sfflg) {
+        this.sfflg = sfflg;
+    }
+
+    public String getZpgdbar() {
+        return zpgdbar;
+    }
+
+    public void setZpgdbar(String zpgdbar) {
+        this.zpgdbar = zpgdbar;
+    }
+
+    public Long getChangeNum() {
+        return changeNum;
+    }
+
+    public void setChangeNum(Long changeNum) {
+        this.changeNum = changeNum;
+    }
+
+    public Long getSjjcNum() {
+        return sjjcNum;
+    }
+
+    public void setSjjcNum(Long sjjcNum) {
+        this.sjjcNum = sjjcNum;
     }
 }

@@ -26,4 +26,7 @@ public  interface XhcardMapper
      String selectMaxCharg(@Param("matnr") String matnr,@Param("charg") String charg );
 
      int updateZsxwc(Xhcard xhcard);
+
+     List<Xhcard> selectXbkc(Xhcard xhcard);
+
 }
