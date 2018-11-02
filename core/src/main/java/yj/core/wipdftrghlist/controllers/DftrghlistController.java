@@ -302,6 +302,7 @@ public class DftrghlistController extends BaseController {
         dftrghlist.setCancelFlag("1");
         dftrghlist.setCancelBy(Long.valueOf(userId));
         dftrghlist.setLastUpdateDate(new Date());
+        dftrghlist.setCancelDate(new Date());
         dftrghlist.setLastUpdatedBy(Long.valueOf(userId));
 
         int sum = 0;

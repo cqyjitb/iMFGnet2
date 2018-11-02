@@ -120,6 +120,7 @@
     <update id="updateByIdAndItem" parameterType="yj.core.wipdftrghlist.dto.Dftrghlist">
         UPDATE wip_dftrghlist set CANCEL_FLAG = #{cancelFlag},
                                   CANCEL_BY = #{cancelBy},
+                                  CANCEL_DATE = #{cancelDate},
                                   LAST_UPDATED_BY = #{lastUpdatedBy},
                                   LAST_UPDATE_DATE = #{lastUpdateDate}
                 <where>
