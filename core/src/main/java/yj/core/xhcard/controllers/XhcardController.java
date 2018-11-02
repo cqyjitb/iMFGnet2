@@ -538,4 +538,45 @@ public class XhcardController
         return new ResponseData(service.selectXbkc(dto));
     }
 
+    @RequestMapping(value = {"/sap/xhcard/BlmpclCheckZxhbar"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
+    @ResponseBody
+    ResponseData blmpclCheckZxhbar(HttpServletRequest request,String zxhbar){
+        ResponseData rs = new ResponseData();
+        List list = new ArrayList();
+        Xhcard xhcard = new Xhcard();
+        xhcard = service.selectByBacode(zxhbar);
+        if (xhcard == null){
+            rs.setSuccess(false);
+            rs.setMessage("未能获取箱号信息,请检查箱号是否输入正确！");
+            return rs;
+        }
+
+        if (!xhcard.getZxhzt().equals("7")){
+            rs.setMessage("箱号状态错误！");
+            rs.setSuccess(false);
+            return rs;
+        }
+
+        if (xhcard.getZsxwc() != null){
+            if (xhcard.getZsxwc().equals("X")){
+                rs.setMessage("该箱号已经完成上线，不允许进行不良毛坯处理！");
+                rs.setSuccess(false);
+                return rs;
+            }
+        }
+
+
+
+        Marc marc = new Marc();
+        marc = marcService.selectByMatnr(xhcard.getMatnr());
+        Cardh cardh = new Cardh();
+        cardh = cardhService.selectByZxhbar(xhcard.getAufnr(),xhcard.getZxhnum());
+        list.add(xhcard);
+        list.add(marc);
+        list.add(cardh);
+        rs.setSuccess(true);
+        rs.setRows(list);
+        return rs;
+    }
+
 }

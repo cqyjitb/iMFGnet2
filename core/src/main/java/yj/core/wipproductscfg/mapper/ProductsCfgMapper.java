@@ -11,5 +11,7 @@ public interface ProductsCfgMapper extends Mapper<ProductsCfg>{
 
     int selectMaxByLineidAndMatnr(ProductsCfg dto);
     int selectMaxByLineidAndMatnrLgort(ProductsCfg dto);
+    ProductsCfg selectByLineidAndPMatnr(@Param("line_id") String line_id,@Param("matnr") String matnr);
+
     ProductsCfg selectByLineidAndMatnr(@Param("line_id") String line_id,@Param("matnr") String matnr);
 }

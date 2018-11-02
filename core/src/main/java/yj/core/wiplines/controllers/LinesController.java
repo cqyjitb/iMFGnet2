@@ -110,7 +110,7 @@ public class LinesController extends BaseController {
         ProductsCfg pc = new ProductsCfg();
         pc.setLineId(Long.valueOf(line_id));
         pc.setPmatnr(marc.getMatnr());
-        pc = productsCfgService.selectByLineidAndMatnr(Long.valueOf(line_id).toString(),marc.getMatnr());
+        pc = productsCfgService.selectByLineidAndPMatnr(Long.valueOf(line_id).toString(),marc.getMatnr());
         if (pc != null){
             listpcfg.add(pc);
         }
@@ -133,6 +133,29 @@ public class LinesController extends BaseController {
         list.add(marclist);
         list.add(listpcfg);
         rs.setRows(list);
+        return rs;
+    }
+
+    /**
+     *
+     * 线边库不良毛坯处理，获取生产线信息
+     * 根据生产线ID验证生产线ID是否错误，获取生产线信息
+     */
+    @RequestMapping(value = {"/wip/lines/selectByIdForBlmpcl"}, method = {RequestMethod.GET})
+    @ResponseBody
+    ResponseData selectByIdForBlmpcl(HttpServletRequest request,Long line_id){
+
+        ResponseData rs = new ResponseData();
+        List<Lines> list = new ArrayList<>();
+        Lines line = service.selectByIdForBlmpcl(line_id);
+        if (line != null){
+            list.add(line);
+            rs.setRows(list);
+            rs.setSuccess(true);
+        }else{
+            rs.setSuccess(false);
+            rs.setMessage("未能获取生产线信息,请检查生产线ID是否输入正确！");
+        }
         return rs;
     }
 }

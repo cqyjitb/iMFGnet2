@@ -44,6 +44,8 @@ public class Tcode extends BaseDTO {
 
     private String app0015;
 
+    private String app0016;
+
 
      public void setUserName(String userName){
          this.userName = userName;
@@ -171,5 +173,13 @@ public class Tcode extends BaseDTO {
 
     public void setApp0015(String app0015) {
         this.app0015 = app0015;
+    }
+
+    public String getApp0016() {
+        return app0016;
+    }
+
+    public void setApp0016(String app0016) {
+        this.app0016 = app0016;
     }
 }

@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.wipdftrghlist.mapper.DftrghlistMapper">
+    <resultMap id="BaseResultMap" type="yj.core.wipdftrghlist.dto.Dftrghlist">
+        <result column="RECORDID" property="recordid" jdbcType="VARCHAR" />
+        <result column="ITEM" property="item" jdbcType="DECIMAL" />
+        <result column="WERKS" property="werks" jdbcType="VARCHAR" />
+        <result column="MATNR" property="matnr" jdbcType="VARCHAR" />
+        <result column="LINE_ID" property="lineId" jdbcType="VARCHAR" />
+        <result column="ZBANC" property="zbanc" jdbcType="VARCHAR" />
+        <result column="SHIFT" property="shift" jdbcType="VARCHAR" />
+        <result column="GSTRP" property="gstrp" jdbcType="DATE" />
+        <result column="ZMPBAR" property="zmpbar" jdbcType="VARCHAR" />
+        <result column="ZPGDBAR" property="zpgdbar" jdbcType="VARCHAR" />
+        <result column="ZXHBAR" property="zxhbar" jdbcType="VARCHAR" />
+        <result column="MATNR2" property="matnr2" jdbcType="VARCHAR" />
+        <result column="YCHARGE" property="ycharge" jdbcType="VARCHAR" />
+        <result column="YSHIFT" property="yshift" jdbcType="VARCHAR" />
+        <result column="YZBANC" property="yzbanc" jdbcType="VARCHAR" />
+        <result column="SFFLG" property="sfflg" jdbcType="VARCHAR" />
+        <result column="DIECD" property="diecd" jdbcType="VARCHAR" />
+        <result column="YGSTRP" property="ygstrp" jdbcType="DATE" />
+        <result column="CODE" property="code" jdbcType="VARCHAR" />
+        <result column="TLEVELCODE" property="tlevelcode" jdbcType="VARCHAR" />
+        <result column="MENGE" property="menge" jdbcType="DECIMAL" />
+        <result column="DFECT_QTY" property="dfectQty" jdbcType="DECIMAL" />
+        <result column="GMEIN" property="gmein" jdbcType="VARCHAR" />
+        <result column="RECORDID1" property="recordid1" jdbcType="VARCHAR" />
+        <result column="RECORDID2" property="recordid2" jdbcType="VARCHAR" />
+        <result column="AUFNR" property="aufnr" jdbcType="VARCHAR" />
+        <result column="CANCEL_FLAG" property="cancelFlag" jdbcType="VARCHAR" />
+        <result column="CANCEL_BY" property="cancelBy" jdbcType="DECIMAL" />
+        <result column="CANCEL_DATE" property="cancelDate" jdbcType="DATE" />
+        <result column="CREATION_DATE" property="creationDate" jdbcType="DATE" />
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+        <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="VARCHAR" />
+        <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="DATE" />
+    </resultMap>
+
+    <select id="selectByCondition" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_dftrghlist
+        <where>
+            1=1
+            <if test="werks !=  null">
+            and WERKS = #{werks}
+            </if>
+            <if test="matnr != null">
+            and MATNR = #{matnr}
+           </if>
+           <if test="line_id != null">
+            and LINE_ID = #{line_id}
+           </if>
+            <if test="shift != null">
+            and SHIFT = #{shift}
+            </if>
+            <if test="gstrp != null">
+            and GSTRP = #{gstrp}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectMaxItemByCondition" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select MAX(ITEM) FROM wip_dftrghlist
+        <where>
+            1=1
+            <if test="werks !=  null">
+                and WERKS = #{werks}
+            </if>
+            <if test="matnr != null">
+                and MATNR = #{matnr}
+            </if>
+            <if test="line_id != null">
+                and LINE_ID = #{line_id}
+            </if>
+            <if test="shift != null">
+                and SHIFT = #{shift}
+            </if>
+            <if test="gstrp != null">
+             and GSTRP = #{gstrp}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertDftrghlist" parameterType="yj.core.wipdftrghlist.dto.Dftrghlist">
+        insert INTO wip_dftrghlist(RECORDID,ITEM,WERKS,MATNR,LINE_ID,ZBANC,SHIFT,GSTRP,ZMPBAR,ZPGDBAR,ZXHBAR,MATNR2,YCHARGE,YSHIFT,YZBANC,SFFLG,DIECD,YGSTRP,CODE,TLEVELCODE,
+        MENGE,DFECT_QTY,GMEIN,RECORDID1,RECORDID2,AUFNR,CANCEL_FLAG,CANCEL_BY,CANCEL_DATE,CREATION_DATE,CREATED_BY,LAST_UPDATED_BY,LAST_UPDATE_DATE)VALUES(
+        #{recordid},#{item},#{werks},#{matnr},#{lineId},#{zbanc},#{shift},#{gstrp},#{zmpbar},#{zpgdbar},#{zxhbar},#{matnr2},#{ycharge},#{yshift},#{yzbanc},#{sfflg},
+        #{diecd},#{ygstrp},#{code},#{tlevelcode},#{menge},#{dfectQty},#{gmein},#{recordid1},#{recordid2},#{aufnr},#{cancelFlag},#{cancelBy},#{cancelDate},#{creationDate},
+        #{createdBy},#{lastUpdatedBy},#{lastUpdateDate})
+    </insert>
+</mapper>

@@ -23,4 +23,10 @@
                   </if>
               </where>
     </select>
+
+    <select id="selectAllForBlcl" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select CODE,
+                KURZTEXT
+                  from sap_qpcd
+    </select>
 </mapper>

@@ -28,4 +28,15 @@
                    </if>
                </where>
     </select>
+
+    <select id="selectByQpcode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select TLEVELCODE,
+               ZTEXT
+               FROM  sap_dftdtl
+               <where>
+                   MATNR2 = #{matnr}
+                   AND CODE = #{code}
+               </where>
+
+    </select>
 </mapper>

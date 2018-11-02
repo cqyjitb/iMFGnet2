@@ -17,4 +17,9 @@ public class LinesServiceImpl extends BaseServiceImpl<Lines> implements ILinesSe
     public Lines selectById(Long line_id) {
         return linesMapper.selectById(line_id);
     }
+
+    @Override
+    public Lines selectByIdForBlmpcl(Long line_id) {
+        return linesMapper.selectById(line_id);
+    }
 }

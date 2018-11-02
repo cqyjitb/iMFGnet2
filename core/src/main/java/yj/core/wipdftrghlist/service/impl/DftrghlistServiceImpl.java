@@ -1,0 +1,36 @@
+package yj.core.wipdftrghlist.service.impl;
+
+import com.hand.hap.system.service.impl.BaseServiceImpl;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import yj.core.wipdftrghlist.dto.Dftrghlist;
+import yj.core.wipdftrghlist.mapper.DftrghlistMapper;
+import yj.core.wipdftrghlist.service.IDftrghlistService;
+import org.springframework.transaction.annotation.Transactional;
+
+@Service
+@Transactional
+public class DftrghlistServiceImpl extends BaseServiceImpl<Dftrghlist> implements IDftrghlistService{
+    @Autowired
+    private DftrghlistMapper dftrghlistMapper;
+    @Override
+    public Dftrghlist selectByCondition(String werks, String matnr,String line_id, String shift, String gstrp) {
+        return dftrghlistMapper.selectByCondition(werks,matnr,line_id,shift,gstrp);
+    }
+
+    @Override
+    public int insertDftrghlist(Dftrghlist dftrghlist) {
+        return dftrghlistMapper.insertDftrghlist(dftrghlist);
+    }
+
+    @Override
+    public int updateDftrghlist(Dftrghlist dftrghlist) {
+        return dftrghlistMapper.updateDftrghlist(dftrghlist);
+    }
+
+    @Override
+    public int selectMaxItemByCondition(String werks, String matnr, String line_id, String shift, String gstrp) {
+
+        return dftrghlistMapper.selectMaxItemByCondition(werks,matnr,line_id,shift,gstrp);
+    }
+}

@@ -4,13 +4,11 @@ import org.springframework.stereotype.Controller;
 import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.dto.ResponseData;
+import org.springframework.web.bind.annotation.*;
 import yj.core.qpcd.dto.Qpcd;
 import yj.core.qpcd.service.IQpcdService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -42,4 +40,11 @@ import java.util.List;
         service.batchDelete(dto);
         return new ResponseData();
     }
+
+        @RequestMapping(value = {"/sap/qpcd/selectAll"}, method = {RequestMethod.GET})
+        @ResponseBody
+        public ResponseData selectAll(HttpServletRequest request){
+            List<Qpcd> list = service.selectAllForBlcl();
+            return  new ResponseData(list);
+        }
     }

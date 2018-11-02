@@ -32,6 +32,11 @@ public class ProductsCfgServiceImpl extends BaseServiceImpl<ProductsCfg> impleme
     }
 
     @Override
+    public ProductsCfg selectByLineidAndPMatnr(String line_id, String matnr) {
+        return productsCfgMapper.selectByLineidAndPMatnr(line_id,matnr);
+    }
+
+    @Override
     public ProductsCfg selectByLineidAndMatnr(String line_id, String matnr) {
         return productsCfgMapper.selectByLineidAndMatnr(line_id,matnr);
     }
