@@ -4,6 +4,8 @@ import com.hand.hap.core.ProxySelf;
 import com.hand.hap.system.service.IBaseService;
 import yj.core.wipdftrghlist.dto.Dftrghlist;
 
+import java.util.List;
+
 public interface IDftrghlistService extends IBaseService<Dftrghlist>, ProxySelf<IDftrghlistService>{
     /**
      * 按照工厂 机加生产线id 成品物料 机加班组 机加生产日期查询记录
@@ -40,4 +42,28 @@ public interface IDftrghlistService extends IBaseService<Dftrghlist>, ProxySelf<
      * @return
      */
     int selectMaxItemByCondition(String werks,String matnr,String line_id,String shift,String gstrp);
+
+    /**
+     * 根据 生产线id 班组 箱号 查询不良品处理记录
+     * @param line_id
+     * @param classgrp
+     * @param zxhbar
+     * @return
+     */
+    List<Dftrghlist> selectByLindIdAndZxhbar(String line_id,String classgrp,String zxhbar);
+
+    /**
+     * 根据单号 行号 查询记录
+     * @param recordid
+     * @param item
+     * @return
+     */
+    Dftrghlist selectByIdAndItem(String recordid,Long item);
+
+    /**
+     * 根据单号 行号 修改记录
+     * @param dto
+     * @return
+     */
+    int updateByIdAndItem(Dftrghlist dto);
 }

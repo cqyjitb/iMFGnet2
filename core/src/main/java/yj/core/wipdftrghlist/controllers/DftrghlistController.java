@@ -238,4 +238,80 @@ public class DftrghlistController extends BaseController {
 
         return rs;
     }
+
+    /**
+     * 根据生产线ID 班组 毛坯箱号 查询不良毛坯处理记录明细
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = {"/wip/dftrghlist/searchBlmpcl"}, method = {RequestMethod.GET})
+    @ResponseBody
+    public ResponseData searchBlmpcl(HttpServletRequest request){
+        ResponseData rs = new ResponseData();
+        String line_id = request.getParameter("line_id");
+        String classgrp = request.getParameter("classgrp");
+        String zxhbar = request.getParameter("zxhbar");
+        List<Dftrghlist> list = service.selectByLindIdAndZxhbar(line_id,classgrp,zxhbar);
+        if (list.size() > 0){
+            rs.setSuccess(true);
+            rs.setRows(list);
+        }else{
+            rs.setMessage("没有符合条件的记录！");
+            rs.setSuccess(false);
+        }
+        return rs;
+    }
+
+    @RequestMapping(value = {"/wip/dftrghlist/selectXhcard"}, method = {RequestMethod.GET})
+    @ResponseBody
+    public ResponseData selectXhcard(HttpServletRequest request){
+        ResponseData rs = new ResponseData();
+        List list = new ArrayList();
+        Xhcard xhcard = new Xhcard();
+        String zxhbar = request.getParameter("zxhbar");
+        xhcard = xhcardService.selectByBacode(zxhbar);
+        if (xhcard == null){
+
+            rs.setSuccess(false);
+            rs.setMessage("未能获取箱号信息！请重新扫描箱号条码！");
+        }else{
+            list.add(xhcard);
+            Marc marc = marcService.selectByMatnr(xhcard.getMatnr());
+            list.add(marc);
+            rs.setSuccess(true);
+            rs.setRows(list);
+        }
+        return rs;
+    }
+
+    /**
+     * 处理取消不良毛坯处理的页面请求
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = {"/wip/dftrghlist/cancelBlmpcl"}, method = {RequestMethod.GET})
+    @ResponseBody
+    public ResponseData cancelBlmpcl(HttpServletRequest request){
+        ResponseData rs = new ResponseData();
+        String recordid = request.getParameter("recordid");
+        String item = request.getParameter("item");
+        String userId = request.getParameter("userId");
+
+        Dftrghlist dftrghlist = service.selectByIdAndItem(recordid,Long.valueOf(item));
+
+        dftrghlist.setCancelFlag("1");
+        dftrghlist.setCancelBy(Long.valueOf(userId));
+        dftrghlist.setLastUpdateDate(new Date());
+        dftrghlist.setLastUpdatedBy(Long.valueOf(userId));
+
+        int sum = 0;
+        sum = service.updateByIdAndItem(dftrghlist);
+        if (sum == 1){
+            rs.setSuccess(true);
+        }else{
+            rs.setSuccess(false);
+            rs.setMessage("更新数据库失败，请联系系统管理员！");
+        }
+        return  rs;
+    }
 }

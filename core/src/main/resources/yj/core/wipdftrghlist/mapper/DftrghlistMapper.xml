@@ -89,4 +89,42 @@
         #{diecd},#{ygstrp},#{code},#{tlevelcode},#{menge},#{dfectQty},#{gmein},#{recordid1},#{recordid2},#{aufnr},#{cancelFlag},#{cancelBy},#{cancelDate},#{creationDate},
         #{createdBy},#{lastUpdatedBy},#{lastUpdateDate})
     </insert>
+
+    <select id="selectByLindIdAndZxhbar" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_dftrghlist
+        <where>
+            CANCEL_FLAG = '0'
+            and ( RECORDID1 is null OR RECORDID1 = '')
+            and ( RECORDID2 is null OR RECORDID2 = '')
+            AND ( AUFNR IS NULL OR AUFNR = '')
+            <if test="line_id != null">
+                and LINE_ID = #{line_id}
+            </if>
+            <if test="zxhbar != null">
+                and ZXHBAR = #{zxhbar}
+            </if>
+            <if test="classgrp != null">
+                and SHIFT = #{classgrp}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByIdAndItem" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_dftrghlist
+        <where>
+            RECORDID = #{recordid}
+            and ITEM = #{item}
+        </where>
+    </select>
+
+    <update id="updateByIdAndItem" parameterType="yj.core.wipdftrghlist.dto.Dftrghlist">
+        UPDATE wip_dftrghlist set CANCEL_FLAG = #{cancelFlag},
+                                  CANCEL_BY = #{cancelBy},
+                                  LAST_UPDATED_BY = #{lastUpdatedBy},
+                                  LAST_UPDATE_DATE = #{lastUpdateDate}
+                <where>
+                    RECORDID = #{recordid}
+                    and ITEM = #{item}
+                </where>
+    </update>
 </mapper>
