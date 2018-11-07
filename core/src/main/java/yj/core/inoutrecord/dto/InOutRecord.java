@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import com.hand.hap.mybatis.annotation.ExtensionAttribute;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import com.hand.hap.system.dto.BaseDTO;
 import java.util.Date;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -103,6 +105,20 @@ public class InOutRecord extends BaseDTO {
 
     private Long lastUpdatedBy; //更新人
 
+    @Transient
+    private String werks;
+    @Transient
+    private Long unitId;
+    @Transient
+    private String name;
+    @Transient
+    private String maktx;
+
+    private int zsxnum;
+
+    private int num;
+    @Transient
+    private String descriptions;
 
     public Integer getZremade() {
         return zremade;
@@ -382,5 +398,61 @@ public class InOutRecord extends BaseDTO {
     @Override
     public void setLastUpdatedBy(Long lastUpdatedBy) {
         this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+    public String getWerks() {
+        return werks;
+    }
+
+    public void setWerks(String werks) {
+        this.werks = werks;
+    }
+
+    public Long getUnitId() {
+        return unitId;
+    }
+
+    public void setUnitId(Long unitId) {
+        this.unitId = unitId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getMaktx() {
+        return maktx;
+    }
+
+    public void setMaktx(String maktx) {
+        this.maktx = maktx;
+    }
+
+    public int getZsxnum() {
+        return zsxnum;
+    }
+
+    public void setZsxnum(int zsxnum) {
+        this.zsxnum = zsxnum;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
+
+    public String getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(String descriptions) {
+        this.descriptions = descriptions;
     }
 }

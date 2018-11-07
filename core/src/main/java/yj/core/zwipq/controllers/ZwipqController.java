@@ -568,4 +568,60 @@ public class ZwipqController extends BaseController {
         }
         return rs;
     }
+
+    /**
+     * 处理产线在制队列明细查询页面请求 918100064
+     * @param request
+     * @param unitId
+     * @param lineId
+     * @param zremade
+     * @param attr1After
+     * @param attr1Before
+     * @param shift
+     * @param sfflg
+     * @param diecd
+     * @param zxhbar
+     * @param zgjbar
+     * @param online
+     * @param zzxkl
+     * @param zqjkl
+     * @param zoffl
+     * @param status
+     * @return
+     */
+    @RequestMapping(value = "/zwipq/selectZwipq")
+    @ResponseBody
+    public ResponseData selectZwipq( HttpServletRequest request,Long unitId,String lineId,Integer zremade,
+                                     String attr1After,String attr1Before,String shift,String sfflg,String diecd,
+                                     String zxhbar,String zgjbar,String online,String zzxkl,String zqjkl,String zoffl,String status){
+        IRequest requestContext = createRequestContext(request);
+        Integer online1 = null,zzxkl1 = null, zqjkl1 = null, zoffl1 = null, status1 = null;
+        if (attr1Before != null){
+            attr1Before = attr1Before.substring(0,10);
+        }
+        if (attr1After != null){
+            attr1After = attr1After.substring(0,10);
+        }
+        if("Y".equals(zzxkl)){
+            zzxkl1 = 1;
+        }
+        if("Y".equals(zqjkl)){
+            zqjkl1 = 1;
+        }
+        if("Y".equals(zoffl)){
+            zoffl1 = 1;
+        }
+        if("Y".equals(status)){
+            status1 = 1;
+        }
+        if("Y".equals(online)){
+            online1 = 1;
+        }
+        if("N".equals(online)){
+            online1 = 0;
+        }
+        ResponseData rs = new ResponseData();
+        List<Zwipq> list = service.selectZwipq(requestContext, unitId, lineId, zremade, attr1After, attr1Before, shift, sfflg, diecd, zxhbar, zgjbar,online1, zzxkl1, zqjkl1, zoffl1, status1);
+        return new ResponseData(list);
+    }
 }

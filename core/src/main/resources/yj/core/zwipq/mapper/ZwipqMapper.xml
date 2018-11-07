@@ -73,6 +73,128 @@
         <result column="CHECK" property="check" jdbcType="VARCHAR" />
     </resultMap>
 
+    <resultMap id="BaseResultMap3" type="yj.core.zwipq.dto.Zwipq">
+        <result column="ZSXJLH" property="zsxjlh" jdbcType="VARCHAR" />
+        <result column="LINE_ID" property="lineId" jdbcType="VARCHAR" />
+        <result column="ARBPR" property="arbpr" jdbcType="VARCHAR" />
+        <result column="SEG_OPR_NAME" property="segOprName" jdbcType="VARCHAR" />
+        <result column="PKG_LINE_ID" property="pkgLineId" jdbcType="VARCHAR" />
+        <result column="SHIFT" property="shift" jdbcType="VARCHAR" />
+        <result column="ZPGDBAR" property="zpgdbar" jdbcType="VARCHAR" />
+        <result column="ZPGDBAR1" property="zpgdbar1" jdbcType="VARCHAR" />
+        <result column="VORNR" property="vornr" jdbcType="VARCHAR" />
+        <result column="ZXHBAR" property="zxhbar" jdbcType="VARCHAR" />
+        <result column="MATNR" property="matnr" jdbcType="VARCHAR" />
+        <result column="MATNR2" property="matnr2" jdbcType="VARCHAR" />
+        <result column="ZPGDBAR2" property="zpgdbar2" jdbcType="VARCHAR" />
+        <result column="ZGJBAR" property="zgjbar" jdbcType="VARCHAR" />
+        <result column="ZSXNUM" property="zsxnum" jdbcType="DECIMAL" />
+        <result column="GMEIN" property="gmein" jdbcType="VARCHAR" />
+        <result column="LGORT" property="lgort" jdbcType="VARCHAR" />
+        <result column="CHARG" property="charg" jdbcType="VARCHAR" />
+        <result column="ZREMADE" property="zremade" jdbcType="DECIMAL" />
+        <result column="ZZXKL" property="zzxkl" jdbcType="DECIMAL" />
+        <result column="ZQJKL" property="zqjkl" jdbcType="DECIMAL" />
+        <result column="ZOFFL" property="zoffl" jdbcType="DECIMAL" />
+        <result column="STATUS" property="status" jdbcType="DECIMAL" />
+        <result column="SFFLG" property="sfflg" jdbcType="VARCHAR" />
+        <result column="DIECD" property="diecd" jdbcType="VARCHAR" />
+        <result column="Q_SENQ" property="qsenq" jdbcType="DECIMAL"/>
+        <result column="CREATION_DATE" property="creationDate" jdbcType="DATE" />
+        <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
+        <result column="LAST_UPDATED_DATE" property="lastUpdatedDate" jdbcType="DATE" />
+        <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
+        <result column="OFF_UPDATED_DATE" property="offUpdatedDate" jdbcType="DATE" />
+        <result column="OFF_UPDATED_BY" property="offUpdatedBy" jdbcType="DECIMAL" />
+        <result column="ATTR7" property="attr7" jdbcType="VARCHAR"/>
+        <result column="CHECK" property="check" jdbcType="VARCHAR" />
+        <result column="UNIT_ID" property="unitId" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <select id="selectZwipq" parameterType="java.lang.String" resultMap="BaseResultMap3">
+        select count(q.zsxjlh),q.line_id,q.creation_date,q.zxhbar,q.sfflg,q.diecd,q.zgjbar,q.matnr,q.matnr2,
+        q.arbpr,q.charg,q.zzxkl,q.zqjkl,q.zoffl,q.status,q.zremade,q.zpgdbar,q.lgort,q.q_senq,
+        b.unit_id,b.name,li.descriptions,ma.maktx
+        from zwipq q,sap_cardh ca,wip_lines li,hr_org_unit_b b,sap_marc ma
+        <where>
+            q.line_id = li.line_id
+            AND li.dept_id = b.unit_code
+            AND q.matnr = ma.matnr
+            AND ca.zpgdbar = q.zpgdbar
+            <if test="unitId != null">
+                AND b.unit_id = #{unitId}
+            </if>
+            <if test="lineId != null">
+                AND li.line_id = #{lineId}
+            </if>
+            <if test="zremade != null">
+                AND q.zremade = #{zremade}
+            </if>
+            <if test="attr1After != null">
+                AND ca.attr1 >= #{attr1After}
+            </if>
+            <if test="attr1Before != null">
+                AND #{attr1Before} >= ca.attr1
+            </if>
+            <if test="shift != null">
+                AND q.shift = #{shift}
+            </if>
+            <if test="sfflg != null">
+                AND q.sfflg = #{sfflg}
+            </if>
+            <if test="diecd != null">
+                AND q.diecd = #{diecd}
+            </if>
+            <if test="zxhbar != null">
+                AND q.zxhbar = #{zxhbar}
+            </if>
+            <if test="zgjbar != null">
+                AND q.zgjbar = #{zgjbar}
+            </if>
+            AND (
+            <if test="online == 1">
+                (q.zzxkl != 1 AND q.zqjkl != 1 AND q.zoffl != 1 AND q.status != 1)
+            </if>
+            <if test="online == 0">
+                (q.zzxkl = 1 AND q.zqjkl = 1 AND q.zoffl = 1 AND q.status = 1)
+            </if>
+            <if test="zzxkl == 1">
+                OR (q.zzxkl = 1 AND q.zqjkl != 1 AND q.zoffl != 1 AND q.status != 1)
+            </if>
+            <if test="zqjkl == 1">
+                OR (q.zzxkl != 1 AND q.zqjkl = 1 AND q.zoffl != 1 AND q.status != 1)
+            </if>
+            <if test="zoffl == 1">
+                OR (q.zzxkl != 1 AND q.zqjkl != 1 AND q.zoffl = 1 AND q.status != 1)
+            </if>
+            <if test="status == 1">
+                OR (q.zzxkl != 1 AND q.zqjkl != 1 AND q.zoffl != 1 AND q.status = 1)
+            </if>
+            <if test="online == null">
+                1 = 1
+            </if>)
+        </where>
+        group by q.zsxjlh having count(q.zsxjlh)>=1
+    </select>
+
+    <select id="selectZsxnum" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(DISTINCT q.zsxjlh) zsxnum from zwipq q, wip_in_out_record re,wip_lines li
+        <where>
+            q.zzxkl != 1
+            AND q.zqjkl != 1
+            AND q.zoffl != 1
+            AND q.status != 1
+            AND q.sfflg = re.sfflg
+            AND q.diecd = re.diecd
+            AND q.line_id = #{lineId}
+            AND q.sfflg = #{sfflg}
+            AND q.diecd = #{diecd}
+            <if test="zremade != null">
+                AND q.zremade = #{zremade}
+            </if>
+        </where>
+    </select>
+
     <select id="selectByLineIdAndZxhbar" parameterType="java.lang.String" resultMap="BaseResultMap">
         select * from zwipq
         <where>

@@ -1,5 +1,6 @@
 package yj.core.zwipq.service;
 
+import com.hand.hap.core.IRequest;
 import com.hand.hap.core.ProxySelf;
 import com.hand.hap.system.service.IBaseService;
 import yj.core.webservice_migo.dto.DTMIGOReturn;
@@ -23,4 +24,8 @@ public interface IZwipqService extends IBaseService<Zwipq>, ProxySelf<IZwipqServ
     int updateQsenqBatch(List<Zwipq> list);
     List<Zwipq> selectForJjxx(String line_id,String classgrp);
     int updateZoffl(List<Zwipq> list);
+    List<Zwipq> selectZwipq(IRequest request, Long unitId, String lineId, Integer zremade,
+                            String attr1After, String attr1Before, String shift, String sfflg, String diecd,
+                            String zxhbar, String zgjbar, Integer online, Integer zzxkl, Integer zqjkl, Integer zoffl, Integer status);
+
 }

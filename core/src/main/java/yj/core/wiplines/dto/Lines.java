@@ -7,6 +7,7 @@ import com.hand.hap.mybatis.annotation.ExtensionAttribute;
 import javax.persistence.Table;
 import com.hand.hap.system.dto.BaseDTO;
 import java.util.Date;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 @ExtensionAttribute(disable=true)
@@ -54,6 +55,22 @@ public class Lines extends BaseDTO {
       private Date lastUpdatedDate; //更新时间
 
       private Long lastUpdatedBy; //更新人
+
+    private String pkgtype;//装箱方式 0：批次 1：二维码
+    @Transient
+    private String name;
+    @Transient
+    private String ktext;
+    @Transient
+    private String unitCode;
+    @Transient
+    private Long unitId;
+    @Transient
+    private Long parentId;
+
+    private String uname;
+
+    private String pdescriptions; //产线描述
 
 
      public void setWerks(String werks){
@@ -198,5 +215,69 @@ public class Lines extends BaseDTO {
 
     public void setOnlinetype(String onlinetype) {
         this.onlinetype = onlinetype;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getKtext() {
+        return ktext;
+    }
+
+    public void setKtext(String ktext) {
+        this.ktext = ktext;
+    }
+
+    public String getUnitCode() {
+        return unitCode;
+    }
+
+    public void setUnitCode(String unitCode) {
+        this.unitCode = unitCode;
+    }
+
+    public Long getUnitId() {
+        return unitId;
+    }
+
+    public void setUnitId(Long unitId) {
+        this.unitId = unitId;
+    }
+
+    public Long getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(Long parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getUname() {
+        return uname;
+    }
+
+    public void setUname(String uname) {
+        this.uname = uname;
+    }
+
+    public String getPdescriptions() {
+        return pdescriptions;
+    }
+
+    public void setPdescriptions(String pdescriptions) {
+        this.pdescriptions = pdescriptions;
+    }
+
+    public String getPkgtype() {
+        return pkgtype;
+    }
+
+    public void setPkgtype(String pkgtype) {
+        this.pkgtype = pkgtype;
     }
 }

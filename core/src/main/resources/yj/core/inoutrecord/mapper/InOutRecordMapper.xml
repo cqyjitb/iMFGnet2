@@ -38,6 +38,55 @@
         <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="VARCHAR"/>
         <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL"/>
     </resultMap>
+    <resultMap id="BaseResultMap2" type="yj.core.inoutrecord.dto.InOutRecord">
+        <result column="LINE_ID" property="lineId" jdbcType="VARCHAR"/>
+        <result column="MATNR" property="matnr" jdbcType="VARCHAR"/>
+        <result column="DIECD" property="diecd" jdbcType="VARCHAR"/>
+        <result column="SFFLG" property="sfflg" jdbcType="VARCHAR"/>
+        <result column="DESCRIPTIONS" property="descriptions" jdbcType="VARCHAR"/>
+        <result column="WERKS" property="werks" jdbcType="VARCHAR"/>
+        <result column="UNIT_ID" property="unitId" jdbcType="DECIMAL"/>
+        <result column="NAME" property="name" jdbcType="VARCHAR"/>
+        <result column="MAKTX" property="maktx" jdbcType="VARCHAR"/>
+        <result column="ZREMADE" property="zremade" jdbcType="DECIMAL"/>
+        <result column="ZOUTNUM" property="zoutnum" jdbcType="DECIMAL"/>
+    </resultMap>
+
+    <select id="selectforlines" parameterType="java.lang.String" resultMap="BaseResultMap2">
+        select distinct re.line_id,li.descriptions,li.werks,b.unit_id,b.name,re.matnr,m.maktx,re.sfflg,re.diecd
+        from wip_in_out_record re,wip_lines li,hr_org_unit_b b,zwipq q,sap_marc m
+        <where>
+            q.line_id = re.line_id
+            AND li.line_id = re.line_id
+            AND q.matnr = re.matnr
+            AND re.matnr = m.matnr
+            AND li.dept_id = b.unit_code
+            AND q.sfflg = re.sfflg
+            AND q.diecd = re.diecd
+            <if test="unitId != null">
+                AND b.unit_id = #{unitId}
+            </if>
+            <if test="lineId != null">
+                AND re.line_id = #{lineId}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectZoutnum" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(DISTINCT re.zqjjlh) from wip_in_out_record re,zwipq q,wip_lines li
+        <where>
+            re.reflag in(0,3)
+            AND q.sfflg = re.sfflg
+            AND q.diecd = re.diecd
+            AND re.line_id = #{lineId}
+            AND re.sfflg = #{sfflg}
+            AND re.diecd = #{diecd}
+            <if test="zremade != null">
+                AND re.zremade = #{zremade}
+            </if>
+        </where>
+    </select>
+
     <insert id="insertQjrecode" parameterType="yj.core.inoutrecord.dto.InOutRecord">
         insert INTO wip_in_out_record (ZQJJLH,ZWIPQID,LINE_ID,ARBPR,ZBANZ,ZBANC,ZPGDBAR,VORNR,ZXHBAR,ZPGDBAR2,MATNR,MATNR2,ZGJBAR,ZOUTNUM,REFLAG,GMEIN,CHARG,DIECD,SFFLG,
         ZOTYPE,ZQXDM,ZISSUETXT,ZBPJC,ZJTGX,ZOPLO,OUTDAT,OUTNAM,REDAT,RENAM,ZREMADE,CREATION_DATE,CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY)VALUES (#{zqjjlh},#{zwipqid},#{lineId},#{arbpr},#{zbanz},#{zbanc},#{zpgdbar},#{vornr},#{zxhbar},#{zpgdbar2},#{matnr},#{matnr2},

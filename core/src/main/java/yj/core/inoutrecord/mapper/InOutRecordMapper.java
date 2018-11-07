@@ -14,4 +14,23 @@ public interface InOutRecordMapper extends Mapper<InOutRecord>{
         List<InOutRecord> selectforZud(@Param("line_id") String line_id,@Param("classgrp") String classgrp);
         InOutRecord selectById(String zqjjlh);
         List<InOutRecord> selectforZrwk(@Param("line_id") String line_id,@Param("classgrp") String classgrp,@Param("zotype") String zotype);
+
+        /**
+         * 产线在制队列汇总表查询 918100064
+         * @param lineId
+         * @param unitId
+         * @return
+         */
+        List<InOutRecord> selectforlines(@Param("lineId") String lineId,@Param("unitId")Long unitId);
+
+        /**
+         * 根据生产线、返工件标识、处理标识查询WIP_IN_OUT_RECORD表汇总取件数量（未报废） 918100064
+         * @param lineId
+         * @param zremade
+         * @param sfflg
+         * @param diecd
+         * @return
+         */
+        int selectZoutnum(@Param("lineId")String lineId,@Param("zremade") Integer zremade,@Param("sfflg") String sfflg,@Param("diecd") String diecd);
+
 }

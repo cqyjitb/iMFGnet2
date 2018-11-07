@@ -16,6 +16,7 @@ import yj.core.marc.mapper.MarcMapper;
 import yj.core.qjcode.dto.Qjcode;
 import yj.core.qjcode.mapper.QjcodeMapper;
 import yj.core.zudlist.dto.Zudlist;
+import yj.core.zwipq.mapper.ZwipqMapper;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +33,8 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
     private CardhMapper cardhMapper;
     @Autowired
     private QjcodeMapper qjcodeMapper;
+    @Autowired
+    private ZwipqMapper zwipqMapper;
     @Override
     public int insertQjrecode(List<InOutRecord> list) {
         int sum = 0;
@@ -125,5 +128,20 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
     @Override
     public List<InOutRecord> selectforZrwk(String line_id, String classgrp, String zotype,IRequest iRequest) {
         return inOutRecordMapper.selectforZrwk(line_id,classgrp,zotype);
+    }
+
+    @Override
+    public List<InOutRecord> selectforlines(IRequest request, String lineId, Long unitId) {
+        return inOutRecordMapper.selectforlines(lineId, unitId);
+    }
+
+    @Override
+    public int selectZoutnum(String lineId, Integer zremade, String sfflg, String diecd) {
+        return inOutRecordMapper.selectZoutnum(lineId, zremade, sfflg, diecd);
+    }
+
+    @Override
+    public int selectZsxnum(String lineId, Integer zremade, String sfflg, String diecd) {
+        return zwipqMapper.selectZsxnum(lineId, zremade,sfflg,diecd);
     }
 }

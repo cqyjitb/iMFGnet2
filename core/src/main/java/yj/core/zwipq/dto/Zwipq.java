@@ -86,6 +86,21 @@ public class Zwipq extends BaseDTO {
 
       private String cursum;//取件数量
 
+    @Transient
+    private Long unitId;
+    @Transient
+    private String name;
+    @Transient
+    private String descriptions;
+    @Transient
+    private String maktx;
+
+    private String attr1After;
+
+    private String attr1Before;
+
+    private Integer online;
+
     public Integer getZremade() {
         return zremade;
     }
@@ -356,5 +371,61 @@ public class Zwipq extends BaseDTO {
 
     public void setStatus(Long status) {
         this.status = status;
+    }
+
+    public Long getUnitId() {
+        return unitId;
+    }
+
+    public void setUnitId(Long unitId) {
+        this.unitId = unitId;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(String descriptions) {
+        this.descriptions = descriptions;
+    }
+
+    public String getMaktx() {
+        return maktx;
+    }
+
+    public void setMaktx(String maktx) {
+        this.maktx = maktx;
+    }
+
+    public String getAttr1After() {
+        return attr1After;
+    }
+
+    public void setAttr1After(String attr1After) {
+        this.attr1After = attr1After;
+    }
+
+    public String getAttr1Before() {
+        return attr1Before;
+    }
+
+    public void setAttr1Before(String attr1Before) {
+        this.attr1Before = attr1Before;
+    }
+
+    public Integer getOnline() {
+        return online;
+    }
+
+    public void setOnline(Integer online) {
+        this.online = online;
     }
 }

@@ -1,5 +1,6 @@
 package yj.core.zwipq.service.impl;
 
+import com.hand.hap.core.IRequest;
 import com.hand.hap.system.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -189,5 +190,11 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
             }
         }
         return sum;
+    }
+
+    @Override
+    public List<Zwipq> selectZwipq(IRequest request, Long unitId, String lineId, Integer zremade, String attr1After, String attr1Before,
+                                   String shift, String sfflg, String diecd, String zxhbar, String zgjbar, Integer online, Integer zzxkl, Integer zqjkl, Integer zoffl, Integer status) {
+        return zwipqMapper.selectZwipq(unitId, lineId, zremade, attr1After, attr1Before, shift, sfflg, diecd,zxhbar, zgjbar, online, zzxkl, zqjkl, zoffl, status);
     }
 }

@@ -152,4 +152,35 @@ public class InOutRecordController extends BaseController {
         return new ResponseData(listzrwk);
     }
 
+    /**
+     * 处理产线在制队列汇总表查询的页面请求 918100064
+     * @param request
+     * @param lineId
+     * @param unitId
+     * @param zremade
+     * @return
+     */
+    @RequestMapping(value = "/inoutrecord/selectforlines")
+    @ResponseBody
+    public ResponseData selectforlines(HttpServletRequest request, String lineId,Long unitId,Integer zremade) {
+        IRequest requestContext = createRequestContext(request);
+        ResponseData rs =  new ResponseData();
+        List<InOutRecord> list = service.selectforlines(requestContext,lineId,unitId);
+        List<InOutRecord> result = new ArrayList<InOutRecord>();
+        if(list.size() > 0 ){
+            for(InOutRecord inOutRecord : list){
+                String lineId2 = inOutRecord.getLineId();
+                String sfflg = inOutRecord.getSfflg();
+                String diecd = inOutRecord.getDiecd();
+                Integer num = service.selectZoutnum(lineId2, zremade,sfflg,diecd);
+                Integer zsxnum = service.selectZsxnum(lineId2, zremade,sfflg,diecd);
+                if(zsxnum != 0 || num != 0){
+                    inOutRecord.setZsxnum(zsxnum);
+                    inOutRecord.setNum(num);
+                    result.add(inOutRecord);
+                }
+            }
+        }
+        return new ResponseData(result);
+    }
 }

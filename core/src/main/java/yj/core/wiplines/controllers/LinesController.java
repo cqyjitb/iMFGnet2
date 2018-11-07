@@ -41,19 +41,55 @@ public class LinesController extends BaseController {
     @Autowired
     private IMarcService marcService;
 
+    /**
+     *  处理机加生产线维护页面查询请求 918100064
+     * @param dto
+     * @param page
+     * @param pageSize
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/wip/lines/query")
     @ResponseBody
     public ResponseData query(Lines dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
                               @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize, HttpServletRequest request) {
         IRequest requestContext = createRequestContext(request);
-        return new ResponseData(service.select(requestContext, dto, page, pageSize));
+        List<Lines> list = service.selectFromPage(dto,requestContext,page,pageSize);
+        for(int i=0;i<list.size();i++){
+            Lines lines = list.get(i);
+            Long parentId = lines.getParentId();
+            Long plineId = lines.getPlineId();
+            if (plineId != null){
+                lines.setPdescriptions(service.selectDescription(plineId));
+            }
+            Lines li = service.selectUnitCode(parentId);
+            lines.setUnitCode(li.getUnitCode());
+            lines.setUname(li.getName());
+        }
+        return new ResponseData(list);
     }
 
+    /**
+     * 处理机加生产线维护页面添加和修改请求 918100064
+     * @param request
+     * @param dto
+     * @return
+     */
     @RequestMapping(value = "/wip/lines/submit")
     @ResponseBody
     public ResponseData update(HttpServletRequest request, @RequestBody List<Lines> dto) {
         IRequest requestCtx = createRequestContext(request);
-        return new ResponseData(service.batchUpdate(requestCtx, dto));
+        ResponseData rs =  new ResponseData();
+        String str = service.setMessageLines(dto);
+        if(str != null){
+            rs.setSuccess(false);
+            rs.setMessage(str);
+            return rs;
+        }else{
+            String result = service.updateOrInsert(requestCtx,dto);
+            rs.setMessage(result);
+            return rs;
+        }
     }
 
     @RequestMapping(value = "/wip/lines/remove")
