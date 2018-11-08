@@ -80,13 +80,14 @@ public class LinesController extends BaseController {
     public ResponseData update(HttpServletRequest request, @RequestBody List<Lines> dto) {
         IRequest requestCtx = createRequestContext(request);
         ResponseData rs =  new ResponseData();
+        String userId ="" + request.getSession().getAttribute("userId");
         String str = service.setMessageLines(dto);
         if(str != null){
             rs.setSuccess(false);
             rs.setMessage(str);
             return rs;
         }else{
-            String result = service.updateOrInsert(requestCtx,dto);
+            String result = service.updateOrInsert(requestCtx,dto,userId);
             rs.setMessage(result);
             return rs;
         }

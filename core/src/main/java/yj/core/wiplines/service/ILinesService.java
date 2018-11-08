@@ -21,5 +21,5 @@ public interface ILinesService extends IBaseService<Lines>, ProxySelf<ILinesServ
     String selectDescription(Long plineId);
     Lines selectUnitCode(Long parentId);
     String setMessageLines(List<Lines> dto);
-    String updateOrInsert(IRequest requestCtx,List<Lines> dto);
+    String updateOrInsert(IRequest requestCtx,List<Lines> dto,String userId);
 }

@@ -100,6 +100,66 @@ public class Zudlist extends BaseDTO {
     @Transient
     private String maktx;
 
+    /*添加字段 918100064 */
+    @Transient
+    private Long unitId;//生产车间Id
+    private String creationDateBefore;
+    private String creationDateAfter;
+    @Transient
+    private String sortl;//客户名称
+    @Transient
+    private String zotype;//取件原因编号
+    @Transient
+    private String descriptions;//生产线名称
+
+    public Long getUnitId() {
+        return unitId;
+    }
+
+    public void setUnitId(Long unitId) {
+        this.unitId = unitId;
+    }
+
+    public String getCreationDateBefore() {
+        return creationDateBefore;
+    }
+
+    public void setCreationDateBefore(String creationDateBefore) {
+        this.creationDateBefore = creationDateBefore;
+    }
+
+    public String getCreationDateAfter() {
+        return creationDateAfter;
+    }
+
+    public void setCreationDateAfter(String creationDateAfter) {
+        this.creationDateAfter = creationDateAfter;
+    }
+
+    public String getSortl() {
+        return sortl;
+    }
+
+    public void setSortl(String sortl) {
+        this.sortl = sortl;
+    }
+
+    public String getZotype() {
+        return zotype;
+    }
+
+    public void setZotype(String zotype) {
+        this.zotype = zotype;
+    }
+
+    public String getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(String descriptions) {
+        this.descriptions = descriptions;
+    }
+
     public String getMaktx() {
         return maktx;
     }

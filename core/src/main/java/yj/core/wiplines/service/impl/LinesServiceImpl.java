@@ -74,7 +74,7 @@ public class LinesServiceImpl extends BaseServiceImpl<Lines> implements ILinesSe
     }
 
     @Override
-    public String updateOrInsert(IRequest requestCtx,List<Lines> dto) {
+    public String updateOrInsert(IRequest requestCtx,List<Lines> dto,String userId) {
         if(dto.size() > 0){
             for(int i=0;i<dto.size();i++){
                 Lines lines = dto.get(i);
@@ -82,15 +82,16 @@ public class LinesServiceImpl extends BaseServiceImpl<Lines> implements ILinesSe
                 if (num == 1){
                     if(lines.getCreationDate() == null){
                         lines.setCreationDate(new Date());
-                        lines.setCreatedBy(1L);
+                        lines.setCreatedBy(Long.valueOf(userId));
                     }
                     lines.setLastUpdatedDate(new Date());
+                    lines.setLastUpdatedBy(Long.valueOf(userId));
                     lines.setDeptId(linesMapper.selectDeptId(lines.getUnitId()));
                     linesMapper.updateLines(lines);
                 }else{
                     lines.setWerks("1001");
                     lines.setCreationDate(new Date());
-                    lines.setCreatedBy(1L);
+                    lines.setCreatedBy(Long.valueOf(userId));
                     lines.setDeptId(linesMapper.selectDeptId(lines.getUnitId()));
                     linesMapper.insertLines(lines);
                 }

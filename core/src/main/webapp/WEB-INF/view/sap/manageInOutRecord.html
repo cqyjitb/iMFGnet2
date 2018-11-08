@@ -196,7 +196,7 @@
             }
         });
 
-        var gird = $("#Grid").kendoGrid({
+        $("#Grid").kendoGrid({
             dataSource: dataSource,
             autoBind:false,
             height: '100%',
@@ -208,7 +208,7 @@
                 refresh: true,
                /* buttonCount: 10*/
             },
-
+            toolbar: ["excel"],
             columns:[
                 {
                     field: "werks",
@@ -334,7 +334,10 @@
             ],
             editable: false
         });
-
+        var grid = $("#Grid").data("kendoGrid");
+        grid.bind("excelExport", function(e) {
+            e.workbook.fileName = "产线在制队列汇总表.xlsx";
+        });
         Hap.autoResizeGrid("#Grid");
     </script>
 </body>
