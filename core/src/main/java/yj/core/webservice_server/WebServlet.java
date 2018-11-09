@@ -83,5 +83,13 @@ public class WebServlet extends CXFNonSpringServlet {
         serverFactoryBean7.setAddress("/SyncXhcard"); //服务请求路径
         serverFactoryBean7.setServiceBean(syncXhcard);
         serverFactoryBean7.create();
+
+        //发布外协采购订单同步接口
+        ServerFactoryBean serverFactoryBean8 = new ServerFactoryBean(); //server工厂
+        SyncOutsrgrfeImpl SyncOutsrgrfe = new SyncOutsrgrfeImpl();
+        serverFactoryBean8.setServiceClass(IsyncOutsrgrfe.class);
+        serverFactoryBean8.setAddress("/SyncOutsrgrfe"); //服务请求路径
+        serverFactoryBean8.setServiceBean(SyncOutsrgrfe);
+        serverFactoryBean8.create();
     }
 }
