@@ -1,5 +1,7 @@
 package yj.core.zrwklist.controllers;
 
+import com.hand.hap.hr.dto.Employee;
+import com.hand.hap.hr.service.IEmployeeService;
 import org.springframework.stereotype.Controller;
 import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.core.IRequest;
@@ -11,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -19,6 +22,8 @@ import java.util.List;
 
     @Autowired
     private IZrwklistService service;
+    @Autowired
+    private IEmployeeService employeeService;
 
 
     @RequestMapping(value = "/wip/zrwklist/query")
@@ -42,4 +47,36 @@ import java.util.List;
         service.batchDelete(dto);
         return new ResponseData();
     }
+        /**
+         *处理机加返工返修单查询页面请求 918100064
+         * @param dto
+         * @param page
+         * @param pageSize
+         * @param request
+         * @return
+         */
+        @RequestMapping(value = "/wip/zrwklist/selectZrwklist")
+        @ResponseBody
+        public ResponseData selectZrwklist(Zrwklist dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page, String createdBy1,
+                                          @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize, HttpServletRequest request) {
+            IRequest requestContext = createRequestContext(request);
+            if(createdBy1 != null && createdBy1 != ""){
+                Employee employee = employeeService.queryByCode(createdBy1);
+                dto.setCreatedBy(employee.getEmployeeId());
+            }
+            Zrwklist zrwklist  = resultFormat(dto);
+            return new ResponseData(service.selectZrwklist(requestContext,zrwklist,page,pageSize));
+        }
+        /**
+         *修改创建日期的方法 918100064
+         * @param dto
+         * @return
+         */
+        public Zrwklist resultFormat(Zrwklist dto){
+            if ( dto.getCreationDateBefore() !=null){
+                String cdBefore = dto.getCreationDateBefore().replace("00:00:00","23:59:59");
+                dto.setCreationDateBefore(cdBefore);
+            }
+            return dto;
+        }
     }

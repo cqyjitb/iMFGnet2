@@ -87,6 +87,46 @@ public class Zrwklist extends BaseDTO {
 
     private String vornr_old;
 
+    /*添加字段 918100064*/
+    @Transient
+    private Long unitId;//生产车间Id
+    private String creationDateBefore;
+    private String creationDateAfter;
+    @Transient
+    private String descriptions;//生产线名称
+
+    public Long getUnitId() {
+        return unitId;
+    }
+
+    public void setUnitId(Long unitId) {
+        this.unitId = unitId;
+    }
+
+    public String getCreationDateBefore() {
+        return creationDateBefore;
+    }
+
+    public void setCreationDateBefore(String creationDateBefore) {
+        this.creationDateBefore = creationDateBefore;
+    }
+
+    public String getCreationDateAfter() {
+        return creationDateAfter;
+    }
+
+    public void setCreationDateAfter(String creationDateAfter) {
+        this.creationDateAfter = creationDateAfter;
+    }
+
+    public String getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(String descriptions) {
+        this.descriptions = descriptions;
+    }
+
     public String getRcode() {
         return rcode;
     }

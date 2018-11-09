@@ -64,7 +64,7 @@ import java.util.List;
                 dto.setCreatedBy(employee.getEmployeeId());
             }
             Zudlist zudlist  = resultFormat(dto);
-            return new ResponseData(service.selectZudlist(requestContext,dto,page,pageSize));
+            return new ResponseData(service.selectZudlist(requestContext,zudlist,page,pageSize));
         }
 
         /**
