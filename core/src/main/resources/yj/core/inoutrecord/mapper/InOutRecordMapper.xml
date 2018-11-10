@@ -37,6 +37,8 @@
         <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL"/>
         <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="VARCHAR"/>
         <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL"/>
+        <result column="KUNNR" property="kunnr" jdbcType="VARCHAR"/>
+        <result column="SORTL" property="sortl" jdbcType="VARCHAR"/>
     </resultMap>
     <resultMap id="BaseResultMap2" type="yj.core.inoutrecord.dto.InOutRecord">
         <result column="LINE_ID" property="lineId" jdbcType="VARCHAR"/>
@@ -151,18 +153,39 @@
         </where>
     </update>
 
+    <!--<select id="selectforZud" parameterType="java.lang.String" resultMap="BaseResultMap">-->
+        <!--select a.*-->
+               <!--from wip_in_out_record a,wip_qjcode b-->
+        <!--<where>-->
+            <!--a.ZOTYPE = b.ID-->
+            <!--AND b.SLD1 = 'X'-->
+            <!--AND REFLAG = 0-->
+            <!--<if test="line_id != null">-->
+                <!--and LINE_ID = #{line_id}-->
+            <!--</if>-->
+            <!--<if test="classgrp != null">-->
+                <!--and ZBANZ = #{classgrp}-->
+            <!--</if>-->
+
+        <!--</where>-->
+    <!--</select>-->
+
     <select id="selectforZud" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select a.*
-               from wip_in_out_record a,wip_qjcode b
+        select a.*,
+               c.name1,
+               d.kunnr
+        from wip_in_out_record a,wip_qjcode b,sap_cust c,wip_products_cfg d
         <where>
             a.ZOTYPE = b.ID
+            and ( a.LINE_ID = d.LINE_ID and a.MATNR = d.MATNR )
+            AND c.KUNNR = d.KUNNR
             AND b.SLD1 = 'X'
-            AND REFLAG = 0
+            AND a.REFLAG = 0
             <if test="line_id != null">
-                and LINE_ID = #{line_id}
+                and a.LINE_ID = #{line_id}
             </if>
             <if test="classgrp != null">
-                and ZBANZ = #{classgrp}
+                and a.ZBANZ = #{classgrp}
             </if>
 
         </where>

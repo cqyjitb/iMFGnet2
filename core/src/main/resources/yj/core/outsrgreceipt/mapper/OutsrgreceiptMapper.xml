@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.outsrgreceipt.mapper.OutsrgreceiptMapper">
+    <resultMap id="BaseResultMap" type="yj.core.outsrgreceipt.dto.Outsrgreceipt">
+        <result column="RECEIPTNM" property="receiptnm" jdbcType="VARCHAR" />
+        <result column="ITEM" property="item" jdbcType="VARCHAR" />
+        <result column="WERKS" property="werks" jdbcType="VARCHAR" />
+        <result column="ZPGDBAR" property="zpgdbar" jdbcType="VARCHAR" />
+        <result column="VORNR" property="vornr" jdbcType="VARCHAR" />
+        <result column="ISSUENM" property="issuenm" jdbcType="VARCHAR" />
+        <result column="ISSUENMITEM" property="issuenmitem" jdbcType="VARCHAR" />
+        <result column="VSNDA" property="vsnda" jdbcType="VARCHAR" />
+        <result column="EBELN" property="ebeln" jdbcType="VARCHAR" />
+        <result column="EBELP" property="ebelp" jdbcType="VARCHAR" />
+        <result column="KTSCH" property="ktsch" jdbcType="VARCHAR" />
+        <result column="TXZ01" property="txz01" jdbcType="VARCHAR" />
+        <result column="LIFNR" property="lifnr" jdbcType="VARCHAR" />
+        <result column="MATNR" property="matnr" jdbcType="VARCHAR" />
+        <result column="DIECD" property="diecd" jdbcType="VARCHAR" />
+        <result column="SFFLG" property="sfflg" jdbcType="VARCHAR" />
+        <result column="MENGE" property="menge" jdbcType="DECIMAL" />
+        <result column="MATKL" property="matkl" jdbcType="VARCHAR" />
+        <result column="TTRECEIPTS" property="ttreceipts" jdbcType="DECIMAL" />
+        <result column="ZSHNUM" property="zshnum" jdbcType="DECIMAL" />
+        <result column="ZLFNUM" property="zlfnum" jdbcType="DECIMAL" />
+        <result column="ZGFNUM" property="zgfnum" jdbcType="DECIMAL" />
+        <result column="ZLOST" property="zlost" jdbcType="DECIMAL" />
+        <result column="ZTHNUM" property="zthnum" jdbcType="DECIMAL" />
+        <result column="GMEIN" property="gmein" jdbcType="VARCHAR" />
+        <result column="CHARG" property="charg" jdbcType="VARCHAR" />
+        <result column="STATUS" property="status" jdbcType="VARCHAR" />
+        <result column="MBLNR" property="mblnr" jdbcType="VARCHAR" />
+        <result column="ZEILE" property="zeile" jdbcType="VARCHAR" />
+        <result column="MJAHR" property="mjahr" jdbcType="VARCHAR" />
+        <result column="RUECK" property="rueck" jdbcType="VARCHAR" />
+        <result column="RMZHL" property="rmzhl" jdbcType="VARCHAR" />
+        <result column="DEDUCTNTENM" property="deductntenm" jdbcType="VARCHAR" />
+        <result column="ZDSDAT" property="zdsdat" jdbcType="DATE" />
+        <result column="ZDSTIM" property="zdstim" jdbcType="DATE" />
+        <result column="ZDSUSER" property="zdsuser" jdbcType="DECIMAL" />
+    </resultMap>
+
+
+</mapper>

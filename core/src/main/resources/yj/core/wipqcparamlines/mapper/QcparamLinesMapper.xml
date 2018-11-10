@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.wipqcparamlines.mapper.QcparamLinesMapper">
+    <resultMap id="BaseResultMap" type="yj.core.wipqcparamlines.dto.QcparamLines">
+        <result column="WERKS" property="werks" jdbcType="VARCHAR" />
+        <result column="LINE_ID" property="lineId" jdbcType="DECIMAL" />
+        <result column="FIRSTCLASS_QTY" property="firstclassQty" jdbcType="DECIMAL" />
+        <result column="SECONDCLASS_QTY" property="secondclassQty" jdbcType="DECIMAL" />
+        <result column="THIRDCLASS_QTY" property="thirdclassQty" jdbcType="DECIMAL" />
+        <result column="FOURTHCLASS_QTY" property="fourthclassQty" jdbcType="DECIMAL" />
+        <result column="DFTRATE_ALARM" property="dftrateAlarm" jdbcType="VARCHAR" />
+        <result column="UPPER_LIMITS" property="upperLimits" jdbcType="DECIMAL" />
+        <result column="LINEQC_RESPONSIBLE" property="lineqcResponsible" jdbcType="VARCHAR" />
+        <result column="SHOPQC_RESPONSIBLE" property="shopqcResponsible" jdbcType="VARCHAR" />
+        <result column="DEPTQC_RESPONSIBLE" property="deptqcResponsible" jdbcType="VARCHAR" />
+        <result column="ENGRQC_RESPONSIBLE" property="engrqcResponsible" jdbcType="VARCHAR" />
+        <result column="AUDITOR1" property="auditor1" jdbcType="VARCHAR" />
+        <result column="DEFAULT_LINEDEPT" property="defaultLinedept" jdbcType="VARCHAR" />
+        <result column="DEFAULT_CASTDEPT" property="defaultCastdept" jdbcType="VARCHAR" />
+        <result column="CREATION_DATE" property="creationDate" jdbcType="DATE" />
+        <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
+        <result column="LAST_UPDATED_DATE" property="lastUpdatedDate" jdbcType="DATE" />
+        <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
+    </resultMap>
+
+    <select id="selectForJj" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select a.*,
+               b.NAME
+               from wip_qcparam_lines a,hr_org_unit_b b
+        <where>
+            a.DEFAULT_LINEDEPT = b.UNIT_CODE
+            AND LINE_ID = #{lineId}
+            and WERKS = #{werks}
+        </where>
+    </select>
+
+    <select id="selectForYz" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select a.*,
+        b.NAME
+        from wip_qcparam_lines a,hr_org_unit_b b
+        <where>
+            a.DEFAULT_CASTDEPT = b.UNIT_CODE
+            AND LINE_ID = #{lineId}
+            and WERKS = #{werks}
+        </where>
+    </select>
+</mapper>

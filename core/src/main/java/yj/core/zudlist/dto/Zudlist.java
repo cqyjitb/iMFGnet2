@@ -100,6 +100,39 @@ public class Zudlist extends BaseDTO {
     @Transient
     private String maktx;
 
+    @Transient
+    private String kunnr;
+
+    @Transient
+    private String name1;//客户名称
+
+    @Transient
+    private String name;//部门名称
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getKunnr() {
+        return kunnr;
+    }
+
+    public void setKunnr(String kunnr) {
+        this.kunnr = kunnr;
+    }
+
+    public String getName1() {
+        return name1;
+    }
+
+    public void setName1(String name1) {
+        this.name1 = name1;
+    }
+
     /*添加字段 918100064 */
     @Transient
     private Long unitId;//生产车间Id

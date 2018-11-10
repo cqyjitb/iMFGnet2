@@ -15,6 +15,8 @@ import yj.core.marc.dto.Marc;
 import yj.core.marc.mapper.MarcMapper;
 import yj.core.qjcode.dto.Qjcode;
 import yj.core.qjcode.mapper.QjcodeMapper;
+import yj.core.wipqcparamlines.dto.QcparamLines;
+import yj.core.wipqcparamlines.mapper.QcparamLinesMapper;
 import yj.core.zudlist.dto.Zudlist;
 import yj.core.zwipq.mapper.ZwipqMapper;
 
@@ -35,6 +37,8 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
     private QjcodeMapper qjcodeMapper;
     @Autowired
     private ZwipqMapper zwipqMapper;
+    @Autowired
+    private QcparamLinesMapper qcparamLinesMapper;
     @Override
     public int insertQjrecode(List<InOutRecord> list) {
         int sum = 0;
@@ -68,6 +72,8 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
         if (list.size() > 0){
             for (int i = 0;i<list.size();i++){
                 Zudlist zudlist = new Zudlist();
+                zudlist.setKunnr(list.get(i).getKunnr());
+                zudlist.setName1(list.get(i).getName1());
                 zudlist.setLineId(list.get(i).getLineId());
                 zudlist.setZbanz(list.get(i).getZbanz());
                 zudlist.setZbanc(list.get(i).getZbanc());
@@ -78,6 +84,7 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
                 zudlist.setGmein(list.get(i).getGmein());
                 zudlist.setMatnr(list.get(i).getMatnr());
                 zudlist.setMatnr2(list.get(i).getMatnr2());
+                zudlist.setZbpjc(list.get(i).getKunnr());
                 Marc marc2 = new Marc();
                 marc2 = marcMapper.selectByMatnr(list.get(i).getMatnr2());
                 zudlist.setMaktx(marc2.getMaktx());
@@ -104,6 +111,17 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
                 zudlist.setReviewc("F");
                 zudlist.setZqxdm(list.get(i).getZqxdm());
                 zudlist.setZissuetxt(list.get(i).getZissuetxt());
+                if (!zudlist.getZqxdm().equals("")){
+                    if (zudlist.getZqxdm().substring(0,1).equals("M")){
+                        QcparamLines qcparamLines = qcparamLinesMapper.selectForYz(Long.valueOf(list.get(i).getLineId()),"1001");
+                        zudlist.setRspart(qcparamLines.getDefaultCastdept());
+                        zudlist.setName(qcparamLines.getName());
+                    }else{
+                        QcparamLines qcparamLines = qcparamLinesMapper.selectForJj(Long.valueOf(list.get(i).getLineId()),"1001");
+                        zudlist.setRspart(qcparamLines.getDefaultLinedept());
+                        zudlist.setName(qcparamLines.getName());
+                    }
+                }
                 listzuds.add(zudlist);
             }
         }

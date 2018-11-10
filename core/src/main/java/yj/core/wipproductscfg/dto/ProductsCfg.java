@@ -35,6 +35,8 @@ public class ProductsCfg extends BaseDTO {
      @NotEmpty
       private int sxmin;
 
+      private String kunnr;
+
       private Date creationDate; //创建时间
 
       private Long createdBy; //创建人
@@ -146,5 +148,13 @@ public class ProductsCfg extends BaseDTO {
 
     public void setSxmin(int sxmin) {
         this.sxmin = sxmin;
+    }
+
+    public String getKunnr() {
+        return kunnr;
+    }
+
+    public void setKunnr(String kunnr) {
+        this.kunnr = kunnr;
     }
 }

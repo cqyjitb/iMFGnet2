@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.outsrgissue.mapper.OutsrgissueMapper">
+    <resultMap id="BaseResultMap" type="yj.core.outsrgissue.dto.Outsrgissue">
+        <result column="ISSUENM" property="issuenm" jdbcType="VARCHAR" />
+        <result column="ITEM" property="item" jdbcType="VARCHAR" />
+        <result column="WERKS" property="werks" jdbcType="VARCHAR" />
+        <result column="ZPGDBAR" property="zpgdbar" jdbcType="VARCHAR" />
+        <result column="VORNR" property="vornr" jdbcType="VARCHAR" />
+        <result column="VSNDA" property="vsnda" jdbcType="VARCHAR" />
+        <result column="EBELN" property="ebeln" jdbcType="VARCHAR" />
+        <result column="EBELP" property="ebelp" jdbcType="VARCHAR" />
+        <result column="KTSCH" property="ktsch" jdbcType="VARCHAR" />
+        <result column="TXZ01" property="txz01" jdbcType="VARCHAR" />
+        <result column="ETENR" property="etenr" jdbcType="VARCHAR" />
+        <result column="LIFNR" property="lifnr" jdbcType="VARCHAR" />
+        <result column="MATNR" property="matnr" jdbcType="VARCHAR" />
+        <result column="DIECD" property="diecd" jdbcType="VARCHAR" />
+        <result column="SFFLG" property="sfflg" jdbcType="VARCHAR" />
+        <result column="MENGE" property="menge" jdbcType="DECIMAL" />
+        <result column="MATKL" property="matkl" jdbcType="VARCHAR" />
+        <result column="ZISNUM" property="zisnum" jdbcType="DECIMAL" />
+        <result column="GMEIN" property="gmein" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="selectByContidion" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_outsrgissue
+        <where>
+            WERKS = #{werks}
+            AND EBELN = #{ebeln}
+            AND EBELP = #{ebelp}
+            AND MATNR = #{matnr}
+            AND LIFNR = #{lifnr}
+        </where>
+    </select>
+
+</mapper>
