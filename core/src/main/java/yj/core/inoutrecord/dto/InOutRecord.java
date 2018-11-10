@@ -120,6 +120,12 @@ public class InOutRecord extends BaseDTO {
     @Transient
     private String descriptions;
 
+    @Transient
+    private String kunnr;
+
+    @Transient
+    private String name1;
+
     public Integer getZremade() {
         return zremade;
     }
@@ -454,5 +460,21 @@ public class InOutRecord extends BaseDTO {
 
     public void setDescriptions(String descriptions) {
         this.descriptions = descriptions;
+    }
+
+    public String getKunnr() {
+        return kunnr;
+    }
+
+    public void setKunnr(String kunnr) {
+        this.kunnr = kunnr;
+    }
+
+    public String getName1() {
+        return name1;
+    }
+
+    public void setName1(String name1) {
+        this.name1 = name1;
     }
 }

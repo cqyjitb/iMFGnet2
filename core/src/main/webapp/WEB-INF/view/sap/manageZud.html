@@ -209,7 +209,8 @@
                     zoplo: {type: "string",editable: true},
                     rsname: {type: "string",editable: true},
                     reviewc: {type: "string",editable: false},
-                    mark: {type: "string",editable: true}
+                    mark: {type: "string",editable: true},
+                    kunnr:{type: "string",editable: false}
                 }
             }
         }
@@ -275,16 +276,30 @@
                     style: "text-align: center;"
                 },
                 template: function (dataItem) {
-                    return dataItem['name1'] || ''//如果不加，此行会根据field添写字段
+                    return dataItem['zbpjc'] || ''//如果不加，此行会根据field添写字段
                 },
                 editor : function (container, options) {
                     $('<input name="' + options.field + '"/>').appendTo(container).kendoLov($.extend(<@lov "LOV_CUST"/>,
                         {
                             textField: 'name1',//显示的字段
                             model    : options.model//将lov选中数据放在model中
+
                         }));
                 }
             }, {
+                field: "name1",
+                title: '客户简称',
+                width: 100,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+//                editor:function (container, options){
+//                    container.html(options.model.sortl);
+//                }
+            },{
                 field: "matnr2",
                 title: '产品型号',
                 width: 100,
@@ -444,7 +459,7 @@
                 }
             }, {
                 field: "rspart",
-                title: '责任部门',
+                title: '责任部门编码',
                 width: 100,
                 headerAttributes: {
                     style: "text-align: center;"
@@ -453,7 +468,7 @@
                     style: "text-align: center;"
                 },
                 template: function (dataItem) {
-                    return dataItem['name'] || ''//如果不加，此行会根据field添写字段
+                    return dataItem['rspart'] || ''//如果不加，此行会根据field添写字段
                 },
                 editor : function (container, options) {
                     $('<input name="' + options.field + '"/>').appendTo(container).kendoLov($.extend(<@lov "LOV_UNIT_NEW"/>,
@@ -461,6 +476,16 @@
                             textField: 'name',//显示的字段
                             model    : options.model//将lov选中数据放在model中
                         }));
+                }
+            },{
+                field: "name",
+                title: '责任部门名称',
+                width: 120,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
                 }
             },
             {
@@ -540,10 +565,10 @@
                     break;
                 }
 
-                if (selections[i].rspart == "" || selections[i].rspart == '' || selections[i].rspart == null ){
-                    l_error = "责任部门为必输选项";
-                    break;
-                }
+//                if (selections[i].rspart == "" || selections[i].rspart == '' || selections[i].rspart == null ){
+//                    l_error = "责任部门为必输选项";
+//                    break;
+//                }
 
 
                 if (selections[i].zqxdm == "" || selections[i].zqxdm == '' || selections[i].zqxdm == null ){
@@ -561,7 +586,7 @@
                         zbanz:selections[i].zbanz,
                         zbanc:selections[i].zbanc,
                         zpgdbar:selections[i].zpgdbar,
-                        zbpjc:selections[i].zbpjc,
+                        zbpjc:selections[i].kunnr,
                         matnr2:selections[i].matnr2,
                         zgjbar:selections[i].zgjbar,
                         sfflg:selections[i].sfflg,
