@@ -10,7 +10,24 @@
         <result column="MATNR" property="matnr" jdbcType="VARCHAR" />
         <result column="STATUS" property="status" jdbcType="VARCHAR" />
         <result column="PRTFLAG" property="prtflag" jdbcType="VARCHAR" />
+        <result column="CREATION_DATE" property="creationDate" jdbcType="DATE" />
+        <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
+        <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="DATE" />
+        <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
     </resultMap>
 
+    <select id="selectByMatnrAndLifnrDesc" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_outsrgissuehead
+        <where>
+            MATNR = #{matnr}
+            and LIFNR = #{lifnr}
+        </where>
+        order by ISSUENM DESC;
+    </select>
+
+    <insert id="insertNewRow" parameterType="yj.core.outsrgissuehead.dto.Outsrgissuehead">
+        insert into wip_outsrgissuehead (ISSUENM,WERKS,TXZ01,LIFNR,MATNR,STATUS,PRTFLAG,CREATION_DATE,CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY)
+        values(#{issuenm},#{werks},#{txz01},#{lifnr},#{matnr},#{status},#{prtflag},#{creationDate},#{createdBy},#{lastUpdateDate},#{lastUpdatedBy})
+    </insert>
 
 </mapper>

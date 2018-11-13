@@ -4,6 +4,8 @@ import com.hand.hap.core.ProxySelf;
 import com.hand.hap.system.service.IBaseService;
 import yj.core.outsrgrfe.dto.Outsrgrfe;
 
+import java.util.List;
+
 public interface IOutsrgrfeService extends IBaseService<Outsrgrfe>, ProxySelf<IOutsrgrfeService>{
     /**
      * 新增记录   917110140
@@ -29,4 +31,11 @@ public interface IOutsrgrfeService extends IBaseService<Outsrgrfe>, ProxySelf<IO
      * @return
      */
     int updateByCondition(Outsrgrfe outsrgrfe);
+
+    /**
+     * 根据供应商编码查询 外协采购订单接口表记录
+     * @param lifnr
+     * @return
+     */
+    List<Outsrgrfe> selectForSortl(String lifnr);
 }

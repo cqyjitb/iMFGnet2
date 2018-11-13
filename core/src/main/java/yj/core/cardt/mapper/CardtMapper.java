@@ -2,6 +2,8 @@ package yj.core.cardt.mapper;
 
 import com.hand.hap.mybatis.common.Mapper;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 import yj.core.cardt.dto.Cardt;
 import yj.core.cardt.dto.VCardt;
 
@@ -27,4 +29,12 @@ public  interface CardtMapper
      List<Cardt> selectByZpgdbarAsc(String zpgdbar);
 
      List<Cardt> selectByZpgdbarDesc(String zpgdbar);
+
+     /**
+      *  根据工序流转卡号 工序号 查询工序记录 917110140
+      * @param zpgdbar
+      * @param vornr
+      * @return
+      */
+     Cardt selectByZpgdbarAndVornr(@Param("zpgdbar") String zpgdbar, @Param("vornr") String vornr);
 }

@@ -4,6 +4,7 @@ import com.hand.hap.system.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import yj.core.outsrgissue.dto.Outsrgissue;
+import yj.core.outsrgissue.mapper.OutsrgissueMapper;
 import yj.core.outsrgissue.service.IOutsrgissueService;
 import org.springframework.transaction.annotation.Transactional;
 import yj.core.outsrgrfe.service.IOutsrgrfeService;
@@ -15,9 +16,19 @@ import java.util.List;
 public class OutsrgissueServiceImpl extends BaseServiceImpl<Outsrgissue> implements IOutsrgissueService{
 
     @Autowired
-    private IOutsrgissueService outsrgissueService;
+    private OutsrgissueMapper OutsrgissueMapper;
     @Override
     public List<Outsrgissue> selectByContidion(String ebeln, String ebelp, String werks, String lifnr, String matnr) {
-        return outsrgissueService.selectByContidion(ebeln,ebelp,werks,lifnr,matnr);
+        return OutsrgissueMapper.selectByContidion(ebeln,ebelp,werks,lifnr,matnr);
+    }
+
+    @Override
+    public List<Outsrgissue> selectByIssuenmDesc(String issuenm) {
+        return OutsrgissueMapper.selectByIssuenmDesc(issuenm);
+    }
+
+    @Override
+    public int insertNewRow(Outsrgissue outsrgissue) {
+        return OutsrgissueMapper.insertNewRow(outsrgissue);
     }
 }

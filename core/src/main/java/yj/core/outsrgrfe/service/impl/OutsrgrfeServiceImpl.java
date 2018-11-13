@@ -8,6 +8,8 @@ import yj.core.outsrgrfe.mapper.OutsrgrfeMapper;
 import yj.core.outsrgrfe.service.IOutsrgrfeService;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class OutsrgrfeServiceImpl extends BaseServiceImpl<Outsrgrfe> implements IOutsrgrfeService{
@@ -26,5 +28,10 @@ public class OutsrgrfeServiceImpl extends BaseServiceImpl<Outsrgrfe> implements 
     @Override
     public int updateByCondition(Outsrgrfe outsrgrfe) {
         return outsrgrfeMapper.updateByCondition(outsrgrfe);
+    }
+
+    @Override
+    public List<Outsrgrfe> selectForSortl(String lifnr) {
+        return outsrgrfeMapper.selectForSortl(lifnr);
     }
 }

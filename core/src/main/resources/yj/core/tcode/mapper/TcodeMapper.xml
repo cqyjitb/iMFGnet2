@@ -20,7 +20,11 @@
         <result column="APP0014" property="app0014" jdbcType="VARCHAR" />
         <result column="APP0015" property="app0015" jdbcType="VARCHAR" />
         <result column="APP0016" property="app0016" jdbcType="VARCHAR" />
-        <result column="APP0016" property="app0017" jdbcType="VARCHAR" />
+        <result column="APP0017" property="app0017" jdbcType="VARCHAR" />
+        <result column="APP0018" property="app0018" jdbcType="VARCHAR" />
+        <result column="APP0019" property="app0019" jdbcType="VARCHAR" />
+        <result column="APP0020" property="app0020" jdbcType="VARCHAR" />
+        <result column="APP0021" property="app0021" jdbcType="VARCHAR" />
     </resultMap>
     <select id="isExit" parameterType="yj.core.tcode.dto.Tcode" resultType="java.lang.Integer">
         select count(*)
@@ -56,8 +60,12 @@
         APP0013 = #{app0013},
         APP0014 = #{app0014},
         APP0015 = #{app0015},
-        APP0014 = #{app0016},
-        APP0015 = #{app0017}
+        APP0016 = #{app0016},
+        APP0017 = #{app0017},
+        APP0018 = #{app0018},
+        APP0019 = #{app0019},
+        APP0020 = #{app0020},
+        APP0021 = #{app0021}
           <where>
               USER_NAME = #{userName}
           </where>

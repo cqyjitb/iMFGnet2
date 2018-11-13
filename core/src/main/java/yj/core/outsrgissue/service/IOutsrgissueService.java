@@ -17,4 +17,18 @@ public interface IOutsrgissueService extends IBaseService<Outsrgissue>, ProxySel
      * @return
      */
     List<Outsrgissue> selectByContidion(String ebeln,String ebelp,String werks,String lifnr,String matnr);
+
+    /**
+     *  根据发料单号查询记录 按照行号 降序排序 917110140
+     * @param issuenm
+     * @return
+     */
+    List<Outsrgissue> selectByIssuenmDesc(String issuenm);
+
+    /**
+     *  插入新记录 917110140
+     * @param outsrgissue
+     * @return
+     */
+    int insertNewRow(Outsrgissue outsrgissue);
 }

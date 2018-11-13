@@ -16,7 +16,7 @@ public interface DftrghlistMapper extends Mapper<Dftrghlist>{
      * @param gstrp
      * @return
      */
-    Dftrghlist selectByCondition(@Param("werks") String werks,@Param("matnr") String matnr,@Param("line_id") String line_id,@Param("shift") String shift,@Param("gstrp") String gstrp);
+    List<Dftrghlist> selectByCondition(@Param("werks") String werks,@Param("matnr") String matnr,@Param("line_id") String line_id,@Param("shift") String shift,@Param("gstrp") String gstrp);
 
     /**
      * 插入新记录

@@ -86,4 +86,9 @@ public class CardtServiceImpl
     public List<Cardt> selectByZpgdbarDesc(String zpgdbar) {
         return cardtMapper.selectByZpgdbarDesc(zpgdbar);
     }
+
+    @Override
+    public Cardt selectByZpgdbarAndVornr(String zpgdbar, String vornr) {
+        return cardtMapper.selectByZpgdbarAndVornr(zpgdbar,vornr);
+    }
 }
