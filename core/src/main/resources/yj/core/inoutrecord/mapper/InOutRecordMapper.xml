@@ -45,7 +45,7 @@
         <result column="SFFLG" property="sfflg" jdbcType="VARCHAR"/>
         <result column="DESCRIPTIONS" property="descriptions" jdbcType="VARCHAR"/>
         <result column="WERKS" property="werks" jdbcType="VARCHAR"/>
-        <result column="UNIT_ID" property="unitId" jdbcType="DECIMAL"/>
+        <result column="DEPT_ID" property="deptId" jdbcType="VARCHAR"/>
         <result column="NAME" property="name" jdbcType="VARCHAR"/>
         <result column="MAKTX" property="maktx" jdbcType="VARCHAR"/>
         <result column="ZREMADE" property="zremade" jdbcType="DECIMAL"/>
@@ -53,7 +53,7 @@
     </resultMap>
 
     <select id="selectforlines" parameterType="java.lang.String" resultMap="BaseResultMap2">
-        select distinct re.line_id,li.descriptions,li.werks,b.unit_id,b.name,re.matnr,m.maktx,re.sfflg,re.diecd
+        select distinct re.line_id,li.descriptions,li.werks,li.dept_id,b.name,re.matnr,m.maktx,re.sfflg,re.diecd
         from wip_in_out_record re,wip_lines li,hr_org_unit_b b,zwipq q,sap_marc m
         <where>
             q.line_id = re.line_id
@@ -63,8 +63,8 @@
             AND li.dept_id = b.unit_code
             AND q.sfflg = re.sfflg
             AND q.diecd = re.diecd
-            <if test="unitId != null">
-                AND b.unit_id = #{unitId}
+            <if test="deptId != null">
+                AND li.dept_id = #{deptId}
             </if>
             <if test="lineId != null">
                 AND re.line_id = #{lineId}
@@ -83,6 +83,21 @@
             AND re.diecd = #{diecd}
             <if test="zremade != null">
                 AND re.zremade = #{zremade}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectZoutnum1" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select COALESCE(sum(zoutnum),0) FROM wip_in_out_record
+        <where>
+            line_id = #{lineId}
+            AND matnr2 = #{matnr}
+            AND zpgdbar = #{zpgdbar}
+            <if test="reflag == 2">
+                AND reflag = 2
+            </if>
+            <if test="reflag == 3">
+                AND reflag in (0,3)
             </if>
         </where>
     </select>

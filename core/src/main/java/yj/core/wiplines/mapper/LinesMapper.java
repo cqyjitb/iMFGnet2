@@ -40,11 +40,11 @@ public interface LinesMapper extends Mapper<Lines>{
     Lines selectLov();
 
     /**
-     * 根据表hr_org_unit_b中父组织parentId查询记录 918100064
-     * @param parentId
+     * 根据表hr_org_unit_b中unitCode查询记录 918100064
+     * @param unitCode
      * @return
      */
-    Lines selectUnit(@Param("parentId")Long parentId);
+    Lines selectUnit(@Param("unitCode")String unitCode);
 
     /**
      *根据表hr_org_unit_b的主键unitId查询表wip_lines的部门Id 918100064

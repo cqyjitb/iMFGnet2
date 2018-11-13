@@ -156,16 +156,16 @@ public class InOutRecordController extends BaseController {
      * 处理产线在制队列汇总表查询的页面请求 918100064
      * @param request
      * @param lineId
-     * @param unitId
+     * @param deptId
      * @param zremade
      * @return
      */
     @RequestMapping(value = "/inoutrecord/selectforlines")
     @ResponseBody
-    public ResponseData selectforlines(HttpServletRequest request, String lineId,Long unitId,Integer zremade) {
+    public ResponseData selectforlines(HttpServletRequest request, String lineId,String deptId,Integer zremade) {
         IRequest requestContext = createRequestContext(request);
         ResponseData rs =  new ResponseData();
-        List<InOutRecord> list = service.selectforlines(requestContext,lineId,unitId);
+        List<InOutRecord> list = service.selectforlines(requestContext,lineId,deptId);
         List<InOutRecord> result = new ArrayList<InOutRecord>();
         if(list.size() > 0 ){
             for(InOutRecord inOutRecord : list){

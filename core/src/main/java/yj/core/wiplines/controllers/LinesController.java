@@ -41,6 +41,28 @@ public class LinesController extends BaseController {
     @Autowired
     private IMarcService marcService;
 
+    @RequestMapping(value = "/wip/lines/query")
+    @ResponseBody
+    public ResponseData query(Lines dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
+                              @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize, HttpServletRequest request) {
+        IRequest requestContext = createRequestContext(request);
+        return new ResponseData(service.select(requestContext,dto,page,pageSize));
+    }
+
+    @RequestMapping(value = "/wip/lines/submit")
+    @ResponseBody
+    public ResponseData update(HttpServletRequest request, @RequestBody List<Lines> dto) {
+        IRequest requestCtx = createRequestContext(request);
+        return new ResponseData(service.batchUpdate(requestCtx, dto));
+    }
+
+    @RequestMapping(value = "/wip/lines/remove")
+    @ResponseBody
+    public ResponseData delete(HttpServletRequest request, @RequestBody List<Lines> dto) {
+        service.batchDelete(dto);
+        return new ResponseData();
+    }
+
     /**
      *  处理机加生产线维护页面查询请求 918100064
      * @param dto
@@ -49,20 +71,20 @@ public class LinesController extends BaseController {
      * @param request
      * @return
      */
-    @RequestMapping(value = "/wip/lines/query")
+    @RequestMapping(value = "/wip/lines/queryLines")
     @ResponseBody
-    public ResponseData query(Lines dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
+    public ResponseData queryLines(Lines dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
                               @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize, HttpServletRequest request) {
         IRequest requestContext = createRequestContext(request);
         List<Lines> list = service.selectFromPage(dto,requestContext,page,pageSize);
         for(int i=0;i<list.size();i++){
             Lines lines = list.get(i);
-            Long parentId = lines.getParentId();
+            String deptId = lines.getDeptId();
             Long plineId = lines.getPlineId();
             if (plineId != null){
                 lines.setPdescriptions(service.selectDescription(plineId));
             }
-            Lines li = service.selectUnitCode(parentId);
+            Lines li = service.selectUnitCode(deptId);
             lines.setUnitCode(li.getUnitCode());
             lines.setUname(li.getName());
         }
@@ -75,9 +97,9 @@ public class LinesController extends BaseController {
      * @param dto
      * @return
      */
-    @RequestMapping(value = "/wip/lines/submit")
+    @RequestMapping(value = "/wip/lines/submitLines")
     @ResponseBody
-    public ResponseData update(HttpServletRequest request, @RequestBody List<Lines> dto) {
+    public ResponseData updateLines(HttpServletRequest request, @RequestBody List<Lines> dto) {
         IRequest requestCtx = createRequestContext(request);
         ResponseData rs =  new ResponseData();
         String userId ="" + request.getSession().getAttribute("userId");
@@ -91,13 +113,6 @@ public class LinesController extends BaseController {
             rs.setMessage(result);
             return rs;
         }
-    }
-
-    @RequestMapping(value = "/wip/lines/remove")
-    @ResponseBody
-    public ResponseData delete(HttpServletRequest request, @RequestBody List<Lines> dto) {
-        service.batchDelete(dto);
-        return new ResponseData();
     }
 
     @RequestMapping(value = {"/wip/lines/selectById"}, method = {RequestMethod.GET})

@@ -111,6 +111,16 @@ public class Zudlist extends BaseDTO {
     private String zotype;//取件原因编号
     @Transient
     private String descriptions;//生产线名称
+    @Transient
+    private String deptId;
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
 
     public Long getUnitId() {
         return unitId;

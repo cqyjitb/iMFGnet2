@@ -55,7 +55,7 @@
                             <div class="form-group">
                                 <label class="col-sm-4 control-label">车间</label>
                                 <div class="col-sm-8">
-                                    <input id="unit-code" class="k-textbox" data-bind="value:model.unitId" style="width: 100%">
+                                    <input id="unit-code" class="k-textbox" data-bind="value:model.deptId" style="width: 100%">
                                     <script>
                                         $("#unit-code").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_UNIT_NEW2")}, {
                                             query: function (e) {
@@ -95,12 +95,12 @@
     dataSource = new kendo.data.DataSource({
         transport: {
             read: {
-                url: BaseUrl + "/wip/lines/query",
+                url: BaseUrl + "/wip/lines/queryLines",
                 type: "POST",
                 dataType: "json"
             },
             update: {
-                url: BaseUrl + "/wip/lines/submit",
+                url: BaseUrl + "/wip/lines/submitLines",
                 type: "POST",
                 contentType: "application/json"
             },
@@ -111,7 +111,7 @@
             },
             create: {
 
-                url: BaseUrl + "/wip/lines/submit",
+                url: BaseUrl + "/wip/lines/submitLines",
                 type: "POST",
                 contentType: "application/json"
             },
@@ -135,7 +135,7 @@
                 fields: {
                     werks: {type: "string",editable: false,defaultValue: "1001"},
                     lineCode: {type: "string",editable: true},
-                    unitId: {type: "long",editable: true},
+                    deptId: {type: "string",editable: true},
                     lineId:{type: "long"},
                     plineId:{type: "long",editable: true},
                     pointNum:{type: "long",editable: true},
@@ -174,7 +174,7 @@
                 }
             },
             {
-                field:"unitId",
+                field:"deptId",
                 title:"车间",
                 width:80,
                 headerAttributes: {
@@ -184,7 +184,7 @@
                     style: "text-align: center;"
                 },
                 template: function (dataItem) {
-                    return dataItem['unitId'] || ''
+                    return dataItem['deptId'] || ''
                 },
                 editor : function (container, options) {
                     $('<input name="'+options.field+'"/>').appendTo(container).kendoLov($.extend(<@lov "LOV_UNIT_NEW2"/>,
@@ -445,7 +445,7 @@
                         {
                             query: function(e) {
                                 //在query事件中做级联查询，设置参数名为"roleName",值为"管理员",查询出的数据将会是所有角色名为“管理员”的数据
-                                e.param['parentId'] = options.model.unitId;
+                                e.param['unitCode'] = options.model.deptId;
                             },
                             textField: 'uname',
                             model: options.model

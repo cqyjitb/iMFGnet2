@@ -94,6 +94,16 @@ public class Zrwklist extends BaseDTO {
     private String creationDateAfter;
     @Transient
     private String descriptions;//生产线名称
+    @Transient
+    private String deptId; //部门Id
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
 
     public Long getUnitId() {
         return unitId;

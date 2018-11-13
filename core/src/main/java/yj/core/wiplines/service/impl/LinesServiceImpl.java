@@ -40,8 +40,8 @@ public class LinesServiceImpl extends BaseServiceImpl<Lines> implements ILinesSe
     }
 
     @Override
-    public Lines selectUnitCode(Long parentId) {
-        return linesMapper.selectUnit(parentId);
+    public Lines selectUnitCode(String deptId) {
+        return linesMapper.selectUnit(deptId);
     }
 
     @Override
@@ -49,7 +49,7 @@ public class LinesServiceImpl extends BaseServiceImpl<Lines> implements ILinesSe
         if(dto.size() > 0){
             for(int i= 0;i< dto.size();i++){
                 Lines lines = dto.get(i);
-                if(lines.getUnitId() == null){
+                if(lines.getDeptId() == null || lines.getDeptId() == ""){
                     return "生产车间不能为空";
                 }else if(lines.getLineId() == null){
                     return "产线编码不能为空";
@@ -86,13 +86,11 @@ public class LinesServiceImpl extends BaseServiceImpl<Lines> implements ILinesSe
                     }
                     lines.setLastUpdatedDate(new Date());
                     lines.setLastUpdatedBy(Long.valueOf(userId));
-                    lines.setDeptId(linesMapper.selectDeptId(lines.getUnitId()));
                     linesMapper.updateLines(lines);
                 }else{
                     lines.setWerks("1001");
                     lines.setCreationDate(new Date());
                     lines.setCreatedBy(Long.valueOf(userId));
-                    lines.setDeptId(linesMapper.selectDeptId(lines.getUnitId()));
                     linesMapper.insertLines(lines);
                 }
             }
