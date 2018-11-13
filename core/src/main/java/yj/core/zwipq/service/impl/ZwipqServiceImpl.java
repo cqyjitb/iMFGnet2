@@ -6,6 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.mapper.CardhMapper;
+import yj.core.dispatch.dto.Result;
+import yj.core.inoutrecord.mapper.InOutRecordMapper;
 import yj.core.marc.dto.Marc;
 import yj.core.marc.mapper.MarcMapper;
 import yj.core.webservice_migo.components.MigoWebserviceUtil;
@@ -20,11 +22,10 @@ import yj.core.zwipq.mapper.ZwipqMapper;
 import yj.core.zwipq.service.IZwipqService;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Transactional
@@ -41,6 +42,8 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
     private MarcMapper marcMapper;
     @Autowired
     private CardhMapper cardhMapper;
+    @Autowired
+    private InOutRecordMapper inOutRecordMapper;
 
     @Override
     public List<Zwipq> selectByLineIdAndZxhbar(String line_id, String zxhbar) {
@@ -193,8 +196,34 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
     }
 
     @Override
-    public List<Zwipq> selectZwipq(IRequest request, Long unitId, String lineId, Integer zremade, String attr1After, String attr1Before,
+    public List<Zwipq> selectZwipq(IRequest request, String deptId, String lineId, Integer zremade, String attr1After, String attr1Before,
                                    String shift, String sfflg, String diecd, String zxhbar, String zgjbar, Integer online, Integer zzxkl, Integer zqjkl, Integer zoffl, Integer status) {
-        return zwipqMapper.selectZwipq(unitId, lineId, zremade, attr1After, attr1Before, shift, sfflg, diecd,zxhbar, zgjbar, online, zzxkl, zqjkl, zoffl, status);
+        return zwipqMapper.selectZwipq(deptId, lineId, zremade, attr1After, attr1Before, shift, sfflg, diecd,zxhbar, zgjbar, online, zzxkl, zqjkl, zoffl, status);
+    }
+
+    @Override
+    public List<Zwipq> selectIORZwipq(IRequest request, String deptId, String lineId, String pmatnr, String attr1After, String attr1Before, String shift) {
+        List<Zwipq> list = zwipqMapper.selectIORZwipq(deptId, lineId, pmatnr, attr1After, attr1Before, shift);
+        List<Zwipq> list1 = new ArrayList<Zwipq>();
+        DecimalFormat df = new DecimalFormat("0.00");
+        for (int i=0;i<list.size();i++){
+            Zwipq zwipq = list.get(i);
+            String lineId1 = zwipq.getLineId();
+            String pmatnr1 = zwipq.getPmatnr();
+            String zpgdbar = zwipq.getZpgdbar();
+            double zsxnum =  zwipqMapper.selectZsxnum1(lineId1,pmatnr1,zpgdbar,null,null,null,null);
+            if(zsxnum != 0){
+                long zzxkl = zwipqMapper.selectZsxnum1(lineId1,pmatnr1,zpgdbar,1,0,0,0);
+                zwipq.setZsxnum(zsxnum);
+                zwipq.setZzxkl(zzxkl);
+                zwipq.setProcessed(zwipqMapper.selectZsxnum1(lineId1,pmatnr1,zpgdbar,0,0,0,0));
+                zwipq.setZoutnum(inOutRecordMapper.selectZoutnum1(lineId1,pmatnr1,zpgdbar,3));
+                zwipq.setScrap(inOutRecordMapper.selectZoutnum1(lineId1,pmatnr1,zpgdbar,2));
+                String rate = df.format(zzxkl/zsxnum*100) + "%";
+                zwipq.setRate(rate);
+                list1.add(zwipq);
+            }
+        }
+        return list1;
     }
 }

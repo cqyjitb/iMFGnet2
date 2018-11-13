@@ -149,8 +149,8 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
     }
 
     @Override
-    public List<InOutRecord> selectforlines(IRequest request, String lineId, Long unitId) {
-        return inOutRecordMapper.selectforlines(lineId, unitId);
+    public List<InOutRecord> selectforlines(IRequest request, String lineId, String deptId) {
+        return inOutRecordMapper.selectforlines(lineId, deptId);
     }
 
     @Override

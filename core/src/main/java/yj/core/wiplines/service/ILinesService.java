@@ -19,7 +19,7 @@ public interface ILinesService extends IBaseService<Lines>, ProxySelf<ILinesServ
 
     List<Lines> selectFromPage(Lines dto, IRequest requestContext, int page, int pageSize);
     String selectDescription(Long plineId);
-    Lines selectUnitCode(Long parentId);
+    Lines selectUnitCode(String deptId);
     String setMessageLines(List<Lines> dto);
     String updateOrInsert(IRequest requestCtx,List<Lines> dto,String userId);
 }

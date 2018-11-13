@@ -69,7 +69,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">生产车间<label id="label">* </label></label>
                                     <div class="col-sm-8">
-                                        <input id="unit-code" class="k-textbox" data-bind="value:model.unitId" style="width: 100%">
+                                        <input id="unit-code" class="k-textbox" data-bind="value:model.deptId" style="width: 100%">
                                         <script>
                                             $("#unit-code").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_UNIT_NEW2")}, {
                                                 query: function (e) {
@@ -90,7 +90,7 @@
                                                 query: function (e) {
                                                     /*var deptId = document.getElementById("unit-code").value;
                                                     alert(deptId);*/
-                                                    e.param['unitId'] = document.getElementById("unit-code").value;
+                                                    e.param['deptId'] = document.getElementById("unit-code").value;
                                                     e.param['enabledFlag'] = 'Y';
                                                 }
                                             }));
@@ -180,7 +180,7 @@
                     id: "zqjjlh",
                     fields: {
                         werks: {type: "string"},
-                        unitId: {type: "number"},
+                        deptId: {type: "string"},
                         name: {type: "string"},
                         lineId: {type: "string"},
                         descriptions: {type: "string"},
@@ -222,7 +222,7 @@
                     }
                 },
                 {
-                    field:"unitId",
+                    field:"deptId",
                     title:"生产车间",
                     width:80,
                     headerAttributes: {

@@ -572,7 +572,7 @@ public class ZwipqController extends BaseController {
     /**
      * 处理产线在制队列明细查询页面请求 918100064
      * @param request
-     * @param unitId
+     * @param deptId
      * @param lineId
      * @param zremade
      * @param attr1After
@@ -591,7 +591,7 @@ public class ZwipqController extends BaseController {
      */
     @RequestMapping(value = "/zwipq/selectZwipq")
     @ResponseBody
-    public ResponseData selectZwipq( HttpServletRequest request,Long unitId,String lineId,Integer zremade,
+    public ResponseData selectZwipq( HttpServletRequest request,String deptId,String lineId,Integer zremade,
                                      String attr1After,String attr1Before,String shift,String sfflg,String diecd,
                                      String zxhbar,String zgjbar,String online,String zzxkl,String zqjkl,String zoffl,String status){
         IRequest requestContext = createRequestContext(request);
@@ -621,7 +621,32 @@ public class ZwipqController extends BaseController {
             online1 = 0;
         }
         ResponseData rs = new ResponseData();
-        List<Zwipq> list = service.selectZwipq(requestContext, unitId, lineId, zremade, attr1After, attr1Before, shift, sfflg, diecd, zxhbar, zgjbar,online1, zzxkl1, zqjkl1, zoffl1, status1);
+        List<Zwipq> list = service.selectZwipq(requestContext, deptId, lineId, zremade, attr1After, attr1Before, shift, sfflg, diecd, zxhbar, zgjbar,online1, zzxkl1, zqjkl1, zoffl1, status1);
+        return new ResponseData(list);
+    }
+
+    /**
+     * 处理期间产品合格率查询页面请求 918100064
+     * @param request
+     * @param deptId
+     * @param lineId
+     * @param pmatnr
+     * @param attr1After
+     * @param attr1Before
+     * @param shift
+     * @return
+     */
+    @RequestMapping(value = "/zwipq/selectIORZwipq")
+    @ResponseBody
+    public ResponseData selectIORZwipq( HttpServletRequest request,String deptId,String lineId,String pmatnr, String attr1After,String attr1Before,String shift){
+        IRequest requestContext = createRequestContext(request);
+        if (attr1Before != null){
+            attr1Before = attr1Before.substring(0,10);
+        }
+        if (attr1After != null){
+            attr1After = attr1After.substring(0,10);
+        }
+        List<Zwipq> list = service.selectIORZwipq(requestContext,deptId,lineId,pmatnr,attr1After,attr1Before,shift);
         return new ResponseData(list);
     }
 }

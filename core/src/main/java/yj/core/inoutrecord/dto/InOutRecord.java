@@ -119,6 +119,16 @@ public class InOutRecord extends BaseDTO {
     private int num;
     @Transient
     private String descriptions;
+    @Transient
+    private String deptId;
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
 
     @Transient
     private String kunnr;

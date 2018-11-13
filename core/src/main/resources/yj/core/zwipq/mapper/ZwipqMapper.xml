@@ -109,20 +109,103 @@
         <result column="ATTR7" property="attr7" jdbcType="VARCHAR"/>
         <result column="CHECK" property="check" jdbcType="VARCHAR" />
         <result column="UNIT_ID" property="unitId" jdbcType="DECIMAL"/>
+        <result column="DEPT_ID" property="deptId" jdbcType="VARCHAR"/>
     </resultMap>
+
+    <resultMap id="BaseResultMap4" type="yj.core.zwipq.dto.Zwipq">
+        <result column="WERKS" property="werks" jdbcType="VARCHAR"/>
+        <result column="UNIT_ID" property="unitId" jdbcType="DECIMAL"/>
+        <result column="NAME" property="name" jdbcType="VARCHAR"/>
+        <result column="LINE_ID" property="lineId" jdbcType="DECIMAL"/>
+        <result column="DESCRIPTIONS" property="descriptions" jdbcType="VARCHAR"/>
+        <result column="ATTR1" property="attr1" jdbcType="VARCHAR"/>
+        <result column="SHIFT" property="shift" jdbcType="VARCHAR"/>
+        <result column="MATNR" property="matnr" jdbcType="VARCHAR"/>
+        <result column="MAKTX" property="maktx" jdbcType="VARCHAR"/>
+        <result column="ZSXNUM" property="zsxnum" jdbcType="DECIMAL"/>
+        <result column="ZZXKL" property="zzxkl" jdbcType="DECIMAL"/>
+        <result column="ZQJKL" property="zqjkl" jdbcType="DECIMAL"/>
+        <result column="ZOUTNUM" property="zoutnum" jdbcType="DECIMAL"/>
+        <result column="ZOFFL" property="zoffl" jdbcType="DECIMAL"/>
+        <result column="GMEIN" property="gmein" jdbcType="VARCHAR"/>
+        <result column="KUNNR" property="kunnr" jdbcType="VARCHAR"/>
+        <result column="NAME1" property="name1" jdbcType="VARCHAR"/>
+        <result column="DEPT_ID" property="deptId" jdbcType="VARCHAR"/>
+        <result column="PMATNR" property="pmatnr" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="selectIORZwipq" parameterType="java.lang.String" resultMap="BaseResultMap4">
+        select distinct li.werks as werks,li.dept_id as deptId,b.name as name,q.line_id as lineId,
+            li.descriptions as descriptions,ca.attr1 as attr,q.shift as shift1,pc.pmatnr as pmatnr,
+            (select maktx FROM sap_marc where matnr = pmatnr) as pmaktx,
+            (select zpgdbar from sap_cardh where attr1 = attr and shift = shift1 and matnr = pmatnr) as zpgdbar,
+            pc.matnr as matnr,ma.maktx as maktx,q.gmein as gmein,pc.kunnr as kunnr,cu.name1 as name1
+            FROM zwipq q,wip_lines li,wip_in_out_record re,hr_org_unit_b b,sap_cardh ca,wip_products_cfg pc,sap_marc ma,sap_cust cu
+                <where>
+                    li.line_id = q.line_id
+                    AND q.line_id = re.line_id
+                    AND pc.line_id = q.line_id
+                    AND re.matnr = q.matnr
+                    AND ca.matnr = q.matnr2
+                    AND pc.matnr = q.matnr
+                    AND ma.matnr = q.matnr
+                    AND b.unit_code = li.dept_id
+                    AND ca.zpgdbar = q.zpgdbar
+                    AND pc.kunnr = cu.kunnr
+                    <if test="deptId != null">
+                        AND li.dept_id = #{deptId}
+                    </if>
+                    <if test="lineId != null">
+                        AND li.line_id = #{lineId}
+                    </if>
+                    <if test="pmatnr != null">
+                        AND pc.pmatnr = #{pmatnr}
+                    </if>
+                    <if test="attr1After != null">
+                        AND ca.attr1 >= #{attr1After}
+                    </if>
+                    <if test="attr1Before != null">
+                        AND #{attr1Before} >= ca.attr1
+                    </if>
+                    <if test="shift != null">
+                        AND ca.shift = #{shift}
+                    </if>
+                </where>
+    </select>
+
+    <select id="selectZsxnum1" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select COALESCE(sum(zsxnum),0) FROM zwipq
+        <where>
+            line_id = #{lineId}
+            AND matnr2 = #{matnr}
+            AND zpgdbar = #{zpgdbar}
+            <if test="zzxkl != null">
+                AND zzxkl = #{zzxkl}
+            </if>
+            <if test="zqjkl != null">
+                AND zqjkl = #{zqjkl}
+            </if>
+            <if test="zoffl != null">
+                AND zoffl = #{zoffl}
+            </if>
+            <if test="status != null">
+                AND status = #{status}
+            </if>
+        </where>
+    </select>
 
     <select id="selectZwipq" parameterType="java.lang.String" resultMap="BaseResultMap3">
         select count(q.zsxjlh),q.line_id,q.creation_date,q.zxhbar,q.sfflg,q.diecd,q.zgjbar,q.matnr,q.matnr2,
         q.arbpr,q.charg,q.zzxkl,q.zqjkl,q.zoffl,q.status,q.zremade,q.zpgdbar,q.lgort,q.q_senq,
-        b.unit_id,b.name,li.descriptions,ma.maktx
+        li.dept_id,b.name,li.descriptions,ma.maktx
         from zwipq q,sap_cardh ca,wip_lines li,hr_org_unit_b b,sap_marc ma
         <where>
             q.line_id = li.line_id
             AND li.dept_id = b.unit_code
             AND q.matnr = ma.matnr
             AND ca.zpgdbar = q.zpgdbar
-            <if test="unitId != null">
-                AND b.unit_id = #{unitId}
+            <if test="deptId != null">
+                AND li.dept_id = #{deptId}
             </if>
             <if test="lineId != null">
                 AND li.line_id = #{lineId}

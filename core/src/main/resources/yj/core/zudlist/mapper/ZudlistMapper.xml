@@ -82,8 +82,8 @@
             AND ma.matnr = zl.matnr2
             AND re.zqjjlh = zl.zqjjlh
             AND b.unit_code = li.dept_id
-            <if test="unitId != null">
-                AND b.unit_id = #{unitId}
+            <if test="deptId != null">
+                AND li.dept_id = #{deptId}
             </if>
             <if test="lineId != null">
                 AND zh.line_id = #{lineId}

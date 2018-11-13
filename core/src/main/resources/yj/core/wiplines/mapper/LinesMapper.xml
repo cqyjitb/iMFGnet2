@@ -59,8 +59,8 @@
         <where>
             ENABLED_FLAG = 'Y'
             and UNIT_CATEGORY = 'B'
-            <if test="parentId != null">
-                AND unit_id = #{parentId}
+            <if test="unitCode != null">
+                AND unit_id = (select parent_id FROM hr_org_unit_b where ENABLED_FLAG = 'Y' and UNIT_CATEGORY = 'B' and unit_code = #{unitCode})
             </if>
         </where>
     </select>
@@ -73,7 +73,7 @@
     </select>
 
     <select id="selectFromPage" parameterType="yj.core.wiplines.dto.Lines" resultMap="BaseResultMap2">
-        select distinct li.LINE_ID,
+        select distinct li.LINE_ID,li.dept_id,
         li.WERKS,
         li.LINE_CODE,
         li.DESCRIPTIONS,
@@ -106,19 +106,18 @@
             <if test="lineId != null">
                 AND li.line_id = #{lineId}
             </if>
-            <if test="unitId != null ">
-                AND un.unit_id = #{unitId}
+            <if test="deptId != null ">
+                AND li.dept_id = #{deptId}
             </if>
         </where>
 
     </select>
 
     <select id="selectLov" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select distinct li.line_id,li.dept_id,li.descriptions from wip_lines li,zwipq q,hr_org_unit_b b
+        select distinct li.line_id,li.dept_id,li.descriptions from wip_lines li,hr_org_unit_b b
         <where>
-            li.line_id=q.line_id
-            AND li.dept_id = b.unit_code
-            AND b.unit_id = #{unitId}
+            li.dept_id = b.unit_code
+            AND li.dept_id = #{deptId}
         </where>
     </select>
 

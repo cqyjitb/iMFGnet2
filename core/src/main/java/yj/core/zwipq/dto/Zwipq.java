@@ -101,6 +101,134 @@ public class Zwipq extends BaseDTO {
 
     private Integer online;
 
+    /*添加字段 918100064*/
+    @Transient
+    private String werks; //工厂
+    @Transient
+    private String attr1; //生产日期
+    @Transient
+    private String kunnr; //客户编码
+    @Transient
+    private String name1; //客户名称
+    private String rate; //合格率%  装箱数量/投入数量
+    @Transient
+    private Integer zoutnum; //待处理数量
+    @Transient
+    private String pmatnr;//产品物料
+    private String pmaktx; //物料描述
+    @Transient
+    private String shift1;
+    @Transient
+    private String deptId;//部门Id
+    private Integer scrap;//报废数量
+    private Integer processed; //在制数量
+    @Transient
+    private String attr;//生产日期
+
+    public String getAttr() {
+        return attr;
+    }
+
+    public void setAttr(String attr) {
+        this.attr = attr;
+    }
+
+    public Integer getProcessed() {
+        return processed;
+    }
+
+    public void setProcessed(Integer processed) {
+        this.processed = processed;
+    }
+
+    public Integer getScrap() {
+        return scrap;
+    }
+
+    public void setScrap(Integer scrap) {
+        this.scrap = scrap;
+    }
+
+    public String getWerks() {
+        return werks;
+    }
+
+    public void setWerks(String werks) {
+        this.werks = werks;
+    }
+
+    public String getAttr1() {
+        return attr1;
+    }
+
+    public void setAttr1(String attr1) {
+        this.attr1 = attr1;
+    }
+
+    public String getKunnr() {
+        return kunnr;
+    }
+
+    public void setKunnr(String kunnr) {
+        this.kunnr = kunnr;
+    }
+
+    public String getName1() {
+        return name1;
+    }
+
+    public void setName1(String name1) {
+        this.name1 = name1;
+    }
+
+    public String getRate() {
+        return rate;
+    }
+
+    public void setRate(String rate) {
+        this.rate = rate;
+    }
+
+    public Integer getZoutnum() {
+        return zoutnum;
+    }
+
+    public void setZoutnum(Integer zoutnum) {
+        this.zoutnum = zoutnum;
+    }
+
+    public String getPmatnr() {
+        return pmatnr;
+    }
+
+    public void setPmatnr(String pmatnr) {
+        this.pmatnr = pmatnr;
+    }
+
+    public String getPmaktx() {
+        return pmaktx;
+    }
+
+    public void setPmaktx(String pmaktx) {
+        this.pmaktx = pmaktx;
+    }
+
+    public String getShift1() {
+        return shift1;
+    }
+
+    public void setShift1(String shift1) {
+        this.shift1 = shift1;
+    }
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
+
     public Integer getZremade() {
         return zremade;
     }
