@@ -16,7 +16,7 @@ public class DftrghlistServiceImpl extends BaseServiceImpl<Dftrghlist> implement
     @Autowired
     private DftrghlistMapper dftrghlistMapper;
     @Override
-    public Dftrghlist selectByCondition(String werks, String matnr,String line_id, String shift, String gstrp) {
+    public List<Dftrghlist> selectByCondition(String werks, String matnr,String line_id, String shift, String gstrp) {
         return dftrghlistMapper.selectByCondition(werks,matnr,line_id,shift,gstrp);
     }
 

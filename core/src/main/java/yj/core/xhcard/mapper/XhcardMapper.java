@@ -29,4 +29,13 @@ public  interface XhcardMapper
 
      List<Xhcard> selectXbkc(Xhcard xhcard);
 
+     /**
+      *  根据生产订单 工厂 箱号 查询XHCARD记录 917110140
+      * @param werks
+      * @param aufnr
+      * @param zxhnum
+      * @return
+      */
+     Xhcard selectForZxhbar(@Param("werks") String werks,@Param("aufnr") String aufnr,@Param("zxhnum") String zxhnum);
+
 }

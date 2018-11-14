@@ -230,4 +230,13 @@
 
     </select>
 
+    <select id="selectForZxhbar" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from sap_xhcard
+        <where>
+            WERKS = #{werks}
+            and AUFNR = #{aufnr}
+            and ZXHNUM = #{zxhnum}
+        </where>
+    </select>
+
 </mapper>

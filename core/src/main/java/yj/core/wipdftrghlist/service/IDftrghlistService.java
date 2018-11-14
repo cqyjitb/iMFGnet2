@@ -16,7 +16,7 @@ public interface IDftrghlistService extends IBaseService<Dftrghlist>, ProxySelf<
      * @param gstrp
      * @return
      */
-    Dftrghlist selectByCondition(String werks,String matnr,String line_id,String shift,String gstrp);
+    List<Dftrghlist> selectByCondition(String werks,String matnr,String line_id,String shift,String gstrp);
 
     /**
      * 插入新记录

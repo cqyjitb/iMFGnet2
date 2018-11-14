@@ -4,6 +4,8 @@ import com.hand.hap.mybatis.common.Mapper;
 import org.apache.ibatis.annotations.Param;
 import yj.core.outsrgrfe.dto.Outsrgrfe;
 
+import java.util.List;
+
 public interface OutsrgrfeMapper extends Mapper<Outsrgrfe>{
     /**
      * 新增记录   917110140
@@ -29,4 +31,11 @@ public interface OutsrgrfeMapper extends Mapper<Outsrgrfe>{
      * @return
      */
     int updateByCondition(Outsrgrfe outsrgrfe);
+
+    /**
+     * 根据供应商编码查询 外协采购订单接口表记录
+     * @param lifnr
+     * @return
+     */
+    List<Outsrgrfe> selectForSortl(String lifnr);
 }

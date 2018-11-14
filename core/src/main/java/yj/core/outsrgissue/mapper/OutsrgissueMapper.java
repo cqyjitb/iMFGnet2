@@ -16,5 +16,26 @@ public interface OutsrgissueMapper extends Mapper<Outsrgissue>{
      * @param matnr
      * @return
      */
-    List<Outsrgissue> selectByContidion(@Param("ebeln") String ebeln, @Param("ebelp") String ebelp, @Param("werks") String werks, @Param("lifnr") String lifnr, @Param("matnr") String matnr);
+    List<Outsrgissue> selectByContidion(@Param("ebeln") String ebeln,@Param("ebelp") String ebelp,@Param("werks") String werks,@Param("lifnr") String lifnr,@Param("matnr") String matnr);
+
+    /**
+     *  根据发料单号查询记录 按照行号 降序排序 917110140
+     * @param issuenm
+     * @return
+     */
+    List<Outsrgissue> selectByIssuenmDesc(@Param("issuenm") String issuenm);
+
+    /**
+     *  插入新记录 917110140
+     * @param outsrgissue
+     * @return
+     */
+    int insertNewRow(Outsrgissue outsrgissue);
+
+    /**
+     *  根据流转卡号查询外协发料记录
+     * @param zpgdbar
+     * @return
+     */
+    Outsrgissue selectByBarcode(String zpgdbar);
 }

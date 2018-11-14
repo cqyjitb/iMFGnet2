@@ -107,20 +107,20 @@ public class DftrghlistController extends BaseController {
         int sum = 0;
         //获取箱号信息
         Xhcard xhcard = xhcardService.selectByBacode(zxhbar);
-        if (xhcard == null){
+        if (xhcard == null) {
             rs.setSuccess(false);
             rs.setMessage("未能获取箱号信息，请检查箱号是否输入正确！");
-            return  rs;
+            return rs;
         }
 
         //获取在制队列数量
         List<Zwipq> listzwipq = new ArrayList<>();
-        listzwipq = zwipqService.selectByLineIdAndZxhbar(line_id,zxhbar);
-        Long tmp = Long.valueOf(yeild) - (Long.valueOf(xhcard.getMenge().substring(0,xhcard.getMenge().indexOf("."))) - listzwipq.size());
-        if (tmp > 0){
+        listzwipq = zwipqService.selectByLineIdAndZxhbar(line_id, zxhbar);
+        Long tmp = Long.valueOf(yeild) - (Long.valueOf(xhcard.getMenge().substring(0, xhcard.getMenge().indexOf("."))) - listzwipq.size());
+        if (tmp > 0) {
             rs.setSuccess(false);
-            rs.setMessage("不良数量超出毛坯框剩余毛坯数量"+ tmp +"个！");
-            return  rs;
+            rs.setMessage("不良数量超出毛坯框剩余毛坯数量" + tmp + "个！");
+            return rs;
         }
 
 
@@ -128,10 +128,10 @@ public class DftrghlistController extends BaseController {
         Marc marc = marcService.selectByMatnr(matnr2);
         //获取压铸流转卡信息
         Cardh cardh = cardhService.selectByZxhbar(xhcard.getAufnr(), xhcard.getZxhnum());
-        if (cardh == null){
+        if (cardh == null) {
             rs.setSuccess(false);
             rs.setMessage("未能获取箱号对应的压铸流转卡，请检查箱号是否输入正确！");
-            return  rs;
+            return rs;
         }
         //取首工序号
         List<Afvc> list = new ArrayList<>();
@@ -140,122 +140,124 @@ public class DftrghlistController extends BaseController {
         InputLog inputLog = new InputLog();
         inputLog.setDispatch(cardh.getZpgdbar());
         inputLog.setOperation(list.get(list.size() - 1).getVornr());
-         inputLog = inputLogService.queryByDispatchAndOperation(inputLog);
+        inputLog = inputLogService.queryByDispatchAndOperation(inputLog);
         //获取机加产线信息
         Lines lines = linesService.selectByIdForBlmpcl(Long.valueOf(line_id));
-        if (lines == null){
+        if (lines == null) {
             rs.setMessage("未能获取产线信息，请检查产线ID是否正确！");
             rs.setSuccess(false);
             return rs;
-        }else{
-             werks = lines.getWerks();
+        } else {
+            werks = lines.getWerks();
         }
         //获取机加产线产品配置信息
-        ProductsCfg pcfg = productsCfgService.selectByLineidAndMatnr(line_id.toString(),matnr2);
-        if (pcfg != null){
-             matnr = pcfg.getPmatnr();
-        }else{
+        ProductsCfg pcfg = productsCfgService.selectByLineidAndMatnr(line_id.toString(), matnr2);
+        if (pcfg != null) {
+            matnr = pcfg.getPmatnr();
+        } else {
             rs.setSuccess(false);
             rs.setMessage("未能读取生产线产品配置信息，请检查产线产品配置！");
             return rs;
         }
-            //查询是否已经包含记录
-            Dftrghlist dftrghlist = service.selectByCondition(werks,matnr,line_id,shift,gstrp);
-            if (dftrghlist == null){
-                dftrghlist = new Dftrghlist();
-                //插入新的记录
-                //生成记录id
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String curdate = df.format(new Date()).substring(0, 10).replaceAll("-", "");
-                recordid = "J" + curdate + "0001";
-                dftrghlist.setWerks(werks);
-                dftrghlist.setMatnr(matnr);
-                dftrghlist.setMatnr2(matnr2);
-                dftrghlist.setLineId(line_id);
-                dftrghlist.setZxhbar(zxhbar);
-                dftrghlist.setZmpbar(zmpbar);
-                dftrghlist.setZpgdbar(cardh.getZpgdbar());
-                dftrghlist.setSfflg(sfflg);
-                dftrghlist.setShift(shift);
-                dftrghlist.setGstrp(new Date());
-                dftrghlist.setYcharge(xhcard.getChargkc());
-                dftrghlist.setDiecd(diecd);
-                dftrghlist.setYzbanc(inputLog.getAttr4());
-                dftrghlist.setCode(code);
-                dftrghlist.setTlevelcode(tlevelcode);
-                dftrghlist.setMenge(Long.valueOf(xhcard.getMenge().substring(0,xhcard.getMenge().indexOf("."))));
-                dftrghlist.setDfectQty(Long.valueOf(yeild));
-                dftrghlist.setGmein(marc.getMeins());
-                dftrghlist.setCreatedBy(Long.valueOf(userId));
-                dftrghlist.setCreationDate(new Date());
-                dftrghlist.setYgstrp(cardh.getFprddat());
-                dftrghlist.setYshift(cardh.getShift());
-                dftrghlist.setCancelFlag("0");
-                dftrghlist.setItem(1L);
-                dftrghlist.setRecordid(recordid);
-                sum = service.insertDftrghlist(dftrghlist);
-            }else{
-                //1 获取最大行号
-                Long item = Long.valueOf(service.selectMaxItemByCondition(werks,matnr,line_id,shift,gstrp) + 1);
-                SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String curdate = df.format(new Date()).substring(0, 10).replaceAll("-", "");
-                recordid = "J" + curdate + "0001";
-                dftrghlist.setWerks(werks);
-                dftrghlist.setMatnr(matnr);
-                dftrghlist.setMatnr2(matnr2);
-                dftrghlist.setLineId(line_id);
-                dftrghlist.setZxhbar(zxhbar);
-                dftrghlist.setZmpbar(zmpbar);
-                dftrghlist.setZpgdbar(cardh.getZpgdbar());
-                dftrghlist.setSfflg(sfflg);
-                dftrghlist.setShift(shift);
-                dftrghlist.setGstrp(new Date());
-                dftrghlist.setYcharge(xhcard.getChargkc());
-                dftrghlist.setDiecd(diecd);
-                dftrghlist.setYzbanc(inputLog.getAttr4());
-                dftrghlist.setCode(code);
-                dftrghlist.setTlevelcode(tlevelcode);
-                dftrghlist.setMenge(Long.valueOf(xhcard.getMenge().substring(0,xhcard.getMenge().indexOf("."))));
-                dftrghlist.setDfectQty(Long.valueOf(yeild));
-                dftrghlist.setGmein(marc.getMeins());
-                dftrghlist.setCreatedBy(Long.valueOf(userId));
-                dftrghlist.setCreationDate(new Date());
-                dftrghlist.setYgstrp(cardh.getFprddat());
-                dftrghlist.setYshift(cardh.getShift());
-                dftrghlist.setCancelFlag("0");
-                dftrghlist.setItem(item);
-                dftrghlist.setRecordid(recordid);
-                sum = service.insertDftrghlist(dftrghlist);
-            }
+        //查询是否已经包含记录
+        Dftrghlist dftrghlist = new Dftrghlist();
+        List<Dftrghlist> listdfs = service.selectByCondition(werks, matnr, line_id, shift, gstrp);
+        if (listdfs.size() == 0) {
+            dftrghlist = new Dftrghlist();
+            //插入新的记录
+            //生成记录id
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String curdate = df.format(new Date()).substring(0, 10).replaceAll("-", "");
+            recordid = "J" + curdate + "0001";
+            dftrghlist.setWerks(werks);
+            dftrghlist.setMatnr(matnr);
+            dftrghlist.setMatnr2(matnr2);
+            dftrghlist.setLineId(line_id);
+            dftrghlist.setZxhbar(zxhbar);
+            dftrghlist.setZmpbar(zmpbar);
+            dftrghlist.setZpgdbar(cardh.getZpgdbar());
+            dftrghlist.setSfflg(sfflg);
+            dftrghlist.setShift(shift);
+            dftrghlist.setGstrp(new Date());
+            dftrghlist.setYcharge(xhcard.getChargkc());
+            dftrghlist.setDiecd(diecd);
+            dftrghlist.setYzbanc(inputLog.getAttr4());
+            dftrghlist.setCode(code);
+            dftrghlist.setTlevelcode(tlevelcode);
+            dftrghlist.setMenge(Long.valueOf(xhcard.getMenge().substring(0, xhcard.getMenge().indexOf("."))));
+            dftrghlist.setDfectQty(Long.valueOf(yeild));
+            dftrghlist.setGmein(marc.getMeins());
+            dftrghlist.setCreatedBy(Long.valueOf(userId));
+            dftrghlist.setCreationDate(new Date());
+            dftrghlist.setYgstrp(cardh.getFprddat());
+            dftrghlist.setYshift(cardh.getShift());
+            dftrghlist.setCancelFlag("0");
+            dftrghlist.setItem(1L);
+            dftrghlist.setRecordid(recordid);
+            sum = service.insertDftrghlist(dftrghlist);
+        } else {
+            //1 获取最大行号
+            Long item = Long.valueOf(service.selectMaxItemByCondition(werks, matnr, line_id, shift, gstrp) + 1);
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String curdate = df.format(new Date()).substring(0, 10).replaceAll("-", "");
+            recordid = "J" + curdate + "0001";
+            dftrghlist.setWerks(werks);
+            dftrghlist.setMatnr(matnr);
+            dftrghlist.setMatnr2(matnr2);
+            dftrghlist.setLineId(line_id);
+            dftrghlist.setZxhbar(zxhbar);
+            dftrghlist.setZmpbar(zmpbar);
+            dftrghlist.setZpgdbar(cardh.getZpgdbar());
+            dftrghlist.setSfflg(sfflg);
+            dftrghlist.setShift(shift);
+            dftrghlist.setGstrp(new Date());
+            dftrghlist.setYcharge(xhcard.getChargkc());
+            dftrghlist.setDiecd(diecd);
+            dftrghlist.setYzbanc(inputLog.getAttr4());
+            dftrghlist.setCode(code);
+            dftrghlist.setTlevelcode(tlevelcode);
+            dftrghlist.setMenge(Long.valueOf(xhcard.getMenge().substring(0, xhcard.getMenge().indexOf("."))));
+            dftrghlist.setDfectQty(Long.valueOf(yeild));
+            dftrghlist.setGmein(marc.getMeins());
+            dftrghlist.setCreatedBy(Long.valueOf(userId));
+            dftrghlist.setCreationDate(new Date());
+            dftrghlist.setYgstrp(cardh.getFprddat());
+            dftrghlist.setYshift(cardh.getShift());
+            dftrghlist.setCancelFlag("0");
+            dftrghlist.setItem(item);
+            dftrghlist.setRecordid(recordid);
+            sum = service.insertDftrghlist(dftrghlist);
+        }
 
-            if (sum == 1){
-                rs.setMessage("不良毛坯处理成功！");
-                rs.setSuccess(true);
-            }else{
-                rs.setMessage("不良毛坯处理失败，请联系管理员！");
-                rs.setSuccess(false);
-            }
+        if (sum == 1) {
+            rs.setMessage("不良毛坯处理成功！");
+            rs.setSuccess(true);
+        } else {
+            rs.setMessage("不良毛坯处理失败，请联系管理员！");
+            rs.setSuccess(false);
+        }
 
         return rs;
     }
 
     /**
      * 根据生产线ID 班组 毛坯箱号 查询不良毛坯处理记录明细
+     *
      * @param request
      * @return
      */
     @RequestMapping(value = {"/wip/dftrghlist/searchBlmpcl"}, method = {RequestMethod.GET})
     @ResponseBody
-    public ResponseData searchBlmpcl(HttpServletRequest request){
+    public ResponseData searchBlmpcl(HttpServletRequest request) {
         ResponseData rs = new ResponseData();
         String line_id = request.getParameter("line_id");
         String classgrp = request.getParameter("classgrp");
         String zxhbar = request.getParameter("zxhbar");
-        List<Dftrghlist> list = service.selectByLindIdAndZxhbar(line_id,classgrp,zxhbar);
-        if (list.size() > 0){
+        List<Dftrghlist> list = service.selectByLindIdAndZxhbar(line_id, classgrp, zxhbar);
+        if (list.size() > 0) {
             rs.setSuccess(true);
             rs.setRows(list);
-        }else{
+        } else {
             rs.setMessage("没有符合条件的记录！");
             rs.setSuccess(false);
         }
@@ -264,17 +266,17 @@ public class DftrghlistController extends BaseController {
 
     @RequestMapping(value = {"/wip/dftrghlist/selectXhcard"}, method = {RequestMethod.GET})
     @ResponseBody
-    public ResponseData selectXhcard(HttpServletRequest request){
+    public ResponseData selectXhcard(HttpServletRequest request) {
         ResponseData rs = new ResponseData();
         List list = new ArrayList();
         Xhcard xhcard = new Xhcard();
         String zxhbar = request.getParameter("zxhbar");
         xhcard = xhcardService.selectByBacode(zxhbar);
-        if (xhcard == null){
+        if (xhcard == null) {
 
             rs.setSuccess(false);
             rs.setMessage("未能获取箱号信息！请重新扫描箱号条码！");
-        }else{
+        } else {
             list.add(xhcard);
             Marc marc = marcService.selectByMatnr(xhcard.getMatnr());
             list.add(marc);
@@ -286,18 +288,19 @@ public class DftrghlistController extends BaseController {
 
     /**
      * 处理取消不良毛坯处理的页面请求
+     *
      * @param request
      * @return
      */
     @RequestMapping(value = {"/wip/dftrghlist/cancelBlmpcl"}, method = {RequestMethod.GET})
     @ResponseBody
-    public ResponseData cancelBlmpcl(HttpServletRequest request){
+    public ResponseData cancelBlmpcl(HttpServletRequest request) {
         ResponseData rs = new ResponseData();
         String recordid = request.getParameter("recordid");
         String item = request.getParameter("item");
         String userId = request.getParameter("userId");
 
-        Dftrghlist dftrghlist = service.selectByIdAndItem(recordid,Long.valueOf(item));
+        Dftrghlist dftrghlist = service.selectByIdAndItem(recordid, Long.valueOf(item));
 
         dftrghlist.setCancelFlag("1");
         dftrghlist.setCancelBy(Long.valueOf(userId));
@@ -307,12 +310,12 @@ public class DftrghlistController extends BaseController {
 
         int sum = 0;
         sum = service.updateByIdAndItem(dftrghlist);
-        if (sum == 1){
+        if (sum == 1) {
             rs.setSuccess(true);
-        }else{
+        } else {
             rs.setSuccess(false);
             rs.setMessage("更新数据库失败，请联系系统管理员！");
         }
-        return  rs;
+        return rs;
     }
 }

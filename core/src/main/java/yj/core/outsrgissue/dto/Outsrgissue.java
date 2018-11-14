@@ -14,7 +14,7 @@ public class Outsrgissue extends BaseDTO {
       private String issuenm; //外协发料单号
 
      @NotEmpty
-      private String item; //外协发料单行项目
+      private Long item; //外协发料单行项目
 
      @Id
      @GeneratedValue
@@ -54,6 +54,10 @@ public class Outsrgissue extends BaseDTO {
 
       private String gmein;
 
+      private String charg;
+
+      private String status;
+
 
      public void setIssuenm(String issuenm){
          this.issuenm = issuenm;
@@ -63,11 +67,11 @@ public class Outsrgissue extends BaseDTO {
          return issuenm;
      }
 
-     public void setItem(String item){
+     public void setItem(Long item){
          this.item = item;
      }
 
-     public String getItem(){
+     public Long getItem(){
          return item;
      }
 
@@ -213,5 +217,21 @@ public class Outsrgissue extends BaseDTO {
 
     public void setSortl(String sortl) {
         this.sortl = sortl;
+    }
+
+    public String getCharg() {
+        return charg;
+    }
+
+    public void setCharg(String charg) {
+        this.charg = charg;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
