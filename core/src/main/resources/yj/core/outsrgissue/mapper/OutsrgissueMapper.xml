@@ -22,6 +22,8 @@
         <result column="MATKL" property="matkl" jdbcType="VARCHAR" />
         <result column="ZISNUM" property="zisnum" jdbcType="DECIMAL" />
         <result column="GMEIN" property="gmein" jdbcType="VARCHAR" />
+        <result column="CHARG" property="charg" jdbcType="VARCHAR" />
+        <result column="STATUS" property="STATUS" jdbcType="VARCHAR" />
         <result column="CREATION_DATE" property="creationDate" jdbcType="DATE" />
         <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
         <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="DATE" />
@@ -51,8 +53,15 @@
 
     <insert id="insertNewRow" parameterType="yj.core.outsrgissue.dto.Outsrgissue">
         insert into  wip_outsrgissue (ISSUENM,ITEM,WERKS,ZPGDBAR,VORNR,VSNDA,EBELN,EBELP,KTSCH,TXZ01,ETENR,LIFNR,MATNR,DIECD,
-        SFFLG,MENGE,MATKL,ZISNUM,GMEIN,CREATION_DATE,CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY)
+        SFFLG,MENGE,MATKL,ZISNUM,GMEIN,CHARG,STATUS,CREATION_DATE,CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY)
         VALUES (#{issuenm},#{item},#{werks},#{zpgdbar},#{vornr},#{vsnda},#{ebeln},#{ebelp},#{ktsch},#{txz01},#{etenr},
-        #{lifnr},#{matnr},#{diecd},#{sfflg},#{menge},#{matkl},#{zisnum},#{gmein},#{creationDate},#{createdBy},#{lastUpdateDate},#{lastUpdatedBy})
+        #{lifnr},#{matnr},#{diecd},#{sfflg},#{menge},#{matkl},#{zisnum},#{gmein},#{charg},#{status},#{creationDate},#{createdBy},#{lastUpdateDate},#{lastUpdatedBy})
     </insert>
+
+    <select id="selectByBarcode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_outsrgissue
+        <where>
+            ZPGDBAR = #{zpgdbar}
+        </where>
+    </select>
 </mapper>

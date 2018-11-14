@@ -31,4 +31,11 @@ public interface IOutsrgissueService extends IBaseService<Outsrgissue>, ProxySel
      * @return
      */
     int insertNewRow(Outsrgissue outsrgissue);
+
+    /**
+     *  根据流转卡号查询外协发料记录
+     * @param zpgdbar
+     * @return
+     */
+    Outsrgissue selectByBarcode(String zpgdbar);
 }

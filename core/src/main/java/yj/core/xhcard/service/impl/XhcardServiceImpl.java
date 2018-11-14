@@ -322,4 +322,9 @@ public class XhcardServiceImpl
             return listresult;
         }
     }
+
+    @Override
+    public Xhcard selectForZxhbar(String werks, String aufnr, String zxhnum) {
+        return xhcardMapper.selectForZxhbar(werks,aufnr,zxhnum);
+    }
 }

@@ -31,4 +31,9 @@ public class OutsrgissueServiceImpl extends BaseServiceImpl<Outsrgissue> impleme
     public int insertNewRow(Outsrgissue outsrgissue) {
         return OutsrgissueMapper.insertNewRow(outsrgissue);
     }
+
+    @Override
+    public Outsrgissue selectByBarcode(String zpgdbar) {
+        return OutsrgissueMapper.selectByBarcode(zpgdbar);
+    }
 }

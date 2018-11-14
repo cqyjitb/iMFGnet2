@@ -38,4 +38,12 @@ public  interface IXhcardService
 
      List<Xhcard> selectXbkc(Xhcard dto);
 
+     /**
+      *  根据生产订单 工厂 箱号 查询XHCARD记录 917110140
+      * @param werks
+      * @param aufnr
+      * @param zxhnum
+      * @return
+      */
+     Xhcard selectForZxhbar(String werks,String aufnr,String zxhnum);
 }

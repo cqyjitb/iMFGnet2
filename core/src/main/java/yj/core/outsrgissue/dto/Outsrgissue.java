@@ -54,6 +54,10 @@ public class Outsrgissue extends BaseDTO {
 
       private String gmein;
 
+      private String charg;
+
+      private String status;
+
 
      public void setIssuenm(String issuenm){
          this.issuenm = issuenm;
@@ -213,5 +217,21 @@ public class Outsrgissue extends BaseDTO {
 
     public void setSortl(String sortl) {
         this.sortl = sortl;
+    }
+
+    public String getCharg() {
+        return charg;
+    }
+
+    public void setCharg(String charg) {
+        this.charg = charg;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

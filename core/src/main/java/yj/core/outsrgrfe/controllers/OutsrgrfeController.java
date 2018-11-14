@@ -16,6 +16,11 @@ import yj.core.outsrgissue.service.IOutsrgissueService;
 import yj.core.outsrgrfe.dto.Outsrgrfe;
 import yj.core.outsrgrfe.service.IOutsrgrfeService;
 import org.springframework.beans.factory.annotation.Autowired;
+import yj.core.webserver_weidu.components.WeiduWebserviceUtil;
+import yj.core.webserver_weidu.dto.DTWEIDUParam;
+import yj.core.webserver_weidu.dto.DTWEIDUReturn;
+import yj.core.xhcard.dto.Xhcard;
+import yj.core.xhcard.service.IXhcardService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -34,6 +39,8 @@ import java.util.List;
     private IOutsrgissueService outsrgissueService;
     @Autowired
     private IMarcService marcService;
+    @Autowired
+    private IXhcardService xhcardService;
 
     @RequestMapping(value = "/wip/outsrgrfe/query")
     @ResponseBody
@@ -117,13 +124,14 @@ import java.util.List;
         //查询工序信息
             String l_error = "X";
             int l_index = 0;
+            int l_index2 = 0;
             List<Cardt> listcardt = new ArrayList<>();
             listcardt = cardtService.selectByZpgdbarDesc(barcode);
             for (int i = 0;i<listcardt.size();i++){
                 if (listcardt.get(i).getSteus().equals("ZP02")){
                     l_error = "";
                     l_index = i;
-
+                    l_index2 = i + 1;
                 }
             }
 
@@ -132,6 +140,46 @@ import java.util.List;
                 rs.setSuccess(false);
                 return  rs;
             }
+
+            if (l_index != 0){
+                if (!listcardt.get(l_index2).getConfirmed().equals("X")){
+                    rs.setSuccess(false);
+                    rs.setMessage("前工序尚未报工，不允许进行外协发料！");
+                    return  rs;
+                }
+            }
+         //查询改流转卡对应的箱号是否已经外协发料
+        Outsrgissue outsrgissue = outsrgissueService.selectByBarcode(cardh.getZpgdbar());
+            if (outsrgissue != null){
+                rs.setMessage("该流转卡对应毛坯框已进行外协发料操作，请勿重复扫描！");
+                rs.setSuccess(false);
+                return rs;
+            }
+
+         //查询箱号信息
+        Xhcard xhcard = new Xhcard();
+            xhcard = xhcardService.selectForZxhbar(cardh.getWerks(),cardh.getAufnr(),cardh.getZxhnum());
+
+        //查询该流转卡对应班标 模号 是否属于围堵批次
+            DTWEIDUParam param = new DTWEIDUParam();
+            param.setMATNR(cardh.getMatnr());
+            param.setWERKS(cardh.getWerks());
+            param.setZBANB(cardh.getSfflg());
+            param.setZMODEL(cardh.getDiecd());
+            param.setZXHBAR(xhcard.getZxhbar());
+        //机加上线毛坯围堵查询
+        WeiduWebserviceUtil weiduWebserviceUtil = new WeiduWebserviceUtil();
+        DTWEIDUReturn dtweiduReturn = weiduWebserviceUtil.receiveConfirmation(param);
+        if (dtweiduReturn.getMTYPE().equals("S")) {
+            if (dtweiduReturn.getWEIDUFLG() != null) {
+                if (dtweiduReturn.getWEIDUFLG().equals("1")) {
+
+                    rs.setSuccess(false);
+                    rs.setMessage("该毛坯框，班标：" + cardh.getSfflg() + ",属于围堵批次！不允许外协发料！");
+                    return rs;
+                }
+            }
+        }
 
         //2:查询接口表信息
 

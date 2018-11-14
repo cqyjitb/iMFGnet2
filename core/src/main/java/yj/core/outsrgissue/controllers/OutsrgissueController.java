@@ -18,6 +18,10 @@ import yj.core.outsrgissuehead.dto.Outsrgissuehead;
 import yj.core.outsrgissuehead.service.IOutsrgissueheadService;
 import yj.core.outsrgrfe.dto.Outsrgrfe;
 import yj.core.outsrgrfe.service.IOutsrgrfeService;
+import yj.core.webservice_outsrgissue.components.SyncOutsrgissueWebserviceUtil;
+import yj.core.webservice_outsrgissue.dto.DTOUTSRGISSUEhead;
+import yj.core.webservice_outsrgissue.dto.DTOUTSRGISSUEitem;
+import yj.core.webservice_outsrgissue.dto.DTOUTSRGISSUEreturn;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -65,7 +69,7 @@ import java.util.List;
 
     @RequestMapping(value = {"/wip/outsrgissue/wxfl"},method = {RequestMethod.GET})
     @ResponseBody
-    public ResponseData processWxfl(HttpServletRequest request,String barcode,String lifnr,String userId,String ebeln,Double menge2,String vornr){
+    public ResponseData processWxfl(HttpServletRequest request,String barcode,String lifnr,String userId,String ebeln,String menge,String vornr){
         ResponseData rs = new ResponseData();
         Cardh cardh = new Cardh();
         cardh = cardhService.selectByBarcode(barcode);
@@ -127,7 +131,7 @@ import java.util.List;
 
         //准备行数据
         Long item = 0l;
-        if (outsrgissuehead == null){
+        if (outsrgissuehead.getIssuenm() == null){
             //使用以前单号
             issuenm = list.get(list.size() - 1).getIssuenm();
             //根据单号查询交货明细最大行号
@@ -156,17 +160,77 @@ import java.util.List;
         outsrgissue.setVornr(vornr);
         outsrgissue.setVsnda(outsrgrfe.getVsnda());
         outsrgissue.setWerks(cardh.getWerks());
-        outsrgissue.setZisnum(menge2);
+        outsrgissue.setZisnum(Double.valueOf(menge));
         outsrgissue.setZpgdbar(barcode);
         outsrgissue.setCreatedBy(Long.valueOf(userId));
         outsrgissue.setCreationDate(new Date());
+        outsrgissue.setStatus("0");
+        outsrgissue.setCharg(cardh.getCharg2());
         int result = 0;
-        if (outsrgissuehead != null){
-            result = outsrgissueheadService.insertNewRow(outsrgissuehead);
-            if ( result != 1){
-                rs.setMessage("数据保存失败，请联系管理员！");
-                rs.setSuccess(false);
-                return rs;
+
+        SyncOutsrgissueWebserviceUtil syncOutsrgissueWebserviceUtil = new SyncOutsrgissueWebserviceUtil();
+        DTOUTSRGISSUEhead head = new DTOUTSRGISSUEhead();
+        DTOUTSRGISSUEitem items = new DTOUTSRGISSUEitem();
+        if (outsrgissuehead.getIssuenm() != null){
+            head.setIssuenm(outsrgissuehead.getIssuenm());
+            head.setLifnr(outsrgissuehead.getLifnr());
+            head.setMatnr(outsrgissuehead.getMatnr());
+            head.setPrtflag(outsrgissuehead.getPrtflag());
+            head.setStatus(outsrgissuehead.getStatus());
+            head.setTxz01(outsrgissuehead.getTxz01());
+            head.setWerks(outsrgissuehead.getWerks());
+        }else{
+            head.setIssuenm("");
+            head.setLifnr("");
+            head.setMatnr("");
+            head.setPrtflag("");
+            head.setStatus("");
+            head.setTxz01("");
+            head.setWerks("");
+        }
+
+        if (outsrgissue != null){
+            items.setDiecd(outsrgissue.getDiecd());
+            items.setEbeln(outsrgissue.getEbeln());
+            items.setEbelp(outsrgissue.getEbelp());
+            items.setEtenr(outsrgissue.getEtenr());
+            items.setGmein(outsrgissue.getGmein());
+            items.setIssuenm(outsrgissue.getIssuenm());
+            items.setItem(outsrgissue.getItem());
+            items.setKtsch(outsrgissue.getKtsch());
+            items.setLifnr(outsrgissue.getLifnr());
+            items.setMatkl(outsrgissue.getMatkl());
+            items.setMatnr(outsrgissue.getMatnr());
+            items.setMenge(outsrgissue.getMenge());
+            items.setSfflg(outsrgissue.getSfflg());
+            items.setSortl(outsrgissue.getSortl());
+            items.setTxz01(outsrgissue.getTxz01());
+            items.setVornr(outsrgissue.getVornr());
+            items.setVsnda(outsrgissue.getVsnda());
+            items.setWerks(outsrgissue.getWerks());
+            items.setZisnum(outsrgissue.getZisnum());
+            items.setZpgdbar(outsrgissue.getZpgdbar());
+            items.setCharg(outsrgissue.getCharg());
+            items.setStatus(outsrgissue.getStatus());
+
+        }
+        DTOUTSRGISSUEreturn DTRE = new DTOUTSRGISSUEreturn();
+        DTRE = syncOutsrgissueWebserviceUtil.receiveConfirmation(head,items);
+        if (DTRE.getMSGTY().equals("S")){
+            if (outsrgissuehead.getIssuenm() != null){
+                result = outsrgissueheadService.insertNewRow(outsrgissuehead);
+                if ( result != 1){
+                    rs.setMessage("数据保存失败，请联系管理员！");
+                    rs.setSuccess(false);
+                    return rs;
+                }else{
+                    result = service.insertNewRow(outsrgissue);
+                    if (result != 1){
+                        rs.setMessage("数据保存失败，请联系管理员！");
+                        rs.setSuccess(false);
+                        return rs;
+                    }
+                }
             }else{
                 result = service.insertNewRow(outsrgissue);
                 if (result != 1){
@@ -175,7 +239,12 @@ import java.util.List;
                     return rs;
                 }
             }
+        }else{
+            rs.setSuccess(false);
+            rs.setMessage(DTRE.getMESSAGE());
+            return rs;
         }
+
 
         rs.setSuccess(true);
         return rs;

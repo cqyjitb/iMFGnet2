@@ -205,7 +205,7 @@ public class XhcardController
             }
         }
 
-        if (cardh.getStatus().equals("HOLD")){
+        if (cardh.getStatus().equals("HOLD")) {
             rs.setSuccess(false);
             rs.setMessage("当前毛坯框对应的机加流转卡已被冻结，不允许进行机加上线操作！");
             return rs;
@@ -258,7 +258,7 @@ public class XhcardController
         if (curxhcard == null) {
             //第二步 根据箱号获取流转卡记录
             cardh = cardhService.selectByZxhbar(xhcard.getAufnr(), xhcard.getZxhnum());
-            if (cardh.getStatus().equals("HOLD")){
+            if (cardh.getStatus().equals("HOLD")) {
                 rs.setMessage("当前箱号对应的流转卡处于HOLD状态，不允许继续上线！");
                 rs.setSuccess(false);
             }
@@ -300,19 +300,19 @@ public class XhcardController
                         for (int j = 0; j < xhcardlist.size(); j++) {//在先进先出中排除已经围堵的批次
                             String letgo = "";
                             if (Long.valueOf(xhcardlist.get(j).getChargkc()) < Long.valueOf(xhcard.getChargkc())) {
-                                for (int w = 0;w<allcurlzk.size();w++){
-                                    if (allcurlzk.get(i).getZxhbar().equals(xhcardlist.get(j).getZxhbar())){
+                                for (int w = 0; w < allcurlzk.size(); w++) {
+                                    if (allcurlzk.get(w).getZxhbar().equals(xhcardlist.get(j).getZxhbar())) {
                                         letgo = "X";
                                     }
                                 }
-                                if (letgo.equals("X")){//批次比当前箱号批次小的 ，如果小批次箱号属于其他线正在上线的箱 不属于先进先出考虑范围
+                                if (letgo.equals("X")) {//批次比当前箱号批次小的 ，如果小批次箱号属于其他线正在上线的箱 不属于先进先出考虑范围
                                     continue;
                                 }
 
                                 DTWEIDUParam param1 = new DTWEIDUParam();
                                 Cardh cardhtmp = new Cardh();
                                 cardhtmp = cardhService.selectByZxhbar(xhcardlist.get(j).getAufnr(), xhcardlist.get(j).getZxhnum());
-                                if (cardhtmp.getStatus().equals("HOLD")){//已经被冻结的不参与批次比较
+                                if (cardhtmp.getStatus().equals("HOLD")) {//已经被冻结的不参与批次比较
                                     continue;
                                 }
                                 param1.setMATNR(xhcardlist.get(j).getMatnr());
@@ -326,7 +326,7 @@ public class XhcardController
                                     if (dtweiduReturn1.getWEIDUFLG() != null) {
                                         if (dtweiduReturn1.getWEIDUFLG().equals("1")) {
 
-                                        }else{
+                                        } else {
                                             rs.setSuccess(false);
                                             rs.setMessage("未按先进先出规则上线，请先上线批次为：" + xhcardlist.get(j).getChargkc() + " 的毛坯框！");
                                             return rs;
@@ -336,15 +336,15 @@ public class XhcardController
 
                             }
                         }
-                       l_error = "";
+                        l_error = "";
                     }
                 }
 
             }
 
-            if (l_error.equals("E")){
+            if (l_error.equals("E")) {
                 rs.setSuccess(false);
-                rs.setMessage("该毛坯框物料:"+xhcard.getMatnr()+"不是本生产线所需物料,请检查!");
+                rs.setMessage("该毛坯框物料:" + xhcard.getMatnr() + "不是本生产线所需物料,请检查!");
                 return rs;
             }
 
@@ -352,15 +352,15 @@ public class XhcardController
             rslist.add(inputLoglist);//返回报工记录
             rslist.add(xhcard);//返回扫描的箱号信息
             rs.setRows(rslist);
-        } else if(!xhcard.getZxhbar().equals(curxhcard.getZxhbar())){
+        } else if (!xhcard.getZxhbar().equals(curxhcard.getZxhbar())) {
             String newXhflg = "";
             if (!zxhbar.equals(curlzk.getZxhbar())) {//扫描的毛坯框码 和当前毛坯框码不一致的时候
                 //取当前毛坯框流转卡
-                Cardh curcardh = cardhService.selectByZxhbar(curxhcard.getAufnr(),curxhcard.getZxhnum());
+                Cardh curcardh = cardhService.selectByZxhbar(curxhcard.getAufnr(), curxhcard.getZxhnum());
                 //判断当前毛坯框码是否完成上线
 
-                if (!curcardh.getStatus().equals("HOLD")){
-                    if (curxhcard.getZsxwc() == null ) {
+                if (!curcardh.getStatus().equals("HOLD")) {
+                    if (curxhcard.getZsxwc() == null) {
                         rs.setSuccess(false);
                         rs.setMessage("上一毛坯框：" + curlzk.getZxhbar() + " 未完成上线！请使用该框码继续上线！");
                         return rs;
@@ -410,19 +410,19 @@ public class XhcardController
                         for (int j = 0; j < xhcardlist.size(); j++) {//在先进先出中排除已经围堵的批次
                             String letgo = "";
                             if (Long.valueOf(xhcardlist.get(j).getChargkc()) < Long.valueOf(xhcard.getChargkc())) {
-                                for (int w = 0;w<allcurlzk.size();w++){
-                                    if (allcurlzk.get(i).getZxhbar().equals(xhcardlist.get(j).getZxhbar())){
+                                for (int w = 0; w < allcurlzk.size(); w++) {
+                                    if (allcurlzk.get(w).getZxhbar().equals(xhcardlist.get(j).getZxhbar())) {
                                         letgo = "X";
                                     }
                                 }
-                                if (letgo.equals("X")){//批次比当前箱号批次小的 ，如果小批次箱号属于其他线正在上线的箱 不属于先进先出考虑范围
+                                if (letgo.equals("X")) {//批次比当前箱号批次小的 ，如果小批次箱号属于其他线正在上线的箱 不属于先进先出考虑范围
                                     continue;
                                 }
 
                                 DTWEIDUParam param1 = new DTWEIDUParam();
                                 Cardh cardhtmp = new Cardh();
                                 cardhtmp = cardhService.selectByZxhbar(xhcardlist.get(j).getAufnr(), xhcardlist.get(j).getZxhnum());
-                                if (cardhtmp.getStatus().equals("HOLD")){//已经冻结的毛坯框不参与批次的比较
+                                if (cardhtmp.getStatus().equals("HOLD")) {//已经冻结的毛坯框不参与批次的比较
                                     continue;
                                 }
                                 param1.setMATNR(xhcardlist.get(j).getMatnr());
@@ -436,7 +436,7 @@ public class XhcardController
                                     if (dtweiduReturn1.getWEIDUFLG() != null) {
                                         if (dtweiduReturn1.getWEIDUFLG().equals("1")) {
 
-                                        }else{
+                                        } else {
                                             rs.setSuccess(false);
                                             rs.setMessage("未按先进先出规则上线，请先上线批次为：" + xhcardlist.get(j).getChargkc() + " 的毛坯框！");
                                             return rs;
@@ -444,7 +444,7 @@ public class XhcardController
                                     }
                                 }
 
-                            }else if(Long.valueOf(xhcardlist.get(j).getChargkc()).equals(Long.valueOf(xhcard.getChargkc()))){
+                            } else if (Long.valueOf(xhcardlist.get(j).getChargkc()).equals(Long.valueOf(xhcard.getChargkc()))) {
                                 break;
                             }
                         }
@@ -454,9 +454,9 @@ public class XhcardController
 
             }
 
-            if (l_error.equals("E")){
+            if (l_error.equals("E")) {
                 rs.setSuccess(false);
-                rs.setMessage("该毛坯框物料:"+xhcard.getMatnr()+"不是本生产线所需物料,请检查!");
+                rs.setMessage("该毛坯框物料:" + xhcard.getMatnr() + "不是本生产线所需物料,请检查!");
                 return rs;
             }
 
@@ -466,12 +466,12 @@ public class XhcardController
             rs.setRows(rslist);
 
 
-        }else if(xhcard.getZxhbar().equals(curxhcard.getZxhbar())){
+        } else if (xhcard.getZxhbar().equals(curxhcard.getZxhbar())) {
             //第二步 根据箱号获取流转卡记录
 
             cardh = cardhService.selectByZxhbar(xhcard.getAufnr(), xhcard.getZxhnum());
             //第三步 根据订单查询末工序记录
-            if (cardh.getStatus().equals("HOLD")){
+            if (cardh.getStatus().equals("HOLD")) {
                 rs.setMessage("当前箱号对应的流转卡处于HOLD状态，不允许继续上线！");
                 rs.setSuccess(false);
             }
@@ -507,9 +507,9 @@ public class XhcardController
 
             }
 
-            if (l_error.equals("E")){
+            if (l_error.equals("E")) {
                 rs.setSuccess(false);
-                rs.setMessage("该毛坯框物料:"+xhcard.getMatnr()+"不是本生产线所需物料,请检查!");
+                rs.setMessage("该毛坯框物料:" + xhcard.getMatnr() + "不是本生产线所需物料,请检查!");
                 return rs;
             }
 
@@ -523,6 +523,7 @@ public class XhcardController
 
     /**
      * 查询机加线边库库存
+     *
      * @param request
      * @param dto
      * @return
@@ -530,9 +531,9 @@ public class XhcardController
 
     @RequestMapping({"/sap/xhcard/queryXbkc"})
     @ResponseBody
-    public ResponseData queryXbck(HttpServletRequest request,Xhcard dto){
+    public ResponseData queryXbck(HttpServletRequest request, Xhcard dto) {
         IRequest requestContext = createRequestContext(request);
-        if (dto.getZsxwc().equals("Y")){
+        if (dto.getZsxwc().equals("Y")) {
             dto.setZsxwc(null);
         }
         return new ResponseData(service.selectXbkc(dto));
@@ -540,25 +541,25 @@ public class XhcardController
 
     @RequestMapping(value = {"/sap/xhcard/BlmpclCheckZxhbar"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     @ResponseBody
-    ResponseData blmpclCheckZxhbar(HttpServletRequest request,String zxhbar){
+    ResponseData blmpclCheckZxhbar(HttpServletRequest request, String zxhbar) {
         ResponseData rs = new ResponseData();
         List list = new ArrayList();
         Xhcard xhcard = new Xhcard();
         xhcard = service.selectByBacode(zxhbar);
-        if (xhcard == null){
+        if (xhcard == null) {
             rs.setSuccess(false);
             rs.setMessage("未能获取箱号信息,请检查箱号是否输入正确！");
             return rs;
         }
 
-        if (!xhcard.getZxhzt().equals("7")){
+        if (!xhcard.getZxhzt().equals("7")) {
             rs.setMessage("箱号状态错误！");
             rs.setSuccess(false);
             return rs;
         }
 
-        if (xhcard.getZsxwc() != null){
-            if (xhcard.getZsxwc().equals("X")){
+        if (xhcard.getZsxwc() != null) {
+            if (xhcard.getZsxwc().equals("X")) {
                 rs.setMessage("该箱号已经完成上线，不允许进行不良毛坯处理！");
                 rs.setSuccess(false);
                 return rs;
@@ -566,11 +567,10 @@ public class XhcardController
         }
 
 
-
         Marc marc = new Marc();
         marc = marcService.selectByMatnr(xhcard.getMatnr());
         Cardh cardh = new Cardh();
-        cardh = cardhService.selectByZxhbar(xhcard.getAufnr(),xhcard.getZxhnum());
+        cardh = cardhService.selectByZxhbar(xhcard.getAufnr(), xhcard.getZxhnum());
         list.add(xhcard);
         list.add(marc);
         list.add(cardh);
