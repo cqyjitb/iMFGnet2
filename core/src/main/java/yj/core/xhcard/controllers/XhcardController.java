@@ -33,6 +33,8 @@ import yj.core.webserver_weidu.dto.DTWEIDUReturn;
 import yj.core.webservice_queryXhcard.dto.QueryXhcardReturnResult;
 import yj.core.wipcurlzk.dto.Curlzk;
 import yj.core.wipcurlzk.service.ICurlzkService;
+import yj.core.wipdftrghlist.dto.Dftrghlist;
+import yj.core.wipdftrghlist.service.IDftrghlistService;
 import yj.core.wipproductscfg.dto.ProductsCfg;
 import yj.core.wipproductscfg.service.IProductsCfgService;
 import yj.core.xhcard.dto.Xhcard;
@@ -59,6 +61,8 @@ public class XhcardController
     private IProductsCfgService productsCfgService;
     @Autowired
     private ICurlzkService curlzkService;
+    @Autowired
+    private IDftrghlistService dftrghlistService;
 
     @RequestMapping({"/sap/xhcard/query"})
     @ResponseBody
@@ -513,9 +517,15 @@ public class XhcardController
                 return rs;
             }
 
+            //查询毛坯不良品处理记录
+            List<Dftrghlist> dftrghlists = dftrghlistService.selectByZxhbar(zxhbar);
+
             rs.setSuccess(true);
             rslist.add(inputLoglist);//返回报工记录
             rslist.add(xhcard);//返回扫描的箱号信息
+            if (dftrghlists.size() > 0){
+                rslist.add(dftrghlists);
+            }
             rs.setRows(rslist);
         }
         return rs;

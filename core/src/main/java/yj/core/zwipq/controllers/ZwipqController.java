@@ -41,6 +41,7 @@ import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
+import static java.lang.Math.abs;
 import static javafx.scene.input.KeyCode.L;
 
 @Controller
@@ -268,14 +269,6 @@ public class ZwipqController extends BaseController {
     @RequestMapping(value = {"/zwipq/callmigo"}, method = {RequestMethod.GET})
     @ResponseBody
     public ResponseData callmigo(HttpServletRequest request, String line_id, String zxhbar, int cynum, String bwart, int createBy, String zpgdbar) {
-        //汇总不良品数量
-        Dftrghlist dftrghlist = new Dftrghlist();
-        List<Dftrghlist> list = dftrghlistService.selectByZxhbar(zxhbar);
-        if (list.size() > 0){
-            for (int i=0;i<list.size();i++){
-                cynum = cynum + list.get(i).getDfectQty().intValue();
-            }
-        }
         DTMIGOReturn rs = service.callMigo(zxhbar, cynum, line_id, bwart, createBy, zpgdbar);
         ResponseData rd = new ResponseData();
         if (rs.getMTYPE().equals("S")) {

@@ -170,6 +170,14 @@ public class DftrghlistController extends BaseController {
             return rs;
         }
         //查询是否已经包含记录
+        DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+        Date datetmp = null;
+        try{
+            datetmp = format1.parse(gstrp);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
         Dftrghlist dftrghlist = new Dftrghlist();
         List<Dftrghlist> listdfs = service.selectByCondition(werks, matnr, line_id, shift, gstrp);
         if (listdfs.size() == 0) {
@@ -188,7 +196,7 @@ public class DftrghlistController extends BaseController {
             dftrghlist.setZpgdbar(cardh.getZpgdbar());
             dftrghlist.setSfflg(sfflg);
             dftrghlist.setShift(shift);
-            dftrghlist.setGstrp(new Date());
+            dftrghlist.setGstrp(datetmp);
             dftrghlist.setYcharge(xhcard.getChargkc());
             dftrghlist.setDiecd(diecd);
             dftrghlist.setYzbanc(inputLog.getAttr4());
@@ -207,13 +215,7 @@ public class DftrghlistController extends BaseController {
             sum = service.insertDftrghlist(dftrghlist);
         } else {
             //1 获取最大行号
-            DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
-            Date datetmp = null;
-            try{
-                datetmp = format1.parse(gstrp);
-            }catch (Exception e){
-                e.printStackTrace();
-            }
+
             Long item = Long.valueOf(service.selectMaxItemByCondition(werks, matnr, line_id, shift, gstrp) + 1);
             recordid = listdfs.get(0).getRecordid();
             dftrghlist.setWerks(werks);
@@ -299,12 +301,13 @@ public class DftrghlistController extends BaseController {
             return  rs;
         }
 
-        if  (xhcard.getZsxwc().equals("X")){
-            rs.setSuccess(false);
-            rs.setMessage("该毛坯框已上线完成，不允许取消不良品处理！");
-            return rs;
+        if (xhcard.getZsxwc() != null){
+            if  (xhcard.getZsxwc().equals("X")){
+                rs.setSuccess(false);
+                rs.setMessage("该毛坯框已上线完成，不允许取消不良品处理！");
+                return rs;
+            }
         }
-
 
             list.add(xhcard);
             Marc marc = marcService.selectByMatnr(xhcard.getMatnr());
