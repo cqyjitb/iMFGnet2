@@ -279,6 +279,11 @@ public class DftrghlistController extends BaseController {
         return rs;
     }
 
+    /**
+     *  取消线边库不良毛坯处理 箱号查询
+     * @param request
+     * @return
+     */
     @RequestMapping(value = {"/wip/dftrghlist/selectXhcard"}, method = {RequestMethod.GET})
     @ResponseBody
     public ResponseData selectXhcard(HttpServletRequest request) {
@@ -291,13 +296,22 @@ public class DftrghlistController extends BaseController {
 
             rs.setSuccess(false);
             rs.setMessage("未能获取箱号信息！请重新扫描箱号条码！");
-        } else {
+            return  rs;
+        }
+
+        if  (xhcard.getZsxwc().equals("X")){
+            rs.setSuccess(false);
+            rs.setMessage("该毛坯框已上线完成，不允许取消不良品处理！");
+            return rs;
+        }
+
+
             list.add(xhcard);
             Marc marc = marcService.selectByMatnr(xhcard.getMatnr());
             list.add(marc);
             rs.setSuccess(true);
             rs.setRows(list);
-        }
+
         return rs;
     }
 
