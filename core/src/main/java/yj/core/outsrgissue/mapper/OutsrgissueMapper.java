@@ -37,5 +37,5 @@ public interface OutsrgissueMapper extends Mapper<Outsrgissue>{
      * @param zpgdbar
      * @return
      */
-    Outsrgissue selectByBarcode(String zpgdbar);
+    Outsrgissue selectByBarcode(@Param("zpgdbar") String zpgdbar,@Param("status") String status);
 }

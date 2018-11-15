@@ -37,5 +37,5 @@ public interface IOutsrgissueService extends IBaseService<Outsrgissue>, ProxySel
      * @param zpgdbar
      * @return
      */
-    Outsrgissue selectByBarcode(String zpgdbar);
+    Outsrgissue selectByBarcode(String zpgdbar,String status);
 }

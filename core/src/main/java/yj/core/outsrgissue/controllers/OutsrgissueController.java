@@ -22,6 +22,7 @@ import yj.core.webservice_outsrgissue.components.SyncOutsrgissueWebserviceUtil;
 import yj.core.webservice_outsrgissue.dto.DTOUTSRGISSUEhead;
 import yj.core.webservice_outsrgissue.dto.DTOUTSRGISSUEitem;
 import yj.core.webservice_outsrgissue.dto.DTOUTSRGISSUEreturn;
+import yj.core.wipdftrghlist.dto.Dftrghlist;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -249,4 +250,51 @@ import java.util.List;
         rs.setSuccess(true);
         return rs;
     }
+
+        /**
+         *  处理冲销外协发料 查询流转卡请求 917110140
+         * @param request
+         * @param barcode
+         * @return
+         */
+        @RequestMapping(value = {"/wip/outsrgissue/selectForCxwxfl"},method = {RequestMethod.GET})
+        @ResponseBody
+        ResponseData selectForCxwxfl(HttpServletRequest request,String barcode){
+        ResponseData rs = new ResponseData();
+        String status = "0";
+        Outsrgissue outsrgissue = service.selectByBarcode(barcode,status);
+        if (outsrgissue == null){
+            rs.setMessage("该流转卡尚未进行外协发料！不能对其进行冲销外协发料操作！");
+            rs.setSuccess(false);
+            return rs;
+        }
+
+        Cardh cardh = new Cardh();
+        cardh = cardhService.selectByBarcode(barcode);
+
+        Marc marc = new Marc();
+        marc = marcService.selectByMatnr(cardh.getMatnr());
+
+        List list = new ArrayList();
+        list.add(outsrgissue);
+        list.add(cardh);
+        list.add(marc);
+        rs.setSuccess(true);
+        rs.setRows(list);
+        return rs;
+        }
+
+        @RequestMapping(value = {"/wip/outsrgissue/cxwxfl"},method = {RequestMethod.GET})
+        @ResponseBody
+        ResponseData processCxwxfl(HttpServletRequest request,String barcode,String userId){
+            ResponseData rs = new ResponseData();
+            String status = "0";
+            Outsrgissue outsrgissue = service.selectByBarcode(barcode,status);
+
+            outsrgissue.setStatus("1");
+            outsrgissue.setLastUpdateDate(new Date());
+            outsrgissue.setLastUpdatedBy(Long.valueOf(userId));
+
+            return rs;
+        }
     }

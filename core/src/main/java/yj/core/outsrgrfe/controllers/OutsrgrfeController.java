@@ -149,7 +149,8 @@ import java.util.List;
                 }
             }
          //查询改流转卡对应的箱号是否已经外协发料
-        Outsrgissue outsrgissue = outsrgissueService.selectByBarcode(cardh.getZpgdbar());
+        String status = "0";
+        Outsrgissue outsrgissue = outsrgissueService.selectByBarcode(cardh.getZpgdbar(),status);
             if (outsrgissue != null){
                 rs.setMessage("该流转卡对应毛坯框已进行外协发料操作，请勿重复扫描！");
                 rs.setSuccess(false);

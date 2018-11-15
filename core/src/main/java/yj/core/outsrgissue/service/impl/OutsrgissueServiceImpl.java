@@ -33,7 +33,7 @@ public class OutsrgissueServiceImpl extends BaseServiceImpl<Outsrgissue> impleme
     }
 
     @Override
-    public Outsrgissue selectByBarcode(String zpgdbar) {
-        return OutsrgissueMapper.selectByBarcode(zpgdbar);
+    public Outsrgissue selectByBarcode(String zpgdbar,String status) {
+        return OutsrgissueMapper.selectByBarcode(zpgdbar,status);
     }
 }
