@@ -13,6 +13,7 @@ import yj.core.afko.dto.Afko;
 import yj.core.afko.service.IAfkoService;
 import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.service.ICardhService;
+import yj.core.dftdtl.service.IDftdtlService;
 import yj.core.inoutrecord.dto.InOutRecord;
 import yj.core.inoutrecord.service.IInOutRecordService;
 import yj.core.lineiocfg.dto.LineioCfg;
@@ -24,6 +25,8 @@ import yj.core.resb.service.IResbService;
 import yj.core.webservice_migo.dto.DTMIGOReturn;
 import yj.core.wipcurlzk.dto.Curlzk;
 import yj.core.wipcurlzk.service.ICurlzkService;
+import yj.core.wipdftrghlist.dto.Dftrghlist;
+import yj.core.wipdftrghlist.service.IDftrghlistService;
 import yj.core.wiplines.dto.Lines;
 import yj.core.wiplines.service.ILinesService;
 import yj.core.xhcard.dto.Xhcard;
@@ -63,6 +66,8 @@ public class ZwipqController extends BaseController {
     private IInOutRecordService iInOutRecordService;
     @Autowired
     private ILineioCfgService iLineioCfgService;
+    @Autowired
+    private IDftrghlistService dftrghlistService;
 
 
     @RequestMapping(value = "/zwipq/query")
@@ -263,7 +268,14 @@ public class ZwipqController extends BaseController {
     @RequestMapping(value = {"/zwipq/callmigo"}, method = {RequestMethod.GET})
     @ResponseBody
     public ResponseData callmigo(HttpServletRequest request, String line_id, String zxhbar, int cynum, String bwart, int createBy, String zpgdbar) {
-
+        //汇总不良品数量
+        Dftrghlist dftrghlist = new Dftrghlist();
+        List<Dftrghlist> list = dftrghlistService.selectByZxhbar(zxhbar);
+        if (list.size() > 0){
+            for (int i=0;i<list.size();i++){
+                cynum = cynum + list.get(i).getDfectQty().intValue();
+            }
+        }
         DTMIGOReturn rs = service.callMigo(zxhbar, cynum, line_id, bwart, createBy, zpgdbar);
         ResponseData rd = new ResponseData();
         if (rs.getMTYPE().equals("S")) {

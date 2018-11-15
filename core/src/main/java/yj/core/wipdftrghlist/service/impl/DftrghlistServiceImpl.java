@@ -50,4 +50,9 @@ public class DftrghlistServiceImpl extends BaseServiceImpl<Dftrghlist> implement
     public int updateByIdAndItem(Dftrghlist dto) {
         return dftrghlistMapper.updateByIdAndItem(dto);
     }
+
+    @Override
+    public List<Dftrghlist> selectByZxhbar(String zxhbar) {
+        return dftrghlistMapper.selectByZxhbar(zxhbar);
+    }
 }

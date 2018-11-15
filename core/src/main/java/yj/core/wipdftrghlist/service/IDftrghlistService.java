@@ -66,4 +66,11 @@ public interface IDftrghlistService extends IBaseService<Dftrghlist>, ProxySelf<
      * @return
      */
     int updateByIdAndItem(Dftrghlist dto);
+
+    /**
+     *  根据箱号查询已经处理的不良毛坯记录
+     * @param zxhbar
+     * @return
+     */
+    List<Dftrghlist> selectByZxhbar(String zxhbar);
 }

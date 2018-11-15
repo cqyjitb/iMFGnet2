@@ -24,8 +24,27 @@ public class Dftdtl extends BaseDTO {
 
       private String code; //缺陷代码
 
+      private String  machingflag;
 
-     public void setWerks(String werks){
+      private String castingflag;
+
+    public String getMachingflag() {
+        return machingflag;
+    }
+
+    public void setMachingflag(String machingflag) {
+        this.machingflag = machingflag;
+    }
+
+    public String getCastingflag() {
+        return castingflag;
+    }
+
+    public void setCastingflag(String castingflag) {
+        this.castingflag = castingflag;
+    }
+
+    public void setWerks(String werks){
          this.werks = werks;
      }
 

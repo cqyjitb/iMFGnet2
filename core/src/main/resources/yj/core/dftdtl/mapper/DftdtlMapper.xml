@@ -8,6 +8,8 @@
         <result column="TLEVELCODE" property="tlevelcode" jdbcType="VARCHAR" />
         <result column="ZTEXT" property="ztext" jdbcType="VARCHAR" />
         <result column="CODE" property="code" jdbcType="VARCHAR" />
+        <result column="MACHING_FLAG" property="machingflag" jdbcType="VARCHAR" />
+        <result column="CASTING_FLAG" property="castingflag" jdbcType="VARCHAR" />
     </resultMap>
 
     <select id="selectForLov" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -36,6 +38,7 @@
                <where>
                    MATNR2 = #{matnr}
                    AND CODE = #{code}
+                   AND CASTING_FLAG = '1'
                </where>
 
     </select>

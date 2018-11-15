@@ -27,6 +27,7 @@ import yj.core.zwipq.dto.Zwipq;
 import yj.core.zwipq.service.IZwipqService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -112,11 +113,20 @@ public class DftrghlistController extends BaseController {
             rs.setMessage("未能获取箱号信息，请检查箱号是否输入正确！");
             return rs;
         }
+        //获取已经处理的不良毛坯记录 并汇总
+        Long hissum = 0L;
+        List<Dftrghlist> historylist = service.selectByZxhbar(zxhbar);
+        if (historylist.size() > 0){
+            for (int i=0;i<historylist.size();i++){
+                hissum = hissum + historylist.get(i).getDfectQty();
+            }
+        }
 
         //获取在制队列数量
         List<Zwipq> listzwipq = new ArrayList<>();
         listzwipq = zwipqService.selectByLineIdAndZxhbar(line_id, zxhbar);
-        Long tmp = Long.valueOf(yeild) - (Long.valueOf(xhcard.getMenge().substring(0, xhcard.getMenge().indexOf("."))) - listzwipq.size());
+        //当前输入数量 + 历史处理数量总和 - （ 箱号数量 - 在制队列数量）
+        Long tmp = Long.valueOf(yeild) + hissum - (Long.valueOf(xhcard.getMenge().substring(0, xhcard.getMenge().indexOf("."))) - listzwipq.size());
         if (tmp > 0) {
             rs.setSuccess(false);
             rs.setMessage("不良数量超出毛坯框剩余毛坯数量" + tmp + "个！");
@@ -166,8 +176,8 @@ public class DftrghlistController extends BaseController {
             dftrghlist = new Dftrghlist();
             //插入新的记录
             //生成记录id
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String curdate = df.format(new Date()).substring(0, 10).replaceAll("-", "");
+            //SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            String curdate = gstrp.substring(0, 10).replaceAll("-", "");
             recordid = "J" + curdate + "0001";
             dftrghlist.setWerks(werks);
             dftrghlist.setMatnr(matnr);
@@ -197,10 +207,15 @@ public class DftrghlistController extends BaseController {
             sum = service.insertDftrghlist(dftrghlist);
         } else {
             //1 获取最大行号
+            DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
+            Date datetmp = null;
+            try{
+                datetmp = format1.parse(gstrp);
+            }catch (Exception e){
+                e.printStackTrace();
+            }
             Long item = Long.valueOf(service.selectMaxItemByCondition(werks, matnr, line_id, shift, gstrp) + 1);
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String curdate = df.format(new Date()).substring(0, 10).replaceAll("-", "");
-            recordid = "J" + curdate + "0001";
+            recordid = listdfs.get(0).getRecordid();
             dftrghlist.setWerks(werks);
             dftrghlist.setMatnr(matnr);
             dftrghlist.setMatnr2(matnr2);
@@ -210,7 +225,7 @@ public class DftrghlistController extends BaseController {
             dftrghlist.setZpgdbar(cardh.getZpgdbar());
             dftrghlist.setSfflg(sfflg);
             dftrghlist.setShift(shift);
-            dftrghlist.setGstrp(new Date());
+            dftrghlist.setGstrp(datetmp);
             dftrghlist.setYcharge(xhcard.getChargkc());
             dftrghlist.setDiecd(diecd);
             dftrghlist.setYzbanc(inputLog.getAttr4());

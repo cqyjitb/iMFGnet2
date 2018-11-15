@@ -541,7 +541,7 @@ public class XhcardController
 
     @RequestMapping(value = {"/sap/xhcard/BlmpclCheckZxhbar"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
     @ResponseBody
-    ResponseData blmpclCheckZxhbar(HttpServletRequest request, String zxhbar) {
+    ResponseData blmpclCheckZxhbar(HttpServletRequest request, String zxhbar,String line_id) {
         ResponseData rs = new ResponseData();
         List list = new ArrayList();
         Xhcard xhcard = new Xhcard();
@@ -564,6 +564,14 @@ public class XhcardController
                 rs.setSuccess(false);
                 return rs;
             }
+        }
+
+        //获取产线配置 检查物料是否可以在产线加工
+        ProductsCfg productsCfg = productsCfgService.selectByLineidAndMatnr(line_id,xhcard.getMatnr());
+        if (productsCfg == null){
+            rs.setSuccess(false);
+            rs.setMessage("该毛坯不属于该产线加工！");
+            return rs;
         }
 
 

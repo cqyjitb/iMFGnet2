@@ -128,4 +128,12 @@
                     and ITEM = #{item}
                 </where>
     </update>
+
+    <select id="selectByZxhbar" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_dftrghlist
+                 <where>
+                     ZXHBAR = #{zxhbar}
+                     and CANCEL_FLAG = '0'
+                 </where>
+    </select>
 </mapper>
