@@ -24,4 +24,14 @@ public class OutsrgissueheadServiceImpl extends BaseServiceImpl<Outsrgissuehead>
     public int insertNewRow(Outsrgissuehead outsrgissuehead) {
         return outsrgissueheadMapper.insertNewRow(outsrgissuehead);
     }
+
+    @Override
+    public int updateOutsrgissueHead(Outsrgissuehead outsrgissuehead) {
+        return outsrgissueheadMapper.updateOutsrgissueHead(outsrgissuehead);
+    }
+
+    @Override
+    public Outsrgissuehead selectByIssuenm(String issuenm) {
+        return outsrgissueheadMapper.selectByIssuenm(issuenm);
+    }
 }

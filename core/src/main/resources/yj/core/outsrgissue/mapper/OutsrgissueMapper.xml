@@ -23,7 +23,7 @@
         <result column="ZISNUM" property="zisnum" jdbcType="DECIMAL" />
         <result column="GMEIN" property="gmein" jdbcType="VARCHAR" />
         <result column="CHARG" property="charg" jdbcType="VARCHAR" />
-        <result column="STATUS" property="STATUS" jdbcType="VARCHAR" />
+        <result column="STATUS" property="status" jdbcType="VARCHAR" />
         <result column="CREATION_DATE" property="creationDate" jdbcType="DATE" />
         <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
         <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="DATE" />
@@ -38,6 +38,7 @@
             AND EBELP = #{ebelp}
             AND MATNR = #{matnr}
             AND LIFNR = #{lifnr}
+            AND STATUS != "1"
         </where>
     </select>
 
@@ -62,9 +63,27 @@
         select * from wip_outsrgissue
         <where>
             ZPGDBAR = #{zpgdbar}
-            <if test="status ！= null">
+            <if test="status != null">
                 and STATUS = #{status}
             </if>
+        </where>
+    </select>
+
+    <update id="updateOutsrgissue" parameterType="yj.core.outsrgissue.dto.Outsrgissue">
+        update wip_outsrgissue set  STATUS = #{status},
+                                   LAST_UPDATE_DATE = #{lastUpdateDate},
+                                   LAST_UPDATED_BY = #{lastUpdatedBy}
+                                   <where>
+                                       ISSUENM = #{issuenm}
+                                       and ITEM = #{item}
+                                   </where>
+    </update>
+
+    <select id="selectByIssuenmAndStatus" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_outsrgissue
+        <where>
+            ISSUENM = #{issuenm}
+            and STATUS != #{status}
         </where>
     </select>
 </mapper>

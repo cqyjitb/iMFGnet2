@@ -184,7 +184,7 @@ public class ZwipqController extends BaseController {
             } else {
                 String pkgline_id_str = lines.getPlineId().toString();
                 zwipq.setPkgLineId(pkgline_id_str);
-                zwipq.setLineId(pkgline_id_str);
+                zwipq.setLineId(line_id_str);
             }
             zwipq.setCharg(xhcard.getChargkc());
             zwipq.setSfflg(attr7);//班标

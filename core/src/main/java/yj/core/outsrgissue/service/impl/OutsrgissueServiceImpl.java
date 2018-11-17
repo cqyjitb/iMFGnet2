@@ -36,4 +36,14 @@ public class OutsrgissueServiceImpl extends BaseServiceImpl<Outsrgissue> impleme
     public Outsrgissue selectByBarcode(String zpgdbar,String status) {
         return OutsrgissueMapper.selectByBarcode(zpgdbar,status);
     }
+
+    @Override
+    public int updateOutsrgissue(Outsrgissue outsrgissue) {
+        return OutsrgissueMapper.updateOutsrgissue(outsrgissue);
+    }
+
+    @Override
+    public List<Outsrgissue> selectByIssuenmAndStatus(String issuenm, String status) {
+        return OutsrgissueMapper.selectByIssuenmAndStatus(issuenm,status);
+    }
 }

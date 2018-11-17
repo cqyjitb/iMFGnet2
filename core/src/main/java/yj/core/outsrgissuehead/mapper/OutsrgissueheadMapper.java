@@ -22,4 +22,18 @@ public interface OutsrgissueheadMapper extends Mapper<Outsrgissuehead>{
      * @return
      */
     int insertNewRow(Outsrgissuehead outsrgissuehead);
+
+    /**
+     *  根据单号 修改状态及时间
+     * @param outsrgissuehead
+     * @return
+     */
+    int updateOutsrgissueHead(Outsrgissuehead outsrgissuehead);
+
+    /**
+     *  根据单号查询表头信息
+     * @param issuenm
+     * @return
+     */
+    Outsrgissuehead selectByIssuenm(String issuenm);
 }

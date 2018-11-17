@@ -117,6 +117,10 @@ public class AfkoController
                                 gamng_bd += cardhList.get(j).getEcqty().doubleValue();
                             }
                         }
+
+                        if (j == 0) {
+                            list.get(i).setMaxno(cardhList.get(j).getZpgdbh());
+                        }
                     }
                 } else {
                     gamng_bd = 0.0D;

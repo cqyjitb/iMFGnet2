@@ -38,4 +38,21 @@ public interface IOutsrgissueService extends IBaseService<Outsrgissue>, ProxySel
      * @return
      */
     Outsrgissue selectByBarcode(String zpgdbar,String status);
+
+    /**
+     *  冲销后更新外协发料单行项目数据
+     * @param outsrgissue
+     * @return
+     */
+    int updateOutsrgissue(Outsrgissue outsrgissue);
+
+    /**
+     *  查询状态不是 1-已冲销的 外协发料单记录
+     * @param issuenm
+     * @param status
+     * @return
+     */
+    List<Outsrgissue> selectByIssuenmAndStatus(String issuenm,String status);
+
+
 }

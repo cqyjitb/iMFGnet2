@@ -30,4 +30,20 @@
         values(#{issuenm},#{werks},#{txz01},#{lifnr},#{matnr},#{status},#{prtflag},#{creationDate},#{createdBy},#{lastUpdateDate},#{lastUpdatedBy})
     </insert>
 
+    <update id="updateOutsrgissueHead" parameterType="yj.core.outsrgissuehead.dto.Outsrgissuehead">
+        update wip_outsrgissuehead SET STATUS = #{status},
+                                       LAST_UPDATE_DATE = #{lastUpdateDate},
+                                       LAST_UPDATED_BY = #{lastUpdatedBy}
+                                    <where>
+                                        ISSUENM = #{issuenm}
+                                    </where>
+
+    </update>
+
+    <select id="selectByIssuenm" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_outsrgissuehead
+        <where>
+            ISSUENM = #{issuenm}
+        </where>
+    </select>
 </mapper>

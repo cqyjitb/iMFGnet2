@@ -86,7 +86,7 @@ import java.util.List;
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String curdate = df.format(new Date()).substring(0,10).replaceAll("-","");
-        String issuenm = "F" + curdate.substring(2,5) + "000001";
+        String issuenm = "F" + curdate.substring(2,6) + "000001";
         //准备表头数据
         Outsrgissuehead outsrgissuehead = new Outsrgissuehead();
         if (list.size() ==0 ){
@@ -113,7 +113,8 @@ import java.util.List;
                     String mxnum = outsrgissuehead.getIssuenm().substring(5,11);
                     int num = Integer.valueOf(mxnum) + 1;
                     mxnum = String.valueOf(num);
-                    for (int i = 0;i<6-mxnum.length();i++){
+                    int length = 6 -mxnum.length();
+                    for (int i = 0;i<length;i++){
                         mxnum = "0" + mxnum;
                     }
 
@@ -288,6 +289,8 @@ import java.util.List;
         @ResponseBody
         ResponseData processCxwxfl(HttpServletRequest request,String barcode,String userId){
             ResponseData rs = new ResponseData();
+            int sum = 0;
+            int sum2 = 0;
             String status = "0";
             Outsrgissue outsrgissue = service.selectByBarcode(barcode,status);
 
@@ -295,6 +298,34 @@ import java.util.List;
             outsrgissue.setLastUpdateDate(new Date());
             outsrgissue.setLastUpdatedBy(Long.valueOf(userId));
 
+            sum = service.updateOutsrgissue(outsrgissue);
+            if (sum == 1){
+                //检查表头对应的行项目是不是全部被冲销 如果是 更新表头的记录状态
+                List<Outsrgissue> list = service.selectByIssuenmAndStatus(outsrgissue.getIssuenm(),"1");
+                if (list.size() == 0){
+                    //更新表头状态
+                    Outsrgissuehead outsrgissuehead = outsrgissueheadService.selectByIssuenm(outsrgissue.getIssuenm());
+                    outsrgissuehead.setStatus("1");
+                    outsrgissuehead.setLastUpdateDate(new Date());
+                    outsrgissuehead.setLastUpdatedBy(Long.valueOf(userId));
+                    sum2 = outsrgissueheadService.updateOutsrgissueHead(outsrgissuehead);
+                    if (sum2 == 1){
+                        rs.setSuccess(true);
+                        rs.setMessage("冲销成功！");
+                    }else{
+                        rs.setSuccess(false);
+                        rs.setMessage("冲销失败！");
+                    }
+
+                }else{
+                    rs.setSuccess(true);
+                    rs.setMessage("冲销成功！");
+                }
+
+            }else{
+                rs.setMessage("冲销失败！");
+                rs.setSuccess(false);
+            }
             return rs;
         }
     }
