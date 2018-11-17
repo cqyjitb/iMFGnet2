@@ -1,6 +1,7 @@
 package yj.core.webservice.components;
 
 import org.springframework.stereotype.Component;
+import yj.core.util.WebServerHelp;
 import yj.core.webservice.dto.DTPP001Parameters;
 import yj.core.webservice.dto.DTPP001ReturnResult;
 import yj.core.webservice.receiver.DTPP001SendRes;
@@ -26,13 +27,14 @@ public class ConfirmationWebserviceUtil{
         SIPP001SenderSyncService ss = new SIPP001SenderSyncService(wsdlURL, SERVICE_NAME);
         SIPP001SenderSync port = ss.getHTTPPort();
         Map<String, Object> reqCtxt = ((javax.xml.ws.BindingProvider) port).getRequestContext();
+        WebServerHelp webServerHelp = new WebServerHelp();
         //pro
 //        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
 //        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "YJhap201707@CQ");
 
         //dev
-        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
-        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "Yjsap123@CQ");
+//        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
+//        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "Yjsap123@CQ");
 
 
 

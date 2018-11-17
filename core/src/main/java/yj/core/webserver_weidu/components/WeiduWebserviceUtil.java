@@ -1,6 +1,7 @@
 package yj.core.webserver_weidu.components;
 
 import org.apache.bcel.generic.IF_ACMPEQ;
+import yj.core.util.WebServerHelp;
 import yj.core.webserver_weidu.dto.DTWEIDUParam;
 import yj.core.webserver_weidu.dto.DTWEIDUReturn;
 import yj.core.webserver_weidu.receiver.DTWEIDURes;
@@ -27,14 +28,18 @@ public class WeiduWebserviceUtil {
         SIWEIDUSenderSynService ss = new SIWEIDUSenderSynService(wsdlURL, SERVICE_NAME);
         SIWEIDUSenderSyn port = ss.getHTTPPort();
         Map<String, Object> reqCtxt = ((javax.xml.ws.BindingProvider) port).getRequestContext();
-
+        WebServerHelp webServerHelp = new WebServerHelp();
+        String username = webServerHelp.getUsername();
+        String password = webServerHelp.getPassword();
         //pro
 //        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
 //        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "YJhap201707@CQ");
 
         //dev
-        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
-        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "Yjsap123@CQ");
+        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, username);
+        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, password);
+//        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
+//        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "Yjsap123@CQ");
 
         DTWEIDUReq.ITEM item = new DTWEIDUReq.ITEM();
         item.setMATNR(param.getMATNR());

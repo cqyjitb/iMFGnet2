@@ -1,5 +1,6 @@
 package yj.core.webserver_readtp.components;
 
+import yj.core.util.WebServerHelp;
 import yj.core.webserver_readtp.receiver.DTREADTPRes;
 import yj.core.webserver_readtp.sender.DTREADTPReq;
 import yj.core.webserver_readtp.sender.SIREADTPSenderSyn;
@@ -24,14 +25,18 @@ public class ReadTpWebserviceUtil {
         SIREADTPSenderSynService ss = new SIREADTPSenderSynService(wsdlURL, SERVICE_NAME);
         SIREADTPSenderSyn port = ss.getHTTPPort();
         Map<String,Object> reqCtxt = ((javax.xml.ws.BindingProvider) port).getRequestContext();
-
+        WebServerHelp webServerHelp = new WebServerHelp();
+        String username = webServerHelp.getUsername();
+        String password = webServerHelp.getPassword();
         //pro
 //        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
 //        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "YJhap201707@CQ");
 
         //dev
-        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
-        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "Yjsap123@CQ");
+        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, username);
+        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, password);
+//        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
+//        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "Yjsap123@CQ");
 
         DTREADTPRes res = new DTREADTPRes();
         res = port.siREADTPSenderSyn(req);

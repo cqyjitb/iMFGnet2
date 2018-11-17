@@ -1,6 +1,7 @@
 package yj.core.webservicepd.components;
 
 import org.springframework.stereotype.Component;
+import yj.core.util.WebServerHelp;
 import yj.core.webservicepd.dto.DTPANDIANParam;
 import yj.core.webservicepd.dto.DTPANDIANRenturn;
 import yj.core.webservicepd.receiver.DTPANDIANRes;
@@ -24,13 +25,18 @@ public class ConfirmationWebservicePdUtil {
         SIPANDIANSenderSynService ss = new SIPANDIANSenderSynService(wsdlURL,SERVICE_NAME);
         SIPANDIANSenderSyn port = ss.getHTTPPort();
         Map<String, Object> reqCtxt = ((javax.xml.ws.BindingProvider) port).getRequestContext();
+        WebServerHelp webServerHelp = new WebServerHelp();
+        String username = webServerHelp.getUsername();
+        String password = webServerHelp.getPassword();
         //pro
 //        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
 //        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "YJhap201707@CQ");
 
         //dev
-        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
-        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "Yjsap123@CQ");
+        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, username);
+        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, password);
+//        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
+//        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "Yjsap123@CQ");
 
         DTPANDIANReq.ITEM item = new DTPANDIANReq.ITEM();
         item.setAUFNR(param.getAUFNR());

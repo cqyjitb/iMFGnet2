@@ -8,6 +8,7 @@ import java.util.Map;
 import javax.xml.namespace.QName;
 import javax.xml.ws.BindingProvider;
 import org.springframework.stereotype.Component;
+import yj.core.util.WebServerHelp;
 import yj.core.webservice_xhcard.dto.XhcardParameters;
 import yj.core.webservice_xhcard.dto.XhcardReturnResult;
 import yj.core.webservice_xhcard.receiver.DTXHCARDSENDXRES;
@@ -28,13 +29,18 @@ public class XhcardSyncWebserviceUtil
 
         SIXHCARDSENDXSYNC port = ss.getHTTPPort();
         Map<String, Object> reqCtxt = ((BindingProvider)port).getRequestContext();
+        WebServerHelp webServerHelp = new WebServerHelp();
+        String username = webServerHelp.getUsername();
+        String password = webServerHelp.getPassword();
         //pro
 //        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
 //        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "YJhap201707@CQ");
 
         //dev
-        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
-        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "Yjsap123@CQ");
+        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, username);
+        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, password);
+//        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
+//        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "Yjsap123@CQ");
 
         ITEM item = new ITEM();
 

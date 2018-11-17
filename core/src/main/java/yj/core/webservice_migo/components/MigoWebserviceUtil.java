@@ -1,6 +1,7 @@
 package yj.core.webservice_migo.components;
 
 import org.springframework.stereotype.Component;
+import yj.core.util.WebServerHelp;
 import yj.core.webservice_migo.dto.DTMIGOParam;
 import yj.core.webservice_migo.dto.DTMIGOReturn;
 import yj.core.webservice_migo.receiver.DTMIGOSendRes;
@@ -25,13 +26,18 @@ public class MigoWebserviceUtil {
         SIMIGOSenderSyncService ss = new SIMIGOSenderSyncService(wsdlURL, SERVICE_NAME);
         SIMIGOSenderSync port = ss.getHTTPPort();
         Map<String, Object> reqCtxt = ((javax.xml.ws.BindingProvider) port).getRequestContext();
+        WebServerHelp webServerHelp = new WebServerHelp();
+        String username = webServerHelp.getUsername();
+        String password = webServerHelp.getPassword();
         //pro
 //        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
 //        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "YJhap201707@CQ");
 
         //dev
-        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
-        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "Yjsap123@CQ");
+        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, username);
+        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, password);
+//        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
+//        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "Yjsap123@CQ");
 
         DTMIGOSendReq.ITEM item = new DTMIGOSendReq.ITEM();
         item.setACTION(param.getACTION());

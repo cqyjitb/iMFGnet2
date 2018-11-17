@@ -1,5 +1,6 @@
 package yj.core.webservice_outsrgissue.components;
 
+import yj.core.util.WebServerHelp;
 import yj.core.webservice_outsrgissue.dto.DTOUTSRGISSUEhead;
 import yj.core.webservice_outsrgissue.dto.DTOUTSRGISSUEitem;
 import yj.core.webservice_outsrgissue.dto.DTOUTSRGISSUEreturn;
@@ -23,14 +24,18 @@ public class SyncOutsrgissueWebserviceUtil {
         SIOUTSRGISSUESenderSyncService ss = new SIOUTSRGISSUESenderSyncService(wsdlURL, SERVICE_NAME);
         SIOUTSRGISSUESenderSync port = ss.getHTTPPort();
         Map<String,Object> reqCtxt = ((javax.xml.ws.BindingProvider) port).getRequestContext();
-
+        WebServerHelp webServerHelp = new WebServerHelp();
+        String username = webServerHelp.getUsername();
+        String password = webServerHelp.getPassword();
         //pro
 //        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
 //        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "YJhap201707@CQ");
 
         //dev
-        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
-        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "Yjsap123@CQ");
+        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, username);
+        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, password);
+//        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
+//        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "Yjsap123@CQ");
 
         DTOUTSRGISSUEReq.ITEM itemreq = new DTOUTSRGISSUEReq.ITEM();
         itemreq.setDIECD(item.getDiecd());
