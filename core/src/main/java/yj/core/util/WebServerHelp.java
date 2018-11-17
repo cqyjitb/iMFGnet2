@@ -8,8 +8,13 @@ public class WebServerHelp {
     private String password;
 
     public WebServerHelp(){
-        this.username = "HAPUSER";
-        this.password = "Yjsap123@CQ";
+        //dev
+//        this.username = "HAPUSER";
+//        this.password = "Yjsap123@CQ";
+        //prd
+          this.username = "HAPUSER";
+          this.password = "YJhap201707@CQ";
+
     }
 
     public String getUsername() {
