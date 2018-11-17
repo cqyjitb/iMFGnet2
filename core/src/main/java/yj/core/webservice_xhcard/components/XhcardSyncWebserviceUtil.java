@@ -64,7 +64,6 @@ public class XhcardSyncWebserviceUtil
         item.setZTXT(params.getZtxt());
         item.setZBQBD(params.getZbqbd());
         item.setCHARGKC(params.getChargkc());
-
         DTXHCARDSENDXREQ dtxhcardsendxreq = new DTXHCARDSENDXREQ();
         dtxhcardsendxreq.getITEM().add(item);
 

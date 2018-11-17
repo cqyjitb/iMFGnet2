@@ -108,15 +108,7 @@ public class AfkoController
                 if (cardhList.size() > 0) {
                     for (int j = 0; j < cardhList.size(); j++)
                     {
-                        if (cardhList.get(j).getEcqty() == null ){
-                            gamng_bd += cardhList.get(j).getMenge().doubleValue();
-                        }else{
-                            if (cardhList.get(j).getEcqty() == 0){
-                                gamng_bd += cardhList.get(j).getMenge().doubleValue();
-                            }else{
-                                gamng_bd += cardhList.get(j).getEcqty().doubleValue();
-                            }
-                        }
+                        gamng_bd += cardhList.get(j).getMenge().doubleValue();
 
                         if (j == 0) {
                             list.get(i).setMaxno(cardhList.get(j).getZpgdbh());
