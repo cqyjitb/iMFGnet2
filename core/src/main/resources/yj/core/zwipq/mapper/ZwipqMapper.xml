@@ -22,6 +22,7 @@
         <result column="LGORT" property="lgort" jdbcType="VARCHAR" />
         <result column="CHARG" property="charg" jdbcType="VARCHAR" />
         <result column="ZREMADE" property="zremade" jdbcType="DECIMAL" />
+        <result column="EXECOFF_FLAG" property="execoffFlag" jdbcType="VARCHAR" />
         <result column="ZZXKL" property="zzxkl" jdbcType="DECIMAL" />
         <result column="ZQJKL" property="zqjkl" jdbcType="DECIMAL" />
         <result column="ZOFFL" property="zoffl" jdbcType="DECIMAL" />
@@ -295,9 +296,9 @@
     </select>
 
     <insert id="InsertIntoZwipq" parameterType="yj.core.zwipq.dto.Zwipq">
-        insert into zwipq (ZSXJLH,LINE_ID,ARBPR,SEG_OPR_NAME,PKG_LINE_ID,SHIFT,ZPGDBAR,ZPGDBAR1,VORNR,ZXHBAR,MATNR,MATNR2,ZPGDBAR2,ZGJBAR,ZREMADE,
+        insert into zwipq (ZSXJLH,LINE_ID,ARBPR,SEG_OPR_NAME,PKG_LINE_ID,SHIFT,ZPGDBAR,ZPGDBAR1,VORNR,ZXHBAR,MATNR,MATNR2,ZPGDBAR2,ZGJBAR,ZREMADE,EXECOFF_FLAG,
         ZSXNUM,GMEIN,LGORT,CHARG,ZZXKL,ZQJKL,ZOFFL,SFFLG,STATUS,DIECD,Q_SENQ,CREATION_DATE,CREATED_BY,LAST_UPDATED_DATE,LAST_UPDATED_BY,OFF_UPDATED_DATE,OFF_UPDATED_BY)
-        VALUES (#{zsxjlh},#{lineId},#{arbpr},#{segOprName},#{pkgLineId},#{shift},#{zpgdbar},#{zpgdbar1},#{vornr},#{zxhbar},#{matnr},#{matnr2},#{zpgdbar2},#{zgjbar},#{zremade},#{zsxnum},#{gmein},#{lgort},
+        VALUES (#{zsxjlh},#{lineId},#{arbpr},#{segOprName},#{pkgLineId},#{shift},#{zpgdbar},#{zpgdbar1},#{vornr},#{zxhbar},#{matnr},#{matnr2},#{zpgdbar2},#{zgjbar},#{zremade},#{execoffFlag},#{zsxnum},#{gmein},#{lgort},
         #{charg},#{zzxkl},#{zqjkl},#{zoffl},#{sfflg},#{status},#{diecd},#{qsenq},#{creationDate},#{createdBy},#{lastUpdatedDate},#{lastUpdatedBy},#{offUpdatedDate},#{offUpdatedBy})
     </insert>
 
@@ -410,4 +411,11 @@
                              ZSXJLH = #{zsxjlh}
                          </where>
     </update>
+
+    <select id="selectByZxhbar" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from zwipq
+        <where>
+            ZXHBAR = #{zxhbar}
+        </where>
+    </select>
 </mapper>

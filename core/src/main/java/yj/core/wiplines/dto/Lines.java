@@ -49,6 +49,8 @@ public class Lines extends BaseDTO {
 
       private Date creationDate; //创建时间
 
+      private String execoffFlag;
+
      @NotNull
       private Long createdBy; //创建人
 
@@ -72,8 +74,15 @@ public class Lines extends BaseDTO {
 
     private String pdescriptions; //产线描述
 
+    public String getExecoffFlag() {
+        return execoffFlag;
+    }
 
-     public void setWerks(String werks){
+    public void setExecoffFlag(String execoffFlag) {
+        this.execoffFlag = execoffFlag;
+    }
+
+    public void setWerks(String werks){
          this.werks = werks;
      }
 

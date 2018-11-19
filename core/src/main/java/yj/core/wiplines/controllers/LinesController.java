@@ -1,5 +1,6 @@
 package yj.core.wiplines.controllers;
 
+import org.apache.bcel.generic.IF_ACMPEQ;
 import org.springframework.stereotype.Controller;
 import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.core.IRequest;
@@ -115,9 +116,17 @@ public class LinesController extends BaseController {
         }
     }
 
+    /**
+     *  机加上线 下线 扫描产线ID 检查    917110140
+     * @param request
+     * @param line_id
+     * @param classgrp
+     * @param type
+     * @return
+     */
     @RequestMapping(value = {"/wip/lines/selectById"}, method = {RequestMethod.GET})
     @ResponseBody
-    public ResponseData selectById(HttpServletRequest request, Long line_id, String classgrp) {
+    public ResponseData selectById(HttpServletRequest request, Long line_id, String classgrp,String type) {
         List list = new ArrayList();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String erdat = df.format(new Date()).substring(0, 10);
@@ -134,6 +143,29 @@ public class LinesController extends BaseController {
             rs.setSuccess(false);
             rs.setMessage("该生产线上线类型为二维码上线，请在终检台扫码取件/还件！");
             return rs;
+        }
+
+        if (type.equals("xx")){
+
+            if (lines.getExecoffFlag() == null){
+                rs.setSuccess(false);
+                rs.setMessage("该生产线不允许下线确认！");
+                return rs;
+            }
+
+            if (lines.getExecoffFlag().equals("0")){
+                rs.setSuccess(false);
+                rs.setMessage("该生产线不允许下线确认！");
+                return rs;
+            }
+        }
+
+        if (type.equals("sx")){
+            if (lines.getPlineId() != null){
+                rs.setSuccess(false);
+                rs.setMessage("该产线为主产线，不允许直接上线！");
+                return rs;
+            }
         }
 
         //获取产线当前运行配置

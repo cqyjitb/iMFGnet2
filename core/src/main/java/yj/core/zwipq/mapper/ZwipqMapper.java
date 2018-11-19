@@ -101,4 +101,11 @@ public interface ZwipqMapper extends Mapper<Zwipq> {
     int selectZsxnum1(@Param("lineId") String lineId, @Param("matnr") String matnr, @Param("zpgdbar") String zpgdbar, @Param("zzxkl") Integer zzxkl,
                       @Param("zqjkl") Integer zqjkl, @Param("zoffl") Integer zoffl, @Param("status") Integer status);
 
+
+    /**
+     *  根据箱号查询在制队列数据 917110140
+     * @param zxhbar
+     * @return
+     */
+    List<Zwipq> selectByZxhbar(String zxhbar);
 }

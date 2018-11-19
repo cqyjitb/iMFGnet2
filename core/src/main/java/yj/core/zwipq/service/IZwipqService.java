@@ -28,4 +28,11 @@ public interface IZwipqService extends IBaseService<Zwipq>, ProxySelf<IZwipqServ
                             String attr1After, String attr1Before, String shift, String sfflg, String diecd,
                             String zxhbar, String zgjbar, Integer online, Integer zzxkl, Integer zqjkl, Integer zoffl, Integer status);
     List<Zwipq> selectIORZwipq(IRequest request, String deptId, String lineId, String pmatnr, String attr1After, String attr1Before, String shift);
+
+    /**
+     *  根据箱号查询在制队列数据 917110140
+     * @param zxhbar
+     * @return
+     */
+    List<Zwipq> selectByZxhbar(String zxhbar);
 }

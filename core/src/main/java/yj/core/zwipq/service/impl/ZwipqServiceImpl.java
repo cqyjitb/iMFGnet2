@@ -228,4 +228,9 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
         }
         return list1;
     }
+
+    @Override
+    public List<Zwipq> selectByZxhbar(String zxhbar) {
+        return zwipqMapper.selectByZxhbar(zxhbar);
+    }
 }

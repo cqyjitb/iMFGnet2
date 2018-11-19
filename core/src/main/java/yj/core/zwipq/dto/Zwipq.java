@@ -68,6 +68,8 @@ public class Zwipq extends BaseDTO {
 
       private Long qsenq;//队列序号
 
+      private String sourceLineId;
+
       private Date creationDate; //创建时间
 
      @NotNull
@@ -124,6 +126,15 @@ public class Zwipq extends BaseDTO {
     private Integer processed; //在制数量
     @Transient
     private String attr;//生产日期
+
+
+    public String getSourceLineId() {
+        return sourceLineId;
+    }
+
+    public void setSourceLineId(String sourceLineId) {
+        this.sourceLineId = sourceLineId;
+    }
 
     public String getAttr() {
         return attr;

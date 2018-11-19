@@ -93,15 +93,34 @@ public class ZwipqController extends BaseController {
         return new ResponseData();
     }
 
-    @RequestMapping(value = {"/zwipq/selectByLineIdAndZxhbar"}, method = {RequestMethod.GET})
-    @ResponseBody
-    public ResponseData selectByLineIdAndZxhbar(HttpServletRequest request, String line_id, String zxhbar) {
+//    @RequestMapping(value = {"/zwipq/selectByLineIdAndZxhbar"}, method = {RequestMethod.GET})
+//    @ResponseBody
+//    public ResponseData selectByLineIdAndZxhbar(HttpServletRequest request, String line_id, String zxhbar) {
+//
+//        List<Zwipq> list = service.selectByLineIdAndZxhbar(line_id, zxhbar);
+//        ResponseData rs = new ResponseData(list);
+//        rs.setSuccess(true);
+//        return rs;
+//    }
 
-        List<Zwipq> list = service.selectByLineIdAndZxhbar(line_id, zxhbar);
-        ResponseData rs = new ResponseData(list);
-        rs.setSuccess(true);
-        return rs;
-    }
+
+        @RequestMapping(value = {"/zwipq/selectByZxhbar"}, method = {RequestMethod.GET})
+        @ResponseBody
+        public ResponseData selectByZxhbar(HttpServletRequest request,String zxhbar,String line_id){
+            ResponseData rs = new ResponseData();
+            List listall = new ArrayList();
+            List<Zwipq> list = service.selectByZxhbar(zxhbar);
+            List<Zwipq> listpline = new ArrayList<>();
+            Lines lines = new Lines();
+            lines = linesService.selectById(Long.valueOf(line_id));
+            listall.add(list);
+            if (lines.getPlineId() != null){
+                listpline = service.selectByLineIdAndZxhbar(lines.getPlineId().toString(),zxhbar);
+                listall.add(listpline);
+            }
+
+            return rs;
+        }
 
     /*
     ** 机加上线 插入在制队列
@@ -536,24 +555,57 @@ public class ZwipqController extends BaseController {
         list = service.selectForJjxx(line_id,classgrp);//查询队列里面的可下线数据 按照队列序号升序排列
         List<Zwipq> listupdate = new ArrayList<>();
 
+        Map m = new HashMap();
+        m.put("p1", "SEQ_ON_LINE");
+        m.put("p2", cursum + 100);
+        service.selectMaxQsenq(m);
+        Integer qsenq = Integer.valueOf(m.get("p3").toString());
+        List<Zwipq> listtmp = new ArrayList<>();
         for(int i = 0;i<cursum;i++){
             list.get(i).setZoffl(1L);
+            list.get(i).setSourceLineId(line_id);//下线时记录源生产线ID
             list.get(i).setLastUpdatedBy(Long.valueOf(userId));
             list.get(i).setLastUpdatedDate(new Date());
             listupdate.add(list.get(i));
+
+            if (!list.get(i).getLineId().equals(list.get(i).getPkgLineId())){//子产线下线 新增队列记录 绑定主产线
+                Zwipq zwipqtmp = list.get(i);
+                zwipqtmp.setLineId(list.get(i).getPkgLineId());
+                zwipqtmp.setZoffl(0L);
+                zwipqtmp.setCreatedBy(Long.valueOf(userId));
+                zwipqtmp.setCreationDate(new Date());
+                zwipqtmp.setQsenq(Long.valueOf(qsenq));
+                listtmp.add(zwipqtmp);
+            }
+            qsenq = qsenq + 1;
         }
 
         int num = service.updateZoffl(listupdate);
-        if (num == cursum){
-            rs.setSuccess(true);
-            rs.setMessage("下线成功！");
-        }else if(num < cursum){
-            rs.setSuccess(false);
-            rs.setMessage("部分下线成功！，成功数量："+num);
-        }else if(num == 0){
-            rs.setSuccess(false);
-            rs.setMessage("下线失败！");
+        if (listtmp.size() > 0){
+            num = service.InsertIntoZwipq(listtmp);
+            if (num == listtmp.size()){
+                rs.setSuccess(true);
+                rs.setMessage("下线成功！");
+            }else if(num < listtmp.size()){
+                rs.setSuccess(false);
+                rs.setMessage("部分下线成功！，成功数量："+num);
+            }else if(num == 0){
+                rs.setSuccess(false);
+                rs.setMessage("下线失败！");
+            }
+        }else{
+            if (num == cursum){
+                rs.setSuccess(true);
+                rs.setMessage("下线成功！");
+            }else if(num < cursum){
+                rs.setSuccess(false);
+                rs.setMessage("部分下线成功！，成功数量："+num);
+            }else if(num == 0){
+                rs.setSuccess(false);
+                rs.setMessage("下线失败！");
+            }
         }
+
         return rs;
     }
 
