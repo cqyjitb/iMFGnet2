@@ -13,6 +13,8 @@ import yj.core.marc.mapper.MarcMapper;
 import yj.core.webservice_migo.components.MigoWebserviceUtil;
 import yj.core.webservice_migo.dto.DTMIGOParam;
 import yj.core.webservice_migo.dto.DTMIGOReturn;
+import yj.core.wipdftrghlist.dto.Dftrghlist;
+import yj.core.wipdftrghlist.service.IDftrghlistService;
 import yj.core.xhcard.dto.Xhcard;
 import yj.core.xhcard.mapper.XhcardMapper;
 import yj.core.ztbc0018.dto.Ztbc0018;
@@ -46,6 +48,8 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
     private CardhMapper cardhMapper;
     @Autowired
     private InOutRecordMapper inOutRecordMapper;
+    @Autowired
+    private IDftrghlistService dftrghlistService;
 
     @Override
     public List<Zwipq> selectByLineIdAndZxhbar(String line_id, String zxhbar) {
@@ -77,6 +81,9 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
         Xhcard xhcard = xhcardMapper.selectByBacode(zxhbar);
         Cardh cardh = cardhMapper.selectByZxhbar(xhcard.getAufnr(),xhcard.getZxhnum());
         Marc marc = marcMapper.selectByMatnr(xhcard.getMatnr());
+        List<Dftrghlist> listdf = new ArrayList<>();
+        listdf = dftrghlistService.selectByZxhbar(zxhbar);
+
         Integer cy = cynum;
         param.setACTION("");
         param.setREFDOC("");
@@ -111,11 +118,17 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
         ztbc0018.setMjahr(rs.getMJAHR());
         Long bmenge = Long.parseLong(xhcard.getMenge().substring(0,xhcard.getMenge().length() -2));
         ztbc0018.setBmenge(bmenge);
+        Long dfnum = 0L;
+        if (listdf.size() > 0){
+            for (int i = 0;i<listdf.size();i++){
+                dfnum = dfnum + listdf.get(i).getDfectQty();
+            }
+        }
         if (bwart.equals("702")){
-            Long smenge = Long.parseLong(xhcard.getMenge().substring(0,xhcard.getMenge().length() -2)) - cynum;
+            Long smenge = Long.parseLong(xhcard.getMenge().substring(0,xhcard.getMenge().length() -2)) - cynum - dfnum;
             ztbc0018.setSmenge(smenge);
         }else{
-            Long smenge =  Long.parseLong(xhcard.getMenge().substring(0,xhcard.getMenge().length() -2)) + cynum;
+            Long smenge =  Long.parseLong(xhcard.getMenge().substring(0,xhcard.getMenge().length() -2)) + cynum - dfnum;
             ztbc0018.setSmenge(smenge);
         }
         ztbc0018.setLgort(xhcard.getLgort());
