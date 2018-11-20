@@ -186,7 +186,16 @@ public class DftrghlistController extends BaseController {
             //生成记录id
             //SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             String curdate = gstrp.substring(0, 10).replaceAll("-", "");
-            recordid = "J" + curdate + "0001";
+            //获取单号最大流水
+            String maxrecordid = service.selectMaxRecordid(werks,gstrp);
+            if (maxrecordid == null){
+                recordid = "J" + curdate +"0001";
+            }
+            else{
+                    int num = Integer.valueOf(maxrecordid.substring(10,13));
+                    num = num + 1;
+                    recordid = "J" + curdate + String.format("%04d",num);
+            }
             dftrghlist.setWerks(werks);
             dftrghlist.setMatnr(matnr);
             dftrghlist.setMatnr2(matnr2);
@@ -216,7 +225,7 @@ public class DftrghlistController extends BaseController {
         } else {
             //1 获取最大行号
 
-            Long item = Long.valueOf(service.selectMaxItemByCondition(werks, matnr, line_id, shift, gstrp) + 1);
+            Long item = Long.valueOf(service.selectMaxItemByCondition(werks, matnr, null, shift, gstrp) + 1);
             recordid = listdfs.get(0).getRecordid();
             dftrghlist.setWerks(werks);
             dftrghlist.setMatnr(matnr);

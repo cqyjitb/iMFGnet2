@@ -56,15 +56,15 @@ public class CardhstController extends BaseController {
             for (int i = 0; i < dto.size(); i++) {
                 Cardhst tst = new Cardhst();
                 Cardh cardh = new Cardh();
+                dto.get(i).setId(2L);
                 tst = service.selectByBarcodeAndStatus(dto.get(i));
                 if (tst == null){
                     dto.get(i).setId(2L);
 
                     service.insertSingerStatus(dto.get(i));
                 }else{
-                    long maxid = service.getMaxNo(dto.get(i).getZpgdbar()) + 1;
-                    dto.get(i).setId(maxid);
-                    service.insertSingerStatus(dto.get(i));
+
+                    service.updateStatus(dto.get(i));
                 }
 
                 if (dto.get(i).getId() == 2L){//补打不更改当前状态

@@ -593,7 +593,7 @@ public class ZwipqController extends BaseController {
                 zwipqtmp.setGmein(list.get(i).getGmein());
                 zwipqtmp.setLgort(list.get(i).getLgort());
                 zwipqtmp.setCharg(list.get(i).getCharg());
-                zwipqtmp.setSfflg(classgrp);//班标
+                zwipqtmp.setSfflg(list.get(i).getSfflg());//班标
                 zwipqtmp.setDiecd(list.get(i).getDiecd());//模号
                 zwipqtmp.setZzxkl(list.get(i).getZzxkl());
                 zwipqtmp.setZqjkl(list.get(i).getZqjkl());

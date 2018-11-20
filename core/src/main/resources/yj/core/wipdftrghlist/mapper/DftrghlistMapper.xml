@@ -82,6 +82,16 @@
         </where>
     </select>
 
+    <select id="selectMaxRecordid" parameterType="java.lang.String" resultType="java.lang.String">
+        select MAX(RECORDID) FROM wip_dftrghlist
+        <where>
+             WERKS = #{werks}
+            <if test="gstrp != null">
+             AND   GSTRP = #{gstrp}
+            </if>
+        </where>
+    </select>
+
     <insert id="insertDftrghlist" parameterType="yj.core.wipdftrghlist.dto.Dftrghlist">
         insert INTO wip_dftrghlist(RECORDID,ITEM,WERKS,MATNR,LINE_ID,ZBANC,SHIFT,GSTRP,ZMPBAR,ZPGDBAR,ZXHBAR,MATNR2,YCHARGE,YSHIFT,YZBANC,SFFLG,DIECD,YGSTRP,CODE,TLEVELCODE,
         MENGE,DFECT_QTY,GMEIN,RECORDID1,RECORDID2,AUFNR,CANCEL_FLAG,CANCEL_BY,CANCEL_DATE,CREATION_DATE,CREATED_BY,LAST_UPDATED_BY,LAST_UPDATE_DATE)VALUES(

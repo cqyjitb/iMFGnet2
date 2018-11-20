@@ -55,4 +55,9 @@ public class DftrghlistServiceImpl extends BaseServiceImpl<Dftrghlist> implement
     public List<Dftrghlist> selectByZxhbar(String zxhbar) {
         return dftrghlistMapper.selectByZxhbar(zxhbar);
     }
+
+    @Override
+    public String selectMaxRecordid(String werks, String gstrp) {
+        return dftrghlistMapper.selectMaxRecordid(werks,gstrp);
+    }
 }

@@ -1,5 +1,6 @@
 package yj.core.outsrgissue.controllers;
 
+import org.apache.bcel.generic.IF_ACMPEQ;
 import org.springframework.stereotype.Controller;
 import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.core.IRequest;
@@ -88,6 +89,8 @@ import java.util.List;
         String curdate = df.format(new Date()).substring(0,10).replaceAll("-","");
         String issuenm = "F" + curdate.substring(2,6) + "000001";
         //准备表头数据
+
+        String l_update = "";
         Outsrgissuehead outsrgissuehead = new Outsrgissuehead();
         if (list.size() ==0 ){
             //产生新的单号 F+ 年 + 月 + 6位流水
@@ -103,6 +106,7 @@ import java.util.List;
         }else{
             if (list.get(list.size() -1).getStatus().equals("0")){
                 //使用以前的单号
+                l_update = "X";
 
             }else{
                 //产生新的单号 获取当前流水
@@ -112,12 +116,7 @@ import java.util.List;
                 }else{
                     String mxnum = outsrgissuehead.getIssuenm().substring(5,11);
                     int num = Integer.valueOf(mxnum) + 1;
-                    mxnum = String.valueOf(num);
-                    int length = 6 -mxnum.length();
-                    for (int i = 0;i<length;i++){
-                        mxnum = "0" + mxnum;
-                    }
-
+                    mxnum = String.format("%06d",num);
                     outsrgissuehead.setIssuenm("F" + curdate.substring(2,5) + mxnum);
                     outsrgissuehead.setLifnr(lifnr);
                     outsrgissuehead.setMatnr(cardh.getMatnr());
@@ -132,44 +131,53 @@ import java.util.List;
         }
 
         //准备行数据
-        Long item = 0l;
-        if (outsrgissuehead.getIssuenm() == null){
-            //使用以前单号
-            issuenm = list.get(list.size() - 1).getIssuenm();
-            //根据单号查询交货明细最大行号
-            List<Outsrgissue> listmx = service.selectByIssuenmDesc(issuenm);
-            item = listmx.get(0).getItem() + 1;
-
-        }else{
-            item = 1l;
-        }
+        //查询该流转卡是否具有已冲销的发货记录
         Outsrgissue outsrgissue = new Outsrgissue();
-        outsrgissue.setDiecd(cardh.getDiecd());
-        outsrgissue.setEbeln(outsrgrfe.getEbeln());
-        outsrgissue.setEbelp(outsrgrfe.getEbelp());
-        outsrgissue.setEtenr("");
-        outsrgissue.setGmein(cardh.getGmein());
-        outsrgissue.setIssuenm(issuenm);
-        outsrgissue.setItem(item);
-        outsrgissue.setKtsch(cardt.getKtsch());
-        outsrgissue.setLifnr(lifnr);
-        outsrgissue.setMatkl(marc.getMatkl());
-        outsrgissue.setMatnr(cardh.getMatnr());
-        outsrgissue.setMenge(outsrgrfe.getMenge());
-        outsrgissue.setSfflg(cardh.getSfflg());
-        outsrgissue.setSortl(outsrgrfe.getSortl());
-        outsrgissue.setTxz01(cardt.getLtxa1());
-        outsrgissue.setVornr(vornr);
-        outsrgissue.setVsnda(outsrgrfe.getVsnda());
-        outsrgissue.setWerks(cardh.getWerks());
-        outsrgissue.setZisnum(Double.valueOf(menge));
-        outsrgissue.setZpgdbar(barcode);
-        outsrgissue.setCreatedBy(Long.valueOf(userId));
-        outsrgissue.setCreationDate(new Date());
-        outsrgissue.setStatus("0");
-        outsrgissue.setCharg(cardh.getCharg2());
-        int result = 0;
+        outsrgissue = service.selectByBarcode(barcode,"1");
+        if (outsrgissue != null){
+            //  使用以前的老航项目
+            outsrgissue.setStatus("0");
+            outsrgissue.setLastUpdatedBy(Long.valueOf(userId));
+            outsrgissue.setLastUpdateDate(new Date());
+        }else{//新的行项目
+            Long item = 0l;
+            if (outsrgissuehead.getIssuenm() == null){
+                //使用以前单号
+                issuenm = list.get(list.size() - 1).getIssuenm();
+                //根据单号查询交货明细最大行号
+                List<Outsrgissue> listmx = service.selectByIssuenmDesc(issuenm);
+                item = listmx.get(0).getItem() + 1;
 
+            }else{
+                item = 1l;
+                outsrgissue.setDiecd(cardh.getDiecd());
+                outsrgissue.setEbeln(outsrgrfe.getEbeln());
+                outsrgissue.setEbelp(outsrgrfe.getEbelp());
+                outsrgissue.setEtenr("");
+                outsrgissue.setGmein(cardh.getGmein());
+                outsrgissue.setIssuenm(issuenm);
+                outsrgissue.setItem(item);
+                outsrgissue.setKtsch(cardt.getKtsch());
+                outsrgissue.setLifnr(lifnr);
+                outsrgissue.setMatkl(marc.getMatkl());
+                outsrgissue.setMatnr(cardh.getMatnr());
+                outsrgissue.setMenge(outsrgrfe.getMenge());
+                outsrgissue.setSfflg(cardh.getSfflg());
+                outsrgissue.setSortl(outsrgrfe.getSortl());
+                outsrgissue.setTxz01(cardt.getLtxa1());
+                outsrgissue.setVornr(vornr);
+                outsrgissue.setVsnda(outsrgrfe.getVsnda());
+                outsrgissue.setWerks(cardh.getWerks());
+                outsrgissue.setZisnum(Double.valueOf(menge));
+                outsrgissue.setZpgdbar(barcode);
+                outsrgissue.setCreatedBy(Long.valueOf(userId));
+                outsrgissue.setCreationDate(new Date());
+                outsrgissue.setStatus("0");
+                outsrgissue.setCharg(cardh.getCharg2());
+            }
+        }
+
+        int result = 0;
         SyncOutsrgissueWebserviceUtil syncOutsrgissueWebserviceUtil = new SyncOutsrgissueWebserviceUtil();
         DTOUTSRGISSUEhead head = new DTOUTSRGISSUEhead();
         DTOUTSRGISSUEitem items = new DTOUTSRGISSUEitem();
@@ -226,7 +234,12 @@ import java.util.List;
                     rs.setSuccess(false);
                     return rs;
                 }else{
-                    result = service.insertNewRow(outsrgissue);
+                    if (l_update.equals("X")){
+                        result = service.updateOutsrgissue(outsrgissue);
+                    }else{
+                        result = service.insertNewRow(outsrgissue);
+                    }
+
                     if (result != 1){
                         rs.setMessage("数据保存失败，请联系管理员！");
                         rs.setSuccess(false);
@@ -234,7 +247,12 @@ import java.util.List;
                     }
                 }
             }else{
-                result = service.insertNewRow(outsrgissue);
+                if (l_update.equals("X")){
+                    result = service.updateOutsrgissue(outsrgissue);
+                }else{
+                    result = service.insertNewRow(outsrgissue);
+                }
+
                 if (result != 1){
                     rs.setMessage("数据保存失败，请联系管理员！");
                     rs.setSuccess(false);
@@ -423,7 +441,57 @@ import java.util.List;
         @ResponseBody
         ResponseData selectForwxsh(HttpServletRequest request,String barcode){
             ResponseData rs = new ResponseData();
+            //1:获取流转卡数据  检查流转卡状态
+            Cardh cardh = new Cardh();
+            cardh = cardhService.selectByBarcode(barcode);
+            if (cardh == null){
+                rs.setSuccess(false);
+                rs.setMessage("工序流转卡不存在，请检查流转卡号是否正确！");
+                return rs;
+            }
 
+            if (cardh.getStatus().equals("HOLD")){
+                rs.setSuccess(false);
+                rs.setMessage("流转卡状态为HOLD，不允许外协收货！");
+                return rs;
+            }
+
+            //2:获取外协发料单明细数据
+            Outsrgissue outsrgissue = new Outsrgissue();
+            outsrgissue = service.selectByBarcode(barcode,null);
+            if (outsrgissue == null){
+                rs.setSuccess(false);
+                rs.setMessage("该流转卡尚未生成外协发料单！");
+                return  rs;
+            }
+
+            if (!outsrgissue.getStatus().equals("0")){
+                if (outsrgissue.getStatus().equals("1")){
+                    rs.setSuccess(false);
+                    rs.setMessage("流转卡对应的外协发料单已冲销！");
+                    return rs;
+                }
+
+                if (outsrgissue.getStatus().equals("2")){
+                    rs.setMessage("流转卡对应的外协发料单已收货！");
+                    rs.setSuccess(false);
+                    return rs;
+                }
+            }
+
+            //获取外协发料单表头数据
+            Outsrgissuehead outsrgissuehead = new Outsrgissuehead();
+            outsrgissuehead = outsrgissueheadService.selectByIssuenm(outsrgissue.getIssuenm());
+            if (!outsrgissuehead.getStatus().equals("1")){
+                rs.setSuccess(false);
+                rs.setMessage("外协发料单尚未完成，不允许进行外协收货！");
+                return rs;
+            }
+
+            List list = new ArrayList();
+            list.add(cardh);
+            list.add(outsrgissue);
+            list.add(outsrgissuehead);
 
             return rs;
         }
