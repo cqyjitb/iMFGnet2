@@ -4,6 +4,7 @@ package yj.core.zudhead.dto;
  * Created by 917110140 on 2018/9/27.
  */
 public class recPageData {
+    private String plineId;
     private String lineId;
     private String zbanz;
     private String zbanc;
@@ -35,6 +36,14 @@ public class recPageData {
     private String zxhbar;
     private String matnr;
 
+
+    public String getPlineId() {
+        return plineId;
+    }
+
+    public void setPlineId(String plineId) {
+        this.plineId = plineId;
+    }
 
     public String getMatnr() {
         return matnr;

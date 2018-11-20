@@ -85,7 +85,7 @@ import java.util.Map;
             zrwkhead.setZrwknum(zudnum);
             zrwkhead.setArbpr(dto.get(0).getArbpr());
             zrwkhead.setCrdat(curdate);
-            zrwkhead.setLineId(dto.get(0).getLineId());
+            zrwkhead.setLineId(dto.get(0).getPlineId());
             zrwkhead.setZotype(dto.get(0).getZotype());
             zrwkhead.setCreatedBy(Long.valueOf(createdBy));
             zrwkhead.setCreationDate(new Date());
@@ -94,6 +94,8 @@ import java.util.Map;
                 Zrwklist zrwklist = new Zrwklist();
                 zrwklist.setZrwknum(zudnum);
                 zrwklist.setItem(Integer.valueOf(i + 1).toString());
+                zrwklist.setLineId(dto.get(i).getLineId());
+                zrwklist.setArbpr(dto.get(i).getArbpr());
                 zrwklist.setZqjjlh(dto.get(i).getZqjjlh());
                 zrwklist.setZpgdbar(dto.get(i).getZpgdbar());
                 if (dto.get(i).getVornr() == null){

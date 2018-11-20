@@ -18,6 +18,8 @@ import yj.core.marc.dto.Marc;
 import yj.core.marc.service.IMarcService;
 import yj.core.qjcode.dto.Qjcode;
 import yj.core.qjcode.service.IQjcodeService;
+import yj.core.wiplines.dto.Lines;
+import yj.core.wiplines.service.ILinesService;
 import yj.core.zrwklist.dto.Zrwklist;
 import yj.core.zudlist.dto.Zudlist;
 
@@ -36,6 +38,8 @@ public class InOutRecordController extends BaseController {
     private IQjcodeService qjcodeService;
     @Autowired
     private IMarcService marcService;
+    @Autowired
+    private ILinesService linesService;
 
     @RequestMapping(value = "/wip/in/out/record/query")
     @ResponseBody
@@ -95,7 +99,15 @@ public class InOutRecordController extends BaseController {
         List<InOutRecord> list = new ArrayList<>();
         List<Zudlist> listzuds = new ArrayList<>();
         IRequest requestContext = createRequestContext(request);
-        listzuds = service.selectforZud(line_id,classgrp);
+        // 判断 line_id 是不是主产线 如果是主产线 需要把 所属的子产线记录都查询出来
+        List<Lines> lines = new ArrayList<>();
+        lines = linesService.selectByPlineId(line_id);
+        if (lines.size() > 0){
+            listzuds = service.selectforZud(line_id,null,classgrp);
+        }else{
+            listzuds = service.selectforZud(null,line_id,classgrp);
+        }
+
         return new ResponseData(listzuds);
     }
 
@@ -108,7 +120,14 @@ public class InOutRecordController extends BaseController {
         List<InOutRecord> list = new ArrayList<>();
         List<Zrwklist> listzrwk = new ArrayList<>();
         IRequest requestContext = createRequestContext(request);
-        list = service.selectforZrwk(line_id,classgrp,zotype,requestContext);
+        // 判断 line_id 是不是主产线 如果是主产线 需要把 所属的子产线记录都查询出来
+        List<Lines> lines = new ArrayList<>();
+        if (lines.size() > 0){
+            list = service.selectforZrwk(line_id,null,classgrp,zotype,requestContext);
+        }else{
+            list = service.selectforZrwk(null,line_id,classgrp,zotype,requestContext);
+        }
+
         if (list.size() > 0){
             for (int i = 0;i<list.size();i++){
                 Zrwklist zrwklist = new Zrwklist();

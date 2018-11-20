@@ -5,6 +5,7 @@ package yj.core.zrwkhead.dto;
  */
 public class recPageDate {
 
+    private String plineId;
     private String zotype; //取出原因
     private String lineId; //生产线ID
     private String arbpr; //工作中心
@@ -30,6 +31,14 @@ public class recPageDate {
     private String zrwktimes; //返修次数
     private String reviewc; //评审结论
     private String mark; //备注
+
+    public String getPlineId() {
+        return plineId;
+    }
+
+    public void setPlineId(String plineId) {
+        this.plineId = plineId;
+    }
 
     public String getZotype() {
         return zotype;

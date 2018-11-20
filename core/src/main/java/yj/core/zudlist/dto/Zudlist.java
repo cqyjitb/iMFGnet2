@@ -82,11 +82,11 @@ public class Zudlist extends BaseDTO {
       private String rueck;//确认号
 
       private String rmzhl;//计数器
-    @Transient
+
      private String lineId;
     @Transient
      private String udtype; //不合格审理单类型
-    @Transient
+
     private String arbpr; //工作中心
     @Transient
     private String rcode;//取件原因

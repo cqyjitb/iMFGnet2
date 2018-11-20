@@ -69,7 +69,6 @@ public class Zrwklist extends BaseDTO {
 
       private String mark; //备注
 
-    @Transient
     private String lineId;
     @Transient
     private String zotype; //不合格审理单类型
@@ -79,7 +78,6 @@ public class Zrwklist extends BaseDTO {
     private Date creationDate;
     @Transient
     private String rcode;
-    @Transient
     private String arbpr;
 
     @Transient

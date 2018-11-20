@@ -39,6 +39,7 @@
         <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL"/>
         <result column="KUNNR" property="kunnr" jdbcType="VARCHAR"/>
         <result column="SORTL" property="sortl" jdbcType="VARCHAR"/>
+        <result column="PLINE_ID" property="plineId" jdbcType="VARCHAR"/>
     </resultMap>
     <resultMap id="BaseResultMap2" type="yj.core.inoutrecord.dto.InOutRecord">
         <result column="LINE_ID" property="lineId" jdbcType="VARCHAR"/>
@@ -189,31 +190,40 @@
         select a.*,
                c.name1,
                d.kunnr
-        from wip_in_out_record a,wip_qjcode b,sap_cust c,wip_products_cfg d
+        from wip_in_out_record a,wip_qjcode b,sap_cust c,wip_products_cfg d,wip_lines e
         <where>
             a.ZOTYPE = b.ID
             and ( a.LINE_ID = d.LINE_ID and a.MATNR = d.MATNR )
             AND c.KUNNR = d.KUNNR
             AND b.SLD1 = 'X'
             AND a.REFLAG = 0
+            AND a.LINE_ID = e.LINE_ID
             <if test="line_id != null">
                 and a.LINE_ID = #{line_id}
+            </if>
+            <if test="pline_id != null">
+                and e.PLINE_ID = #{pline_id}
             </if>
             <if test="classgrp != null">
                 and a.ZBANZ = #{classgrp}
             </if>
+            ORDER BY a.LINE_ID ASC;
 
         </where>
     </select>
 
     <select id="selectforZrwk" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select a.* from wip_in_out_record a,wip_qjcode b
+        select a.* from wip_in_out_record a,wip_qjcode b,wip_lines e
         <where>
             a.ZOTYPE = b.ID
             AND b.SLD2 = 'X'
             AND REFLAG = 0
+            AND a.LINE_ID = e.LINE_ID
             <if test="line_id != null">
-                and LINE_ID = #{line_id}
+                and a.LINE_ID = #{line_id}
+            </if>
+            <if test="pline_id != null">
+                and e.PLINE_ID = #{pline_id}
             </if>
             <if test="classgrp != null">
                 and ZBANZ = #{classgrp}

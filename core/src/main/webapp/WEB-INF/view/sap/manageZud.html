@@ -31,6 +31,14 @@
         top: 0;
         z-index: 1001;
     }
+
+    #label{
+        color: red;
+    }
+
+    #label2{
+        color: red;
+    }
 </style>
 <script type="text/javascript">
     var LODOP; //声明为全局变量
@@ -76,13 +84,29 @@
                 <div class="panel-body">
                     <div id="test">
                         <div class="row">
+
                             <div class="col-sm-4">
-                                    <label class="col-sm-4 control-label">生产线</label>
+                                <label class="col-sm-4 control-label">生产车间&nbsp;<label id="label">*</label></label>
+                                <div class="col-sm-8">
+                                    <input id="unit_code" class="k-textbox" data-bind="value:model.deptId" style="width: 100%">
+                                    <script>
+                                        $("#unit_code").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_UNIT_NEW2")}, {
+                                            query: function (e) {
+                                                e.param['enabledFlag'] = 'Y';
+                                            }
+                                        }));
+                                    </script>
+                                </div>
+                            </div>
+
+                            <div class="col-sm-4">
+                                    <label class="col-sm-4 control-label">生产线&nbsp;<label id="label2">*</label></label>
                                     <div class="col-sm-8">
                                         <input id="line_id" class="k-textbox" data-bind="value:model.line_id" style="width: 100%">
                                         <script>
-                                            $("#line_id").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_LINE")}, {
+                                            $("#line_id").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_LINE_NEW")}, {
                                                 query: function (e) {
+                                                    e.param['deptId'] = document.getElementById("unit_code").value;
                                                     e.param['enabledFlag'] = 'Y';
                                                 }
                                             }))
@@ -559,6 +583,7 @@
         var grid =  $("#Grid").data("kendoGrid"),
             selections = grid.selectedDataItems();
         if (selections.length > 0){
+            var plineId = document.getElementById("line_id").value;
             for(var i=0;i<selections.length;i++){
                 if (selections[i].zbpjc == "" || selections[i].zbpjc == '' || selections[i].zbpjc == null ){
                     l_error = "客户名称为必输选项";
@@ -582,6 +607,7 @@
                 }
                 var viewModel3 = kendo.observable({
                     model: {
+                        plineId:plineId,
                         lineId:selections[i].lineId,
                         zbanz:selections[i].zbanz,
                         zbanc:selections[i].zbanc,

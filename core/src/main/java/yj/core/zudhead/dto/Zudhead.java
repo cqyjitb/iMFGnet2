@@ -37,7 +37,6 @@ public class Zudhead extends BaseDTO {
      @Transient
       private Date creationDate;
 
-
      public void setZudnum(String zudnum){
          this.zudnum = zudnum;
      }

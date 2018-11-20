@@ -3,6 +3,7 @@ package yj.core.inoutrecord.mapper;
 import com.hand.hap.mybatis.common.Mapper;
 import org.apache.ibatis.annotations.Param;
 import yj.core.inoutrecord.dto.InOutRecord;
+import yj.core.zudlist.dto.Zudlist;
 
 import java.util.List;
 
@@ -11,9 +12,25 @@ public interface InOutRecordMapper extends Mapper<InOutRecord>{
         List<InOutRecord> selectforjjhj(@Param("line_id") String line_id, @Param("qjcodeval") String qjcodeval, @Param("lineiocfgval") String lineiocfgval,@Param("matnr") String matnr,@Param("hjtype") int hjtype);
         List<InOutRecord> selectNoReflg(@Param("line_id") String line_id, @Param("zotype") String zotype, @Param("vornr") String vornr, @Param("matnr") String matnr, @Param("sfflg") String sfflg,@Param("hjtype") int hjtype);
         int updateReflag(InOutRecord inOutRecord);
-        List<InOutRecord> selectforZud(@Param("line_id") String line_id,@Param("classgrp") String classgrp);
+        /**
+         *   917110140 修改成可以适应父产线 子产线共用的查询
+         * @param Pline_id 父产线ID
+         * @param line_id  产线ID
+         * @param classgrp 班组
+         * @return
+         */
+        List<InOutRecord> selectforZud(@Param("pline_id") String Pline_id, @Param("line_id") String line_id, @Param("classgrp") String classgrp);
+
         InOutRecord selectById(String zqjjlh);
-        List<InOutRecord> selectforZrwk(@Param("line_id") String line_id,@Param("classgrp") String classgrp,@Param("zotype") String zotype);
+
+        /** 917110140
+         * @param pline_id
+         * @param line_id
+         * @param classgrp
+         * @param zotype
+         * @return
+         */
+        List<InOutRecord> selectforZrwk(@Param("pline_id") String pline_id,@Param("line_id") String line_id,@Param("classgrp") String classgrp,@Param("zotype") String zotype);
 
         /**
          * 产线在制队列汇总表查询 918100064
@@ -42,5 +59,6 @@ public interface InOutRecordMapper extends Mapper<InOutRecord>{
          * @return
          */
         int selectZoutnum1(@Param("lineId")String lineId,@Param("matnr")String matnr,@Param("zpgdbar")String zpgdbar,@Param("reflag")Integer reflag);
+
 
 }

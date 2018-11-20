@@ -119,7 +119,7 @@ public class ZudheadController extends BaseController {
             }
             zudhead.setZudnum(zudnum);
             zudhead.setUdtype("1");
-            zudhead.setLineId(a.get(0).getLineId());
+            zudhead.setLineId(a.get(0).getPlineId());
             zudhead.setArbpr(a.get(0).getArbpr());
             zudhead.setCrdat(curdate);
             zudhead.setCreatedBy(Long.valueOf(createdBy));
@@ -131,6 +131,8 @@ public class ZudheadController extends BaseController {
                 Zudlist zudlist = new Zudlist();
                 zudlist.setZudnum(zudhead.getZudnum());
                 zudlist.setItem(Integer.valueOf(i + 1).toString());
+                zudlist.setLineId(a.get(i).getLineId());
+                zudlist.setArbpr(a.get(i).getArbpr());
                 zudlist.setZqjjlh(a.get(i).getZqjjlh());
                 zudlist.setZpgdbar(a.get(i).getZpgdbar());
                 zudlist.setVornr(a.get(i).getVornr());

@@ -5,6 +5,8 @@
     <resultMap id="BaseResultMap" type="yj.core.zudlist.dto.Zudlist">
         <result column="ZUDNUM" property="zudnum" jdbcType="VARCHAR" />
         <result column="ITEM" property="item" jdbcType="VARCHAR" />
+        <result column="LINE_ID" property="lineId" jdbcType="VARCHAR" />
+        <result column="ARBPR" property="arbpr" jdbcType="VARCHAR" />
         <result column="ZQJJLH" property="zqjjlh" jdbcType="VARCHAR" />
         <result column="ZPGDBAR" property="zpgdbar" jdbcType="VARCHAR" />
         <result column="VORNR" property="vornr" jdbcType="VARCHAR" />
@@ -104,8 +106,8 @@
     </select>
 
     <insert id="insertItem" parameterType="yj.core.zudlist.dto.Zudlist">
-        insert INTO  wip_zudlist(ZUDNUM,ITEM,ZQJJLH,ZPGDBAR,VORNR,ZXHBAR,ZPGDBAR2,MATNR,MATNR2,ZGJBAR,ZDNUM,GMEIN,CHARG2,CHARG,DIECD,SFFLG,ZQXDM,
-        ZISSUETXT,ZBPJC,ZOPLO,ZBANZ,ZBANC,RSPART,RSNAME,REVIEWC,GSTRP,MARK,RUECK,RMZHL,CREATION_DATE,CREATED_BY)VALUES (#{zudnum},#{item},#{zqjjlh},#{zpgdbar},#{vornr},#{zxhbar},#{zpgdbar2},#{matnr},
+        insert INTO  wip_zudlist(ZUDNUM,ITEM,LINE_ID,ARBPR,ZQJJLH,ZPGDBAR,VORNR,ZXHBAR,ZPGDBAR2,MATNR,MATNR2,ZGJBAR,ZDNUM,GMEIN,CHARG2,CHARG,DIECD,SFFLG,ZQXDM,
+        ZISSUETXT,ZBPJC,ZOPLO,ZBANZ,ZBANC,RSPART,RSNAME,REVIEWC,GSTRP,MARK,RUECK,RMZHL,CREATION_DATE,CREATED_BY)VALUES (#{zudnum},#{item},#{lineId},#{arbpr},#{zqjjlh},#{zpgdbar},#{vornr},#{zxhbar},#{zpgdbar2},#{matnr},
         #{matnr2},#{zgjbar},#{zdnum},#{gmein},#{charg2},#{charg},#{diecd},
         #{sfflg},#{zqxdm},#{zissuetxt},#{zbpjc},#{zoplo},#{zbanz},#{zbanc},#{rspart},#{rsname},#{reviewc},#{gstrp},#{mark},#{rueck},#{rmzhl},#{creationDate},#{createdBy})
     </insert>
