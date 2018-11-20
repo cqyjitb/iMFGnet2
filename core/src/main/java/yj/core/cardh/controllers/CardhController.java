@@ -843,8 +843,14 @@ public class CardhController
                 cardhst.setId(1L);
                 cardhst.setStatus("CRTD");
                 cardhst.setIsactive("X");
-
                 listCardhst.add(cardhst);
+                cardhst = new Cardhst();
+                cardhst.setZpgdbar(dto.get(i).getZpgdbar());
+                cardhst.setId(2L);
+                cardhst.setStatus("PRNT");
+                cardhst.setIsactive("");
+                listCardhst.add(cardhst);
+
 
                     //获取箱号中间日期序列最大值
 
@@ -1000,8 +1006,14 @@ public class CardhController
                 cardhst.setId(1L);
                 cardhst.setStatus("CRTD");
                 cardhst.setIsactive("X");
-
                 listCardhst.add(cardhst);
+                cardhst = new Cardhst();
+                cardhst.setZpgdbar(dto.get(i).getZpgdbar());
+                cardhst.setId(2L);
+                cardhst.setStatus("PRNT");
+                cardhst.setIsactive("");
+                listCardhst.add(cardhst);
+
                 List<Afvc> listAfvc = afvcService.selectByAufpl(dto.get(i).getAufpl());
                 if (listAfvc.size() > 0) {
                     for (int j = 0; j < listAfvc.size(); j++) {
