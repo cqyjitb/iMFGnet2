@@ -93,15 +93,20 @@ public class ZwipqController extends BaseController {
         return new ResponseData();
     }
 
-//    @RequestMapping(value = {"/zwipq/selectByLineIdAndZxhbar"}, method = {RequestMethod.GET})
-//    @ResponseBody
-//    public ResponseData selectByLineIdAndZxhbar(HttpServletRequest request, String line_id, String zxhbar) {
-//
-//        List<Zwipq> list = service.selectByLineIdAndZxhbar(line_id, zxhbar);
-//        ResponseData rs = new ResponseData(list);
-//        rs.setSuccess(true);
-//        return rs;
-//    }
+    @RequestMapping(value = {"/zwipq/selectByLineIdAndZxhbar"}, method = {RequestMethod.GET})
+    @ResponseBody
+    public ResponseData selectByLineIdAndZxhbar(HttpServletRequest request, String line_id, String zxhbar ,String cursum ) {
+        ResponseData rs = new ResponseData();
+        List<Zwipq> list = service.selectByLineIdAndZxhbar(line_id, zxhbar);
+        if (list.size() < Integer.valueOf(cursum)){
+            rs.setSuccess(false);
+            rs.setMessage("取消上线数量不能大于当前生产线在制队列数量！");
+            return rs;
+        }
+
+        rs.setSuccess(true);
+        return rs;
+    }
 
 
         @RequestMapping(value = {"/zwipq/selectByZxhbar"}, method = {RequestMethod.GET})
@@ -118,7 +123,7 @@ public class ZwipqController extends BaseController {
                 listpline = service.selectByLineIdAndZxhbar(lines.getPlineId().toString(),zxhbar);
                 listall.add(listpline);
             }
-
+            rs.setRows(listall);
             return rs;
         }
 
@@ -549,12 +554,12 @@ public class ZwipqController extends BaseController {
      */
     @RequestMapping(value = {"/zwipq/sumbitJjxx"}, method = {RequestMethod.GET})
     @ResponseBody
-    public ResponseData sumbitJjxx(HttpServletRequest request,String line_id,String classgrp,int cursum,String userId){
+    public ResponseData sumbitJjxx(HttpServletRequest request,String line_id,String classgrp,String cursum1,String userId){
         ResponseData rs = new ResponseData();
         List<Zwipq> list = new ArrayList<>();
-        list = service.selectForJjxx(line_id,classgrp);//查询队列里面的可下线数据 按照队列序号升序排列
+        list = service.selectForJjxx(line_id,"");//查询队列里面的可下线数据 按照队列序号升序排列
         List<Zwipq> listupdate = new ArrayList<>();
-
+        Integer cursum = Integer.valueOf(cursum1);
         Map m = new HashMap();
         m.put("p1", "SEQ_ON_LINE");
         m.put("p2", cursum + 100);
@@ -564,12 +569,37 @@ public class ZwipqController extends BaseController {
         for(int i = 0;i<cursum;i++){
             list.get(i).setZoffl(1L);
             list.get(i).setSourceLineId(line_id);//下线时记录源生产线ID
-            list.get(i).setLastUpdatedBy(Long.valueOf(userId));
-            list.get(i).setLastUpdatedDate(new Date());
-            listupdate.add(list.get(i));
-
+            String uuidtest = list.get(i).getZsxjlh();
             if (!list.get(i).getLineId().equals(list.get(i).getPkgLineId())){//子产线下线 新增队列记录 绑定主产线
-                Zwipq zwipqtmp = list.get(i);
+                Zwipq zwipqtmp = new Zwipq();
+                Lines parline = linesService.selectById(Long.valueOf(list.get(i).getPkgLineId()));
+                UUID uuid = java.util.UUID.randomUUID();
+                String uuidstr = uuid.toString().replaceAll("-", "");
+                zwipqtmp.setArbpr(list.get(i).getArbpr());
+                if (parline.getSegOprName() == null){
+                    zwipqtmp.setSegOprName("");
+                }else{
+                    zwipqtmp.setSegOprName(parline.getSegOprName());
+                }
+                zwipqtmp.setPkgLineId(list.get(i).getPkgLineId());
+                zwipqtmp.setShift(list.get(i).getShift());
+                zwipqtmp.setZpgdbar(list.get(i).getZpgdbar());
+                zwipqtmp.setZpgdbar2(list.get(i).getZpgdbar2());
+                zwipqtmp.setVornr("0010");
+                zwipqtmp.setZxhbar(list.get(i).getZxhbar());
+                zwipqtmp.setMatnr(list.get(i).getMatnr());
+                zwipqtmp.setMatnr2(list.get(i).getMatnr2());
+                zwipqtmp.setZsxnum(1.0);
+                zwipqtmp.setGmein(list.get(i).getGmein());
+                zwipqtmp.setLgort(list.get(i).getLgort());
+                zwipqtmp.setCharg(list.get(i).getCharg());
+                zwipqtmp.setSfflg(classgrp);//班标
+                zwipqtmp.setDiecd(list.get(i).getDiecd());//模号
+                zwipqtmp.setZzxkl(list.get(i).getZzxkl());
+                zwipqtmp.setZqjkl(list.get(i).getZqjkl());
+                zwipqtmp.setStatus(list.get(i).getStatus());
+                zwipqtmp.setZremade(list.get(i).getZremade());
+                zwipqtmp.setZsxjlh(uuidstr);
                 zwipqtmp.setLineId(list.get(i).getPkgLineId());
                 zwipqtmp.setZoffl(0L);
                 zwipqtmp.setCreatedBy(Long.valueOf(userId));
@@ -578,6 +608,11 @@ public class ZwipqController extends BaseController {
                 listtmp.add(zwipqtmp);
             }
             qsenq = qsenq + 1;
+            list.get(i).setLastUpdatedBy(Long.valueOf(userId));
+            list.get(i).setLastUpdatedDate(new Date());
+            uuidtest = list.get(i).getZsxjlh();
+            listupdate.add(list.get(i));
+
         }
 
         int num = service.updateZoffl(listupdate);

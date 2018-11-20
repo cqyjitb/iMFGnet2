@@ -97,4 +97,9 @@ public class LinesServiceImpl extends BaseServiceImpl<Lines> implements ILinesSe
         }
         return null;
     }
+
+    @Override
+    public List<Lines> selectByPlineId(String line_id) {
+        return linesMapper.selectByPlineId(line_id);
+    }
 }

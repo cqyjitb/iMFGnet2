@@ -59,4 +59,11 @@ public interface LinesMapper extends Mapper<Lines>{
      * @return
      */
     String selectDescription(@Param("plineId")Long plineId);
+
+    /**
+     *  检查一条产线是否是 主产线 917110140
+     * @param line_id
+     * @return
+     */
+    List<Lines> selectByPlineId(String line_id);
 }

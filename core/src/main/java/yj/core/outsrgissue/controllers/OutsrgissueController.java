@@ -310,22 +310,121 @@ import java.util.List;
                     outsrgissuehead.setLastUpdatedBy(Long.valueOf(userId));
                     sum2 = outsrgissueheadService.updateOutsrgissueHead(outsrgissuehead);
                     if (sum2 == 1){
-                        rs.setSuccess(true);
-                        rs.setMessage("冲销成功！");
+                        //同步到sap
+                        DTOUTSRGISSUEhead head = new DTOUTSRGISSUEhead();
+                        DTOUTSRGISSUEitem item = new DTOUTSRGISSUEitem();
+                        head.setWerks(outsrgissuehead.getWerks());
+                        head.setTxz01(outsrgissuehead.getTxz01());
+                        head.setStatus(outsrgissuehead.getStatus());
+                        head.setPrtflag(outsrgissuehead.getPrtflag());
+                        head.setMatnr(outsrgissuehead.getMatnr());
+                        head.setLifnr(outsrgissuehead.getLifnr());
+                        head.setIssuenm(outsrgissuehead.getIssuenm());
+
+                        item.setStatus(outsrgissue.getStatus());
+                        item.setCharg(outsrgissue.getCharg());
+                        item.setZpgdbar(outsrgissue.getZpgdbar());
+                        item.setZisnum(outsrgissue.getZisnum());
+                        item.setWerks(outsrgissue.getWerks());
+                        item.setVsnda(outsrgissue.getVsnda());
+                        item.setVornr(outsrgissue.getVornr());
+                        item.setTxz01(outsrgissue.getTxz01());
+                        item.setSortl(outsrgissue.getSortl());
+                        item.setSfflg(outsrgissue.getSfflg());
+                        item.setMenge(outsrgissue.getMenge());
+                        item.setMatnr(outsrgissue.getMatnr());
+                        item.setMatkl(outsrgissue.getMatkl());
+                        item.setLifnr(outsrgissue.getLifnr());
+                        item.setKtsch(outsrgissue.getKtsch());
+                        item.setItem(outsrgissue.getItem());
+                        item.setIssuenm(outsrgissue.getIssuenm());
+                        item.setGmein(outsrgissue.getGmein());
+                        item.setEtenr(outsrgissue.getEtenr());
+                        item.setEbelp(outsrgissue.getEbelp());
+                        item.setEbeln(outsrgissue.getEbeln());
+                        item.setDiecd(outsrgissue.getDiecd());
+
+                        SyncOutsrgissueWebserviceUtil syncOutsrgissueWebserviceUtil = new SyncOutsrgissueWebserviceUtil();
+                        DTOUTSRGISSUEreturn re = syncOutsrgissueWebserviceUtil.receiveConfirmation(head,item);
+                        if (re.getMSGTY().equals("S")){
+                            rs.setSuccess(true);
+                            rs.setMessage("冲销成功！");
+                        }else{
+                            rs.setMessage(re.getMESSAGE());
+                            rs.setSuccess(false);
+                        }
+
                     }else{
                         rs.setSuccess(false);
                         rs.setMessage("冲销失败！");
                     }
 
                 }else{
-                    rs.setSuccess(true);
-                    rs.setMessage("冲销成功！");
+                    //同步到sap
+                    DTOUTSRGISSUEhead head = new DTOUTSRGISSUEhead();
+                    DTOUTSRGISSUEitem item = new DTOUTSRGISSUEitem();
+                    head.setWerks("");
+                    head.setTxz01("");
+                    head.setStatus("");
+                    head.setPrtflag("");
+                    head.setMatnr("");
+                    head.setLifnr("");
+                    head.setIssuenm("");
+
+                    item.setStatus(outsrgissue.getStatus());
+                    item.setCharg(outsrgissue.getCharg());
+                    item.setZpgdbar(outsrgissue.getZpgdbar());
+                    item.setZisnum(outsrgissue.getZisnum());
+                    item.setWerks(outsrgissue.getWerks());
+                    item.setVsnda(outsrgissue.getVsnda());
+                    item.setVornr(outsrgissue.getVornr());
+                    item.setTxz01(outsrgissue.getTxz01());
+                    item.setSortl(outsrgissue.getSortl());
+                    item.setSfflg(outsrgissue.getSfflg());
+                    item.setMenge(outsrgissue.getMenge());
+                    item.setMatnr(outsrgissue.getMatnr());
+                    item.setMatkl(outsrgissue.getMatkl());
+                    item.setLifnr(outsrgissue.getLifnr());
+                    item.setKtsch(outsrgissue.getKtsch());
+                    item.setItem(outsrgissue.getItem());
+                    item.setIssuenm(outsrgissue.getIssuenm());
+                    item.setGmein(outsrgissue.getGmein());
+                    item.setEtenr(outsrgissue.getEtenr());
+                    item.setEbelp(outsrgissue.getEbelp());
+                    item.setEbeln(outsrgissue.getEbeln());
+                    item.setDiecd(outsrgissue.getDiecd());
+
+                    SyncOutsrgissueWebserviceUtil syncOutsrgissueWebserviceUtil = new SyncOutsrgissueWebserviceUtil();
+                    DTOUTSRGISSUEreturn re = syncOutsrgissueWebserviceUtil.receiveConfirmation(head,item);
+                    if (re.getMSGTY().equals("S")){
+                        rs.setSuccess(true);
+                        rs.setMessage("冲销成功！");
+                    }else{
+                        rs.setMessage(re.getMESSAGE());
+                        rs.setSuccess(false);
+                    }
                 }
 
             }else{
                 rs.setMessage("冲销失败！");
                 rs.setSuccess(false);
             }
+            return rs;
+        }
+
+        /**
+         *  处理外协收货 扫描工序流转卡 页面请求  917110140
+         * @param request
+         * @param barcode
+         * @return
+         */
+
+        @RequestMapping(value = {"/wip/outsrgissue/selectForwxsh"},method = {RequestMethod.GET})
+        @ResponseBody
+        ResponseData selectForwxsh(HttpServletRequest request,String barcode){
+            ResponseData rs = new ResponseData();
+
+
             return rs;
         }
     }

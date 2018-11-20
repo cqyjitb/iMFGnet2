@@ -11,6 +11,7 @@
         <result column="PLINE_ID" property="plineId" jdbcType="DECIMAL" />
         <result column="ARBPL" property="arbpl" jdbcType="VARCHAR" />
         <result column="ENABLE_FLAG" property="enableFlag" jdbcType="VARCHAR" />
+        <result column="EXECOFF_FLAG" property="execoffFlag" jdbcType="VARCHAR" />
         <result column="START_DATE" property="startDate" jdbcType="DATE" />
         <result column="END_DATE" property="endDate" jdbcType="DATE" />
         <result column="TAKT_TIME" property="taktTime" jdbcType="DECIMAL" />
@@ -173,4 +174,10 @@
          </where>
     </select>
 
+    <select id="selectByPlineId" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select * from wip_lines
+        <where>
+            PLINE_ID = #{plineId}
+        </where>
+    </select>
 </mapper>

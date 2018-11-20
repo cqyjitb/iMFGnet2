@@ -161,7 +161,9 @@ public class LinesController extends BaseController {
         }
 
         if (type.equals("sx")){
-            if (lines.getPlineId() != null){
+            List<Lines> listtmp = new ArrayList<>();
+             listtmp = service.selectByPlineId(line_id.toString());
+            if ( listtmp.size() > 0 ){
                 rs.setSuccess(false);
                 rs.setMessage("该产线为主产线，不允许直接上线！");
                 return rs;

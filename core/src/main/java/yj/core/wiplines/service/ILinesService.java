@@ -22,4 +22,11 @@ public interface ILinesService extends IBaseService<Lines>, ProxySelf<ILinesServ
     Lines selectUnitCode(String deptId);
     String setMessageLines(List<Lines> dto);
     String updateOrInsert(IRequest requestCtx,List<Lines> dto,String userId);
+
+    /**
+     *  检查一条产线是否是 主产线 917110140
+     * @param line_id
+     * @return
+     */
+    List<Lines> selectByPlineId(String line_id);
 }

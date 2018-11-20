@@ -127,7 +127,6 @@ public class Zwipq extends BaseDTO {
     @Transient
     private String attr;//生产日期
 
-
     public String getSourceLineId() {
         return sourceLineId;
     }
