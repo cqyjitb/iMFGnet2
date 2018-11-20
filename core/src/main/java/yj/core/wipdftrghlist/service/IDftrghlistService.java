@@ -73,4 +73,12 @@ public interface IDftrghlistService extends IBaseService<Dftrghlist>, ProxySelf<
      * @return
      */
     List<Dftrghlist> selectByZxhbar(String zxhbar);
+
+    /**
+     *  查询指定机加生产日期 不良品处理单号最大值
+     * @param werks
+     * @param gstrp
+     * @return
+     */
+    String selectMaxRecordid(String werks,String gstrp);
 }
