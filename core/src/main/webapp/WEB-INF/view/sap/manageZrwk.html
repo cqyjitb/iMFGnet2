@@ -485,7 +485,7 @@
         var grid =  $("#Grid").data("kendoGrid"),
             selections = grid.selectedDataItems();
         if (selections.length > 0){
-            var plineId = document.getElementById("line_id");
+            var plineId = document.getElementById("line_id").value;
             for(var i=0;i<selections.length;i++){
                 var ozotype = document.getElementById("zotype");
                 var val = ozotype.value;

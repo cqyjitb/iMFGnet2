@@ -605,6 +605,7 @@ public class ZwipqController extends BaseController {
                 zwipqtmp.setCreatedBy(Long.valueOf(userId));
                 zwipqtmp.setCreationDate(new Date());
                 zwipqtmp.setQsenq(Long.valueOf(qsenq));
+                zwipqtmp.setSourceLineId(list.get(i).getLineId());
                 listtmp.add(zwipqtmp);
             }
             qsenq = qsenq + 1;
