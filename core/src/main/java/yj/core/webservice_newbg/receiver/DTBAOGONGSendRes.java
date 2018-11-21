@@ -11,7 +11,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
 /**
- * �����������
+ * 生产订单报工返回
  *
  * <p>
  * Java class for DT_BAOGONG_Send_Res complex type.
@@ -56,6 +56,8 @@ import javax.xml.bind.annotation.XmlType;
  *                   &lt;element name="TXT" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="ZTPBAR" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="CHARG" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="MBLNR" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="MJAHR" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="MAKT" maxOccurs="unbounded" minOccurs="0">
  *                     &lt;complexType>
  *                       &lt;complexContent>
@@ -182,6 +184,8 @@ public class DTBAOGONGSendRes {
      *         &lt;element name="TXT" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="ZTPBAR" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="CHARG" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="MBLNR" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="MJAHR" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="MAKT" maxOccurs="unbounded" minOccurs="0">
      *           &lt;complexType>
      *             &lt;complexContent>
@@ -224,8 +228,9 @@ public class DTBAOGONGSendRes {
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = { "aufnr", "matnr", "rsnum", "rspos",
-            "fevor", "txt", "ztpbar", "charg", "makt", "afvc", "msgty",
-            "msgno", "msgid", "msgv1", "msgv2", "msgv3", "msgv4", "message" })
+            "fevor", "txt", "ztpbar", "charg", "mblnr", "mjahr", "makt",
+            "afvc", "msgty", "msgno", "msgid", "msgv1", "msgv2", "msgv3",
+            "msgv4", "message" })
     public static class DETAIL {
 
         @XmlElement(name = "AUFNR", required = true)
@@ -244,6 +249,10 @@ public class DTBAOGONGSendRes {
         protected String ztpbar;
         @XmlElement(name = "CHARG", required = true)
         protected String charg;
+        @XmlElement(name = "MBLNR", required = true)
+        protected String mblnr;
+        @XmlElement(name = "MJAHR", required = true)
+        protected String mjahr;
         @XmlElement(name = "MAKT")
         protected List<DTBAOGONGSendRes.DETAIL.MAKT> makt;
         @XmlElement(name = "AFVC")
@@ -431,6 +440,48 @@ public class DTBAOGONGSendRes {
          */
         public void setCHARG(String value) {
             this.charg = value;
+        }
+
+        /**
+         * Gets the value of the mblnr property.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getMBLNR() {
+            return mblnr;
+        }
+
+        /**
+         * Sets the value of the mblnr property.
+         *
+         * @param value
+         *            allowed object is {@link String }
+         *
+         */
+        public void setMBLNR(String value) {
+            this.mblnr = value;
+        }
+
+        /**
+         * Gets the value of the mjahr property.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getMJAHR() {
+            return mjahr;
+        }
+
+        /**
+         * Sets the value of the mjahr property.
+         *
+         * @param value
+         *            allowed object is {@link String }
+         *
+         */
+        public void setMJAHR(String value) {
+            this.mjahr = value;
         }
 
         /**
@@ -1037,5 +1088,3 @@ public class DTBAOGONGSendRes {
     }
 
 }
-
-

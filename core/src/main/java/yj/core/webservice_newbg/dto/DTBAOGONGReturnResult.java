@@ -79,6 +79,26 @@ public class DTBAOGONGReturnResult {
 
     private String CHARG;
 
+    private String MBLNR;
+
+    private String MJAHR;
+
+    public String getMBLNR() {
+        return MBLNR;
+    }
+
+    public void setMBLNR(String MBLNR) {
+        this.MBLNR = MBLNR;
+    }
+
+    public String getMJAHR() {
+        return MJAHR;
+    }
+
+    public void setMJAHR(String MJAHR) {
+        this.MJAHR = MJAHR;
+    }
+
     public String getZTPBAR() {
         return ZTPBAR;
     }

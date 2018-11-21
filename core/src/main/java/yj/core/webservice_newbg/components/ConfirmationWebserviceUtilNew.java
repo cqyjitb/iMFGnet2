@@ -110,6 +110,8 @@ public class ConfirmationWebserviceUtilNew {
         String message = dtbaogongSendRes.getDETAIL().get(0).getMESSAGE();//信息
         String maktx = "";
         String ltxa1 = "";
+        String mblnr = dtbaogongSendRes.getDETAIL().get(0).getMBLNR();
+        String mjahr = dtbaogongSendRes.getDETAIL().get(0).getMJAHR();
         if(dtbaogongSendRes.getDETAIL().get(0).getMAKT().size() > 0){
             maktx = dtbaogongSendRes.getDETAIL().get(0).getMAKT().get(0).getMAKTX();
         }
@@ -141,6 +143,8 @@ public class ConfirmationWebserviceUtilNew {
         returnResult.setTXT(txt);
         returnResult.setLTXA1(ltxa1);
         returnResult.setCHARG(charg);
+        returnResult.setMJAHR(mjahr);
+        returnResult.setMBLNR(mblnr);
         return returnResult;
     }
 }
