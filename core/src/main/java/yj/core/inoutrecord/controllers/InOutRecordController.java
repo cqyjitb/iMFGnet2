@@ -100,13 +100,14 @@ public class InOutRecordController extends BaseController {
         List<Zudlist> listzuds = new ArrayList<>();
         IRequest requestContext = createRequestContext(request);
         // 判断 line_id 是不是主产线 如果是主产线 需要把 所属的子产线记录都查询出来
-        List<Lines> lines = new ArrayList<>();
-        lines = linesService.selectByPlineId(line_id);
-        if (lines.size() > 0){
-            listzuds = service.selectforZud(line_id,null,classgrp);
-        }else{
-            listzuds = service.selectforZud(null,line_id,classgrp);
-        }
+//        List<Lines> lines = new ArrayList<>();
+//        lines = linesService.selectByPlineId(line_id);
+//        if (lines.size() > 0){
+//            listzuds = service.selectforZud(line_id,null,classgrp);
+//        }else{
+//            listzuds = service.selectforZud(null,line_id,classgrp);
+//        }
+         listzuds = service.selectforZud(line_id,line_id,classgrp);
 
         return new ResponseData(listzuds);
     }
@@ -121,13 +122,14 @@ public class InOutRecordController extends BaseController {
         List<Zrwklist> listzrwk = new ArrayList<>();
         IRequest requestContext = createRequestContext(request);
         // 判断 line_id 是不是主产线 如果是主产线 需要把 所属的子产线记录都查询出来
-        List<Lines> lines = new ArrayList<>();
-        if (lines.size() > 0){
-            list = service.selectforZrwk(line_id,null,classgrp,zotype,requestContext);
-        }else{
-            list = service.selectforZrwk(null,line_id,classgrp,zotype,requestContext);
-        }
-
+//        List<Lines> lines = new ArrayList<>();
+//        lines = linesService.selectByPlineId(line_id);
+//        if (lines.size() > 0){
+//            list = service.selectforZrwk(line_id,null,classgrp,zotype,requestContext);
+//        }else{
+//            list = service.selectforZrwk(null,line_id,classgrp,zotype,requestContext);
+//        }
+        list = service.selectforZrwk(line_id,line_id,classgrp,zotype,requestContext);
         if (list.size() > 0){
             for (int i = 0;i<list.size();i++){
                 Zrwklist zrwklist = new Zrwklist();

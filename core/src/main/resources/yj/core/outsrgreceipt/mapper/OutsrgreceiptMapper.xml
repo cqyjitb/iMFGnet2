@@ -41,5 +41,10 @@
         <result column="ZDSUSER" property="zdsuser" jdbcType="DECIMAL" />
     </resultMap>
 
-
+    <select id="selectByEbeln" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_outsrgreceipt
+        <where>
+            EBELN = #{ebeln}
+        </where>
+    </select>
 </mapper>

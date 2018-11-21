@@ -32,8 +32,37 @@ public class Outsrgreceipthead extends BaseDTO {
 
       private String prtflag; //打印标识
 
+      private Date zipdat;
 
-     public void setReceiptnm(String receiptnm){
+      private Date ziptim;
+
+      private Long zipuser;
+
+    public Date getZipdat() {
+        return zipdat;
+    }
+
+    public void setZipdat(Date zipdat) {
+        this.zipdat = zipdat;
+    }
+
+    public Date getZiptim() {
+        return ziptim;
+    }
+
+    public void setZiptim(Date ziptim) {
+        this.ziptim = ziptim;
+    }
+
+    public Long getZipuser() {
+        return zipuser;
+    }
+
+    public void setZipuser(Long zipuser) {
+        this.zipuser = zipuser;
+    }
+
+    public void setReceiptnm(String receiptnm){
          this.receiptnm = receiptnm;
      }
 

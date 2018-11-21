@@ -198,12 +198,7 @@
             AND b.SLD1 = 'X'
             AND a.REFLAG = 0
             AND a.LINE_ID = e.LINE_ID
-            <if test="line_id != null">
-                and a.LINE_ID = #{line_id}
-            </if>
-            <if test="pline_id != null">
-                and e.PLINE_ID = #{pline_id}
-            </if>
+            and ( a.LINE_ID = #{line_id} or e.PLINE_ID = #{pline_id} )
             <if test="classgrp != null">
                 and a.ZBANZ = #{classgrp}
             </if>
@@ -219,12 +214,8 @@
             AND b.SLD2 = 'X'
             AND REFLAG = 0
             AND a.LINE_ID = e.LINE_ID
-            <if test="line_id != null">
-                and a.LINE_ID = #{line_id}
-            </if>
-            <if test="pline_id != null">
-                and e.PLINE_ID = #{pline_id}
-            </if>
+            and ( a.LINE_ID = #{line_id} or e.PLINE_ID = #{pline_id} )
+
             <if test="classgrp != null">
                 and ZBANZ = #{classgrp}
             </if>

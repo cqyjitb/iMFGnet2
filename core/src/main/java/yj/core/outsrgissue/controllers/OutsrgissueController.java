@@ -17,6 +17,8 @@ import yj.core.outsrgissue.service.IOutsrgissueService;
 import org.springframework.beans.factory.annotation.Autowired;
 import yj.core.outsrgissuehead.dto.Outsrgissuehead;
 import yj.core.outsrgissuehead.service.IOutsrgissueheadService;
+import yj.core.outsrgreceipt.dto.Outsrgreceipt;
+import yj.core.outsrgreceipt.service.IOutsrgreceiptService;
 import yj.core.outsrgrfe.dto.Outsrgrfe;
 import yj.core.outsrgrfe.service.IOutsrgrfeService;
 import yj.core.webservice_outsrgissue.components.SyncOutsrgissueWebserviceUtil;
@@ -46,6 +48,8 @@ import java.util.List;
     private IMarcService marcService;
     @Autowired
     private ICardtService cardtService;
+    @Autowired
+    private IOutsrgreceiptService outsrgreceiptService;
 
     @RequestMapping(value = "/wip/outsrgissue/query")
     @ResponseBody
@@ -455,6 +459,8 @@ import java.util.List;
                 rs.setMessage("流转卡状态为HOLD，不允许外协收货！");
                 return rs;
             }
+            Marc marc = new Marc();
+            marc = marcService.selectByMatnr(cardh.getMatnr());
 
             //2:获取外协发料单明细数据
             Outsrgissue outsrgissue = new Outsrgissue();
@@ -488,11 +494,20 @@ import java.util.List;
                 return rs;
             }
 
+            //获取已经收获的记录数据
+            List<Outsrgreceipt> listsh = new ArrayList<>();
+            listsh = outsrgreceiptService.selectByEbeln(outsrgissue.getEbeln());
+
             List list = new ArrayList();
             list.add(cardh);
+            list.add(marc);
             list.add(outsrgissue);
             list.add(outsrgissuehead);
-
+            if (listsh.size() > 0){
+                list.add(listsh);
+            }
+            rs.setRows(list);
+            rs.setSuccess(true);
             return rs;
         }
     }
