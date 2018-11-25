@@ -8,11 +8,32 @@
         <result column="LIFNR" property="lifnr" jdbcType="VARCHAR" />
         <result column="MATNR" property="matnr" jdbcType="VARCHAR" />
         <result column="STATUS" property="status" jdbcType="VARCHAR" />
-        <result column="ZDPDAT" property="zdpdat" jdbcType="DATE" />
-        <result column="ZDPTIM" property="zdptim" jdbcType="DATE" />
+        <result column="ZDPDAT" property="zdpdat" jdbcType="VARCHAR" />
+        <result column="ZDPTIM" property="zdptim" jdbcType="VARCHAR" />
         <result column="ZDPUSER" property="zdpuser" jdbcType="DECIMAL" />
+        <result column="ZIPDAT" property="zipdat" jdbcType="VARCHAR" />
+        <result column="ZIPTIM" property="ziptim" jdbcType="VARCHAR" />
+        <result column="ZIPUSER" property="zipuser" jdbcType="DECIMAL" />
         <result column="PRTFLAG" property="prtflag" jdbcType="VARCHAR" />
+        <result column="CREATION_DATE" property="creationDate" jdbcType="DATE" />
+        <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
+        <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="DATE" />
+        <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
     </resultMap>
+
+    <select id="selectByMatnrAndLifnrDesc" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_outsrgreceipthead
+        <where>
+            MATNR = #{matnr}
+            and LIFNR = #{lifnr}
+        </where>
+        order by RECEIPTNM DESC
+    </select>
+
+    <insert id="insertNewRow" parameterType="yj.core.outsrgissuehead.dto.Outsrgissuehead">
+        insert INTO wip_outsrgreceipthead (RECEIPTNM,WERKS,LIFNR,MATNR,STATUS,ZDPDAT,ZDPTIM,ZDPUSER,ZIPDAT,ZIPTIM,ZIPUSER,PRTFLAG,CREATION_DATE,CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY)
+        VALUES (#{receiptnm},#{werks},#{lifnr},#{matnr},#{status},#{status},#{zdpdat},#{zdptim},#{zdpuser},#{zipdat},#{ziptim},#{zipuser},#{prtflag},#{creationDate},#{createdBy},#{lastUpdateDate},#{lastUpdatedBy})
+    </insert>
 
 
 </mapper>

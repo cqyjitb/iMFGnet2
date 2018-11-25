@@ -24,4 +24,19 @@ public class OutsrgreceiptServiceImpl extends BaseServiceImpl<Outsrgreceipt> imp
     public Outsrgreceipt selectByZpgdbarAndStatus(String zpgdbar, String status) {
         return outsrgreceiptMapper.selectByZpgdbarAndStatus(zpgdbar,status);
     }
+
+    @Override
+    public List<Outsrgreceipt> selectByReceiptDesc(String receiptnm) {
+        return outsrgreceiptMapper.selectByReceiptDesc(receiptnm);
+    }
+
+    @Override
+    public int insertNewRow(Outsrgreceipt outsrgreceipt) {
+        return outsrgreceiptMapper.insertNewRow(outsrgreceipt);
+    }
+
+    @Override
+    public int updateOutsrgreceipt(Outsrgreceipt outsrgreceipt) {
+        return outsrgreceiptMapper.updateOutsrgreceipt(outsrgreceipt);
+    }
 }

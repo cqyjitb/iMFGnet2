@@ -24,41 +24,49 @@ public class Outsrgreceipthead extends BaseDTO {
 
       private String status; //单据状态
 
-      private Date zdpdat; //收货过账日期
+      private String zdpdat; //收货过账日期
 
-      private Date zdptim; //收货过账时间
+      private String zdptim; //收货过账时间
 
-      private Long zdpuser; //收货过账账号
+      private String zdpuser; //收货过账账号
 
       private String prtflag; //打印标识
 
-      private Date zipdat;
+      private String zipdat;
 
-      private Date ziptim;
+      private String ziptim;
 
-      private Long zipuser;
+      private String zipuser;
 
-    public Date getZipdat() {
+    public void setZdpdat(String zdpdat) {
+        this.zdpdat = zdpdat;
+    }
+
+    public void setZdptim(String zdptim) {
+        this.zdptim = zdptim;
+    }
+
+    public String getZipdat() {
         return zipdat;
     }
 
-    public void setZipdat(Date zipdat) {
+    public void setZipdat(String zipdat) {
         this.zipdat = zipdat;
     }
 
-    public Date getZiptim() {
+    public String getZiptim() {
         return ziptim;
     }
 
-    public void setZiptim(Date ziptim) {
+    public void setZiptim(String ziptim) {
         this.ziptim = ziptim;
     }
 
-    public Long getZipuser() {
+    public String getZipuser() {
         return zipuser;
     }
 
-    public void setZipuser(Long zipuser) {
+    public void setZipuser(String zipuser) {
         this.zipuser = zipuser;
     }
 
@@ -102,31 +110,24 @@ public class Outsrgreceipthead extends BaseDTO {
          return status;
      }
 
-     public void setZdpdat(Date zdpdat){
-         this.zdpdat = zdpdat;
-     }
 
-     public Date getZdpdat(){
-         return zdpdat;
-     }
+    public String getZdpdat() {
+        return zdpdat;
+    }
 
-     public void setZdptim(Date zdptim){
-         this.zdptim = zdptim;
-     }
+    public String getZdptim() {
+        return zdptim;
+    }
 
-     public Date getZdptim(){
-         return zdptim;
-     }
+    public String getZdpuser() {
+        return zdpuser;
+    }
 
-     public void setZdpuser(Long zdpuser){
-         this.zdpuser = zdpuser;
-     }
+    public void setZdpuser(String zdpuser) {
+        this.zdpuser = zdpuser;
+    }
 
-     public Long getZdpuser(){
-         return zdpuser;
-     }
-
-     public void setPrtflag(String prtflag){
+    public void setPrtflag(String prtflag){
          this.prtflag = prtflag;
      }
 

@@ -15,7 +15,7 @@ public class Outsrgreceipt extends BaseDTO {
       private String receiptnm; //外协收货单号
 
      @NotEmpty
-      private String item; //外协收货单行项目
+      private Long item; //外协收货单行项目
 
      @Id
      @GeneratedValue
@@ -81,11 +81,11 @@ public class Outsrgreceipt extends BaseDTO {
 
       private String deductntenm; //扣款通知单号
 
-      private Date zdsdat; //收货扫码日期
+      private String zdsdat; //收货扫码日期
 
-      private Date zdstim; //收货扫码时间
+      private  String zdstim; //收货扫码时间
 
-      private Long zdsuser; //收货扫码账号
+      private String zdsuser; //收货扫码账号
 
 
      public void setReceiptnm(String receiptnm){
@@ -96,15 +96,15 @@ public class Outsrgreceipt extends BaseDTO {
          return receiptnm;
      }
 
-     public void setItem(String item){
-         this.item = item;
-     }
+    public Long getItem() {
+        return item;
+    }
 
-     public String getItem(){
-         return item;
-     }
+    public void setItem(Long item) {
+        this.item = item;
+    }
 
-     public void setWerks(String werks){
+    public void setWerks(String werks){
          this.werks = werks;
      }
 
@@ -352,28 +352,27 @@ public class Outsrgreceipt extends BaseDTO {
          return deductntenm;
      }
 
-     public void setZdsdat(Date zdsdat){
-         this.zdsdat = zdsdat;
-     }
+    public String getZdsdat() {
+        return zdsdat;
+    }
 
-     public Date getZdsdat(){
-         return zdsdat;
-     }
+    public void setZdsdat(String zdsdat) {
+        this.zdsdat = zdsdat;
+    }
 
-     public void setZdstim(Date zdstim){
-         this.zdstim = zdstim;
-     }
+    public String getZdstim() {
+        return zdstim;
+    }
 
-     public Date getZdstim(){
-         return zdstim;
-     }
+    public void setZdstim(String zdstim) {
+        this.zdstim = zdstim;
+    }
 
-     public void setZdsuser(Long zdsuser){
-         this.zdsuser = zdsuser;
-     }
+    public String getZdsuser() {
+        return zdsuser;
+    }
 
-     public Long getZdsuser(){
-         return zdsuser;
-     }
-
-     }
+    public void setZdsuser(String zdsuser) {
+        this.zdsuser = zdsuser;
+    }
+}

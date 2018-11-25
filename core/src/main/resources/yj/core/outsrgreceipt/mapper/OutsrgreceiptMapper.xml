@@ -4,7 +4,7 @@
 <mapper namespace="yj.core.outsrgreceipt.mapper.OutsrgreceiptMapper">
     <resultMap id="BaseResultMap" type="yj.core.outsrgreceipt.dto.Outsrgreceipt">
         <result column="RECEIPTNM" property="receiptnm" jdbcType="VARCHAR" />
-        <result column="ITEM" property="item" jdbcType="VARCHAR" />
+        <result column="ITEM" property="item" jdbcType="DECIMAL" />
         <result column="WERKS" property="werks" jdbcType="VARCHAR" />
         <result column="ZPGDBAR" property="zpgdbar" jdbcType="VARCHAR" />
         <result column="VORNR" property="vornr" jdbcType="VARCHAR" />
@@ -36,9 +36,13 @@
         <result column="RUECK" property="rueck" jdbcType="VARCHAR" />
         <result column="RMZHL" property="rmzhl" jdbcType="VARCHAR" />
         <result column="DEDUCTNTENM" property="deductntenm" jdbcType="VARCHAR" />
-        <result column="ZDSDAT" property="zdsdat" jdbcType="DATE" />
-        <result column="ZDSTIM" property="zdstim" jdbcType="DATE" />
+        <result column="ZDSDAT" property="zdsdat" jdbcType="VARCHAR" />
+        <result column="ZDSTIM" property="zdstim" jdbcType="VARCHAR" />
         <result column="ZDSUSER" property="zdsuser" jdbcType="DECIMAL" />
+        <result column="CREATION_DATE" property="creationDate" jdbcType="DATE" />
+        <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
+        <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="DATE" />
+        <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
     </resultMap>
 
     <select id="selectByEbeln" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -57,4 +61,44 @@
             </if>
         </where>
     </select>
+
+    <select id="selectByReceiptDesc" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_outsrgreceipt
+        <where>
+            RECEIPTNM = #{receiptnm}
+        </where>
+        order by item DESC
+    </select>
+
+    <insert id="insertNewRow" parameterType="yj.core.outsrgreceipt.dto.Outsrgreceipt">
+        insert into wip_outsrgreceipt (RECEIPTNM,ITEM,WERKS,ZPGDBAR,VORNR,ISSUENM,ISSUENMITEM,VSNDA,EBELN,EBELP,KTSCH,TXZ01,LIFNR,MATNR,DIECD,SFFLG,MENGE,MATKL,
+        TTRECEIPTS,ZSHNUM,ZLFNUM,ZGFNUM,ZLOST,ZTHNUM,GMEIN,CHARG,STATUS,MBLNR,ZEILE,MJAHR,RUECK,RMZHL,DEDUCTNTENM,ZDSDAT,ZDSTIM,ZDSUSER,CREATION_DATE,CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY)
+        values (#{receiptnm},#{item},#{werks},#{zpgdbar},#{vornr},#{issuenm},#{issuenmitem},#{vsnda},#{ebeln},#{ebelp},#{ktsch},#{txz01},#{lifnr},#{matnr},#{diecd},
+        #{sfflg},#{menge},#{matkl},#{ttreceipts},#{zshnum},#{zlfnum},#{zgfnum},#{zlost},#{zthnum},#{gmein},#{charg},#{status},#{mblnr},#{zeile},#{mjahr},#{rueck},#{rmzhl},#{deductntenm},#{zdsdat},
+        #{zdstim},#{zdsuser},#{creationDate},#{createdBy},#{lastUpdateDate},#{lastUpdatedBy})
+    </insert>
+
+    <update id="updateOutsrgreceipt" parameterType="yj.core.outsrgreceipt.dto.Outsrgreceipt">
+        UPDATE wip_outsrgreceipt set STATUS = #{status},
+        LAST_UPDATE_DATE = #{lastUpdateDate},
+        LAST_UPDATED_BY = #{lastUpdatedBy},
+        ZSHNUM = #{zshnum},
+        ZLFNUM = #{zlfnum},
+        ZGFNUM = #{zgfnum},
+        ZLOST = #{zlost},
+        TTRECEIPTS = #{ttreceipts},
+        ZDSDAT = #{zdsdat},
+        ZDSTIM = #{zdstim},
+        ZDSUSER = #{zdsuser}
+        MJAHR   = #{mjahr},
+        RUECK   = #{rueck},
+        RMZHL   = #{rmzhl},
+        MBLNR   = #{mblnr},
+        ZEILE   = #{zeile} ,
+        ZPGDBAR = #{zpgdbar}
+        <where>
+            RECEIPTNM = #{receiptnm}
+            and ITEM = #{item}
+        </where>
+    </update>
 </mapper>

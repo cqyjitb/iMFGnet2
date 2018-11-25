@@ -108,13 +108,13 @@ import java.util.List;
             outsrgissuehead.setCreatedBy(Long.valueOf(userId));
             outsrgissuehead.setCreationDate(new Date());
         }else{
-            if (list.get(list.size() -1).getStatus().equals("0")){
+            if (list.get(0).getStatus().equals("0")){
                 //使用以前的单号
                 l_update = "X";
 
             }else{
                 //产生新的单号 获取当前流水
-                outsrgissuehead = list.get(list.size() - 1);
+                outsrgissuehead = list.get(0);
                 if (!outsrgissuehead.getIssuenm().substring(1,4).equals(curdate.substring(2,5))){
                     outsrgissuehead.setIssuenm(issuenm);
                 }else{
@@ -147,7 +147,7 @@ import java.util.List;
             Long item = 0l;
             if (outsrgissuehead.getIssuenm() == null){
                 //使用以前单号
-                issuenm = list.get(list.size() - 1).getIssuenm();
+                issuenm = list.get(0).getIssuenm();
                 //根据单号查询交货明细最大行号
                 List<Outsrgissue> listmx = service.selectByIssuenmDesc(issuenm);
                 item = listmx.get(0).getItem() + 1;

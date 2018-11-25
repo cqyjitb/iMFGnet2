@@ -192,6 +192,19 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
     }
 
     @Override
+    public DTBAOGONGReturnResult inputDispatchNewWX(InputLog input, Cardh cardh, Cardt cardt,String isfirst) {
+        DTBAOGONGReturnResult returnResult = new DTBAOGONGReturnResult();
+        Appidconf appidconf = new Appidconf();
+        returnResult = checkBarcode(cardh, appidconf, cardt, returnResult, input, isfirst);
+        if (returnResult.getMSGTY().equals("C")) {
+            input.setAttr5(cardh.getCharg());//设置流转卡日期序列
+            return returnResultAndUpdateConfirmationNew(input);
+        } else {
+            return returnResult;
+        }
+    }
+
+    @Override
     public DTBAOGONGReturnResult inputDispatchNew(InputLog input, Cardh cardh, Cardt cardt, Appidconf appidconf, String isfirst) {
         DTBAOGONGReturnResult returnResult = new DTBAOGONGReturnResult();
         returnResult = checkBarcode(cardh, appidconf, cardt, returnResult, input, isfirst);
@@ -240,56 +253,110 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
             return returnResult;
         }
 
-        if (appidconf.getAppid().equals("app0001")) {
-            currentInputSum = currentInputSum + inputLog.getYeild();
-            if (cardt.getConfirmed().equals("X")) {
-                returnResult.setMESSAGE("当前工序已经报工，不允许重复报工！");
-                returnResult.setMSGTY("E");
-                return returnResult;
-
-            }
-            //标准装框 + 标准装框 * 浮动报工率 / 100
-            if (currentInputSum > cardh.getPlqty() + cardh.getPlqty() * (cardh.getFlgrg() / 100)) {
-                returnResult.setMESSAGE("报工数量不能超过标准装框量！请核对报工数量！");
-                returnResult.setMSGTY("E");
-                return returnResult;
-            }
-
-        } else if (appidconf.getAppid().equals("app0002") || appidconf.getAppid().equals("app0003")) {
-            if (cardt.getConfirmed().equals("X")) {
-                returnResult.setMESSAGE("当前工序已经报工，不允许重复报工！");
-                returnResult.setMSGTY("E");
-                return returnResult;
-
-            }
-            if (!isfirst.equals("FIRST")) {//如果是首工序 不获取前工序报工数据 直接报工
-                //获取前工序报工数据
-                beforeMaxOpera = inputLogMapper.confirmationBeforeMaxOperation(inputLog);
-                List<InputLog> maxInputLogs = this.inputLogMapper.confirmationExistMaxOperaInfo(inputLog.getDispatch(), beforeMaxOpera);
-                if (maxInputLogs.size() > 0) {
-                    currentInputSum = currentInputSum + inputLog.getYeild() + inputLog.getRowScrap() + inputLog.getWorkScrap();
-                    for (InputLog inputLogtmp : maxInputLogs) {
-                        historyMaxOperationYeildSum = Double.valueOf(historyMaxOperationYeildSum.doubleValue() + inputLogtmp.getYeild().doubleValue());
-                    }
-                    if (!currentInputSum.equals(historyMaxOperationYeildSum)) {
-                        returnResult.setMESSAGE("后工序报工总数不等于前工序合格品数量！");
-                        returnResult.setMSGTY("E");
-                        return returnResult;
-                    }
-                } else {
-                    returnResult.setMESSAGE("存在前置工序未报工！");
+        if (appidconf.getAppid() != null){
+            if (appidconf.getAppid().equals("app0001")) {
+                currentInputSum = currentInputSum + inputLog.getYeild();
+                if (cardt.getConfirmed().equals("X")) {
+                    returnResult.setMESSAGE("当前工序已经报工，不允许重复报工！");
                     returnResult.setMSGTY("E");
                     return returnResult;
 
                 }
-
-                if (currentInputSum > cardh.getPlqty()) {
+                //标准装框 + 标准装框 * 浮动报工率 / 100
+                if (currentInputSum > cardh.getPlqty() + cardh.getPlqty() * (cardh.getFlgrg() / 100)) {
                     returnResult.setMESSAGE("报工数量不能超过标准装框量！请核对报工数量！");
                     returnResult.setMSGTY("E");
                     return returnResult;
                 }
+
+            } else if (appidconf.getAppid().equals("app0002") || appidconf.getAppid().equals("app0003")) {
+                if (cardt.getConfirmed().equals("X")) {
+                    returnResult.setMESSAGE("当前工序已经报工，不允许重复报工！");
+                    returnResult.setMSGTY("E");
+                    return returnResult;
+
+                }
+                if (!isfirst.equals("FIRST")) {//如果是首工序 不获取前工序报工数据 直接报工
+                    //获取前工序报工数据
+                    beforeMaxOpera = inputLogMapper.confirmationBeforeMaxOperation(inputLog);
+                    List<InputLog> maxInputLogs = this.inputLogMapper.confirmationExistMaxOperaInfo(inputLog.getDispatch(), beforeMaxOpera);
+                    if (maxInputLogs.size() > 0) {
+                        currentInputSum = currentInputSum + inputLog.getYeild() + inputLog.getRowScrap() + inputLog.getWorkScrap();
+                        for (InputLog inputLogtmp : maxInputLogs) {
+                            historyMaxOperationYeildSum = Double.valueOf(historyMaxOperationYeildSum.doubleValue() + inputLogtmp.getYeild().doubleValue());
+                        }
+                        if (!currentInputSum.equals(historyMaxOperationYeildSum)) {
+                            returnResult.setMESSAGE("后工序报工总数不等于前工序合格品数量！");
+                            returnResult.setMSGTY("E");
+                            return returnResult;
+                        }
+                    } else {
+                        returnResult.setMESSAGE("存在前置工序未报工！");
+                        returnResult.setMSGTY("E");
+                        return returnResult;
+
+                    }
+
+                    if (currentInputSum > cardh.getPlqty()) {
+                        returnResult.setMESSAGE("报工数量不能超过标准装框量！请核对报工数量！");
+                        returnResult.setMSGTY("E");
+                        return returnResult;
+                    }
+                }
+            }
+        }else{
+            //工序外协报工
+            if (isfirst.equals("X")){
+                currentInputSum = currentInputSum + inputLog.getYeild();
+                if (cardt.getConfirmed().equals("X")) {
+                    returnResult.setMESSAGE("当前工序已经报工，不允许重复报工！");
+                    returnResult.setMSGTY("E");
+                    return returnResult;
+
+                }
+                //标准装框 + 标准装框 * 浮动报工率 / 100
+                if (currentInputSum > cardh.getPlqty() + cardh.getPlqty() * (cardh.getFlgrg() / 100)) {
+                    returnResult.setMESSAGE("报工数量不能超过标准装框量！请核对报工数量！");
+                    returnResult.setMSGTY("E");
+                    return returnResult;
+                }
+            }else{
+                if (cardt.getConfirmed().equals("X")) {
+                    returnResult.setMESSAGE("当前工序已经报工，不允许重复报工！");
+                    returnResult.setMSGTY("E");
+                    return returnResult;
+
+                }
+                if (!isfirst.equals("FIRST")) {//如果是首工序 不获取前工序报工数据 直接报工
+                    //获取前工序报工数据
+                    beforeMaxOpera = inputLogMapper.confirmationBeforeMaxOperation(inputLog);
+                    List<InputLog> maxInputLogs = this.inputLogMapper.confirmationExistMaxOperaInfo(inputLog.getDispatch(), beforeMaxOpera);
+                    if (maxInputLogs.size() > 0) {
+                        currentInputSum = currentInputSum + inputLog.getYeild() + inputLog.getRowScrap() + inputLog.getWorkScrap();
+                        for (InputLog inputLogtmp : maxInputLogs) {
+                            historyMaxOperationYeildSum = Double.valueOf(historyMaxOperationYeildSum.doubleValue() + inputLogtmp.getYeild().doubleValue());
+                        }
+                        if (!currentInputSum.equals(historyMaxOperationYeildSum)) {
+                            returnResult.setMESSAGE("后工序报工总数不等于前工序合格品数量！");
+                            returnResult.setMSGTY("E");
+                            return returnResult;
+                        }
+                    } else {
+                        returnResult.setMESSAGE("存在前置工序未报工！");
+                        returnResult.setMSGTY("E");
+                        return returnResult;
+
+                    }
+
+                    if (currentInputSum > cardh.getPlqty()) {
+                        returnResult.setMESSAGE("报工数量不能超过标准装框量！请核对报工数量！");
+                        returnResult.setMSGTY("E");
+                        return returnResult;
+                    }
+                }
             }
         }
+
         return returnResult;
     }
 

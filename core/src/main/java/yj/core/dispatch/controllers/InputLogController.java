@@ -24,6 +24,8 @@ import yj.core.cardt.service.ICardtService;
 import yj.core.cardt.service.impl.CardtServiceImpl;
 import yj.core.dispatch.dto.InputLog;
 import yj.core.dispatch.service.IInputLogService;
+import yj.core.outsrgissue.dto.Outsrgissue;
+import yj.core.outsrgissue.service.IOutsrgissueService;
 import yj.core.pandian.dto.Pandian;
 import yj.core.pandian.service.IPandianService;
 import yj.core.webservice.dto.DTPP001ReturnResult;
@@ -66,6 +68,9 @@ public class InputLogController extends BaseController{
 
     @Autowired
     private IAfkoService afkoService;
+
+    @Autowired
+    private IOutsrgissueService outsrgissueService;
     /*
     *报功日志界面查询
      */
@@ -309,6 +314,185 @@ public class InputLogController extends BaseController{
         list.add(returnResult);
         return new ResponseData(list);
     }
+    @RequestMapping(value = {"/confirmation/input/log/insertInputLogNWX"}, method = {RequestMethod.GET})
+    @ResponseBody
+    public ResponseData inputDispatchNWX(HttpServletRequest request){
+        ResponseData rs = new ResponseData();
+        InputLog inputLog = new InputLog();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String curdate = df.format(new Date()).substring(0,10).replaceAll("-","");
+        String curtim  = df.format(new Date()).substring(11,19).replaceAll(":","");
+
+        String barcode = request.getParameter("barcode");
+        String  yssum = request.getParameter("yssum");
+        String  thsum = request.getParameter("thsum");
+        String  hjsum = request.getParameter("hjsum");
+        String  hgsum = request.getParameter("hgsum");
+        String  gfsum = request.getParameter("gfsum");
+        String  lfsum = request.getParameter("lfsum");
+        String  createdBy = request.getParameter("createdBy");
+        String  vornr = request.getParameter("vornr");
+        String  userName = request.getParameter("userName");
+        String  isfirst = "";
+        //获取流转卡信息
+        Cardh card = new Cardh();
+        card = cardhService.selectByBarcode(barcode);
+
+        inputLog.setBarcode(barcode);
+        inputLog.setOrderno(card.getAufnr());
+        inputLog.setDispatch(barcode);
+        inputLog.setOperation(vornr);
+        inputLog.setYeild(Double.parseDouble(hgsum));
+        inputLog.setWorkScrap(Double.parseDouble(gfsum));
+        inputLog.setRowScrap(Double.parseDouble(lfsum));
+        inputLog.setLine("");
+        inputLog.setPlant(card.getWerks());
+        inputLog.setPostingDate(curdate);
+        inputLog.setDispatchLogicID(barcode.substring(14,18));
+        inputLog.setCreated_by(createdBy);
+        inputLog.setAttr1(createdBy);
+        inputLog.setAttr2("");
+        inputLog.setAttr3("");
+        inputLog.setAttr4("");
+        inputLog.setAttr5("");
+        inputLog.setAttr6("");
+        inputLog.setAttr8("");
+        inputLog.setAttr9("");
+        inputLog.setAttr10("");
+        inputLog.setAttr11("");
+        inputLog.setAttr12("");
+        inputLog.setAttr13("");
+        inputLog.setAttr14("");
+        inputLog.setAttr15("5");
+        inputLog.setUserName(userName);
+        //获取发料单数据
+        Outsrgissue outsrgissue = new Outsrgissue();
+        outsrgissue = outsrgissueService.selectByBarcode(barcode,"1");
+
+        //获取工序数据
+        Cardt cardt = new Cardt();
+        Cardt dto = new Cardt();
+        dto.setZpgdbar(barcode);
+        dto.setKtsch(outsrgissue.getKtsch());
+        cardt = cardtService.selectByBarcodeAndKtsch(dto);
+
+        List<Cardt> cardtasc = new ArrayList<>();
+        List<Cardt> cardtdesc = new ArrayList<>();
+
+        cardtasc = cardtService.selectByZpgdbarAsc(barcode);
+
+        cardtdesc = cardtService.selectByZpgdbarDesc(barcode);
+        String lstvor = "";
+        String fstvor = "";
+
+        if (cardtasc.get(0).getVornr().equals(vornr)){
+            fstvor = "X";
+            isfirst = "X";
+        }
+
+        if (cardtdesc.get(0).getVornr().equals(vornr)){
+            lstvor = "X";
+        }
+        inputLog.setLstvor(lstvor);
+        inputLog.setFstvor(fstvor);
+        inputLog.setZprtp("5");
+        if (fstvor.equals("X")){
+            inputLog.setCharg("");
+            inputLog.setClassgrp("");
+            inputLog.setModelNo("");
+            inputLog.setAttr7("");
+        }else{
+            inputLog.setCharg(card.getCharg2());
+            inputLog.setModelNo(card.getDiecd());
+            inputLog.setClassgrp(card.getShift());
+            inputLog.setAttr7(card.getSfflg());
+        }
+
+        Cardhst cardhst = new Cardhst();
+        inputLog.setArbpl(cardt.getArbpl());//工作中心
+        if (inputLog.getArbpl() == null){
+            inputLog.setArbpl("");
+        }
+
+        List<DTBAOGONGReturnResult> list = new ArrayList<>();
+        DTBAOGONGReturnResult returnResult = service.inputDispatchNewWX(inputLog,card,cardt,isfirst);
+        if ( returnResult.getMSGTY().equals("S")){
+            //设置流转卡报工后状态
+            long maxid = cardhstService.getMaxNo(inputLog.getDispatch()) + 1;
+            List<Cardh> listcardh = new ArrayList<Cardh>();
+            if (fstvor.equals("X")){
+                card.setStatus2(card.getStatus());
+                card.setStatus("FCNF");
+            }
+
+            if (lstvor.equals("X")){
+                card.setStatus2(card.getStatus());
+                card.setStatus("ECNF");
+            }
+
+            if (fstvor.equals("") && lstvor.equals("")){
+                card.setStatus2(card.getStatus());
+                card.setStatus("CNF");
+            }
+
+            cardhst.setZpgdbar(inputLog.getDispatch());
+            cardhst.setIsactive("X");
+            cardhst.setId(maxid);
+            cardhst.setOperation(inputLog.getOperation());
+            cardhst.setStatus(card.getStatus());
+
+            if (inputLog.getFstvor().equals("X")){
+                card.setFprddat(curdate);
+                card.setShift("");
+                card.setSfflg("");
+                card.setDiecd("");
+                card.setCharg2(returnResult.getCHARG());
+                card.setActgstrp(curdate);
+                card.setEcqty(Double.parseDouble(hgsum));
+                card.setActst(curtim);
+            }
+
+            if (inputLog.getLstvor().equals("X")){
+                card.setEprddat(curdate);
+                card.setActgltrp(curdate);
+                card.setActdt(curtim);
+                card.setAlqty(Double.parseDouble(hgsum));
+            }
+
+            if  (card.getQtysm() == null){
+                card.setQtysm(Double.parseDouble(lfsum));
+            }else{
+                card.setQtysm(card.getQtysm() + Double.parseDouble(gfsum));
+            }
+
+            if (card.getQtysp() == null){
+                card.setQtysp(Double.parseDouble(gfsum));
+            }else{
+                card.setQtysp(card.getQtysp() + Double.parseDouble(gfsum));
+            }
+            listcardh.add(card);
+
+            cardhService.updateCardhStatus(listcardh);
+
+            //判断状态是否已经存在
+            Cardhst tst = cardhstService.selectByBarcodeAndStatus(cardhst);
+            if (tst == null){
+                cardhstService.insertSingerStatus(cardhst);
+            }else{
+
+                cardhstService.updateStatus(cardhst);
+            }
+            //设置工序记录报工完成后Confirmed 标识
+            cardt.setConfirmed("X");
+            cardtService.updateCardtConfirmed(cardt);
+
+        }
+        list.add(returnResult);
+        rs.setRows(list);
+        rs.setSuccess(true);
+        return  rs;
+    }
+
 
     @RequestMapping(value = {"/confirmation/input/log/insertInputLogN"}, method = {RequestMethod.GET})
     @ResponseBody

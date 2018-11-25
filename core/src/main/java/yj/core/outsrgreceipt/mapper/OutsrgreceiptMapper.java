@@ -21,4 +21,26 @@ public interface OutsrgreceiptMapper extends Mapper<Outsrgreceipt>{
      * @return
      */
     Outsrgreceipt selectByZpgdbarAndStatus(@Param("zpgdbar") String zpgdbar, @Param("status") String status);
+
+    /**
+     *  根据单号查询 行 按 单号 行号 降序排列 917110140
+     * @param receiptnm
+     * @return
+     */
+    List<Outsrgreceipt> selectByReceiptDesc(String receiptnm);
+
+    /**
+     *  插入新行 917110140
+     * @param outsrgreceipt
+     * @return
+     */
+    int insertNewRow(Outsrgreceipt outsrgreceipt);
+
+    /**
+     *  更新行 917110140
+     * @param outsrgreceipt
+     * @return
+     */
+
+    int updateOutsrgreceipt(Outsrgreceipt outsrgreceipt);
 }

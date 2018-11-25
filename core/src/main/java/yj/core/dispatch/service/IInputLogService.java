@@ -38,6 +38,8 @@ public interface IInputLogService extends IBaseService<InputLog>, ProxySelf<IInp
 
     DTBAOGONGReturnResult inputDispatchNew(InputLog input, Cardh cardh, Cardt cardt, Appidconf appidconf,String isfirst);
 
+    DTBAOGONGReturnResult inputDispatchNewWX(InputLog input, Cardh cardh, Cardt cardt,String isfirst);
+
     List<InputLog> queryBeforeResult(IRequest iRequest, String dispatch, String operation);
 
     Long selectNextId();
