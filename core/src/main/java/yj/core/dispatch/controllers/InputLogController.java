@@ -314,6 +314,13 @@ public class InputLogController extends BaseController{
         list.add(returnResult);
         return new ResponseData(list);
     }
+
+
+    /**
+     *  处理外协报工页面请求
+     * @param request
+     * @return
+     */
     @RequestMapping(value = {"/confirmation/input/log/insertInputLogNWX"}, method = {RequestMethod.GET})
     @ResponseBody
     public ResponseData inputDispatchNWX(HttpServletRequest request){
