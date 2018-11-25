@@ -193,7 +193,7 @@
         from wip_in_out_record a,wip_qjcode b,sap_cust c,wip_products_cfg d,wip_lines e
         <where>
             a.ZOTYPE = b.ID
-            and ( a.LINE_ID = d.LINE_ID and a.MATNR = d.MATNR )
+            and ( a.LINE_ID = d.LINE_ID and a.MATNR2 = d.PMATNR )
             AND c.KUNNR = d.KUNNR
             AND b.SLD1 = 'X'
             AND a.REFLAG = 0
