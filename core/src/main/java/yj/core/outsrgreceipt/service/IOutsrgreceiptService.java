@@ -13,4 +13,12 @@ public interface IOutsrgreceiptService extends IBaseService<Outsrgreceipt>, Prox
      * @return
      */
     List<Outsrgreceipt> selectByEbeln(String ebeln);
+
+    /**
+     *  根据流转卡号 状态 查询收货记录 917110140
+     * @param zpgdbar
+     * @param status
+     * @return
+     */
+    Outsrgreceipt selectByZpgdbarAndStatus(String zpgdbar,String status);
 }

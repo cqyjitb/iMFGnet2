@@ -47,4 +47,14 @@
             EBELN = #{ebeln}
         </where>
     </select>
+
+    <select id="selectByZpgdbarAndStatus" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_outsrgreceipt
+        <where>
+            ZPGDBAR = #{zpgdbar}
+            <if test="status != null">
+                and STATUS = #{status}
+            </if>
+        </where>
+    </select>
 </mapper>

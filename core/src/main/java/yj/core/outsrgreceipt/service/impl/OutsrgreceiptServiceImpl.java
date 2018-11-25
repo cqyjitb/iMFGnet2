@@ -19,4 +19,9 @@ public class OutsrgreceiptServiceImpl extends BaseServiceImpl<Outsrgreceipt> imp
     public List<Outsrgreceipt> selectByEbeln(String ebeln) {
         return outsrgreceiptMapper.selectByEbeln(ebeln);
     }
+
+    @Override
+    public Outsrgreceipt selectByZpgdbarAndStatus(String zpgdbar, String status) {
+        return outsrgreceiptMapper.selectByZpgdbarAndStatus(zpgdbar,status);
+    }
 }

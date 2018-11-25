@@ -510,4 +510,71 @@ import java.util.List;
             rs.setSuccess(true);
             return rs;
         }
+
+        @RequestMapping(value = {"/wip/outsrgissue/selectForwxsh"},method = {RequestMethod.GET})
+        @ResponseBody
+        ResponseData selectForwxsh(HttpServletRequest request){
+            ResponseData rs = new ResponseData();
+            String barcode = request.getParameter("barcode");
+            //1 获取流转卡信息
+            Cardh cardh = new Cardh();
+            cardh = cardhService.selectByBarcode(barcode);
+
+            if  (cardh == null){
+                rs.setSuccess(false);
+                rs.setMessage("流转卡不存在，请确认流转卡号是否正确！");
+                return rs;
+            }
+
+            if (cardh.getStatus().equals("HOLD")){
+                rs.setSuccess(false);
+                rs.setMessage("流转卡状态为HOLD 不允许外协收货！");
+                return rs;
+            }
+
+            Marc marc = new Marc();
+            marc = marcService.selectByMatnr(cardh.getMatnr());
+
+
+            Outsrgissue outsrgissue = new Outsrgissue();
+            outsrgissue = service.selectByBarcode(barcode,null);
+            if (outsrgissue == null){
+                rs.setSuccess(false);
+                rs.setMessage("流转卡尚未进行外协发料，不允许进行外协收货！");
+                return rs;
+            }
+
+            if (outsrgissue.getStatus().equals("0")){
+                rs.setSuccess(false);
+                rs.setMessage("流转卡对应的外协发料单尚未完成发料，不允许对该流转卡进行外协收货！");
+                return rs;
+            }
+
+            Outsrgissuehead outsrgissuehead = new Outsrgissuehead();
+            outsrgissuehead = outsrgissueheadService.selectByIssuenm(outsrgissue.getIssuenm());
+
+
+            //查询该流转卡是否已完成发货
+            Outsrgreceipt outsrgreceipt = new Outsrgreceipt();
+            outsrgreceipt = outsrgreceiptService.selectByZpgdbarAndStatus(barcode,"0");
+            if (outsrgreceipt != null){
+                rs.setMessage("该流转卡已完成外协收货，请勿重复操作！");
+                rs.setSuccess(false);
+                return rs;
+            }
+
+            //查询外协采购订单已收货的数量
+            List<Outsrgreceipt> list = new ArrayList<>();
+
+            list = outsrgreceiptService.selectByEbeln(outsrgissue.getEbeln());
+            List listall = new ArrayList();
+            listall.add(cardh);
+            listall.add(marc);
+            listall.add(outsrgissue);
+            listall.add(outsrgissuehead);
+            listall.add(list);
+            rs.setSuccess(true);
+            rs.setRows(listall);
+            return rs;
+        }
     }
