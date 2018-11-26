@@ -464,9 +464,16 @@ public class XhcardController
                 return rs;
             }
 
+            //查询毛坯不良品处理记录
+            List<Dftrghlist> dftrghlists = dftrghlistService.selectByZxhbar(zxhbar);
+
             rs.setSuccess(true);
             rslist.add(inputLoglist);//返回报工记录
             rslist.add(xhcard);//返回扫描的箱号信息
+            if (dftrghlists.size() > 0){
+                rslist.add(dftrghlists);
+            }
+
             rs.setRows(rslist);
 
 

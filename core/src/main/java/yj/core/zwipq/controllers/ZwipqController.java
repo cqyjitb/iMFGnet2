@@ -93,12 +93,22 @@ public class ZwipqController extends BaseController {
         return new ResponseData();
     }
 
+    /**
+     *  根据生产线ID 箱号条码 查询在职队列数量 作为最大可取消数量   917110140
+     * @param request
+     * @param line_id
+     * @param zxhbar
+     * @param cursum
+     * @return
+     */
     @RequestMapping(value = {"/zwipq/selectByLineIdAndZxhbar"}, method = {RequestMethod.GET})
     @ResponseBody
     public ResponseData selectByLineIdAndZxhbar(HttpServletRequest request, String line_id, String zxhbar ,String cursum ) {
         ResponseData rs = new ResponseData();
         List<Zwipq> list = service.selectByLineIdAndZxhbar(line_id, zxhbar);
-        if (list.size() < Integer.valueOf(cursum)){
+        List<Zwipq> listdown = service.selectByLineIdAndZxhbarAndZOFFL(line_id,zxhbar,"1");
+
+        if (list.size() - listdown.size() < Integer.valueOf(cursum)){
             rs.setSuccess(false);
             rs.setMessage("取消上线数量不能大于当前生产线在制队列数量！");
             return rs;
@@ -123,6 +133,8 @@ public class ZwipqController extends BaseController {
                 listpline = service.selectByLineIdAndZxhbar(lines.getPlineId().toString(),zxhbar);
                 listall.add(listpline);
             }
+
+
             rs.setRows(listall);
             return rs;
         }

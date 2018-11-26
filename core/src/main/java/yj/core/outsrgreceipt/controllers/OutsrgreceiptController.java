@@ -132,14 +132,14 @@ public class OutsrgreceiptController extends BaseController {
                 l_update = "X";
             }else{
                 outsrgreceipthead = list.get(0);
-                if (!outsrgreceipthead.getReceiptnm().substring(1,4).equals(curdate.substring(2,5))){
+                if (!outsrgreceipthead.getReceiptnm().substring(1,5).equals(curdate.substring(2,6))){
                     String no = "S" + curdate.substring(2,6) + "000001";
                     outsrgreceipthead.setReceiptnm(no);
                 }else{
                     String mxnum = outsrgreceipthead.getReceiptnm().substring(5,11);
                     int num = Integer.valueOf(mxnum) + 1;
                     mxnum = String.format("%06d",num);
-                    outsrgreceipthead.setReceiptnm("S" + curdate + mxnum);
+                    outsrgreceipthead.setReceiptnm("S" + curdate.substring(2,6) + mxnum);
                     outsrgreceipthead.setZdpuser(createdBy);
                     outsrgreceipthead.setZdptim(curtim);
                     outsrgreceipthead.setCreationDate(new Date());
@@ -183,9 +183,49 @@ public class OutsrgreceiptController extends BaseController {
             outsrgreceipt.setTtreceipts(Double.parseDouble(hjsum));
         }else{
             Long item = 0L;
+            outsrgreceipt = new Outsrgreceipt();
             if (outsrgreceipthead.getReceiptnm() == null){
                 List<Outsrgreceipt> listmx = service.selectByReceiptDesc(list.get(0).getReceiptnm());
                 item = listmx.get(0).getItem() + 1;
+
+                outsrgreceipt.setRmzhl(rspos);
+                outsrgreceipt.setRueck(rsnum);
+                outsrgreceipt.setZeile("");
+                outsrgreceipt.setZdstim(curtim);
+                outsrgreceipt.setZdsdat(curdate);
+                outsrgreceipt.setZthnum(Double.parseDouble(thsum));
+                outsrgreceipt.setMblnr(mblnr);
+                outsrgreceipt.setMjahr(mjahr);
+                outsrgreceipt.setZdsuser(createdBy);
+                outsrgreceipt.setZgfnum(Double.parseDouble(gfsum));
+                outsrgreceipt.setZlfnum(Double.parseDouble(lfsum));
+                outsrgreceipt.setZlost(Double.parseDouble(yssum));
+                outsrgreceipt.setZpgdbar(barcode);
+                outsrgreceipt.setZshnum(Double.parseDouble(gfsum) + Double.parseDouble(lfsum) + Double.parseDouble(hgsum) + Double.parseDouble(thsum));
+                outsrgreceipt.setStatus("0");
+                outsrgreceipt.setCreatedBy(Long.valueOf(createdBy));
+                outsrgreceipt.setCreationDate(new Date());
+                outsrgreceipt.setWerks(cardh.getWerks());
+                outsrgreceipt.setVsnda(outsrgissue.getVsnda());
+                outsrgreceipt.setVornr(vornr);
+                outsrgreceipt.setTxz01(outsrgissue.getTxz01());
+                outsrgreceipt.setTtreceipts(Double.parseDouble(hjsum));
+                outsrgreceipt.setSfflg(cardh.getSfflg());
+                outsrgreceipt.setReceiptnm(list.get(0).getReceiptnm());
+                outsrgreceipt.setMenge(outsrgrfe.getMenge());
+                outsrgreceipt.setMatnr(cardh.getMatnr());
+                outsrgreceipt.setMatkl(marc.getMatkl());
+                outsrgreceipt.setLifnr(lifnr);
+                outsrgreceipt.setKtsch(outsrgissue.getKtsch());
+                outsrgreceipt.setIssuenmitem(outsrgissue.getItem().toString());
+                outsrgreceipt.setIssuenm(outsrgissue.getIssuenm());
+                outsrgreceipt.setGmein(cardh.getGmein());
+                outsrgreceipt.setEbelp(outsrgissue.getEbelp());
+                outsrgreceipt.setEbeln(outsrgissue.getEbeln());
+                outsrgreceipt.setDiecd(cardh.getDiecd());
+                outsrgreceipt.setDeductntenm("");
+                outsrgreceipt.setCharg(cardh.getCharg2());
+                outsrgreceipt.setItem(item);
 
             }else{
                 item = 1L;
@@ -212,7 +252,7 @@ public class OutsrgreceiptController extends BaseController {
                 outsrgreceipt.setTxz01(outsrgissue.getTxz01());
                 outsrgreceipt.setTtreceipts(Double.parseDouble(hjsum));
                 outsrgreceipt.setSfflg(cardh.getSfflg());
-                outsrgreceipt.setReceiptnm(list.get(0).getReceiptnm());
+                outsrgreceipt.setReceiptnm(outsrgreceipthead.getReceiptnm());
                 outsrgreceipt.setMenge(outsrgrfe.getMenge());
                 outsrgreceipt.setMatnr(cardh.getMatnr());
                 outsrgreceipt.setMatkl(marc.getMatkl());

@@ -246,4 +246,9 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
     public List<Zwipq> selectByZxhbar(String zxhbar) {
         return zwipqMapper.selectByZxhbar(zxhbar);
     }
+
+    @Override
+    public List<Zwipq> selectByLineIdAndZxhbarAndZOFFL(String line_id, String zxhbar, String zoffl) {
+        return zwipqMapper.selectByLineIdAndZxhbarAndZOFFL(line_id,zxhbar,zoffl);
+    }
 }

@@ -108,4 +108,13 @@ public interface ZwipqMapper extends Mapper<Zwipq> {
      * @return
      */
     List<Zwipq> selectByZxhbar(String zxhbar);
+
+    /**
+     *   根据生产线ID 箱号条码 查询在职队列数量 作为最大可取消数量   917110140
+     * @param line_id
+     * @param zxhbar
+     * @param zoffl
+     * @return
+     */
+    List<Zwipq> selectByLineIdAndZxhbarAndZOFFL(String line_id,String zxhbar,String zoffl);
 }
