@@ -69,30 +69,54 @@ public class OutsrgreceiptController extends BaseController {
         return new ResponseData();
     }
 
-    @RequestMapping(value = {"/wip/outsrgissue/wxsh"}, method = {RequestMethod.GET})
+    @RequestMapping(value = {"/wip/outsrgreceipt/syncwxsh"}, method = {RequestMethod.GET})
     @ResponseBody
     public ResponseData processWxsh(HttpServletRequest request) {
         ResponseData rs = new ResponseData();
-        String barcode = request.getParameter("barcode");
-        String lifnr = request.getParameter("lifnr");
-        String lfsum = request.getParameter("lfsum");
-        String gfsum = request.getParameter("gfsum");
-        String hgsum = request.getParameter("hgsum");
-        String yssum = request.getParameter("yssum");
-        String thsum = request.getParameter("thsum");
-        String hjsum = request.getParameter("hjsum");
-        String createdBy = request.getParameter("createdBy");
-        String mblnr = request.getParameter("mblnr");
-        String mjahr = request.getParameter("mjahr");
-        String rsnum = request.getParameter("rsnum");
-        String rspos = request.getParameter("rspos");
-        String vornr = request.getParameter("vornr");
+        String barcode = request.getParameter("a");
+        String lifnr = request.getParameter("b");
+        String lfsum = request.getParameter("c");
+        String gfsum = request.getParameter("d");
+        String hgsum = request.getParameter("e");
+        String yssum = request.getParameter("f");
+        String thsum = request.getParameter("g");
+        String hjsum = request.getParameter("h");
+        String createdBy = request.getParameter("i");
+        String mblnr = request.getParameter("j");
+        String mjahr = request.getParameter("k");
+        String rsnum = request.getParameter("l");
+        String rspos = request.getParameter("m");
+        String vornr = request.getParameter("n");
+
+        if (lfsum.equals("")){
+            lfsum = "0";
+        }
+
+        if (gfsum.equals("")){
+            gfsum = "0";
+        }
+
+        if (hgsum.equals("")){
+            hgsum = "0";
+        }
+
+        if (yssum.equals("")){
+            yssum = "0";
+        }
+
+        if (thsum.equals("")){
+            thsum = "0";
+        }
+
+        if (hjsum.equals("")){
+            hjsum = "0";
+        }
 
         Cardh cardh = new Cardh();
         cardh = cardhService.selectByBarcode(barcode);
 
         Outsrgissue outsrgissue = new Outsrgissue();
-        outsrgissue = outsrgissueService.selectByBarcode(barcode,"1");
+        outsrgissue = outsrgissueService.selectByBarcode(barcode,"0");
 
         Outsrgrfe outsrgrfe = new Outsrgrfe();
         outsrgrfe = outsrgrfeService.selectByCondition(cardh.getWerks(),cardh.getAufnr(),vornr,cardh.getMatnr(),lifnr);
@@ -129,7 +153,7 @@ public class OutsrgreceiptController extends BaseController {
         }else{
             if (list.get(0).getStatus().equals("0")){
                 //使用以前的单号
-                l_update = "X";
+
             }else{
                 outsrgreceipthead = list.get(0);
                 if (!outsrgreceipthead.getReceiptnm().substring(1,5).equals(curdate.substring(2,6))){
@@ -162,6 +186,7 @@ public class OutsrgreceiptController extends BaseController {
         outsrgreceipt = service.selectByZpgdbarAndStatus(barcode,"1");
         if (outsrgreceipt != null) {
             //使用以前的行项目
+            l_update = "X";
             outsrgreceipt.setStatus("0");
             outsrgreceipt.setLastUpdatedBy(Long.valueOf(createdBy));
             outsrgreceipt.setLastUpdateDate(new Date());
@@ -332,6 +357,7 @@ public class OutsrgreceiptController extends BaseController {
             item.setLifnr(outsrgreceipt.getLifnr());
             item.setKtsch(outsrgreceipt.getKtsch());
             item.setItem(outsrgreceipt.getItem().toString());
+            item.setIssuenm(outsrgreceipt.getIssuenm());
             item.setIssuenmitem(outsrgreceipt.getIssuenmitem());
             item.setGmein(outsrgreceipt.getGmein());
             item.setEbelp(outsrgreceipt.getEbelp());

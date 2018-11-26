@@ -25,6 +25,7 @@
         <intercept-url pattern="/confirmation/input/log/writeOff" access="permitAll"/>
         <intercept-url pattern="/confirmation/input/log/insertInputLog" access="permitAll"/>
         <intercept-url pattern="/confirmation/input/log/insertInputLogN" access="permitAll"/>
+        <intercept-url pattern="/confirmation/input/log/insertInputLogNWX" access="permitAll"/>
         <intercept-url pattern="/confirmation/input/log/inputFindHistory" access="permitAll"/>
         <intercept-url pattern="/confirmation/input/log/queryResultpd" access="permitAll"/>
         <intercept-url pattern="/confirmation/input/log/pandian" access="permitAll"/>

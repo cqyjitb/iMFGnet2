@@ -421,9 +421,9 @@
     <select id="selectByLineIdAndZxhbarAndZOFFL" parameterType="java.lang.String" resultMap="BaseResultMap">
         select * from  zwipq
         <where>
-            LINE_ID = #{line_id},
-            ZXHBAR = #{zxhbar},
-            ZOFFL = #{zoffl}
+            LINE_ID = #{line_id}
+            and ZXHBAR = #{zxhbar}
+            and ZOFFL = #{zoffl}
         </where>
     </select>
 </mapper>

@@ -30,6 +30,8 @@ import yj.core.pandian.dto.Pandian;
 import yj.core.pandian.service.IPandianService;
 import yj.core.webservice.dto.DTPP001ReturnResult;
 import yj.core.webservice_newbg.dto.DTBAOGONGReturnResult;
+import yj.core.xhcard.dto.Xhcard;
+import yj.core.xhcard.service.IXhcardService;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -71,6 +73,9 @@ public class InputLogController extends BaseController{
 
     @Autowired
     private IOutsrgissueService outsrgissueService;
+
+    @Autowired
+    private IXhcardService xhcardService;
     /*
     *报功日志界面查询
      */
@@ -330,21 +335,51 @@ public class InputLogController extends BaseController{
         String curdate = df.format(new Date()).substring(0,10).replaceAll("-","");
         String curtim  = df.format(new Date()).substring(11,19).replaceAll(":","");
 
-        String barcode = request.getParameter("barcode");
-        String  yssum = request.getParameter("yssum");
-        String  thsum = request.getParameter("thsum");
-        String  hjsum = request.getParameter("hjsum");
-        String  hgsum = request.getParameter("hgsum");
-        String  gfsum = request.getParameter("gfsum");
-        String  lfsum = request.getParameter("lfsum");
-        String  createdBy = request.getParameter("createdBy");
-        String  vornr = request.getParameter("vornr");
-        String  userName = request.getParameter("userName");
+        String barcode = request.getParameter("a");
+        String  yssum = request.getParameter("b");
+        String  thsum = request.getParameter("c");
+        String  hjsum = request.getParameter("d");
+        String  hgsum = request.getParameter("e");
+        String  gfsum = request.getParameter("f");
+        String  lfsum = request.getParameter("g");
+        String  createdBy = request.getParameter("i");
+        String  vornr = request.getParameter("j");
+        String  userName = request.getParameter("k");
         String  isfirst = "";
+
+        if (lfsum.equals("")){
+            lfsum = "0";
+        }
+
+        if (gfsum.equals("")){
+            gfsum = "0";
+        }
+
+        if (hgsum.equals("")){
+            hgsum = "0";
+        }
+
+        if (yssum.equals("")){
+            yssum = "0";
+        }
+
+        if (thsum.equals("")){
+            thsum = "0";
+        }
+
+        if (hjsum.equals("")){
+            hjsum = "0";
+        }
+
         //获取流转卡信息
         Cardh card = new Cardh();
         card = cardhService.selectByBarcode(barcode);
 
+        Afko afko = new Afko();
+        afko = afkoService.selectByAufnr(card.getAufnr());
+
+        Xhcard xhcard = new Xhcard();
+        xhcard = xhcardService.selectForZxhbar(card.getWerks(),card.getAufnr(),card.getZxhnum());
         inputLog.setBarcode(barcode);
         inputLog.setOrderno(card.getAufnr());
         inputLog.setDispatch(barcode);
@@ -372,9 +407,11 @@ public class InputLogController extends BaseController{
         inputLog.setAttr14("");
         inputLog.setAttr15("5");
         inputLog.setUserName(userName);
+        inputLog.setAuart(afko.getAuart());
+        inputLog.setZtpbar(xhcard.getZxhbar());
         //获取发料单数据
         Outsrgissue outsrgissue = new Outsrgissue();
-        outsrgissue = outsrgissueService.selectByBarcode(barcode,"1");
+        outsrgissue = outsrgissueService.selectByBarcode(barcode,"0");
 
         //获取工序数据
         Cardt cardt = new Cardt();
@@ -493,6 +530,10 @@ public class InputLogController extends BaseController{
             cardt.setConfirmed("X");
             cardtService.updateCardtConfirmed(cardt);
 
+        }else{
+            rs.setSuccess(false);
+            rs.setMessage(returnResult.getMESSAGE());
+            return rs;
         }
         list.add(returnResult);
         rs.setRows(list);

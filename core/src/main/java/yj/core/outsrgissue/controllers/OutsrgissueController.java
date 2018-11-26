@@ -110,7 +110,6 @@ import java.util.List;
         }else{
             if (list.get(0).getStatus().equals("0")){
                 //使用以前的单号
-                l_update = "X";
 
             }else{
                 //产生新的单号 获取当前流水
@@ -140,6 +139,7 @@ import java.util.List;
         outsrgissue = service.selectByBarcode(barcode,"1");
         if (outsrgissue != null){
             //  使用以前的老航项目
+            l_update = "X";
             outsrgissue.setStatus("0");
             outsrgissue.setLastUpdatedBy(Long.valueOf(userId));
             outsrgissue.setLastUpdateDate(new Date());

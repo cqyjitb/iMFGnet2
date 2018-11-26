@@ -327,7 +327,7 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
                     return returnResult;
 
                 }
-                if (!isfirst.equals("FIRST")) {//如果是首工序 不获取前工序报工数据 直接报工
+                if (!isfirst.equals("X")) {//如果是首工序 不获取前工序报工数据 直接报工
                     //获取前工序报工数据
                     beforeMaxOpera = inputLogMapper.confirmationBeforeMaxOperation(inputLog);
                     List<InputLog> maxInputLogs = this.inputLogMapper.confirmationExistMaxOperaInfo(inputLog.getDispatch(), beforeMaxOpera);

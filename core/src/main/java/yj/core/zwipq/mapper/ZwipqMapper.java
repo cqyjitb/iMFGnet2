@@ -116,5 +116,5 @@ public interface ZwipqMapper extends Mapper<Zwipq> {
      * @param zoffl
      * @return
      */
-    List<Zwipq> selectByLineIdAndZxhbarAndZOFFL(String line_id,String zxhbar,String zoffl);
+    List<Zwipq> selectByLineIdAndZxhbarAndZOFFL(@Param("line_id") String line_id,@Param("zxhbar") String zxhbar,@Param("zoffl") String zoffl);
 }
