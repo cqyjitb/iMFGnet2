@@ -21,4 +21,38 @@ public interface ProductsCfgMapper extends Mapper<ProductsCfg>{
      * @return
      */
     List<ProductsCfg> selectByLineId(@Param("lineId") String lineId);
+
+    /**
+     * 机加产线产品配置维护查询 918100064
+     * @param productsCfg
+     * @return
+     */
+    List<ProductsCfg> selectFromPage(ProductsCfg productsCfg);
+
+    /**
+     * 根据主键查询数据的条数 918100064
+     * @param werks
+     * @param lineId
+     * @param pmatnr
+     * @return
+     */
+    int isExit(@Param("werks") String werks,@Param("lineId") Long lineId,@Param("pmatnr") String pmatnr);
+
+    /**
+     * 机加产线产品配置维护修改 918100064
+     * @param productsCfg
+     */
+    void updateProductsCfg(ProductsCfg productsCfg);
+
+    /**
+     * 机加产线产品配置维护添加 918100064
+     * @param productsCfg
+     */
+    void insertProductsCfg(ProductsCfg productsCfg);
+
+    /**
+     * 机加产线产品配置维护删除 918100064
+     * @param productsCfg
+     */
+    void deleteProductsCfg(ProductsCfg productsCfg);
 }

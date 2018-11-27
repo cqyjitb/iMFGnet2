@@ -88,7 +88,6 @@ public class LinesServiceImpl extends BaseServiceImpl<Lines> implements ILinesSe
                     lines.setLastUpdatedBy(Long.valueOf(userId));
                     linesMapper.updateLines(lines);
                 }else{
-                    lines.setWerks("1001");
                     lines.setCreationDate(new Date());
                     lines.setCreatedBy(Long.valueOf(userId));
                     linesMapper.insertLines(lines);

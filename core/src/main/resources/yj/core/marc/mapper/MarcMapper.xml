@@ -45,6 +45,15 @@
         <result column="YZCBARF" property="yzcbarf" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <select id="selectMatnr" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from sap_marc
+        <where>
+            <if test="matnr != null">
+                matnr = #{matnr}
+            </if>
+        </where>
+    </select>
+
     <select id="isExit" resultType="java.lang.Integer" parameterType="java.lang.String">
         SELECT count(*) FROM sap_marc
         <where>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.wipdot.mapper.DotMapper">
+    <resultMap id="BaseResultMap" type="yj.core.wipdot.dto.Dot">
+        <result column="WERKS" property="werks" jdbcType="VARCHAR"/>
+        <result column="LINE_ID" property="lineId" jdbcType="DECIMAL"/>
+        <result column="POINT_ID" property="pointId" jdbcType="DECIMAL"/>
+        <result column="DOT_ID" property="dotId" jdbcType="DECIMAL"/>
+        <result column="DOT_CODE" property="dotCode" jdbcType="VARCHAR"/>
+        <result column="DESCRIPTIONS" property="descriptions" jdbcType="VARCHAR"/>
+        <result column="FIRST_FLAG" property="firstFlag" jdbcType="VARCHAR"/>
+        <result column="END_FLAG" property="endFlag" jdbcType="VARCHAR"/>
+        <result column="MONITOR_FLAG" property="monitorFlag" jdbcType="VARCHAR"/>
+        <result column="ENABLE_FLAG" property="enableFlag" jdbcType="VARCHAR"/>
+        <result column="START_DATE" property="startDate" jdbcType="DATE"/>
+        <result column="END_DATE" property="endDate" jdbcType="DATE"/>
+        <result column="ALERT_FLAG" property="alertFlag" jdbcType="VARCHAR"/>
+        <result column="CRTATED_BY" property="createdBy" jdbcType="VARCHAR"/>
+        <result column="CREATION_DATE" property="creationDate" jdbcType="DATE"/>
+        <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="VARCHAR"/>
+        <result column="LAST_UPDATED_DATE" property="lastUpdatedDate" jdbcType="DATE"/>
+    </resultMap>
+
+    <select id="selectPoints" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(*) from wip_dot
+        <where>
+            POINT_ID = #{pointId}
+        </where>
+    </select>
+
+</mapper>

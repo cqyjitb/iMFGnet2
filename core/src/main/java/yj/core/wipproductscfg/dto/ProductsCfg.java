@@ -7,6 +7,7 @@ import com.hand.hap.mybatis.annotation.ExtensionAttribute;
 import javax.persistence.Table;
 import com.hand.hap.system.dto.BaseDTO;
 import java.util.Date;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 @ExtensionAttribute(disable=true)
@@ -37,6 +38,20 @@ public class ProductsCfg extends BaseDTO {
 
       private String kunnr;
 
+      private String custmantr;
+
+      private String custbarcodeynCarton;
+
+      private String custbarcodeynBox;
+
+      private Integer spostCarton;
+
+      private Integer epostCarton;
+
+      private Integer spostBox;
+
+      private Integer epostBox;
+
       private Date creationDate; //创建时间
 
       private Long createdBy; //创建人
@@ -45,8 +60,68 @@ public class ProductsCfg extends BaseDTO {
 
       private Long lastUpdatedBy; //更新人
 
+    @Transient
+    private String descriptions;
+    @Transient
+    private String maktx;
 
-     public void setWerks(String werks){
+    private String matnr2;
+
+    private String maktx2;
+
+    private String kunnr1;
+    @Transient
+    private String name1;
+
+    public String getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(String descriptions) {
+        this.descriptions = descriptions;
+    }
+
+    public String getMaktx() {
+        return maktx;
+    }
+
+    public void setMaktx(String maktx) {
+        this.maktx = maktx;
+    }
+
+    public String getMatnr2() {
+        return matnr2;
+    }
+
+    public void setMatnr2(String matnr2) {
+        this.matnr2 = matnr2;
+    }
+
+    public String getMaktx2() {
+        return maktx2;
+    }
+
+    public void setMaktx2(String maktx2) {
+        this.maktx2 = maktx2;
+    }
+
+    public String getKunnr1() {
+        return kunnr1;
+    }
+
+    public void setKunnr1(String kunnr1) {
+        this.kunnr1 = kunnr1;
+    }
+
+    public String getName1() {
+        return name1;
+    }
+
+    public void setName1(String name1) {
+        this.name1 = name1;
+    }
+
+    public void setWerks(String werks){
          this.werks = werks;
      }
 
@@ -78,7 +153,7 @@ public class ProductsCfg extends BaseDTO {
          return matnr;
      }
 
-     public void setCreationDate(Date creationDate){
+    public void setCreationDate(Date creationDate){
          this.creationDate = creationDate;
      }
 
@@ -156,5 +231,61 @@ public class ProductsCfg extends BaseDTO {
 
     public void setKunnr(String kunnr) {
         this.kunnr = kunnr;
+    }
+
+    public String getCustmantr() {
+        return custmantr;
+    }
+
+    public void setCustmantr(String custmantr) {
+        this.custmantr = custmantr;
+    }
+
+    public String getCustbarcodeynCarton() {
+        return custbarcodeynCarton;
+    }
+
+    public void setCustbarcodeynCarton(String custbarcodeynCarton) {
+        this.custbarcodeynCarton = custbarcodeynCarton;
+    }
+
+    public String getCustbarcodeynBox() {
+        return custbarcodeynBox;
+    }
+
+    public void setCustbarcodeynBox(String custbarcodeynBox) {
+        this.custbarcodeynBox = custbarcodeynBox;
+    }
+
+    public Integer getSpostCarton() {
+        return spostCarton;
+    }
+
+    public void setSpostCarton(Integer spostCarton) {
+        this.spostCarton = spostCarton;
+    }
+
+    public Integer getEpostCarton() {
+        return epostCarton;
+    }
+
+    public void setEpostCarton(Integer epostCarton) {
+        this.epostCarton = epostCarton;
+    }
+
+    public Integer getSpostBox() {
+        return spostBox;
+    }
+
+    public void setSpostBox(Integer spostBox) {
+        this.spostBox = spostBox;
+    }
+
+    public Integer getEpostBox() {
+        return epostBox;
+    }
+
+    public void setEpostBox(Integer epostBox) {
+        this.epostBox = epostBox;
     }
 }
