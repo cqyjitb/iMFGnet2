@@ -54,6 +54,14 @@
         <result column="ZOUTNUM" property="zoutnum" jdbcType="DECIMAL"/>
     </resultMap>
 
+    <select id="selectDftdtl" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(*) from wip_in_out_record
+        <where>
+            matnr2 = #{matnr2}
+            AND ZISSUETXT = #{zissuetxt}
+        </where>
+    </select>
+
     <select id="selectforlines" parameterType="java.lang.String" resultMap="BaseResultMap2">
         select distinct re.line_id,li.descriptions,li.werks,li.dept_id,b.name,re.matnr,m.maktx,re.sfflg,re.diecd
         from wip_in_out_record re,wip_lines li,hr_org_unit_b b,zwipq q,sap_marc m

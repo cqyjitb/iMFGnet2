@@ -303,7 +303,8 @@
                         zpgdbar: {type: "string"},
                         lgort: {type: "string"},
                         createdBy: {type: "number"},
-                        qsenq:{type:"number"}
+                        qsenq:{type:"number"},
+                        sourceLineId:{type:"string"}
                     }
                 }
             }
@@ -581,6 +582,17 @@
                     field: "qsenq",
                     title: '队列序号',
                     width: 80,
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    },
+                    attributes: {
+                        style: "text-align: center;"
+                    }
+                },
+                {
+                    field: "sourceLineId",
+                    title: '来源产线Id',
+                    width: 100,
                     headerAttributes: {
                         style: "text-align: center;"
                     },

@@ -45,6 +45,8 @@ public class Lines extends BaseDTO {
 
       private String segOprName;//工序段名称
 
+      private String pkgBindFlag;//包装绑定工件二维码。1：绑定，0：不绑定
+
       private Long pointNum; //工序数量
 
       private Date creationDate; //创建时间
@@ -73,6 +75,14 @@ public class Lines extends BaseDTO {
     private String uname;
 
     private String pdescriptions; //产线描述
+
+    public String getPkgBindFlag() {
+        return pkgBindFlag;
+    }
+
+    public void setPkgBindFlag(String pkgBindFlag) {
+        this.pkgBindFlag = pkgBindFlag;
+    }
 
     public String getExecoffFlag() {
         return execoffFlag;

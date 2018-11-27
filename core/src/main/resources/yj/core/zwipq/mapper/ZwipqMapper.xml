@@ -101,9 +101,9 @@
         <result column="SFFLG" property="sfflg" jdbcType="VARCHAR" />
         <result column="DIECD" property="diecd" jdbcType="VARCHAR" />
         <result column="Q_SENQ" property="qsenq" jdbcType="DECIMAL"/>
-        <result column="CREATION_DATE" property="creationDate" jdbcType="DATE" />
+        <result column="CREATION_DATE" property="creationDate"/>
         <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
-        <result column="LAST_UPDATED_DATE" property="lastUpdatedDate" jdbcType="DATE" />
+        <result column="LAST_UPDATED_DATE" property="lastUpdatedDate"/>
         <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
         <result column="OFF_UPDATED_DATE" property="offUpdatedDate" jdbcType="DATE" />
         <result column="OFF_UPDATED_BY" property="offUpdatedBy" jdbcType="DECIMAL" />
@@ -111,6 +111,7 @@
         <result column="CHECK" property="check" jdbcType="VARCHAR" />
         <result column="UNIT_ID" property="unitId" jdbcType="DECIMAL"/>
         <result column="DEPT_ID" property="deptId" jdbcType="VARCHAR"/>
+        <result column="SOURCE_LINE_ID" property="sourceLineId" jdbcType="VARCHAR" />
     </resultMap>
 
     <resultMap id="BaseResultMap4" type="yj.core.zwipq.dto.Zwipq">
@@ -138,8 +139,7 @@
     <select id="selectIORZwipq" parameterType="java.lang.String" resultMap="BaseResultMap4">
         select distinct li.werks as werks,li.dept_id as deptId,b.name as name,q.line_id as lineId,
             li.descriptions as descriptions,ca.attr1 as attr,q.shift as shift1,pc.pmatnr as pmatnr,
-            (select maktx FROM sap_marc where matnr = pmatnr) as pmaktx,
-            (select zpgdbar from sap_cardh where attr1 = attr and shift = shift1 and matnr = pmatnr) as zpgdbar,
+            (select maktx FROM sap_marc where matnr = pmatnr) as pmaktx,ca.zpgdbar as zpgdbar,
             pc.matnr as matnr,ma.maktx as maktx,q.gmein as gmein,pc.kunnr as kunnr,cu.name1 as name1
             FROM zwipq q,wip_lines li,wip_in_out_record re,hr_org_unit_b b,sap_cardh ca,wip_products_cfg pc,sap_marc ma,sap_cust cu
                 <where>
@@ -196,8 +196,8 @@
     </select>
 
     <select id="selectZwipq" parameterType="java.lang.String" resultMap="BaseResultMap3">
-        select count(q.zsxjlh),q.line_id,q.creation_date,q.zxhbar,q.sfflg,q.diecd,q.zgjbar,q.matnr,q.matnr2,
-        q.arbpr,q.charg,q.zzxkl,q.zqjkl,q.zoffl,q.status,q.zremade,q.zpgdbar,q.lgort,q.q_senq,
+        select distinct q.zsxjlh,q.line_id,q.creation_date,q.zxhbar,q.sfflg,q.diecd,q.zgjbar,q.matnr,q.matnr2,
+        q.arbpr,q.charg,q.zzxkl,q.zqjkl,q.zoffl,q.status,q.zremade,q.zpgdbar,q.lgort,q.q_senq,q.SOURCE_LINE_ID,
         li.dept_id,b.name,li.descriptions,ma.maktx
         from zwipq q,sap_cardh ca,wip_lines li,hr_org_unit_b b,sap_marc ma
         <where>
@@ -258,7 +258,6 @@
                 1 = 1
             </if>)
         </where>
-        group by q.zsxjlh having count(q.zsxjlh)>=1
     </select>
 
     <select id="selectZsxnum" parameterType="java.lang.String" resultType="java.lang.Integer">

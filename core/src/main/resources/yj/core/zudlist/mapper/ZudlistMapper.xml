@@ -72,6 +72,14 @@
         <result column="MAKTX" property="maktx" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <select id="selectDftdtl" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(*) from wip_zudlist
+        <where>
+            matnr2 = #{matnr2}
+            AND ZISSUETXT = #{zissuetxt}
+        </where>
+    </select>
+
     <select id="selectZudlist" parameterType="java.lang.String" resultMap="BaseResultMap2">
         select distinct zl.*,zh.line_id,li.descriptions,cu.sortl,ma.maktx,re.zotype
         from wip_zudlist zl,wip_zudhead zh,wip_lines li,hr_org_unit_b b,sap_cust cu,sap_marc ma,wip_in_out_record re

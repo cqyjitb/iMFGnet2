@@ -66,4 +66,59 @@ import java.util.List;
         return rs;
         }
 
+        /**
+         * 处理质量缺陷明细代码维护查询页面请求 918100064
+         * @param page
+         * @param pageSize
+         * @param request
+         * @param werks
+         * @param matnr
+         * @param code
+         * @return
+         */
+        @RequestMapping(value = "/sap/dftdtl/queryDftdtl")
+        @ResponseBody
+        public ResponseData queryDftdtl(@RequestParam(defaultValue = DEFAULT_PAGE) int page,
+                                        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize,
+                                        HttpServletRequest request,String werks,String matnr,String code) {
+            IRequest requestContext = createRequestContext(request);
+            return new ResponseData(service.selectFromPage(requestContext,page,pageSize,werks,matnr,code));
+        }
+
+        /**
+         * 处理质量缺陷明细代码维护添加和修改页面请求 918100064
+         * @param request
+         * @param dto
+         * @return
+         */
+        @RequestMapping(value = "/sap/dftdtl/submitDftdtl")
+        @ResponseBody
+        public ResponseData submitDftdtl(HttpServletRequest request,@RequestBody List<Dftdtl> dto){
+            IRequest requestCtx = createRequestContext(request);
+            ResponseData rs =  new ResponseData();
+            String userId ="" + request.getSession().getAttribute("userId");
+            String result = service.updateOrInsert(requestCtx,dto,userId);
+            rs.setMessage(result);
+            return rs;
+        }
+
+        /**
+         * 处理质量缺陷明细代码维护删除页面请求 918100064
+         * @param request
+         * @param dto
+         * @return
+         */
+        @RequestMapping(value = "/sap/dftdtl/removeDftdtl")
+        @ResponseBody
+        public ResponseData removeDftdtl(HttpServletRequest request,@RequestBody List<Dftdtl> dto){
+            ResponseData rs =  new ResponseData();
+            String result = service.deleteDftdtl(dto);
+            if(result != null){
+                rs.setSuccess(false);
+                rs.setMessage(result);
+                return rs;
+            }else {
+                return new ResponseData();
+            }
+        }
     }

@@ -1,5 +1,6 @@
 package yj.core.wipproductscfg.service;
 
+import com.hand.hap.core.IRequest;
 import com.hand.hap.core.ProxySelf;
 import com.hand.hap.system.service.IBaseService;
 import yj.core.wipproductscfg.dto.ProductsCfg;
@@ -29,4 +30,8 @@ public interface IProductsCfgService extends IBaseService<ProductsCfg>, ProxySel
      */
 
     ProductsCfg selectByLineidAndMatnr(String line_id,String matnr);
+
+    List<ProductsCfg> selectFromPage(IRequest requestContext, ProductsCfg dto, int page, int pageSize);
+    String updateOrInsert(IRequest requestContext,List<ProductsCfg> dto,String userId);
+    void deleteProductsCfg(List<ProductsCfg> dto);
 }

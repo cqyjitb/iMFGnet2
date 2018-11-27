@@ -14,4 +14,41 @@ public interface DftdtlMapper extends Mapper<Dftdtl>{
      * @return
      */
     List<Dftdtl> selectByQpcode(@Param("code") String code,@Param("matnr") String matnr);
+
+    /**
+     *根据主键查询是否有这条数据 918100064
+     * @param werks
+     * @param tlevelcode
+     * @param matnr
+     * @return
+     */
+    Integer isExit(@Param("werks")String werks,@Param("tlevelcode") String tlevelcode,@Param("matnr") String matnr);
+
+    /**
+     *质量缺陷明细代码维护查询 918100064
+     * @param werks
+     * @param matnr
+     * @param code
+     * @return
+     */
+    List<Dftdtl> selectFromPage(@Param("werks") String werks,@Param("matnr") String matnr,@Param("code")String code);
+
+    /**
+     * 质量缺陷明细代码维护的修改 918100064
+     * @param dftdtl
+     * @return
+     */
+    Integer updateDftdtl(Dftdtl dftdtl);
+
+    /**
+     *质量缺陷明细代码维护的添加 918100064
+     * @param dftdtl
+     */
+    void insertDftdtl(Dftdtl dftdtl);
+
+    /**
+     *质量缺陷明细代码维护的删除 918100064
+     * @param dftdtl
+     */
+    void deleteDftdtl(Dftdtl dftdtl);
 }

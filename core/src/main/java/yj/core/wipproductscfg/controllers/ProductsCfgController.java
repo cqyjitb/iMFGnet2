@@ -42,4 +42,50 @@ import java.util.List;
         service.batchDelete(dto);
         return new ResponseData();
     }
+
+        /**
+         * 机加产线产品配置维护页面查询请求 918100064
+         * @param dto
+         * @param page
+         * @param pageSize
+         * @param request
+         * @return
+         */
+        @RequestMapping(value = "/wip/products/cfg/queryProductsCfg")
+        @ResponseBody
+        public ResponseData queryProductsCfg(ProductsCfg dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
+                                  @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize, HttpServletRequest request) {
+            IRequest requestContext = createRequestContext(request);
+            return new ResponseData(service.selectFromPage(requestContext,dto,page,pageSize));
+        }
+
+        /**
+         * 机加产线产品配置维护页面增添、修改请求 918100064
+         * @param request
+         * @param dto
+         * @return
+         */
+        @RequestMapping(value = "/wip/products/cfg/submitProductsCfg")
+        @ResponseBody
+        public ResponseData updateProductsCfg(HttpServletRequest request,@RequestBody List<ProductsCfg> dto){
+            IRequest requestCtx = createRequestContext(request);
+            ResponseData rs =  new ResponseData();
+            String userId ="" + request.getSession().getAttribute("userId");
+            String result = service.updateOrInsert(requestCtx, dto,userId);
+            rs.setMessage(result);
+            return rs;
+        }
+
+        /**
+         * 机加产线产品配置维护页面删除请求 918100064
+         * @param request
+         * @param dto
+         * @return
+         */
+        @RequestMapping(value = "/wip/products/cfg/removeProductsCfg")
+        @ResponseBody
+        public ResponseData deleteProductsCfg(HttpServletRequest request,@RequestBody List<ProductsCfg> dto){
+            service.deleteProductsCfg(dto);
+            return new ResponseData();
+        }
     }
