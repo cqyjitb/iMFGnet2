@@ -8,6 +8,8 @@ import org.springframework.web.bind.annotation.*;
 import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.service.ICardhService;
 import yj.core.cardt.service.ICardtService;
+import yj.core.dispatch.dto.InputLog;
+import yj.core.dispatch.service.IInputLogService;
 import yj.core.marc.dto.Marc;
 import yj.core.marc.service.IMarcService;
 import yj.core.outsrgissue.dto.Outsrgissue;
@@ -46,6 +48,8 @@ public class OutsrgreceiptController extends BaseController {
     private IOutsrgrfeService outsrgrfeService;
     @Autowired
     private IMarcService marcService;
+    @Autowired
+    private IInputLogService inputLogService;
 
     @RequestMapping(value = "/wip/outsrgreceipt/query")
     @ResponseBody
@@ -408,6 +412,69 @@ public class OutsrgreceiptController extends BaseController {
             return rs;
         }
         rs.setSuccess(true);
+        return rs;
+    }
+
+    @RequestMapping(value = {"/wip/outsrgreceipt/selectForCxwxsh"}, method = {RequestMethod.GET})
+    @ResponseBody
+    public ResponseData selectForCxwxsh(HttpServletRequest request){
+        ResponseData rs = new ResponseData();
+        String barcode = request.getParameter("barcode");
+        Outsrgreceipt outsrgreceipt = new Outsrgreceipt();
+        outsrgreceipt = service.selectByZpgdbarAndStatus(barcode,"0");
+        Cardh cardh = new Cardh();
+        cardh = cardhService.selectByBarcode(barcode);
+
+        if (cardh == null){
+            rs.setSuccess(false);
+            rs.setMessage("流转卡不存在，请扫描正确的流转卡编号！");
+            return rs;
+        }
+
+
+        if (cardh.getStatus().equals("HOLD")){
+            rs.setSuccess(false);
+            rs.setMessage("流转卡状态为HOLD，不能进行外协收货冲销操作！");
+            return rs;
+        }
+
+        if (outsrgreceipt == null){
+            rs.setMessage("该流转卡没有进行外协收货！无法冲销！");
+            rs.setSuccess(false);
+            return rs;
+        }
+
+        Marc marc = new Marc();
+        marc = marcService.selectByMatnr(outsrgreceipt.getMatnr());
+
+        List outsrgreceipts = new ArrayList<>();
+        outsrgreceipts.add(outsrgreceipt);
+        outsrgreceipts.add(marc);
+        rs.setRows(outsrgreceipts);
+        rs.setSuccess(true);
+        return rs;
+    }
+
+    @RequestMapping(value = {"/wip/outsrgreceipt/processCxwxsh"}, method = {RequestMethod.GET})
+    @ResponseBody
+    public ResponseData processCxwxsh(HttpServletRequest request){
+        ResponseData rs = new ResponseData();
+        //查询流转卡信息
+        String barcode = request.getParameter("barcode");
+        String userId = request.getParameter("userId");
+        //查询查询收货单信息
+        Outsrgreceipt outsrgreceipt = new Outsrgreceipt();
+        outsrgreceipt = service.selectByZpgdbarAndStatus(barcode,"0");
+        Cardh cardh = new Cardh();
+        cardh = cardhService.selectByBarcode(barcode);
+
+        //查询报工日志
+        InputLog inputLog = new InputLog();
+        inputLog.setDispatch(barcode);
+        inputLog.setOperation(outsrgreceipt.getVornr());
+        inputLog = inputLogService.queryByDispatchAndOperation(inputLog);
+
+
         return rs;
     }
 }

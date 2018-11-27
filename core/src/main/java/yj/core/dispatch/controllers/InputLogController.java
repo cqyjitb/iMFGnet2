@@ -828,6 +828,12 @@ public class InputLogController extends BaseController{
             list.add(returnResult);
             return new ResponseData(list);
         }else{
+            if (inputLog.getAttr15().equals("5")){
+                ResponseData rs = new ResponseData();
+                rs.setSuccess(false);
+                rs.setMessage("外协工序收货/报工只能通过手机APP进行冲销！");
+                return rs;
+            }
 
             String fstvor = "";
             String lstvor = "";

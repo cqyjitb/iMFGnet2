@@ -43,4 +43,6 @@ public interface IOutsrgreceiptService extends IBaseService<Outsrgreceipt>, Prox
      */
 
     int updateOutsrgreceipt(Outsrgreceipt outsrgreceipt);
+
+
 }
