@@ -561,7 +561,11 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         param.setLSTVOR(inputLog.getLstvor());
         param.setFSTVOR(inputLog.getFstvor());
         param.setCHARG("");
-        param.setZPRTP("");
+        if (inputLog.getAttr15().equals("5")){
+            param.setZPRTP(inputLog.getAttr15());
+        }else{
+            param.setZPRTP("");
+        }
         param.setZTPBAR("");
 
         DTBAOGONGReturnResult returnResult = webserviceUtilNew.receiveConfirmation(param, list);

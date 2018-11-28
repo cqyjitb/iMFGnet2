@@ -89,7 +89,7 @@
         TTRECEIPTS = #{ttreceipts},
         ZDSDAT = #{zdsdat},
         ZDSTIM = #{zdstim},
-        ZDSUSER = #{zdsuser}
+        ZDSUSER = #{zdsuser},
         MJAHR   = #{mjahr},
         RUECK   = #{rueck},
         RMZHL   = #{rmzhl},
