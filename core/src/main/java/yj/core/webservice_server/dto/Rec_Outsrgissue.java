@@ -1,6 +1,6 @@
-package yj.core.webservice_outsrgissue.dto;
+package yj.core.webservice_server.dto;
 
-public class DTOUTSRGISSUEitem {
+public class Rec_Outsrgissue {
 
     private String issuenm; //外协发料单号
 
@@ -51,30 +51,6 @@ public class DTOUTSRGISSUEitem {
     private String zistim;
 
     private String zisuser;
-
-    public String getZisdat() {
-        return zisdat;
-    }
-
-    public void setZisdat(String zisdat) {
-        this.zisdat = zisdat;
-    }
-
-    public String getZistim() {
-        return zistim;
-    }
-
-    public void setZistim(String zistim) {
-        this.zistim = zistim;
-    }
-
-    public String getZisuser() {
-        return zisuser;
-    }
-
-    public void setZisuser(String zisuser) {
-        this.zisuser = zisuser;
-    }
 
     public String getIssuenm() {
         return issuenm;
@@ -250,5 +226,29 @@ public class DTOUTSRGISSUEitem {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getZisdat() {
+        return zisdat;
+    }
+
+    public void setZisdat(String zisdat) {
+        this.zisdat = zisdat;
+    }
+
+    public String getZistim() {
+        return zistim;
+    }
+
+    public void setZistim(String zistim) {
+        this.zistim = zistim;
+    }
+
+    public String getZisuser() {
+        return zisuser;
+    }
+
+    public void setZisuser(String zisuser) {
+        this.zisuser = zisuser;
     }
 }

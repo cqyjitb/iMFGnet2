@@ -1,6 +1,7 @@
-package yj.core.webservice_outsrgissue.dto;
+package yj.core.webservice_server.dto;
 
-public class DTOUTSRGISSUEhead {
+public class Rec_Outsrgissuehead {
+
     private String issuenm; //外协发料单号
 
     private String werks; //工厂

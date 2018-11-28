@@ -91,6 +91,7 @@ import java.util.List;
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String curdate = df.format(new Date()).substring(0,10).replaceAll("-","");
+        String curtim  = df.format(new Date()).substring(11,19).replaceAll(":","");
         String issuenm = "F" + curdate.substring(2,6) + "000001";
         //准备表头数据
 
@@ -107,6 +108,9 @@ import java.util.List;
             outsrgissuehead.setWerks(cardh.getWerks());
             outsrgissuehead.setCreatedBy(Long.valueOf(userId));
             outsrgissuehead.setCreationDate(new Date());
+            outsrgissuehead.setZipuser("");
+            outsrgissuehead.setZiptim("");
+            outsrgissuehead.setZipdat("");
         }else{
             if (list.get(0).getStatus().equals("0")){
                 //使用以前的单号
@@ -129,6 +133,9 @@ import java.util.List;
                     outsrgissuehead.setWerks(cardh.getWerks());
                     outsrgissuehead.setCreatedBy(Long.valueOf(userId));
                     outsrgissuehead.setCreationDate(new Date());
+                    outsrgissuehead.setZipdat("");
+                    outsrgissuehead.setZiptim("");
+                    outsrgissuehead.setZipuser("");
                 }
             }
         }
@@ -177,6 +184,9 @@ import java.util.List;
                 outsrgissue.setCreationDate(new Date());
                 outsrgissue.setStatus("0");
                 outsrgissue.setCharg(cardh.getCharg2());
+                outsrgissue.setZisdat(curdate);
+                outsrgissue.setZistim(curtim);
+                outsrgissue.setZisuser(userId);
 
             }else{
                 item = 1l;
@@ -204,6 +214,9 @@ import java.util.List;
                 outsrgissue.setCreationDate(new Date());
                 outsrgissue.setStatus("0");
                 outsrgissue.setCharg(cardh.getCharg2());
+                outsrgissue.setZisdat(curdate);
+                outsrgissue.setZistim(curtim);
+                outsrgissue.setZisuser(userId);
             }
         }
 
@@ -219,6 +232,9 @@ import java.util.List;
             head.setStatus(outsrgissuehead.getStatus());
             head.setTxz01(outsrgissuehead.getTxz01());
             head.setWerks(outsrgissuehead.getWerks());
+            head.setZiptim(outsrgissuehead.getZiptim());
+            head.setZipuser(outsrgissuehead.getZipuser());
+            head.setZipdat(outsrgissuehead.getZipdat());
         }else{
             head.setIssuenm("");
             head.setLifnr("");
@@ -227,6 +243,9 @@ import java.util.List;
             head.setStatus("");
             head.setTxz01("");
             head.setWerks("");
+            head.setZipdat("");
+            head.setZiptim("");
+            head.setZipuser("");
         }
 
         if (outsrgissue != null){
@@ -252,6 +271,9 @@ import java.util.List;
             items.setZpgdbar(outsrgissue.getZpgdbar());
             items.setCharg(outsrgissue.getCharg());
             items.setStatus(outsrgissue.getStatus());
+            items.setZisdat(curdate);
+            items.setZistim(curtim);
+            items.setZisuser(userId);
 
         }
         DTOUTSRGISSUEreturn DTRE = new DTOUTSRGISSUEreturn();
@@ -368,6 +390,9 @@ import java.util.List;
                         head.setMatnr(outsrgissuehead.getMatnr());
                         head.setLifnr(outsrgissuehead.getLifnr());
                         head.setIssuenm(outsrgissuehead.getIssuenm());
+                        head.setZipuser(outsrgissuehead.getZipuser());
+                        head.setZiptim(outsrgissuehead.getZiptim());
+                        head.setZipdat(outsrgissuehead.getZipdat());
 
                         item.setStatus(outsrgissue.getStatus());
                         item.setCharg(outsrgissue.getCharg());
@@ -391,6 +416,9 @@ import java.util.List;
                         item.setEbelp(outsrgissue.getEbelp());
                         item.setEbeln(outsrgissue.getEbeln());
                         item.setDiecd(outsrgissue.getDiecd());
+                        item.setZisuser(outsrgissue.getZisuser());
+                        item.setZistim(outsrgissue.getZistim());
+                        item.setZisdat(outsrgissue.getZisdat());
 
                         SyncOutsrgissueWebserviceUtil syncOutsrgissueWebserviceUtil = new SyncOutsrgissueWebserviceUtil();
                         DTOUTSRGISSUEreturn re = syncOutsrgissueWebserviceUtil.receiveConfirmation(head,item);
@@ -418,6 +446,9 @@ import java.util.List;
                     head.setMatnr("");
                     head.setLifnr("");
                     head.setIssuenm("");
+                    head.setZipdat("");
+                    head.setZiptim("");
+                    head.setZipuser("");
 
                     item.setStatus(outsrgissue.getStatus());
                     item.setCharg(outsrgissue.getCharg());
@@ -441,6 +472,9 @@ import java.util.List;
                     item.setEbelp(outsrgissue.getEbelp());
                     item.setEbeln(outsrgissue.getEbeln());
                     item.setDiecd(outsrgissue.getDiecd());
+                    item.setZisdat(outsrgissue.getZisdat());
+                    item.setZistim(outsrgissue.getZistim());
+                    item.setZisuser(outsrgissue.getZisuser());
 
                     SyncOutsrgissueWebserviceUtil syncOutsrgissueWebserviceUtil = new SyncOutsrgissueWebserviceUtil();
                     DTOUTSRGISSUEreturn re = syncOutsrgissueWebserviceUtil.receiveConfirmation(head,item);

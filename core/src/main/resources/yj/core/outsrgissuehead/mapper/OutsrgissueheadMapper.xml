@@ -10,6 +10,9 @@
         <result column="MATNR" property="matnr" jdbcType="VARCHAR" />
         <result column="STATUS" property="status" jdbcType="VARCHAR" />
         <result column="PRTFLAG" property="prtflag" jdbcType="VARCHAR" />
+        <result column="ZIPDAT" property="zipdat" jdbcType="VARCHAR" />
+        <result column="ZIPTIM" property="ziptim" jdbcType="VARCHAR" />
+        <result column="ZIPUSER" property="zipuser" jdbcType="VARCHAR" />
         <result column="CREATION_DATE" property="creationDate" jdbcType="DATE" />
         <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
         <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="DATE" />
@@ -26,12 +29,21 @@
     </select>
 
     <insert id="insertNewRow" parameterType="yj.core.outsrgissuehead.dto.Outsrgissuehead">
-        insert into wip_outsrgissuehead (ISSUENM,WERKS,TXZ01,LIFNR,MATNR,STATUS,PRTFLAG,CREATION_DATE,CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY)
-        values(#{issuenm},#{werks},#{txz01},#{lifnr},#{matnr},#{status},#{prtflag},#{creationDate},#{createdBy},#{lastUpdateDate},#{lastUpdatedBy})
+        insert into wip_outsrgissuehead (ISSUENM,WERKS,TXZ01,LIFNR,MATNR,STATUS,PRTFLAG,ZIPDAT,ZIPTIM,ZIPUSER,CREATION_DATE,CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY)
+        values(#{issuenm},#{werks},#{txz01},#{lifnr},#{matnr},#{status},#{prtflag},#{zipdat},#{ziptim},#{zipuser},#{creationDate},#{createdBy},#{lastUpdateDate},#{lastUpdatedBy})
     </insert>
 
     <update id="updateOutsrgissueHead" parameterType="yj.core.outsrgissuehead.dto.Outsrgissuehead">
         update wip_outsrgissuehead SET STATUS = #{status},
+                                       <if test="zipdat != null">
+                                           ZIPDAT = #{zipdat}
+                                       </if>
+                                        <if test="ziptim != null">
+                                            ZIPTIM = #{ziptim}
+                                        </if>
+                                        <if test="zipuser != null">
+                                            ZIPUSER = #{zipuser}
+                                        </if>
                                        LAST_UPDATE_DATE = #{lastUpdateDate},
                                        LAST_UPDATED_BY = #{lastUpdatedBy}
                                     <where>

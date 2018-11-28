@@ -58,8 +58,37 @@ public class Outsrgissue extends BaseDTO {
 
       private String status;
 
+     private String zisdat;
 
-     public void setIssuenm(String issuenm){
+     private String zistim;
+
+     private String zisuser;
+
+    public String getZisdat() {
+        return zisdat;
+    }
+
+    public void setZisdat(String zisdat) {
+        this.zisdat = zisdat;
+    }
+
+    public String getZistim() {
+        return zistim;
+    }
+
+    public void setZistim(String zistim) {
+        this.zistim = zistim;
+    }
+
+    public String getZisuser() {
+        return zisuser;
+    }
+
+    public void setZisuser(String zisuser) {
+        this.zisuser = zisuser;
+    }
+
+    public void setIssuenm(String issuenm){
          this.issuenm = issuenm;
      }
 
