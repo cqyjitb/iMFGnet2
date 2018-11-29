@@ -60,14 +60,13 @@
     </resultMap>
 
     <select id="selectZrwklist" parameterType="java.lang.String" resultMap="BaseResultMap2">
-        select distinct zl.*, zh.line_id, li.descriptions, ma.maktx, re.zotype
-            from wip_zrwklist zl, wip_zrwkhead zh, wip_lines li,hr_org_unit_b b, sap_marc ma, wip_in_out_record re
+        select distinct zl.*,li.descriptions, ma.maktx, re.zotype
+            from wip_zrwklist zl, wip_zrwkhead zh, wip_lines li,sap_marc ma, wip_in_out_record re
             <where>
                 zh.zrwknum = zl.zrwknum
-                AND li.line_id = zh.line_id
+                AND li.line_id = zl.line_id
                 AND ma.matnr = zl.matnr2
                 AND re.zqjjlh = zl.zqjjlh
-                AND b.unit_code = li.dept_id
                 <if test="deptId != null">
                     AND li.dept_id = #{deptId}
                 </if>

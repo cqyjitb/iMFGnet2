@@ -217,7 +217,9 @@
             parameterMap: function (options, type) {
                 if (type !== "read") {
                     if(checked){
-                        options.models[0].routingId = checked.routingId;
+                        for(var i=0;i<options.models.length;i++) {
+                            options.models[i].routingId = checked.routingId;
+                        }
                     }
                     var datas = Hap.prepareSubmitParameter(options, type);
                     return kendo.stringify(datas);

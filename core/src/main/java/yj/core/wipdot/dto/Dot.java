@@ -5,6 +5,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import java.util.Date;
 
@@ -33,9 +34,9 @@ public class Dot {
 
     private String enableFlag;//是否生效
     @NotEmpty
-    private Date startDate; //生效日期
+    private String startDate; //生效日期
 
-    private Date endDate; //失效日期
+    private String endDate; //失效日期
 
     private String alertFlag;//前工序漏采处理模式
     @NotNull
@@ -46,6 +47,71 @@ public class Dot {
     private Date lastUpdatedDate; //更新时间
 
     private String lastUpdatedBy; //更新人
+
+    @Transient
+    private String deptId;
+    private String startDateAfter;
+    private String startDateBefore;
+    private String endDateAfter;
+    private String endDateBefore;
+    private String descriptions2;
+    private String descriptions3;
+
+    public String getDescriptions2() {
+        return descriptions2;
+    }
+
+    public void setDescriptions2(String descriptions2) {
+        this.descriptions2 = descriptions2;
+    }
+
+    public String getDescriptions3() {
+        return descriptions3;
+    }
+
+    public void setDescriptions3(String descriptions3) {
+        this.descriptions3 = descriptions3;
+    }
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
+
+    public String getStartDateAfter() {
+        return startDateAfter;
+    }
+
+    public void setStartDateAfter(String startDateAfter) {
+        this.startDateAfter = startDateAfter;
+    }
+
+    public String getStartDateBefore() {
+        return startDateBefore;
+    }
+
+    public void setStartDateBefore(String startDateBefore) {
+        this.startDateBefore = startDateBefore;
+    }
+
+    public String getEndDateAfter() {
+        return endDateAfter;
+    }
+
+    public void setEndDateAfter(String endDateAfter) {
+        this.endDateAfter = endDateAfter;
+    }
+
+    public String getEndDateBefore() {
+        return endDateBefore;
+    }
+
+    public void setEndDateBefore(String endDateBefore) {
+        this.endDateBefore = endDateBefore;
+    }
 
     public String getWerks() {
         return werks;
@@ -127,19 +193,19 @@ public class Dot {
         this.enableFlag = enableFlag;
     }
 
-    public Date getStartDate() {
+    public String getStartDate() {
         return startDate;
     }
 
-    public void setStartDate(Date startDate) {
+    public void setStartDate(String startDate) {
         this.startDate = startDate;
     }
 
-    public Date getEndDate() {
+    public String getEndDate() {
         return endDate;
     }
 
-    public void setEndDate(Date endDate) {
+    public void setEndDate(String endDate) {
         this.endDate = endDate;
     }
 

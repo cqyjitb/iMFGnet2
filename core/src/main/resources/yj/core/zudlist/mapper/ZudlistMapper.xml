@@ -83,15 +83,14 @@
     </select>
 
     <select id="selectZudlist" parameterType="java.lang.String" resultMap="BaseResultMap2">
-        select distinct zl.*,zh.line_id,li.descriptions,cu.sortl,ma.maktx,re.zotype
-        from wip_zudlist zl,wip_zudhead zh,wip_lines li,hr_org_unit_b b,sap_cust cu,sap_marc ma,wip_in_out_record re
+        select distinct zl.*,li.descriptions,cu.sortl,ma.maktx,re.zotype
+        from wip_zudlist zl,wip_zudhead zh,wip_lines li,sap_cust cu,sap_marc ma,wip_in_out_record re
         <where>
             zh.zudnum = zl.zudnum
-            AND li.line_id = zh.line_id
+            AND li.line_id = zl.line_id
             AND cu.kunnr = zl.zbpjc
             AND ma.matnr = zl.matnr2
             AND re.zqjjlh = zl.zqjjlh
-            AND b.unit_code = li.dept_id
             <if test="deptId != null">
                 AND li.dept_id = #{deptId}
             </if>

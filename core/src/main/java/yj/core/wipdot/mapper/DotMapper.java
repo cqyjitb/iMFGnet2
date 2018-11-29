@@ -4,6 +4,8 @@ import com.hand.hap.mybatis.common.Mapper;
 import org.apache.ibatis.annotations.Param;
 import yj.core.wipdot.dto.Dot;
 
+import java.util.List;
+
 public interface DotMapper extends Mapper<Dot> {
 
     /**
@@ -12,4 +14,23 @@ public interface DotMapper extends Mapper<Dot> {
      * @return
      */
     int selectPoints(@Param("pointId")Integer pointId);
+
+    /**
+     * 机加采集点配置维护查询 918100064
+     * @param dot
+     * @return
+     */
+    List<Dot> selectFromPage(Dot dot);
+
+    /**
+     * 机加采集点配置维护修改 918100064
+     * @param dot
+     */
+    void updateDot(Dot dot);
+
+    /**
+     * 机加采集点配置维护添加 918100064
+     * @param dot
+     */
+    void insertDot(Dot dot);
 }

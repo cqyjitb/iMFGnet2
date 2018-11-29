@@ -17,19 +17,49 @@ public class DotCotroller extends BaseController{
     @Autowired
     private IDotService service;
 
-    @RequestMapping(value = "/wip/dot/query")
+    /**
+     * 机加采集点配置维护页面查询请求 918100064
+     * @param dto
+     * @param page
+     * @param pageSize
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/wip/dot/queryDot")
     @ResponseBody
-    public ResponseData query(Dot dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
+    public ResponseData queryDot(Dot dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
                               @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize, HttpServletRequest request) {
         IRequest requestContext = createRequestContext(request);
-        return new ResponseData(service.select(requestContext,dto,page,pageSize));
+        if(dto.getStartDateBefore() != null){
+            dto.setStartDateBefore(dto.getStartDateBefore().substring(0,10));
+        }
+        if(dto.getStartDateAfter() != null){
+            dto.setStartDateAfter(dto.getStartDateAfter().substring(0,10));
+        }
+        if(dto.getEndDateBefore() != null){
+            dto.setEndDateBefore(dto.getEndDateBefore().substring(0,10));
+        }
+        if(dto.getEndDateAfter() != null){
+            dto.setEndDateAfter(dto.getEndDateAfter().substring(0,10));
+        }
+        return new ResponseData(service.selectFromPage(requestContext,dto,page,pageSize));
     }
 
-    @RequestMapping(value = "/wip/dot/submit")
+    /**
+     * 机加采集点配置维护页面添加和修改请求 918100064
+     * @param request
+     * @param dto
+     * @return
+     */
+    @RequestMapping(value = "/wip/dot/submitDot")
     @ResponseBody
-    public ResponseData update(HttpServletRequest request, @RequestBody List<Dot> dto) {
+    public ResponseData updateDot(HttpServletRequest request, @RequestBody List<Dot> dto) {
         IRequest requestCtx = createRequestContext(request);
-        return new ResponseData(service.batchUpdate(requestCtx, dto));
+        ResponseData rs =  new ResponseData();
+        String userName ="" + request.getSession().getAttribute("userName");
+        String result = service.updateOrInsert(requestCtx,dto,userName);
+        rs.setMessage(result);
+        return rs;
     }
 
     @RequestMapping(value = "/wip/dot/remove")
