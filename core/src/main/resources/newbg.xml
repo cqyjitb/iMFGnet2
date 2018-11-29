@@ -355,7 +355,7 @@
             <xsd:complexType name="DT_BAOGONG_Send_Res">
                 <xsd:annotation>
                     <xsd:documentation xml:lang="EN">生产订单报工返回</xsd:documentation>
-                    <xsd:appinfo source="http://sap.com/xi/VersionID">c36cd23f9cfd11e88d2f0000002ad1ea</xsd:appinfo>
+                    <xsd:appinfo source="http://sap.com/xi/VersionID">14205e94ed3211e8bc270000002ad1ea</xsd:appinfo>
                 </xsd:annotation>
                 <xsd:sequence>
                     <xsd:element name="RETURN">
@@ -491,6 +491,22 @@
                                             5994fb3d9cfd11e8ce824ccc6a9ffd24
                                         </xsd:appinfo>
                                         <xsd:documentation>批次</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="MBLNR" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            b99a941fed3111e899f34ccc6a9ffd24
+                                        </xsd:appinfo>
+                                        <xsd:documentation>物料凭证</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="MJAHR" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            b99a9420ed3111e89ad84ccc6a9ffd24
+                                        </xsd:appinfo>
+                                        <xsd:documentation>物料凭证年度</xsd:documentation>
                                     </xsd:annotation>
                                 </xsd:element>
                                 <xsd:element name="MAKT" minOccurs="0" maxOccurs="unbounded">
