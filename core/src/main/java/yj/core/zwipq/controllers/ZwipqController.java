@@ -486,7 +486,7 @@ public class ZwipqController extends BaseController {
 
         if (listzwipq.size() > num){
             List<Zwipq> listupdate = new ArrayList<>();
-            zwipqhis.setQsenq(listzwipq.get(num + 1).getQsenq());//获取到准还件的序号.
+            zwipqhis.setQsenq(listzwipq.get(num).getQsenq());//获取到准还件的序号.
             zwipqhis.setLastUpdatedDate(new Date());
             zwipqhis.setLastUpdatedBy(Long.valueOf(userId));
             for (int i= 0;i<listzwipq.size();i++){

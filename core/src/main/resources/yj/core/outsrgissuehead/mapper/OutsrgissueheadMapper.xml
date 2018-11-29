@@ -34,18 +34,18 @@
     </insert>
 
     <update id="updateOutsrgissueHead" parameterType="yj.core.outsrgissuehead.dto.Outsrgissuehead">
-        update wip_outsrgissuehead SET STATUS = #{status},
+        update wip_outsrgissuehead SET STATUS = #{status}
                                        <if test="zipdat != null">
-                                           ZIPDAT = #{zipdat}
+                                           ,ZIPDAT = #{zipdat}
                                        </if>
                                         <if test="ziptim != null">
-                                            ZIPTIM = #{ziptim}
+                                            ,ZIPTIM = #{ziptim}
                                         </if>
                                         <if test="zipuser != null">
-                                            ZIPUSER = #{zipuser}
+                                            ,ZIPUSER = #{zipuser}
                                         </if>
-                                       LAST_UPDATE_DATE = #{lastUpdateDate},
-                                       LAST_UPDATED_BY = #{lastUpdatedBy}
+                                       ,LAST_UPDATE_DATE = #{lastUpdateDate}
+                                       ,LAST_UPDATED_BY = #{lastUpdatedBy}
                                     <where>
                                         ISSUENM = #{issuenm}
                                     </where>

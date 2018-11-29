@@ -1,8 +1,11 @@
 package yj.core.webservice_server;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.ContextLoaderListener;
 import yj.core.outsrgissuehead.dto.Outsrgissuehead;
+import yj.core.outsrgissuehead.mapper.OutsrgissueheadMapper;
 import yj.core.outsrgissuehead.service.IOutsrgissueheadService;
+import yj.core.outsrgreceipthead.mapper.OutsrgreceiptheadMapper;
 import yj.core.webservice_server.dto.Rec_Outsrgissuehead;
 import yj.core.webservice_server.dto.ReturnMessage;
 
@@ -33,7 +36,8 @@ public class SyncOutsrgissueHeadImpl implements IsyncOutsrgissueHead {
         outsrgissuehead.setIssuenm(rec_outsrgissuehead.getIssuenm());
         outsrgissuehead.setMatnr(rec_outsrgissuehead.getMatnr());
         outsrgissuehead.setLifnr(rec_outsrgissuehead.getLifnr());
-        int num = outsrgissueheadService.updateOutsrgissueHead(outsrgissuehead);
+        OutsrgissueheadMapper outsrgissueheadMapper = ContextLoaderListener.getCurrentWebApplicationContext().getBean(OutsrgissueheadMapper.class);
+        int num = outsrgissueheadMapper.updateOutsrgissueHead(outsrgissuehead);
         if (num == 1){
             rs.setMessage("同步成功！");
             rs.setFlag("S");
