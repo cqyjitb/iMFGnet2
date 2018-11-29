@@ -307,7 +307,12 @@
             LINE_ID = #{line_id}
             and ZXHBAR = #{zxhbar}
             and ZPGDBAR = #{zpgdbar}
-            and ZREMADE = 0
+            and ZZXKL = 0
+            and ZQJKL = 0
+            and ZOFFL = 0
+            and STATUS = 0
+            and ZGJBAR is NULL
+            AND ZREMADE = 0
         </where>
         ORDER BY Q_SENQ DESC ;
     </select>
@@ -422,7 +427,7 @@
         <where>
             LINE_ID = #{line_id}
             and ZXHBAR = #{zxhbar}
-            and ZOFFL = #{zoffl}
+            and ( ZOFFL = #{zoffl} OR ZZXKL = 1 OR ZQJKL = 1 OR STATUS = 1 OR ZREMADE = 1 )
         </where>
     </select>
 </mapper>

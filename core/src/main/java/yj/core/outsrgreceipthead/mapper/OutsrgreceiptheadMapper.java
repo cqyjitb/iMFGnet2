@@ -20,4 +20,11 @@ public interface OutsrgreceiptheadMapper extends Mapper<Outsrgreceipthead>{
      * @return
      */
     int insertNewRow(Outsrgreceipthead outsrgreceipthead);
+
+    /**
+     *  更新表头 917110140
+     * @param outsrgreceipthead
+     * @return
+     */
+    int updateOutsrgreceipthead(Outsrgreceipthead outsrgreceipthead);
 }

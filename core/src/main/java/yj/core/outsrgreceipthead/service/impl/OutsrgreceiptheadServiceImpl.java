@@ -24,4 +24,9 @@ public class OutsrgreceiptheadServiceImpl extends BaseServiceImpl<Outsrgreceipth
     public int insertNewRow(Outsrgreceipthead outsrgreceipthead) {
         return outsrgreceiptheadMapper.insertNewRow(outsrgreceipthead);
     }
+
+    @Override
+    public int updateOutsrgreceipthead(Outsrgreceipthead outsrgreceipthead) {
+        return outsrgreceiptheadMapper.updateOutsrgreceipthead(outsrgreceipthead);
+    }
 }

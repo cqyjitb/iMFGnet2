@@ -21,4 +21,11 @@ public interface IOutsrgreceiptheadService extends IBaseService<Outsrgreceipthea
      * @return
      */
     int insertNewRow(Outsrgreceipthead outsrgreceipthead);
+
+    /**
+     *  更新表头 917110140
+     * @param outsrgreceipthead
+     * @return
+     */
+    int updateOutsrgreceipthead(Outsrgreceipthead outsrgreceipthead);
 }

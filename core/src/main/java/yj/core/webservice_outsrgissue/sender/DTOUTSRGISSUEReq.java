@@ -1,12 +1,11 @@
 package yj.core.webservice_outsrgissue.sender;
 
-
-         import java.util.ArrayList;
-         import java.util.List;
-         import javax.xml.bind.annotation.XmlAccessType;
-         import javax.xml.bind.annotation.XmlAccessorType;
-         import javax.xml.bind.annotation.XmlElement;
-         import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
  * <p>
@@ -33,6 +32,9 @@ package yj.core.webservice_outsrgissue.sender;
  *                   &lt;element name="STATUS" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="PRTFLAG" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="TXZ01" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ZIPDAT" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ZIPTIM" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ZIPUSER" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                 &lt;/sequence>
  *               &lt;/restriction>
  *             &lt;/complexContent>
@@ -64,6 +66,9 @@ package yj.core.webservice_outsrgissue.sender;
  *                   &lt;element name="GMEIN" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="CHARG" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="STATUS" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ZISDAT" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ZISTIM" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ZISUSER" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                 &lt;/sequence>
  *               &lt;/restriction>
  *             &lt;/complexContent>
@@ -157,6 +162,9 @@ public class DTOUTSRGISSUEReq {
      *         &lt;element name="STATUS" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="PRTFLAG" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="TXZ01" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="ZIPDAT" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="ZIPTIM" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="ZIPUSER" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *       &lt;/sequence>
      *     &lt;/restriction>
      *   &lt;/complexContent>
@@ -167,7 +175,7 @@ public class DTOUTSRGISSUEReq {
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = { "issuenm", "werks", "lifnr", "matnr",
-            "status", "prtflag", "txz01" })
+            "status", "prtflag", "txz01", "zipdat", "ziptim", "zipuser" })
     public static class HEAD {
 
         @XmlElement(name = "ISSUENM", required = true)
@@ -184,6 +192,12 @@ public class DTOUTSRGISSUEReq {
         protected String prtflag;
         @XmlElement(name = "TXZ01", required = true)
         protected String txz01;
+        @XmlElement(name = "ZIPDAT", required = true)
+        protected String zipdat;
+        @XmlElement(name = "ZIPTIM", required = true)
+        protected String ziptim;
+        @XmlElement(name = "ZIPUSER", required = true)
+        protected String zipuser;
 
         /**
          * Gets the value of the issuenm property.
@@ -332,6 +346,69 @@ public class DTOUTSRGISSUEReq {
             this.txz01 = value;
         }
 
+        /**
+         * Gets the value of the zipdat property.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getZIPDAT() {
+            return zipdat;
+        }
+
+        /**
+         * Sets the value of the zipdat property.
+         *
+         * @param value
+         *            allowed object is {@link String }
+         *
+         */
+        public void setZIPDAT(String value) {
+            this.zipdat = value;
+        }
+
+        /**
+         * Gets the value of the ziptim property.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getZIPTIM() {
+            return ziptim;
+        }
+
+        /**
+         * Sets the value of the ziptim property.
+         *
+         * @param value
+         *            allowed object is {@link String }
+         *
+         */
+        public void setZIPTIM(String value) {
+            this.ziptim = value;
+        }
+
+        /**
+         * Gets the value of the zipuser property.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getZIPUSER() {
+            return zipuser;
+        }
+
+        /**
+         * Sets the value of the zipuser property.
+         *
+         * @param value
+         *            allowed object is {@link String }
+         *
+         */
+        public void setZIPUSER(String value) {
+            this.zipuser = value;
+        }
+
     }
 
     /**
@@ -368,6 +445,9 @@ public class DTOUTSRGISSUEReq {
      *         &lt;element name="GMEIN" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="CHARG" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="STATUS" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="ZISDAT" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="ZISTIM" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="ZISUSER" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *       &lt;/sequence>
      *     &lt;/restriction>
      *   &lt;/complexContent>
@@ -380,7 +460,7 @@ public class DTOUTSRGISSUEReq {
     @XmlType(name = "", propOrder = { "issuenm", "item", "werks", "zpgdbar",
             "vornr", "vsnda", "ebeln", "ebelp", "ktsch", "txz01", "etenr",
             "lifnr", "matnr", "diecd", "sfflg", "menge", "matkl", "zisnum",
-            "gmein", "charg", "status" })
+            "gmein", "charg", "status", "zisdat", "zistim", "zisuser" })
     public static class ITEM {
 
         @XmlElement(name = "ISSUENM", required = true)
@@ -425,6 +505,12 @@ public class DTOUTSRGISSUEReq {
         protected String charg;
         @XmlElement(name = "STATUS", required = true)
         protected String status;
+        @XmlElement(name = "ZISDAT", required = true)
+        protected String zisdat;
+        @XmlElement(name = "ZISTIM", required = true)
+        protected String zistim;
+        @XmlElement(name = "ZISUSER", required = true)
+        protected String zisuser;
 
         /**
          * Gets the value of the issuenm property.
@@ -855,6 +941,69 @@ public class DTOUTSRGISSUEReq {
          */
         public void setSTATUS(String value) {
             this.status = value;
+        }
+
+        /**
+         * Gets the value of the zisdat property.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getZISDAT() {
+            return zisdat;
+        }
+
+        /**
+         * Sets the value of the zisdat property.
+         *
+         * @param value
+         *            allowed object is {@link String }
+         *
+         */
+        public void setZISDAT(String value) {
+            this.zisdat = value;
+        }
+
+        /**
+         * Gets the value of the zistim property.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getZISTIM() {
+            return zistim;
+        }
+
+        /**
+         * Sets the value of the zistim property.
+         *
+         * @param value
+         *            allowed object is {@link String }
+         *
+         */
+        public void setZISTIM(String value) {
+            this.zistim = value;
+        }
+
+        /**
+         * Gets the value of the zisuser property.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getZISUSER() {
+            return zisuser;
+        }
+
+        /**
+         * Sets the value of the zisuser property.
+         *
+         * @param value
+         *            allowed object is {@link String }
+         *
+         */
+        public void setZISUSER(String value) {
+            this.zisuser = value;
         }
 
     }

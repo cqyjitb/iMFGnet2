@@ -59,6 +59,10 @@ public class SyncOutsrgissueWebserviceUtil {
         itemreq.setZPGDBAR(item.getZpgdbar());
         itemreq.setCHARG(item.getCharg());
         itemreq.setSTATUS(item.getStatus());
+        itemreq.setZISDAT(item.getZisdat());
+        itemreq.setZISTIM(item.getZistim());
+        itemreq.setZISUSER(item.getZistim());
+
         DTOUTSRGISSUEReq.HEAD headreq = new DTOUTSRGISSUEReq.HEAD();
         if (head != null){
             headreq.setISSUENM(head.getIssuenm());
@@ -68,6 +72,9 @@ public class SyncOutsrgissueWebserviceUtil {
             headreq.setSTATUS(head.getStatus());
             headreq.setTXZ01(head.getTxz01());
             headreq.setWERKS(head.getWerks());
+            headreq.setZIPDAT(head.getZipdat());
+            headreq.setZIPTIM(headreq.getZIPTIM());
+            headreq.setZIPUSER(head.getZipuser());
         }else{
             headreq.setISSUENM("");
             headreq.setLIFNR("");
@@ -76,6 +83,9 @@ public class SyncOutsrgissueWebserviceUtil {
             headreq.setSTATUS("");
             headreq.setTXZ01("");
             headreq.setWERKS("");
+            headreq.setZIPUSER("");
+            headreq.setZIPTIM("");
+            headreq.setZIPUSER("");
         }
 
 

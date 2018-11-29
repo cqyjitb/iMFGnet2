@@ -274,7 +274,7 @@ public class ZwipqController extends BaseController {
         ResponseData rs = new ResponseData();
         //1：查询当前机加流转卡 当前箱号 所有的队列信息 按照 上线序列号倒序排列
         List<Zwipq> list = service.selectBylineidAndZxhbarAndZpgdbar(line_id, zxhbar, zpgdbar);
-        if (list.size() == 0) {
+        if (list.size() == 0 || list.size() - cursum < 0) {
             rs.setSuccess(false);
             rs.setMessage("队列中没有足够的数量进行取消上线操作！");
         } else {
@@ -292,9 +292,6 @@ public class ZwipqController extends BaseController {
                 rs.setMessage("取消上线记录共：" + sum + " 条！");
             }
         }
-
-        //查询箱号记录 取消上线之后是否需要取消上线完成标识
-        //Xhcard xhcard = xhcardService.selectByBacode(zxhbar);
 
         return rs;
     }
@@ -489,7 +486,7 @@ public class ZwipqController extends BaseController {
 
         if (listzwipq.size() > num){
             List<Zwipq> listupdate = new ArrayList<>();
-            zwipqhis.setQsenq(listzwipq.get(num + 1).getQsenq());//获取到准还件的序号.
+            zwipqhis.setQsenq(listzwipq.get(num).getQsenq());//获取到准还件的序号.
             zwipqhis.setLastUpdatedDate(new Date());
             zwipqhis.setLastUpdatedBy(Long.valueOf(userId));
             for (int i= 0;i<listzwipq.size();i++){

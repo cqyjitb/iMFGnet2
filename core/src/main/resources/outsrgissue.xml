@@ -87,7 +87,7 @@
             </xsd:complexType>
             <xsd:complexType name="DT_OUTSRGISSUE_Req">
                 <xsd:annotation>
-                    <xsd:appinfo source="http://sap.com/xi/VersionID">a599c439e7bb11e88b080000002ad1ea</xsd:appinfo>
+                    <xsd:appinfo source="http://sap.com/xi/VersionID">10f6d666f2b311e8af850000002ad1ea</xsd:appinfo>
                 </xsd:annotation>
                 <xsd:sequence>
                     <xsd:element name="HEAD" minOccurs="0">
@@ -146,6 +146,9 @@
                                         </xsd:appinfo>
                                     </xsd:annotation>
                                 </xsd:element>
+                                <xsd:element name="ZIPDAT" type="xsd:string"/>
+                                <xsd:element name="ZIPTIM" type="xsd:string"/>
+                                <xsd:element name="ZIPUSER" type="xsd:string"/>
                             </xsd:sequence>
                         </xsd:complexType>
                     </xsd:element>
@@ -289,8 +292,23 @@
                                         </xsd:appinfo>
                                     </xsd:annotation>
                                 </xsd:element>
-                                <xsd:element name="CHARG" type="xsd:string"/>
-                                <xsd:element name="STATUS" type="xsd:string"/>
+                                <xsd:element name="CHARG" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            b666f2c1f2b211e8b3e3002324a6066a
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="STATUS" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            b666f2c2f2b211e89d6f002324a6066a
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="ZISDAT" type="xsd:string"/>
+                                <xsd:element name="ZISTIM" type="xsd:string"/>
+                                <xsd:element name="ZISUSER" type="xsd:string"/>
                             </xsd:sequence>
                         </xsd:complexType>
                     </xsd:element>

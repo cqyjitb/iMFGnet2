@@ -91,5 +91,21 @@ public class WebServlet extends CXFNonSpringServlet {
         serverFactoryBean8.setAddress("/SyncOutsrgrfe"); //服务请求路径
         serverFactoryBean8.setServiceBean(SyncOutsrgrfe);
         serverFactoryBean8.create();
+
+        //发布外协发料单打印同步接口
+        ServerFactoryBean serverFactoryBean9 = new ServerFactoryBean(); //server工厂
+        SyncOutsrgissueHeadImpl syncOutsrgissueHead = new SyncOutsrgissueHeadImpl();
+        serverFactoryBean9.setServiceClass(IsyncOutsrgissueHead.class);
+        serverFactoryBean9.setAddress("/SyncOutsrgissueHead"); //服务请求路径
+        serverFactoryBean9.setServiceBean(syncOutsrgissueHead);
+        serverFactoryBean9.create();
+
+        //发布外协收货单打印同步接口
+        ServerFactoryBean serverFactoryBean10 = new ServerFactoryBean(); //server工厂
+        SyncOutsrgreceiptHeadImpl syncOutsrgreceiptHead = new SyncOutsrgreceiptHeadImpl();
+        serverFactoryBean10.setServiceClass(IsyncOutsrgreceiptHead.class);
+        serverFactoryBean10.setAddress("/SyncoutsrgreceiptHead"); //服务请求路径
+        serverFactoryBean10.setServiceBean(syncOutsrgreceiptHead);
+        serverFactoryBean10.create();
     }
 }
