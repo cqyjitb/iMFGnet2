@@ -332,7 +332,7 @@ public class XhcardController
 
                                         } else {
                                             rs.setSuccess(false);
-                                            rs.setMessage("未按先进先出规则上线，请先上线批次为：" + xhcardlist.get(j).getChargkc() + " 的毛坯框！");
+                                            rs.setMessage("未按先进先出规则上线，请先上线批次为：" + xhcardlist.get(j).getChargkc() + ",箱号："+ xhcardlist.get(j).getZxhbar() + " 的毛坯框！");
                                             return rs;
                                         }
                                     }
@@ -442,7 +442,7 @@ public class XhcardController
 
                                         } else {
                                             rs.setSuccess(false);
-                                            rs.setMessage("未按先进先出规则上线，请先上线批次为：" + xhcardlist.get(j).getChargkc() + " 的毛坯框！");
+                                            rs.setMessage("未按先进先出规则上线，请先上线批次为：" + xhcardlist.get(j).getChargkc() + ",箱号："+ xhcardlist.get(j).getZxhbar() + " 的毛坯框！");
                                             return rs;
                                         }
                                     }
