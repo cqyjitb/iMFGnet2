@@ -61,7 +61,7 @@ public class SyncOutsrgissueWebserviceUtil {
         itemreq.setSTATUS(item.getStatus());
         itemreq.setZISDAT(item.getZisdat());
         itemreq.setZISTIM(item.getZistim());
-        itemreq.setZISUSER(item.getZistim());
+        itemreq.setZISUSER(item.getZisuser());
 
         DTOUTSRGISSUEReq.HEAD headreq = new DTOUTSRGISSUEReq.HEAD();
         if (head != null){
@@ -73,7 +73,7 @@ public class SyncOutsrgissueWebserviceUtil {
             headreq.setTXZ01(head.getTxz01());
             headreq.setWERKS(head.getWerks());
             headreq.setZIPDAT(head.getZipdat());
-            headreq.setZIPTIM(headreq.getZIPTIM());
+            headreq.setZIPTIM(head.getZiptim());
             headreq.setZIPUSER(head.getZipuser());
         }else{
             headreq.setISSUENM("");

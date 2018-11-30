@@ -44,6 +44,9 @@
                                         <if test="zipuser != null">
                                             ,ZIPUSER = #{zipuser}
                                         </if>
+                                        <if test="prtflag != null">
+                                            ,PRTFLAG = #{prtflag}
+                                        </if>
                                        ,LAST_UPDATE_DATE = #{lastUpdateDate}
                                        ,LAST_UPDATED_BY = #{lastUpdatedBy}
                                     <where>

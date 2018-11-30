@@ -32,7 +32,7 @@
 
     <insert id="insertNewRow" parameterType="yj.core.outsrgreceipthead.dto.Outsrgreceipthead">
         insert INTO wip_outsrgreceipthead (RECEIPTNM,WERKS,LIFNR,MATNR,STATUS,ZDPDAT,ZDPTIM,ZDPUSER,ZIPDAT,ZIPTIM,ZIPUSER,PRTFLAG,CREATION_DATE,CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY)
-        VALUES (#{receiptnm},#{werks},#{lifnr},#{matnr},#{status},#{status},#{zdpdat},#{zdptim},#{zdpuser},#{zipdat},#{ziptim},#{zipuser},#{prtflag},#{creationDate},#{createdBy},#{lastUpdateDate},#{lastUpdatedBy})
+        VALUES (#{receiptnm},#{werks},#{lifnr},#{matnr},#{status},#{zdpdat},#{zdptim},#{zdpuser},#{zipdat},#{ziptim},#{zipuser},#{prtflag},#{creationDate},#{createdBy},#{lastUpdateDate},#{lastUpdatedBy})
     </insert>
 
     <update id="updateOutsrgreceipthead" parameterType="yj.core.outsrgreceipthead.dto.Outsrgreceipthead">

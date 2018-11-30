@@ -22,10 +22,11 @@ public class SyncOutsrgissueHeadImpl implements IsyncOutsrgissueHead {
             rs.setFlag("E");
             rs.setMessage("同步数据有误！");
         }
-
+        String dat = rec_outsrgissuehead.getZipdat().substring(0,4) + "-" + rec_outsrgissuehead.getZipdat().substring(4,6) + "-" + rec_outsrgissuehead.getZipdat().substring( rec_outsrgissuehead.getZipdat().length() - 2, rec_outsrgissuehead.getZipdat().length());
+        String tim = rec_outsrgissuehead.getZiptim().substring(0,2) + ":" + rec_outsrgissuehead.getZiptim().substring(2,4) + ":" + rec_outsrgissuehead.getZiptim().substring( rec_outsrgissuehead.getZiptim().length() - 2,rec_outsrgissuehead.getZiptim().length());
         Outsrgissuehead outsrgissuehead = new Outsrgissuehead();
-        outsrgissuehead.setZipdat(rec_outsrgissuehead.getZipdat());
-        outsrgissuehead.setZiptim(rec_outsrgissuehead.getZiptim());
+        outsrgissuehead.setZipdat(dat);
+        outsrgissuehead.setZiptim(tim);
         outsrgissuehead.setZipuser(rec_outsrgissuehead.getZipuser());
         outsrgissuehead.setLastUpdatedBy(10001L);
         outsrgissuehead.setLastUpdateDate(new Date());

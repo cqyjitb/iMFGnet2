@@ -92,6 +92,8 @@ import java.util.List;
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String curdate = df.format(new Date()).substring(0,10).replaceAll("-","");
         String curtim  = df.format(new Date()).substring(11,19).replaceAll(":","");
+        String curdate1 = df.format(new Date()).substring(0,10);
+        String curtim1 = df.format(new Date()).substring(11,19);
         String issuenm = "F" + curdate.substring(2,6) + "000001";
         //准备表头数据
 
@@ -184,8 +186,8 @@ import java.util.List;
                 outsrgissue.setCreationDate(new Date());
                 outsrgissue.setStatus("0");
                 outsrgissue.setCharg(cardh.getCharg2());
-                outsrgissue.setZisdat(curdate);
-                outsrgissue.setZistim(curtim);
+                outsrgissue.setZisdat(curdate1);
+                outsrgissue.setZistim(curtim1);
                 outsrgissue.setZisuser(userId);
 
             }else{
@@ -214,8 +216,8 @@ import java.util.List;
                 outsrgissue.setCreationDate(new Date());
                 outsrgissue.setStatus("0");
                 outsrgissue.setCharg(cardh.getCharg2());
-                outsrgissue.setZisdat(curdate);
-                outsrgissue.setZistim(curtim);
+                outsrgissue.setZisdat(curdate1);
+                outsrgissue.setZistim(curtim1);
                 outsrgissue.setZisuser(userId);
             }
         }

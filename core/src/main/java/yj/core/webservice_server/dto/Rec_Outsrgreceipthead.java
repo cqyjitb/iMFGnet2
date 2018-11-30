@@ -12,12 +12,6 @@ public class Rec_Outsrgreceipthead {
 
     private String status; //单据状态
 
-    private String zdpdat; //收货过账日期
-
-    private String zdptim; //收货过账时间
-
-    private String zdpuser; //收货过账账号
-
     private String prtflag; //打印标识
 
     private String zipdat;
@@ -64,30 +58,6 @@ public class Rec_Outsrgreceipthead {
 
     public void setStatus(String status) {
         this.status = status;
-    }
-
-    public String getZdpdat() {
-        return zdpdat;
-    }
-
-    public void setZdpdat(String zdpdat) {
-        this.zdpdat = zdpdat;
-    }
-
-    public String getZdptim() {
-        return zdptim;
-    }
-
-    public void setZdptim(String zdptim) {
-        this.zdptim = zdptim;
-    }
-
-    public String getZdpuser() {
-        return zdpuser;
-    }
-
-    public void setZdpuser(String zdpuser) {
-        this.zdpuser = zdpuser;
     }
 
     public String getPrtflag() {

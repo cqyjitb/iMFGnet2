@@ -24,7 +24,7 @@ public class SyncOutsrgreceiptHeadImpl implements IsyncOutsrgreceiptHead {
         outsrgreceipthead.setReceiptnm(rec_outsrgreceipthead.getReceiptnm());
         outsrgreceipthead.setZiptim(rec_outsrgreceipthead.getZiptim());
         outsrgreceipthead.setZipdat(rec_outsrgreceipthead.getZipdat());
-        outsrgreceipthead.setZdpdat(rec_outsrgreceipthead.getZdpdat());
+        outsrgreceipthead.setZipuser(rec_outsrgreceipthead.getZipuser());
         outsrgreceipthead.setLifnr(rec_outsrgreceipthead.getLifnr());
         outsrgreceipthead.setMatnr(rec_outsrgreceipthead.getMatnr());
         outsrgreceipthead.setPrtflag(rec_outsrgreceipthead.getPrtflag());
