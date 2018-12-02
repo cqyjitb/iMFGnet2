@@ -186,6 +186,7 @@ function delDispatchValues() {
     document.getElementById("attr13").value = "";
     document.getElementById("attr14").value = "";
     document.getElementById("attr15").value = "";
+    window.location.reload();
 
 }
 
