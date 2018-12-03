@@ -66,11 +66,21 @@ public class CardhstController extends BaseController {
 
                     service.updateStatus(dto.get(i));
                 }
-
-                if (dto.get(i).getId() == 2L){//补打不更改当前状态
+                int maxno = service.getMaxNo(dto.get(i).getZpgdbar());
+                if ( maxno <= 2) {
+                    if (dto.get(i).getId() == 2L) {//补打不更改当前状态
+                        cardh = cardhService.selectByBarcode(dto.get(i).getZpgdbar());
+                        cardh.setStatus2(cardh.getStatus());
+                        cardh.setStatus("PRNT");
+                        cardh.setZdybs("Y");
+                        List<Cardh> list = new ArrayList<>();
+                        list.add(cardh);
+                        cardhService.updateCardhStatus(list);
+                    }
+                }else{
                     cardh = cardhService.selectByBarcode(dto.get(i).getZpgdbar());
-                    cardh.setStatus2(cardh.getStatus());
-                    cardh.setStatus("PRNT");
+                    cardh.setStatus2(cardh.getStatus2());
+                    cardh.setStatus(cardh.getStatus());
                     cardh.setZdybs("Y");
                     List<Cardh> list = new ArrayList<>();
                     list.add(cardh);
