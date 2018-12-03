@@ -138,7 +138,118 @@ public class ZwipqController extends BaseController {
             rs.setRows(listall);
             return rs;
         }
+    @RequestMapping(value = {"/zwipq/insertIntoZwipqTmp"}, method = {RequestMethod.GET})
+    @ResponseBody
+    public ResponseData insertIntoZwipqTmp(HttpServletRequest request, int cursum, Long line_id, String shift, String zpgdbar, String zxhbar, String attr7, String createBy,
+                                        String classgrp, String isAll) {
+        ResponseData rs = new ResponseData();
+        //1；获取产线信息
+        Lines lines = linesService.selectById(line_id);
 
+        //查询箱号信息
+        Xhcard xhcard = xhcardService.selectByBacode(zxhbar);
+
+        //查询机加派工单
+        Cardh cardh = cardhService.selectByBarcode(zpgdbar);
+
+        Marc marc = marcService.selectByMatnr(xhcard.getMatnr());
+
+        Curlzk curlzk = new Curlzk();
+        curlzk = curlzkService.selectById(Long.valueOf(line_id), classgrp);
+        if (curlzk == null){
+            rs.setSuccess(false);
+            rs.setMessage("未获取到当前生产线，当前机加流转卡信息！");
+            return rs;
+        }
+
+        //查询队列获取最大序列号
+        String line_id_str = line_id.toString();
+        Map m = new HashMap();
+        m.put("p1", "SEQ_ON_LINE");
+        m.put("p2", cursum + 100);
+        service.selectMaxQsenq(m);
+        Integer qsenq = Integer.valueOf(m.get("p3").toString());
+        if (qsenq == 1) {
+            curlzk.setZxhbar(zxhbar);
+        }
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        //准备插入的数据集
+        List<Zwipq> list = new ArrayList<>();
+        for (int i = 0; i < cursum; i++) {
+            Zwipq zwipq = new Zwipq();
+            UUID uuid = java.util.UUID.randomUUID();
+            String uuidstr = uuid.toString().replaceAll("-", "");
+            zwipq.setZsxjlh(uuidstr);
+
+            zwipq.setArbpr(lines.getArbpl());
+            zwipq.setSegOprName(lines.getSegOprName());
+            if (lines.getPlineId() == null) {
+                zwipq.setPkgLineId("");
+            } else {
+                zwipq.setPkgLineId(lines.getPlineId().toString());
+            }
+            zwipq.setShift(shift);
+            zwipq.setZpgdbar(zpgdbar);
+            zwipq.setZpgdbar2("");
+            zwipq.setVornr("0010");
+            zwipq.setZxhbar(zxhbar);
+            zwipq.setMatnr(xhcard.getMatnr());
+            zwipq.setMatnr2(cardh.getMatnr());
+            zwipq.setZsxnum(1.0);
+            zwipq.setGmein(marc.getMeins());
+            zwipq.setLgort(xhcard.getLgort());
+
+
+            if (lines.getPlineId() == null) {
+                zwipq.setLineId(line_id_str);
+                zwipq.setPkgLineId(line_id_str);
+            } else {
+                String pkgline_id_str = lines.getPlineId().toString();
+                zwipq.setPkgLineId(pkgline_id_str);
+                zwipq.setLineId(line_id_str);
+            }
+            zwipq.setCharg(xhcard.getChargkc());
+            zwipq.setSfflg(attr7);//班标
+            zwipq.setDiecd(xhcard.getZmnum());//模号
+            zwipq.setQsenq(qsenq.longValue());
+            zwipq.setCreatedBy(Long.valueOf(createBy));
+            zwipq.setZzxkl(0L);
+            zwipq.setZqjkl(0L);
+            zwipq.setZoffl(0L);
+            zwipq.setStatus(0L);
+            zwipq.setZremade(0);
+            zwipq.setCreationDate(new Date());
+            list.add(zwipq);
+            qsenq = qsenq + 1;
+        }
+        if (list.size() == cursum) {
+            int num = service.InsertIntoZwipq(list);
+        }
+        //如果是毛坯框的第一件物料上线 要更新当前产线的当前毛坯框码
+        if (curlzk.getZxhbar() == null ) {
+            curlzk.setZxhbar(zxhbar);
+            curlzk.setLastUpdatedBy(Long.valueOf(createBy));
+            curlzk.setLastUpdateDate(new Date());
+            curlzkService.updateZxhbar(curlzk);
+        }
+
+        if (!curlzk.getZxhbar().equals(zxhbar)){
+            curlzk.setZxhbar(zxhbar);
+            curlzk.setLastUpdatedBy(Long.valueOf(createBy));
+            curlzk.setLastUpdateDate(new Date());
+            curlzkService.updateZxhbar(curlzk);
+        }
+        //如果勾选了上线完成标识 更新箱号的上线完成标识
+        if (isAll.equals("true")) {
+            xhcard.setZsxwc("X");
+            xhcardService.updateZsxwc(xhcard);
+        }
+
+        rs.setSuccess(true);
+        return rs;
+
+    }
     /*
     ** 机加上线 插入在制队列
      */

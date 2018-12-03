@@ -126,13 +126,13 @@ public class LinesController extends BaseController {
      */
     @RequestMapping(value = {"/wip/lines/selectById"}, method = {RequestMethod.GET})
     @ResponseBody
-    public ResponseData selectById(HttpServletRequest request, Long line_id, String classgrp,String type) {
+    public ResponseData selectById(HttpServletRequest request, String line_id, String classgrp,String type) {
         List list = new ArrayList();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String erdat = df.format(new Date()).substring(0, 10);
         ResponseData rs = new ResponseData(list);
         //获取生产线信息
-        Lines lines = service.selectById(line_id);
+        Lines lines = service.selectById(Long.valueOf(line_id));
         if (lines == null) {
             rs.setSuccess(false);
             rs.setMessage("生产线ID错误，请从新输入正确的生产线ID!");
@@ -205,7 +205,7 @@ public class LinesController extends BaseController {
         marclist.add(marc);
         cardhList.add(cardhjj);
         List<ProductsCfg> prolist = new ArrayList<>();
-        prolist = productsCfgService.selectById(line_id);
+        prolist = productsCfgService.selectById(Long.valueOf(line_id));
         if (prolist.size() <= 0) {
             rs.setSuccess(false);
             rs.setMessage("生产线：" + line_id + "尚未配置产品基础信息，请先维护产品配置。");
