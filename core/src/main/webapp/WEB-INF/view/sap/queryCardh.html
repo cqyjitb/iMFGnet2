@@ -181,9 +181,9 @@
                                             <!--});-->
                                             <!--</script>-->
                                             <select class="mui-select" id="zdybs" style="width: 200px;height: 30px;text-align: center;" >
-                                                <option value="ALL">包含全部</option>
+                                                <!--<option value="ALL">包含全部</option>-->
                                                 <option value="Y">已打印</option>
-                                                <option value="N">未打印</option>
+                                                <!--<option value="N">未打印</option>-->
                                             </select>
                                             <script>
                                                 $(document).ready(function() {
@@ -322,14 +322,16 @@
                 refresh: true,
                 buttonCount: 10
             },
-//            toolbar: [{
+            toolbar: [
+
+//                {
 //                name: "stop",
 //                template: '<span id="deleteBtn" class="btn btn-danger">删除工序流转卡</span>'
 //            },
-//                {
-//                    name: "print",
-//                    template: '<span id="printBtn" class="btn btn-success">打印工序流转卡</span>'
-//                }],
+                {
+                    name: "print",
+                    template: '<span id="printBtn" class="btn btn-success">打印工序流转卡</span>'
+                }],
             columns:[
                 {
                     field: "werks",
@@ -864,8 +866,8 @@
                 }
 
             };
-            LODOP.SET_PREVIEW_WINDOW(0,1,1,1024,768,"自定义标题.开始打印");
-            document.getElementById('S1').value= LODOP.PREVIEW();
+            //LODOP.SET_PREVIEW_WINDOW(0,1,1,1024,768,"自定义标题.开始打印");
+            document.getElementById('S1').value= LODOP.PRINT();
             //document.getElementById('S1').value= LODOP.PRINT_DESIGN();
 
         }

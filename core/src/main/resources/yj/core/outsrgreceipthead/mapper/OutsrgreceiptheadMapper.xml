@@ -42,7 +42,7 @@
                                          ZIPUSER = #{zipuser},
                                          PRTFLAG = #{prtflag},
                                          LAST_UPDATE_DATE = #{lastUpdateDate},
-                                         LAST_UPDATED_BY = #{lastUpdatedBy},
+                                         LAST_UPDATED_BY = #{lastUpdatedBy}
                                          <where>
                                              RECEIPTNM = #{receiptnm}
                                          </where>

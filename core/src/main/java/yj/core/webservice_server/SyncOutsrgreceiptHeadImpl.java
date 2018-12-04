@@ -1,7 +1,10 @@
 package yj.core.webservice_server;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.context.ContextLoaderListener;
+import yj.core.outsrgissuehead.mapper.OutsrgissueheadMapper;
 import yj.core.outsrgreceipthead.dto.Outsrgreceipthead;
+import yj.core.outsrgreceipthead.mapper.OutsrgreceiptheadMapper;
 import yj.core.outsrgreceipthead.service.IOutsrgreceiptheadService;
 import yj.core.webservice_server.dto.Rec_Outsrgreceipthead;
 import yj.core.webservice_server.dto.ReturnMessage;
@@ -32,8 +35,8 @@ public class SyncOutsrgreceiptHeadImpl implements IsyncOutsrgreceiptHead {
         outsrgreceipthead.setWerks(rec_outsrgreceipthead.getWerks());
         outsrgreceipthead.setLastUpdateDate(new Date());
         outsrgreceipthead.setLastUpdatedBy(10001L);
-
-        int num = outsrgreceiptheadService.updateOutsrgreceipthead(outsrgreceipthead);
+        OutsrgreceiptheadMapper outsrgreceiptheadMapper = ContextLoaderListener.getCurrentWebApplicationContext().getBean(OutsrgreceiptheadMapper.class);
+        int num = outsrgreceiptheadMapper.updateOutsrgreceipthead(outsrgreceipthead);
         if (num == 1){
             rs.setMessage("同步成功！");
             rs.setFlag("S");
