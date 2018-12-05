@@ -188,7 +188,7 @@ public class XhcardController
 
         //先进先出控制
         String matnr = xhcard.getMatnr();
-        List<Xhcard> allxhcard = service.selectByMatnrAndLgortSort(matnr, "9128");
+        List<Xhcard> allxhcard = service.selectByMatnrAndLgortSort(matnr, xhcard.getLgort());
         //查询线边库所有毛坯 按照班标排序
 
         cardhjj = cardhService.selectByBarcode(zpgdbar);

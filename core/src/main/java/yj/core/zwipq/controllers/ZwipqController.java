@@ -533,13 +533,18 @@ public class ZwipqController extends BaseController {
                 Xhcard xhcard = xhcardService.selectByBacode(listall.get(i).getZxhbar());
                 Cardh cardhyz = cardhService.selectByZxhbar(xhcard.getAufnr(), xhcard.getZxhnum());
                 inOutRecord.setZpgdbar(cardhjj.getZpgdbar());//机加当前流转卡号
-                inOutRecord.setZpgdbar2(cardhyz.getZpgdbar());//压铸工序流转卡号
-                inOutRecord.setMatnr(cardhyz.getMatnr());
+                if (xhcard.getZtxt() == null || xhcard.getZtxt().equals("")){
+                    inOutRecord.setZpgdbar2(cardhyz.getZpgdbar());//压铸工序流转卡号
+                }else{
+                    inOutRecord.setZpgdbar2("");//压铸工序流转卡号
+                }
+
+                inOutRecord.setMatnr(xhcard.getMatnr());
                 inOutRecord.setMatnr2(cardhjj.getMatnr());
                 inOutRecord.setZoutnum(1.0);
                 inOutRecord.setReflag(0L);
                 inOutRecord.setZremade(0);
-                inOutRecord.setGmein(cardhyz.getGmein());
+                inOutRecord.setGmein(xhcard.getMeins());
                 inOutRecord.setCharg(xhcard.getChargkc());
                 inOutRecord.setDiecd(xhcard.getZmnum());
                 inOutRecord.setSfflg(listall.get(i).getSfflg());
