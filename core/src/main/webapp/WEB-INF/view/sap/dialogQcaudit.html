@@ -12,6 +12,7 @@
             var grid = window.parent.$("#Grid").data("kendoGrid");
             selections2 = grid.selectedDataItems();
             if (selections2.length > 0) {
+//                根据选择的内容创建不合格品审理单2
                 console.log(".....");
             }
             window.parent.$("#newWin").data("kendoWindow").close();
@@ -27,15 +28,28 @@
                         <div class="col-sm-6">
                             <label class="col-sm-3 control-label">责任部门</label>
                             <div class="col-sm-9">
-                                <input type="text" required style="width:100%" name="depart" data-bind="value:model.depart" class="k-textbox">
-                                <span data-for="depart" class=".k-invalid-msg"></span>
+                                <input type="text"  id="unit_codedepart" style="width:100%" name="departbm" data-bind="value:model.departbm" class="k-textbox">
+                                <span data-for="departbm" class=".k-invalid-msg"></span>
+                                <script>
+                                    $("#unit_codedepart").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_UNIT_NEW")}, {
+                                        query: function (e) {
+                                            e.param['enabledFlag'] = 'Y';
+                                        }
+                                    }));
+                                </script>
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-3 control-label">责任车间/产线</label>
                             <div class="col-sm-9">
-                                <input type="text" required style="width:100%" name="name" data-bind="value:model.lineid" class="k-textbox">
-                                <span data-for="lineid" class=".k-invalid-msg"></span>
+                                <input type="text" id="unit_codedepartcj" style="width:100%" name="name" data-bind="value:model.departcj" class="k-textbox">
+                                <script>
+                                    $("#unit_codedepartcj").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_UNIT_NEW2")}, {
+                                        query: function (e) {
+                                            e.param['enabledFlag'] = 'Y';
+                                        }
+                                    }));
+                                </script>
                             </div>
                         </div>
                     </div>

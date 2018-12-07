@@ -204,4 +204,45 @@ public class InOutRecordController extends BaseController {
         }
         return new ResponseData(result);
     }
+
+    /**
+     *  不合格品审理单2 根据条件取数
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/inoutrecord/selectForQcaudit")
+    @ResponseBody
+    public ResponseData selectforQcaudit(HttpServletRequest request,@RequestParam(defaultValue = DEFAULT_PAGE) int page,
+                                         @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize){
+        ResponseData rs = new ResponseData();
+//        werks: {type: "string"},
+//        matnr: {type: "string"},
+//        gytype: {type: "string"},
+//        deptId: {type: "string"},
+//        line_id: {type: "string"},
+//        gstrpfrom:{type:"date"},
+//        gstrpto:{type:"date"}
+        String werks = request.getParameter("werks") == null?"":request.getParameter("werks");
+        String matnr = request.getParameter("matnr") == null ?"":request.getParameter("matnr");
+        String gytype = request.getParameter("qytype") == null?"":request.getParameter("qytype");
+        String deptId = request.getParameter("deptId") == null?"":request.getParameter("deptId");
+        String line_id = request.getParameter("line_id") == null?"":request.getParameter("line_id");
+        String gstrpfrom = request.getParameter("gstrpfrom");
+        String gstrpto = request.getParameter("gstrpto");
+        if (gstrpfrom != null){
+            gstrpfrom = gstrpfrom.substring(0,10);
+        }else{
+            gstrpfrom = "";
+        }
+
+        if (gstrpto != null){
+            gstrpto = gstrpto.substring(0,10);
+        }else{
+            gstrpto = "";
+        }
+
+
+
+        return rs;
+    }
 }
