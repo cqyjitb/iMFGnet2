@@ -1,0 +1,698 @@
+<!--
+    报功日志报表
+-->
+
+<#include "../include/header.html">
+
+    <style>
+        span[class='k-window-title'] {
+            user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            -webkit-user-select: none;
+            -webkit-touch-callout: none;
+        }
+
+        .action_ok {
+            color: #5fb760;
+        }
+
+        .action_dangerous {
+            color: #eeac5f;
+        }
+
+        #label {
+            color: red;
+        }
+
+        #label2 {
+            color: red;
+        }
+
+        #label3 {
+            color: red;
+        }
+
+    </style>
+    <script type="text/javascript">
+        /*   $(function(){
+         setInterval(function(){
+         $.ajax({
+         url: '${base.contextPath}/test/form',
+         async: false,
+         success: function(data) {
+         document.getElementById('s').innerHTML=JSON.stringify(data.rows[0]);
+         document.getElementById('e').innerHTML=JSON.stringify(data.rows[1]);
+
+         },
+         });
+         }, 1000);
+
+         });*/
+
+
+        //        function ajaxTest() {
+        //            $.ajax({
+        //                url: '${base.contextPath}/test/form',
+        //                async: false,
+        //                success: function (data) {
+        //                    document.getElementById('s').innerHTML = JSON.stringify(data.rows[0]);
+        //                    document.getElementById('e').innerHTML = JSON.stringify(data.rows[1]);
+        //
+        //                },
+        //            });
+        //        }
+
+        var viewModel = kendo.observable({
+            model: {},
+            comboboxSource: [{
+                text: "A班",
+                value: "A"
+            }, {
+                text: "B班",
+                value: "B"
+            }, {
+                text: "C班",
+                value: "C"
+            }],
+
+            comboboxType: [{
+                text: "已加工未入库产品",
+                value: "1"
+            }, {
+                text: "未加工线边库毛坯",
+                value: "2"
+            }, {
+                text: "已入库成品",
+                value: "3"
+            }],
+
+            resetForm: function () {
+                var formData = viewModel.model.toJSON();
+                for (var k in formData) {
+                    viewModel.model.set(k, null);
+                }
+                $('#Grid').data('kendoGrid').dataSource.read();
+            },
+            queryGrid: function (e) {
+                $('#Grid').data('kendoGrid').dataSource.page(1);
+            }
+
+
+        });
+
+        var viewModel2 = kendo.observable({
+            model: {}
+        });
+
+    </script>
+    <div id="content-container">
+        <div id="page-content">
+            <div class="panel" style="padding: 0px;border:none;box-shadow: none;">
+                <form class="form-horizontal" id="myForm">
+                    <div class="panel-body">
+                        <div id="test">
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">工厂</label>
+                                        <div class="col-sm-8">
+                                            <input id="werks" class="k-textbox" data-bind="value:model.werks"
+                                                   style="width: 100%" data-defaultValue="1001">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">产品物料号</label>
+                                        <div class="col-sm-8">
+                                            <input id="queryID" class="k-textbox" data-bind="value:model.material"
+                                                   style="width: 100%">
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">产品所处工艺状态&nbsp;<label id="label3">*</label></label>
+                                        <div class="col-sm-8">
+                                            <input id="type" name="type" required placeholder="产品所处工艺状态"
+                                                   data-role="combobox" data-value-primitive="true"
+                                                   data-text-field="text" data-value-field="value"
+                                                   data-bind="enabled: isEnabled, source: comboboxType, value:model.type"
+                                                   style="width: 100%;"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <div class="row ">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">生产车间&nbsp;<label
+                                                id="label">*</label></label>
+                                        <div class="col-sm-8">
+                                            <input id="unit_code" class="k-textbox" data-bind="value:model.deptId"
+                                                   style="width: 100%">
+                                            <script>
+                                                $("#unit_code").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_UNIT_NEW2")}, {
+                                                    query: function (e) {
+                                                        e.param['enabledFlag'] = 'Y';
+                                                    }
+                                                }));
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">生产线&nbsp;<label
+                                                id="label2">*</label></label>
+                                        <div class="col-sm-8">
+                                            <input id="line_id" class="k-textbox" data-bind="value:model.line_id"
+                                                   style="width: 100%">
+                                            <script>
+                                                $("#line_id").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_LINE_NEW")}, {
+                                                    query: function (e) {
+                                                        e.param['deptId'] = document.getElementById("unit_code").value;
+                                                        e.param['enabledFlag'] = 'Y';
+                                                    }
+                                                }))
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">生产日期从&nbsp;</label>
+
+                                        <div class="col-sm-8">
+                                            <input style="width: 100%" data-role="datepicker"
+                                                   data-bind="value:model.creatDateAfter" class="k-datepicker">
+                                        </div>
+
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">生产日期至&nbsp;</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" style="width: 100%" data-role="datepicker"
+                                                   data-bind="value:model.creatDateBefore" class="k-datepicker">
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </form>
+                <div class="row" style="margin-right: -8px;">
+                    <div class="pull-right" style="margin-right:15px">
+                                <span class="btn btn-primary" data-bind="click:queryGrid"
+                                      type="submit">
+                                <i class="fa fa-search" style="margin-right:3px;"></i>
+                            <@spring.message "hap.query"/></span>
+                        <span class="btn btn-default" type="button" data-bind="click:resetForm">
+                                <i class="fa fa-eraser" style="margin-right:3px;"></i>
+                            <@spring.message "hap.reset"/></span>
+                        <span class="btn btn-info" type="button" id="panel_hidden" onclick="test()">
+                                <i class="fa fa-joomla" style="margin-right:3px;"></i>
+                           <@spring.message "hap.panel_hidden"/></span>
+                        <span class="btn btn-info" type="button" id="panel_show" onclick="test()"
+                              style="display: none">
+                                <i class="fa fa-joomla" style="margin-right:3px;"></i>
+                           <@spring.message "hap.panel_show"/></span>
+                    </div>
+                </div>
+                <!--新窗口占位符-->
+                <div id="newWin" style="display: none"></div>
+                <div style="clear:both">
+                    <div id="Grid"></div>
+                </div>
+
+            </div>
+        </div>
+
+        <script type="text/javascript">
+            kendo.bind($('#page-content'), viewModel);
+            kendo.bind($('#page-newWin'), viewModel2);
+
+            function test() {
+                var apply = $("#test");
+                var button_hidden = $("#panel_hidden");
+                var button_show = $("#panel_show");
+                if (apply.is(":hidden")) {
+                    button_hidden.show();
+                    button_show.hide();
+                    apply.show();    //如果元素为隐藏,则将它显现
+                } else {
+                    button_hidden.hide();
+                    button_show.show();
+                    apply.hide();     //如果元素为显现,则将其隐藏
+                }
+                Hap.autoResizeGrid("#Grid");
+
+            }
+
+            var BaseUrl = _basePath;
+            dataSource = new kendo.data.DataSource({
+                transport: {
+                    read: {
+                        url: BaseUrl + "/confirmation/input/log/queryLog",
+                        type: "POST",
+                        dataType: "json"
+                    },
+                    parameterMap: function (options, type) {
+                        if (type !== "read" && options.models) {
+                            var datas = Hap.prepareSubmitParameter(options, type)
+
+                            return kendo.stringify(datas);
+                        } else if (type === "read") {
+                            return Hap.prepareQueryParameter(viewModel.model.toJSON(), options)
+                        }
+                    }
+                },
+//                change: function (e) {
+//                    ajaxTest();
+//                },
+                batch: true,
+                serverPaging: true,
+                pageSize: 10,
+                schema: {
+                    data: 'rows',
+                    total: 'total',
+                    model: {
+                        id: "id",
+                        fields: {
+                            orderno: {type: "string"},
+                            operation: {type: "string"},
+                            postingDate: {type: "date"},
+                            creatDate: {type: "date"},
+                            logCreatDate: {type: "date"}
+
+                        }
+                    }
+                }
+            });
+
+            var leftGird = $("#Grid").kendoGrid({
+                dataSource: dataSource,
+                autoBind: false,
+                height: '100%',
+                resizable: true,
+                scrollable: true,
+                navigatable: false,
+                selectable: 'rowbox',
+                pageable: {
+                    pageSizes: [20, 50, 100, 500, 1000, 2000, 5000, "all"],
+                    refresh: true,
+                    buttonCount: 10
+                },
+
+                toolbar: [{
+                    name: "createQcaudit",
+                    template: '<span id="createQcaudit" class="btn btn-success">创建不合格品审理单2</span>'
+                }],
+
+                columns: [
+                    {
+                        field: "plant",
+                        title: '工厂',
+                        width: 70,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+                    {
+                        field: "orderno",
+                        title: '订单号',
+                        width: 120,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    }, {
+                        field: "dispatch",
+                        title: '流转卡号',
+                        width: 150,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+                    {
+                        field: "operation",
+                        title: '工序',
+                        width: 70,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+                    {
+                        field: "operationDesc",
+                        title: '工序名称',
+                        width: 100,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+                    {
+                        field: "material",
+                        title: '产品物料号',
+                        width: 95,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+                    {
+                        field: "matDesc",
+                        title: '产品名称',
+                        width: 350,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        }
+
+                    },
+                    {
+                        field: "fevor",
+                        title: '生产管理员',
+                        width: 100,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+                    {
+                        field: "fevorTxt",
+                        title: '生产管理员名称',
+                        width: 150,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+                    {
+                        field: "creatDate",
+                        title: '报工时间',
+                        width: 150,
+                        format: "{0: yyyy-MM-dd HH:mm:ss}",
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+
+                    {
+                        field: "postingDate",
+                        title: '过账日期',
+                        width: 100,
+                        format: "{0:yyyy-MM-dd}",
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+                    {
+                        field: "yeild",
+                        title: '合格数量',
+                        width: 120,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+                    {
+                        field: "workScrap",
+                        title: '工废数量',
+                        width: 120,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+
+                    {
+                        field: " rowScrap",
+                        title: '料废数量',
+                        width: 120,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+
+
+                    {
+                        field: "classgrp",
+                        title: '班组',
+                        width: 120,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+
+                    {
+                        field: "line",
+                        title: '生产线',
+                        width: 120,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+                    {
+                        field: "modelNo",
+                        title: '模号',
+                        width: 120,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+                    {
+                        field: "userName",
+                        title: '报工人',
+                        width: 100,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+                    {
+                        field: "attr1",
+                        title: '操作人1',
+                        width: 100,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+                    {
+                        field: "attr2",
+                        title: '操作人2',
+                        width: 100,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+                    {
+                        field: "attr3",
+                        title: '起/止压射号',
+                        width: 100,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+                    {
+                        field: "attr4",
+                        title: '操作人4',
+                        width: 100,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+                    {
+                        field: "attr5",
+                        title: '操作人5',
+                        width: 100,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+                    {
+                        field: "attr6",
+                        title: '生产日期',
+                        width: 100,
+                        format: "{0:yyyy-MM-dd}",
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+                    {
+                        field: "attr7",
+                        title: '班标',
+                        width: 100,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+                    {
+                        field: "logCreatDate",
+                        title: '日志时间',
+                        width: 150,
+                        format: "{0: yyyy-MM-dd HH:mm:ss}",
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+                    {
+                        field: "tranType",
+                        title: '报工/冲销',
+                        width: 100,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+
+                    {
+                        field: "msgty",
+                        title: '是否成功',
+                        width: 100,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+                    {
+                        field: "msgtx",
+                        title: '消息',
+                        width: 120,
+                        width: 350,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        }
+                    },
+
+
+                ],
+                editable: false
+            });
+
+            var grid = $("#Grid").data("kendoGrid");
+            grid.bind("excelExport", function (e) {
+                e.workbook.fileName = "报工日志.xlsx";
+            });
+
+            function deleteData() {
+
+                Hap.deleteGridSelection({
+                    grid: $('#Grid')
+                });
+
+            }
+
+            Hap.autoResizeGrid("#Grid");
+
+
+            $('#createQcaudit').on('click', function () {
+                var url = "dialogQcaudit.html";
+                var dialog = $("#newWin").kendoWindow({
+                    actions: ["Close"],
+                    width: 900,
+                    height: 600,
+                    title: '<@spring.message "hap.edit"/>',
+                    content: url,
+                    iframe: true,
+                    visible: false,
+                    modal: true
+
+                }).data("kendoWindow");
+                dialog.center().open();
+
+            });
+        </script>
+        <style type="text/css">
+
+            .priority-median {
+                background-color: yellowgreen;
+            }
+
+            .priority-high {
+                background-color: orangered;
+            }
+        </style>
+        </body>
+        </html>
