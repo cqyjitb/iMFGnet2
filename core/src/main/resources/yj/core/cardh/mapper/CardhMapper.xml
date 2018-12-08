@@ -224,6 +224,9 @@
             <if test="zdybs != null">
                 and ZDYBS = #{zdybs}
             </if>
+            <if test="zxhnum != null">
+                and ZXHNUM = #{zxhnum}
+            </if>
             ORDER  BY GSTRP DESC
         </where>
 

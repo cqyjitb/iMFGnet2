@@ -147,6 +147,16 @@ public class Cardh
 
     private Long lastUpdatedBy; //更新人
 
+    private String zxhbar;
+
+    public String getZxhbar() {
+        return zxhbar;
+    }
+
+    public void setZxhbar(String zxhbar) {
+        this.zxhbar = zxhbar;
+    }
+
     public String getZtype() {
         return ztype;
     }

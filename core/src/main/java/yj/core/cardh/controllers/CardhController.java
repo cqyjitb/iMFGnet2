@@ -79,7 +79,25 @@ public class CardhController
     @ResponseBody
     public ResponseData queryAfterSort(Cardh dto, @RequestParam(defaultValue = "1") int page, @RequestParam(defaultValue = "10") int pageSize, HttpServletRequest request) {
         IRequest requestContext = createRequestContext(request);
-        return new ResponseData(this.service.queryAfterSort(requestContext, dto, page, pageSize));
+        if (dto.getZxhbar() != null){
+            Xhcard xhcard = new Xhcard();
+            xhcard = xhcardService.selectByBacode(dto.getZxhbar());
+            if (xhcard != null){
+                dto.setAufnr(xhcard.getAufnr());
+                dto.setMatnr(xhcard.getMatnr());
+                dto.setZxhnum(xhcard.getZxhnum());
+                return new ResponseData(this.service.queryAfterSort(requestContext, dto, page, pageSize));
+            }else{
+                ResponseData rs = new ResponseData();
+                rs.setSuccess(false);
+                rs.setMessage("箱号不存在！");
+                return rs;
+            }
+        }else{
+
+            return new ResponseData(this.service.queryAfterSort(requestContext, dto, page, pageSize));
+        }
+
     }
 
     @RequestMapping({"/sap/cardh/queryZuheAfterSort"})
