@@ -224,6 +224,7 @@ public class XhcardController
             rs.setMessage("该毛坯框:" + xhcard.getZxhbar() + "库存地点：" + xhcard.getLgort() + "错误！");
             return rs;
         }
+        Marc marcjj = marcService.selectByMatnr(cardhjj.getMatnr());
 
         curxhcard = service.selectByBacode(curlzk.getZxhbar());
         //查询所有生产线 当前毛坯箱号记录
@@ -258,9 +259,12 @@ public class XhcardController
                                 if (dtweiduReturn1.getWEIDUFLG().equals("1")) {
 
                                 } else {
-                                    rs.setSuccess(false);
-                                    rs.setMessage("未按先进先出规则上线，请先上线批次为：" + allxhcard.get(j).getChargkc() + ",箱号：" + allxhcard.get(j).getZxhbar() + " 的毛坯框！");
-                                    return rs;
+                                    if (marcjj.getFifof() != null && marcjj.getFifof().equals("Y")){
+                                        rs.setSuccess(false);
+                                        rs.setMessage("未按先进先出规则上线，请先上线批次为：" + allxhcard.get(j).getChargkc() + ",箱号：" + allxhcard.get(j).getZxhbar() + " 的毛坯框！");
+                                        return rs;
+                                    }
+
                                 }
                             }
                         }
@@ -304,9 +308,11 @@ public class XhcardController
                                     if (dtweiduReturn1.getWEIDUFLG().equals("1")) {
 
                                     } else {
-                                        rs.setSuccess(false);
-                                        rs.setMessage("未按先进先出规则上线，请先上线批次为：" + allxhcard.get(j).getChargkc() + ",箱号：" + allxhcard.get(j).getZxhbar() + " 的毛坯框！");
-                                        return rs;
+                                        if (marcjj.getFifof() != null && marcjj.getFifof().equals("Y")){
+                                            rs.setSuccess(false);
+                                            rs.setMessage("未按先进先出规则上线，请先上线批次为：" + allxhcard.get(j).getChargkc() + ",箱号：" + allxhcard.get(j).getZxhbar() + " 的毛坯框！");
+                                            return rs;
+                                        }
                                     }
                                 }
                             }
@@ -459,6 +465,8 @@ public class XhcardController
             rs.setMessage("该毛坯框:" + xhcard.getZxhbar() + "库存地点：" + xhcard.getLgort() + "错误！");
             return rs;
         }
+        //机加成品物料主数据
+        Marc marcjj = marcService.selectByMatnr(cardhjj.getMatnr());
 
 
         curxhcard = service.selectByBacode(curlzk.getZxhbar());
@@ -540,9 +548,11 @@ public class XhcardController
                                         if (dtweiduReturn1.getWEIDUFLG().equals("1")) {
 
                                         } else {
-                                            rs.setSuccess(false);
-                                            rs.setMessage("未按先进先出规则上线，请先上线批次为：" + xhcardlist.get(j).getChargkc() + ",箱号：" + xhcardlist.get(j).getZxhbar() + " 的毛坯框！");
-                                            return rs;
+                                            if (marcjj.getFifof() != null && marcjj.getFifof().equals("Y")){
+                                                rs.setSuccess(false);
+                                                rs.setMessage("未按先进先出规则上线，请先上线批次为：" + xhcardlist.get(j).getChargkc() + ",箱号：" + xhcardlist.get(j).getZxhbar() + " 的毛坯框！");
+                                                return rs;
+                                            }
                                         }
                                     }
                                 }
@@ -650,9 +660,12 @@ public class XhcardController
                                         if (dtweiduReturn1.getWEIDUFLG().equals("1")) {
 
                                         } else {
-                                            rs.setSuccess(false);
-                                            rs.setMessage("未按先进先出规则上线，请先上线批次为：" + xhcardlist.get(j).getChargkc() + ",箱号：" + xhcardlist.get(j).getZxhbar() + " 的毛坯框！");
-                                            return rs;
+                                            if (marcjj.getFifof() != null && marcjj.getFifof().equals("Y")){
+                                                rs.setSuccess(false);
+                                                rs.setMessage("未按先进先出规则上线，请先上线批次为：" + xhcardlist.get(j).getChargkc() + ",箱号：" + xhcardlist.get(j).getZxhbar() + " 的毛坯框！");
+                                                return rs;
+                                            }
+
                                         }
                                     }
                                 }
