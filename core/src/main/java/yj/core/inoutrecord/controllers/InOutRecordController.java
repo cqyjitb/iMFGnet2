@@ -215,13 +215,6 @@ public class InOutRecordController extends BaseController {
     public ResponseData selectforQcaudit(HttpServletRequest request,@RequestParam(defaultValue = DEFAULT_PAGE) int page,
                                          @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize){
         ResponseData rs = new ResponseData();
-//        werks: {type: "string"},
-//        matnr: {type: "string"},
-//        gytype: {type: "string"},
-//        deptId: {type: "string"},
-//        line_id: {type: "string"},
-//        gstrpfrom:{type:"date"},
-//        gstrpto:{type:"date"}
         String werks = request.getParameter("werks") == null?"":request.getParameter("werks");
         String matnr = request.getParameter("matnr") == null ?"":request.getParameter("matnr");
         String gytype = request.getParameter("qytype") == null?"":request.getParameter("qytype");

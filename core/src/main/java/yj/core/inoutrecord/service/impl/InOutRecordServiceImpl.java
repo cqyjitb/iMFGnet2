@@ -16,6 +16,7 @@ import yj.core.marc.mapper.MarcMapper;
 import yj.core.qjcode.dto.Qjcode;
 import yj.core.qjcode.mapper.QjcodeMapper;
 import yj.core.wipqcparamlines.dto.QcparamLines;
+import yj.core.wipqcparamlines.dto.itemPageData;
 import yj.core.wipqcparamlines.mapper.QcparamLinesMapper;
 import yj.core.zudlist.dto.Zudlist;
 import yj.core.zwipq.mapper.ZwipqMapper;
@@ -161,5 +162,20 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
     @Override
     public int selectZsxnum(String lineId, Integer zremade, String sfflg, String diecd) {
         return zwipqMapper.selectZsxnum(lineId, zremade,sfflg,diecd);
+    }
+
+    @Override
+    public List<itemPageData> selectforQcaudit1(String werks, String matnr, String deptId, String line_id, String gstrpfrom, String gstrpto, int page, int pagesize) {
+        return null;
+    }
+
+    @Override
+    public List<itemPageData> selectforQcaudit2(String werks, String matnr, String deptId, String line_id, String gstrpfrom, String gstrpto, int page, int pagesize) {
+        return null;
+    }
+
+    @Override
+    public List<itemPageData> selectforQcaudit3(String werks, String matnr, String deptId, String line_id, String gstrpfrom, String gstrpto, int page, int pagesize) {
+        return null;
     }
 }

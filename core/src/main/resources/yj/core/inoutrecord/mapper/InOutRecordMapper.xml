@@ -239,4 +239,8 @@
             ZQJJLH = #{zqjjlh}
         </where>
     </select>
+
+    <select id="selectforQcaudit1" parameterType="java.lang.String" resultMap="BaseResultMap2">
+
+    </select>
 </mapper>
