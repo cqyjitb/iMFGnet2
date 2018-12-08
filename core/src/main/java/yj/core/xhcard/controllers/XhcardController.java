@@ -533,13 +533,21 @@ public class XhcardController
                                 DTWEIDUParam param1 = new DTWEIDUParam();
                                 Cardh cardhtmp = new Cardh();
                                 cardhtmp = cardhService.selectByZxhbar(xhcardlist.get(j).getAufnr(), xhcardlist.get(j).getZxhnum());
-                                if (cardhtmp.getStatus().equals("HOLD")) {//已经被冻结的不参与批次比较
-                                    continue;
+
+                                if (cardhtmp != null){
+                                    if (cardhtmp.getStatus().equals("HOLD")){
+                                        continue;
+                                    }
+                                    param1.setZBANB(cardhtmp.getSfflg());
+                                    param1.setZMODEL(cardhtmp.getDiecd());
+
+                                }else{
+                                    param1.setZBANB(xhcardlist.get(j).getZtxt());
+                                    param1.setZMODEL(xhcardlist.get(j).getZmnum());
                                 }
                                 param1.setMATNR(xhcardlist.get(j).getMatnr());
                                 param1.setWERKS(xhcardlist.get(j).getWerks());
-                                param1.setZBANB(cardhtmp.getSfflg());
-                                param1.setZMODEL(cardhtmp.getDiecd());
+
                                 param1.setZXHBAR(xhcard.getZxhbar());
                                 DTWEIDUReturn dtweiduReturn1 = new DTWEIDUReturn();
                                 dtweiduReturn1 = weiduWebserviceUtil.receiveConfirmation(param1);
@@ -582,7 +590,25 @@ public class XhcardController
                 Cardh curcardh = cardhService.selectByZxhbar(curxhcard.getAufnr(), curxhcard.getZxhnum());
                 //判断当前毛坯框码是否完成上线
 
-                if (!curcardh.getStatus().equals("HOLD")) {
+                if (curcardh != null){
+                    if (!curcardh.getStatus().equals("HOLD")) {
+                        if (curxhcard.getZsxwc() == null) {
+                            rs.setSuccess(false);
+                            rs.setMessage("上一毛坯框：" + curlzk.getZxhbar() + " 未完成上线！请使用该框码继续上线！");
+                            return rs;
+                        }
+
+                        if (!curxhcard.getZsxwc().equals("X")) {
+                            rs.setSuccess(false);
+                            rs.setMessage("上一毛坯框：" + curlzk.getZxhbar() + " 未完成上线！请使用该框码继续上线！");
+                            return rs;
+                        }
+                    }else{
+                        rs.setSuccess(false);
+                        rs.setMessage("当前箱号对应流转卡状态为HOLD");
+                        return rs;
+                    }
+                }else{
                     if (curxhcard.getZsxwc() == null) {
                         rs.setSuccess(false);
                         rs.setMessage("上一毛坯框：" + curlzk.getZxhbar() + " 未完成上线！请使用该框码继续上线！");
@@ -595,6 +621,7 @@ public class XhcardController
                         return rs;
                     }
                 }
+
 
             }
             //第二步 根据箱号获取流转卡记录
@@ -645,13 +672,20 @@ public class XhcardController
                                 DTWEIDUParam param1 = new DTWEIDUParam();
                                 Cardh cardhtmp = new Cardh();
                                 cardhtmp = cardhService.selectByZxhbar(xhcardlist.get(j).getAufnr(), xhcardlist.get(j).getZxhnum());
-                                if (cardhtmp.getStatus().equals("HOLD")) {//已经冻结的毛坯框不参与批次的比较
-                                    continue;
+
+                                if (cardhtmp != null){
+                                    if (cardhtmp.getStatus().equals("HOLD")){
+                                        continue;
+                                    }
+                                    param1.setZBANB(cardhtmp.getSfflg());
+                                    param1.setZMODEL(cardhtmp.getDiecd());
+                                }else{
+                                    param1.setZBANB(xhcardlist.get(j).getZtxt());
+                                    param1.setZMODEL(xhcardlist.get(j).getZmnum());
                                 }
                                 param1.setMATNR(xhcardlist.get(j).getMatnr());
                                 param1.setWERKS(xhcardlist.get(j).getWerks());
-                                param1.setZBANB(cardhtmp.getSfflg());
-                                param1.setZMODEL(cardhtmp.getDiecd());
+
                                 param1.setZXHBAR(xhcard.getZxhbar());
                                 DTWEIDUReturn dtweiduReturn1 = new DTWEIDUReturn();
                                 dtweiduReturn1 = weiduWebserviceUtil.receiveConfirmation(param1);
