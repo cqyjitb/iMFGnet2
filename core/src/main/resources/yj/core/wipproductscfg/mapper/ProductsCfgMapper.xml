@@ -105,9 +105,12 @@
     </delete>
 
     <select id="selectByLineId" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select pmatnr as pmatnr, (select maktx FROM sap_marc where matnr = pmatnr) as matnr FROM wip_products_cfg
+        select pmatnr as pmatnr, (select maktx FROM sap_marc where matnr = pmatnr) as maktx FROM wip_products_cfg
         <where>
             LINE_ID = #{lineId}
+            <if test="pmatnr != null">
+                AND pmatnr = #{pmatnr}
+            </if>
         </where>
     </select>
 

@@ -1,12 +1,13 @@
 package yj.core.zwipq.service.impl;
 
 import com.hand.hap.core.IRequest;
+import com.hand.hap.hr.dto.Employee;
+import com.hand.hap.hr.mapper.EmployeeMapper;
 import com.hand.hap.system.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.mapper.CardhMapper;
-import yj.core.dispatch.dto.Result;
 import yj.core.inoutrecord.mapper.InOutRecordMapper;
 import yj.core.marc.dto.Marc;
 import yj.core.marc.mapper.MarcMapper;
@@ -15,6 +16,8 @@ import yj.core.webservice_migo.dto.DTMIGOParam;
 import yj.core.webservice_migo.dto.DTMIGOReturn;
 import yj.core.wipdftrghlist.dto.Dftrghlist;
 import yj.core.wipdftrghlist.service.IDftrghlistService;
+import yj.core.wiplines.dto.Lines;
+import yj.core.wiplines.mapper.LinesMapper;
 import yj.core.xhcard.dto.Xhcard;
 import yj.core.xhcard.mapper.XhcardMapper;
 import yj.core.ztbc0018.dto.Ztbc0018;
@@ -25,11 +28,8 @@ import yj.core.zwipq.service.IZwipqService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DecimalFormat;
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import static java.lang.Math.abs;
 
 @Service
 @Transactional
@@ -50,6 +50,8 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
     private InOutRecordMapper inOutRecordMapper;
     @Autowired
     private IDftrghlistService dftrghlistService;
+    @Autowired
+    private EmployeeMapper employeeMapper;
 
     @Override
     public List<Zwipq> selectByLineIdAndZxhbar(String line_id, String zxhbar) {
@@ -211,9 +213,21 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
     }
 
     @Override
-    public List<Zwipq> selectZwipq(IRequest request, String deptId, String lineId, Integer zremade, String attr1After, String attr1Before,
+    public List<Zwipq> selectZwipq(IRequest request, String deptId, String lineId,String plineId, Integer zremade, String attr1After, String attr1Before,
                                    String shift, String sfflg, String diecd, String zxhbar, String zgjbar, Integer online, Integer zzxkl, Integer zqjkl, Integer zoffl, Integer status) {
-        return zwipqMapper.selectZwipq(deptId, lineId, zremade, attr1After, attr1Before, shift, sfflg, diecd,zxhbar, zgjbar, online, zzxkl, zqjkl, zoffl, status);
+        List<Zwipq> zwipq = zwipqMapper.selectZwipq(deptId, lineId,plineId, zremade, attr1After, attr1Before, shift, sfflg, diecd,zxhbar, zgjbar, online, zzxkl, zqjkl, zoffl, status);
+        for(int i=0;i<zwipq.size();i++ ){
+            Zwipq zwipq1 = zwipq.get(i);
+            Employee list = new Employee();
+            list.setEmployeeId(zwipq1.getCreatedBy());
+            Employee employee = employeeMapper.selectOne(list);
+            if(employee == null){
+                zwipq1.setCreateBy("");
+            }else{
+                zwipq1.setCreateBy(employee.getEmployeeCode());
+            }
+        }
+        return zwipq;
     }
 
     @Override

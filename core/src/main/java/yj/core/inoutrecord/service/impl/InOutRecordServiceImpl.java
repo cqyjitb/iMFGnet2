@@ -1,6 +1,5 @@
 package yj.core.inoutrecord.service.impl;
 
-import com.github.pagehelper.PageHelper;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,9 +14,12 @@ import yj.core.marc.dto.Marc;
 import yj.core.marc.mapper.MarcMapper;
 import yj.core.qjcode.dto.Qjcode;
 import yj.core.qjcode.mapper.QjcodeMapper;
+import yj.core.wiplines.dto.Lines;
+import yj.core.wiplines.mapper.LinesMapper;
 import yj.core.wipqcparamlines.dto.QcparamLines;
 import yj.core.wipqcparamlines.mapper.QcparamLinesMapper;
 import yj.core.zudlist.dto.Zudlist;
+import yj.core.zwipq.dto.Zwipq;
 import yj.core.zwipq.mapper.ZwipqMapper;
 
 import java.util.ArrayList;
@@ -39,6 +41,7 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
     private ZwipqMapper zwipqMapper;
     @Autowired
     private QcparamLinesMapper qcparamLinesMapper;
+
     @Override
     public int insertQjrecode(List<InOutRecord> list) {
         int sum = 0;
@@ -149,17 +152,17 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
     }
 
     @Override
-    public List<InOutRecord> selectforlines(IRequest request, String lineId, String deptId) {
-        return inOutRecordMapper.selectforlines(lineId, deptId);
+    public List<InOutRecord> selectforlines(IRequest request, String lineId, String plineId,String deptId) {
+        return inOutRecordMapper.selectforlines(lineId,plineId, deptId);
     }
 
     @Override
-    public int selectZoutnum(String lineId, Integer zremade, String sfflg, String diecd) {
-        return inOutRecordMapper.selectZoutnum(lineId, zremade, sfflg, diecd);
+    public int selectZoutnum(String lineId, Integer zremade,String matnr, String sfflg, String diecd) {
+        return inOutRecordMapper.selectZoutnum(lineId, zremade,matnr, sfflg, diecd);
     }
 
     @Override
-    public int selectZsxnum(String lineId, Integer zremade, String sfflg, String diecd) {
-        return zwipqMapper.selectZsxnum(lineId, zremade,sfflg,diecd);
+    public int selectZsxnum(String lineId, Integer zremade,String matnr, String sfflg, String diecd) {
+        return zwipqMapper.selectZsxnum(lineId, zremade,matnr,sfflg,diecd);
     }
 }

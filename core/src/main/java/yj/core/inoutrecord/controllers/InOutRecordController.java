@@ -38,8 +38,6 @@ public class InOutRecordController extends BaseController {
     private IQjcodeService qjcodeService;
     @Autowired
     private IMarcService marcService;
-    @Autowired
-    private ILinesService linesService;
 
     @RequestMapping(value = "/wip/in/out/record/query")
     @ResponseBody
@@ -186,15 +184,16 @@ public class InOutRecordController extends BaseController {
     public ResponseData selectforlines(HttpServletRequest request, String lineId,String deptId,Integer zremade) {
         IRequest requestContext = createRequestContext(request);
         ResponseData rs =  new ResponseData();
-        List<InOutRecord> list = service.selectforlines(requestContext,lineId,deptId);
+        List<InOutRecord> list = service.selectforlines(requestContext,lineId,lineId,deptId);
         List<InOutRecord> result = new ArrayList<InOutRecord>();
         if(list.size() > 0 ){
             for(InOutRecord inOutRecord : list){
                 String lineId2 = inOutRecord.getLineId();
                 String sfflg = inOutRecord.getSfflg();
                 String diecd = inOutRecord.getDiecd();
-                Integer num = service.selectZoutnum(lineId2, zremade,sfflg,diecd);
-                Integer zsxnum = service.selectZsxnum(lineId2, zremade,sfflg,diecd);
+                String matnr = inOutRecord.getMatnr();
+                Integer num = service.selectZoutnum(lineId2, zremade,matnr,sfflg,diecd);
+                Integer zsxnum = service.selectZsxnum(lineId2, zremade,matnr,sfflg,diecd);
                 if(zsxnum != 0 || num != 0){
                     inOutRecord.setZsxnum(zsxnum);
                     inOutRecord.setNum(num);

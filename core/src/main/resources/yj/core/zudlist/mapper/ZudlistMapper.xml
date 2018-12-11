@@ -83,7 +83,7 @@
     </select>
 
     <select id="selectZudlist" parameterType="java.lang.String" resultMap="BaseResultMap2">
-        select distinct zl.*,li.descriptions,cu.sortl,ma.maktx,re.zotype
+        select distinct zl.*,li.descriptions,cu.sortl,ma.maktx,re.zotype,zl.CREATION_DATE as createDate
         from wip_zudlist zl,wip_zudhead zh,wip_lines li,sap_cust cu,sap_marc ma,wip_in_out_record re
         <where>
             zh.zudnum = zl.zudnum

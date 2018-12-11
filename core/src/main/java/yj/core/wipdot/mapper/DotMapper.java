@@ -33,4 +33,11 @@ public interface DotMapper extends Mapper<Dot> {
      * @param dot
      */
     void insertDot(Dot dot);
+
+    /**
+     * 根据生产线查询采集点 918100064
+     * @param lineId
+     * @return
+     */
+    List<Dot> selectByLineId(@Param("lineId")Long lineId);
 }

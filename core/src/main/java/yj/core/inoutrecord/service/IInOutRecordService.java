@@ -35,8 +35,8 @@ public interface IInOutRecordService extends IBaseService<InOutRecord>, ProxySel
      * @return
      */
     List<InOutRecord> selectforZrwk(String pline_id,String line_id,String classgrp,String zotype,IRequest iRequest);
-    List<InOutRecord> selectforlines(IRequest request, String lineId, String deptId);
-    int selectZoutnum(String lineId, Integer zremade,String sfflg,String diecd);
-    int selectZsxnum(String lineId, Integer zremade,String sfflg,String diecd);
+    List<InOutRecord> selectforlines(IRequest request, String lineId,String plineId,String deptId);
+    int selectZoutnum(String lineId, Integer zremade,String matnr,String sfflg,String diecd);
+    int selectZsxnum(String lineId, Integer zremade,String matnr,String sfflg,String diecd);
 
 }

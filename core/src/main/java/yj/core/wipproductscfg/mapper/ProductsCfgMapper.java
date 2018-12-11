@@ -16,11 +16,12 @@ public interface ProductsCfgMapper extends Mapper<ProductsCfg>{
     ProductsCfg selectByLineidAndMatnr(@Param("line_id") String line_id,@Param("matnr") String matnr);
 
     /**
-     * 根据lineId查询 918100064
+     * 根据lineId查询 LOV_PRODUCTS 918100064
      * @param lineId
+     * @param pmatnr
      * @return
      */
-    List<ProductsCfg> selectByLineId(@Param("lineId") String lineId);
+    List<ProductsCfg> selectByLineId(@Param("lineId") String lineId,@Param("pmatnr") String pmatnr);
 
     /**
      * 机加产线产品配置维护查询 918100064

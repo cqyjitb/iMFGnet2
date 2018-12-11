@@ -85,7 +85,14 @@ import java.util.List;
         @RequestMapping(value = "/wip/products/cfg/removeProductsCfg")
         @ResponseBody
         public ResponseData deleteProductsCfg(HttpServletRequest request,@RequestBody List<ProductsCfg> dto){
-            service.deleteProductsCfg(dto);
-            return new ResponseData();
+            ResponseData rs =  new ResponseData();
+            String result = service.deleteProductsCfg(dto);
+            if(result != null){
+                rs.setSuccess(false);
+                rs.setMessage(result);
+                return rs;
+            }else {
+                return new ResponseData();
+            }
         }
     }

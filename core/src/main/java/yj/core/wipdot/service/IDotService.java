@@ -11,4 +11,5 @@ public interface IDotService extends IBaseService<Dot>, ProxySelf<IDotService> {
 
     List<Dot> selectFromPage(IRequest requestContext, Dot dto, int page, int pageSize);
     String updateOrInsert(IRequest requestCtx,List<Dot> dto,String userName);
+    String deleteDot(List<Dot> dto);
 }
