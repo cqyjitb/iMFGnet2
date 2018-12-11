@@ -815,7 +815,7 @@ public class ZwipqController extends BaseController {
         IRequest requestContext = createRequestContext(request);
         Integer online1 = null,zzxkl1 = null, zqjkl1 = null, zoffl1 = null, status1 = null;
         if (attr1Before != null){
-            attr1Before = attr1Before.substring(0,10);
+            attr1Before = attr1Before.replace("00:00:00","23:59:59");
         }
         if (attr1After != null){
             attr1After = attr1After.substring(0,10);
@@ -839,7 +839,7 @@ public class ZwipqController extends BaseController {
             online1 = 0;
         }
         ResponseData rs = new ResponseData();
-        List<Zwipq> list = service.selectZwipq(requestContext, deptId, lineId, zremade, attr1After, attr1Before, shift, sfflg, diecd, zxhbar, zgjbar,online1, zzxkl1, zqjkl1, zoffl1, status1);
+        List<Zwipq> list = service.selectZwipq(requestContext, deptId,lineId,lineId, zremade, attr1After, attr1Before, shift, sfflg, diecd, zxhbar, zgjbar,online1, zzxkl1, zqjkl1, zoffl1, status1);
         return new ResponseData(list);
     }
 

@@ -490,7 +490,7 @@
                 var ozotype = document.getElementById("zotype");
                 var val = ozotype.value;
                 if (val == "2"){//取件原因为 捡漏NG的时候才检查返工次数是否输入
-                    if (selections[i].zrwktimes == "" || selections[i].zrwktimes == '' || selections[i].zrwktimes == null ){
+                    if (selections[i].zrwktimes == "" || selections[i].zrwktimes == '' || selections[i].zrwktimes == null ) {
                         l_error = "返修次数为必须项目！";
                         break;
                     }else{
@@ -500,6 +500,21 @@
                             break;
                         };
                     }
+                }
+                if(selections[i].zrwktimes != null && selections[i].zrwktimes.length > 1){
+                    l_error = "返修次数的字段长度不能大于1！";
+                    break;
+                }else if(selections[i].mark != null && selections[i].mark.length > 40){
+                    l_error = "备注的字段长度不能大于40！";
+                    break;
+                /*}else if(selections[i].vornr != null && selections[i].vornr.length > 10){
+                    l_error = "取件工序的字段长度不能大于10！";
+                    break;
+                }else if(selections[i].vornr_old != null && selections[i].vornr_old.length > 10){
+                    l_error = "发现工序号的字段长度不能大于10！";
+                    break;*/
+                }else{
+                    break;
                 }
                 var viewModel3 = kendo.observable({
                     model: {

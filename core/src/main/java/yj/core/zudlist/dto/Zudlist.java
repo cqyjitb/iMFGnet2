@@ -108,6 +108,24 @@ public class Zudlist extends BaseDTO {
 
     @Transient
     private String name;//部门名称
+    private String createBy1;//创建人
+    private String createDate;//创建日期
+
+    public String getCreateDate() {
+        return createDate;
+    }
+
+    public void setCreateDate(String createDate) {
+        this.createDate = createDate;
+    }
+
+    public String getCreateBy1() {
+        return createBy1;
+    }
+
+    public void setCreateBy1(String createBy1) {
+        this.createBy1 = createBy1;
+    }
 
     public String getName() {
         return name;

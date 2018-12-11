@@ -39,7 +39,7 @@ public interface InOutRecordMapper extends Mapper<InOutRecord>{
          * @param deptId
          * @return
          */
-        List<InOutRecord> selectforlines(@Param("lineId") String lineId,@Param("deptId")String deptId);
+        List<InOutRecord> selectforlines(@Param("lineId") String lineId,@Param("plineId") String plineId,@Param("deptId")String deptId);
 
         /**
          * 根据生产线、返工件标识、处理标识查询WIP_IN_OUT_RECORD表汇总取件数量（未报废） 918100064
@@ -49,7 +49,7 @@ public interface InOutRecordMapper extends Mapper<InOutRecord>{
          * @param diecd
          * @return
          */
-        int selectZoutnum(@Param("lineId")String lineId,@Param("zremade") Integer zremade,@Param("sfflg") String sfflg,@Param("diecd") String diecd);
+        int selectZoutnum(@Param("lineId")String lineId,@Param("zremade") Integer zremade,@Param("matnr")String matnr,@Param("sfflg") String sfflg,@Param("diecd") String diecd);
 
         /**
          * 按产线、成品物料、工序流转卡集查询待处理数量、报废数量 918100064

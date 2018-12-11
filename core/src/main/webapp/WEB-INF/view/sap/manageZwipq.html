@@ -20,11 +20,9 @@
             color: #eeac5f;
         }
 
-        #label{
+        .label{
             color: red;
         }
-
-
     </style>
     <script type="text/javascript">
         var newViewModel = kendo.observable({
@@ -62,15 +60,21 @@
             },
             queryGrid1: function (e) {
                 var deptId = document.getElementById("unit_code").value;
-                document.getElementById("online").value;
-                document.getElementById("zzxkl").value;
-                document.getElementById("zqjkl").value;
-                document.getElementById("zoffl").value;
-                document.getElementById("status").value;
-                if (deptId == null || deptId == "" || deptId == ''){
+                var lineId = document.getElementById("line-id").value;
+                newViewModel.model.set("online",document.getElementById("online").value);
+                newViewModel.model.set("zzxkl",document.getElementById("zzxkl").value);
+                newViewModel.model.set("zqjkl",document.getElementById("zqjkl").value);
+                newViewModel.model.set("zoffl",document.getElementById("zoffl").value);
+                newViewModel.model.set("status",document.getElementById("status").value);
+                if (deptId == null || deptId == "" || deptId == '') {
                     kendo.ui.showErrorDialog({
                         title: '错误',
                         message: "查询条件:生产车间,必输！"
+                    });
+                }else if(lineId ==null || lineId == "" || lineId == ''){
+                    kendo.ui.showErrorDialog({
+                        title: '错误',
+                        message: "查询条件:生产线,必输！"
                     });
                 }else{
                     $('#Grid').data('kendoGrid').dataSource.page(1);
@@ -87,7 +91,7 @@
                             <div class="col-sm-4">
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">生产车间
-                                        <label id="label">* </label></label>
+                                        <label class="label">* </label></label>
                                     <div class="col-sm-8">
                                         <input id="unit_code" class="k-textbox" data-bind="value:model.deptId" style="width: 100%">
                                         <script>
@@ -102,7 +106,8 @@
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label">生产线</label>
+                                    <label class="col-sm-4 control-label">生产线
+                                        <label class="label">* </label></label>
                                     <div class="col-sm-8">
                                         <input id="line-id" class="k-textbox" data-bind="value:model.lineId" style="width: 100%">
                                         <script>
@@ -131,7 +136,7 @@
                         <div class="row" style="margin-right: -8px;">
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label">生产日期从</label>
+                                    <label class="col-sm-4 control-label">上线日期从</label>
                                     <div class="col-sm-8">
                                         <input style="width: 100%" data-role="datepicker"
                                                data-bind="value:model.attr1After" class="k-datepicker">
@@ -140,7 +145,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label">生产日期至</label>
+                                    <label class="col-sm-4 control-label">上线日期至</label>
                                     <div class="col-sm-8">
                                         <input type="text" style="width: 100%" data-role="datepicker"
                                                data-bind="value:model.attr1Before" class="k-datepicker">
@@ -302,7 +307,7 @@
                         zremade: {type: "number"},
                         zpgdbar: {type: "string"},
                         lgort: {type: "string"},
-                        createdBy: {type: "number"},
+                        createBy: {type: "string"},
                         qsenq:{type:"number"},
                         sourceLineId:{type:"string"}
                     }
@@ -369,7 +374,7 @@
                     }
                 },
                 {
-                    field: "creationDate",
+                    field: "attr1",
                     title: '上线时间',
                     width: 180,
                     format: "{0:yyyy-MM-dd HH:mm:ss}",
@@ -458,7 +463,7 @@
                     }
                 },
                 {
-                    field: "maktx",
+                    field: "maktx2",
                     title: '机加物料描述',
                     width: 360,
                     headerAttributes: {
@@ -537,7 +542,16 @@
                 {
                     field: "zremade",
                     title: '返工标识',
-                    width: 60,
+                    width: 80,
+                    template:function (e) {
+                        if(e.zremade == "1"){
+                            return "返工订单";
+                        }else if(e.zremade == "0"){
+                            return "正常订单";
+                        }else{
+                            return "";
+                        }
+                    },
                     headerAttributes: {
                         style: "text-align: center;"
                     },
@@ -568,7 +582,7 @@
                     }
                 },
                 {
-                    field: "createdBy",
+                    field: "createBy",
                     title: '上线人',
                     width: 60,
                     headerAttributes: {

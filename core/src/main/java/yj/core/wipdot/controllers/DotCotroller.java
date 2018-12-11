@@ -62,10 +62,17 @@ public class DotCotroller extends BaseController{
         return rs;
     }
 
-    @RequestMapping(value = "/wip/dot/remove")
+    @RequestMapping(value = "/wip/dot/removeDot")
     @ResponseBody
-    public ResponseData delete(HttpServletRequest request, @RequestBody List<Dot> dto) {
-        service.batchDelete(dto);
-        return new ResponseData();
+    public ResponseData deleteDot(HttpServletRequest request, @RequestBody List<Dot> dto) {
+        ResponseData rs =  new ResponseData();
+        String result = service.deleteDot(dto);
+        if(result != null){
+            rs.setSuccess(false);
+            rs.setMessage(result);
+            return rs;
+        }else {
+            return new ResponseData();
+        }
     }
 }

@@ -74,10 +74,6 @@
                 kendo.ui.showInfoDialog({
                     message:'箱容不能为空'
                 })
-            }else if(newViewModel.model.tuoQty ==''||newViewModel.model.tuoQty==null){
-                kendo.ui.showInfoDialog({
-                    message:'托容不能为空'
-                })
             }else if(newViewModel.model.barcodeCnt < 0){
                 kendo.ui.showInfoDialog({
                     message:'条码位数必须输入正整数'
@@ -322,6 +318,11 @@
             $(":input").attr("readOnly",true);
             $("#btn").hide();
         }
+    }else{
+        newViewModel.model.set("status","0");
+        newViewModel.model.set("isCheck","1");
+        newViewModel.model.set("isPrint","1");
+        newViewModel.model.set("isStep","1");
     }
     var BaseUrl = _basePath;
     var dataSource2 = new kendo.data.DataSource({
@@ -375,7 +376,9 @@
                     startPos:{type:"number"},
                     endPos:{type:"number"},
                     codeType:{defaultValue:"0"},
-                    status:{defaultValue:"0"}
+                    status:{defaultValue:"0"},
+                    checkUpData:{type:"number"},
+                    checkDownData:{type:"number"}
                 }
             }
         }
@@ -454,6 +457,15 @@
                         ]
                     })
                 },
+                template:function (e) {
+                    if(e.codeType == "1"){
+                        return "1-检测值项";
+                    }else if(e.codeType == "0"){
+                        return "0-特殊字符";
+                    }else{
+                        return "";
+                    }
+                },
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -508,6 +520,15 @@
                             { text:"0-有效",value:"0"}
                         ]
                     })
+                },
+                template:function (e) {
+                    if(e.status == "1"){
+                        return "1-失效";
+                    }else if(e.status == "0"){
+                        return "0-有效";
+                    }else{
+                        return "";
+                    }
                 },
                 headerAttributes: {
                     style: "text-align: center;"

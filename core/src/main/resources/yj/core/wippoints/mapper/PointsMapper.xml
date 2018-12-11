@@ -46,12 +46,23 @@
 
     <select id="selectLineId" resultMap="BaseResultMap">
         select distinct line_id as lineId,(select descriptions from wip_lines where line_id = lineId) as descriptions from wip_points
+        <where>
+            <if test="lineId != null">
+                line_id = #{lineId}
+            </if>
+        </where>
     </select>
 
     <select id="selectPointId" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select * from wip_points
         <where>
             line_id = #{lineId}
+            <if test="pointId != null">
+                AND point_id = #{pointId}
+            </if>
+            <if test="pointCode != null">
+                AND point_code = #{pointCode}
+            </if>
         </where>
     </select>
 

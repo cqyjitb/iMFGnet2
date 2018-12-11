@@ -47,7 +47,7 @@ public interface ZwipqMapper extends Mapper<Zwipq> {
      * @param diecd
      * @return
      */
-    int selectZsxnum(@Param("lineId") String lineId, @Param("zremade") Integer zremade, @Param("sfflg") String sfflg, @Param("diecd") String diecd);
+    int selectZsxnum(@Param("lineId") String lineId, @Param("zremade") Integer zremade,@Param("matnr")String matnr, @Param("sfflg") String sfflg, @Param("diecd") String diecd);
 
     /**
      * 产线在制队列明细查询 918100064
@@ -69,7 +69,7 @@ public interface ZwipqMapper extends Mapper<Zwipq> {
      * @param status
      * @return
      */
-    List<Zwipq> selectZwipq(@Param("deptId") String deptId, @Param("lineId") String lineId, @Param("zremade") Integer zremade, @Param("attr1After") String attr1After,
+    List<Zwipq> selectZwipq(@Param("deptId") String deptId, @Param("lineId") String lineId,@Param("plineId") String plineId, @Param("zremade") Integer zremade, @Param("attr1After") String attr1After,
                             @Param("attr1Before") String attr1Before, @Param("shift") String shift, @Param("sfflg") String sfflg, @Param("diecd") String diecd, @Param("zxhbar") String zxhbar,
                             @Param("zgjbar") String zgjbar, @Param("online") Integer online, @Param("zzxkl") Integer zzxkl, @Param("zqjkl") Integer zqjkl, @Param("zoffl") Integer zoffl, @Param("status") Integer status);
 
@@ -117,4 +117,12 @@ public interface ZwipqMapper extends Mapper<Zwipq> {
      * @return
      */
     List<Zwipq> selectByLineIdAndZxhbarAndZOFFL(@Param("line_id") String line_id,@Param("zxhbar") String zxhbar,@Param("zoffl") String zoffl);
+
+    /**
+     * 根据生产线和物料描述查询数据多少 918100064
+     * @param lineId
+     * @param matnr2
+     * @return
+     */
+    int selectLineIdMatnr2(@Param("lineId") String lineId,@Param("matnr2") String matnr2);
 }

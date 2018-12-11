@@ -126,6 +126,34 @@ public class Zwipq extends BaseDTO {
     private Integer processed; //在制数量
     @Transient
     private String attr;//生产日期
+    private String createBy;//上线人
+    private String maktx2;
+    @Transient
+    private String plineId;
+
+    public String getPlineId() {
+        return plineId;
+    }
+
+    public void setPlineId(String plineId) {
+        this.plineId = plineId;
+    }
+
+    public String getMaktx2() {
+        return maktx2;
+    }
+
+    public void setMaktx2(String maktx2) {
+        this.maktx2 = maktx2;
+    }
+
+    public String getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(String createBy) {
+        this.createBy = createBy;
+    }
 
     public String getSourceLineId() {
         return sourceLineId;
