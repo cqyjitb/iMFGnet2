@@ -33,5 +33,5 @@ public interface IProductsCfgService extends IBaseService<ProductsCfg>, ProxySel
 
     List<ProductsCfg> selectFromPage(IRequest requestContext, ProductsCfg dto, int page, int pageSize);
     String updateOrInsert(IRequest requestContext,List<ProductsCfg> dto,String userId);
-    void deleteProductsCfg(List<ProductsCfg> dto);
+    String deleteProductsCfg(List<ProductsCfg> dto);
 }

@@ -107,7 +107,7 @@
         <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
         <result column="OFF_UPDATED_DATE" property="offUpdatedDate" jdbcType="DATE" />
         <result column="OFF_UPDATED_BY" property="offUpdatedBy" jdbcType="DECIMAL" />
-        <result column="ATTR7" property="attr7" jdbcType="VARCHAR"/>
+        <result column="ATTR1" property="attr1" jdbcType="VARCHAR"/>
         <result column="CHECK" property="check" jdbcType="VARCHAR" />
         <result column="UNIT_ID" property="unitId" jdbcType="DECIMAL"/>
         <result column="DEPT_ID" property="deptId" jdbcType="VARCHAR"/>
@@ -135,6 +135,14 @@
         <result column="DEPT_ID" property="deptId" jdbcType="VARCHAR"/>
         <result column="PMATNR" property="pmatnr" jdbcType="VARCHAR"/>
     </resultMap>
+
+    <select id="selectLineIdMatnr2" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select count(*) from zwipq
+        <where>
+             line_id = #{lineId}
+            AND matnr2 = #{matnr2}
+        </where>
+    </select>
 
     <select id="selectIORZwipq" parameterType="java.lang.String" resultMap="BaseResultMap4">
         select distinct li.werks as werks,li.dept_id as deptId,b.name as name,q.line_id as lineId,
@@ -196,29 +204,28 @@
     </select>
 
     <select id="selectZwipq" parameterType="java.lang.String" resultMap="BaseResultMap3">
-        select distinct q.zsxjlh,q.line_id,q.creation_date,q.zxhbar,q.sfflg,q.diecd,q.zgjbar,q.matnr,q.matnr2,
-        q.arbpr,q.charg,q.zzxkl,q.zqjkl,q.zoffl,q.status,q.zremade,q.zpgdbar,q.lgort,q.q_senq,q.SOURCE_LINE_ID,
-        li.dept_id,b.name,li.descriptions,ma.maktx
-        from zwipq q,sap_cardh ca,wip_lines li,hr_org_unit_b b,sap_marc ma
+        select distinct q.zsxjlh,q.line_id,q.creation_date as attr1,q.zxhbar,q.sfflg,q.diecd,q.zgjbar,q.matnr,q.matnr2 as matnr2,
+        q.arbpr,q.charg,q.zzxkl,q.zqjkl,q.zoffl,q.status,q.zremade,q.zpgdbar,q.lgort,q.q_senq,q.SOURCE_LINE_ID,q.CREATED_BY,
+        li.dept_id,b.name,li.descriptions,ma.maktx,(select maktx from sap_marc where matnr = matnr2) as maktx2
+        from zwipq q,wip_lines li,hr_org_unit_b b,sap_marc ma
         <where>
             q.line_id = li.line_id
             AND li.dept_id = b.unit_code
             AND q.matnr = ma.matnr
-            AND ca.zpgdbar = q.zpgdbar
             <if test="deptId != null">
                 AND li.dept_id = #{deptId}
             </if>
             <if test="lineId != null">
-                AND li.line_id = #{lineId}
+                AND (li.line_id = #{lineId} OR li.pline_id = #{plineId})
             </if>
             <if test="zremade != null">
                 AND q.zremade = #{zremade}
             </if>
             <if test="attr1After != null">
-                AND ca.attr1 >= #{attr1After}
+                AND q.creation_date >= #{attr1After}
             </if>
             <if test="attr1Before != null">
-                AND #{attr1Before} >= ca.attr1
+                AND #{attr1Before} >= q.creation_date
             </if>
             <if test="shift != null">
                 AND q.shift = #{shift}
@@ -242,6 +249,9 @@
             <if test="online == 0">
                 (q.zzxkl = 1 AND q.zqjkl = 1 AND q.zoffl = 1 AND q.status = 1)
             </if>
+            <if test="online == null">
+                1 = 1
+            </if>
             <if test="zzxkl == 1">
                 OR (q.zzxkl = 1 AND q.zqjkl != 1 AND q.zoffl != 1 AND q.status != 1)
             </if>
@@ -253,27 +263,23 @@
             </if>
             <if test="status == 1">
                 OR (q.zzxkl != 1 AND q.zqjkl != 1 AND q.zoffl != 1 AND q.status = 1)
-            </if>
-            <if test="online == null">
-                1 = 1
             </if>)
         </where>
     </select>
 
     <select id="selectZsxnum" parameterType="java.lang.String" resultType="java.lang.Integer">
-        select count(DISTINCT q.zsxjlh) zsxnum from zwipq q, wip_in_out_record re,wip_lines li
+        select count(DISTINCT zsxjlh) zsxnum from zwipq
         <where>
-            q.zzxkl != 1
-            AND q.zqjkl != 1
-            AND q.zoffl != 1
-            AND q.status != 1
-            AND q.sfflg = re.sfflg
-            AND q.diecd = re.diecd
-            AND q.line_id = #{lineId}
-            AND q.sfflg = #{sfflg}
-            AND q.diecd = #{diecd}
+            zzxkl != 1
+            AND zqjkl != 1
+            AND zoffl != 1
+            AND status != 1
+            AND line_id = #{lineId}
+            AND sfflg = #{sfflg}
+            AND diecd = #{diecd}
+            AND matnr = #{matnr}
             <if test="zremade != null">
-                AND q.zremade = #{zremade}
+                AND zremade = #{zremade}
             </if>
         </where>
     </select>

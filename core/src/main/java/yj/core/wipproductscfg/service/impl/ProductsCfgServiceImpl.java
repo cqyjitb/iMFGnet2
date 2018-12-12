@@ -5,10 +5,12 @@ import com.hand.hap.core.IRequest;
 import com.hand.hap.system.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import yj.core.wipdot.dto.Dot;
 import yj.core.wipproductscfg.dto.ProductsCfg;
 import yj.core.wipproductscfg.mapper.ProductsCfgMapper;
 import yj.core.wipproductscfg.service.IProductsCfgService;
 import org.springframework.transaction.annotation.Transactional;
+import yj.core.zwipq.mapper.ZwipqMapper;
 
 import java.util.Date;
 import java.util.List;
@@ -18,6 +20,8 @@ import java.util.List;
 public class ProductsCfgServiceImpl extends BaseServiceImpl<ProductsCfg> implements IProductsCfgService{
     @Autowired
     private ProductsCfgMapper productsCfgMapper;
+    @Autowired
+    private ZwipqMapper zwipqMapper;
 
     @Override
     public List<ProductsCfg> selectById(long line_id) {
@@ -80,13 +84,18 @@ public class ProductsCfgServiceImpl extends BaseServiceImpl<ProductsCfg> impleme
     }
 
     @Override
-    public void deleteProductsCfg(List<ProductsCfg> dto) {
+    public String deleteProductsCfg(List<ProductsCfg> dto) {
         if(dto.size() > 0){
-            for(int i=0;i<dto.size();i++){
+            for (int i=0;i<dto.size();i++){
                 ProductsCfg productsCfg = dto.get(i);
-                productsCfgMapper.deleteProductsCfg(productsCfg);
+                int num = zwipqMapper.selectLineIdMatnr2(productsCfg.getLineId()+"",productsCfg.getPmatnr());
+                if(num != 0){
+                    return "生产线和产品编码已使用，不允许删除！";
+                }else{
+                    productsCfgMapper.deleteProductsCfg(productsCfg);
+                }
             }
         }
-
+        return null;
     }
 }

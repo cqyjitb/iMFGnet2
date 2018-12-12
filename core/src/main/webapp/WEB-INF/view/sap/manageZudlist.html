@@ -164,7 +164,8 @@
                 fields: {
                     deptId: {type: "string"},
                     zudnum: {type: "string"},
-                    createdBy1: {type: "string"}
+                    createdBy1: {type: "string"},
+                    createDate:{type:"date"}
                 }
             }
         }
@@ -463,6 +464,29 @@
                 field: "mark",
                 title: '备注',
                 width: 60,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field: "createBy1",
+                title: '创建人',
+                width: 60,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field: "createDate",
+                title: '创建时间',
+                width: 180,
+                format: "{0:yyyy-MM-dd HH:mm:ss}",
                 headerAttributes: {
                     style: "text-align: center;"
                 },

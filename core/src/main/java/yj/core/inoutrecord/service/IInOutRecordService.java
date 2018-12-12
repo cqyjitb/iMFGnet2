@@ -36,9 +36,9 @@ public interface IInOutRecordService extends IBaseService<InOutRecord>, ProxySel
      * @return
      */
     List<InOutRecord> selectforZrwk(String pline_id,String line_id,String classgrp,String zotype,IRequest iRequest);
-    List<InOutRecord> selectforlines(IRequest request, String lineId, String deptId);
-    int selectZoutnum(String lineId, Integer zremade,String sfflg,String diecd);
-    int selectZsxnum(String lineId, Integer zremade,String sfflg,String diecd);
+    List<InOutRecord> selectforlines(IRequest request, String lineId,String plineId,String deptId);
+    int selectZoutnum(String lineId, Integer zremade,String matnr,String sfflg,String diecd);
+    int selectZsxnum(String lineId, Integer zremade,String matnr,String sfflg,String diecd);
 
     /**
      *  不合格品审理单2 产品所处工艺状态=已加工未入库产品 917110140

@@ -578,7 +578,7 @@
 
     $('#createZud').on('click', function (){
         //检查是否勾选记录
-        var l_error = ""
+        var l_error = "";
         var dataarray = new Array();
         var grid =  $("#Grid").data("kendoGrid"),
             selections = grid.selectedDataItems();
@@ -605,6 +605,27 @@
                     l_error = "不合格品描述为必输选项！"
                     break;
                 }
+                if(selections[i].mark != null && selections[i].mark.length > 40){
+                    l_error = "备注的字段长度不能大于40！";
+                    break;
+                }
+                if(selections[i].vornr != null && selections[i].vornr.length > 10){
+                    l_error = "发生机台/工序号的字段长度不能大于10！";
+                    break;
+                }
+                /*if(selections[i].vornr_old != null && selections[i].vornr_old.length > 10) {
+                    l_error = "发现工序号的字段长度不能大于10！";
+                    break;
+                }*/
+                if(selections[i].zoplo != null && selections[i].zoplo.length > 2){
+                    l_error = "工位的字段长度不能大于2！";
+                    break;
+                }
+                if(selections[i].rsname != null && selections[i].rsname.length > 10){
+                    l_error = "责任人的字段长度不能大于10！";
+                    break;
+                }
+
                 var viewModel3 = kendo.observable({
                     model: {
                         plineId:plineId,

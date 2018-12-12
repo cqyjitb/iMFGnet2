@@ -25,6 +25,13 @@
         <result column="LAST_UPDATED_DATE" property="lastUpdatedDate" jdbcType="DATE"/>
     </resultMap>
 
+    <select id="selectByLineId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select * from wip_dot
+        <where>
+            line_id = #{lineId}
+        </where>
+    </select>
+
     <select id="selectFromPage" parameterType="yj.core.wipdot.dto.Dot" resultMap="BaseResultMap">
         select do.*,li.dept_id,li.descriptions as descriptions2,do.point_id as pointId,
                 (select descriptions from wip_points where point_id = pointId) as descriptions3

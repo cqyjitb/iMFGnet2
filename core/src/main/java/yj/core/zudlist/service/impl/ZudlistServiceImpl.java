@@ -2,6 +2,8 @@ package yj.core.zudlist.service.impl;
 
 import com.github.pagehelper.PageHelper;
 import com.hand.hap.core.IRequest;
+import com.hand.hap.hr.dto.Employee;
+import com.hand.hap.hr.mapper.EmployeeMapper;
 import com.hand.hap.system.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,6 +15,7 @@ import yj.core.zudlist.dto.Zudlist;
 import yj.core.zudlist.mapper.ZudlistMapper;
 import yj.core.zudlist.service.IZudlistService;
 import org.springframework.transaction.annotation.Transactional;
+import yj.core.zwipq.dto.Zwipq;
 
 import java.util.List;
 
@@ -25,6 +28,8 @@ public class ZudlistServiceImpl extends BaseServiceImpl<Zudlist> implements IZud
     private InOutRecordMapper inOutRecordMapper;
     @Autowired
     private QjcodeMapper qjcodeMapper;
+    @Autowired
+    private EmployeeMapper employeeMapper;
     @Override
     public int insertItem(List<Zudlist> list) {
         int sum = 0;
@@ -45,6 +50,14 @@ public class ZudlistServiceImpl extends BaseServiceImpl<Zudlist> implements IZud
                 Qjcode qjcode = qjcodeMapper.selectById(Integer.valueOf(zudlist.getZotype()));
                 zudlist.setRcode(qjcode.getRcode());
                 zudlist.setVornr_old(inOutRecord.getVornr());
+                Employee list1 = new Employee();
+                list1.setEmployeeId(zudlist.getCreatedBy());
+                Employee employee = employeeMapper.selectOne(list1);
+                if(employee == null){
+                    zudlist.setCreateBy1("");
+                }else{
+                    zudlist.setCreateBy1(employee.getEmployeeCode());
+                }
             }
         }
         return list;

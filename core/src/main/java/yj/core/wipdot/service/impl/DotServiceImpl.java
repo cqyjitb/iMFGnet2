@@ -10,6 +10,8 @@ import yj.core.wipdot.dto.Dot;
 import yj.core.wipdot.mapper.DotMapper;
 import yj.core.wipdot.service.IDotService;
 import yj.core.wiplines.dto.Lines;
+import yj.core.wippoints.dto.Points;
+import yj.core.wipusers.mapper.UsersMapper;
 
 import java.util.Date;
 import java.util.List;
@@ -19,6 +21,8 @@ import java.util.List;
 public class DotServiceImpl extends BaseServiceImpl<Dot> implements IDotService{
     @Autowired
     private DotMapper dotMapper;
+    @Autowired
+    private UsersMapper usersMapper;
 
     @Override
     public List<Dot> selectFromPage(IRequest requestContext, Dot dto, int page, int pageSize) {
@@ -56,6 +60,22 @@ public class DotServiceImpl extends BaseServiceImpl<Dot> implements IDotService{
                     dot.setCreationDate(new Date());
                     dot.setCreatedBy(userName);
                     dotMapper.insertDot(dot);
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String deleteDot(List<Dot> dto) {
+        if(dto.size() > 0){
+            for (int i=0;i<dto.size();i++){
+                Dot dot = dto.get(i);
+                int num = usersMapper.selectDotId(dot.getDotId());
+                if(num != 0){
+                    return "采集点Id已使用，不允许删除！";
+                }else{
+                    dotMapper.delete(dot);
                 }
             }
         }

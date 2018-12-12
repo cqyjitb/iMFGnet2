@@ -397,6 +397,15 @@
                 field:"status",
                 title:"状态",
                 width:80,
+                template:function (e) {
+                    if(e.status == "1"){
+                        return "1-失效";
+                    }else if(e.status == "0"){
+                        return "0-有效";
+                    }else{
+                        return "";
+                    }
+                },
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -408,6 +417,15 @@
                 field:"isCheck",
                 title:"检测验证",
                 width:80,
+                template:function (e) {
+                    if(e.isCheck == "1"){
+                        return "1-验证";
+                    }else if(e.isCheck == "0"){
+                        return "0-不验证";
+                    }else{
+                        return "";
+                    }
+                },
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -419,6 +437,15 @@
                 field:"isPrint",
                 title:"打印箱码",
                 width:80,
+                template:function (e) {
+                    if(e.isPrint == "1"){
+                        return "1-不打印";
+                    }else if(e.isPrint == "0"){
+                        return "0-打印";
+                    }else{
+                        return "";
+                    }
+                },
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -430,6 +457,15 @@
                 field:"isStep",
                 title:"跳序验证",
                 width:80,
+                template:function (e) {
+                    if(e.isStep == "1"){
+                        return "1-验证";
+                    }else if(e.isStep == "0"){
+                        return "0-不验证";
+                    }else{
+                        return "";
+                    }
+                },
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -441,6 +477,15 @@
                 field:"isRelCustomer",
                 title:"绑定客户条码",
                 width:80,
+                template:function (e) {
+                    if(e.isRelCustomer == "1"){
+                        return "1-绑定";
+                    }else if(e.isRelCustomer == "0"){
+                        return "0-不绑定";
+                    }else{
+                        return "";
+                    }
+                },
                 headerAttributes: {
                     style: "text-align: center;"
                 },

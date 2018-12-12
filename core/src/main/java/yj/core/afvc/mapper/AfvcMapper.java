@@ -2,6 +2,8 @@ package yj.core.afvc.mapper;
 
 import com.hand.hap.mybatis.common.Mapper;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 import yj.core.afvc.dto.Afvc;
 
 public  interface AfvcMapper
@@ -23,4 +25,11 @@ public  interface AfvcMapper
      * @return
      */
     int deleteByAufpl(String aufpl);
+
+    /**
+     * 工作中心查询 LOV_AFVC  918100064
+     * @param arbpl
+     * @return
+     */
+    List<Afvc> selectByArbpl(@Param("arbpl") String arbpl);
 }
