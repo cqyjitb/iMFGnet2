@@ -8,16 +8,37 @@
         <result column="LINE_ID" property="lineId" jdbcType="VARCHAR" />
         <result column="CRDAT" property="crdat" jdbcType="VARCHAR" />
         <result column="ARBPR" property="arbpr" jdbcType="VARCHAR" />
+        <result column="STATUS" property="status" jdbcType="VARCHAR" />
+        <result column="CREATION_DATE" property="creationDate"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
+        <result column="LAST_UPDATED_DATE" property="lastUpdatedDate"/>
+        <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
     </resultMap>
 
     <select id="selectMaxNo" parameterType="java.lang.String" resultType="java.lang.String">
         select MAX(ZUDNUM)
-          FROM wip_zudhead
-          <where>
-              CRDAT = #{crdat}
-          </where>
+        FROM wip_zudhead
+        <where>
+            CRDAT = #{crdat}
+        </where>
     </select>
     <insert id="insertHead" parameterType="yj.core.zudhead.dto.Zudhead">
         insert INTO wip_zudhead(ZUDNUM,UDTYPE,LINE_ID,CRDAT,ARBPR,CREATION_DATE,CREATED_BY)VALUES (#{zudnum},#{udtype},#{lineId},#{crdat},#{arbpr},#{creationDate},#{createdBy})
     </insert>
+
+    <select id="selectByZudnum" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_zudhead
+        <where>
+            ZUDNUM = #{zudnum}
+        </where>
+    </select>
+
+    <update id="updateHead" parameterType="yj.core.zudhead.dto.Zudhead">
+        update wip_zudhead set LAST_UPDATED_DATE = #{lastUpdatedDate},
+        LAST_UPDATED_BY = #{lastUpdatedBy},
+        STATUS = #{status}
+        <where>
+            ZUDNUM = #{zudnum}
+        </where>
+    </update>
 </mapper>

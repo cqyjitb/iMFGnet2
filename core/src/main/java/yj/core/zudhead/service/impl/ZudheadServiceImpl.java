@@ -22,4 +22,14 @@ public class ZudheadServiceImpl extends BaseServiceImpl<Zudhead> implements IZud
     public int insertHead(Zudhead zudhead) {
         return zudheadMapper.insertHead(zudhead);
     }
+
+    @Override
+    public Zudhead selectByZudnum(String zudnum) {
+        return zudheadMapper.selectByZudnum(zudnum);
+    }
+
+    @Override
+    public int updateHead(Zudhead head) {
+        return zudheadMapper.updateHead(head);
+    }
 }

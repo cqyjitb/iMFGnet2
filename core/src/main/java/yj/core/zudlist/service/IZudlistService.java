@@ -10,4 +10,18 @@ import java.util.List;
 public interface IZudlistService extends IBaseService<Zudlist>, ProxySelf<IZudlistService>{
     int insertItem(List<Zudlist> list);
     List<Zudlist> selectZudlist(IRequest requestContext, Zudlist dto, int page, int pageSize);
+
+    /**
+     *  更新不合格品审理单1 行信息 917110140
+     * @param zudlist
+     * @return
+     */
+    int updateItem(Zudlist zudlist);
+
+    /**
+     *  根据表单号查询 status = 0 的记录 917110140
+     * @param zudnum
+     * @return
+     */
+    List<Zudlist> selectByZudnumForUnprocess(String zudnum);
 }

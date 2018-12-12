@@ -23,4 +23,18 @@ public interface ZudlistMapper extends Mapper<Zudlist>{
      * @return
      */
     int selectDftdtl(@Param("matnr2")String matnr2, @Param("zissuetxt")String zissuetxt);
+
+    /**
+     *  更新不合格品审理单1 行信息 917110140
+     * @param zudlist
+     * @return
+     */
+    int updateItem(Zudlist zudlist);
+
+    /**
+     *  根据表单号查询 status = 0 的记录 917110140
+     * @param zudnum
+     * @return
+     */
+    List<Zudlist> selectByZudnumForUnprocess(String zudnum);
 }

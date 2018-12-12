@@ -15,61 +15,61 @@ import java.util.Date;
 @ExtensionAttribute(disable=true)
 @Table(name = "wip_zudhead")
 public class Zudhead extends BaseDTO {
-     @Id
-     @GeneratedValue
-      private String zudnum; //单据号
+    @Id
+    @GeneratedValue
+    private String zudnum; //单据号
 
-     @NotEmpty
-      private String udtype; //不合格审理单类型
+    @NotEmpty
+    private String udtype; //不合格审理单类型
 
-     @NotEmpty
-      private String lineId; //生产线ID
+    @NotEmpty
+    private String lineId; //生产线ID
 
-     @NotEmpty
-      private String arbpr; //工作中心
+    @NotEmpty
+    private String arbpr; //工作中心
 
-     @NotEmpty
-      private String crdat;
+    @NotEmpty
+    private String crdat;
 
-      private String status; //不合格品审理单1状态 0 未处理 1 已处理
+    private String status; //不合格品审理单1状态 0 未处理 1 已处理
 
-     @Transient
-      private Long createdBy;
+    @Transient
+    private Long createdBy;
 
-     @Transient
-      private Date creationDate;
+    @Transient
+    private Date creationDate;
 
-     public void setZudnum(String zudnum){
-         this.zudnum = zudnum;
-     }
+    public void setZudnum(String zudnum){
+        this.zudnum = zudnum;
+    }
 
-     public String getZudnum(){
-         return zudnum;
-     }
+    public String getZudnum(){
+        return zudnum;
+    }
 
-     public void setUdtype(String udtype){
-         this.udtype = udtype;
-     }
+    public void setUdtype(String udtype){
+        this.udtype = udtype;
+    }
 
-     public String getUdtype(){
-         return udtype;
-     }
+    public String getUdtype(){
+        return udtype;
+    }
 
-     public void setLineId(String lineId){
-         this.lineId = lineId;
-     }
+    public void setLineId(String lineId){
+        this.lineId = lineId;
+    }
 
-     public String getLineId(){
-         return lineId;
-     }
+    public String getLineId(){
+        return lineId;
+    }
 
-     public void setArbpr(String arbpr){
-         this.arbpr = arbpr;
-     }
+    public void setArbpr(String arbpr){
+        this.arbpr = arbpr;
+    }
 
-     public String getArbpr(){
-         return arbpr;
-     }
+    public String getArbpr(){
+        return arbpr;
+    }
 
     @Override
     public Long getCreatedBy() {

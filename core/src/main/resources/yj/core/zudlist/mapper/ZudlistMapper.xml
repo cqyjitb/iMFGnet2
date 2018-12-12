@@ -34,6 +34,12 @@
         <result column="MARK" property="mark" jdbcType="VARCHAR" />
         <result column="RUECK" property="rueck" jdbcType="VARCHAR" />
         <result column="RMZHL" property="rmzhl" jdbcType="VARCHAR" />
+        <result column="STATUS" property="status" jdbcType="VARCHAR" />
+        <result column="RMZHL" property="rmzhl" jdbcType="VARCHAR" />
+        <result column="CREATION_DATE" property="creationDate"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
+        <result column="LAST_UPDATED_DATE" property="lastUpdatedDate"/>
+        <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
     </resultMap>
     <resultMap id="BaseResultMap2" type="yj.core.zudlist.dto.Zudlist">
         <result column="ZUDNUM" property="zudnum" jdbcType="VARCHAR" />
@@ -119,4 +125,32 @@
         #{sfflg},#{zqxdm},#{zissuetxt},#{zbpjc},#{zoplo},#{zbanz},#{zbanc},#{rspart},#{rsname},#{reviewc},#{gstrp},#{mark},#{rueck},#{rmzhl},#{creationDate},#{createdBy})
     </insert>
 
+    <update id="updateItem" parameterType="yj.core.zudlist.dto.Zudlist">
+        update wip_zudlist set LAST_UPDATED_DATE = #{lastUpdatedDate},
+        LAST_UPDATED_BY = #{lastUpdatedBy}
+        <if test="rueck != null">
+            ,RUECK = #{rueck}
+        </if>
+        <if test="rmzhl != null">
+            ,RMZHL = #{rmzhl}
+        </if>
+        <if test="status != null">
+            ,STATUS = #{status}
+        </if>
+        <if test="reviewc != null">
+            ,REVIEWC = #{reviewc}
+        </if>
+        <where>
+            ZUDNUM = #{zudnum}
+            and ITEM = #{item}
+        </where>
+    </update>
+
+    <select id="selectByZudnumForUnprocess" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_zudlist
+        <where>
+            ZUDNUM = #{zudnum}
+            and STATUS = '0'
+        </where>
+    </select>
 </mapper>

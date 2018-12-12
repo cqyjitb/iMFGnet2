@@ -37,6 +37,8 @@ import yj.core.zudhead.service.IZudheadService;
 import org.springframework.beans.factory.annotation.Autowired;
 import yj.core.zudlist.dto.Zudlist;
 import yj.core.zudlist.service.IZudlistService;
+import yj.core.zudlog.dto.Zudlog;
+import yj.core.zudlog.service.IZudlogService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -64,6 +66,8 @@ public class ZudheadController extends BaseController {
     private IZudlistService zudlistService;
     @Autowired
     private ICardtService cardtService;
+    @Autowired
+    private IZudlogService zudlogService;
 
 
     @RequestMapping(value = "/wip/zudhead/query")
@@ -157,6 +161,7 @@ public class ZudheadController extends BaseController {
                 zudlist.setZbanz(a.get(i).getZbanz());
                 zudlist.setRspart(a.get(i).getRspart());
                 zudlist.setRsname(a.get(i).getRsname());
+                zudlist.setStatus("0");
                 zudlist.setReviewc("F");
                 zudlist.setMark(a.get(i).getMark());
                 zudlist.setCreatedBy(Long.valueOf(createdBy));
@@ -499,5 +504,398 @@ public class ZudheadController extends BaseController {
 
         }
         return responseData;
+    }
+
+    @RequestMapping(value = {"/wip/zudhead/processZud"}, method = {RequestMethod.POST})
+    @ResponseBody
+    ResponseData processZud(HttpServletRequest request,@RequestBody List<Zudlist> list){
+        ResponseData rs = new ResponseData();
+        if (list.size() == 0){
+            rs.setSuccess(false);
+            rs.setMessage("请选择需要处理的记录！");
+            return rs;
+        }
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String curdate = df.format(new Date()).substring(0, 10).replaceAll("-", "");
+        String createdBy = "" + request.getSession().getAttribute("userId");
+        List<Zudhead> headlist = new ArrayList<>();
+        List<DTBAOGONGParameters> listparam = new ArrayList<>();
+        List<ParamAndQjjlh> listparamQjjlh = new ArrayList<>();
+
+        for (int i=0;i<list.size();i++){
+            Zudhead zudhead = new Zudhead();
+            zudhead = service.selectByZudnum(list.get(i).getZudnum());
+            if (headlist.size() == 0){
+                headlist.add(zudhead);
+            }else{
+                if (!headlist.contains(zudhead)){
+                    headlist.add(zudhead);
+                }
+            }
+
+            //处理回到取还件记录表的数据记录
+            if (list.get(i).getReviewc().equals("B")){
+                list.get(i).setStatus("1");
+                list.get(i).setLastUpdateDate(new Date());
+                list.get(i).setLastUpdatedBy(Long.valueOf(createdBy));
+                zudlistService.updateItem(list.get(i));
+
+                InOutRecord inOutRecord = iInOutRecordService.selectById(list.get(i).getZqjjlh());
+                inOutRecord.setLastUpdateDate(new Date());
+                inOutRecord.setLastUpdatedBy(Long.valueOf(createdBy));
+                inOutRecord.setReflag(0L);
+                iInOutRecordService.updateReflag(inOutRecord);
+
+                Zudlog zudlog = new Zudlog();
+                UUID uuid = java.util.UUID.randomUUID();
+                String uuidstr = uuid.toString().replaceAll("-", "");
+                zudlog.setId(uuidstr);
+                zudlog.setZudnum(list.get(i).getZudnum());
+                zudlog.setItem(list.get(i).getItem());
+                zudlog.setMsgtx("还回取还件队列");
+                zudlog.setStatus("1");
+                zudlog.setCreatedBy(Long.valueOf(createdBy));
+                zudlog.setCreationDate(new Date());
+                zudlogService.insertLog(zudlog);
+            }else{
+                //准备报工数据
+                Cardh cardhjj = new Cardh();
+                cardhjj = cardhService.selectByBarcode(list.get(i).getZpgdbar());
+                if (listparam.size() > 0){
+                    DTBAOGONGParameters parameters = new DTBAOGONGParameters();
+                    String flg = "";
+                    for (int j = 0; j < listparam.size(); j++) {
+                        if (listparam.get(j).getZPGDBAR().equals(list.get(i).getZpgdbar())) {
+                            //重复机加流转卡取件记录
+                            //数量直接累计
+                            flg = "X";
+                            if (list.get(i).getZqxdm().substring(0, 1).equals("M")) {
+                                Double num = Double.valueOf(listparam.get(j).getRMNGA()) + 1;
+                                listparam.get(j).setRMNGA(num.toString());
+                            }else{
+                                Double num = Double.valueOf(listparam.get(j).getXMNGA()) + 1;
+                                listparam.get(j).setXMNGA(num.toString());
+                            }
+                            ParamAndQjjlh paramAndQjjlh = new ParamAndQjjlh();
+                            paramAndQjjlh.setNum(listparam.size() - 1);
+                            paramAndQjjlh.setQjjlh(list.get(i).getZqjjlh());
+                            listparamQjjlh.add(paramAndQjjlh);
+                        }
+                    }
+                    if (flg.equals("")) {
+                        parameters.setPWERK("1001");
+                        parameters.setAUFNR(cardhjj.getAufnr());
+                        //获取机加装箱工序
+                        Cardt cardt = new Cardt();
+                        cardt.setZpgdbar(cardhjj.getZpgdbar());
+                        cardt.setKtsch("21001");
+                        cardt = cardtService.selectByBarcodeAndKtsch(cardt);
+                        parameters.setVORNR(cardt.getVornr());//工序号
+                        parameters.setBUDAT(curdate);
+                        parameters.setDATUM(curdate);
+                        parameters.setGMNGA("0");
+                        parameters.setRMNGA("0");
+                        parameters.setXMNGA("0");
+                        if (list.get(i).getZqxdm().substring(0, 1).equals("M")) {
+                            parameters.setRMNGA("1");
+                        } else {
+                            parameters.setXMNGA("1");
+                        }
+                        parameters.setZSCBC("");
+                        parameters.setZSCX("");
+                        parameters.setZMNUM("");
+                        parameters.setZPGDBAR(cardhjj.getZpgdbar());
+                        parameters.setZPGDBH(cardhjj.getZpgdbh());
+                        parameters.setRSNUM("");
+                        parameters.setRSPOS("");
+                        parameters.setREVERSE("");
+                        parameters.setATTR1(createdBy);
+                        parameters.setATTR2("");
+                        parameters.setATTR3("");
+                        parameters.setATTR4("");//报工类别
+                        parameters.setATTR5("");
+                        parameters.setATTR6("");
+                        parameters.setATTR7("");
+                        parameters.setUSERNAME(createdBy);
+                        parameters.setZTPBAR("");
+                        parameters.setLSTVOR("X");
+                        parameters.setFSTVOR("");
+                        parameters.setZPRTP("4");
+                        parameters.setAUART(cardhjj.getAuart());
+                        parameters.setARBPL(cardt.getArbpl());
+                        parameters.setCHARG("");
+                        listparam.add(parameters);
+                        ParamAndQjjlh paramAndQjjlh = new ParamAndQjjlh();
+                        paramAndQjjlh.setNum(listparam.size() - 1);
+                        paramAndQjjlh.setQjjlh(list.get(i).getZqjjlh());
+                        listparamQjjlh.add(paramAndQjjlh);
+                    }
+                }else{
+                    DTBAOGONGParameters parameters = new DTBAOGONGParameters();
+                    parameters.setPWERK("1001");
+                    parameters.setAUFNR(cardhjj.getAufnr());
+                    //获取机加装箱工序
+                    Cardt cardt = new Cardt();
+                    cardt.setZpgdbar(cardhjj.getZpgdbar());
+                    cardt.setKtsch("21001");
+                    cardt = cardtService.selectByBarcodeAndKtsch(cardt);
+                    parameters.setVORNR(cardt.getVornr());//工序号
+                    parameters.setBUDAT(curdate);
+                    parameters.setDATUM(curdate);
+                    parameters.setGMNGA("0");
+                    parameters.setRMNGA("0");
+                    parameters.setXMNGA("0");
+                    if (list.get(i).getZqxdm().substring(0, 1).equals("M")) {
+                        parameters.setRMNGA("1");
+                    } else {
+                        parameters.setXMNGA("1");
+                    }
+                    parameters.setZSCBC("");
+                    parameters.setZSCX("");
+                    parameters.setZMNUM("");
+                    parameters.setZPGDBAR(cardhjj.getZpgdbar());
+                    parameters.setZPGDBH(cardhjj.getZpgdbh());
+                    parameters.setRSNUM("");
+                    parameters.setRSPOS("");
+                    parameters.setREVERSE("");
+                    parameters.setATTR1(createdBy);
+                    parameters.setATTR2("");
+                    parameters.setATTR3("");
+                    parameters.setATTR4("");//报工类别
+                    parameters.setATTR5("");
+                    parameters.setATTR6("");
+                    parameters.setATTR7("");
+                    parameters.setUSERNAME(createdBy);
+                    parameters.setZTPBAR("");
+                    parameters.setLSTVOR("X");
+                    parameters.setFSTVOR("");
+                    parameters.setZPRTP("4");
+                    parameters.setAUART(cardhjj.getAuart());
+                    parameters.setARBPL(cardt.getArbpl());
+                    parameters.setCHARG("");
+                    listparam.add(parameters);
+                    ParamAndQjjlh paramAndQjjlh = new ParamAndQjjlh();
+                    paramAndQjjlh.setNum(listparam.size() - 1);
+                    paramAndQjjlh.setQjjlh(list.get(i).getZqjjlh());
+                    listparamQjjlh.add(paramAndQjjlh);
+                }
+            }
+
+        }
+        //开始报工
+        ConfirmationWebserviceUtilNew confirmationWebserviceUtilNew = new ConfirmationWebserviceUtilNew();
+        String isbg = "";//是否有报工成功的记录
+        String iserr = "";//是否有失败的报工记录
+        if (listparam.size() > 0) {
+            for (int i = 0; i < listparam.size(); i++) {
+                List<DTBAOGONGParametersitem> parametersitems = new ArrayList<>();
+                List<InOutRecord> listinoutRecord = new ArrayList<>();
+                for (int j = 0; j < list.size(); j++) {
+                    String flg = "";
+                    //准备领料明细数据
+                    String pZpgdbar = listparam.get(i).getZPGDBAR();
+                    String recZpgdbar = list.get(j).getZpgdbar();
+                    if (listparam.get(i).getZPGDBAR().equals(list.get(j).getZpgdbar())) {
+                        //取箱号信息
+                        DTBAOGONGParametersitem parametersitem = new DTBAOGONGParametersitem();
+                        Xhcard xhcard = new Xhcard();
+                        xhcard = xhcardService.selectByBacode(list.get(j).getZxhbar());
+                        if (parametersitems.size() > 0) {
+                            for (int y = 0; y < parametersitems.size(); y++) {
+                                if (parametersitems.get(y).getCHARG().equals(xhcard.getChargkc())) {
+                                    flg = "X";
+                                    Integer num = Integer.valueOf(parametersitems.get(y).getBDMNG()) + 1;
+                                    parametersitems.get(y).setBDMNG(num.toString());
+                                }
+                            }
+                            if (flg.equals("")) {
+                                parametersitem.setSUBRSNUM("");
+                                parametersitem.setSUBRSPOS("");
+                                parametersitem.setBDMNG("1");
+                                parametersitem.setMATNR(xhcard.getMatnr());
+                                parametersitem.setCHARG(xhcard.getChargkc());
+                                parametersitem.setLGORT(xhcard.getLgort());
+                                parametersitem.setMEINS(xhcard.getMeins());
+                                parametersitem.setWERKS(xhcard.getWerks());
+                                parametersitems.add(parametersitem);
+                            }
+                        }else{
+                            parametersitem.setSUBRSNUM("");
+                            parametersitem.setSUBRSPOS("");
+                            parametersitem.setBDMNG("1");
+                            parametersitem.setMATNR(xhcard.getMatnr());
+                            parametersitem.setCHARG(xhcard.getChargkc());
+                            parametersitem.setLGORT(xhcard.getLgort());
+                            parametersitem.setMEINS(xhcard.getMeins());
+                            parametersitem.setWERKS(xhcard.getWerks());
+                            parametersitems.add(parametersitem);
+                        }
+                    }
+                }
+                DTBAOGONGReturnResult returnResult = new DTBAOGONGReturnResult();
+                returnResult = confirmationWebserviceUtilNew.receiveConfirmation(listparam.get(i), parametersitems);
+                Log log = new Log();
+                Result result = new Result();
+                InputLog inputLog = new InputLog();
+                inputLog.setBarcode(listparam.get(i).getZPGDBAR());
+                inputLog.setOrderno(listparam.get(i).getAUFNR());
+                inputLog.setDispatch(listparam.get(i).getZPGDBAR());
+                inputLog.setOperation(listparam.get(i).getVORNR());
+                inputLog.setYeild(Double.parseDouble(listparam.get(i).getGMNGA()));
+                inputLog.setWorkScrap(Double.parseDouble(listparam.get(i).getXMNGA()));
+                inputLog.setRowScrap(Double.parseDouble(listparam.get(i).getRMNGA()));
+                inputLog.setClassgrp(listparam.get(i).getZSCBC());
+                inputLog.setLine(listparam.get(i).getZSCX());
+                inputLog.setModelNo("");
+                inputLog.setPlant(listparam.get(i).getPWERK());
+                inputLog.setPostingDate(listparam.get(i).getBUDAT());
+                inputLog.setDispatchLogicID(listparam.get(i).getZPGDBH());
+                inputLog.setCreated_by(listparam.get(i).getUSERNAME());
+                inputLog.setAttr1(listparam.get(i).getATTR1());
+                inputLog.setAttr2(listparam.get(i).getATTR2());
+                inputLog.setAttr3(listparam.get(i).getATTR3());
+                inputLog.setAttr4(listparam.get(i).getATTR4());
+                inputLog.setAttr5(listparam.get(i).getATTR5());
+                inputLog.setAttr6(listparam.get(i).getATTR6());
+                inputLog.setAttr7(listparam.get(i).getATTR7());
+                inputLog.setUserName(listparam.get(i).getUSERNAME());
+                inputLog.setMaterial(returnResult.getMATNR());
+                inputLog.setMatDesc(returnResult.getMAKTX());
+                inputLogService.insertInputLog(inputLog);
+                Long id = inputLogService.selectNextId();
+                result.setPlant(inputLog.getPlant());
+                result.setInputId(id);
+                result.setIsReversed("0");
+                result.setMaterial(inputLog.getMaterial());
+                result.setMatDesc(inputLog.getMatDesc());
+                result.setCreated_by(inputLog.getCreated_by());
+                result.setConfirmationNo(returnResult.getRSNUM());
+                result.setConfirmationPos(returnResult.getRSPOS());
+                result.setFevor(returnResult.getFEVOR());
+                result.setFevorTxt(returnResult.getTXT());
+                result.setOperationDesc(returnResult.getLTXA1());
+                log.setMsgty(returnResult.getMSGTY());
+                log.setMsgtx(returnResult.getMESSAGE());
+                log.setTranType("0");
+                log.setRefId(id);
+                log.setCreated_by(inputLog.getCreated_by());
+                resultService.insertResult(result);
+                logService.insertLog(log);
+                List<Zudlist> listsaveZudlist = new ArrayList<>();
+                if (returnResult.getMSGTY().equals("S")) {
+                    isbg = "X";
+                    //1,更新wip_in_out_record //更新 wip_zudlist
+
+                    for (int x = 0; x < listparamQjjlh.size(); x++) {
+                        if (listparamQjjlh.get(x).getNum() == i) {
+                            InOutRecord inOutRecord = new InOutRecord();
+                            inOutRecord = iInOutRecordService.selectById(listparamQjjlh.get(x).getQjjlh());
+                            inOutRecord.setReflag(2L);
+                            inOutRecord.setLastUpdatedBy(Long.valueOf(createdBy));
+                            inOutRecord.setLastUpdateDate(new Date());
+                            listinoutRecord.add(inOutRecord);
+
+                            //写不合格审理单行项目
+                            for (int y = 0; y < list.size(); y++) {
+                                if (list.get(y).getZqjjlh().equals(listparamQjjlh.get(x).getQjjlh())) {
+                                    list.get(y).setRueck(returnResult.getRSNUM());
+                                    list.get(y).setRmzhl(returnResult.getRSPOS());
+                                    list.get(y).setStatus("1");//已处理
+                                    list.get(y).setLastUpdatedBy(Long.valueOf(createdBy));
+                                    list.get(y).setLastUpdateDate(new Date());
+                                    zudlistService.updateItem(list.get(y));
+                                    //listsaveZudlist.add(list.get(y));
+
+                                    UUID uuid = java.util.UUID.randomUUID();
+                                    String uuidstr = uuid.toString().replaceAll("-", "");
+                                    Zudlog zudlog = new Zudlog();
+                                    zudlog.setInputlogid(id);
+                                    zudlog.setId(uuidstr);
+                                    zudlog.setZudnum(list.get(y).getZudnum());
+                                    zudlog.setItem(list.get(y).getItem());
+                                    zudlog.setMsgtx(returnResult.getMESSAGE());
+                                    zudlog.setStatus("1");
+                                    zudlog.setCreatedBy(Long.valueOf(createdBy));
+                                    zudlog.setCreationDate(new Date());
+                                    zudlogService.insertLog(zudlog);
+                                }
+                            }
+                        }
+                    }
+
+                    iInOutRecordService.batchUpdateReflag(listinoutRecord);
+                    //                            //2，更新 cardh
+                    Cardh cardhjj = new Cardh();
+                    cardhjj = cardhService.selectByBarcode(listparam.get(i).getZPGDBAR());
+                    if (cardhjj.getQtysp() != null){
+                        cardhjj.setQtysp(Double.valueOf(listparam.get(i).getXMNGA()) + cardhjj.getQtysp());//?
+                    }else{
+                        cardhjj.setQtysp(Double.valueOf(listparam.get(i).getXMNGA()));
+                    }
+
+                    if (cardhjj.getQtysm() != null){
+                        cardhjj.setQtysm(Double.valueOf(listparam.get(i).getRMNGA()) + cardhjj.getQtysm());//?
+                    }else{
+                        cardhjj.setQtysm(Double.valueOf(listparam.get(i).getRMNGA()));
+                    }
+                    cardhjj.setLastUpdatedBy(Long.valueOf(createdBy));
+                    cardhjj.setLastUpdatedDate(new Date());
+                    List<Cardh> listcardh = new ArrayList<>();
+                    listcardh.add(cardhjj);
+                    cardhService.updateCardhStatus(listcardh);
+                } else{
+                    iserr = "X";
+                    for (int x = 0; x < listparamQjjlh.size(); x++) {
+                        if (listparamQjjlh.get(x).getNum() == i) {
+                            //写不合格审理单行项目
+                            for (int y = 0; y < list.size(); y++) {
+                                if (list.get(y).getZqjjlh().equals(listparamQjjlh.get(x).getQjjlh())) {
+                                    list.get(y).setStatus("0");//未处理
+                                    list.get(y).setLastUpdatedBy(Long.valueOf(createdBy));
+                                    list.get(y).setLastUpdateDate(new Date());
+                                    zudlistService.updateItem(list.get(y));
+                                    //listsaveZudlist.add(list.get(y));
+
+                                    UUID uuid = java.util.UUID.randomUUID();
+                                    String uuidstr = uuid.toString().replaceAll("-", "");
+                                    Zudlog zudlog = new Zudlog();
+                                    zudlog.setInputlogid(id);
+                                    zudlog.setId(uuidstr);
+                                    zudlog.setZudnum(list.get(y).getZudnum());
+                                    zudlog.setItem(list.get(y).getItem());
+                                    zudlog.setMsgtx(returnResult.getMESSAGE());
+                                    zudlog.setStatus("2");
+                                    zudlog.setCreatedBy(Long.valueOf(createdBy));
+                                    zudlog.setCreationDate(new Date());
+                                    zudlogService.insertLog(zudlog);
+                                }
+                            }
+                        }
+                    }
+                }
+
+
+            }
+
+            //更新表头
+            for (int i= 0;i<headlist.size();i++){
+                //根据表头单号 查询是否存在未处理的表行
+                List<Zudlist> listunprocess = zudlistService.selectByZudnumForUnprocess(headlist.get(i).getZudnum());
+                if (listunprocess.size() == 0){
+                    //所有行均已处理 更新表头状态
+                    headlist.get(i).setStatus("1");
+                    service.updateHead(headlist.get(i));
+                }
+            }
+        }
+
+        if (iserr.equals("X")){
+            rs.setSuccess(true);
+            rs.setMessage("不合格品审理单处理完成，处理过程中有错误产生！");
+        }else{
+            rs.setSuccess(true);
+            rs.setMessage("不合格品审理单处理完成!");
+        }
+        return rs;
     }
 }
