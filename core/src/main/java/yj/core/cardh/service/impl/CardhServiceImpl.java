@@ -96,4 +96,9 @@ public class CardhServiceImpl
     public int updateForLgort(Cardh cardh) {
         return cardhMapper.updateForLgort(cardh);
     }
+
+    @Override
+    public List<Cardh> queryAfterSortForClientPrint(Cardh dto) {
+        return cardhMapper.queryAfterSortForClientPrint(dto);
+    }
 }

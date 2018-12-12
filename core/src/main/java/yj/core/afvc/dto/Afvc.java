@@ -5,7 +5,11 @@ import com.hand.hap.system.dto.BaseDTO;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import org.hibernate.validator.constraints.NotEmpty;
+
+import java.util.Date;
 
 @ExtensionAttribute(disable=true)
 @Table(name="sap_afvc")
@@ -25,6 +29,30 @@ public class Afvc
     private String ktext;
     private String ktsch;
     private String flag;
+
+
+    @Transient
+    private Date creationDate; //创建时间
+    @Transient
+    private Date lastUpdatedDate; //更新时间
+
+    @Override
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    @Override
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public Date getLastUpdatedDate() {
+        return lastUpdatedDate;
+    }
+
+    public void setLastUpdatedDate(Date lastUpdatedDate) {
+        this.lastUpdatedDate = lastUpdatedDate;
+    }
 
     public void setAufpl(String aufpl)
     {

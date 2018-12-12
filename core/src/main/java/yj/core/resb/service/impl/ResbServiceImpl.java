@@ -34,4 +34,9 @@ public class ResbServiceImpl extends BaseServiceImpl<Resb> implements IResbServi
     public List<Resb> selectByRsnum(String rsnum) {
         return resbMapper.selectByRsnum(rsnum);
     }
+
+    @Override
+    public int deleteByAufpl(String aufpl) {
+        return resbMapper.deleteByAufpl(aufpl);
+    }
 }

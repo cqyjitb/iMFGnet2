@@ -16,4 +16,11 @@ public  interface AfvcMapper
     public abstract List<Afvc> selectByAufpl(String paramString);
 
     List<Afvc> selectByAufnr(String aufnr);
+
+    /**
+     *  根据 aufpl 删除数据 917110140
+     * @param aufpl
+     * @return
+     */
+    int deleteByAufpl(String aufpl);
 }

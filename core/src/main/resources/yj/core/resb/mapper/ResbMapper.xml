@@ -62,4 +62,8 @@
             RSNUM = #{rsnum}
         </where>
     </select>
+
+    <delete id="deleteByAufpl" parameterType="java.lang.String">
+        delete FROM sap_resb where AUFPL = #{aufpl}
+    </delete>
 </mapper>

@@ -34,8 +34,8 @@
     </select>
 
     <insert id="insertSync" parameterType="yj.core.afvc.dto.Afvc">
-        INSERT INTO sap_afvc(AUFPL,APLZL,WERKS,VORNR,STEUS,LTXA1,ARBPL,KTEXT,KTSCH,FLAG)
-               VALUES (#{aufpl},#{aplzl},#{werks},#{vornr},#{steus},#{ltxa1},#{arbpl},#{ktext},#{ktsch},#{flag})
+        INSERT INTO sap_afvc(AUFPL,APLZL,WERKS,VORNR,STEUS,LTXA1,ARBPL,KTEXT,KTSCH,FLAG,CREATION_DATE)
+               VALUES (#{aufpl},#{aplzl},#{werks},#{vornr},#{steus},#{ltxa1},#{arbpl},#{ktext},#{ktsch},#{flag},#{creationDate})
     </insert>
 
     <update id="updateSync" parameterType="yj.core.afvc.dto.Afvc">
@@ -65,4 +65,8 @@
                </where>
                order by a.vornr desc;
     </select>
+
+    <delete id="deleteByAufpl" parameterType="java.lang.String">
+        delete FROM sap_afvc where AUFPL = #{aufpl}
+    </delete>
 </mapper>

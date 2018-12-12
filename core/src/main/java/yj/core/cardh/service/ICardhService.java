@@ -32,4 +32,11 @@ public  interface ICardhService
 
      int updateForLgort(Cardh cardh);
 
+     /**
+      *  c#打印客户端查询流转卡专用 917110140
+      * @param dto
+      * @return
+      */
+     List<Cardh> queryAfterSortForClientPrint(Cardh dto);
+
 }

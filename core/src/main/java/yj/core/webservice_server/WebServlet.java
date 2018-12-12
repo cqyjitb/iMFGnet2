@@ -107,5 +107,6 @@ public class WebServlet extends CXFNonSpringServlet {
         serverFactoryBean10.setAddress("/SyncoutsrgreceiptHead"); //服务请求路径
         serverFactoryBean10.setServiceBean(syncOutsrgreceiptHead);
         serverFactoryBean10.create();
+
     }
 }

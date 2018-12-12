@@ -42,4 +42,9 @@ public class AfvcServiceImpl
     public List<Afvc> selectByAufnr(String aufnr) {
         return afvcMapper.selectByAufnr(aufnr);
     }
+
+    @Override
+    public int deleteByAufpl(String aufpl) {
+        return afvcMapper.deleteByAufpl(aufpl);
+    }
 }

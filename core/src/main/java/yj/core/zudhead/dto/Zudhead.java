@@ -31,6 +31,8 @@ public class Zudhead extends BaseDTO {
      @NotEmpty
       private String crdat;
 
+      private String status; //不合格品审理单1状态 0 未处理 1 已处理
+
      @Transient
       private Long createdBy;
 
@@ -95,5 +97,13 @@ public class Zudhead extends BaseDTO {
 
     public void setCrdat(String crdat) {
         this.crdat = crdat;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

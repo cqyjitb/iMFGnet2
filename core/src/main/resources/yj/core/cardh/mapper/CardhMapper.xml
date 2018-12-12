@@ -313,5 +313,35 @@
                              </where>
     </update>
 
-
+    <select id="queryAfterSortForClientPrint" parameterType="yj.core.cardh.dto.Cardh" resultMap="BaseResultMap2">
+        select * from sap_cardh
+        <where>
+            1 = 1
+            <if test="werks != null " >
+                and WERKS = #{werks}
+            </if>
+            <if test="matnr != null">
+                and MATNR = #{matnr}
+            </if>
+            <if test="zpgdbar != null">
+                and ZPGDBAR = #{zpgdbar}
+            </if>
+            <if test="auart != null">
+                and AUART = #{auart}
+            </if>
+            <if test="status != null">
+                and STATUS = #{status}
+            </if>
+            <if test="aufnr != null">
+                and AUFNR = #{aufnr}
+            </if>
+            <if test="zdybs != null">
+                and ZDYBS = #{zdybs}
+            </if>
+            <if test="zxhnum != null">
+                and ZXHNUM = #{zxhnum}
+            </if>
+        </where>
+        ORDER  BY GSTRP DESC;
+    </select>
 </mapper>

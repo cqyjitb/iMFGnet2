@@ -110,10 +110,43 @@ public class SyncAufnrImp
                 }
             }
             if (rec_afvc.size() > 0) {
+//                for (int i = 0; i < rec_afvc.size(); i++)
+//                {
+//                    Afvc afvc = new Afvc();
+//                    String aufpl = rec_afvc.get(i).getAufpl();
+//                    String aplzl = rec_afvc.get(i).getAplzl();
+//                    String werks = rec_afvc.get(i).getWerks();
+//                    String vornr = rec_afvc.get(i).getVornr();
+//                    String steus = rec_afvc.get(i).getSteus();
+//                    String ltxa1 = rec_afvc.get(i).getLtxa1();
+//                    String arbpl = rec_afvc.get(i).getArbpl();
+//                    String ktext = rec_afvc.get(i).getKtext();
+//                    String flag =  rec_afvc.get(i).getFlag();
+//                    String ktsch = rec_afvc.get(i).getKtsch();
+//                    afvc.setAufpl(aufpl);
+//                    afvc.setAplzl(aplzl);
+//                    afvc.setWerks(werks);
+//                    afvc.setVornr(vornr);
+//                    afvc.setSteus(steus);
+//                    afvc.setLtxa1(ltxa1);
+//                    afvc.setArbpl(arbpl);
+//                    afvc.setKtext(ktext);
+//                    afvc.setKtsch(ktsch);
+//                    afvc.setFlag(flag);
+//                    if (this.afvcService.selectReturnNum(afvc) > 0) {
+//                        num_afvc += this.afvcService.updateSync(afvc);
+//                    } else {
+//                        num_afvc += this.afvcService.insertSync(afvc);
+//                    }
+//                }
+
+                //修改逻辑 针对重读主数据问题 先删除整单工序数据 然后重新写工序数据
+                    String aufpl = rec_afvc.get(0).getAufpl();
+                    afvcService.deleteByAufpl(aufpl);//删除整单数据
                 for (int i = 0; i < rec_afvc.size(); i++)
                 {
                     Afvc afvc = new Afvc();
-                    String aufpl = rec_afvc.get(i).getAufpl();
+                    aufpl = rec_afvc.get(i).getAufpl();
                     String aplzl = rec_afvc.get(i).getAplzl();
                     String werks = rec_afvc.get(i).getWerks();
                     String vornr = rec_afvc.get(i).getVornr();
@@ -133,11 +166,9 @@ public class SyncAufnrImp
                     afvc.setKtext(ktext);
                     afvc.setKtsch(ktsch);
                     afvc.setFlag(flag);
-                    if (this.afvcService.selectReturnNum(afvc) > 0) {
-                        num_afvc += this.afvcService.updateSync(afvc);
-                    } else {
+                    afvc.setCreationDate(new Date());
                         num_afvc += this.afvcService.insertSync(afvc);
-                    }
+
                 }
             }
 
@@ -210,6 +241,37 @@ public class SyncAufnrImp
             }
 
             if (rec_resbs.size() > 0){
+                String aufpl = rec_resbs.get(0).getAufpl();
+                resbService.deleteByAufpl(aufpl);
+//                for (int i = 0;i<rec_resbs.size();i++){
+//                    Resb resb = new Resb();
+//                    resb.setAplzl(rec_resbs.get(i).getAplzl());
+//                    resb.setAufpl(rec_resbs.get(i).getAufpl());
+//                    resb.setBdmng(rec_resbs.get(i).getBdmng());
+//                    resb.setLgort(rec_resbs.get(i).getLgort());
+//                    resb.setMaktx(rec_resbs.get(i).getMaktx());
+//                    resb.setMatnr(rec_resbs.get(i).getMatnr());
+//                    resb.setMeins(rec_resbs.get(i).getMeins());
+//                    resb.setPosnr(rec_resbs.get(i).getPosnr());
+//                    resb.setPostp(rec_resbs.get(i).getPostp());
+//                    resb.setRgekz(rec_resbs.get(i).getRgekz());
+//                    resb.setRsnum(rec_resbs.get(i).getRsnum());
+//                    resb.setRspos(rec_resbs.get(i).getRspos());
+//                    resb.setVornr(rec_resbs.get(i).getVornr());
+//                    resb.setXloek(rec_resbs.get(i).getXloek());
+//                    resb.setWerks(rec_resbs.get(i).getWerks());
+//
+//                    int sum = resbService.isExit(resb.getRsnum(),resb.getRspos());
+//                    if (sum > 0){
+//                        resb.setLastUpdatedDate(new Date());
+//                        int num = resbService.updateByRsnum(resb);
+//                    }else{
+//                        resb.setCreationDate(new Date());
+//                        int num = resbService.insertByRsnum(resb);
+//                    }
+//
+//                }
+
                 for (int i = 0;i<rec_resbs.size();i++){
                     Resb resb = new Resb();
                     resb.setAplzl(rec_resbs.get(i).getAplzl());
@@ -228,14 +290,10 @@ public class SyncAufnrImp
                     resb.setXloek(rec_resbs.get(i).getXloek());
                     resb.setWerks(rec_resbs.get(i).getWerks());
 
-                    int sum = resbService.isExit(resb.getRsnum(),resb.getRspos());
-                    if (sum > 0){
-                        resb.setLastUpdatedDate(new Date());
-                        int num = resbService.updateByRsnum(resb);
-                    }else{
+
                         resb.setCreationDate(new Date());
                         int num = resbService.insertByRsnum(resb);
-                    }
+
 
                 }
             }

@@ -17,6 +17,13 @@
     <jaxws:endpoint id="syncztpp0023" implementor="#service3" address="/SyncZtpp0023" >
     </jaxws:endpoint>
 
+    <bean id="service4" class="yj.core.webservice_server.UserLoginImpl"/>
+    <jaxws:endpoint id="imfglogin" implementor="#service4" address="/iMfgnetLogin" >
+    </jaxws:endpoint>
+
+    <bean id="service5" class="yj.core.webservice_server.QueryCardhImpl"/>
+    <jaxws:endpoint id="queryCardh" implementor="#service5" address="/QueryCardh" >
+    </jaxws:endpoint>
     <!--<bean id="service5" class="yj.core.webservice_server.QueryXhcardImp" />-->
     <!--<jaxws:endpoint id="queryxhcard" implementor="#service5" address="/QueryXhcard">-->
     <!--</jaxws:endpoint>-->
