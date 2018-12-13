@@ -23,7 +23,7 @@
         </where>
     </select>
     <insert id="insertHead" parameterType="yj.core.zudhead.dto.Zudhead">
-        insert INTO wip_zudhead(ZUDNUM,UDTYPE,LINE_ID,CRDAT,ARBPR,CREATION_DATE,CREATED_BY)VALUES (#{zudnum},#{udtype},#{lineId},#{crdat},#{arbpr},#{creationDate},#{createdBy})
+        insert INTO wip_zudhead(ZUDNUM,UDTYPE,LINE_ID,CRDAT,ARBPR,STATUS,CREATION_DATE,CREATED_BY)VALUES (#{zudnum},#{udtype},#{lineId},#{crdat},#{arbpr},#{status},#{creationDate},#{createdBy})
     </insert>
 
     <select id="selectByZudnum" parameterType="java.lang.String" resultMap="BaseResultMap">

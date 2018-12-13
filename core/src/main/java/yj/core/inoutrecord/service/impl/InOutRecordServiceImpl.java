@@ -112,7 +112,7 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
                 zudlist.setVornr_old(list.get(i).getVornr());
                 zudlist.setZgjbar(list.get(i).getZgjbar());
                 zudlist.setZqjjlh(list.get(i).getZqjjlh());
-                zudlist.setReviewc("F");
+                zudlist.setReviewc("");
                 zudlist.setZqxdm(list.get(i).getZqxdm());
                 zudlist.setZissuetxt(list.get(i).getZissuetxt());
                 if (!zudlist.getZqxdm().equals("")){

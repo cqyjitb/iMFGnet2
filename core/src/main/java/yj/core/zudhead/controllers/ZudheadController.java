@@ -164,7 +164,7 @@ public class ZudheadController extends BaseController {
                 zudlist.setRspart(a.get(i).getRspart());
                 zudlist.setRsname(a.get(i).getRsname());
                 zudlist.setStatus("0");
-                zudlist.setReviewc("F");
+                zudlist.setReviewc("");
                 zudlist.setMark(a.get(i).getMark());
                 zudlist.setCreatedBy(Long.valueOf(createdBy));
                 zudlist.setReviewc(a.get(i).getReviewc());
