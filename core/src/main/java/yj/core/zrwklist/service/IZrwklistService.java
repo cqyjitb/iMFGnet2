@@ -9,5 +9,5 @@ import java.util.List;
 
 public interface IZrwklistService extends IBaseService<Zrwklist>, ProxySelf<IZrwklistService>{
     int insertItem(List<Zrwklist> list);
-    List<Zrwklist> selectZrwklist(IRequest requestContext, Zrwklist dto, int page, int pageSize);
+    List<Zrwklist> selectZrwklist(IRequest requestContext, Zrwklist dto);
 }

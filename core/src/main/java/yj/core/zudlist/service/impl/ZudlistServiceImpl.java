@@ -40,8 +40,8 @@ public class ZudlistServiceImpl extends BaseServiceImpl<Zudlist> implements IZud
     }
 
     @Override
-    public List<Zudlist> selectZudlist(IRequest requestContext, Zudlist dto, int page, int pageSize) {
-        PageHelper.startPage(page,pageSize);
+    public List<Zudlist> selectZudlist(IRequest requestContext, Zudlist dto) {
+        //PageHelper.startPage(page,pageSize);
         List<Zudlist> list = zudlistMapper.selectZudlist(dto);
         if(list.size() > 0){
             for(int i=0;i<list.size();i++){
