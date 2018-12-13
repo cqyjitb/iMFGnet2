@@ -25,7 +25,9 @@
 </style>
 <script type="text/javascript">
     var viewModel = kendo.observable({
-        model: {},
+        model: {
+            status:"0"
+        },
         queryGrid: function (e) {
             var deptId = document.getElementById("unit_code").value;
             var zudnum = document.getElementById("zudnum").value;
@@ -557,7 +559,7 @@
             url    : BaseUrl + "/wip/zudhead/processZud",
             dataType : "json",
             contentType : "application/json",
-            data   : kendo.stringify([data]),
+            data   : kendo.stringify(data),
             success: function (data) {
                 if(data.success==false){
                     kendo.ui.showErrorDialog({
@@ -565,6 +567,9 @@
                     });
                 }
                 else{
+                    kendo.ui.showErrorDialog({
+                        message:data.message
+                    });
                     viewModel.model.set('status',0);
                     $('#Grid').data('kendoGrid').dataSource.page(1);
                 }

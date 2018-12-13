@@ -39,6 +39,27 @@ public class Zudhead extends BaseDTO {
     @Transient
     private Date creationDate;
 
+    private Long lastUpdatedBy;
+    private Date lastUpdateDate;
+
+    @Override
+    public Long getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+
+    @Override
+    public void setLastUpdatedBy(Long lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
+    }
+
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
+
     public void setZudnum(String zudnum){
         this.zudnum = zudnum;
     }
