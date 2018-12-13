@@ -50,6 +50,7 @@
         <result column="GSTRP" property="gstrp" jdbcType="DATE" />
         <result column="ZBANZ" property="zbanz" jdbcType="VARCHAR" />
         <result column="ZBANC" property="zbanc" jdbcType="VARCHAR" />
+        <result column="STATUS" property="status" jdbcType="VARCHAR" />
         <result column="ZRWKTIMES" property="zrwktimes" jdbcType="DECIMAL" />
         <result column="REVIEWC" property="reviewc" jdbcType="VARCHAR" />
         <result column="MARK" property="mark" jdbcType="VARCHAR" />
@@ -67,11 +68,14 @@
                 AND li.line_id = zl.line_id
                 AND ma.matnr = zl.matnr2
                 AND re.zqjjlh = zl.zqjjlh
+                <if test="status != null">
+                    AND zl.STATUS = #{status}
+                </if>
                 <if test="deptId != null">
                     AND li.dept_id = #{deptId}
                 </if>
                 <if test="lineId != null">
-                    AND zh.line_id = #{lineId}
+                    AND (zl.line_id = #{lineId} or li.pline_id = #{lineId})
                 </if>
                 <if test="creationDateAfter != null">
                     AND zh.creation_date >= #{creationDateAfter}
