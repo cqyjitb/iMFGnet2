@@ -71,6 +71,7 @@
         <result column="MARK" property="mark" jdbcType="VARCHAR" />
         <result column="RUECK" property="rueck" jdbcType="VARCHAR" />
         <result column="RMZHL" property="rmzhl" jdbcType="VARCHAR" />
+        <result column="STATUS" property="status" jdbcType="VARCHAR" />
         <result column="CREATION_DATE" property="creationDate" jdbcType="DATE"/>
         <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL"/>
         <result column="LINE_ID" property="lineId" jdbcType="VARCHAR"/>
@@ -97,6 +98,9 @@
             AND cu.kunnr = zl.zbpjc
             AND ma.matnr = zl.matnr2
             AND re.zqjjlh = zl.zqjjlh
+            <if test="status != null">
+                AND zl.STATUS = #{status}
+            </if>
             <if test="deptId != null">
                 AND li.dept_id = #{deptId}
             </if>
