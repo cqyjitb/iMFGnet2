@@ -95,6 +95,16 @@ public class Zrwklist extends BaseDTO {
     @Transient
     private String deptId; //部门Id
 
+    private String status;//0未处理 1已处理
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getDeptId() {
         return deptId;
     }
