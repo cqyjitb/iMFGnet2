@@ -38,7 +38,7 @@
         <result column="RMZHL" property="rmzhl" jdbcType="VARCHAR" />
         <result column="CREATION_DATE" property="creationDate"/>
         <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
-        <result column="LAST_UPDATED_DATE" property="lastUpdatedDate"/>
+        <result column="LAST_UPDATE_DATE" property="lastUpdateDate"/>
         <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
     </resultMap>
     <resultMap id="BaseResultMap2" type="yj.core.zudlist.dto.Zudlist">
@@ -126,7 +126,7 @@
     </insert>
 
     <update id="updateItem" parameterType="yj.core.zudlist.dto.Zudlist">
-        update wip_zudlist set LAST_UPDATED_DATE = #{lastUpdatedDate},
+        update wip_zudlist set LAST_UPDATE_DATE = #{lastUpdateDate},
         LAST_UPDATED_BY = #{lastUpdatedBy}
         <if test="rueck != null">
             ,RUECK = #{rueck}
@@ -151,6 +151,14 @@
         <where>
             ZUDNUM = #{zudnum}
             and STATUS = '0'
+        </where>
+    </select>
+
+    <select id="selectByIdAndItem" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_zudlist
+        <where>
+            ZUDNUM = #{zudnum}
+            and ITEM = #{item}
         </where>
     </select>
 </mapper>

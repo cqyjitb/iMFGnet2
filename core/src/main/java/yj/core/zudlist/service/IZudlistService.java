@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface IZudlistService extends IBaseService<Zudlist>, ProxySelf<IZudlistService>{
     int insertItem(List<Zudlist> list);
-    List<Zudlist> selectZudlist(IRequest requestContext, Zudlist dto, int page, int pageSize);
+    //List<Zudlist> selectZudlist(IRequest requestContext, Zudlist dto, int page, int pageSize);
 
     /**
      *  更新不合格品审理单1 行信息 917110140
@@ -25,4 +25,12 @@ public interface IZudlistService extends IBaseService<Zudlist>, ProxySelf<IZudli
      */
     List<Zudlist> selectByZudnumForUnprocess(String zudnum);
     List<Zudlist> selectZudlist(IRequest requestContext, Zudlist dto);
+
+    /**
+     *  根据单号 行号查询行记录 917110140
+     * @param zudnum
+     * @param item
+     * @return
+     */
+    Zudlist selectByIdAndItem(String zudnum,String item);
 }

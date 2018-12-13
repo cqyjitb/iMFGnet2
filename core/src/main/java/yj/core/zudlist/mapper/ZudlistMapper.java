@@ -37,4 +37,12 @@ public interface ZudlistMapper extends Mapper<Zudlist>{
      * @return
      */
     List<Zudlist> selectByZudnumForUnprocess(String zudnum);
+
+    /**
+     *  根据单号 行号查询行记录 917110140
+     * @param zudnum
+     * @param item
+     * @return
+     */
+    Zudlist selectByIdAndItem(@Param("zudnum") String zudnum,@Param("item") String item);
 }

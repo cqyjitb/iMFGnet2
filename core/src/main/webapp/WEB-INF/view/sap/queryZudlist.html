@@ -388,7 +388,7 @@
                 }
             },
             {
-                field: " rcode",
+                field: "rcode",
                 title: '取件原因',
                 width: 100,
                 headerAttributes: {
@@ -551,13 +551,26 @@
 
     $("#createZudlist").on('click',function () {
         var data = grid._data;
+        var tmparry= new Array();
+        for (var i = 0;i<data.length;i++){
+            var viewModel3 = kendo.observable({
+                model: {
+                    zudnum:data[i].zudnum,
+                    item:data[i].item,
+                    reviewc:data[i].reviewc
+
+                }
+            });
+            tmparry[i] = viewModel3.model.toJSON();
+        }
+        var postdata = JSON.stringify(tmparry);
         var BaseUrl = _basePath;
         $.ajax({
             type   : 'POST',
             url    : BaseUrl + "/wip/zudhead/processZud",
-            dataType : "json",
-            contentType : "application/json",
-            data   : kendo.stringify([data]),
+            contentType: "application/json; charset=utf-8",
+            async: false,
+            data   : postdata,
             success: function (data) {
                 if(data.success==false){
                     kendo.ui.showErrorDialog({

@@ -103,6 +103,10 @@ public class Zudlist extends BaseDTO {
     private Long createdBy;
     @Transient
     private Date creationDate;
+    @Transient
+    private Date lastUpdateDate;
+    @Transient
+    private Long lastUpdatedBy;
 
     @Transient
     private String maktx;
@@ -534,5 +538,26 @@ public class Zudlist extends BaseDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+
+    @Override
+    public Long getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+
+    @Override
+    public void setLastUpdatedBy(Long lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+    @Override
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
+    }
+
+    @Override
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
     }
 }

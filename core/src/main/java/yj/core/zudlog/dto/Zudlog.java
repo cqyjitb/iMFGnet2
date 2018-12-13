@@ -8,6 +8,8 @@ import com.hand.hap.system.dto.BaseDTO;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.Date;
 
 @ExtensionAttribute(disable=true)
 @Table(name = "wip_zudlog")
@@ -25,6 +27,10 @@ public class Zudlog extends BaseDTO {
       private Long inputlogid;
 
       private String msgtx;
+    @Transient
+      private Date creationDate;
+
+      private Long createdBy;
 
     public String getMsgtx() {
         return msgtx;
@@ -74,4 +80,23 @@ public class Zudlog extends BaseDTO {
          return status;
      }
 
-     }
+    @Override
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    @Override
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    @Override
+    public Long getCreatedBy() {
+        return createdBy;
+    }
+
+    @Override
+    public void setCreatedBy(Long createdBy) {
+        this.createdBy = createdBy;
+    }
+}

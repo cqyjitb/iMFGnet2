@@ -73,4 +73,9 @@ public class ZudlistServiceImpl extends BaseServiceImpl<Zudlist> implements IZud
     public List<Zudlist> selectByZudnumForUnprocess(String zudnum) {
         return zudlistMapper.selectByZudnumForUnprocess(zudnum);
     }
+
+    @Override
+    public Zudlist selectByIdAndItem(String zudnum, String item) {
+        return zudlistMapper.selectByIdAndItem(zudnum,item);
+    }
 }

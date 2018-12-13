@@ -11,7 +11,7 @@
         <result column="STATUS" property="status" jdbcType="VARCHAR" />
         <result column="CREATION_DATE" property="creationDate"/>
         <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
-        <result column="LAST_UPDATED_DATE" property="lastUpdatedDate"/>
+        <result column="LAST_UPDATE_DATE" property="lastUpdateDate"/>
         <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
     </resultMap>
 
@@ -34,7 +34,7 @@
     </select>
 
     <update id="updateHead" parameterType="yj.core.zudhead.dto.Zudhead">
-        update wip_zudhead set LAST_UPDATED_DATE = #{lastUpdatedDate},
+        update wip_zudhead set LAST_UPDATE_DATE = #{lastUpdateDate},
         LAST_UPDATED_BY = #{lastUpdatedBy},
         STATUS = #{status}
         <where>

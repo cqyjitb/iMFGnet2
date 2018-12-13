@@ -130,6 +130,8 @@ public class ZudheadController extends BaseController {
             zudhead.setStatus("0");
             zudhead.setCreationDate(new Date());
             List<ParamAndQjjlh> listparamQjjlh = new ArrayList<>();
+            List<InOutRecord> listinout = new ArrayList<>();
+
             //准备审理单行数据 和 报工数据
             for (int i = 0; i < a.size(); i++) {
                 //审理单行数据
@@ -181,304 +183,13 @@ public class ZudheadController extends BaseController {
 
                 listitem.add(zudlist);
 
+                InOutRecord inOutRecord = new InOutRecord();
+                inOutRecord = iInOutRecordService.selectById(zudlist.getZqjjlh());
+                inOutRecord.setReflag(2L);
+                inOutRecord.setLastUpdatedBy(Long.valueOf(createdBy));
+                inOutRecord.setLastUpdateDate(new Date());
+                listinout.add(inOutRecord);
             }
-//                //报工数据
-//                    Cardh cardhjj = new Cardh();
-//                    cardhjj = cardhService.selectByBarcode(a.get(i).getZpgdbar());
-//                    if (listparam.size() > 0) {
-//                        DTBAOGONGParameters parameters = new DTBAOGONGParameters();
-//                        String flg = "";
-//
-//                        for (int j = 0; j < listparam.size(); j++) {
-//
-//                            if (listparam.get(j).getZPGDBAR().equals(a.get(i).getZpgdbar())) {
-//                                //重复机加流转卡取件记录
-//                                //数量直接累计
-//                                flg = "X";
-//                                if (a.get(i).getZqxdm().substring(0, 1).equals("M")) {
-//                                    Double num = Double.valueOf(listparam.get(j).getRMNGA()) + 1;
-//                                    listparam.get(j).setRMNGA(num.toString());
-//                                } else {
-//                                    Double num = Double.valueOf(listparam.get(j).getXMNGA()) + 1;
-//                                    listparam.get(j).setXMNGA(num.toString());
-//                                }
-//                                ParamAndQjjlh paramAndQjjlh = new ParamAndQjjlh();
-//                                paramAndQjjlh.setNum(listparam.size() - 1);
-//                                paramAndQjjlh.setQjjlh(a.get(i).getZqjjlh());
-//                                listparamQjjlh.add(paramAndQjjlh);
-//                            }
-//                        }
-//                        if (flg.equals("")) {
-//                            parameters.setPWERK("1001");
-//                            parameters.setAUFNR(cardhjj.getAufnr());
-//                            //获取机加装箱工序
-//                            Cardt cardt = new Cardt();
-//                            cardt.setZpgdbar(cardhjj.getZpgdbar());
-//                            cardt.setKtsch("21001");
-//                            cardt = cardtService.selectByBarcodeAndKtsch(cardt);
-//                            parameters.setVORNR(cardt.getVornr());//工序号
-//                            parameters.setBUDAT(curdate);
-//                            parameters.setDATUM(curdate);
-//                            parameters.setGMNGA("0");
-//                            parameters.setRMNGA("0");
-//                            parameters.setXMNGA("0");
-//                            if (a.get(i).getZqxdm().substring(0, 1).equals("M")) {
-//                                parameters.setRMNGA("1");
-//                            } else {
-//                                parameters.setXMNGA("1");
-//                            }
-//                            parameters.setZSCBC("");
-//                            parameters.setZSCX("");
-//                            parameters.setZMNUM("");
-//                            parameters.setZPGDBAR(cardhjj.getZpgdbar());
-//                            parameters.setZPGDBH(cardhjj.getZpgdbh());
-//                            parameters.setRSNUM("");
-//                            parameters.setRSPOS("");
-//                            parameters.setREVERSE("");
-//                            parameters.setATTR1(createdBy);
-//                            parameters.setATTR2("");
-//                            parameters.setATTR3("");
-//                            parameters.setATTR4("");//报工类别
-//                            parameters.setATTR5("");
-//                            parameters.setATTR6("");
-//                            parameters.setATTR7("");
-//                            parameters.setUSERNAME(createdBy);
-//                            parameters.setZTPBAR("");
-//                            parameters.setLSTVOR("X");
-//                            parameters.setFSTVOR("");
-//                            parameters.setZPRTP("4");
-//                            parameters.setAUART(cardhjj.getAuart());
-//                            parameters.setARBPL(cardt.getArbpl());
-//                            parameters.setCHARG("");
-//                            listparam.add(parameters);
-//                            ParamAndQjjlh paramAndQjjlh = new ParamAndQjjlh();
-//                            paramAndQjjlh.setNum(listparam.size() - 1);
-//                            paramAndQjjlh.setQjjlh(a.get(i).getZqjjlh());
-//                            listparamQjjlh.add(paramAndQjjlh);
-//                        }
-//
-//                    } else {
-//                        DTBAOGONGParameters parameters = new DTBAOGONGParameters();
-//                        parameters.setPWERK("1001");
-//                        parameters.setAUFNR(cardhjj.getAufnr());
-//                        //获取机加装箱工序
-//                        Cardt cardt = new Cardt();
-//                        cardt.setZpgdbar(cardhjj.getZpgdbar());
-//                        cardt.setKtsch("21001");
-//                        cardt = cardtService.selectByBarcodeAndKtsch(cardt);
-//                        parameters.setVORNR(cardt.getVornr());//工序号
-//                        parameters.setBUDAT(curdate);
-//                        parameters.setDATUM(curdate);
-//                        parameters.setGMNGA("0");
-//                        parameters.setRMNGA("0");
-//                        parameters.setXMNGA("0");
-//                        if (a.get(i).getZqxdm().substring(0, 1).equals("M")) {
-//                            parameters.setRMNGA("1");
-//                        } else {
-//                            parameters.setXMNGA("1");
-//                        }
-//                        parameters.setZSCBC("");
-//                        parameters.setZSCX("");
-//                        parameters.setZMNUM("");
-//                        parameters.setZPGDBAR(cardhjj.getZpgdbar());
-//                        parameters.setZPGDBH(cardhjj.getZpgdbh());
-//                        parameters.setRSNUM("");
-//                        parameters.setRSPOS("");
-//                        parameters.setREVERSE("");
-//                        parameters.setATTR1(createdBy);
-//                        parameters.setATTR2("");
-//                        parameters.setATTR3("");
-//                        parameters.setATTR4("");//报工类别
-//                        parameters.setATTR5("");
-//                        parameters.setATTR6("");
-//                        parameters.setATTR7("");
-//                        parameters.setUSERNAME(createdBy);
-//                        parameters.setZTPBAR("");
-//                        parameters.setLSTVOR("X");
-//                        parameters.setFSTVOR("");
-//                        parameters.setZPRTP("4");
-//                        parameters.setAUART(cardhjj.getAuart());
-//                        parameters.setARBPL(cardt.getArbpl());
-//                        parameters.setCHARG("");
-//                        listparam.add(parameters);
-//                        ParamAndQjjlh paramAndQjjlh = new ParamAndQjjlh();
-//                        paramAndQjjlh.setNum(listparam.size() - 1);
-//                        paramAndQjjlh.setQjjlh(a.get(i).getZqjjlh());
-//                        listparamQjjlh.add(paramAndQjjlh);
-//
-//                    }
-//                }
-//                ConfirmationWebserviceUtilNew confirmationWebserviceUtilNew = new ConfirmationWebserviceUtilNew();
-//                String isbg = "";//是否有报工成功的记录
-//                String iserr = "";//是否有失败的报工记录
-//                if (listparam.size() > 0) {
-//                    for (int i = 0; i < listparam.size(); i++) {
-//
-//                        List<DTBAOGONGParametersitem> parametersitems = new ArrayList<>();
-//                        List<InOutRecord> listinoutRecord = new ArrayList<>();
-//                        for (int j = 0; j < a.size(); j++) {
-//                            String flg = "";
-//                            //准备领料明细数据
-//                            String pZpgdbar = listparam.get(i).getZPGDBAR();
-//                            String recZpgdbar = a.get(j).getZpgdbar();
-//                            if (listparam.get(i).getZPGDBAR().equals(a.get(j).getZpgdbar())) {
-//                                //取箱号信息
-//                                DTBAOGONGParametersitem parametersitem = new DTBAOGONGParametersitem();
-//                                Xhcard xhcard = new Xhcard();
-//                                xhcard = xhcardService.selectByBacode(a.get(j).getZxhbar());
-//                                if (parametersitems.size() > 0) {
-//                                    for (int y = 0; y < parametersitems.size(); y++) {
-//                                        if (parametersitems.get(y).getCHARG().equals(xhcard.getChargkc())) {
-//                                            flg = "X";
-//                                            Integer num = Integer.valueOf(parametersitems.get(y).getBDMNG()) + 1;
-//                                            parametersitems.get(y).setBDMNG(num.toString());
-//                                        }
-//                                    }
-//
-//                                    if (flg.equals("")) {
-//                                        parametersitem.setSUBRSNUM("");
-//                                        parametersitem.setSUBRSPOS("");
-//                                        parametersitem.setBDMNG("1");
-//                                        parametersitem.setMATNR(xhcard.getMatnr());
-//                                        parametersitem.setCHARG(xhcard.getChargkc());
-//                                        parametersitem.setLGORT(xhcard.getLgort());
-//                                        parametersitem.setMEINS(xhcard.getMeins());
-//                                        parametersitem.setWERKS(xhcard.getWerks());
-//                                        parametersitems.add(parametersitem);
-//                                    }
-//
-//                                } else {
-//                                    parametersitem.setSUBRSNUM("");
-//                                    parametersitem.setSUBRSPOS("");
-//                                    parametersitem.setBDMNG("1");
-//                                    parametersitem.setMATNR(xhcard.getMatnr());
-//                                    parametersitem.setCHARG(xhcard.getChargkc());
-//                                    parametersitem.setLGORT(xhcard.getLgort());
-//                                    parametersitem.setMEINS(xhcard.getMeins());
-//                                    parametersitem.setWERKS(xhcard.getWerks());
-//                                    parametersitems.add(parametersitem);
-//                                }
-//
-//                            }
-//
-//                        }
-//                        DTBAOGONGReturnResult rs = new DTBAOGONGReturnResult();
-//                        rs = confirmationWebserviceUtilNew.receiveConfirmation(listparam.get(i), parametersitems);
-//
-//                        if (rs.getMSGTY().equals("S")) {
-//                            isbg = "X";
-//                            //1,更新wip_in_out_record    //更新 wip_zudlist
-//                            List<Zudlist> listsaveZudlist = new ArrayList<>();
-//                            for (int x = 0; x < listparamQjjlh.size(); x++) {
-//                                if (listparamQjjlh.get(x).getNum() == i) {
-//                                    InOutRecord inOutRecord = new InOutRecord();
-//                                    inOutRecord = iInOutRecordService.selectById(listparamQjjlh.get(x).getQjjlh());
-//                                    inOutRecord.setReflag(2L);
-//                                    inOutRecord.setLastUpdatedBy(Long.valueOf(createdBy));
-//                                    inOutRecord.setLastUpdateDate(new Date());
-//                                    listinoutRecord.add(inOutRecord);
-//
-//                                    //写不合格审理单行项目
-//                                    for (int y = 0; y < listitem.size(); y++) {
-//                                        if (listitem.get(y).getZqjjlh().equals(listparamQjjlh.get(x).getQjjlh())) {
-//                                            listitem.get(y).setRueck(rs.getRSNUM());
-//                                            listitem.get(y).setRmzhl(rs.getRSPOS());
-//                                            listsaveZudlist.add(listitem.get(y));
-//                                        }
-//                                    }
-//                                }
-//                            }
-//
-//                            iInOutRecordService.batchUpdateReflag(listinoutRecord);
-//                            zudlistService.insertItem(listsaveZudlist);
-//                            //2，更新 cardh
-//                            Cardh cardhjj = new Cardh();
-//                            cardhjj = cardhService.selectByBarcode(listparam.get(i).getZPGDBAR());
-//                            if (cardhjj.getQtysp() != null){
-//                                cardhjj.setQtysp(Double.valueOf(listparam.get(i).getXMNGA()) + cardhjj.getQtysp());//?
-//                            }else{
-//                                cardhjj.setQtysp(Double.valueOf(listparam.get(i).getXMNGA()));
-//                            }
-//
-//                            if (cardhjj.getQtysm() != null){
-//                                cardhjj.setQtysm(Double.valueOf(listparam.get(i).getRMNGA()) + cardhjj.getQtysm());//?
-//                            }else{
-//                                cardhjj.setQtysm(Double.valueOf(listparam.get(i).getRMNGA()));
-//                            }
-//                            cardhjj.setLastUpdatedBy(Long.valueOf(createdBy));
-//                            cardhjj.setLastUpdatedDate(new Date());
-//                            List<Cardh> listcardh = new ArrayList<>();
-//                            listcardh.add(cardhjj);
-//                            cardhService.updateCardhStatus(listcardh);
-//
-//                        } else {
-//                            iserr = "X";
-//                        }
-//                        Log log = new Log();
-//                        Result result = new Result();
-//                        InputLog inputLog = new InputLog();
-//                        inputLog.setBarcode(listparam.get(i).getZPGDBAR());
-//                        inputLog.setOrderno(listparam.get(i).getAUFNR());
-//                        inputLog.setDispatch(listparam.get(i).getZPGDBAR());
-//                        inputLog.setOperation(listparam.get(i).getVORNR());
-//                        inputLog.setYeild(Double.parseDouble(listparam.get(i).getGMNGA()));
-//                        inputLog.setWorkScrap(Double.parseDouble(listparam.get(i).getXMNGA()));
-//                        inputLog.setRowScrap(Double.parseDouble(listparam.get(i).getRMNGA()));
-//                        inputLog.setClassgrp(listparam.get(i).getZSCBC());
-//                        inputLog.setLine(listparam.get(i).getZSCX());
-//                        inputLog.setModelNo("");
-//                        inputLog.setPlant(listparam.get(i).getPWERK());
-//                        inputLog.setPostingDate(listparam.get(i).getBUDAT());
-//                        inputLog.setDispatchLogicID(listparam.get(i).getZPGDBH());
-//                        inputLog.setCreated_by(listparam.get(i).getUSERNAME());
-//                        inputLog.setAttr1(listparam.get(i).getATTR1());
-//                        inputLog.setAttr2(listparam.get(i).getATTR2());
-//                        inputLog.setAttr3(listparam.get(i).getATTR3());
-//                        inputLog.setAttr4(listparam.get(i).getATTR4());
-//                        inputLog.setAttr5(listparam.get(i).getATTR5());
-//                        inputLog.setAttr6(listparam.get(i).getATTR6());
-//                        inputLog.setAttr7(listparam.get(i).getATTR7());
-//                        inputLog.setUserName(listparam.get(i).getUSERNAME());
-//                        inputLog.setMaterial(rs.getMATNR());
-//                        inputLog.setMatDesc(rs.getMAKTX());
-//                        inputLogService.insertInputLog(inputLog);
-//                        Long id = inputLogService.selectNextId();
-//                        result.setPlant(inputLog.getPlant());
-//                        result.setInputId(id);
-//                        result.setIsReversed("0");
-//                        result.setMaterial(inputLog.getMaterial());
-//                        result.setMatDesc(inputLog.getMatDesc());
-//                        result.setCreated_by(inputLog.getCreated_by());
-//                        result.setConfirmationNo(rs.getRSNUM());
-//                        result.setConfirmationPos(rs.getRSPOS());
-//                        result.setFevor(rs.getFEVOR());
-//                        result.setFevorTxt(rs.getTXT());
-//                        result.setOperationDesc(rs.getLTXA1());
-//                        log.setMsgty(rs.getMSGTY());
-//                        log.setMsgtx(rs.getMESSAGE());
-//                        log.setTranType("0");
-//                        log.setRefId(id);
-//                        log.setCreated_by(inputLog.getCreated_by());
-//                        resultService.insertResult(result);
-//                        logService.insertLog(log);
-//                }
-//            }
-            //保存不合格品审理单
-//            if (isbg.equals("X") && iserr.equals("")) {
-//                service.insertHead(zudhead);
-//                responseData.setCode("S");
-//                responseData.setMessage("不合格品处理单创建成功！");
-//                responseData.setSuccess(true);
-//            } else if (isbg.equals("") && iserr.equals("X")) {
-//                responseData.setCode("S");
-//                responseData.setMessage("不合格品处理单创建失败！");
-//                responseData.setSuccess(true);
-//            } else if (isbg.equals("X") && iserr.equals("X")) {
-//                service.insertHead(zudhead);
-//                responseData.setCode("S");
-//                responseData.setMessage("不合格品处理单创建成功！但存在报工失败的记录行，请查询报工日志！");
-//                responseData.setSuccess(true);
-//            }
 
             //保存不合格品审理单1 表头
             if (zudhead != null){
@@ -490,7 +201,8 @@ public class ZudheadController extends BaseController {
                         responseData.setSuccess(false);
                         responseData.setMessage("创建不合格品审理单1行失败！");
                     }else{
-                        responseData.setCode("s");
+                        iInOutRecordService.batchUpdateReflag(listinout);
+                        responseData.setCode("S");
                         responseData.setSuccess(true);
                         responseData.setMessage("创建不合格品审理单1成功！");
                     }
@@ -508,9 +220,9 @@ public class ZudheadController extends BaseController {
 
     @RequestMapping(value = {"/wip/zudhead/processZud"}, method = {RequestMethod.POST})
     @ResponseBody
-    ResponseData processZud(HttpServletRequest request,@RequestBody List<Zudlist> list){
+    ResponseData processZud(HttpServletRequest request,@RequestBody List<Zudlist> listtmp){
         ResponseData rs = new ResponseData();
-        if (list.size() == 0){
+        if (listtmp.size() == 0){
             rs.setSuccess(false);
             rs.setMessage("请选择需要处理的记录！");
             return rs;
@@ -521,10 +233,10 @@ public class ZudheadController extends BaseController {
         List<Zudhead> headlist = new ArrayList<>();
         List<DTBAOGONGParameters> listparam = new ArrayList<>();
         List<ParamAndQjjlh> listparamQjjlh = new ArrayList<>();
-
-        for (int i=0;i<list.size();i++){
+        List<Zudlist> list = new ArrayList<>();
+        for (int i=0;i<listtmp.size();i++){
             Zudhead zudhead = new Zudhead();
-            zudhead = service.selectByZudnum(list.get(i).getZudnum());
+            zudhead = service.selectByZudnum(listtmp.get(i).getZudnum());
             if (headlist.size() == 0){
                 headlist.add(zudhead);
             }else{
@@ -532,15 +244,17 @@ public class ZudheadController extends BaseController {
                     headlist.add(zudhead);
                 }
             }
-
+            Zudlist zudlist = new Zudlist();
+            zudlist = zudlistService.selectByIdAndItem(listtmp.get(i).getZudnum(),listtmp.get(i).getItem());
+            zudlist.setReviewc(listtmp.get(i).getReviewc());
             //处理回到取还件记录表的数据记录
-            if (list.get(i).getReviewc().equals("B")){
-                list.get(i).setStatus("1");
-                list.get(i).setLastUpdateDate(new Date());
-                list.get(i).setLastUpdatedBy(Long.valueOf(createdBy));
-                zudlistService.updateItem(list.get(i));
+            if (zudlist.getReviewc().equals("Q")){
+                zudlist.setStatus("1");
+                zudlist.setLastUpdateDate(new Date());
+                zudlist.setLastUpdatedBy(Long.valueOf(createdBy));
+                zudlistService.updateItem(zudlist);
 
-                InOutRecord inOutRecord = iInOutRecordService.selectById(list.get(i).getZqjjlh());
+                InOutRecord inOutRecord = iInOutRecordService.selectById(zudlist.getZqjjlh());
                 inOutRecord.setLastUpdateDate(new Date());
                 inOutRecord.setLastUpdatedBy(Long.valueOf(createdBy));
                 inOutRecord.setReflag(0L);
@@ -550,8 +264,8 @@ public class ZudheadController extends BaseController {
                 UUID uuid = java.util.UUID.randomUUID();
                 String uuidstr = uuid.toString().replaceAll("-", "");
                 zudlog.setId(uuidstr);
-                zudlog.setZudnum(list.get(i).getZudnum());
-                zudlog.setItem(list.get(i).getItem());
+                zudlog.setZudnum(zudlist.getZudnum());
+                zudlog.setItem(zudlist.getItem());
                 zudlog.setMsgtx("还回取还件队列");
                 zudlog.setStatus("1");
                 zudlog.setCreatedBy(Long.valueOf(createdBy));
@@ -560,16 +274,16 @@ public class ZudheadController extends BaseController {
             }else{
                 //准备报工数据
                 Cardh cardhjj = new Cardh();
-                cardhjj = cardhService.selectByBarcode(list.get(i).getZpgdbar());
+                cardhjj = cardhService.selectByBarcode(zudlist.getZpgdbar());
                 if (listparam.size() > 0){
                     DTBAOGONGParameters parameters = new DTBAOGONGParameters();
                     String flg = "";
                     for (int j = 0; j < listparam.size(); j++) {
-                        if (listparam.get(j).getZPGDBAR().equals(list.get(i).getZpgdbar())) {
+                        if (listparam.get(j).getZPGDBAR().equals(zudlist.getZpgdbar())) {
                             //重复机加流转卡取件记录
                             //数量直接累计
                             flg = "X";
-                            if (list.get(i).getZqxdm().substring(0, 1).equals("M")) {
+                            if (zudlist.getZqxdm().substring(0, 1).equals("M")) {
                                 Double num = Double.valueOf(listparam.get(j).getRMNGA()) + 1;
                                 listparam.get(j).setRMNGA(num.toString());
                             }else{
@@ -578,7 +292,7 @@ public class ZudheadController extends BaseController {
                             }
                             ParamAndQjjlh paramAndQjjlh = new ParamAndQjjlh();
                             paramAndQjjlh.setNum(listparam.size() - 1);
-                            paramAndQjjlh.setQjjlh(list.get(i).getZqjjlh());
+                            paramAndQjjlh.setQjjlh(zudlist.getZqjjlh());
                             listparamQjjlh.add(paramAndQjjlh);
                         }
                     }
@@ -596,7 +310,7 @@ public class ZudheadController extends BaseController {
                         parameters.setGMNGA("0");
                         parameters.setRMNGA("0");
                         parameters.setXMNGA("0");
-                        if (list.get(i).getZqxdm().substring(0, 1).equals("M")) {
+                        if (zudlist.getZqxdm().substring(0, 1).equals("M")) {
                             parameters.setRMNGA("1");
                         } else {
                             parameters.setXMNGA("1");
@@ -627,7 +341,7 @@ public class ZudheadController extends BaseController {
                         listparam.add(parameters);
                         ParamAndQjjlh paramAndQjjlh = new ParamAndQjjlh();
                         paramAndQjjlh.setNum(listparam.size() - 1);
-                        paramAndQjjlh.setQjjlh(list.get(i).getZqjjlh());
+                        paramAndQjjlh.setQjjlh(zudlist.getZqjjlh());
                         listparamQjjlh.add(paramAndQjjlh);
                     }
                 }else{
@@ -645,7 +359,7 @@ public class ZudheadController extends BaseController {
                     parameters.setGMNGA("0");
                     parameters.setRMNGA("0");
                     parameters.setXMNGA("0");
-                    if (list.get(i).getZqxdm().substring(0, 1).equals("M")) {
+                    if (zudlist.getZqxdm().substring(0, 1).equals("M")) {
                         parameters.setRMNGA("1");
                     } else {
                         parameters.setXMNGA("1");
@@ -676,9 +390,10 @@ public class ZudheadController extends BaseController {
                     listparam.add(parameters);
                     ParamAndQjjlh paramAndQjjlh = new ParamAndQjjlh();
                     paramAndQjjlh.setNum(listparam.size() - 1);
-                    paramAndQjjlh.setQjjlh(list.get(i).getZqjjlh());
+                    paramAndQjjlh.setQjjlh(zudlist.getZqjjlh());
                     listparamQjjlh.add(paramAndQjjlh);
                 }
+                list.add(zudlist);
             }
 
         }
@@ -823,7 +538,7 @@ public class ZudheadController extends BaseController {
                         }
                     }
 
-                    iInOutRecordService.batchUpdateReflag(listinoutRecord);
+                    //iInOutRecordService.batchUpdateReflag(listinoutRecord);
                     //                            //2，更新 cardh
                     Cardh cardhjj = new Cardh();
                     cardhjj = cardhService.selectByBarcode(listparam.get(i).getZPGDBAR());
@@ -877,21 +592,23 @@ public class ZudheadController extends BaseController {
 
             }
 
-            //更新表头
-            for (int i= 0;i<headlist.size();i++){
-                //根据表头单号 查询是否存在未处理的表行
-                List<Zudlist> listunprocess = zudlistService.selectByZudnumForUnprocess(headlist.get(i).getZudnum());
-                if (listunprocess.size() == 0){
-                    //所有行均已处理 更新表头状态
-                    headlist.get(i).setStatus("1");
-                    service.updateHead(headlist.get(i));
-                }
+
+        }
+
+        //更新表头
+        for (int i= 0;i<headlist.size();i++){
+            //根据表头单号 查询是否存在未处理的表行
+            List<Zudlist> listunprocess = zudlistService.selectByZudnumForUnprocess(headlist.get(i).getZudnum());
+            if (listunprocess.size() == 0){
+                //所有行均已处理 更新表头状态
+                headlist.get(i).setStatus("1");
+                service.updateHead(headlist.get(i));
             }
         }
 
         if (iserr.equals("X")){
             rs.setSuccess(true);
-            rs.setMessage("不合格品审理单处理完成，处理过程中有错误产生！");
+            rs.setMessage("不合格品审理单处理完成，处理过程中有错误产生！请查询日志！");
         }else{
             rs.setSuccess(true);
             rs.setMessage("不合格品审理单处理完成!");
