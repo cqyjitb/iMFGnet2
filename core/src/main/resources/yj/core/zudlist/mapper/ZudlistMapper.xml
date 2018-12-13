@@ -105,7 +105,7 @@
                 AND li.dept_id = #{deptId}
             </if>
             <if test="lineId != null">
-                AND zh.line_id = #{lineId}
+                AND (zl.line_id = #{lineId} or li.pline_id = #{lineId})
             </if>
             <if test="creationDateAfter != null">
                 AND zh.creation_date >= #{creationDateAfter}

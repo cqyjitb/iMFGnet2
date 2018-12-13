@@ -123,8 +123,6 @@ public class Zudlist extends BaseDTO {
     private String createDate;//创建日期
 
 
-
-
     public String getCreateDate() {
         return createDate;
     }
