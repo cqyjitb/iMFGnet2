@@ -49,22 +49,19 @@ import java.util.List;
         /**
          *处理不合格品审理单1查询页面请求 918100064
          * @param dto
-         * @param page
-         * @param pageSize
          * @param request
          * @return
          */
         @RequestMapping(value = "/wip/zudlist/selectZudlist")
         @ResponseBody
-        public ResponseData selectZudlist(Zudlist dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,String createdBy1,
-                                          @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize, HttpServletRequest request) {
+        public ResponseData selectZudlist(Zudlist dto,String createdBy1,HttpServletRequest request) {
             IRequest requestContext = createRequestContext(request);
             if(createdBy1 != null && createdBy1 != ""){
                 Employee employee = employeeService.queryByCode(createdBy1);
                 dto.setCreatedBy(employee.getEmployeeId());
             }
             Zudlist zudlist  = resultFormat(dto);
-            return new ResponseData(service.selectZudlist(requestContext,zudlist,page,pageSize));
+            return new ResponseData(service.selectZudlist(requestContext,zudlist));
         }
 
         /**

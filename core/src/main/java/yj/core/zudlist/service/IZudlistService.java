@@ -24,4 +24,5 @@ public interface IZudlistService extends IBaseService<Zudlist>, ProxySelf<IZudli
      * @return
      */
     List<Zudlist> selectByZudnumForUnprocess(String zudnum);
+    List<Zudlist> selectZudlist(IRequest requestContext, Zudlist dto);
 }

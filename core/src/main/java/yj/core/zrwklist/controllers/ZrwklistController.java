@@ -50,22 +50,19 @@ import java.util.List;
         /**
          *处理机加返工返修单查询页面请求 918100064
          * @param dto
-         * @param page
-         * @param pageSize
          * @param request
          * @return
          */
         @RequestMapping(value = "/wip/zrwklist/selectZrwklist")
         @ResponseBody
-        public ResponseData selectZrwklist(Zrwklist dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page, String createdBy1,
-                                          @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize, HttpServletRequest request) {
+        public ResponseData selectZrwklist(Zrwklist dto, String createdBy1, HttpServletRequest request) {
             IRequest requestContext = createRequestContext(request);
             if(createdBy1 != null && createdBy1 != ""){
                 Employee employee = employeeService.queryByCode(createdBy1);
                 dto.setCreatedBy(employee.getEmployeeId());
             }
             Zrwklist zrwklist  = resultFormat(dto);
-            return new ResponseData(service.selectZrwklist(requestContext,zrwklist,page,pageSize));
+            return new ResponseData(service.selectZrwklist(requestContext,zrwklist));
         }
         /**
          *修改创建日期的方法 918100064

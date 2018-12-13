@@ -22,7 +22,7 @@
                 })
             }
         },
-        queryFunction:function () {
+        /*queryFunction:function () {
             var selections = grid.selectedDataItems();
             if(selections.length == 1){
                 var url = 'manageProductsCfg_edit.html?2';
@@ -32,7 +32,7 @@
                     message: '请先选择一行数据'
                 })
             }
-        },
+        },*/
         queryResource: function (e) {
             $('#Grid').data('kendoGrid').dataSource.page(1);
         },
@@ -98,7 +98,7 @@
         <span class="btn btn-primary k-grid-add" style="float:left;margin-right:5px;" data-bind="click:createFunction"><@spring.message "hap.new"/></span>
         <span class="btn btn-success k-grid-save-changes" data-bind="click:saveFunction" type="submit" style="float:left;margin-right:5px;">更改</span>
         <span onclick="deleteData()" class="btn btn-danger" style="float:left;margin-right:5px;"><@spring.message "hap.delete"/></span>
-        <span class="btn btn-primary" style="float:left;margin-right:5px;" data-bind="click:queryFunction" type="submit">查看</span>
+        <!--<span class="btn btn-primary" style="float:left;margin-right:5px;" data-bind="click:queryFunction" type="submit">查看</span>-->
     </div>
     <script>kendo.bind($('#toolbar-btn'), viewModel);</script>
     <div class="pull-right" id="query-form" style="padding-bottom:10px;">

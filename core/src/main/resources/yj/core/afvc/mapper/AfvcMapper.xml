@@ -18,8 +18,9 @@
     <select id="selectByArbpl" parameterType="java.lang.String" resultMap="BaseResultMap">
         select distinct arbpl, ktext from sap_afvc
         <where>
+            arbpl IS NOT NULL
             <if test="arbpl != null">
-                arbpl = #{arbpl}
+                AND arbpl = #{arbpl}
             </if>
         </where>
         order by arbpl desc

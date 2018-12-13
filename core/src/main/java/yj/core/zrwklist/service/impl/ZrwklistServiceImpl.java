@@ -38,8 +38,8 @@ public class ZrwklistServiceImpl extends BaseServiceImpl<Zrwklist> implements IZ
     }
 
     @Override
-    public List<Zrwklist> selectZrwklist(IRequest requestContext, Zrwklist dto, int page, int pageSize) {
-        PageHelper.startPage(page,pageSize);
+    public List<Zrwklist> selectZrwklist(IRequest requestContext, Zrwklist dto) {
+        //PageHelper.startPage(page,pageSize);
         List<Zrwklist> list = zrwklistMapper.selectZrwklist(dto);
         if(list.size() > 0){
             for(int i=0;i<list.size();i++){
