@@ -59,7 +59,7 @@ public class ZudlistServiceImpl extends BaseServiceImpl<Zudlist> implements IZud
                     zudlist.setCreateBy1(employee.getEmployeeCode());
                 }
 
-                if ( list.get(i).getReviewc() == null &&list.get(i).getReviewc().equals("")){
+                if ( list.get(i).getReviewc() == null || list.get(i).getReviewc().equals("")){
                     list.get(i).setReviewc("F");
                 }
 
