@@ -121,26 +121,7 @@ public class Zudlist extends BaseDTO {
     private String name;//部门名称
     private String createBy1;//创建人
     private String createDate;//创建日期
-    private Long lastUpdatedBy;
-    private Date lastUpdateDate;
 
-    @Override
-    public Long getLastUpdatedBy() {
-        return lastUpdatedBy;
-    }
-
-    @Override
-    public void setLastUpdatedBy(Long lastUpdatedBy) {
-        this.lastUpdatedBy = lastUpdatedBy;
-    }
-
-    public Date getLastUpdateDate() {
-        return lastUpdateDate;
-    }
-
-    public void setLastUpdateDate(Date lastUpdateDate) {
-        this.lastUpdateDate = lastUpdateDate;
-    }
 
     public String getCreateDate() {
         return createDate;
