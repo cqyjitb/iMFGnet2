@@ -85,6 +85,7 @@
         select distinct zudnum from wip_zudlist
         <where>
             line_id = #{lineId}
+            AND status != '1'
             <if test="zudnum != null">
                 and zudnum = #{zudnum}
             </if>
