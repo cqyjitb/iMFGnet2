@@ -224,7 +224,7 @@
                                     //add by 张滔 2017-12-5 添加扫描条码后判断如果不是首工序，查询首工序扫描记录中输入的 模号，生产线，班标
                                     //同时锁定 模号 生产线 班组 班标不允许编辑。
                                     var ordernotmp = strBarcode.substring(4, lenBarcode - 8);
-                                    if (strBarcode.substring(lenBarcode - 4, lenBarcode) != "0010" && (ordernotmp >= "1000000000" && ordernotmp <= "2999999999")) {//只针对压铸生产订单
+                                    if (strBarcode.substring(lenBarcode - 4, lenBarcode) != "0010" && ((ordernotmp >= "1000000000" && ordernotmp <= "2999999999") || (ordernotmp >= "9400000000" && ordernotmp <= "9499999999") )) {//只针对压铸生产订单
                                         //如果不是首工序 锁定模号字段，生产线字段，班标字段 不允许修改
                                         //disableModelNo();//模号不允许编辑   暂时允许输入先运行一段时间再做管控
                                         //disableLine();//生产线不允许编辑
@@ -468,9 +468,14 @@
                  * for 添加针对订单类型YZ01 YZ04 YZ06
                  **/
 
+                /**
+                 * add by 张涛 2018-12-14
+                 * for 添加针对订单类型 YZ03
+                 **/
+
                 var strBarcode = document.getElementById("barcode").value;
                 orderno = strBarcode.substring(4, strBarcode.length - 8);
-                if (orderno >= "1000000000" && orderno <= "2999999999") {
+                if ((orderno >= "1000000000" && orderno <= "2999999999") || (orderno >= "9400000000" && orderno <= "9499999999")) {
                     getDispatchValues();
 
                     if (operation == "0010")//只有在首工序的时候才允许设置模号，生产线

@@ -99,7 +99,7 @@ function getDispatchValues() {
      * add by 张滔 2017-12-01
      * for 添加逻辑 针对订单类型YZ01 YZ04 YZ06
      */
-    if(orderno >= "1000000000" && orderno <= "2999999999"){
+    if((orderno >= "1000000000" && orderno <= "2999999999") || (orderno >= "9400000000" && orderno <= "9499999999")){
             if(document.getElementById("attr6").selectedIndex == "" || document.getElementById("attr6").selectedIndex < "0")
             {
                 attr6 =  document.getElementById("attr6").options[0].value;
@@ -211,7 +211,7 @@ function checkDispatchValues() {
         return "请输入数量";
     }
 
-    if ((orderno >= "1000000000" && orderno <= "2999999999") || (orderno >= "3000000000" && orderno <= "4999999999")){
+    if ((orderno >= "1000000000" && orderno <= "2999999999") || (orderno >= "3000000000" && orderno <= "4999999999") || (orderno >= "9400000000" && orderno <= "9499999999")){
         /**
          * add by 张滔 2017年11月30日
          * for 生产线输入校验(只针对订单类型QP01 YZ01 YZ04 YZ06)
