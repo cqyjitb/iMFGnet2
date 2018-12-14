@@ -1,7 +1,10 @@
 package yj.core.zudlog.mapper;
 
 import com.hand.hap.mybatis.common.Mapper;
+import yj.core.zudlist.dto.Zudlist;
 import yj.core.zudlog.dto.Zudlog;
+
+import java.util.List;
 
 public interface ZudlogMapper extends Mapper<Zudlog>{
     /**
@@ -10,4 +13,11 @@ public interface ZudlogMapper extends Mapper<Zudlog>{
      * @return
      */
     int insertLog(Zudlog zudlog);
+
+    /**
+     * 查询日志 918100064
+     * @param dto
+     * @return
+     */
+    List<Zudlog> selectFromPage(Zudlog dto);
 }
