@@ -32,6 +32,25 @@ public class Zudlog extends BaseDTO {
 
       private Long createdBy;
 
+      private String createdBy1;
+      private String creationDate1;
+
+    public String getCreatedBy1() {
+        return createdBy1;
+    }
+
+    public void setCreatedBy1(String createdBy1) {
+        this.createdBy1 = createdBy1;
+    }
+
+    public String getCreationDate1() {
+        return creationDate1;
+    }
+
+    public void setCreationDate1(String creationDate1) {
+        this.creationDate1 = creationDate1;
+    }
+
     public String getMsgtx() {
         return msgtx;
     }

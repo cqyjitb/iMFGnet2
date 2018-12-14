@@ -13,6 +13,16 @@
         <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
     </resultMap>
 
+    <select id="selectFromPage" parameterType="yj.core.zudlog.dto.Zudlog" resultMap="BaseResultMap">
+        select *,CREATION_DATE as creationDate1 from wip_zudlog
+        <where>
+            <if test="zudnum != null">
+                zudnum = #{zudnum}
+            </if>
+        </where>
+        order by CREATION_DATE desc
+    </select>
+
     <insert id="insertLog" parameterType="yj.core.zudlog.dto.Zudlog">
         insert into wip_zudlog (ID,ZUDNUM,ITEM,STATUS,INPUTLOGID,MSGTX,CREATION_DATE,CREATED_BY) VALUES (#{id},#{zudnum},#{item},#{status},#{inputlogid},#{msgtx},#{creationDate},#{createdBy});
     </insert>

@@ -81,6 +81,16 @@
         <result column="MAKTX" property="maktx" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <select id="selectByLineId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select distinct zudnum from wip_zudlist
+        <where>
+            line_id = #{lineId}
+            <if test="zudnum != null">
+                and zudnum = #{zudnum}
+            </if>
+        </where>
+    </select>
+
     <select id="selectDftdtl" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(*) from wip_zudlist
         <where>

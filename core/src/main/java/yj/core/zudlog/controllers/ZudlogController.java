@@ -43,4 +43,12 @@ public ResponseData delete(HttpServletRequest request,@RequestBody List<Zudlog> 
     service.batchDelete(dto);
     return new ResponseData();
 }
+
+    @RequestMapping(value = "/wip/zudlog/selectZudlog")
+    @ResponseBody
+    public ResponseData queryZudlog(Zudlog dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
+                              @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize, HttpServletRequest request) {
+        IRequest requestContext = createRequestContext(request);
+        return new ResponseData(service.selectFromPage(requestContext,dto,page,pageSize));
+    }
 }

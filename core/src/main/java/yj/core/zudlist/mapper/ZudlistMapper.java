@@ -45,4 +45,11 @@ public interface ZudlistMapper extends Mapper<Zudlist>{
      * @return
      */
     Zudlist selectByIdAndItem(@Param("zudnum") String zudnum,@Param("item") String item);
+
+    /**
+     * 根据生产线查询所有单号记录 918100064
+     * @param lineId
+     * @return
+     */
+    List<Zudlist> selectByLineId(@Param("lineId")String lineId,@Param("zudnum") String zudnum);
 }
