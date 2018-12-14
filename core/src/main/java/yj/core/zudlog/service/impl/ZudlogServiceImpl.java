@@ -12,6 +12,7 @@ import yj.core.zudlog.dto.Zudlog;
 import yj.core.zudlog.mapper.ZudlogMapper;
 import yj.core.zudlog.service.IZudlogService;
 
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 @Service
@@ -29,6 +30,7 @@ public class ZudlogServiceImpl extends BaseServiceImpl<Zudlog> implements IZudlo
     @Override
     public List<Zudlog> selectFromPage(IRequest requestContext, Zudlog dto, int page, int pageSize) {
         PageHelper.startPage(page,pageSize);
+        SimpleDateFormat sdf = new SimpleDateFormat( " yyyy-MM-dd HH:mm:ss " );
         List<Zudlog> list = zudlogMapper.selectFromPage(dto);
         if(list.size() > 0){
             for(int i=0;i<list.size();i++){
@@ -40,6 +42,7 @@ public class ZudlogServiceImpl extends BaseServiceImpl<Zudlog> implements IZudlo
                 }else{
                     list.get(i).setCreatedBy1(employee.getEmployeeCode());
                 }
+                list.get(i).setCreationDate1(sdf.format(list.get(i).getCreationDate()));;
             }
         }
         return list;

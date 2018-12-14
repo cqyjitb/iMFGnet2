@@ -44,6 +44,14 @@ public ResponseData delete(HttpServletRequest request,@RequestBody List<Zudlog> 
     return new ResponseData();
 }
 
+    /**
+     * 不合格品审理单1处理日志查询页面请求 918100064
+     * @param dto
+     * @param page
+     * @param pageSize
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/wip/zudlog/selectZudlog")
     @ResponseBody
     public ResponseData queryZudlog(Zudlog dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,

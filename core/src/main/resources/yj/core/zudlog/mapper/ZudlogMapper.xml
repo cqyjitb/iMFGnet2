@@ -14,7 +14,7 @@
     </resultMap>
 
     <select id="selectFromPage" parameterType="yj.core.zudlog.dto.Zudlog" resultMap="BaseResultMap">
-        select *,CREATION_DATE as creationDate1 from wip_zudlog
+        select * from wip_zudlog
         <where>
             <if test="zudnum != null">
                 zudnum = #{zudnum}
