@@ -204,7 +204,7 @@ public class ZudheadController extends BaseController {
                         iInOutRecordService.batchUpdateReflag(listinout);
                         responseData.setCode("S");
                         responseData.setSuccess(true);
-                        responseData.setMessage("创建不合格品审理单1成功！");
+                        responseData.setMessage("创建不合格品审理单1成功！单号：" + zudhead.getZudnum());
                     }
                 }else{
                     responseData.setCode("E");
@@ -602,6 +602,8 @@ public class ZudheadController extends BaseController {
             if (listunprocess.size() == 0){
                 //所有行均已处理 更新表头状态
                 headlist.get(i).setStatus("1");
+                headlist.get(i).setLastUpdateDate(new Date());
+                headlist.get(i).setLastUpdatedBy(Long.valueOf(createdBy));
                 service.updateHead(headlist.get(i));
             }
         }
