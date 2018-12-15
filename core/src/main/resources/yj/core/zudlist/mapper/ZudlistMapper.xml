@@ -79,6 +79,7 @@
         <result column="DESCRIPTIONS" property="descriptions" jdbcType="VARCHAR"/>
         <result column="SORTL" property="sortl" jdbcType="VARCHAR"/>
         <result column="MAKTX" property="maktx" jdbcType="VARCHAR"/>
+        <result column="NAME" property="name" jdbcType="VARCHAR" />
     </resultMap>
 
     <select id="selectByLineId" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -101,14 +102,15 @@
     </select>
 
     <select id="selectZudlist" parameterType="java.lang.String" resultMap="BaseResultMap2">
-        select distinct zl.*,li.descriptions,cu.sortl,ma.maktx,re.zotype,zl.CREATION_DATE as createDate
-        from wip_zudlist zl,wip_zudhead zh,wip_lines li,sap_cust cu,sap_marc ma,wip_in_out_record re
+        select distinct zl.*,li.descriptions,cu.sortl,ma.maktx,re.zotype,zl.CREATION_DATE as createDate,b.name
+        from wip_zudlist zl,wip_zudhead zh,wip_lines li,sap_cust cu,sap_marc ma,wip_in_out_record re,hr_org_unit_b b
         <where>
             zh.zudnum = zl.zudnum
             AND li.line_id = zl.line_id
             AND cu.kunnr = zl.zbpjc
             AND ma.matnr = zl.matnr2
             AND re.zqjjlh = zl.zqjjlh
+            AND zl.rspart = b.unit_code
             <if test="status != null">
                 AND zl.STATUS = #{status}
             </if>
