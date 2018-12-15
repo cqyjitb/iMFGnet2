@@ -270,16 +270,16 @@ public class InputLogController extends BaseController{
         String  attr13 =  request.getParameter("13");
         String  attr14 =  request.getParameter("14");
         String  attr15 =  request.getParameter("15");
-        String userName = request.getParameter("16");
-        int length = attr7.length();
-        if ((length == 7) && (operation != "0030"))
-        {
-            String tmpattr7 = attr7.substring(0, 6) + classgrp.toLowerCase();
-            int i = attr7.indexOf(classgrp.toLowerCase());
-            if (i == -1) {
-                attr7 = tmpattr7;
-            }
-        }
+         String userName = request.getParameter("16");
+//        int length = attr7.length();
+//        if ((length == 7) && (operation != "0030"))
+//        {
+//            String tmpattr7 = attr7.substring(0, 6) + classgrp.toLowerCase();
+//            int i = attr7.indexOf(classgrp.toLowerCase());
+//            if (i == -1) {
+//                attr7 = tmpattr7;
+//            }
+//        }
 
 
         inputLog.setBarcode(barcode);

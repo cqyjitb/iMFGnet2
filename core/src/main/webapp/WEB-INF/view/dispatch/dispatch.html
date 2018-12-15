@@ -224,6 +224,7 @@
                                     //add by 张滔 2017-12-5 添加扫描条码后判断如果不是首工序，查询首工序扫描记录中输入的 模号，生产线，班标
                                     //同时锁定 模号 生产线 班组 班标不允许编辑。
                                     var ordernotmp = strBarcode.substring(4, lenBarcode - 8);
+                                    tmpattr7 = "";
                                     if (strBarcode.substring(lenBarcode - 4, lenBarcode) != "0010" && ((ordernotmp >= "1000000000" && ordernotmp <= "2999999999") || (ordernotmp >= "9400000000" && ordernotmp <= "9499999999") )) {//只针对压铸生产订单
                                         //如果不是首工序 锁定模号字段，生产线字段，班标字段 不允许修改
                                         //disableModelNo();//模号不允许编辑   暂时允许输入先运行一段时间再做管控
@@ -549,7 +550,7 @@
             bCfr.onclick=function () {
                 getDispatchValues();
                 //针对后面工序可能不会去点击其他信息页面，这里再次对班标进行赋值
-                if(tmpattr7 != " " && tmpattr7 != null ){
+                if(tmpattr7 != " " && tmpattr7 != null && tmpattr7 != ""){
                     attr7 = tmpattr7;
                 }
                 //检查必输字段
