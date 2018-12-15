@@ -291,7 +291,8 @@ public class ZudheadController extends BaseController {
                                 listparam.get(j).setXMNGA(num.toString());
                             }
                             ParamAndQjjlh paramAndQjjlh = new ParamAndQjjlh();
-                            paramAndQjjlh.setNum(listparam.size() - 1);
+                            //paramAndQjjlh.setNum(listparam.size() - 1);
+                            paramAndQjjlh.setNum(j);
                             paramAndQjjlh.setQjjlh(zudlist.getZqjjlh());
                             listparamQjjlh.add(paramAndQjjlh);
                         }
@@ -340,7 +341,13 @@ public class ZudheadController extends BaseController {
                         parameters.setCHARG("");
                         listparam.add(parameters);
                         ParamAndQjjlh paramAndQjjlh = new ParamAndQjjlh();
-                        paramAndQjjlh.setNum(listparam.size() - 1);
+                        //
+                        for (int j = 0; j < listparam.size(); j++) {
+                            if (listparam.get(j).getZPGDBAR().equals(zudlist.getZpgdbar())) {
+                                paramAndQjjlh.setNum(j);
+                            }
+                        }
+
                         paramAndQjjlh.setQjjlh(zudlist.getZqjjlh());
                         listparamQjjlh.add(paramAndQjjlh);
                     }
@@ -389,7 +396,7 @@ public class ZudheadController extends BaseController {
                     parameters.setCHARG("");
                     listparam.add(parameters);
                     ParamAndQjjlh paramAndQjjlh = new ParamAndQjjlh();
-                    paramAndQjjlh.setNum(listparam.size() - 1);
+                    paramAndQjjlh.setNum(0);
                     paramAndQjjlh.setQjjlh(zudlist.getZqjjlh());
                     listparamQjjlh.add(paramAndQjjlh);
                 }
@@ -399,8 +406,8 @@ public class ZudheadController extends BaseController {
         }
         //开始报工
         ConfirmationWebserviceUtilNew confirmationWebserviceUtilNew = new ConfirmationWebserviceUtilNew();
-        String isbg = "";//是否有报工成功的记录
-        String iserr = "";//是否有失败的报工记录
+
+        int iserr = 0;//是否有失败的报工记录
         if (listparam.size() > 0) {
             for (int i = 0; i < listparam.size(); i++) {
                 List<DTBAOGONGParametersitem> parametersitems = new ArrayList<>();
@@ -498,7 +505,7 @@ public class ZudheadController extends BaseController {
                 logService.insertLog(log);
                 List<Zudlist> listsaveZudlist = new ArrayList<>();
                 if (returnResult.getMSGTY().equals("S")) {
-                    isbg = "X";
+
                     //1,更新wip_in_out_record //更新 wip_zudlist
 
                     for (int x = 0; x < listparamQjjlh.size(); x++) {
@@ -559,7 +566,7 @@ public class ZudheadController extends BaseController {
                     listcardh.add(cardhjj);
                     cardhService.updateCardhStatus(listcardh);
                 } else{
-                    iserr = "X";
+                    iserr = iserr + 1;
                     for (int x = 0; x < listparamQjjlh.size(); x++) {
                         if (listparamQjjlh.get(x).getNum() == i) {
                             //写不合格审理单行项目
@@ -608,7 +615,7 @@ public class ZudheadController extends BaseController {
             }
         }
 
-        if (iserr.equals("X")){
+        if (iserr > 0){
             rs.setSuccess(true);
             rs.setMessage("不合格品审理单处理完成，处理过程中有错误产生！请查询日志！");
         }else{

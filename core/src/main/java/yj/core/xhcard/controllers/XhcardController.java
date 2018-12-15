@@ -506,7 +506,7 @@ public class XhcardController
 
             CheckReturn ck = new CheckReturn();
             ck = CheckFiFo(zxhbar,line_id,afko,cardhjj);
-            if (ck.equals("E")){
+            if (ck.getFlag().equals("E")){
                 rs.setSuccess(false);
                 rs.setMessage(ck.getMessage());
                 return rs;
@@ -661,7 +661,7 @@ public class XhcardController
 
             CheckReturn ck = new CheckReturn();
             ck = CheckFiFo(zxhbar,line_id,afko,cardhjj);
-            if (ck.equals("E")){
+            if (ck.getFlag().equals("E")){
                 rs.setSuccess(false);
                 rs.setMessage(ck.getMessage());
                 return rs;
@@ -844,6 +844,7 @@ public class XhcardController
 
         if (afkoyz.getAuart().equals("YZ02") || afkoyz.getAuart().equals("YZ03") || afkoyz.getAuart().equals("YZ06")){
             ck.setFlag("S");//排除压铸生产订单类型为 yz02 yz03 yz06的情况 不考虑先进先出
+            return ck;
         }
 
         //获取机加预留信息记录
