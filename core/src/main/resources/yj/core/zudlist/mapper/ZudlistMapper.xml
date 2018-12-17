@@ -83,12 +83,13 @@
     </resultMap>
 
     <select id="selectByLineId" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select distinct zudnum from wip_zudlist
+        select distinct zl.zudnum from wip_zudlist zl,wip_lines li
         <where>
-            line_id = #{lineId}
-            AND status != '1'
+            li.line_id = zl.line_id
+            AND (zl.line_id = #{lineId} or li.pline_id = #{lineId})
+            AND zl.status != '1'
             <if test="zudnum != null">
-                and zudnum = #{zudnum}
+                and zl.zudnum = #{zudnum}
             </if>
         </where>
     </select>
