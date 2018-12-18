@@ -88,6 +88,17 @@ public class Xhcard
     @Transient
     private String datee;
 
+    @Transient
+    private double synum;//剩余数量
+
+    public double getSynum() {
+        return synum;
+    }
+
+    public void setSynum(double synum) {
+        this.synum = synum;
+    }
+
     public String getDates() {
         return dates;
     }
@@ -469,4 +480,6 @@ public class Xhcard
     public void setSjjcNum(Long sjjcNum) {
         this.sjjcNum = sjjcNum;
     }
+
+
 }

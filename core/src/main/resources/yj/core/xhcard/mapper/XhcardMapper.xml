@@ -164,6 +164,17 @@
         ORDER BY CHARGKC ASC;
     </select>
 
+    <select id="selectByMatnrAndLgortSortS7" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT * FROM  sap_xhcard
+        <where>
+            MATNR = #{matnr}
+            and LGORT = #{lgort}
+            and ( ZSXWC IS  NULL OR ZSXWC = '')
+            and ZXHZT = '7'
+        </where>
+        ORDER BY CHARGKC ASC;
+    </select>
+
     <select id="selectMaxCharg" parameterType="java.lang.String" resultType="java.lang.String">
         select MAX(CHARG) FROM sap_xhcard
         <where>

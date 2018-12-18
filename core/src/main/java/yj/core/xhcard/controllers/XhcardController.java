@@ -40,6 +40,8 @@ import yj.core.wipproductscfg.service.IProductsCfgService;
 import yj.core.xhcard.dto.CheckReturn;
 import yj.core.xhcard.dto.Xhcard;
 import yj.core.xhcard.service.IXhcardService;
+import yj.core.zwipq.dto.Zwipq;
+import yj.core.zwipq.service.IZwipqService;
 
 @Controller
 public class XhcardController
@@ -64,6 +66,8 @@ public class XhcardController
     private ICurlzkService curlzkService;
     @Autowired
     private IDftrghlistService dftrghlistService;
+    @Autowired
+    private IZwipqService zwipqService;
 
     @RequestMapping({"/sap/xhcard/query"})
     @ResponseBody
@@ -1015,6 +1019,62 @@ public class XhcardController
         list.add(cardh);
         rs.setSuccess(true);
         rs.setRows(list);
+        return rs;
+    }
+
+    /**
+     *  根据毛坯物料号 线边库位置 查询毛坯箱号信息 917110140
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = {"/sap/xhcard/selectForJJmpck"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
+    @ResponseBody
+    ResponseData selectForJJmpck(HttpServletRequest request){
+        ResponseData rs = new ResponseData();
+        String matnr = request.getParameter("matnr");
+        String lgort = request.getParameter("lgort");
+
+        List<Xhcard> listxhcard = new ArrayList<>();
+        listxhcard = service.selectByMatnrAndLgortSortS7(matnr,lgort);
+        if (listxhcard.size() == 0){
+            rs.setSuccess(false);
+            rs.setMessage("");
+            return rs;
+        }
+
+        for (int i = 0;i<listxhcard.size();i++){
+            //根据箱号查询流转卡信息
+            Cardh cardh = new Cardh();
+            if (listxhcard.get(i).getAufnr() != null && !listxhcard.get(i).getAufnr().equals("")){
+                cardh = cardhService.selectByZxhbar(listxhcard.get(i).getAufnr(),listxhcard.get(i).getZxhnum());
+                if (cardh != null){
+                    listxhcard.get(i).setSfflg(cardh.getSfflg());
+                }else{
+                    listxhcard.get(i).setSfflg("");
+                }
+            }else{
+                listxhcard.get(i).setSfflg("");
+            }
+
+            List<Zwipq> listz = new ArrayList<>();
+            listz = zwipqService.selectByZxhbar(listxhcard.get(i).getZxhbar());
+            if (listz.size() > 0){
+                Double sum = 0D;
+                for (int j=0;j<listz.size();j++){
+                    sum = sum + listz.get(i).getZsxnum();
+                }
+                String sumstr = sum.toString();
+                listxhcard.get(i).setZsxnum(Long.valueOf(sumstr));
+                listxhcard.get(i).setSynum(Double.valueOf(listxhcard.get(i).getMenge()) - listxhcard.get(i).getZsxnum());
+            }else{
+                listxhcard.get(i).setZsxnum(0L);
+                listxhcard.get(i).setSynum(Double.valueOf(listxhcard.get(i).getMenge()) - listxhcard.get(i).getZsxnum());
+            }
+
+        }
+
+        rs.setRows(listxhcard);
+        rs.setSuccess(true);
         return rs;
     }
 

@@ -327,4 +327,9 @@ public class XhcardServiceImpl
     public Xhcard selectForZxhbar(String werks, String aufnr, String zxhnum) {
         return xhcardMapper.selectForZxhbar(werks,aufnr,zxhnum);
     }
+
+    @Override
+    public List<Xhcard> selectByMatnrAndLgortSortS7(String matnr, String lgort) {
+        return xhcardMapper.selectByMatnrAndLgortSortS7(matnr,lgort);
+    }
 }

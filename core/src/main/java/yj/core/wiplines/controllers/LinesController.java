@@ -244,4 +244,74 @@ public class LinesController extends BaseController {
         }
         return rs;
     }
+
+    /**
+     *  根据生产线ID 获取当前流转卡信息 产线产品配置信息 917110140  机加毛坯查询页面处理。
+     * @param request
+     * @param line_id
+     * @return
+     */
+    @RequestMapping(value = {"/wip/lines/selectByIdForJjmpck"}, method = {RequestMethod.GET})
+    @ResponseBody
+    ResponseData selectByIdForJjmpck(HttpServletRequest request,Long line_id){
+        ResponseData rs = new ResponseData();
+        //获取生产线信息
+        Lines lines = service.selectById(Long.valueOf(line_id));
+        if (lines == null) {
+            rs.setSuccess(false);
+            rs.setMessage("生产线ID错误，请从新输入正确的生产线ID!");
+            return rs;
+        }
+
+        Curlzk curlzk = new Curlzk();
+        curlzk = curlzkService.selectById(lines.getLineId(), null);
+        if (curlzk == null) {
+            rs.setSuccess(false);
+            rs.setMessage("该生产线无当前处理机加流转卡，请先绑定当前处理流转卡！");
+            return rs;
+        }
+
+        Cardh cardhjj = cardhService.selectByBarcode(curlzk.getZpgdbar());
+        if (cardhjj == null){
+            rs.setSuccess(false);
+            rs.setMessage("无法获取当前机加流转卡:"+ curlzk.getZpgdbar() +"的数据记录！请联系管理员！");
+            return rs;
+        }
+        Marc marcjj = marcService.selectByMatnr(cardhjj.getMatnr());
+        if (marcjj == null){
+            rs.setSuccess(false);
+            rs.setMessage("无法获取物料："+cardhjj.getMatnr()+"主数据记录，请联系管理员！");
+            return rs;
+        }
+
+        ProductsCfg pc = new ProductsCfg();
+        pc.setLineId(Long.valueOf(line_id));
+        pc.setPmatnr(marcjj.getMatnr());
+        pc = productsCfgService.selectByLineidAndPMatnr(Long.valueOf(line_id).toString(),marcjj.getMatnr());
+        if (pc == null){
+            rs.setSuccess(false);
+            rs.setMessage("无法获取产线："+cardhjj.getMatnr()+"物料："+marcjj.getMatnr()+"的产品配置记录，请联系管理员");
+            return rs;
+
+        }
+
+        Marc marcyz = marcService.selectByMatnr(pc.getMatnr());
+        if (marcyz == null){
+            rs.setSuccess(false);
+            rs.setMessage("无法获取物料:" + cardhjj.getMatnr()+ "主数据记录，请联系管理员！");
+            return rs;
+        }
+        List<Curlzk> listcur = new ArrayList<>();
+        listcur.add(curlzk);
+        List<ProductsCfg> listpc = new ArrayList<>();
+        listpc.add(pc);
+        List<Marc> listmarc = new ArrayList<>();
+        listmarc.add(marcyz);
+        List list = new ArrayList();
+        list.add(listcur);
+        list.add(listpc);
+        list.add(listmarc);
+        rs.setRows(list);
+        return rs;
+    }
 }

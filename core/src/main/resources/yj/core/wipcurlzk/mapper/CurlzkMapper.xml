@@ -20,7 +20,9 @@
         select * from wip_curlzk
         <where>
             LINE_ID = #{line_id}
-            and SHIFT = #{classgrp}
+            <if test="classgrp != null">
+                and SHIFT = #{classgrp}
+            </if>
         </where>
     </select>
     <update id="updateZxhbar" parameterType="yj.core.wipcurlzk.dto.Curlzk">

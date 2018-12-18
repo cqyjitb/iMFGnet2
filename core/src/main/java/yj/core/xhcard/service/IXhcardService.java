@@ -46,4 +46,12 @@ public  interface IXhcardService
       * @return
       */
      Xhcard selectForZxhbar(String werks,String aufnr,String zxhnum);
+
+     /**
+      *  根据物料编码 库存地点 查询箱号状态为7的数据记录 917110140
+      * @param matnr
+      * @param lgort
+      * @return
+      */
+     List<Xhcard> selectByMatnrAndLgortSortS7(String matnr,String lgort);
 }
