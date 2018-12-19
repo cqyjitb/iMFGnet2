@@ -61,7 +61,7 @@ import java.util.Locale;
         @RequestMapping(value = {"/sap/apppak/download"},method = {RequestMethod.GET})
         //@RequestMapping(value = {"/sap/apppak/download"})
         public void download(HttpServletRequest request, HttpServletResponse response, String fileId) throws FileReadIOException, TokenException {
-            IRequest requestContext = this.createRequestContext(request);
+               IRequest requestContext = this.createRequestContext(request);
             SysFile sysFile = fileService.selectByPrimaryKey(requestContext, Long.valueOf(fileId));
             try {
                 if(StringUtils.isNotBlank(sysFile.getFilePath())) {
@@ -89,7 +89,7 @@ import java.util.Locale;
         }
 
     private void writeFileToResp(HttpServletResponse response, File file) throws FileNotFoundException, IOException {
-        byte[] buf = new byte[Integer.valueOf(1024).intValue()];
+        byte[] buf = new byte[1024];
         InputStream inStream = new FileInputStream(file);
         Throwable var5 = null;
 
@@ -103,7 +103,7 @@ import java.util.Locale;
                     outputStream.write(buf, 0, readLength);
                 }
 
-                outputStream.flush();
+                //outputStream.flush();
             } catch (Throwable var30) {
                 var7 = var30;
                 throw var30;

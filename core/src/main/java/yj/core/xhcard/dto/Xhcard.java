@@ -87,8 +87,30 @@ public class Xhcard
     private String dates;
     @Transient
     private String datee;
+    @Transient
+    private String wdflag;//围堵状态标识
+    @Transient
+    private String hdflag;//冻结状态标识
+
+    public String getWdflag() {
+        return wdflag;
+    }
+
+    public void setWdflag(String wdflag) {
+        this.wdflag = wdflag;
+    }
+
+    public String getHdflag() {
+        return hdflag;
+    }
+
+    public void setHdflag(String hdflag) {
+        this.hdflag = hdflag;
+    }
 
     @Transient
+
+
     private double synum;//剩余数量
 
     public double getSynum() {

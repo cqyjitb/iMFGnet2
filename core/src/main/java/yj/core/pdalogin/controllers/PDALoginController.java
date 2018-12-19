@@ -93,4 +93,33 @@ public class PDALoginController extends BaseController {
         return rs;
     }
 
+    /**
+     *  新增查询app 最新版本文件id 返回文件ID 生产下载链接 917110140
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/yujiang/getDownloadinfo",method = RequestMethod.GET)
+    @ResponseBody
+    public ResponseData getDownloadinfo(HttpServletRequest request){
+        IRequest requestContext = createRequestContext(request);
+        ResponseData rs = new ResponseData();
+        String type = request.getParameter("type");
+        String key = request.getParameter("key");
+        Attachment attachment = new Attachment();
+        attachment = attachmentService.selectAttachByCodeAndKey(requestContext,type,key);
+        if (attachment != null){
+            List<SysFile> list = sysFileService.selectFilesByTypeAndKey(requestContext,type,key);
+            if (list.size() > 0){
+                rs.setCode(list.get(list.size() - 1).getFileId().toString());
+                rs.setSuccess(true);
+            }else{
+                rs.setCode("E");
+                rs.setSuccess(true);
+            }
+        }
+
+        return rs;
+    }
+
+
 }

@@ -1033,6 +1033,8 @@ public class XhcardController
         ResponseData rs = new ResponseData();
         String matnr = request.getParameter("matnr");
         String lgort = request.getParameter("lgort");
+        QueryXhcardReturnResult qrs = new QueryXhcardReturnResult();
+        qrs = service.selectByBacodeFromSap("", matnr, lgort, "M");
 
         List<Xhcard> listxhcard = new ArrayList<>();
         listxhcard = service.selectByMatnrAndLgortSortS7(matnr,lgort);
@@ -1045,15 +1047,32 @@ public class XhcardController
         for (int i = 0;i<listxhcard.size();i++){
             //根据箱号查询流转卡信息
             Cardh cardh = new Cardh();
+
             if (listxhcard.get(i).getAufnr() != null && !listxhcard.get(i).getAufnr().equals("")){
                 cardh = cardhService.selectByZxhbar(listxhcard.get(i).getAufnr(),listxhcard.get(i).getZxhnum());
                 if (cardh != null){
                     listxhcard.get(i).setSfflg(cardh.getSfflg());
+                    if (cardh.getStatus().equals("HOLD")){
+                        listxhcard.get(i).setHdflag("X");
+                    }else{
+                        listxhcard.get(i).setHdflag("");
+                    }
                 }else{
                     listxhcard.get(i).setSfflg("");
                 }
+
+
             }else{
-                listxhcard.get(i).setSfflg("");
+
+                cardh = null;
+                if (listxhcard.get(i).getZtxt() != null && !listxhcard.get(i).getZtxt().equals("")){
+                    listxhcard.get(i).setSfflg(listxhcard.get(i).getZtxt());
+                }else{
+                    listxhcard.get(i).setSfflg("");
+                }
+
+                listxhcard.get(i).setHdflag("");
+
             }
 
             List<Zwipq> listz = new ArrayList<>();
@@ -1070,6 +1089,30 @@ public class XhcardController
                 listxhcard.get(i).setSynum(Double.valueOf(listxhcard.get(i).getMenge()) - listxhcard.get(i).getZsxnum());
             }
 
+            //调用围堵接口 检查箱号是否被围堵
+            DTWEIDUParam param = new DTWEIDUParam();
+            param.setMATNR(listxhcard.get(i).getMatnr());
+            param.setWERKS(listxhcard.get(i).getWerks());
+            if (cardh != null){
+                param.setZBANB(cardh.getSfflg());
+                param.setZMODEL(cardh.getDiecd().toUpperCase());
+            }else{
+                param.setZBANB(listxhcard.get(i).getZtxt());
+                param.setZMODEL(listxhcard.get(i).getZmnum().toUpperCase());
+            }
+            param.setZXHBAR(listxhcard.get(i).getZxhbar());
+            WeiduWebserviceUtil weiduWebserviceUtil = new WeiduWebserviceUtil();
+            DTWEIDUReturn dtweiduReturn = weiduWebserviceUtil.receiveConfirmation(param);
+            if (dtweiduReturn.getMTYPE().equals("S")) {
+                if (dtweiduReturn.getWEIDUFLG() != null) {
+                    if (dtweiduReturn.getWEIDUFLG().equals("1")) {
+
+                        listxhcard.get(i).setWdflag("X");
+                    }else{
+                        listxhcard.get(i).setWdflag("");
+                    }
+                }
+            }
         }
 
         rs.setRows(listxhcard);

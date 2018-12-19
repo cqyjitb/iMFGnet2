@@ -2,6 +2,11 @@ package yj.core.webservice_queryXhcard.components;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.ContextLoaderListener;
+import yj.core.cardh.dto.Cardh;
+import yj.core.cardh.mapper.CardhMapper;
+import yj.core.cardh.service.ICardhService;
+import yj.core.cardh.service.impl.CardhServiceImpl;
 import yj.core.util.WebServerHelp;
 import yj.core.webservice_queryXhcard.dto.QueryXhcardParam;
 import yj.core.webservice_queryXhcard.dto.QueryXhcardReturnResult;
@@ -81,7 +86,13 @@ public class QueryXhcardWebserviceUtil {
                 xhcard.setZxhwz(dtqueryxhcardRes.getXHCARD().get(i).getZXHWZ());
                 xhcard.setZxhzt(dtqueryxhcardRes.getXHCARD().get(i).getZXHZT());
                 xhcard.setZxhzt2(dtqueryxhcardRes.getXHCARD().get(i).getZXHZT2());
-                list.add(xhcard);
+                Cardh cardh = new Cardh();
+                CardhMapper cardhMapper = ContextLoaderListener.getCurrentWebApplicationContext().getBean(CardhMapper.class);
+                cardh = cardhMapper.selectByZxhbar(xhcard.getAufnr(),xhcard.getZxhnum());
+                if (cardh != null){
+                    list.add(xhcard);
+                }
+
             }
             rs.setMSGTY("S");
             rs.setMESSAGE("箱号已经同步更新！");
