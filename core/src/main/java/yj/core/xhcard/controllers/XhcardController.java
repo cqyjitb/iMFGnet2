@@ -1063,8 +1063,7 @@ public class XhcardController
                 for (int j=0;j<listz.size();j++){
                     sum = sum + listz.get(i).getZsxnum();
                 }
-                String sumstr = sum.toString();
-                listxhcard.get(i).setZsxnum(Long.valueOf(sumstr));
+                listxhcard.get(i).setZsxnum(new Double(sum).longValue());
                 listxhcard.get(i).setSynum(Double.valueOf(listxhcard.get(i).getMenge()) - listxhcard.get(i).getZsxnum());
             }else{
                 listxhcard.get(i).setZsxnum(0L);
