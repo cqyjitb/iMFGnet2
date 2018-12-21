@@ -123,12 +123,15 @@
         <where>
             li.dept_id = b.unit_code
             AND li.dept_id = #{deptId}
+            <if test="lineId != null">
+                AND li.line_id = #{lineId}
+            </if>
         </where>
     </select>
 
     <update id="updateLines" parameterType="yj.core.wiplines.dto.Lines" >
         update wip_lines set WERKS=#{werks},DEPT_ID=#{deptId},LINE_ID=#{lineId},LINE_CODE = #{lineCode},
-        DESCRIPTIONS=#{descriptions},PLINE_ID=#{plineId},ARBPL=#{arbpl},
+        DESCRIPTIONS=#{descriptions},PLINE_ID=#{plineId},ARBPL=#{arbpl},TAKT_TIME=#{taktTime},
         ENABLE_FLAG=#{enableFlag},START_DATE=#{startDate},PKG_BIND_FLAG=#{pkgBindFlag},
         END_DATE=#{endDate},ONLINETYPE=#{onlinetype},PKGTYPE=#{pkgtype},EXECOFF_FLAG=#{execoffFlag},
         SEG_OPR_NAME=#{segOprName},POINT_NUM=#{pointNum},CREATION_DATE=#{creationDate},
@@ -143,10 +146,10 @@
     </update>
 
     <insert id="insertLines" parameterType="yj.core.wiplines.dto.Lines">
-        insert into wip_lines(WERKS,DEPT_ID,LINE_CODE,LINE_ID,DESCRIPTIONS,PLINE_ID,ARBPL,
+        insert into wip_lines(WERKS,DEPT_ID,LINE_CODE,LINE_ID,DESCRIPTIONS,PLINE_ID,ARBPL,TAKT_TIME,
         ENABLE_FLAG,START_DATE,END_DATE,ONLINETYPE,PKGTYPE,EXECOFF_FLAG,PKG_BIND_FLAG,
         SEG_OPR_NAME,POINT_NUM,CREATION_DATE,CREATED_BY)
-        VALUES(#{werks},#{deptId},#{lineCode},#{lineId},#{descriptions},#{plineId},#{arbpl},
+        VALUES(#{werks},#{deptId},#{lineCode},#{lineId},#{descriptions},#{plineId},#{arbpl},#{taktTime},
         #{enableFlag},#{startDate},#{endDate},#{onlinetype},#{pkgtype},#{execoffFlag},#{pkgBindFlag},
         #{segOprName},#{pointNum},#{creationDate},#{createdBy})
     </insert>
