@@ -86,20 +86,7 @@ public class QueryXhcardWebserviceUtil {
                 xhcard.setZxhwz(dtqueryxhcardRes.getXHCARD().get(i).getZXHWZ());
                 xhcard.setZxhzt(dtqueryxhcardRes.getXHCARD().get(i).getZXHZT());
                 xhcard.setZxhzt2(dtqueryxhcardRes.getXHCARD().get(i).getZXHZT2());
-                Cardh cardh = new Cardh();
-                CardhMapper cardhMapper = ContextLoaderListener.getCurrentWebApplicationContext().getBean(CardhMapper.class);
-//                if (xhcard.getAufnr() != null){
-//                    if (xhcard.getAufnr().substring(0,2).equals("00")){
-//                        String aufnr = xhcard.getAufnr().substring(2);
-//                        cardh = cardhMapper.selectByZxhbar(aufnr,xhcard.getZxhnum());
-//                    }else{
-//                        cardh = cardhMapper.selectByZxhbar(xhcard.getAufnr(),xhcard.getZxhnum());
-//                    }
-//                }
-                cardh = cardhMapper.selectByZxhbar(xhcard.getAufnr(),xhcard.getZxhnum());
-                if (cardh != null){
-                    list.add(xhcard);
-                }
+                list.add(xhcard);
 
             }
             rs.setMSGTY("S");
