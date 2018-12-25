@@ -61,4 +61,11 @@
             ISSUENM = #{issuenm}
         </where>
     </select>
+
+    <select id="selectMaxIssuenm" parameterType="java.lang.String" resultType="java.lang.String">
+        select Max(ISSUENM) from wip_outsrgissuehead
+        <where>
+            ISSUENM like #{issuenm}
+        </where>
+    </select>
 </mapper>

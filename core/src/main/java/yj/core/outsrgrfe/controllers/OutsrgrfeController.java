@@ -114,6 +114,7 @@ import java.util.List;
             if (cardh.getStatus().equals("HOLD")){
                 rs.setMessage("当前工序流转卡状态为HOLD，不允许进行工序发料操作！");
                 rs.setSuccess(false);
+                return rs;
             }
 
          //查询物流信息

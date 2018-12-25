@@ -25,16 +25,23 @@ public interface IOutsrgissueheadService extends IBaseService<Outsrgissuehead>, 
     int insertNewRow(Outsrgissuehead outsrgissuehead);
 
     /**
-     *  根据单号 修改状态及时间
+     *  根据单号 修改状态及时间 917110140
      * @param outsrgissuehead
      * @return
      */
     int updateOutsrgissueHead(Outsrgissuehead outsrgissuehead);
 
     /**
-     *  根据单号查询表头信息
+     *  根据单号查询表头信息 917110140
      * @param issuenm
      * @return
      */
     Outsrgissuehead selectByIssuenm(String issuenm);
+
+    /**
+     *  根据 条件字符串 查询单号类似的 最大的单号 917110140
+     * @param issuenm
+     * @return
+     */
+    String selectMaxIssuenm(String issuenm);
 }

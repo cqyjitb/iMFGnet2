@@ -34,4 +34,9 @@ public class OutsrgissueheadServiceImpl extends BaseServiceImpl<Outsrgissuehead>
     public Outsrgissuehead selectByIssuenm(String issuenm) {
         return outsrgissueheadMapper.selectByIssuenm(issuenm);
     }
+
+    @Override
+    public String selectMaxIssuenm(String issuenm) {
+        return outsrgissueheadMapper.selectMaxIssuenm(issuenm);
+    }
 }

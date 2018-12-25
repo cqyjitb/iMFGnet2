@@ -36,4 +36,11 @@ public interface OutsrgissueheadMapper extends Mapper<Outsrgissuehead>{
      * @return
      */
     Outsrgissuehead selectByIssuenm(String issuenm);
+
+    /**
+     *  根据 条件字符串 查询单号类似的 最大的单号 917110140
+     * @param issuenm
+     * @return
+     */
+    String selectMaxIssuenm(String issuenm);
 }

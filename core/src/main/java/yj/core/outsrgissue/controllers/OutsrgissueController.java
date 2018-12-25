@@ -99,9 +99,18 @@ import java.util.List;
 
         String l_update = "";
         Outsrgissuehead outsrgissuehead = new Outsrgissuehead();
-        if (list.size() ==0 ){
+        if (list.size() == 0 ){
             //产生新的单号 F+ 年 + 月 + 6位流水
-            outsrgissuehead.setIssuenm(issuenm);
+            String tmpstr = "F"+curdate.substring(2,6)+"%";
+            String maxissuenm = outsrgissueheadService.selectMaxIssuenm(tmpstr);
+            if (maxissuenm == null){
+                outsrgissuehead.setIssuenm(issuenm);
+            }else{
+                int num = Integer.valueOf(maxissuenm.substring(5,11)) + 1;
+                issuenm = "F" + curdate.substring(2,6) + String.format("%06d",num);
+                outsrgissuehead.setIssuenm(issuenm);
+            }
+
             outsrgissuehead.setLifnr(lifnr);
             outsrgissuehead.setMatnr(cardh.getMatnr());
             outsrgissuehead.setPrtflag("");
@@ -119,14 +128,17 @@ import java.util.List;
 
             }else{
                 //产生新的单号 获取当前流水
-                outsrgissuehead = list.get(0);
-                if (!outsrgissuehead.getIssuenm().substring(1,5).equals(curdate.substring(2,6))){
-                    outsrgissuehead.setIssuenm(issuenm);
-                }else{
-                    String mxnum = outsrgissuehead.getIssuenm().substring(5,11);
-                    int num = Integer.valueOf(mxnum) + 1;
-                    mxnum = String.format("%06d",num);
-                    outsrgissuehead.setIssuenm("F" + curdate.substring(2,6) + mxnum);
+                    outsrgissuehead = list.get(0);
+                    //产生新的单号 F+ 年 + 月 + 6位流水
+                    String tmpstr = "F"+curdate.substring(2,6)+"%";
+                    String maxissuenm = outsrgissueheadService.selectMaxIssuenm(tmpstr);
+                    if (maxissuenm == null){
+                        outsrgissuehead.setIssuenm(issuenm);
+                    }else{
+                        int num = Integer.valueOf(maxissuenm.substring(5,11)) + 1;
+                        issuenm = "F" + curdate.substring(2,6) + String.format("%06d",num);
+                        outsrgissuehead.setIssuenm(issuenm);
+                    }
                     outsrgissuehead.setLifnr(lifnr);
                     outsrgissuehead.setMatnr(cardh.getMatnr());
                     outsrgissuehead.setPrtflag("");
@@ -138,7 +150,7 @@ import java.util.List;
                     outsrgissuehead.setZipdat("");
                     outsrgissuehead.setZiptim("");
                     outsrgissuehead.setZipuser("");
-                }
+
             }
         }
 
