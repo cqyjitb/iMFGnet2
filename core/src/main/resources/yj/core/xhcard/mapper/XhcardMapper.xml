@@ -66,7 +66,6 @@
                               MENGE = #{menge},
                               MEINS = #{meins},
                               ZXHWZ = #{zxhwz},
-   <!--                            AUFNR = #{aufnr}, -->
                               ZXHBAR = #{zxhbar},
                               ZJYY = #{zjyy},
                               ZSCBC = #{zscbc},
