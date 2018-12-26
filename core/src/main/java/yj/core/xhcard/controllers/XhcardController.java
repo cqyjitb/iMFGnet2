@@ -358,7 +358,7 @@ public class XhcardController
         //第一步 获取箱号记录
 
 //        qrs = service.selectByBacodeFromSap(zxhbar, "", "", "S");
-//        xhcard = service.selectByBacode(zxhbar);
+        xhcard = service.selectByBacode(zxhbar);
 
         if (xhcard == null) {
             rs.setSuccess(false);
