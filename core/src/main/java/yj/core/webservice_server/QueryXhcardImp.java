@@ -23,13 +23,14 @@ public class QueryXhcardImp implements IQueryXhcard{
     @Override
     public QueryXhcardReturnResult QueryXhcard(Rec_queryXhcard rec_queryXhcard) {
         QueryXhcardReturnResult rs = new QueryXhcardReturnResult();
-        QueryXhcardParam param = new QueryXhcardParam();
-        param.setZxhbar(rec_queryXhcard.getZxhbar());
-        param.setLgort(rec_queryXhcard.getLgort());
-        param.setMatnr(rec_queryXhcard.getMatnr());
-        param.setQtype(rec_queryXhcard.getQtype());
-        QueryXhcardWebserviceUtil queryXhcardWebserviceUtil = new QueryXhcardWebserviceUtil();
-        rs = queryXhcardWebserviceUtil.receiveConfirmation(param);
+//        QueryXhcardParam param = new QueryXhcardParam();
+//        param.setZxhbar(rec_queryXhcard.getZxhbar());
+//        param.setLgort(rec_queryXhcard.getLgort());
+//        param.setMatnr(rec_queryXhcard.getMatnr());
+//        param.setQtype(rec_queryXhcard.getQtype());
+//        QueryXhcardWebserviceUtil queryXhcardWebserviceUtil = new QueryXhcardWebserviceUtil();
+//        rs = queryXhcardWebserviceUtil.receiveConfirmation(param);
+        rs.setMSGTY("S");
         return rs;
     }
 }

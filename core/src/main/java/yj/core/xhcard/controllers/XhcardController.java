@@ -357,8 +357,8 @@ public class XhcardController
         Xhcard curxhcard = new Xhcard();
         //第一步 获取箱号记录
 
-        qrs = service.selectByBacodeFromSap(zxhbar, "", "", "S");
-        xhcard = service.selectByBacode(zxhbar);
+//        qrs = service.selectByBacodeFromSap(zxhbar, "", "", "S");
+//        xhcard = service.selectByBacode(zxhbar);
 
         if (xhcard == null) {
             rs.setSuccess(false);
@@ -394,23 +394,6 @@ public class XhcardController
                     return rs;
                 }
             }
-//            if (dtweiduReturn.getSTATUS() == null){
-//
-//            }else if (dtweiduReturn.getSTATUS().equals("O")){
-//                if (dtweiduReturn.getZXHBAR() == null){
-//                    rs.setSuccess(false);
-//                    rs.setMessage("该毛坯框，班标："+cardh.getSfflg()+",属于围堵批次！不允许上线扫描！");
-//                    return rs;
-//                }else{
-//                    if (dtweiduReturn.getZXHBAR().equals(xhcard.getZxhbar())){
-//                        //放行
-//                    }else{
-//                        rs.setSuccess(false);
-//                        rs.setMessage("该毛坯框，班标："+cardh.getSfflg()+",属于围堵批次！不允许上线扫描！");
-//                        return rs;
-//                    }
-//                }
-//            }
         }
 
         if (xhcard.getZsxwc() != null) {
@@ -515,84 +498,6 @@ public class XhcardController
                 rs.setMessage(ck.getMessage());
                 return rs;
             }
-
-//            //resb
-//            resblist = resbService.selectByRsnum(afko.getRsnum());
-//
-//            for (int i = 0; i < resblist.size(); i++) {
-//                if (resblist.get(i).getMatnr().equals(xhcard.getMatnr())) {
-//                    String lgort = resblist.get(i).getLgort();
-//                    String matnr = xhcard.getMatnr();
-//                    qrs1 = service.selectByBacodeFromSap(zxhbar, matnr, lgort, "M");
-//                    List<Xhcard> xhcardlist = service.selectByMatnrAndLgortSort(matnr, lgort);
-//                    if (xhcardlist.size() > 0) {
-////                        if (!xhcardlist.get(0).getChargkc().equals(xhcard.getChargkc())) {
-////                            rs.setSuccess(false);
-////                            rs.setMessage("未按先进先出规则上线，请先上线批次为：" + xhcardlist.get(0).getChargkc() + " 的毛坯框！");
-////                            return rs;
-////
-////                        }
-//                        for (int j = 0; j < xhcardlist.size(); j++) {//在先进先出中排除已经围堵的批次
-//                            String letgo = "";
-//                            if (Long.valueOf(xhcardlist.get(j).getChargkc()) < Long.valueOf(xhcard.getChargkc())) {
-//                                for (int w = 0; w < allcurlzk.size(); w++) {
-//                                    if (allcurlzk.get(w).getZxhbar().equals(xhcardlist.get(j).getZxhbar())) {
-//                                        letgo = "X";
-//                                    }
-//                                }
-//                                if (letgo.equals("X")) {//批次比当前箱号批次小的 ，如果小批次箱号属于其他线正在上线的箱 不属于先进先出考虑范围
-//                                    continue;
-//                                }
-//
-//                                DTWEIDUParam param1 = new DTWEIDUParam();
-//                                Cardh cardhtmp = new Cardh();
-//                                cardhtmp = cardhService.selectByZxhbar(xhcardlist.get(j).getAufnr(), xhcardlist.get(j).getZxhnum());
-//
-//                                if (cardhtmp != null){
-//                                    if (cardhtmp.getStatus().equals("HOLD")){
-//                                        continue;
-//                                    }
-//                                    param1.setZBANB(cardhtmp.getSfflg());
-//                                    param1.setZMODEL(cardhtmp.getDiecd());
-//
-//                                }else{
-//                                    param1.setZBANB(xhcardlist.get(j).getZtxt());
-//                                    param1.setZMODEL(xhcardlist.get(j).getZmnum());
-//                                }
-//                                param1.setMATNR(xhcardlist.get(j).getMatnr());
-//                                param1.setWERKS(xhcardlist.get(j).getWerks());
-//
-//                                param1.setZXHBAR(xhcard.getZxhbar());
-//                                DTWEIDUReturn dtweiduReturn1 = new DTWEIDUReturn();
-//                                dtweiduReturn1 = weiduWebserviceUtil.receiveConfirmation(param1);
-//                                if (dtweiduReturn1.getMTYPE().equals("S")) {
-//                                    if (dtweiduReturn1.getWEIDUFLG() != null) {
-//                                        if (dtweiduReturn1.getWEIDUFLG().equals("1")) {
-//
-//                                        } else {
-//                                            if (marcjj.getFifof() != null && marcjj.getFifof().equals("Y")){
-//                                                rs.setSuccess(false);
-//                                                rs.setMessage("未按先进先出规则上线，请先上线批次为：" + xhcardlist.get(j).getChargkc() + ",箱号：" + xhcardlist.get(j).getZxhbar() + " 的毛坯框！");
-//                                                return rs;
-//                                            }
-//                                        }
-//                                    }
-//                                }
-//
-//                            }
-//                        }
-//                        l_error = "";
-//                    }
-//                }
-//
-//            }
-//
-//            if (l_error.equals("E")) {
-//                rs.setSuccess(false);
-//                rs.setMessage("该毛坯框物料:" + xhcard.getMatnr() + "不是本生产线所需物料,请检查!");
-//                return rs;
-//            }
-
             rs.setSuccess(true);
             rslist.add(inputLoglist);//返回报工记录
             rslist.add(xhcard);//返回扫描的箱号信息
@@ -670,77 +575,6 @@ public class XhcardController
                 rs.setMessage(ck.getMessage());
                 return rs;
             }
-            //resb
-//            resblist = resbService.selectByRsnum(afko.getRsnum());
-//            for (int i = 0; i < resblist.size(); i++) {
-//                if (resblist.get(i).getMatnr().equals(xhcard.getMatnr())) {
-//                    String lgort = resblist.get(i).getLgort();
-//                    String matnr = xhcard.getMatnr();
-//                    qrs1 = service.selectByBacodeFromSap(zxhbar, matnr, lgort, "M");
-//                    List<Xhcard> xhcardlist = service.selectByMatnrAndLgortSort(matnr, lgort);
-//                    if (xhcardlist.size() > 0) {
-//                        for (int j = 0; j < xhcardlist.size(); j++) {//在先进先出中排除已经围堵的批次
-//                            String letgo = "";
-//                            if (Long.valueOf(xhcardlist.get(j).getChargkc()) < Long.valueOf(xhcard.getChargkc())) {
-//                                for (int w = 0; w < allcurlzk.size(); w++) {
-//                                    if (allcurlzk.get(w).getZxhbar().equals(xhcardlist.get(j).getZxhbar())) {
-//                                        letgo = "X";
-//                                    }
-//                                }
-//                                if (letgo.equals("X")) {//批次比当前箱号批次小的 ，如果小批次箱号属于其他线正在上线的箱 不属于先进先出考虑范围
-//                                    continue;
-//                                }
-//
-//                                DTWEIDUParam param1 = new DTWEIDUParam();
-//                                Cardh cardhtmp = new Cardh();
-//                                cardhtmp = cardhService.selectByZxhbar(xhcardlist.get(j).getAufnr(), xhcardlist.get(j).getZxhnum());
-//
-//                                if (cardhtmp != null){
-//                                    if (cardhtmp.getStatus().equals("HOLD")){
-//                                        continue;
-//                                    }
-//                                    param1.setZBANB(cardhtmp.getSfflg());
-//                                    param1.setZMODEL(cardhtmp.getDiecd());
-//                                }else{
-//                                    param1.setZBANB(xhcardlist.get(j).getZtxt());
-//                                    param1.setZMODEL(xhcardlist.get(j).getZmnum());
-//                                }
-//                                param1.setMATNR(xhcardlist.get(j).getMatnr());
-//                                param1.setWERKS(xhcardlist.get(j).getWerks());
-//
-//                                param1.setZXHBAR(xhcard.getZxhbar());
-//                                DTWEIDUReturn dtweiduReturn1 = new DTWEIDUReturn();
-//                                dtweiduReturn1 = weiduWebserviceUtil.receiveConfirmation(param1);
-//                                if (dtweiduReturn1.getMTYPE().equals("S")) {
-//                                    if (dtweiduReturn1.getWEIDUFLG() != null) {
-//                                        if (dtweiduReturn1.getWEIDUFLG().equals("1")) {
-//
-//                                        } else {
-//                                            if (marcjj.getFifof() != null && marcjj.getFifof().equals("Y")){
-//                                                rs.setSuccess(false);
-//                                                rs.setMessage("未按先进先出规则上线，请先上线批次为：" + xhcardlist.get(j).getChargkc() + ",箱号：" + xhcardlist.get(j).getZxhbar() + " 的毛坯框！");
-//                                                return rs;
-//                                            }
-//
-//                                        }
-//                                    }
-//                                }
-//
-//                            } else if (Long.valueOf(xhcardlist.get(j).getChargkc()).equals(Long.valueOf(xhcard.getChargkc()))) {
-//                                break;
-//                            }
-//                        }
-//                    }
-//                    l_error = "";
-//                }
-//
-//            }
-//
-//            if (l_error.equals("E")) {
-//                rs.setSuccess(false);
-//                rs.setMessage("该毛坯框物料:" + xhcard.getMatnr() + "不是本生产线所需物料,请检查!");
-//                return rs;
-//            }
 
             //查询毛坯不良品处理记录
             List<Dftrghlist> dftrghlists = dftrghlistService.selectByZxhbar(zxhbar);
@@ -788,9 +622,9 @@ public class XhcardController
             resblist = resbService.selectByRsnum(afko.getRsnum());
             for (int i = 0; i < resblist.size(); i++) {
                 if (resblist.get(i).getMatnr().equals(xhcard.getMatnr())) {
-                    String lgort = resblist.get(i).getLgort();
-                    String matnr = xhcard.getMatnr();
-                    qrs1 = service.selectByBacodeFromSap(zxhbar, matnr, lgort, "M");
+//                    String lgort = resblist.get(i).getLgort();
+//                    String matnr = xhcard.getMatnr();
+//                    qrs1 = service.selectByBacodeFromSap(zxhbar, matnr, lgort, "M");
                     l_error = "";
                 }
 
@@ -859,9 +693,9 @@ public class XhcardController
         String l_error = "E";//判断是否在预留信息表中查询到了准上线毛坯框物料信息
         for (int i=0;i<resblist.size();i++){
             if (resblist.get(i).getMatnr().equals(xhcard.getMatnr())) {
-                lgort = resblist.get(i).getLgort();
-                matnr = xhcard.getMatnr();
-                qrs1 = service.selectByBacodeFromSap(zxhbar, matnr, lgort, "M");//批量更新库存地点 物料号 和准上线箱号一直的箱号信息
+//                lgort = resblist.get(i).getLgort();
+//                matnr = xhcard.getMatnr();
+//                qrs1 = service.selectByBacodeFromSap(zxhbar, matnr, lgort, "M");//批量更新库存地点 物料号 和准上线箱号一直的箱号信息
                 l_error = "";
             }
         }
@@ -1033,8 +867,8 @@ public class XhcardController
         ResponseData rs = new ResponseData();
         String matnr = request.getParameter("matnr");
         String lgort = request.getParameter("lgort");
-        QueryXhcardReturnResult qrs = new QueryXhcardReturnResult();
-        qrs = service.selectByBacodeFromSap("", matnr, lgort, "M");
+//        QueryXhcardReturnResult qrs = new QueryXhcardReturnResult();
+//        qrs = service.selectByBacodeFromSap("", matnr, lgort, "M");
 
         List<Xhcard> listxhcard = new ArrayList<>();
         listxhcard = service.selectByMatnrAndLgortSortS7(matnr,lgort);

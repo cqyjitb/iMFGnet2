@@ -54,4 +54,6 @@ public  interface IXhcardService
       * @return
       */
      List<Xhcard> selectByMatnrAndLgortSortS7(String matnr,String lgort);
+
+     int updateXhcardFromSapSinger(Xhcard xhcard);
 }
