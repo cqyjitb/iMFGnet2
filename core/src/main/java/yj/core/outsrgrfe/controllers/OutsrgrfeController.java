@@ -90,6 +90,23 @@ import java.util.List;
     }
 
         /**
+         *  查询供应商及简称
+         * @param request
+         * @return
+         */
+    @RequestMapping(value = {"/wip/outsrgrfe/selectAllLinfr"}, method = {RequestMethod.GET})
+    @ResponseBody
+    public ResponseData selectAllLifnr(HttpServletRequest request){
+        ResponseData rs = new ResponseData();
+        List<Outsrgrfe> list = service.selectAllLifnr();
+        if (list.size() > 0){
+            rs.setRows(list);
+        }
+        rs.setSuccess(true);
+        return rs;
+        }
+
+        /**
          *  根据工序流转卡号 供应商编码 查询 1：工序流转卡信息 SAP_cardh
          *                               2：工序外协接口表信息 wip_outsrgrfe
          *                               3：工序信息  sap_cardt

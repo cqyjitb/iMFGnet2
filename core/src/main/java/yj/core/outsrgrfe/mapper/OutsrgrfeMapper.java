@@ -38,4 +38,6 @@ public interface OutsrgrfeMapper extends Mapper<Outsrgrfe>{
      * @return
      */
     List<Outsrgrfe> selectForSortl(String lifnr);
+
+    List<Outsrgrfe> selectAllLifnr();
 }

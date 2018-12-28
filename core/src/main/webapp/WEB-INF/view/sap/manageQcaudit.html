@@ -1,5 +1,5 @@
 <!--
-    报功日志报表
+    不合格品审理单2创建
 -->
 
 <#include "../include/header.html">
@@ -37,6 +37,18 @@
             color: red;
         }
 
+        #label5 {
+            color: red;
+        }
+
+        #label6 {
+            color: red;
+        }
+
+        #label7 {
+            color: red;
+        }
+
     </style>
     <div id="content-container">
         <div id="page-content">
@@ -50,8 +62,7 @@
                                         <label class="col-sm-4 control-label">工厂&nbsp;<label
                                                 id="label4">*</label></label>
                                         <div class="col-sm-8">
-                                            <input type="text" id="werks" style="width: 100%"
-                                                   data-bind="value:model.werks" class="k-textbox" readonly="readonly">
+                                            <input type="text" id="werks" style="width: 100%" class="k-textbox" readonly="readonly" data-bind="value:model.werks">
                                         </div>
                                     </div>
                                 </div>
@@ -90,20 +101,73 @@
                                         </div>
                                     </div>
                                 </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">班组&nbsp;<label id="label5">*</label></label>
+                                        <div class="col-sm-8">
+                                            <input id="zbanz" name="zbanz" required placeholder="请选择班组"
+                                                   data-role="combobox" data-value-primitive="true"
+                                                   data-text-field="text" data-value-field="value"
+                                                   data-bind="enabled: isEnabled, source: comboboxZbanz, value:model.zbanz"
+                                                   style="width: 100%;"/>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">缺陷代码&nbsp;<label
+                                                id="label6">*</label></label>
+                                        <div class="col-sm-8">
+                                            <input id="zqxdm" class="k-textbox" data-bind="value:model.zqxdm"
+                                                   style="width: 100%">
+                                            <script>
+                                                $("#zqxdm").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_QPCD1")}, {
+                                                    query: function (e) {
+                                                        e.param['enabledFlag'] = 'Y';
+                                                    }
+                                                }))
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">缺陷小类&nbsp;<label
+                                                id="label7">*</label></label>
+                                        <div class="col-sm-8">
+                                            <input id="zissuetxt" class="k-textbox" data-bind="value:model.zissuetxt"
+                                                   style="width: 100%">
+                                            <script>
+                                                $("#zissuetxt").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_DFTDTL")}, {
+                                                    query: function (e) {
+                                                        var code = document.getElementById("zqxdm").value;
+                                                        e.param['code'] = code;
+                                                        e.param['enabledFlag'] = 'Y';
+                                                    }
+                                                }))
+                                            </script>
+                                        </div>
+                                    </div>
+                                </div>
 
 
 
                             </div>
 
-                            <div class="row ">
+                            <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label">产品所处工艺状态&nbsp;<label id="label3">*</label></label>
                                         <div class="col-sm-8">
-                                            <input id="gytype" name="type" required placeholder="产品所处工艺状态"
+                                            <input id="gytype" name="type" required placeholder="请选择产品所处工艺状态"
                                                    data-role="combobox" data-value-primitive="true"
                                                    data-text-field="text" data-value-field="value"
-                                                   data-bind="enabled: isEnabled, source: comboboxType, value:model.type"
+                                                   data-bind="enabled: isEnabled, source: comboboxType, value:model.gytype"
                                                    style="width: 100%;"/>
                                         </div>
                                     </div>
@@ -123,6 +187,20 @@
 
                                 <div class="col-sm-4">
                                     <div class="form-group">
+                                        <label class="col-sm-4 control-label">毛坯物料号</label>
+                                        <div class="col-sm-8">
+                                            <input type="text" id="matnr2" class="k-textbox"
+                                                   data-bind="value:model.matnr"
+                                                   style="width: 100%">
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
                                         <label class="col-sm-4 control-label">生产日期从&nbsp;</label>
 
                                         <div class="col-sm-8">
@@ -133,8 +211,6 @@
                                     </div>
                                 </div>
 
-                            </div>
-                            <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label">生产日期至&nbsp;</label>
@@ -178,10 +254,16 @@
         </div>
     </div>
     <script type="text/javascript">
-
+        window.onload=function(){
+            document.getElementById("werks").value = '1001';
+        }
+    </script>
+    <script type="text/javascript">
         var viewModel = kendo.observable({
-            model: {},
-            comboboxSource: [{
+            model: {
+                werks:"1001"
+            },
+            comboboxZbanz: [{
                 text: "A班",
                 value: "A"
             }, {
@@ -215,7 +297,9 @@
                 var gytype = document.getElementById("gytype").value;
                 var deptId = document.getElementById("deptId").value;
                 var line_id = document.getElementById("line_id").value;
-                if (werks == "" || gytype == "" || deptId == "" || line_id == "") {
+                var zqxdm = document.getElementById("zqxdm").value;
+                var zissuetxt = document.getElementById("zissuetxt").value;
+                if (werks == "" || gytype == "" || deptId == "" || line_id == "" || zqxdm == "" || zissuetxt == "") {
                     kendo.ui.showErrorDialog({
                         title: '错误',
                         message: "请完整输入必输查询条件后进行查询！"
@@ -225,7 +309,9 @@
                 }
             }
         });
+
         kendo.bind($('#page-content'), viewModel);
+
 
         function test() {
             var apply = $("#test");
@@ -246,7 +332,8 @@
 
         $(document).ready(function () {
             var BaseUrl = _basePath;
-            document.getElementById("werks").value = '1001';
+
+            //viewModel.model.set("werks",werks);
             dataSource = new kendo.data.DataSource({
                 transport: {
                     read: {

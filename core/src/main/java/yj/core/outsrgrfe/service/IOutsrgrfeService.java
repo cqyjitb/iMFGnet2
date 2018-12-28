@@ -38,4 +38,6 @@ public interface IOutsrgrfeService extends IBaseService<Outsrgrfe>, ProxySelf<IO
      * @return
      */
     List<Outsrgrfe> selectForSortl(String lifnr);
+
+    List<Outsrgrfe> selectAllLifnr();
 }

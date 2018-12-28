@@ -57,4 +57,8 @@
             LIFNR = #{lifnr}
         </where>
     </select>
+
+    <select id="selectAllLifnr" resultMap="BaseResultMap">
+        select DISTINCT lifnr,sortl from wip_outsrgrfe
+    </select>
 </mapper>

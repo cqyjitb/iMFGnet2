@@ -214,9 +214,11 @@ public class InOutRecordController extends BaseController {
     public ResponseData selectforQcaudit(HttpServletRequest request,@RequestParam(defaultValue = DEFAULT_PAGE) int page,
                                          @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize){
         ResponseData rs = new ResponseData();
+        //String werks = request.getParameter("werks");
         String werks = request.getParameter("werks") == null?"":request.getParameter("werks");
         String matnr = request.getParameter("matnr") == null ?"":request.getParameter("matnr");
-        String gytype = request.getParameter("qytype") == null?"":request.getParameter("qytype");
+        String matnr2 = request.getParameter("matnr2") == null ?"":request.getParameter("matnr2");
+        String gytype = request.getParameter("gytype") == null?"":request.getParameter("gytype");
         String deptId = request.getParameter("deptId") == null?"":request.getParameter("deptId");
         String line_id = request.getParameter("line_id") == null?"":request.getParameter("line_id");
         String gstrpfrom = request.getParameter("gstrpfrom");
@@ -226,15 +228,27 @@ public class InOutRecordController extends BaseController {
         }else{
             gstrpfrom = "";
         }
-
         if (gstrpto != null){
             gstrpto = gstrpto.substring(0,10);
         }else{
             gstrpto = "";
         }
 
+        if (gytype.equals("1")){
+            if (matnr.equals("") && matnr2.equals("")){
+                rs.setSuccess(false);
+                rs.setMessage("条件产品物料号，毛坯物料号必须录入其中一项！");
+                return rs;
+            }else{
+
+            }
+
+        }else if (gytype.equals("2")){
 
 
+        }else if (gytype.equals("3")){
+
+        }
         return rs;
     }
 }

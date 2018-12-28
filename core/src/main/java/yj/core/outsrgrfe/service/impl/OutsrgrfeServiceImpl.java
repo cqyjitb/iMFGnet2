@@ -34,4 +34,9 @@ public class OutsrgrfeServiceImpl extends BaseServiceImpl<Outsrgrfe> implements 
     public List<Outsrgrfe> selectForSortl(String lifnr) {
         return outsrgrfeMapper.selectForSortl(lifnr);
     }
+
+    @Override
+    public List<Outsrgrfe> selectAllLifnr() {
+        return outsrgrfeMapper.selectAllLifnr();
+    }
 }
