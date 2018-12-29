@@ -40,6 +40,7 @@ import yj.core.wiptrasfer.dto.Trasfer;
 import yj.core.wiptrasfer.service.ITrasferService;
 import yj.core.xhcard.dto.Xhcard;
 import yj.core.xhcard.service.IXhcardService;
+import yj.core.zwipq.service.IZwipqService;
 
 @Controller
 public class CardhController
@@ -66,6 +67,8 @@ public class CardhController
     private IAreaService areaService;
     @Autowired
     private ITrasferService trasferService;
+    @Autowired
+    private IZwipqService zwipqService;
 
 
     @RequestMapping({"/sap/cardh/query"})
@@ -619,10 +622,18 @@ public class CardhController
         List<Cardhst> listcardhst = new ArrayList<>();
         if (dto.size() > 0) {
             for (int i = 0; i < dto.size(); i++) {
+
                 Cardhst cardhst = new Cardhst();
+                String auart = dto.get(i).getAuart().substring(0, 1);
+                if (auart.equals("Q")){
+                    int m = zwipqService.selectByJjzpgdbar(dto.get(i).getZpgdbar());
+                    if (m > 0){
+                        continue;//该机加流转卡不能删除
+                    }
+                }
                 cardhst.setZpgdbar(dto.get(i).getZpgdbar());
                 listcardhst.add(cardhst);
-                String auart = dto.get(i).getAuart().substring(0, 1);
+
                 if (auart.equals("Y")) {
                     Xhcard xhcard = new Xhcard();
                     xhcard.setWerks(dto.get(i).getWerks());

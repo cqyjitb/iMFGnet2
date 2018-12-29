@@ -436,4 +436,12 @@
             and ( ZOFFL = #{zoffl} OR ZZXKL = 1 OR ZQJKL = 1 OR STATUS = 1 OR ZREMADE = 1 )
         </where>
     </select>
+
+    <select id="selectByJjzpgdbar" parameterType="java.lang.String">
+        select count(*) from zwipq
+        <where>
+            ZPGDBAR = #{zpgdbar}
+            or  ZPGDBAR1 = #{zpgdbar}
+        </where>
+    </select>
 </mapper>

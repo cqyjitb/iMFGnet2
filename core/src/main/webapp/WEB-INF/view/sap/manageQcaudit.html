@@ -178,8 +178,8 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label">产品物料号</label>
                                         <div class="col-sm-8">
-                                            <input type="text" id="matnr" class="k-textbox"
-                                                   data-bind="value:model.matnr"
+                                            <input type="text" id="matnr2" class="k-textbox"
+                                                   data-bind="value:model.matnr2"
                                                    style="width: 100%">
                                         </div>
                                     </div>
@@ -189,7 +189,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label">毛坯物料号</label>
                                         <div class="col-sm-8">
-                                            <input type="text" id="matnr2" class="k-textbox"
+                                            <input type="text" id="matnr" class="k-textbox"
                                                    data-bind="value:model.matnr"
                                                    style="width: 100%">
                                         </div>
@@ -381,7 +381,7 @@
                 navigatable: false,
                 selectable: 'rowbox，multiple',
                 pageable: {
-                    pageSizes: [20, 50, 100, 500, 1000, 2000, 5000, "all"],
+                    pageSizes: ["all"],
                     refresh: true,
                     buttonCount: 10
                 },

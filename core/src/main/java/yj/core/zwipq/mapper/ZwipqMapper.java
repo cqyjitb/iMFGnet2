@@ -125,4 +125,11 @@ public interface ZwipqMapper extends Mapper<Zwipq> {
      * @return
      */
     int selectLineIdMatnr2(@Param("lineId") String lineId,@Param("matnr2") String matnr2);
+
+    /**
+     *  根据机加流转卡查询 在制队列记录数量 917110140
+     * @param zpgdbar
+     * @return
+     */
+    int selectByJjzpgdbar(String zpgdbar);
 }

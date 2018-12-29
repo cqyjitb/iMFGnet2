@@ -48,11 +48,10 @@ public interface IInOutRecordService extends IBaseService<InOutRecord>, ProxySel
      * @param line_id
      * @param gstrpfrom
      * @param gstrpto
-     * @param page
-     * @param pagesize
      * @return
      */
-    List<itemPageData> selectforQcaudit1(String werks,String matnr,String deptId,String line_id,String gstrpfrom,String gstrpto,int page,int pagesize);
+    List<InOutRecord> selectforQcaudit1(String werks,String line_id,String matnr,String matnr2,String deptId,String gstrpfrom,String gstrpto,
+    String zqxdm,String zissuetxt,String zbanz);
 
     /**
      *  不合格品审理单2 产品所处工艺状态=未加工线边库毛坯 917110140
@@ -66,7 +65,7 @@ public interface IInOutRecordService extends IBaseService<InOutRecord>, ProxySel
      * @param pagesize
      * @return
      */
-    List<itemPageData> selectforQcaudit2(String werks,String matnr,String deptId,String line_id,String gstrpfrom,String gstrpto,int page,int pagesize);
+    List<InOutRecord> selectforQcaudit2(String werks,String matnr,String deptId,String line_id,String gstrpfrom,String gstrpto,int page,int pagesize);
 
     /**
      *  不合格品审理单2 产品所处工艺状态=已入库成品 917110140
@@ -80,5 +79,5 @@ public interface IInOutRecordService extends IBaseService<InOutRecord>, ProxySel
      * @param pagesize
      * @return
      */
-    List<itemPageData> selectforQcaudit3(String werks,String matnr,String deptId,String line_id,String gstrpfrom,String gstrpto,int page,int pagesize);
+    List<InOutRecord> selectforQcaudit3(String werks,String matnr,String deptId,String line_id,String gstrpfrom,String gstrpto,int page,int pagesize);
 }

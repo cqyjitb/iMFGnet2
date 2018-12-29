@@ -44,4 +44,11 @@ public interface IZwipqService extends IBaseService<Zwipq>, ProxySelf<IZwipqServ
      * @return
      */
     List<Zwipq> selectByLineIdAndZxhbarAndZOFFL(String line_id,String zxhbar,String zoffl);
+
+    /**
+     *  根据机加流转卡查询 在制队列记录数量 917110140
+     * @param zpgdbar
+     * @return
+     */
+    int selectByJjzpgdbar(String zpgdbar);
 }

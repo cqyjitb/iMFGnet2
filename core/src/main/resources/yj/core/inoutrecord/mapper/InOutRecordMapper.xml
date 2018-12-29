@@ -52,6 +52,50 @@
         <result column="NAME" property="name" jdbcType="VARCHAR"/>
         <result column="MAKTX" property="maktx" jdbcType="VARCHAR"/>
     </resultMap>
+    <resultMap id="BaseResultMap3" type="yj.core.inoutrecord.dto.InOutRecord">
+        <result column="ZQJJLH" property="zqjjlh" jdbcType="VARCHAR"/>
+        <result column="ZWIPQID" property="zwipqid" jdbcType="VARCHAR"/>
+        <result column="LINE_ID" property="lineId" jdbcType="VARCHAR"/>
+        <result column="ARBPR" property="arbpr" jdbcType="VARCHAR"/>
+        <result column="ZBANZ" property="zbanz" jdbcType="VARCHAR"/>
+        <result column="ZBANC" property="zbanc" jdbcType="VARCHAR"/>
+        <result column="ZPGDBAR" property="zpgdbar" jdbcType="VARCHAR"/>
+        <result column="VORNR" property="vornr" jdbcType="VARCHAR"/>
+        <result column="ZXHBAR" property="zxhbar" jdbcType="VARCHAR"/>
+        <result column="ZPGDBAR2" property="zpgdbar2" jdbcType="VARCHAR"/>
+        <result column="MATNR" property="matnr" jdbcType="VARCHAR"/>
+        <result column="MATNR2" property="matnr2" jdbcType="VARCHAR"/>
+        <result column="ZGJBAR" property="zgjbar" jdbcType="VARCHAR"/>
+        <result column="ZOUTNUM" property="zoutnum" jdbcType="DECIMAL"/>
+        <result column="REFLAG" property="reflag" jdbcType="DECIMAL"/>
+        <result column="GMEIN" property="gmein" jdbcType="VARCHAR"/>
+        <result column="CHARG" property="charg" jdbcType="VARCHAR"/>
+        <result column="ZREMADE" property="zremade" jdbcType="DECIMAL"/>
+        <result column="DIECD" property="diecd" jdbcType="VARCHAR"/>
+        <result column="SFFLG" property="sfflg" jdbcType="VARCHAR"/>
+        <result column="ZOTYPE" property="zotype" jdbcType="VARCHAR"/>
+        <result column="ZQXDM" property="zqxdm" jdbcType="VARCHAR"/>
+        <result column="ZISSUETXT" property="zissuetxt" jdbcType="VARCHAR"/>
+        <result column="ZBPJC" property="zbpjc" jdbcType="VARCHAR"/>
+        <result column="ZJTGX" property="zjtgx" jdbcType="VARCHAR"/>
+        <result column="ZOPLO" property="zoplo" jdbcType="VARCHAR"/>
+        <result column="OUTDAT" property="outdat" jdbcType="DATE"/>
+        <result column="OUTNAM" property="outnam" jdbcType="DECIMAL"/>
+        <result column="REDAT" property="redat" jdbcType="DATE"/>
+        <result column="RENAM" property="renam" jdbcType="DECIMAL"/>
+        <result column="CREATION_DATE" property="creationDate" jdbcType="VARCHAR"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL"/>
+        <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="VARCHAR"/>
+        <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL"/>
+        <result column="KUNNR" property="kunnr" jdbcType="VARCHAR"/>
+        <result column="SORTL" property="sortl" jdbcType="VARCHAR"/>
+        <result column="ATTR1" property="kunnr" jdbcType="VARCHAR"/>
+        <result column="MAKTX" property="sortl" jdbcType="VARCHAR"/>
+        <result column="MAKTX2" property="kunnr" jdbcType="VARCHAR"/>
+        <result column="DEPT_ID" property="deptId" jdbcType="VARCHAR"/>
+        <result column="GSTRPFROM" property="gstrpfrom" jdbcType="VARCHAR"/>
+        <result column="GSTRPTO" property="gstrpto" jdbcType="VARCHAR"/>
+    </resultMap>
 
     <select id="selectDftdtl" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(*) from wip_in_out_record
@@ -246,7 +290,52 @@
         </where>
     </select>
 
-    <select id="selectforQcaudit1" parameterType="java.lang.String" resultMap="BaseResultMap2">
-
+    <select id="selectforQcaudit1" parameterType="java.lang.String" resultMap="BaseResultMap3">
+        select
+        c.WERKS,
+        i.ZQJJLH,
+        i.ZWIPQID,
+        i.LINE_ID,
+        i.matnr,
+        m.MAKTX,
+        i.matnr2,
+        m2.MAKTX as MAKTX2,
+        i.ZGJBAR,
+        i.ZXHBAR,
+        i.SFFLG,
+        i.CHARG,
+        i.DIECD,
+        i.ZOTYPE,
+        c.ATTR1,
+        i.ZBANZ,
+        i.ZQXDM,
+        i.ZISSUETXT,
+        i.ZOUTNUM
+        FROM wip_in_out_record i
+        LEFT JOIN sap_cardh c on i.ZPGDBAR = c.ZPGDBAR
+        LEFT JOIN sap_marc m on i.MATNR = m.matnr
+        LEFT JOIN SAP_marc m2 on i.MATNR2 = m2.matnr
+        <where>
+            i.ZPGDBAR = c.ZPGDBAR
+            and REFLAG in ('0','3')
+            and i.LINE_ID = #{line_id}
+            and c.WERKS = #{werks}
+            and i.ZBANZ = #{zbanz}
+            AND i.ZQXDM = #{zqxdm}
+            and i.ZISSUETXT = #{zissuetxt}
+            <if test="matnr != null">
+                and i.MATNR = #{matnr}
+            </if>
+            <if test="matnr2 != null">
+                and i.MATNR2 = #{matnr2}
+            </if><if test="gstrpfrom">
+                and c.ATTR1 >= #{gstrpfrom}
+            </if>
+            <if test="gstrpto">
+                and #{gstrpto} >= c.ATTR1
+            </if>
+        </where>
+            order BY c.attr1,i.ZBANZ,i.ZQXDM,i.ZISSUETXT;
     </select>
+
 </mapper>

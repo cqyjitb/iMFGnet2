@@ -146,6 +146,59 @@ public class InOutRecord extends BaseDTO {
     @Transient
     private String name1;
 
+    @Transient
+    private String maktx2;
+
+    @Transient
+    private String attr1;
+
+    @Transient
+    private String sortl;
+    @Transient
+    private String gstrpfrom;
+    @Transient
+    private String gstrpto;
+
+    public String getGstrpfrom() {
+        return gstrpfrom;
+    }
+
+    public void setGstrpfrom(String gstrpfrom) {
+        this.gstrpfrom = gstrpfrom;
+    }
+
+    public String getGstrpto() {
+        return gstrpto;
+    }
+
+    public void setGstrpto(String gstrpto) {
+        this.gstrpto = gstrpto;
+    }
+
+    public String getSortl() {
+        return sortl;
+    }
+
+    public void setSortl(String sortl) {
+        this.sortl = sortl;
+    }
+
+    public String getMaktx2() {
+        return maktx2;
+    }
+
+    public void setMaktx2(String maktx2) {
+        this.maktx2 = maktx2;
+    }
+
+    public String getAttr1() {
+        return attr1;
+    }
+
+    public void setAttr1(String attr1) {
+        this.attr1 = attr1;
+    }
+
     public Integer getZremade() {
         return zremade;
     }

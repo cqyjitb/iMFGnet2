@@ -78,11 +78,18 @@ public interface InOutRecordMapper extends Mapper<InOutRecord>{
          * @param line_id
          * @param gstrpfrom
          * @param gstrpto
-         * @param page
-         * @param pagesize
          * @return
          */
-        List<itemPageData> selectforQcaudit1(String werks, String matnr, String deptId, String line_id, String gstrpfrom, String gstrpto, int page, int pagesize);
+        List<InOutRecord> selectforQcaudit1(@Param("werks") String werks,
+                                             @Param("line_id")String line_id,
+                                             @Param("matnr") String matnr,
+                                             @Param("matnr2") String matnr2,
+                                             @Param("depId") String deptId,
+                                             @Param("gstrpfrom") String gstrpfrom,
+                                             @Param("gstrpto") String gstrpto,
+                                             @Param("zqxdm") String zqxdm,
+                                             @Param("zissuetxt") String zissuetxt,
+                                             @Param("zbanz") String zbanz);
 
         /**
          *  不合格品审理单2 产品所处工艺状态=未加工线边库毛坯 917110140
@@ -96,7 +103,7 @@ public interface InOutRecordMapper extends Mapper<InOutRecord>{
          * @param pagesize
          * @return
          */
-        List<itemPageData> selectforQcaudit2(String werks,String matnr,String deptId,String line_id,String gstrpfrom,String gstrpto,int page,int pagesize);
+        List<InOutRecord> selectforQcaudit2(String werks,String matnr,String deptId,String line_id,String gstrpfrom,String gstrpto,int page,int pagesize);
 
         /**
          *  不合格品审理单2 产品所处工艺状态=已入库成品 917110140
@@ -110,6 +117,6 @@ public interface InOutRecordMapper extends Mapper<InOutRecord>{
          * @param pagesize
          * @return
          */
-        List<itemPageData> selectforQcaudit3(String werks,String matnr,String deptId,String line_id,String gstrpfrom,String gstrpto,int page,int pagesize);
+        List<InOutRecord> selectforQcaudit3(String werks,String matnr,String deptId,String line_id,String gstrpfrom,String gstrpto,int page,int pagesize);
 
 }

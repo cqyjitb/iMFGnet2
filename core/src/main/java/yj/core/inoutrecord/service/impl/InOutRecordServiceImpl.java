@@ -168,17 +168,17 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
     }
 
     @Override
-    public List<itemPageData> selectforQcaudit1(String werks, String matnr, String deptId, String line_id, String gstrpfrom, String gstrpto, int page, int pagesize) {
+    public List<InOutRecord> selectforQcaudit1(String werks, String line_id, String matnr, String matnr2, String deptId, String gstrpfrom, String gstrpto, String zqxdm, String zissuetxt, String zbanz) {
+        return inOutRecordMapper.selectforQcaudit1(werks,line_id,matnr,matnr2,deptId,gstrpfrom,gstrpto,zqxdm,zissuetxt,zbanz);
+    }
+
+    @Override
+    public List<InOutRecord> selectforQcaudit2(String werks, String matnr, String deptId, String line_id, String gstrpfrom, String gstrpto, int page, int pagesize) {
         return null;
     }
 
     @Override
-    public List<itemPageData> selectforQcaudit2(String werks, String matnr, String deptId, String line_id, String gstrpfrom, String gstrpto, int page, int pagesize) {
-        return null;
-    }
-
-    @Override
-    public List<itemPageData> selectforQcaudit3(String werks, String matnr, String deptId, String line_id, String gstrpfrom, String gstrpto, int page, int pagesize) {
+    public List<InOutRecord> selectforQcaudit3(String werks, String matnr, String deptId, String line_id, String gstrpfrom, String gstrpto, int page, int pagesize) {
         return null;
     }
 }

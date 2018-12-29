@@ -215,33 +215,49 @@ public class InOutRecordController extends BaseController {
                                          @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize){
         ResponseData rs = new ResponseData();
         //String werks = request.getParameter("werks");
-        String werks = request.getParameter("werks") == null?"":request.getParameter("werks");
-        String matnr = request.getParameter("matnr") == null ?"":request.getParameter("matnr");
-        String matnr2 = request.getParameter("matnr2") == null ?"":request.getParameter("matnr2");
-        String gytype = request.getParameter("gytype") == null?"":request.getParameter("gytype");
-        String deptId = request.getParameter("deptId") == null?"":request.getParameter("deptId");
-        String line_id = request.getParameter("line_id") == null?"":request.getParameter("line_id");
+        String werks = request.getParameter("werks");
+        String matnr = request.getParameter("matnr");
+        String matnr2 = request.getParameter("matnr2");
+        String gytype = request.getParameter("gytype");
+        String deptId = request.getParameter("deptId");
+        String line_id = request.getParameter("line_id");
+        String zqxdm = request.getParameter("zqxdm");
+        String zissuetxt = request.getParameter("zissuetxt");
+        String zbanz = request.getParameter("zbanz");
         String gstrpfrom = request.getParameter("gstrpfrom");
         String gstrpto = request.getParameter("gstrpto");
         if (gstrpfrom != null){
             gstrpfrom = gstrpfrom.substring(0,10);
-        }else{
-            gstrpfrom = "";
         }
+
         if (gstrpto != null){
             gstrpto = gstrpto.substring(0,10);
-        }else{
-            gstrpto = "";
         }
 
         if (gytype.equals("1")){
-            if (matnr.equals("") && matnr2.equals("")){
+            if (matnr == null && matnr2 == null){
                 rs.setSuccess(false);
                 rs.setMessage("条件产品物料号，毛坯物料号必须录入其中一项！");
                 return rs;
-            }else{
-
             }
+
+//            if (matnr.equals("") && matnr2.equals("")){
+//                rs.setSuccess(false);
+//                rs.setMessage("条件产品物料号，毛坯物料号必须录入其中一项！");
+//                return rs;
+//            }
+
+
+                  //根据条件查询
+                List<InOutRecord> list = service.selectforQcaudit1(werks,line_id,matnr,matnr2,deptId,gstrpfrom,gstrpto,zqxdm,zissuetxt,zbanz);
+                if (list.size() > 0){
+                    rs.setRows(list);
+                    rs.setSuccess(true);
+                }else{
+                    rs.setSuccess(false);
+                    rs.setMessage("没有符合条件的数据!");
+                }
+
 
         }else if (gytype.equals("2")){
 
