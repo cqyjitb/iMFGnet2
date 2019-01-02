@@ -12,11 +12,128 @@
             var grid = window.parent.$("#Grid").data("kendoGrid");
             selections2 = grid.selectedDataItems();
             if (selections2.length > 0) {
-//                根据选择的内容创建不合格品审理单2
-                console.log(".....");
+//                //判断输入项是否为空
+                var departbm = document.getElementById("unit_codedepart").value;
+                var departcj = document.getElementById("unit_codedepartcj").value;
+                var vornr1 = document.getElementById("vornr").value;
+                var userName = document.getElementById("userName").value;
+                var userNameQC = document.getElementById("userNameQC").value;
+                var message = "请录入：";
+                var l_flg = "";
+                    if (departbm == ""){
+                        message = message + " 责任部门";
+                        l_flg = "X";
+                    }
+
+                    if (departcj == ""){
+                        message = message + " 责任车间/产线";
+                        l_flg = "X"
+                    }
+
+                    if (vornr == ""){
+                        message = message + " 责任工序/机台";
+                        l_flg = "X"
+                    }
+
+                    if (userName == ""){
+                        message = message + "责任人";
+                        l_flg = "X"
+                    }
+
+                    if (userNameQC == ""){
+                        message = message + "产品质量工程师";
+                        l_flg = "X"
+                    }
+
+                    if (l_flg == "X"){
+                        kendo.ui.showErrorDialog({
+                            title: '错误',
+                            message: message
+                        });
+                    }else{
+                        //把页面数据传输到后台 创建不合格品审理单2
+                        var dataarray = new Array();
+                        for (var i=0;i<selections2.length;i++){
+                            var viewModel = kendo.observable({
+                                model:{
+                                    werks:selections2[i].werks,
+                                    zqjjlh:selections2[i].zqjjlh,
+                                    zwipqid:selections2[i].zwipqid,
+                                    lineId:selections2[i].lineId,
+                                    arbpr:selections2[i].arbpr,
+                                    zbanz:selections2[i].zbanz,
+                                    zbanc:selections2[i].zbanc,
+                                    zpgdbar:selections2[i].zpgdbar,
+                                    vornr:selections2[i].vornr,
+                                    zxhbar:selections2[i].zxhbar,
+                                    zpgdbar2:selections2[i].zpgdbar2,
+                                    matnr:selections2[i].matnr,
+                                    matnr2:selections2[i].matnr2,
+                                    zgjbar:selections2[i].zgjbar,
+                                    zoutnum:selections2[i].zoutnum,
+                                    reflag:selections2[i].reflag,
+                                    gmein:selections2[i].gmein,
+                                    charg:selections2[i].charg,
+                                    zremade:selections2[i].zremade,
+                                    diecd:selections2[i].diecd,
+                                    sfflg:selections2[i].sfflg,
+                                    zotype:selections2[i].zotype,
+                                    zqxdm:selections2[i].zqxdm,
+                                    zbpjc:selections2[i].zbpjc,
+                                    zjtgx:selections2[i].zjtgx,
+                                    zoplo:selections2[i].zoplo,
+                                    outdat:selections2[i].outdat,
+                                    outnam:selections2[i].outnam,
+                                    redat:selections2[i].redat,
+                                    renam:selections2[i].renam,
+                                    kunnr:selections2[i].kunnr,
+                                    sortl:selections2[i].sortl,
+                                    attr1:selections2[i].attr1,
+                                    maktx:selections2[i].maktx,
+                                    maktx2:selections2[i].maktx2,
+                                    deptId:selections2[i].deptId,
+                                    gstrpfrom:selections2[i].gstrpfrom,
+                                    desmianlinetxt:selections2[i].desmianlinetxt,
+                                    deslinetxt:selections2[i].deslinetxt,
+                                    ztext:selections2[i].ztext,
+                                    departbm:departbm,
+                                    departcj:departcj,
+                                    vornr1:vornr1,
+                                    userName:userName,
+                                    userNameQC:userNameQC
+                                }
+                            });
+                            dataarray[i] = viewModel.model.toJSON();
+
+                        }
+                        var data = JSON.stringify(dataarray);
+                        $.ajax({
+                            url: "${base.contextPath}/wip/qcaudithead/createQcaudit1",
+                            type: "POST",
+                            data:data,
+                            async: false,
+                            contentType: "application/json; charset=utf-8",
+                            success: function (res) {
+                                if (res.success == true){
+
+                                }
+                            },
+                            error:function (res) {
+                                kendo.ui.showErrorDialog({
+                                    title: '错误',
+                                    message: "XXXXXXXX！"
+                                });
+                            }
+                        });
+
+                    }
+
+                }else{
+
+                }
             }
-            window.parent.$("#newWin").data("kendoWindow").close();
-        }
+
+
     });
 </script>
 <div id="page-content" style="width:870px;margin-top: 5px;">
@@ -57,14 +174,14 @@
                         <div class="col-sm-6">
                             <label class="col-sm-3 control-label">责任工序/工位/机台</label>
                             <div class="col-sm-9">
-                                <input type="text" required style="width:100%" name="vornr" data-bind="value:model.vornr" class="k-textbox">
+                                <input type="text" required style="width:100%" id ="vornr" data-bind="value:model.vornr" class="k-textbox">
                             </div>
                         </div>
                         <div class="col-sm-6">
                             <label class="col-sm-3 control-label">责任人</label>
                             <div class="col-sm-9">
                                 <div class="col-sm-9">
-                                    <input type="text" required style="width:100%" name="userName" data-bind="value:model.userName" class="k-textbox">
+                                    <input type="text" required style="width:100%" id ="userName" data-bind="value:model.userName" class="k-textbox">
                                 </div>
                             </div>
                         </div>
@@ -74,7 +191,7 @@
                         <div class="col-sm-6">
                             <label class="col-sm-3 control-label">产品质量工程师</label>
                             <div class="col-sm-9">
-                                <input type="text" required style="width:100%" name="userNameQC" data-bind="value:model.userNameQC" class="k-textbox">
+                                <input type="text" required style="width:100%" id ="userNameQC" data-bind="value:model.userNameQC" class="k-textbox">
                             </div>
                         </div>
                     </div>

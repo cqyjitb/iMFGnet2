@@ -22,4 +22,5 @@ public interface IQcparamLinesService extends IBaseService<QcparamLines>, ProxyS
      * @return
      */
     QcparamLines selectForYz(Long line_id,String werks);
+
 }

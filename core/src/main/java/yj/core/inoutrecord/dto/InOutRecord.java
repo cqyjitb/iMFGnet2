@@ -114,22 +114,33 @@ public class InOutRecord extends BaseDTO {
     @Transient
     private String maktx;
 
+    @Transient
+    private String rcode;
+    @Transient
+    private String kurztext;
+
+    @Transient
     private int zsxnum;
 
     private int num;
     @Transient
-    private String descriptions;
+    private String deslinetxt;
     @Transient
-    private String deptId;
+    private String deptId;//车间ID
     @Transient
-    private String plineId;
+    private String depttxt;//车间描述
+    @Transient
+    private String pline_id;//主产线ID
+    @Transient
+    private String desmianlinetxt; //主产线描述
+
 
     public String getPlineId() {
-        return plineId;
+        return pline_id;
     }
 
     public void setPlineId(String plineId) {
-        this.plineId = plineId;
+        this.pline_id = plineId;
     }
 
     public String getDeptId() {
@@ -158,6 +169,61 @@ public class InOutRecord extends BaseDTO {
     private String gstrpfrom;
     @Transient
     private String gstrpto;
+    @Transient
+    private String ztext;
+
+    @Transient
+    private String departbm;
+
+    @Transient
+    private String departcj;
+
+    @Transient
+    private String vornr1;
+    @Transient
+    private String userName;
+    @Transient
+    private String userNameQC;
+
+    public String getDepartbm() {
+        return departbm;
+    }
+
+    public void setDepartbm(String departbm) {
+        this.departbm = departbm;
+    }
+
+    public String getDepartcj() {
+        return departcj;
+    }
+
+    public void setDepartcj(String departcj) {
+        this.departcj = departcj;
+    }
+
+    public String getVornr1() {
+        return vornr1;
+    }
+
+    public void setVornr1(String vornr1) {
+        this.vornr1 = vornr1;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserNameQC() {
+        return userNameQC;
+    }
+
+    public void setUserNameQC(String userNameQC) {
+        this.userNameQC = userNameQC;
+    }
 
     public String getGstrpfrom() {
         return gstrpfrom;
@@ -527,14 +593,6 @@ public class InOutRecord extends BaseDTO {
         this.num = num;
     }
 
-    public String getDescriptions() {
-        return descriptions;
-    }
-
-    public void setDescriptions(String descriptions) {
-        this.descriptions = descriptions;
-    }
-
     public String getKunnr() {
         return kunnr;
     }
@@ -549,5 +607,61 @@ public class InOutRecord extends BaseDTO {
 
     public void setName1(String name1) {
         this.name1 = name1;
+    }
+
+    public String getRcode() {
+        return rcode;
+    }
+
+    public void setRcode(String rcode) {
+        this.rcode = rcode;
+    }
+
+    public String getKurztext() {
+        return kurztext;
+    }
+
+    public void setKurztext(String kurztext) {
+        this.kurztext = kurztext;
+    }
+
+    public String getDeslinetxt() {
+        return deslinetxt;
+    }
+
+    public void setDeslinetxt(String deslinetxt) {
+        this.deslinetxt = deslinetxt;
+    }
+
+    public String getDepttxt() {
+        return depttxt;
+    }
+
+    public void setDepttxt(String depttxt) {
+        this.depttxt = depttxt;
+    }
+
+    public String getPline_id() {
+        return pline_id;
+    }
+
+    public void setPline_id(String pline_id) {
+        this.pline_id = pline_id;
+    }
+
+    public String getDesmianlinetxt() {
+        return desmianlinetxt;
+    }
+
+    public void setDesmianlinetxt(String desmianlinetxt) {
+        this.desmianlinetxt = desmianlinetxt;
+    }
+
+    public String getZtext() {
+        return ztext;
+    }
+
+    public void setZtext(String ztext) {
+        this.ztext = ztext;
     }
 }

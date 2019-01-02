@@ -89,12 +89,16 @@
         <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL"/>
         <result column="KUNNR" property="kunnr" jdbcType="VARCHAR"/>
         <result column="SORTL" property="sortl" jdbcType="VARCHAR"/>
-        <result column="ATTR1" property="kunnr" jdbcType="VARCHAR"/>
-        <result column="MAKTX" property="sortl" jdbcType="VARCHAR"/>
-        <result column="MAKTX2" property="kunnr" jdbcType="VARCHAR"/>
+        <result column="ATTR1" property="attr1" jdbcType="VARCHAR"/>
+        <result column="MAKTX" property="maktx" jdbcType="VARCHAR"/>
+        <result column="MAKTX2" property="maktx2" jdbcType="VARCHAR"/>
         <result column="DEPT_ID" property="deptId" jdbcType="VARCHAR"/>
         <result column="GSTRPFROM" property="gstrpfrom" jdbcType="VARCHAR"/>
         <result column="GSTRPTO" property="gstrpto" jdbcType="VARCHAR"/>
+        <result column="DESMINALINETXT" property="desmianlinetxt" jdbcType="VARCHAR"/>
+        <result column="DESLINETXT" property="deslinetxt" jdbcType="VARCHAR"/>
+        <result column="ZTEXT" property="ztext" jdbcType="VARCHAR"/>
+        <result column="OUTNAM" property="outnam" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="selectDftdtl" parameterType="java.lang.String" resultType="java.lang.Integer">
@@ -295,26 +299,52 @@
         c.WERKS,
         i.ZQJJLH,
         i.ZWIPQID,
+        l.DEPT_ID,
+        org.NAME as depttxt,
         i.LINE_ID,
+        l.DESCRIPTIONS as DESLINETXT,
+        l.PLINE_ID,
+        l1.DESCRIPTIONS as DESMINALINETXT,
         i.matnr,
-        m.MAKTX,
+        m.maktx,
         i.matnr2,
-        m2.MAKTX as MAKTX2,
+        m2.MAKTX as maktx2,
         i.ZGJBAR,
         i.ZXHBAR,
         i.SFFLG,
         i.CHARG,
         i.DIECD,
         i.ZOTYPE,
-        c.ATTR1,
-        i.ZBANZ,
+        qj.RCODE,
+        i.vornr,
         i.ZQXDM,
+        qp.KURZTEXT,
         i.ZISSUETXT,
-        i.ZOUTNUM
+        dtl.ZTEXT,
+        i.ZOUTNUM,
+        i.GMEIN,
+        i.ZBANZ,
+        i.ZBANC,
+        c.ATTR1,
+        i.zpgdbar2,
+        i.zpgdbar,
+        cfg.KUNNR,
+        k.name1 as SORTL,
+        i.ZOPLO,
+        i.OUTDAT,
+        i.OUTNAM
         FROM wip_in_out_record i
+        LEFT JOIN wip_lines l on l.line_id = i.line_id
         LEFT JOIN sap_cardh c on i.ZPGDBAR = c.ZPGDBAR
         LEFT JOIN sap_marc m on i.MATNR = m.matnr
         LEFT JOIN SAP_marc m2 on i.MATNR2 = m2.matnr
+        LEFT JOIN hr_org_unit_b org on org.UNIT_CODE = l.DEPT_ID
+        LEFT JOIN wip_lines l1 on l1.LINE_ID	= l.PLINE_ID
+        LEFT JOIN wip_qjcode qj on qj.id = i.ZOTYPE
+        LEFT JOIN sap_qpcd qp on qp.code = i.zqxdm
+        left JOIN sap_dftdtl dtl on ( dtl.matnr = i.matnr2 and dtl.TLEVELCODE = i.ZISSUETXT )
+        left join wip_products_cfg cfg on ( cfg.PMATNR = i.matnr2 and cfg.line_id = i.line_id )
+        left JOIN sap_cust k on k.kunnr = cfg.kunnr
         <where>
             i.ZPGDBAR = c.ZPGDBAR
             and REFLAG in ('0','3')

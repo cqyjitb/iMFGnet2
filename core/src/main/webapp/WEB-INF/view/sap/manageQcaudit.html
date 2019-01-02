@@ -352,8 +352,8 @@
                     }
                 },
                 batch: true,
-                serverPaging: true,
-                pageSize: 10,
+//                serverPaging: true,
+//                pageSize: 10,
                 schema: {
                     data: 'rows',
                     total: 'total',
@@ -380,11 +380,11 @@
                 scrollable: true,
                 navigatable: false,
                 selectable: 'rowbox，multiple',
-                pageable: {
-                    pageSizes: ["all"],
-                    refresh: true,
-                    buttonCount: 10
-                },
+//                pageable: {
+//                    pageSizes: ["all"],
+//                    refresh: true,
+//                    buttonCount: 10
+//                },
 
                 toolbar: [{
                     name: "createQcaudit",
@@ -393,7 +393,7 @@
 
                 columns: [
                     {
-                        field: "plant",
+                        field: "werks",
                         title: '工厂',
                         width: 70,
                         headerAttributes: {
@@ -404,9 +404,9 @@
                         }
                     },
                     {
-                        field: "deptTxt",
+                        field: "depttxt",
                         title: '机加车间',
-                        width: 120,
+                        width: 150,
                         headerAttributes: {
                             style: "text-align: center;"
                         },
@@ -414,9 +414,9 @@
                             style: "text-align: center;"
                         }
                     }, {
-                        field: "lineTxt",
-                        title: '流转卡号',
-                        width: 150,
+                        field: "deslinetxt",
+                        title: '生产线',
+                        width: 200,
                         headerAttributes: {
                             style: "text-align: center;"
                         },
@@ -425,9 +425,9 @@
                         }
                     },
                     {
-                        field: "mainLineTxt",
-                        title: '工序',
-                        width: 70,
+                        field: "desmianlinetxt",
+                        title: '主产线',
+                        width: 300,
                         headerAttributes: {
                             style: "text-align: center;"
                         },
@@ -447,9 +447,9 @@
                         }
                     },
                     {
-                        field: "matkx2",
+                        field: "maktx2",
                         title: '成品物料描述',
-                        width: 95,
+                        width: 300,
                         headerAttributes: {
                             style: "text-align: center;"
                         },
@@ -460,27 +460,16 @@
                     {
                         field: "matnr",
                         title: '毛坯物料',
-                        width: 350,
+                        width: 100,
                         headerAttributes: {
                             style: "text-align: center;"
                         }
 
                     },
                     {
-                        field: "matkx",
+                        field: "maktx",
                         title: '毛坯物料描述',
-                        width: 100,
-                        headerAttributes: {
-                            style: "text-align: center;"
-                        },
-                        attributes: {
-                            style: "text-align: center;"
-                        }
-                    },
-                    {
-                        field: "fevorTxt",
-                        title: '生产管理员名称',
-                        width: 150,
+                        width: 300,
                         headerAttributes: {
                             style: "text-align: center;"
                         },
@@ -504,8 +493,7 @@
                     {
                         field: "zxhbar",
                         title: '毛坯箱号',
-                        width: 100,
-                        format: "{0:yyyy-MM-dd}",
+                        width: 200,
                         headerAttributes: {
                             style: "text-align: center;"
                         },
@@ -535,6 +523,17 @@
                             style: "text-align: center;"
                         }
                     },
+                    {
+                        field: "charg",
+                        title: '压铸批次',
+                        width: 120,
+                        headerAttributes: {
+                            style: "text-align: center;"
+                        },
+                        attributes: {
+                            style: "text-align: center;"
+                        }
+                    },
 
                     {
                         field: " diecd",
@@ -550,7 +549,7 @@
 
 
                     {
-                        field: "zotype",
+                        field: "rcode",
                         title: '取件原因',
                         width: 120,
                         headerAttributes: {
@@ -584,7 +583,7 @@
                         }
                     },
                     {
-                        field: "",
+                        field: "kurztext",
                         title: '缺陷描述',
                         width: 100,
                         headerAttributes: {
@@ -595,7 +594,7 @@
                         }
                     },
                     {
-                        field: "",
+                        field: "zissuetxt",
                         title: '缺陷小类',
                         width: 100,
                         headerAttributes: {
@@ -606,7 +605,7 @@
                         }
                     },
                     {
-                        field: "",
+                        field: "ztext",
                         title: '缺陷小类描述',
                         width: 100,
                         headerAttributes: {
@@ -663,7 +662,7 @@
                     },
                     {
                         field: "zbanc",
-                        title: '班标',
+                        title: '机加班次',
                         width: 100,
                         headerAttributes: {
                             style: "text-align: center;"
@@ -676,7 +675,6 @@
                         field: "",
                         title: '机加批次',
                         width: 150,
-                        format: "{0: yyyy-MM-dd HH:mm:ss}",
                         headerAttributes: {
                             style: "text-align: center;"
                         },
@@ -687,7 +685,7 @@
                     {
                         field: "zpgdbar2",
                         title: '压铸流转卡',
-                        width: 100,
+                        width: 120,
                         headerAttributes: {
                             style: "text-align: center;"
                         },
@@ -699,7 +697,7 @@
                     {
                         field: "zpgdbar",
                         title: '机加流转卡',
-                        width: 100,
+                        width: 120,
                         headerAttributes: {
                             style: "text-align: center;"
                         },
@@ -711,7 +709,6 @@
                         field: "sortl",
                         title: '客户',
                         width: 120,
-                        width: 350,
                         headerAttributes: {
                             style: "text-align: center;"
                         }
@@ -720,7 +717,6 @@
                         field: "zplo",
                         title: '发现工位',
                         width: 120,
-                        width: 350,
                         headerAttributes: {
                             style: "text-align: center;"
                         }
@@ -728,7 +724,6 @@
                         field: "stype",
                         title: '返工标识',
                         width: 120,
-                        width: 350,
                         headerAttributes: {
                             style: "text-align: center;"
                         }
@@ -736,7 +731,6 @@
                         field: "outnam",
                         title: '取件账号',
                         width: 120,
-                        width: 350,
                         headerAttributes: {
                             style: "text-align: center;"
                         }
@@ -744,56 +738,84 @@
                         field: "outdat",
                         title: '取件日期',
                         width: 120,
-                        width: 350,
-                        headerAttributes: {
-                            style: "text-align: center;"
-                        }
-                    }, {
-                        field: "outtim",
-                        title: '取件时间',
-                        width: 120,
-                        width: 350,
                         headerAttributes: {
                             style: "text-align: center;"
                         }
                     }
-
-
                 ],
                 editable: false
             });
-
-            var grid = $("#Grid").data("kendoGrid");
-            grid.bind("excelExport", function (e) {
-                e.workbook.fileName = "报工日志.xlsx";
-            });
-
-            function deleteData() {
-
-                Hap.deleteGridSelection({
-                    grid: $('#Grid')
-                });
-
-            }
 
             Hap.autoResizeGrid("#Grid");
 
 
             $('#createQcaudit').on('click', function () {
+
+                //判断选择的条目数 是否满足创建不合格品审理单2 的范围
                 var url = "dialogQcaudit.html";
-                var dialog = $("#newWin").kendoWindow({
-                    actions: ["Close"],
-                    width: 900,
-                    height: 600,
-                    title: '<@spring.message "hap.edit"/>',
-                    content: url,
-                    iframe: true,
-                    visible: false,
-                    modal: true
+                var grid = $("#Grid").data("kendoGrid"),
+                selections = grid.selectedDataItems();
+                if (selections.length > 0){
+                    var dataarray = new Array();
+                    var line_id = document.getElementById("line_id").value;
+                    var werks = document.getElementById("werks").value;
+                    var viewModel3 = kendo.observable({
+                        model: {
+                            line_id:line_id,
+                            werks:werks
+                        }
+                    });
+                    dataarray[0] = viewModel3.model.toJSON();
 
-                }).data("kendoWindow");
-                dialog.center().open();
+                    var data = JSON.stringify(dataarray);
+                        //根据产线ID,工厂 获取wip_qcparam_lines数据。
+                    $.ajax({
+                        url: "${base.contextPath}/wip/qcparam/lines/selectByLineId",
+                        type: "POST",
+                        data:data,
+                        async: false,
+                        contentType: "application/json; charset=utf-8",
+                        success: function (res) {
+                            var rows = res.rows;
+                            if (rows.length > 0) {
+                                  var first = rows[0].firstclassQty;
+                                  if (selections.length > first){
+                                      var dialog = $("#newWin").kendoWindow({
+                                          actions: ["Close"],
+                                          width: 900,
+                                          height: 600,
+                                          title: '<@spring.message "hap.edit"/>',
+                                          content: url,
+                                          iframe: true,
+                                          visible: false,
+                                          modal: true
 
+                                      }).data("kendoWindow");
+                                      dialog.center().open();
+                                  }else{
+                                      kendo.ui.showErrorDialog({
+                                          title: '错误',
+                                          message: "选中的取件记录数量不满足创建不合格品审理单2的条件！"
+                                      });
+                                  }
+                            }else{
+
+                            }
+                        },
+                        error:function (res) {
+                            kendo.ui.showErrorDialog({
+                                title: '错误',
+                                message: "未能获取到产线不合格品审理单2参数配置！"
+                            });
+                        }
+                    });
+
+                    }else{
+                    kendo.ui.showErrorDialog({
+                        title: '错误',
+                        message: "请选择需要处理的行！"
+                    });
+                }
             });
         });
     </script>

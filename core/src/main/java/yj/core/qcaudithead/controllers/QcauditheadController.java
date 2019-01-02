@@ -1,16 +1,16 @@
 package yj.core.qcaudithead.controllers;
 
+import oracle.jdbc.proxy.annotation.Post;
 import org.springframework.stereotype.Controller;
 import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.dto.ResponseData;
+import org.springframework.web.bind.annotation.*;
+import yj.core.inoutrecord.dto.InOutRecord;
 import yj.core.qcaudithead.dto.Qcaudithead;
 import yj.core.qcaudithead.service.IQcauditheadService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -41,5 +41,19 @@ import java.util.List;
     public ResponseData delete(HttpServletRequest request,@RequestBody List<Qcaudithead> dto){
         service.batchDelete(dto);
         return new ResponseData();
+    }
+        @RequestMapping(value = {"/wip/qcaudithead/createQcaudit1"},method = {RequestMethod.POST})
+        @ResponseBody
+        public ResponseData createQcaudit(HttpServletRequest request,@RequestBody List<InOutRecord> dto){
+        ResponseData rs = new ResponseData();
+        if (dto.size() > 0){
+            for (int i=0;i<dto.size();i++){
+                //根据数据 生成不合格品审理单表头 和行
+            }
+        }else{
+            rs.setMessage("");
+            rs.setSuccess(false);
+        }
+        return rs;
     }
     }
