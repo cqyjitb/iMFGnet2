@@ -76,8 +76,7 @@ public interface InOutRecordMapper extends Mapper<InOutRecord>{
          * @param matnr
          * @param deptId
          * @param line_id
-         * @param gstrpfrom
-         * @param gstrpto
+         * @param gstrp
          * @return
          */
         List<InOutRecord> selectforQcaudit1(@Param("werks") String werks,
@@ -85,8 +84,7 @@ public interface InOutRecordMapper extends Mapper<InOutRecord>{
                                              @Param("matnr") String matnr,
                                              @Param("matnr2") String matnr2,
                                              @Param("depId") String deptId,
-                                             @Param("gstrpfrom") String gstrpfrom,
-                                             @Param("gstrpto") String gstrpto,
+                                             @Param("gstrp") String gstrp,
                                              @Param("zqxdm") String zqxdm,
                                              @Param("zissuetxt") String zissuetxt,
                                              @Param("zbanz") String zbanz);

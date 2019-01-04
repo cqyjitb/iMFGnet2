@@ -7,6 +7,7 @@
         <result column="RECORDID" property="recordid" jdbcType="VARCHAR" />
         <result column="ITEM" property="item" jdbcType="VARCHAR" />
         <result column="ZQJJLH" property="zqjjlh" jdbcType="VARCHAR" />
+        <result column="RGHITEM" property="rghitem" jdbcType="VARCHAR"/>
         <result column="ZGJBAR" property="zgjbar" jdbcType="VARCHAR" />
         <result column="ZPGDBAR" property="zpgdbar" jdbcType="VARCHAR" />
         <result column="ZXHBAR" property="zxhbar" jdbcType="VARCHAR" />
@@ -27,7 +28,19 @@
         <result column="MENGE" property="menge" jdbcType="DECIMAL" />
         <result column="DFECT_QTY" property="dfectQty" jdbcType="DECIMAL" />
         <result column="GMEIN" property="gmein" jdbcType="VARCHAR" />
+        <result column="CREATION_DATE" property="creationDate" jdbcType="VARCHAR"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL"/>
+        <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="VARCHAR"/>
+        <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL"/>
     </resultMap>
+
+    <insert id="insertNewRow" parameterType="yj.core.qcauditlist.dto.Qcauditlist">
+        insert into wip_qcauditlist(WERKS,RECORDID,ITEM,ZQJJLH,ZGJBAR,ZPGDBAR,ZXHBAR,MATNR,CHARG,ZBANC,SHIFT,GSTRP,MATNR2,YCHARG,YSHIFT,
+        YZBANC,SFFLG,DIECD,YGSTRP,CODE,TLEVELCODE,MENGE,DFECT_QTY,GMEIN,CREATION_DATE,CREATED_BY)
+        VALUES (#{werks},#{recordid},#{item},#{zqjjlh},#{zgjbar},#{zpgdbar},#{zxhbar},#{matnr},#{charg},#{zbanc},#{shift},#{gstrp},
+        #{matnr2},#{ycharg},#{yshift},#{yzbanc},#{sfflg},#{diecd},#{ygstrp},#{code},#{tlevelcode},#{menge},#{dfectQty},
+        #{gmein},#{creationDate},#{createdBy});
+    </insert>
 
 
 </mapper>

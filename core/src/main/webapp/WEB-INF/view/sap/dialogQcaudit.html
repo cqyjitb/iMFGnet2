@@ -95,6 +95,7 @@
                                     gstrpfrom:selections2[i].gstrpfrom,
                                     desmianlinetxt:selections2[i].desmianlinetxt,
                                     deslinetxt:selections2[i].deslinetxt,
+                                    zissuetxt:selections2[i].zissuetxt,
                                     ztext:selections2[i].ztext,
                                     departbm:departbm,
                                     departcj:departcj,
@@ -115,7 +116,8 @@
                             contentType: "application/json; charset=utf-8",
                             success: function (res) {
                                 if (res.success == true){
-
+                                    grid.data('kendoGrid').dataSource.page(1);
+                                    window.parent.$("#newWin").data("kendoWindow").close();
                                 }
                             },
                             error:function (res) {

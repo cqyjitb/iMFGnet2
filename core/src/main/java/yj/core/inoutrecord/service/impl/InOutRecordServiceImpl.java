@@ -168,8 +168,8 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
     }
 
     @Override
-    public List<InOutRecord> selectforQcaudit1(String werks, String line_id, String matnr, String matnr2, String deptId, String gstrpfrom, String gstrpto, String zqxdm, String zissuetxt, String zbanz) {
-        return inOutRecordMapper.selectforQcaudit1(werks,line_id,matnr,matnr2,deptId,gstrpfrom,gstrpto,zqxdm,zissuetxt,zbanz);
+    public List<InOutRecord> selectforQcaudit1(String werks, String line_id, String matnr, String matnr2, String deptId, String gstrp,String zqxdm, String zissuetxt, String zbanz) {
+        return inOutRecordMapper.selectforQcaudit1(werks,line_id,matnr,matnr2,deptId,gstrp,zqxdm,zissuetxt,zbanz);
     }
 
     @Override

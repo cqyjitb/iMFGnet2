@@ -77,7 +77,7 @@ public class InOutRecord extends BaseDTO {
       private String zqxdm; //缺陷代码
 
      @NotEmpty
-      private String zissuetxt; //不良原因
+     private String zissuetxt; //不良原因
 
      @NotEmpty
       private String zbpjc; //客户简称
@@ -166,9 +166,7 @@ public class InOutRecord extends BaseDTO {
     @Transient
     private String sortl;
     @Transient
-    private String gstrpfrom;
-    @Transient
-    private String gstrpto;
+    private String gstrp;
     @Transient
     private String ztext;
 
@@ -225,20 +223,12 @@ public class InOutRecord extends BaseDTO {
         this.userNameQC = userNameQC;
     }
 
-    public String getGstrpfrom() {
-        return gstrpfrom;
+    public String getGstrp() {
+        return gstrp;
     }
 
-    public void setGstrpfrom(String gstrpfrom) {
-        this.gstrpfrom = gstrpfrom;
-    }
-
-    public String getGstrpto() {
-        return gstrpto;
-    }
-
-    public void setGstrpto(String gstrpto) {
-        this.gstrpto = gstrpto;
+    public void setGstrp(String gstrp) {
+        this.gstrp = gstrp;
     }
 
     public String getSortl() {

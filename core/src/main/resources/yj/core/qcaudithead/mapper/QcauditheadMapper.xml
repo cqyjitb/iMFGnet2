@@ -80,7 +80,37 @@
         <result column="RWK_QLFQTY" property="rwkQlfqty" jdbcType="DECIMAL" />
         <result column="RWK_SCRAPQTY" property="rwkScrapqty" jdbcType="DECIMAL" />
         <result column="CUSTOMER_CONFIRM" property="customerConfirm" jdbcType="VARCHAR" />
+        <result column="CREATION_DATE" property="creationDate" jdbcType="VARCHAR"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL"/>
+        <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="VARCHAR"/>
+        <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL"/>
     </resultMap>
 
+    <select id="selectMaxRecordId" parameterType="java.lang.String" resultType="java.lang.String">
 
+        select Max(RECORDID) FROM  wip_qcaudithead
+        <where>
+              WERKS = #{werks}
+            and GSTRP = #{gstrp}
+        </where>
+    </select>
+
+    <insert id="insertNewRow" parameterType="yj.core.qcaudithead.dto.Qcaudithead">
+        insert into wip_qcaudithead(WERKS,RECORDID,SOURCETYPE,DEPT_RESPONSIBLE,LINEID,LINE_DESC,SHIFT,KUNNR,KUNNR_DESC,
+        ZPGDBAR,MATNR,MAKTX,MATNR2,MAKTX2,CHARG,SFFLG,DIECD,GSTRP,VORNR,
+        RESPONSIBLE,DFECT_QTY,GMEIN,OA_PRESSCLS,OA_STATUS,DEFCT_TYPE,HANDLE_RESULTS1,HANDLE_RESULTS2,HANDLE_RESULTS3,SCRAP_QTY,
+        RWORK_QTY,CONSS_QTY,DFECT_TXT,REPORT_DEPT,REPORTOR,REPORT_DATE,AUDIT_TXT,QC_ENGER,AUDITOR1,AUDIT_HANDLE1,
+        AUDIT_DATE1,AUDITOR2,AUDIT_HANDLE2,AUDIT_DATE2,AUDITOR3,AUDIT_HANDLE3,AUDIT_DATE3,AUDITOR4,AUDIT_HANDLE4,AUDIT_DATE4,
+        AUDITOR5,AUDIT_HANDLE5,AUDIT_DATE5,AUDITOR6,AUDIT_HANDLE6,AUDIT_DATE6,AUDITOR7,AUDIT_HANDLE7,AUDIT_DATE7,AUDITOR8,
+        AUDIT_HANDLE8,AUDIT_DATE8,AUDITOR9,AUDIT_HANDLE9,AUDIT_DATE9,AUDITOR10,AUDIT_HANDLE10,AUDIT_DATE10,HANDLE_RESULTS,QM_NOTIFICATION,
+        QM_NOTNTYPE,QM_NOTNCRTDT,REWORK_ORDER,REWORK_ORDERCRTDT,RWK_QTY,RWK_QLFQTY,RWK_SCRAPQTY,CUSTOMER_CONFIRM,CREATION_DATE,CREATED_BY)
+        VALUES (#{werks},#{recordid},#{sourcetype},#{deptResponsible},#{lineid},#{lineDesc},#{shift},#{kunnr},#{kunnrDesc},#{zpgdbar},
+        #{matnr},#{maktx},#{matnr2},#{maktx2},#{charg},#{sfflg},#{diecd},#{gstrp},#{vornr},#{responsible},
+        #{dfectQty},#{gmein},#{oaPresscls},#{oaStatus},#{defctType},#{handleResults1},#{handleResults2},#{handleResults3},#{scrapQty},#{rworkQty},
+        #{conssQty},#{dfectTxt},#{reportDept},#{reportor},#{reportDate},#{auditTxt},#{qcEnger},#{auditor1},#{auditHandle1},#{auditDate1},
+        #{auditor2},#{auditHandle2},#{auditDate2},#{auditor3},#{auditHandle3},#{auditDate3},#{auditor4},#{auditHandle4},#{auditDate4},#{auditor5},
+        #{auditHandle5},#{auditDate5},#{auditor6},#{auditHandle6},#{auditDate6},#{auditor7},#{auditHandle7},#{auditDate7},#{auditor8},#{auditHandle8},
+        #{auditDate8},#{auditor9},#{auditHandle9},#{auditDate9},#{auditor10},#{auditHandle10},#{auditDate10},#{handleResults},#{qmNotification},#{qmNotntype},
+        #{qmNotncrtdt},#{reworkOrder},#{reworkOrdercrtdt},#{rwkQty},#{rwkQlfqty},#{rwkScrapqty},#{customerConfirm},#{creationDate},#{createdBy})
+    </insert>
 </mapper>

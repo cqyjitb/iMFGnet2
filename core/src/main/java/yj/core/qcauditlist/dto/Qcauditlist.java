@@ -24,6 +24,8 @@ public class Qcauditlist extends BaseDTO {
      @NotEmpty
       private String zqjjlh; //取件记录号
 
+      private String rghitem;
+
       private String zgjbar; //工件二维码/毛坯二维码/工件流水号
 
       private String zpgdbar; //工序流转卡号
@@ -65,7 +67,15 @@ public class Qcauditlist extends BaseDTO {
       private String gmein; //计量单位
 
 
-     public void setWerks(String werks){
+    public String getRghitem() {
+        return rghitem;
+    }
+
+    public void setRghitem(String rghitem) {
+        this.rghitem = rghitem;
+    }
+
+    public void setWerks(String werks){
          this.werks = werks;
      }
 

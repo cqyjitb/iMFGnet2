@@ -224,14 +224,10 @@ public class InOutRecordController extends BaseController {
         String zqxdm = request.getParameter("zqxdm");
         String zissuetxt = request.getParameter("zissuetxt");
         String zbanz = request.getParameter("zbanz");
-        String gstrpfrom = request.getParameter("gstrpfrom");
-        String gstrpto = request.getParameter("gstrpto");
-        if (gstrpfrom != null){
-            gstrpfrom = gstrpfrom.substring(0,10);
-        }
+        String gstrp = request.getParameter("gstrp");
 
-        if (gstrpto != null){
-            gstrpto = gstrpto.substring(0,10);
+        if (gstrp != null){
+            gstrp = gstrp.substring(0,10);
         }
 
         if (gytype.equals("1")){
@@ -249,7 +245,7 @@ public class InOutRecordController extends BaseController {
 
 
                   //根据条件查询
-                List<InOutRecord> list = service.selectforQcaudit1(werks,line_id,matnr,matnr2,deptId,gstrpfrom,gstrpto,zqxdm,zissuetxt,zbanz);
+                List<InOutRecord> list = service.selectforQcaudit1(werks,line_id,matnr,matnr2,deptId,gstrp,zqxdm,zissuetxt,zbanz);
                 if (list.size() > 0){
                     rs.setRows(list);
                     rs.setSuccess(true);

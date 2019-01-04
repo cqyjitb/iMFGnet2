@@ -93,8 +93,7 @@
         <result column="MAKTX" property="maktx" jdbcType="VARCHAR"/>
         <result column="MAKTX2" property="maktx2" jdbcType="VARCHAR"/>
         <result column="DEPT_ID" property="deptId" jdbcType="VARCHAR"/>
-        <result column="GSTRPFROM" property="gstrpfrom" jdbcType="VARCHAR"/>
-        <result column="GSTRPTO" property="gstrpto" jdbcType="VARCHAR"/>
+        <result column="GSTRP" property="gstrp" jdbcType="VARCHAR"/>
         <result column="DESMINALINETXT" property="desmianlinetxt" jdbcType="VARCHAR"/>
         <result column="DESLINETXT" property="deslinetxt" jdbcType="VARCHAR"/>
         <result column="ZTEXT" property="ztext" jdbcType="VARCHAR"/>
@@ -358,11 +357,8 @@
             </if>
             <if test="matnr2 != null">
                 and i.MATNR2 = #{matnr2}
-            </if><if test="gstrpfrom">
-                and c.ATTR1 >= #{gstrpfrom}
-            </if>
-            <if test="gstrpto">
-                and #{gstrpto} >= c.ATTR1
+            </if><if test="gstrp != null">
+                and c.ATTR1 = #{gstrp}
             </if>
         </where>
             order BY c.attr1,i.ZBANZ,i.ZQXDM,i.ZISSUETXT;

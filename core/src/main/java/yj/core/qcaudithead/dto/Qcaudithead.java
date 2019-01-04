@@ -42,6 +42,10 @@ public class Qcaudithead extends BaseDTO {
 
       private String maktx2; //毛坯物料描述
 
+      private String zqxdm;
+
+      private String tlevelcode;
+
       private String charg; //生产批次
 
       private String sfflg; //班标
@@ -74,7 +78,7 @@ public class Qcaudithead extends BaseDTO {
 
       private Double rworkQty; //返工返修数量
 
-      private String conssQty; //让步接收数量
+      private Double conssQty; //让步接收数量
 
       private String dfectTxt; //不合格品描述
 
@@ -409,15 +413,15 @@ public class Qcaudithead extends BaseDTO {
          return rworkQty;
      }
 
-     public void setConssQty(String conssQty){
-         this.conssQty = conssQty;
-     }
+    public Double getConssQty() {
+        return conssQty;
+    }
 
-     public String getConssQty(){
-         return conssQty;
-     }
+    public void setConssQty(Double conssQty) {
+        this.conssQty = conssQty;
+    }
 
-     public void setDfectTxt(String dfectTxt){
+    public void setDfectTxt(String dfectTxt){
          this.dfectTxt = dfectTxt;
      }
 
@@ -785,4 +789,19 @@ public class Qcaudithead extends BaseDTO {
          return customerConfirm;
      }
 
-     }
+    public String getZqxdm() {
+        return zqxdm;
+    }
+
+    public void setZqxdm(String zqxdm) {
+        this.zqxdm = zqxdm;
+    }
+
+    public String getTlevelcode() {
+        return tlevelcode;
+    }
+
+    public void setTlevelcode(String tlevelcode) {
+        this.tlevelcode = tlevelcode;
+    }
+}

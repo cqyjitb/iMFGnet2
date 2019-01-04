@@ -46,11 +46,10 @@ public interface IInOutRecordService extends IBaseService<InOutRecord>, ProxySel
      * @param matnr
      * @param deptId
      * @param line_id
-     * @param gstrpfrom
-     * @param gstrpto
+     * @param gstrp
      * @return
      */
-    List<InOutRecord> selectforQcaudit1(String werks,String line_id,String matnr,String matnr2,String deptId,String gstrpfrom,String gstrpto,
+    List<InOutRecord> selectforQcaudit1(String werks,String line_id,String matnr,String matnr2,String deptId,String gstrp,
     String zqxdm,String zissuetxt,String zbanz);
 
     /**
