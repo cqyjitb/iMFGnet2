@@ -18,7 +18,6 @@
         <result column="KTEXT" property="ktext" jdbcType="VARCHAR"/>
         <result column="CHECKDATE" property="checkdate" jdbcType="DATE"/>
         <result column="CHECKTIME" property="checktime" jdbcType="TIME"/>
-        <result column="CHECKCYCLE" property="checkcycle" jdbcType="VARCHAR"/>
         <result column="CHECKSHIFT" property="checkshift" jdbcType="VARCHAR"/>
         <result column="CHECKUSER" property="checkuser" jdbcType="VARCHAR"/>
         <result column="CHECKOBJECT" property="checkobject" jdbcType="VARCHAR"/>
