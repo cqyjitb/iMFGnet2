@@ -36,6 +36,21 @@
         <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
         <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="VARCHAR" />
         <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="DATE" />
+        <result column="DEPT_ID" property="deptId" jdbcType="VARCHAR" />
+        <result column="DEPTTXT" property="depttxt" jdbcType="VARCHAR" />
+        <result column="DESLINETXT" property="deslinetxt" jdbcType="VARCHAR" />
+        <result column="DESMIANLINETXT" property="desmianlinetxt" jdbcType="VARCHAR" />
+        <result column="MAKTX" property="maktx" jdbcType="VARCHAR" />
+        <result column="MAKTX2" property="maktx2" jdbcType="VARCHAR" />
+        <result column="KURZTEXT" property="kurztext" jdbcType="VARCHAR" />
+        <result column="ZTEXT" property="ztext" jdbcType="VARCHAR" />
+        <result column="ZBANZ" property="zbanz" jdbcType="VARCHAR" />
+        <result column="KUNNR" property="kunnr" jdbcType="VARCHAR" />
+        <result column="SORTL" property="sortl" jdbcType="VARCHAR" />
+        <result column="CHARG" property="charg" jdbcType="VARCHAR" />
+        <result column="ZQXDM" property="zqxdm" jdbcType="VARCHAR" />
+        <result column="ZISSUETXT" property="zissuetxt" jdbcType="VARCHAR" />
+        <result column="ZPGDBAR2" property="zpgdbar2" jdbcType="VARCHAR" />
     </resultMap>
 
     <select id="selectByCondition" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -145,5 +160,69 @@
                      ZXHBAR = #{zxhbar}
                      and CANCEL_FLAG = '0'
                  </where>
+    </select>
+
+    <select id="selectforQcaudit2" parameterType="java.lang.String" resultMap="BaseResultMap">
+      select a.WERKS,
+			 a.RECORDID,
+			 l.DEPT_ID,
+			 org.NAME as DEPTTXT,
+			 a.LINE_ID,
+			 l.DESCRIPTIONS as DESLINETXT,
+			 l.PLINE_ID,
+			 l2.DESCRIPTIONS as desmianlinetxt,
+			 a.matnr,
+			 m.maktx,
+			 a.matnr2,
+			 m2.maktx as maktx2,
+			 a.ZMPBAR,
+			 a.ZXHBAR,
+			 a.SFFLG,
+			 a.YCHARGE as CHARG,
+			 a.DIECD,
+			 a.code as zqxdm,
+			 qp.KURZTEXT,
+			 a.TLEVELCODE as zissuetxt,
+			 df.ZTEXT,
+			 a.GMEIN,
+			 a.gstrp,
+			 a.SHIFT as zbanz,
+			 a.zbanc,
+			 a.ZPGDBAR as ZPGDBAR2,
+			 cfg.KUNNR,
+			 k.name1 as sortl,
+			 a.CREATED_BY,
+			 a.CREATION_DATE
+            from wip_dftrghlist a
+            LEFT JOIN sap_marc m ON m.matnr = a.matnr
+            LEFT JOIN sap_marc m2 ON m2.matnr = a.matnr2
+            left join wip_lines l on l.LINE_ID = a.LINE_ID
+            LEFT JOIN wip_lines l2 on l2.LINE_ID = l.PLINE_ID
+            LEFT JOIN sap_qpcd qp on qp.code = a.code
+            LEFT JOIN sap_dftdtl df on df.TLEVELCODE = a.TLEVELCODE
+            LEFT JOIN hr_org_unit_b org on org.UNIT_CODE = l.DEPT_ID
+            left join wip_products_cfg cfg on ( cfg.PMATNR = a.matnr and cfg.line_id = a.line_id )
+            left join sap_cust k on k.kunnr = cfg.KUNNR
+            <where>
+                a.CANCEL_FLAG = '0'
+                and a.RECORDID1 is NULL
+                and a.RECORDID2 is NULL
+                and a.AUFNR is NULL
+                and a.LINE_ID = #{line_id}
+                and a.WERKS = #{werks}
+                and a.SHIFT  = #{zbanz}
+                AND a.code = #{zqxdm}
+                and a.TLEVELCODE = #{zissuetxt}
+                <if test="matnr2 != null">
+                    and a.MATNR = #{matnr2}
+                </if>
+                <if test="matnr != null">
+                    and a.MATNR2 = #{matnr}
+                </if>
+                <if test="gstrp != null">
+                and a.gstrp = #{gstrp}
+                </if>
+            </where>
+            order by a.gstrp ,zbanz, a.code ,a.TLEVELCODE
     </select>
 </mapper>

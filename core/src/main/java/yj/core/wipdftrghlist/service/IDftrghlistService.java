@@ -81,4 +81,19 @@ public interface IDftrghlistService extends IBaseService<Dftrghlist>, ProxySelf<
      * @return
      */
     String selectMaxRecordid(String werks,String gstrp);
+
+    /**
+     *  根据条件查询 for 不合格品审理单2 917110140
+     * @param werks
+     * @param line_id
+     * @param matnr
+     * @param matnr2
+     * @param deptId
+     * @param gstrp
+     * @param zqxdm
+     * @param zissuetxt
+     * @param zbanz
+     * @return
+     */
+    List<Dftrghlist> selectforQcaudit2(String werks,String line_id,String matnr,String matnr2,String deptId,String gstrp,String zqxdm,String zissuetxt,String zbanz);
 }

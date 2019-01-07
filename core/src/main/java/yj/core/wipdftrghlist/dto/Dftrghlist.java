@@ -99,6 +99,80 @@ public class Dftrghlist extends BaseDTO {
 
      private Date lastUpdateDate;
 
+     private String deptId;
+
+     private String depttxt;
+
+     private String plineId;
+
+     private String deslinetxt;
+
+     private String desmianlinetxt;
+
+     private String maktx;
+
+     private String maktx2;
+
+     private String kurztext;
+
+     private String ztext;
+
+     private String zbanz;
+
+     private String kunnr;
+
+     private String sortl;
+
+     private String charg;
+
+     private String zqxdm;
+
+     private String zissuetxt;
+
+     private String zpgdbar2;
+
+     private String departbm;
+
+     private String departcj;
+
+     private String vornr1;
+
+     private String userName;
+
+     private String userNameQC;
+
+    public String getZpgdbar2() {
+        return zpgdbar2;
+    }
+
+    public void setZpgdbar2(String zpgdbar2) {
+        this.zpgdbar2 = zpgdbar2;
+    }
+
+    public String getCharg() {
+        return charg;
+    }
+
+    public void setCharg(String charg) {
+        this.charg = charg;
+    }
+
+    public String getZqxdm() {
+        return zqxdm;
+    }
+
+    public void setZqxdm(String zqxdm) {
+        this.zqxdm = zqxdm;
+    }
+
+    public String getZissuetxt() {
+        return zissuetxt;
+    }
+
+    public void setZissuetxt(String zissuetxt) {
+        this.zissuetxt = zissuetxt;
+    }
+
     @Override
     public Long getLastUpdatedBy() {
         return lastUpdatedBy;
@@ -371,4 +445,140 @@ public class Dftrghlist extends BaseDTO {
          return cancelDate;
      }
 
-     }
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
+
+    public String getDepttxt() {
+        return depttxt;
+    }
+
+    public void setDepttxt(String depttxt) {
+        this.depttxt = depttxt;
+    }
+
+    public String getPlineId() {
+        return plineId;
+    }
+
+    public void setPlineId(String plineId) {
+        this.plineId = plineId;
+    }
+
+    public String getDeslinetxt() {
+        return deslinetxt;
+    }
+
+    public void setDeslinetxt(String deslinetxt) {
+        this.deslinetxt = deslinetxt;
+    }
+
+    public String getDesmianlinetxt() {
+        return desmianlinetxt;
+    }
+
+    public void setDesmianlinetxt(String desmianlinetxt) {
+        this.desmianlinetxt = desmianlinetxt;
+    }
+
+    public String getMaktx2() {
+        return maktx2;
+    }
+
+    public void setMaktx2(String maktx2) {
+        this.maktx2 = maktx2;
+    }
+
+    public String getKurztext() {
+        return kurztext;
+    }
+
+    public void setKurztext(String kurztext) {
+        this.kurztext = kurztext;
+    }
+
+    public String getZtext() {
+        return ztext;
+    }
+
+    public void setZtext(String ztext) {
+        this.ztext = ztext;
+    }
+
+    public String getZbanz() {
+        return zbanz;
+    }
+
+    public void setZbanz(String zbanz) {
+        this.zbanz = zbanz;
+    }
+
+    public String getKunnr() {
+        return kunnr;
+    }
+
+    public void setKunnr(String kunnr) {
+        this.kunnr = kunnr;
+    }
+
+    public String getSortl() {
+        return sortl;
+    }
+
+    public void setSortl(String sortl) {
+        this.sortl = sortl;
+    }
+
+    public String getMaktx() {
+        return maktx;
+    }
+
+    public void setMaktx(String maktx) {
+        this.maktx = maktx;
+    }
+
+    public String getDepartbm() {
+        return departbm;
+    }
+
+    public void setDepartbm(String departbm) {
+        this.departbm = departbm;
+    }
+
+    public String getDepartcj() {
+        return departcj;
+    }
+
+    public void setDepartcj(String departcj) {
+        this.departcj = departcj;
+    }
+
+    public String getVornr1() {
+        return vornr1;
+    }
+
+    public void setVornr1(String vornr1) {
+        this.vornr1 = vornr1;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getUserNameQC() {
+        return userNameQC;
+    }
+
+    public void setUserNameQC(String userNameQC) {
+        this.userNameQC = userNameQC;
+    }
+}

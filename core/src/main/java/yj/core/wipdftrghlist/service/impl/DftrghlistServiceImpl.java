@@ -60,4 +60,9 @@ public class DftrghlistServiceImpl extends BaseServiceImpl<Dftrghlist> implement
     public String selectMaxRecordid(String werks, String gstrp) {
         return dftrghlistMapper.selectMaxRecordid(werks,gstrp);
     }
+
+    @Override
+    public List<Dftrghlist> selectforQcaudit2(String werks, String line_id, String matnr, String matnr2, String deptId, String gstrp, String zqxdm, String zissuetxt, String zbanz) {
+        return dftrghlistMapper.selectforQcaudit2(werks,line_id,matnr,matnr2,deptId,gstrp,zqxdm,zissuetxt,zbanz);
+    }
 }

@@ -80,4 +80,21 @@ public interface DftrghlistMapper extends Mapper<Dftrghlist>{
      * @return
      */
     String selectMaxRecordid(@Param("werks") String werks,@Param("gstrp") String gstrp);
+
+    /**
+     *  根据条件查询 for 不合格品审理单2 917110140
+     * @param werks
+     * @param line_id
+     * @param matnr
+     * @param matnr2
+     * @param deptId
+     * @param gstrp
+     * @param zqxdm
+     * @param zissuetxt
+     * @param zbanz
+     * @return
+     */
+    List<Dftrghlist> selectforQcaudit2(@Param("werks") String werks,@Param("line_id") String line_id,@Param("matnr") String matnr,
+                                       @Param("matnr2") String matnr2,@Param("deptId") String deptId,@Param("gstrp") String gstrp,
+                                       @Param("zqxdm") String zqxdm,@Param("zissuetxt") String zissuetxt,@Param("zbanz") String zbanz);
 }

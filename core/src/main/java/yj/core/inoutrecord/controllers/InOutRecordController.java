@@ -18,6 +18,8 @@ import yj.core.marc.dto.Marc;
 import yj.core.marc.service.IMarcService;
 import yj.core.qjcode.dto.Qjcode;
 import yj.core.qjcode.service.IQjcodeService;
+import yj.core.wipdftrghlist.dto.Dftrghlist;
+import yj.core.wipdftrghlist.service.IDftrghlistService;
 import yj.core.wiplines.dto.Lines;
 import yj.core.wiplines.service.ILinesService;
 import yj.core.zrwklist.dto.Zrwklist;
@@ -38,6 +40,8 @@ public class InOutRecordController extends BaseController {
     private IQjcodeService qjcodeService;
     @Autowired
     private IMarcService marcService;
+    @Autowired
+    private IDftrghlistService dftrghlistService;
 
     @RequestMapping(value = "/wip/in/out/record/query")
     @ResponseBody
@@ -246,17 +250,25 @@ public class InOutRecordController extends BaseController {
 
                   //根据条件查询
                 List<InOutRecord> list = service.selectforQcaudit1(werks,line_id,matnr,matnr2,deptId,gstrp,zqxdm,zissuetxt,zbanz);
-                if (list.size() > 0){
+                if (list.size() > 0) {
                     rs.setRows(list);
                     rs.setSuccess(true);
-                }else{
-                    rs.setSuccess(false);
-                    rs.setMessage("没有符合条件的数据!");
                 }
 
 
-        }else if (gytype.equals("2")){
 
+        }else if (gytype.equals("2")){
+            if (matnr == null && matnr2 == null){
+                rs.setSuccess(false);
+                rs.setMessage("条件产品物料号，毛坯物料号必须录入其中一项！");
+                return rs;
+            }
+
+            List<Dftrghlist> list =  dftrghlistService.selectforQcaudit2(werks,line_id,matnr,matnr2,deptId,gstrp,zqxdm,zissuetxt,zbanz);
+            if (list.size() > 0){
+                rs.setRows(list);
+                rs.setSuccess(true);
+            }
 
         }else if (gytype.equals("3")){
 

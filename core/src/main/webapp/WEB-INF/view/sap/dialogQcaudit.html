@@ -51,83 +51,173 @@
                             message: message
                         });
                     }else{
-                        //把页面数据传输到后台 创建不合格品审理单2
-                        var dataarray = new Array();
-                        for (var i=0;i<selections2.length;i++){
-                            var viewModel = kendo.observable({
-                                model:{
-                                    werks:selections2[i].werks,
-                                    zqjjlh:selections2[i].zqjjlh,
-                                    zwipqid:selections2[i].zwipqid,
-                                    lineId:selections2[i].lineId,
-                                    arbpr:selections2[i].arbpr,
-                                    zbanz:selections2[i].zbanz,
-                                    zbanc:selections2[i].zbanc,
-                                    zpgdbar:selections2[i].zpgdbar,
-                                    vornr:selections2[i].vornr,
-                                    zxhbar:selections2[i].zxhbar,
-                                    zpgdbar2:selections2[i].zpgdbar2,
-                                    matnr:selections2[i].matnr,
-                                    matnr2:selections2[i].matnr2,
-                                    zgjbar:selections2[i].zgjbar,
-                                    zoutnum:selections2[i].zoutnum,
-                                    reflag:selections2[i].reflag,
-                                    gmein:selections2[i].gmein,
-                                    charg:selections2[i].charg,
-                                    zremade:selections2[i].zremade,
-                                    diecd:selections2[i].diecd,
-                                    sfflg:selections2[i].sfflg,
-                                    zotype:selections2[i].zotype,
-                                    zqxdm:selections2[i].zqxdm,
-                                    zbpjc:selections2[i].zbpjc,
-                                    zjtgx:selections2[i].zjtgx,
-                                    zoplo:selections2[i].zoplo,
-                                    outdat:selections2[i].outdat,
-                                    outnam:selections2[i].outnam,
-                                    redat:selections2[i].redat,
-                                    renam:selections2[i].renam,
-                                    kunnr:selections2[i].kunnr,
-                                    sortl:selections2[i].sortl,
-                                    attr1:selections2[i].attr1,
-                                    maktx:selections2[i].maktx,
-                                    maktx2:selections2[i].maktx2,
-                                    deptId:selections2[i].deptId,
-                                    gstrpfrom:selections2[i].gstrpfrom,
-                                    desmianlinetxt:selections2[i].desmianlinetxt,
-                                    deslinetxt:selections2[i].deslinetxt,
-                                    zissuetxt:selections2[i].zissuetxt,
-                                    ztext:selections2[i].ztext,
-                                    departbm:departbm,
-                                    departcj:departcj,
-                                    vornr1:vornr1,
-                                    userName:userName,
-                                    userNameQC:userNameQC
+                        //判断不合格品数据来源
+                        var Ogytype = window.parent.$("#gytype");
+                        var gytype = Ogytype[0].value;
+                        if (gytype == "1"){
+                            //把页面数据传输到后台 创建不合格品审理单2
+                            var dataarray = new Array();
+                            for (var i=0;i<selections2.length;i++){
+                                var viewModel = kendo.observable({
+                                    model:{
+                                        werks:selections2[i].werks,
+                                        zqjjlh:selections2[i].zqjjlh,
+                                        zwipqid:selections2[i].zwipqid,
+                                        lineId:selections2[i].lineId,
+                                        arbpr:selections2[i].arbpr,
+                                        zbanz:selections2[i].zbanz,
+                                        zbanc:selections2[i].zbanc,
+                                        zpgdbar:selections2[i].zpgdbar,
+                                        vornr:selections2[i].vornr,
+                                        zxhbar:selections2[i].zxhbar,
+                                        zpgdbar2:selections2[i].zpgdbar2,
+                                        matnr:selections2[i].matnr,
+                                        matnr2:selections2[i].matnr2,
+                                        zgjbar:selections2[i].zgjbar,
+                                        zoutnum:selections2[i].zoutnum,
+                                        reflag:selections2[i].reflag,
+                                        gmein:selections2[i].gmein,
+                                        charg:selections2[i].charg,
+                                        zremade:selections2[i].zremade,
+                                        diecd:selections2[i].diecd,
+                                        sfflg:selections2[i].sfflg,
+                                        zotype:selections2[i].zotype,
+                                        zqxdm:selections2[i].zqxdm,
+                                        zbpjc:selections2[i].zbpjc,
+                                        zjtgx:selections2[i].zjtgx,
+                                        zoplo:selections2[i].zoplo,
+                                        outdat:selections2[i].outdat,
+                                        outnam:selections2[i].outnam,
+                                        redat:selections2[i].redat,
+                                        renam:selections2[i].renam,
+                                        kunnr:selections2[i].kunnr,
+                                        sortl:selections2[i].sortl,
+                                        attr1:selections2[i].attr1,
+                                        maktx:selections2[i].maktx,
+                                        maktx2:selections2[i].maktx2,
+                                        deptId:selections2[i].deptId,
+                                        gstrpfrom:selections2[i].gstrpfrom,
+                                        desmianlinetxt:selections2[i].desmianlinetxt,
+                                        deslinetxt:selections2[i].deslinetxt,
+                                        zissuetxt:selections2[i].zissuetxt,
+                                        ztext:selections2[i].ztext,
+                                        departbm:departbm,
+                                        departcj:departcj,
+                                        vornr1:vornr1,
+                                        userName:userName,
+                                        userNameQC:userNameQC
+                                    }
+                                });
+                                dataarray[i] = viewModel.model.toJSON();
+
+                            }
+                            var data = JSON.stringify(dataarray);
+                            $.ajax({
+                                url: "${base.contextPath}/wip/qcaudithead/createQcaudit1",
+                                type: "POST",
+                                data:data,
+                                async: false,
+                                contentType: "application/json; charset=utf-8",
+                                success: function (res) {
+                                    if (res.success == true){
+                                        window.parent.$("#Grid").data("kendoGrid").dataSource.read();
+                                        Hap.autoResizeGrid("#Grid");
+
+                                        kendo.ui.showConfirmDialog({
+                                            title:'',
+                                            message:"不合格品审理单2创建成功！"
+                                        }).done(function () {
+                                            window.parent.$("#newWin").data("kendoWindow").close();
+                                        });
+
+                                    }
+                                },
+                                error:function (res) {
+                                    kendo.ui.showErrorDialog({
+                                        title: '错误',
+                                        message: "XXXXXXXX！"
+                                    });
                                 }
                             });
-                            dataarray[i] = viewModel.model.toJSON();
+                        }else if (gytype == "2"){
+
+                            //把页面数据传输到后台 创建不合格品审理单2
+                            var dataarray = new Array();
+                            for (var i=0;i<selections2.length;i++){
+                                var viewModel = kendo.observable({
+                                    model:{
+                                        werks:selections2[i].werks,
+                                        recordid:selections2[i].recordid,
+                                        deptId:selections2[i].deptId,
+                                        depttxt:selections2[i].depttxt,
+                                        lineId:selections2[i].lineId,
+                                        plineId:selections2[i].plineId,
+                                        desmianlinetxt:selections2[i].desmianlinetxt,
+                                        deslinetxt:selections2[i].deslinetxt,
+                                        zbanz:selections2[i].zbanz,
+                                        charg:selections2[i].charg,
+                                        zqxdm:selections2[i].zqxdm,
+                                        matnr:selections2[i].matnr,
+                                        matnr2:selections2[i].matnr2,
+                                        maktx:selections2[i].maktx,
+                                        maktx2:selections2[i].maktx2,
+                                        zxhbar:selections2[i].zxhbar,
+                                        zpgdbar2:selections2[i].zpgdbar2,
+                                        gmein:selections2[i].gmein,
+                                        zoutnum:selections2[i].zoutnum,
+                                        zbanc:selections2[i].zbanc,
+                                        zgjbar:selections2[i].zgjbar,
+                                        diecd:selections2[i].diecd,
+                                        sfflg:selections2[i].sfflg,
+                                        kunnr:selections2[i].kunnr,
+                                        sortl:selections2[i].sortl,
+                                        gstrp:selections2[i].gstrp,
+                                        zotype:selections2[i].zotype,
+                                        zissuetxt:selections2[i].zissuetxt,
+                                        ztext:selections2[i].ztext,
+                                        departbm:departbm,
+                                        departcj:departcj,
+                                        vornr1:vornr1,
+                                        userName:userName,
+                                        userNameQC:userNameQC,
+                                        outdat:selections2[i].outdat,
+                                        outnam:selections2[i].outnam
+                                    }
+                                });
+                                dataarray[i] = viewModel.model.toJSON();
+
+                            }
+                            var data = JSON.stringify(dataarray);
+                            $.ajax({
+                                url: "${base.contextPath}/wip/qcaudithead/createQcaudit2",
+                                type: "POST",
+                                data:data,
+                                async: false,
+                                contentType: "application/json; charset=utf-8",
+                                success: function (res) {
+                                    if (res.success == true){
+                                        window.parent.$("#Grid").data("kendoGrid").dataSource.read();
+                                        Hap.autoResizeGrid("#Grid");
+
+                                        kendo.ui.showConfirmDialog({
+                                            title:'',
+                                            message:"不合格品审理单2创建成功！"
+                                        }).done(function () {
+                                            window.parent.$("#newWin").data("kendoWindow").close();
+                                        });
+
+                                    }
+                                },
+                                error:function (res) {
+                                    kendo.ui.showErrorDialog({
+                                        title: '错误',
+                                        message: "XXXXXXXX！"
+                                    });
+                                }
+                            });
+                        }else if (gytype == "3"){
 
                         }
-                        var data = JSON.stringify(dataarray);
-                        $.ajax({
-                            url: "${base.contextPath}/wip/qcaudithead/createQcaudit1",
-                            type: "POST",
-                            data:data,
-                            async: false,
-                            contentType: "application/json; charset=utf-8",
-                            success: function (res) {
-                                if (res.success == true){
-                                    grid.data('kendoGrid').dataSource.page(1);
-                                    window.parent.$("#newWin").data("kendoWindow").close();
-                                }
-                            },
-                            error:function (res) {
-                                kendo.ui.showErrorDialog({
-                                    title: '错误',
-                                    message: "XXXXXXXX！"
-                                });
-                            }
-                        });
-
                     }
 
                 }else{
