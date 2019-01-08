@@ -1,9 +1,12 @@
 package yj.core.qcaudithead.service;
 
+import com.hand.hap.core.IRequest;
 import com.hand.hap.core.ProxySelf;
 import com.hand.hap.system.service.IBaseService;
 import yj.core.qcaudithead.dto.Qcaudithead;
 import yj.core.qcauditlist.dto.Qcauditlist;
+
+import java.util.List;
 
 public interface IQcauditheadService extends IBaseService<Qcaudithead>, ProxySelf<IQcauditheadService>{
     /**
@@ -20,4 +23,12 @@ public interface IQcauditheadService extends IBaseService<Qcaudithead>, ProxySel
      * @return
      */
     int insertNewRow(Qcaudithead qcaudithead);
+
+    /**
+     * 根据条件查询不合格品审理单2  918100064
+     * @param requestCtx
+     * @param dto
+     * @return
+     */
+    List<Qcaudithead> selectForQcaudithead(IRequest requestCtx, Qcaudithead dto);
 }

@@ -4,6 +4,8 @@ import com.hand.hap.mybatis.common.Mapper;
 import org.apache.ibatis.annotations.Param;
 import yj.core.qcaudithead.dto.Qcaudithead;
 
+import java.util.List;
+
 public interface QcauditheadMapper extends Mapper<Qcaudithead>{
     /**
      *  根据工厂,生产日期 获取当前工厂当前生产日期 最大单号 917110140
@@ -19,4 +21,11 @@ public interface QcauditheadMapper extends Mapper<Qcaudithead>{
      * @return
      */
     int insertNewRow(Qcaudithead qcaudithead);
+
+    /**
+     * 根据条件查询不合格品审理单2   918100064
+     * @param dto
+     * @return
+     */
+    List<Qcaudithead> selectForQcaudithead(Qcaudithead dto);
 }

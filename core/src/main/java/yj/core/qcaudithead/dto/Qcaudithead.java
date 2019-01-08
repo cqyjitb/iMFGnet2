@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import com.hand.hap.mybatis.annotation.ExtensionAttribute;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import com.hand.hap.system.dto.BaseDTO;
 import java.util.Date;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -172,8 +174,58 @@ public class Qcaudithead extends BaseDTO {
 
       private String customerConfirm; //客户确认
 
+    @Transient
+    private String kurztext;//缺陷描述
 
-     public void setWerks(String werks){
+    @Transient
+    private String ztext;//二级缺陷描述
+
+    @Transient
+    private String name;//部门名称
+    private String gstrp2; //生产日期
+    private String reportDate2; //报告时间
+
+    public String getKurztext() {
+        return kurztext;
+    }
+
+    public void setKurztext(String kurztext) {
+        this.kurztext = kurztext;
+    }
+
+    public String getZtext() {
+        return ztext;
+    }
+
+    public void setZtext(String ztext) {
+        this.ztext = ztext;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getGstrp2() {
+        return gstrp2;
+    }
+
+    public void setGstrp2(String gstrp2) {
+        this.gstrp2 = gstrp2;
+    }
+
+    public String getReportDate2() {
+        return reportDate2;
+    }
+
+    public void setReportDate2(String reportDate2) {
+        this.reportDate2 = reportDate2;
+    }
+
+    public void setWerks(String werks){
          this.werks = werks;
      }
 
