@@ -86,6 +86,35 @@
         <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL"/>
     </resultMap>
 
+    <select id="selectForQcaudithead" parameterType="yj.core.qcaudithead.dto.Qcaudithead" resultMap="BaseResultMap">
+        select COUNT(qh.recordid),qh.*,df.ztext,qp.kurztext,b.name
+        from wip_qcaudithead qh LEFT JOIN sap_dftdtl df ON qh.tlevelcode = df.tlevelcode
+                                LEFT JOIN sap_qpcd qp ON qh.zqxdm = qp.code
+                                LEFT JOIN hr_org_unit_b b ON qh.dept_responsible = b.unit_code
+        <where>
+            1 = 1
+            <if test="werks != null">
+                AND qh.werks = #{werks}
+            </if>
+            <if test="deptResponsible != null">
+                AND qh.dept_responsible = #{deptResponsible}
+            </if>
+            <if test="lineid != null">
+                AND qh.lineid = #{lineid}
+            </if>
+            <if test="shift != null">
+                AND qh.shift = #{shift}
+            </if>
+            <if test="sourcetype != null">
+                AND qh.sourcetype = #{sourcetype}
+            </if>
+            <if test="gstrp != null">
+                AND qh.gstrp = #{gstrp}
+            </if>
+        </where>
+        group by qh.recordid having count(qh.recordid)>1
+    </select>
+
     <select id="selectMaxRecordId" parameterType="java.lang.String" resultType="java.lang.String">
 
         select Max(RECORDID) FROM  wip_qcaudithead

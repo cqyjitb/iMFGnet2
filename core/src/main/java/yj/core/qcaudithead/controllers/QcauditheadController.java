@@ -1,7 +1,5 @@
 package yj.core.qcaudithead.controllers;
 
-import oracle.jdbc.proxy.annotation.Post;
-import org.apache.commons.codec.net.QCodec;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Controller;
 import com.hand.hap.system.controllers.BaseController;
@@ -327,5 +325,37 @@ import java.util.List;
             }
 
             return null;
+        }
+
+        /**
+         * 不合格品审理单2查询页面请求 918100064
+         * @param request
+         * @return
+         */
+        @RequestMapping(value = "/wip/qcaudithead/selectForQcaudithead")
+        @ResponseBody
+        public ResponseData selectForQcaudithead(HttpServletRequest request){
+            IRequest requestCtx = createRequestContext(request);
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+            String werks = request.getParameter("werks");
+            String deptResponsible = request.getParameter("deptResponsible");
+            String lineid = request.getParameter("lineid");
+            String shift = request.getParameter("shift");
+            String sourcetype = request.getParameter("sourcetype");
+            String gstrp = request.getParameter("gstrp");
+            Qcaudithead dto = new Qcaudithead();
+            dto.setWerks(werks);
+            dto.setDeptResponsible(deptResponsible);
+            dto.setLineid(lineid);
+            dto.setShift(shift);
+            dto.setSourcetype(sourcetype);
+            if(gstrp != null){
+                try {
+                    dto.setGstrp(df.parse(gstrp.substring(0,10)));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+            }
+            return new ResponseData(service.selectForQcaudithead(requestCtx, dto));
         }
     }
