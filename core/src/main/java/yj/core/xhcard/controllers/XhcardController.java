@@ -914,7 +914,7 @@ public class XhcardController
             if (listz.size() > 0){
                 Double sum = 0D;
                 for (int j=0;j<listz.size();j++){
-                    sum = sum + listz.get(i).getZsxnum();
+                    sum = sum + listz.get(j).getZsxnum();
                 }
                 listxhcard.get(i).setZsxnum(new Double(sum).longValue());
                 listxhcard.get(i).setSynum(Double.valueOf(listxhcard.get(i).getMenge()) - listxhcard.get(i).getZsxnum());
