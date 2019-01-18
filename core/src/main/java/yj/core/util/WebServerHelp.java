@@ -9,11 +9,11 @@ public class WebServerHelp {
 
     public WebServerHelp(){
         //dev
-        this.username = "HAPUSER";
-        this.password = "Yjsap123@CQ";
+//        this.username = "HAPUSER";
+//        this.password = "Yjsap123@CQ";
         //prd
-//          this.username = "HAPUSER";
-//          this.password = "YJhap201707@CQ";
+          this.username = "HAPUSER";
+          this.password = "YJhap201707@CQ";
 
     }
 
