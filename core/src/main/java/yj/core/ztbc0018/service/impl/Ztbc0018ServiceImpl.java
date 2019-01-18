@@ -8,6 +8,8 @@ import yj.core.ztbc0018.mapper.Ztbc0018Mapper;
 import yj.core.ztbc0018.service.IZtbc0018Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class Ztbc0018ServiceImpl extends BaseServiceImpl<Ztbc0018> implements IZtbc0018Service{
@@ -17,4 +19,10 @@ public class Ztbc0018ServiceImpl extends BaseServiceImpl<Ztbc0018> implements IZ
 //    public int insertZtbc0018(Ztbc0018 ztbc0018) {
 //        return ztbc0018Mapper.insertZtbc0018(ztbc0018);
 //    }
+
+
+    @Override
+    public List<Ztbc0018> selectByZxhbar(String zxhbar) {
+        return ztbc0018Mapper.selectByZxhbar(zxhbar);
+    }
 }

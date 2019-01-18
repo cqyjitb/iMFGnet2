@@ -31,6 +31,8 @@ import yj.core.wiplines.dto.Lines;
 import yj.core.wiplines.service.ILinesService;
 import yj.core.xhcard.dto.Xhcard;
 import yj.core.xhcard.service.IXhcardService;
+import yj.core.ztbc0018.dto.Ztbc0018;
+import yj.core.ztbc0018.service.IZtbc0018Service;
 import yj.core.zwipq.dto.Zwipq;
 import yj.core.zwipq.dto.Zwipqqj;
 import yj.core.zwipq.service.IZwipqService;
@@ -69,6 +71,8 @@ public class ZwipqController extends BaseController {
     private ILineioCfgService iLineioCfgService;
     @Autowired
     private IDftrghlistService dftrghlistService;
+    @Autowired
+    private IZtbc0018Service ztbc0018Service;
 
 
     @RequestMapping(value = "/zwipq/query")
@@ -413,8 +417,16 @@ public class ZwipqController extends BaseController {
     @RequestMapping(value = {"/zwipq/callmigo"}, method = {RequestMethod.GET})
     @ResponseBody
     public ResponseData callmigo(HttpServletRequest request, String line_id, String zxhbar, int cynum, String bwart, int createBy, String zpgdbar) {
-        DTMIGOReturn rs = service.callMigo(zxhbar, cynum, line_id, bwart, createBy, zpgdbar);
         ResponseData rd = new ResponseData();
+        List<Ztbc0018> list = new ArrayList<>();
+        list = ztbc0018Service.selectByZxhbar(zxhbar);
+        if (list.size() > 0){
+            rd.setSuccess(false);
+            rd.setMessage("该箱号已经调账完成，不允许重复调账！");
+            return rd;
+        }
+        DTMIGOReturn rs = service.callMigo(zxhbar, cynum, line_id, bwart, createBy, zpgdbar);
+
         if (rs.getMTYPE().equals("S")) {
             //盘点成功
             rd.setMessage("数据调整成功！");

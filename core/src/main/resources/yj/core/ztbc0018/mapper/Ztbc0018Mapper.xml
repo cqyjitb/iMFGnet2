@@ -26,4 +26,11 @@
         insert INTO sap_ztbc0018(ID,LINE_ID,ZXHBAR,ZPGDBAR2,MBLNR,MJAHR,BMENGE,SMENGE,MEINS,LGORT,ZSPTY,ZSPBZ,ZDLTY,CREATION_DATE,CREATED_BY,LAST_UPDATED_DATE,LAST_UPDATED_BY)
         VALUES (#{id},#{lineId},#{zxhbar},#{zpgdbar2},#{mblnr},#{mjahr},#{bmenge},#{smenge},#{meins},#{lgort},#{zspty},#{zspbz},#{zdlty},#{creationDate},#{createdBy},#{lastUpdatedDate},#{lastUpdatedBy})
     </insert>
+
+    <select id="selectByZxhbar" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from sap_ztbc0018
+        <where>
+            ZXHBAR = #{zxhbar}
+        </where>
+    </select>
 </mapper>
