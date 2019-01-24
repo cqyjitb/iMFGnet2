@@ -40,11 +40,11 @@ public class Operations {
 
     private String endDate; //失效日期
     @NotNull
-    private Date creationDate; //创建时间
+    private String creationDate; //创建时间
     @NotEmpty
     private String createdBy; //创建人
 
-    private Date lastUpdatedDate; //更新时间
+    private String lastUpdatedDate; //更新时间
 
     private String lastUpdatedBy; //更新人
     /*添加字段 918100064*/
@@ -172,11 +172,11 @@ public class Operations {
         this.endDate = endDate;
     }
 
-    public Date getCreationDate() {
+    public String getCreationDate() {
         return creationDate;
     }
 
-    public void setCreationDate(Date creationDate) {
+    public void setCreationDate(String creationDate) {
         this.creationDate = creationDate;
     }
 
@@ -188,11 +188,11 @@ public class Operations {
         this.createdBy = createdBy;
     }
 
-    public Date getLastUpdatedDate() {
+    public String getLastUpdatedDate() {
         return lastUpdatedDate;
     }
 
-    public void setLastUpdatedDate(Date lastUpdatedDate) {
+    public void setLastUpdatedDate(String lastUpdatedDate) {
         this.lastUpdatedDate = lastUpdatedDate;
     }
 

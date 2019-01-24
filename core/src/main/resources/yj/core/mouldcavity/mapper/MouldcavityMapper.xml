@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.mouldcavity.mapper.MouldcavityMapper">
+    <resultMap id="BaseResultMap" type="yj.core.mouldcavity.dto.Mouldcavity">
+        <result column="WERKS" property="werks" jdbcType="VARCHAR"/>
+        <result column="MATNR" property="matnr" jdbcType="VARCHAR"/>
+        <result column="MAKTX" property="maktx" jdbcType="VARCHAR"/>
+        <result column="MDNUM" property="mdnum" jdbcType="DECIMAL"/>
+    </resultMap>
+
+</mapper>

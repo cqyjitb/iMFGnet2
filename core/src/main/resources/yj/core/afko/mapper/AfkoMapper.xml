@@ -66,6 +66,17 @@
         <result column="FLGRG" property="flgrg" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <select id="selectFromFevor" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select distinct fevor,txt from sap_afko
+        <where>
+            fevor like "4%"
+            <if test="fevor != null">
+                AND fevor = #{fevor}
+            </if>
+        </where>
+        order by fevor desc
+    </select>
+    
     <select id="selectReturnNum" resultType="java.lang.Integer">
         select count(*)
         from sap_afko

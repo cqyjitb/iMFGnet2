@@ -17,9 +17,9 @@ public class Routings{
     @GeneratedValue
     private Integer routingId;//工艺路线ID
     @NotEmpty
-    private Integer routingCode;//工艺路线编码
+    private String routingCode;//工艺路线编码
     @NotEmpty
-    private Integer descriptions;//工艺路线描述
+    private String descriptions;//工艺路线描述
     @NotEmpty
     private String matnr;//物料编码
 
@@ -143,19 +143,19 @@ public class Routings{
         this.routingId = routingId;
     }
 
-    public Integer getRoutingCode() {
+    public String getRoutingCode() {
         return routingCode;
     }
 
-    public void setRoutingCode(Integer routingCode) {
+    public void setRoutingCode(String routingCode) {
         this.routingCode = routingCode;
     }
 
-    public Integer getDescriptions() {
+    public String getDescriptions() {
         return descriptions;
     }
 
-    public void setDescriptions(Integer descriptions) {
+    public void setDescriptions(String descriptions) {
         this.descriptions = descriptions;
     }
 

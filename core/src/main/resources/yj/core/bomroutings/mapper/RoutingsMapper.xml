@@ -5,8 +5,8 @@
     <resultMap id="BaseResultMap" type="yj.core.bomroutings.dto.Routings">
         <result column="WERKS" property="werks" jdbcType="VARCHAR"/>
         <result column="ROUTING_ID" property="routingId" jdbcType="DECIMAL"/>
-        <result column="ROUTING_CODE" property="routingCode" jdbcType="DECIMAL"/>
-        <result column="DESCRIPTIONS" property="descriptions" jdbcType="DECIMAL"/>
+        <result column="ROUTING_CODE" property="routingCode" jdbcType="VARCHAR"/>
+        <result column="DESCRIPTIONS" property="descriptions" jdbcType="VARCHAR"/>
         <result column="MATNR" property="matnr" jdbcType="VARCHAR"/>
         <result column="ENABLE_FLAG" property="enableFlag" jdbcType="VARCHAR"/>
         <result column="START_DATE" property="startDate" jdbcType="VARCHAR"/>

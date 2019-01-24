@@ -83,6 +83,24 @@
         <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
     </resultMap>
 
+    <select id="selectByOrderno" parameterType="java.lang.String" resultType="java.lang.Integer">
+        SELECT COALESCE(sum(yeild),0) from confirmation_input_log
+        <where>
+            1 = 1
+            <if test="orderno != null">
+                AND orderno = #{orderno}
+            </if>
+            <if test="classgrp != null">
+                AND classgrp = #{classgrp}
+            </if>
+            <if test="postingDateAfter != null">
+                AND posting_date >= #{postingDateAfter}
+            </if>
+            <if test="postingDateBefore != null">
+                AND #{postingDateBefore} >= posting_date
+            </if>
+        </where>
+    </select>
 
     <select id="queryInputLogById" resultMap="BaseResultMap1">
       SELECT *

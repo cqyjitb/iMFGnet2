@@ -23,4 +23,11 @@ public  interface AfkoMapper
      List<Afko> selectJija(Afko paramAfko);
 
      Afko selectByAufnr(String aufnr);
+
+     /**
+      * 查询以4开头的生产管理员LOV_AFKO  918100064
+      * @param fevor
+      * @return
+      */
+     List<Afko> selectFromFevor(String fevor);
 }

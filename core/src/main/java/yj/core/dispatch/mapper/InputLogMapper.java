@@ -2,6 +2,7 @@ package yj.core.dispatch.mapper;
 
 import com.hand.hap.mybatis.common.Mapper;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.security.access.method.P;
 import yj.core.dispatch.dto.InputLog;
 import java.util.List;
 
@@ -65,4 +66,15 @@ public interface InputLogMapper extends Mapper<InputLog>{
     String queryDispatchMaxOperation (String dispatch);
 
     InputLog queryByDispatchAndOperation (InputLog inputLog);
+
+    /**
+     * 查询表格confirmation_input_log中合格品数量汇总 918100064
+     * @param orderno 订单
+     * @param classgrp 班组
+     * @param postingDateBefore 过账日期
+     * @param postingDateAfter  过账日期
+     * @return
+     */
+    Integer selectByOrderno(@Param("orderno")String orderno, @Param("classgrp")String classgrp,
+                            @Param("postingDateAfter")String postingDateAfter,@Param("postingDateBefore")String postingDateBefore);
 }

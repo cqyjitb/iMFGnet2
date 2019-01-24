@@ -11,6 +11,7 @@ import yj.core.bomoperations.mapper.OperationsMapper;
 import yj.core.bomoperations.service.IOperationsService;
 import yj.core.bomroutings.mapper.RoutingsMapper;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -30,6 +31,7 @@ public class OperationsServiceImpl extends BaseServiceImpl<Operations> implement
 
     @Override
     public String updateOrInsert(IRequest requestCtx, List<Operations> dto, String userId) {
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         if(dto.size() > 0){
             for(int i=0;i<dto.size();i++){
                 Operations operations = dto.get(i);
@@ -37,11 +39,11 @@ public class OperationsServiceImpl extends BaseServiceImpl<Operations> implement
                     operations.setRoutingId(routingsMapper.selectMaxRoutings());
                 }
                 if(operations.getOperationId() != 0){
-                    operations.setLastUpdatedDate(new Date());
+                    operations.setLastUpdatedDate(df.format(new Date()));
                     operations.setLastUpdatedBy(userId);
                     operationsMapper.updateOperations(operations);
                 }else{
-                    operations.setCreationDate(new Date());
+                    operations.setCreationDate(df.format(new Date()));
                     operations.setCreatedBy(userId);
                     operationsMapper.insertOperations(operations);
                 }
