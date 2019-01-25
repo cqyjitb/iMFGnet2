@@ -37,13 +37,14 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
     @Override
     public List<Shotnum> selectShotnum(Shotnum dto, IRequest requestContext) {
         List<Shotnum> list = new ArrayList<Shotnum>();
+        List<Shotnum> list1 = new ArrayList<Shotnum>();
         Cardh cardh = new Cardh();
         Shotnum shotnum = new Shotnum();
         InputLog inputLog = new InputLog();
         Afko afko = new Afko();
         int mdnum = 0,yeild = 0,shotNum = 0;
         if("Y".equals(dto.getTotal())){
-            List<Shotnum> list1 = shotnumMapper.selectShotnum(dto);
+            list1 = shotnumMapper.selectShotnum(dto);
             if(list1.size() > 0){
                 String date = null;
                 Long lists[] = new Long[list1.size()];
@@ -91,25 +92,30 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
             }
 
         }else{
-            list = shotnumMapper.selectShotnum(dto);
-            if(list.size() > 0){
-                for(int i=0;i<list.size();i++){
-                    shotnum = list.get(i);
+            list1 = shotnumMapper.selectShotnum(dto);
+            if(list1.size() > 0){
+                for(int i=0;i<list1.size();i++){
+                    shotnum = list1.get(i);
                     afko = afkoMapper.selectByFevor(shotnum.getArbpl(),dto.getFevor());
-                    inputLog = inputLogMapper.selectByOrderno(afko.getAufnr(),shotnum.getShifts(),shotnum.getPrdDate(),shotnum.getPrdDate());
-                    cardh = cardhMapper.selectByBarcode(shotnum.getZpgdbar());
+                    if(afko != null){
+                        inputLog = inputLogMapper.selectByOrderno(afko.getAufnr(),shotnum.getShifts(),shotnum.getPrdDate(),shotnum.getPrdDate());
+                        cardh = cardhMapper.selectByBarcode(shotnum.getZpgdbar());
 
-                    yeild = (inputLog.getYeild()).intValue();
-                    if(cardh != null){
-                        mdnum = mouldcavityMapper.selectByMatnr(cardh.getMatnr());
-                        shotNum = (int)((shotnum.getShotEnd() - shotnum.getShotStart())*mdnum);
+                        yeild = (inputLog.getYeild()).intValue();
+                        if(cardh != null){
+                            mdnum = mouldcavityMapper.selectByMatnr(cardh.getMatnr());
+                            shotNum = (int)((shotnum.getShotEnd() - shotnum.getShotStart())*mdnum);
+                        }
+                        shotnum.setPrdDateAfter(shotnum.getPrdDate());
+                        shotnum.setFevor(dto.getFevor());
+                        shotnum.setTxt(afko.getTxt());
+                        shotnum.setYeild(yeild);
+                        shotnum.setShotNum(shotNum);
+                        shotnum.setWasteNum(shotNum - yeild);
+                        list.add(shotnum);
+                    }else{
+                        list1.remove(i);
                     }
-                    shotnum.setPrdDateAfter(shotnum.getPrdDate());
-                    shotnum.setFevor(dto.getFevor());
-                    shotnum.setTxt(afko.getTxt());
-                    shotnum.setYeild(yeild);
-                    shotnum.setShotNum(shotNum);
-                    shotnum.setWasteNum(shotNum - yeild);
                 }
             }
         }
