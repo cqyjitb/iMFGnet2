@@ -47,5 +47,8 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
         return list;
     }
 
-
+    @Override
+    public int insertRow(Shotnum shot) {
+        return shotnumMapper.insertRow(shot);
+    }
 }

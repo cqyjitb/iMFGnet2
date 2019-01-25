@@ -75,6 +75,15 @@
         background-color: #C0C2CC;
         text-align: center;
     }
+
+    #login #login_shot{
+        width :190px;
+        height: 60px;
+        margin:0 auto;
+        background-color: #C0C2CC;
+        text-align: center;
+    }
+
     #login #btn{
         width :120px;
         height: 30px;
@@ -90,7 +99,22 @@
         cursor: pointer
     }
 
-    #login #btn_pd{
+    #login #btn_pd {
+        width :120px;
+        height: 30px;
+        margin-top: 15px;
+        background-color: #0D8EDC;
+        color: #FFFFFF;
+        display: inline-block;
+        padding: 5px 10px 6px;
+        text-decoration: none;
+        -webkit-border-radius: 3px;
+        border: none ;
+        position: relative;
+        cursor: pointer
+    }
+
+    #login #btn_shot {
         width :120px;
         height: 30px;
         margin-top: 15px;
@@ -115,9 +139,15 @@
     <div id="login_btn">
         <button id="btn" onclick="submit1()">报工入口</button>
     </div>
+
+    <div id="login_shot">
+        <button id="btn_shot" onclick="submit3()">压射数填报</button>
+    </div>
+
     <div id="login_pd">
         <button id="btn_pd" onclick="submit2()">盘点入口</button>
     </div>
+
 
 </div>
 <script type="text/javascript">
@@ -130,6 +160,10 @@
 
     function submit2(){
         window.location.href='${base.contextPath}/dispatch/dispatch_pd.html';
+    }
+
+    function submit3(){
+        window.location.href='${base.contextPath}/dispatch/dispatch_shot.html';
     }
 
 </script>

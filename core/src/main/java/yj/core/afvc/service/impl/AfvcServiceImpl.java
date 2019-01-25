@@ -47,4 +47,14 @@ public class AfvcServiceImpl
     public int deleteByAufpl(String aufpl) {
         return afvcMapper.deleteByAufpl(aufpl);
     }
+
+    @Override
+    public Afvc selectByZpgdbar(String zpgdbar) {
+        return afvcMapper.selectByZpgdbar(zpgdbar);
+    }
+
+    @Override
+    public List<Afvc> selectByArbpl(String arbpl) {
+        return afvcMapper.selectByArbpl(arbpl);
+    }
 }

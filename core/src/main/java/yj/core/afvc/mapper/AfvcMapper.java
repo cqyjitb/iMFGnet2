@@ -32,4 +32,13 @@ public  interface AfvcMapper
      * @return
      */
     List<Afvc> selectByArbpl(@Param("arbpl") String arbpl);
+
+    /**
+     *  根据派工单 查询工作中心 917110140
+     * @param zpgdbar
+     * @return
+     */
+    Afvc selectByZpgdbar(String zpgdbar);
+
+
 }

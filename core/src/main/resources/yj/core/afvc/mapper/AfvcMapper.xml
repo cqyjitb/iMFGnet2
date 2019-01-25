@@ -80,4 +80,17 @@
     <delete id="deleteByAufpl" parameterType="java.lang.String">
         delete FROM sap_afvc where AUFPL = #{aufpl}
     </delete>
+
+    <select id="selectByZpgdbar" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select  ARBPL,
+				KTEXT
+				from sap_afvc afvc
+				inner join sap_afko afko on afko.AUFPL = afvc.AUFPL
+				INNER JOIN sap_cardh card on card.AUFNR = afko.AUFNR
+				<where>
+                    and card.zpgdbar = #{zpgdbar}
+                    and afvc.vornr = '0010'
+                </where>
+
+    </select>
 </mapper>

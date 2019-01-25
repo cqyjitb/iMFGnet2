@@ -16,4 +16,10 @@ public interface IShotnumService extends IBaseService<Shotnum>, ProxySelf<IShotn
      */
     List<Shotnum> selectShotnum(Shotnum dto, IRequest requestContext);
 
+    /**
+     *  插入新记录 917110140
+     * @param shot
+     * @return
+     */
+    int insertRow(Shotnum shot);
 }

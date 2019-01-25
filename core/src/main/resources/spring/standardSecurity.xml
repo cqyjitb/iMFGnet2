@@ -20,6 +20,7 @@
         <intercept-url pattern="/dispatch/dispatch.html" access="permitAll"/>
         <intercept-url pattern="/dispatch/dispatch_index.html" access="permitAll"/>
         <intercept-url pattern="/dispatch/dispatch_pd.html" access="permitAll"/>
+        <intercept-url pattern="/dispatch/dispatch_shot.html" access="permitAll"/>
         <intercept-url pattern="/hr/employee/queryByCode" access="permitAll"/>
         <intercept-url pattern="/sys/userrole/queryByUserName" access="permitAll"/>
         <intercept-url pattern="/confirmation/input/log/writeOff" access="permitAll"/>

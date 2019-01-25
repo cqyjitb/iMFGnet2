@@ -1,0 +1,524 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1"><!DOCTYPE html>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="X-CSRF-TOKEN" />
+    <title>在制盘点</title>
+
+    <!--
+        Created by Rebs on 2017/6/12.
+    -->
+
+    <!–[if lt IE 9]>
+    <Script src="${base.contextPath}/resources/js/IE9.js"></Script>
+    <![endif]–>
+    <!--
+    <Script src="${base.contextPath}/resources/js/yj-pda.js?v=201706261447"></Script>
+    -->
+    <Script src="${base.contextPath}/resources/js/yj-pda.js"></Script>
+    <Script src="${base.contextPath}/resources/js/json2.js"></Script>
+    <script src="${base.contextPath}/lib/kendoui/js/jquery.min.js"></script>
+
+
+    <style type="text/css">
+        #dispatch-area{
+            margin-top:-7px;
+            width:220px;
+            height:285px;
+            z-index: 999;
+        }
+        #otherInfo-area{
+            background-color: #CCCCCC;
+
+            position: absolute;
+            width:220px;
+            height:285px;
+            z-index: 998;
+            top: 0px;
+            left: 0px;
+        }
+        .dcp-label{
+            font-size: 16px;
+            width: 80px;
+            height: 20px;
+            display: inline-block;
+        }
+        .cls-attr-input{
+            font-size: 16px;
+            width: 120px;
+            height: 21px;
+            margin-bottom: 1px;
+        }
+        #mask{
+            background-color: #434343;
+            opacity:0.5;
+            filter: alpha(opacity=50);
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index:1000;
+        }
+        #mask2{
+            background-color: #434343;
+            opacity:0.5;
+            filter: alpha(opacity=50);
+            position: absolute;
+            width: 240px;
+            height: 320px;
+            left: 0;
+            top: 0;
+            z-index:1001;
+        }
+        #msg-area{
+            background-color: white;
+            width: 200px;
+            height: 120px;
+            top: 100px;
+            left: 20px;
+            position: absolute;
+            z-index: 1002;
+        }
+        #msg1{
+            width:200px;
+            height:30px;
+            background-color:#F5F1DD;
+            border-radius: 5px;
+        }
+        #msg2{
+            width:200px;
+            height:60px;
+        }
+        #msg3{
+            width:200px;
+            height:30px;
+        }
+        #text{
+            width:100%;
+            height:100%;
+            float: left;
+            font-size: medium;
+            font-family: "微软雅黑";
+        }
+    </style>
+    <script>
+        window.onload=function () {
+
+            //获取消息界面DIV页面元素
+            var dMsg = document.getElementById("msg-area");
+            //获取遮罩层2DIV页面元素
+            var dMask2 = document.getElementById("mask2");
+            //获取返回页面元素
+            var cLot = document.getElementById("logout");
+            var back = document.getElementById("back");
+
+            var dprd_date = document.getElementById("prd_date");
+            var dbanz = document.getElementById("banz");
+            var dbanc = document.getElementById("banc");
+
+            /*用户登录相关操作*/
+            //获取当前登录用户用户名
+            var username = getCookie("username");
+            //用户登录判定操作
+            if (username == "" || username == null) {
+                //当用户未登录,返回登录界面
+                window.location.href = '${base.contextPath}/yjlogin.html';
+                return null;
+            } else {
+                //当用户登录，在界面展示用户信息，并记下用户id
+                document.getElementById("user").innerHTML = username;
+                /*var data = {"userName":username}*/
+                $.ajax({
+                    url: "${base.contextPath}/sys/userrole/queryByUserName",
+                    type: "get",
+                    data: {"username": username},
+                    contentType: "application/json; charset=utf-8",
+                    success: function (res) {
+                         userId = JSON.stringify(res.rows[0].userId);
+                        createdBy = userId;
+                        //document.getElementById("user").innerHTML = userId;
+                    }
+                });
+                $.ajax({
+                    url: "${base.contextPath}/hr/employee/queryByCode",
+                    type: "get",
+                    data: {"code": username},
+                    contentType: "application/json; charset=utf-8",
+                    success: function (res) {
+                        var name = JSON.stringify(res.rows[0].name);
+                        name = name.substring(1, name.length - 1);
+                        eval("var strname = '" + name + "';")
+                        document.getElementById("user").innerHTML = strname;
+                    }
+                });
+            }
+
+            //初始化界面状态
+            dMsg.style.display = "none";
+            dMask2.style.display = "none";
+            //返回点击事件
+            cLot.onclick = function () {
+                delCookie("username");
+                window.location.href = '${base.contextPath}/yjlogin.html';
+                return null;
+            }
+            back.onclick = function () {
+                window.location.href = '${base.contextPath}/dispatch/dispatch_index.html';
+                return null;
+            }
+
+            dprd_date.options[0].value = dprd_date.options[0].innerHTML = getTodayDate();
+            dprd_date.options[1].value = dprd_date.options[1].innerHTML = getDate(1);
+            dprd_date.options[2].value = dprd_date.options[2].innerHTML = getDate(2);
+            dprd_date.options[3].value = dprd_date.options[3].innerHTML = getDate(3);
+            dprd_date.options[4].value = dprd_date.options[4].innerHTML = getDate(4);
+
+            var cCleanData = document.getElementById("cleanData");
+            cCleanData.onclick=function () {
+
+                //清空页面元素
+                document.getElementById("zpgdbar").value = "";
+                document.getElementById("arbplDesc").value = "";
+                dprd_date.options[0].selected = true;
+                dbanz.options[0].selected = true;
+                dbanc.options[0].selected = true;
+                document.getElementById("shot_start").value = "";
+                document.getElementById("shot_end").value = "";
+                //获取条码页面元素
+                var roBcd=document.getElementById("zpgdbar");
+
+                //进入报工页面时，光标定位到条码输入框
+                roBcd.focus();
+
+            }
+
+            var dshot_start =  document.getElementById("shot_start");
+            var dshot_end =  document.getElementById("shot_end");
+            dshot_start.onkeydown = function () {
+                if (event.keyCode == 13) {
+                    var shot_start = dshot_start.value;
+                    var shot_end = dshot_end.value;
+                    if ((shot_start != null || shot_start != "") && (shot_end != null || shot_end != "")){
+                        if (shot_start > shot_end){
+                            dshot_start.value = "";
+                            dshot_end.value = "";
+                            openMsgDialog("错误","起始压射数不能大于终止压射数！")
+
+                        }
+                    }
+                }
+            }
+
+            dshot_end.onkeydown = function () {
+                if (event.keyCode == 13) {
+                    var shot_start = dshot_start.value;
+                    var shot_end = dshot_end.value;
+                    if ((shot_start != null || shot_start != "") && (shot_end != null || shot_end != "")){
+                        if (shot_start > shot_end){
+                            dshot_start.value = "";
+                            dshot_end.value = "";
+                            openMsgDialog("错误","起始压射数不能大于终止压射数！")
+
+                        }
+                    }
+                }
+            }
+
+            var roBcd = document.getElementById("zpgdbar");
+            arbpl = "";
+            roBcd.onkeydown = function () {
+                if (event.keyCode == 13) {
+                    var zpgdbar = document.getElementById("zpgdbar").value;
+                    var lenBarcode = zpgdbar.length;
+                    if (lenBarcode == 18){
+                        //根据压铸流转卡号获取压铸机台号
+                        $.ajax({
+                            url:"${base.contextPath}/sap/afvc/getArbpl",
+                            type:"get",
+                            data :{"zpgdbar":zpgdbar},
+                            contentType :"application/json; charset=utf-8",
+                            success:function (res){
+                                if (res.success){
+                                    var Oarbpldes = document.getElementById("arbplDesc");
+                                    var list = res.rows;
+                                    Oarbpldes.value = list[0].ktext;
+                                    arbplDesc = list[0].ktext;
+                                    arbpl = list[0].arbpl;
+                                    var dshot_start = document.getElementById("shot_start");
+                                    dshot_start.focus();
+                                }else{
+
+                                    var dzpgdbar = document.getElementById("zpgdbar");
+                                    dzpgdbar.value = "";
+                                    dzpgdbar.focus();
+                                    openMsgDialog("失败",res.message,"M");
+                                }
+                            },
+                            error:function (res) {
+
+                                var dzpgdbar = document.getElementById("zpgdbar");
+                                dzpgdbar.value = "";
+                                dzpgdbar.focus();
+                                openMsgDialog("失败",res.message,"M");
+                            }
+                        });
+                    }else{
+                        var dzpgdbar = document.getElementById("zpgdbar");
+                        dzpgdbar.focus();
+                        openMsgDialog("错误","压铸派工单号必输！","M");
+                    }
+                }
+            }
+
+            var dconfirm2 = document.getElementById("confirm2");
+            dconfirm2.onclick = function () {
+                var l_error = "";
+                var shot_start = document.getElementById("shot_start").value;
+                var shot_end = document.getElementById("shot_end").value;
+                if (arbpl == "" || arbpl == null){
+                    openMsgDialog("错误","未能获取到压铸机台号！","M")
+                    l_error = "E";
+                }
+
+                if (l_error == ""){
+                    if (shot_start == "" || shot_start == null){
+                        var dshot_start = document.getElementById("shot_start");
+                        dshot_start.focus();
+                        l_error = "E";
+                        openMsgDialog("错误","起始终止压射数必输！","M");
+
+                    }else if (shot_end == "" || shot_end == null){
+                        var dshot_end = document.getElementById("shot_end");
+                        dshot_end.focus();
+                        l_error = "E";
+                        openMsgDialog("错误","终止压射数必输！","M");
+
+                    }else if( shot_start >= shot_end){
+                        l_error = "E";
+                        document.getElementById("shot_start").value = "";
+                        document.getElementById("shot_end").value = "";
+                        openMsgDialog("错误","起始压射数不能大于或等于终止压射数！","M");
+                    }
+                }
+
+                if (l_error == ""){
+                    openMsgDialog("确认","请确认是否提交数据！","C");
+                }
+
+
+            }
+
+
+        //消息界面
+        //msgTitle:标题
+        //msgText：内容
+        //msgType：类型(M:提示消息;C:过账确认消息)
+        function openMsgDialog(msgTitle,msgText,msgType) {
+            appendMask2Dialog();
+            var dMsg=document.getElementById("msg-area");
+            dMsg.style.display="";
+            document.getElementById("msg1").innerHTML="&nbsp"+msgTitle;
+            document.getElementById("msg2").innerHTML=msgText;
+            var bCan=document.getElementById("cancer");
+            var bCls=document.getElementById("close");
+            var userName = getCookie("username");
+            var zpgdbar = document.getElementById("zpgdbar").value;
+            var arbplDesc = document.getElementById("arbplDesc").value;
+            var shot_start =  document.getElementById("shot_start").value;
+            var shot_end =  document.getElementById("shot_end").value;
+
+            if(msgType == "M"){
+                bCan.style.display = "none";
+                bCls.onclick = function () {
+                    dMsg.style.display="none";
+                    removeMask2Dialog();
+                    if(msgTitle == "成功" || msgTitle == "失败"){
+                        //清空页面内容
+                        document.getElementById("zpgdbar").value = "";
+                        document.getElementById("arbplDesc").value = "";
+                        var dprd_date = document.getElementById("prd_date");
+                        var dbanz = document.getElementById("banz");
+                        var dbanc = document.getElementById("banc");
+                        dprd_date.options[0].selected = true;
+                        dbanz.options[0].selected = true;
+                        dbanc.options[0].selected = true;
+                        document.getElementById("shot_start").value = "";
+                        document.getElementById("shot_end").value = "";
+                        //获取条码页面元素
+                        var roBcd=document.getElementById("zpgdbar");
+
+                        //进入报工页面时，光标定位到条码输入框
+                        roBcd.focus();
+                    }else if(msgTitle == "错误" ){
+                        var length = zpgdbar.length;
+
+
+                        if(zpgdbar == "" || zpgdbar == null){
+
+                            //获取条码页面元素
+                            var roBcd=document.getElementById("zpgdbar");
+                            roBcd.focus();
+                        }
+
+                        if(arbplDesc == "" || arbplDesc == null){
+
+                            //获取条码页面元素
+                            var roBcd=document.getElementById("zpgdbar");
+                            roBcd.focus();
+                        }
+
+                        if(shot_start == "" || shot_start == null || shot_end == "" || shot_end == null){
+                            var dshot_start = document.getElementById("shot_start");
+                            var dshot_end = document.getElementById("shot_end");
+                            if (shot_start == "" || shot_start == null){
+                                dshot_start.focus();
+                            }
+
+                            if (shot_end == "" || shot_end == null){
+                                dshot_end.focus();
+                            }
+
+                            if ((shot_start == null || shot_start == "") && (shot_end == null || shot_end == "")){
+                                dshot_start.focus();
+                            }
+                        }
+
+                        if (length != 18){
+                            document.getElementById("zpgdbar").value = "";
+                            var roBcd=document.getElementById("zpgdbar");
+                            document.getElementById("arbplDesc").value = "";
+                            arbplDesc = "";
+                            var dprd_date = document.getElementById("prd_date");
+                            var dbanz = document.getElementById("banz");
+                            var dbanc = document.getElementById("banc");
+                            dprd_date.options[0].selected = true;
+                            dbanz.options[0].selected = true;
+                            dbanc.options[0].selected = true;
+                            document.getElementById("shot_start").value = "";
+                            document.getElementById("shot_end").value = "";
+                            roBcd.focus();
+                        }
+                    }
+                }
+            }else if(msgType == "C"){
+                bCan.style.display = "";
+                bCan.onclick=function () {
+                    dMsg.style.display="none";
+                    removeMask2Dialog();
+                }
+
+                bCls.onclick=function () {
+                    dMsg.style.display="none";
+                    appendMask2Dialog();
+                    var shot_start = document.getElementById("shot_start").value;
+                    var shot_end = document.getElementById("shot_end").value;
+                    var erp_date = document.getElementById("prd_date").value;
+                    var banz = document.getElementById("banz").value;
+                    var banc = document.getElementById("banc").value;
+                    var arbplDesc = document.getElementById("arbplDesc").value;
+                    var zpgdbar = document.getElementById("zpgdbar").value;
+                    var username = getCookie("username");
+                    $.ajax({
+                        url:"${base.contextPath}/wip/shotnum/commitRow",
+                        type:"get",
+                        data : {"arbpl":arbpl,
+                                "arbplDesc":arbplDesc,
+                                "shot_start":shot_start,
+                                "shot_end":shot_end,
+                                "erp_date":erp_date,
+                                "banz":banz,
+                                "banc":banc,
+                                "zpgdbar":zpgdbar,
+                                "createdBy":userId,
+                                "userName":username
+                            },
+                        contentType :"application/json;charset=UTF-8",
+                        success:function (res){
+                            if (res.success){
+                                var dZpgdbar = document.getElementById("zpgdbar");
+                                dZpgdbar.value = "";
+                                dZpgdbar.focus();
+                                openMsgDialog("成功",res.message,"M");
+                            }else{
+
+                            }
+                        },
+                        error:function (res) {
+                            openMsgDialog("失败",res.message,"M");
+                        }
+                    });
+                }
+            }
+        }
+
+        }
+    </script>
+</head>
+<body>
+<!--填报压射次数-->
+<div id="dispatch-area">
+
+    <div style="width: 220px;height: 20px">
+        <div id="back" style="font-size: 16px;width:40px;height:20px;float: left;background-color:#169bd5;top: 0px;margin-bottom: 1px">&nbsp;返回</div>
+        <div style="width:20px;height:20px;float: left;background-color:white;top: 0px"></div>
+        <div id="logout" style="font-size: 16px;width:40px;height:20px;float: left;background-color:#169bd5;top: 0px;margin-bottom: 1px">&nbsp;注销</div>
+        <div id="user" style="margin-right: 25px;font-size:14px;height:20px;float: right;background-color:white;top: 0px"></div>
+    </div>
+
+    <div style="width: 220px;height: 235px">
+        <input id="zpgdbar" style="font-size:16px;width: 200px;height: 22px;margin-bottom: 1px;" type="text"><br>
+        <!--<label class="dcp-label">物料描述</label><input id="matDesc"  style="font-size:10px;width: 120px;height: 40px;background-color: #C9C9C9" disabled="true" type="text"><br>-->
+        <label class="dcp-label">压铸机台</label><textarea id="arbplDesc" style="font-size:10px;width: 120px;height: 40px;background-color: #C9C9C9" disabled="true" rows="2"></textarea><br>
+        <!--<label class="dcp-label">压铸机台</label><input id="arbplDesc"  style="font-size:10px;width: 120px;height: 40px;background-color: #C9C9C9" disabled="true" type="text"><br>-->
+        <label class="dcp-label">班次日期</label><select id="prd_date" class="cls-attr-input"type="text">
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        </select><br>
+        <label class="dcp-label">班组</label><select id="banz" class="cls-attr-input">
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+        </select><br>
+        <label class="dcp-label">班次</label><select id="banc" class="cls-attr-input">
+        <option value="1">白班</option>
+        <option value="2">夜班</option>shot_start
+        <option value="3">中班</option>
+        </select><br>
+        <!--<label class="dcp-label">报工数量</label><input id="yeild" class="cls-attr-input" disabled="true" type="number"><br>-->
+        <label class="dcp-label">起始压射号</label><input id="shot_start" class="cls-attr-input" type="number"><br>
+        <label class="dcp-label">起始压射号</label><input id="shot_end" class="cls-attr-input" type="number"><br>
+    </div>
+
+    <div style="width: 220px;height: 30px;margin-top: 2px">
+        <div style="width:50px;height:20px;float: left;"><button id="confirm2" style="width: auto;height: 27px" hidefocus="true" class="login-btn" >提交</button></div>
+
+        <div> </div>
+        <div style="width:50px;height:20px;float: right;"><button id="cleanData" style="width: auto;height: 27px" hidefocus="true" class="login-btn" >清空</button></div>
+
+    </div>
+</div>
+
+
+
+<!--消息界面-->
+<div id="msg-area">
+    <div>
+        <div id="msg1" style="font-size: 16px; line-height: 25px"></div>
+        <div id="msg2" style="font-size: 10px; text-align: center;line-height: 20px"></div>
+        <div id="msg3">
+            <button id="cancer" style="float: left;width: auto;background-color: white">取消</button>
+            <button id="close" style="float: right;width: auto;background-color: white">确定</button>
+        </div>
+    </div>
+</div>
+
+<!--遮罩层-->
+<div id="mask2">
+</div>
+</body>
+</html>

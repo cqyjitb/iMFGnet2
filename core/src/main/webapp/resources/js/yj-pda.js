@@ -54,6 +54,7 @@ var newAufnr;
 var newZpgdbar;
 
 var pd_sum;
+var arbpl;
 
 function getDispatchValues() {
     tm = new Date().format("yyyy-MM-dd hh:mm:ss");

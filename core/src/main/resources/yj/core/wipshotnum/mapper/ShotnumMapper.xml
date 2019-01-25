@@ -15,6 +15,8 @@
         <result column="SHOT_START" property="shotStart" jdbcType="DECIMAL"/>
         <result column="SHOT_END" property="shotEnd" jdbcType="DECIMAL"/>
         <result column="CRNAM" property="crnam" jdbcType="VARCHAR"/>
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+        <result column="CREATION_DATE" property="creationDate" jdbcType="VARCHAR" />
     </resultMap>
 
     <select id="selectShotnum" parameterType="yj.core.wipshotnum.dto.Shotnum" resultMap="BaseResultMap">
@@ -57,4 +59,9 @@
             </if>
         </where>
     </select>
+
+    <insert id="insertRow" parameterType="yj.core.wipshotnum.dto.Shotnum" >
+        insert INTO wip_shotnum(WERKS,ARBPL,PRD_DATE,SHIFTS,CRDAT,CRTIM,CLASS,ZPGDBAR,KTEXT,SHOT_START,SHOT_END,CRNAM,CREATED_BY,CREATION_DATE)
+        VALUES (#{werks},#{arbpl},#{prdDate},#{shifts},#{crdat},#{crtim},#{sClass},#{zpgdbar},#{ktext},#{shotStart},#{shotEnd},#{crnam},#{createdBy},#{creationDate})
+    </insert>
 </mapper>

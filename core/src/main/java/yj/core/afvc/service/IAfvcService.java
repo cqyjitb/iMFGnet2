@@ -24,4 +24,18 @@ public abstract interface IAfvcService
       * @return
       */
      int deleteByAufpl(String aufpl);
+
+     /**
+      *  根据派工单 查询工作中心 917110140
+      * @param zpgdbar
+      * @return
+      */
+     Afvc selectByZpgdbar(String zpgdbar);
+
+     /**
+      *  根据工作中心编号 获取描述 917110140
+      * @param arbpl
+      * @return
+      */
+     List<Afvc> selectByArbpl(String arbpl);
 }
