@@ -83,8 +83,8 @@
         <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
     </resultMap>
 
-    <select id="selectByOrderno" parameterType="java.lang.String" resultType="java.lang.Integer">
-        SELECT COALESCE(sum(yeild),0) from confirmation_input_log
+    <select id="selectByOrderno" parameterType="java.lang.String" resultType="yj.core.dispatch.dto.InputLog">
+        SELECT COALESCE(sum(yeild),0) as yeild,orderno from confirmation_input_log
         <where>
             1 = 1
             <if test="orderno != null">

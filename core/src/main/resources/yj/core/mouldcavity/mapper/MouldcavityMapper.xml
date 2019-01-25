@@ -8,5 +8,13 @@
         <result column="MAKTX" property="maktx" jdbcType="VARCHAR"/>
         <result column="MDNUM" property="mdnum" jdbcType="DECIMAL"/>
     </resultMap>
-
+    <select id="selectByMatnr" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select mdnum from sap_mouldcavity
+        <where>
+            <if test="matnr != null">
+                matnr = #{matnr}
+            </if>
+        </where>
+        limit 1
+    </select>
 </mapper>

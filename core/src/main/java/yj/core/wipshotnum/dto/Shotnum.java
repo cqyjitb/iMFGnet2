@@ -53,6 +53,15 @@ public class Shotnum extends BaseDTO {
     private String aufnr;//订单
     @Transient
     private Integer yeild;//合格品数量
+    private Integer wasteNum;//废品数量
+
+    public Integer getWasteNum() {
+        return wasteNum;
+    }
+
+    public void setWasteNum(Integer wasteNum) {
+        this.wasteNum = wasteNum;
+    }
 
     public Integer getYeild() {
         return yeild;

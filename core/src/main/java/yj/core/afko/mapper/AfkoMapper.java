@@ -1,6 +1,7 @@
 package yj.core.afko.mapper;
 
 import com.hand.hap.mybatis.common.Mapper;
+import org.apache.ibatis.annotations.Param;
 import yj.core.afko.dto.Afko;
 
 import java.util.List;
@@ -29,5 +30,13 @@ public  interface AfkoMapper
       * @param fevor
       * @return
       */
-     List<Afko> selectFromFevor(String fevor);
+     List<Afko> selectFromFevor(@Param("fevor") String fevor);
+
+     /**
+      * 根据工作中心和生产部门查询 918100064
+      * @param arbpl
+      * @param fevor
+      * @return
+      */
+     Afko selectByFevor(@Param("arbpl")String arbpl,@Param("fevor")String fevor);
 }

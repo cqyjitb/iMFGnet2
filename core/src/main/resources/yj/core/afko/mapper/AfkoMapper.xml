@@ -66,6 +66,20 @@
         <result column="FLGRG" property="flgrg" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <select id="selectByFevor" parameterType="java.lang.String" resultType="yj.core.afko.dto.Afko">
+        select DISTINCT ao.fevor,ao.txt,ao.aufnr from sap_afko ao,sap_afvc ac
+        <where>
+            ao.aufpl = ac.aufpl
+            <if test="fevor != null">
+                AND ao.fevor = #{fevor}
+            </if>
+            <if test="arbpl != null">
+                AND ac.arbpl = #{arbpl}
+            </if>
+        </where>
+        limit 1
+    </select>
+
     <select id="selectFromFevor" parameterType="java.lang.String" resultMap="BaseResultMap">
         select distinct fevor,txt from sap_afko
         <where>
