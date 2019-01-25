@@ -49,15 +49,17 @@
                     message: "查询条件:结束日期,必输！"
                 });
             }else{
+                grid.dataSource.data([]);
                 if(total == 'Y'){
                     grid.hideColumn("shifts");
                     grid.hideColumn("sClass");
                     grid.showColumn("prdDateBefore");
-//                    grid.columns[5].set("title","开始日期");
+                    grid.thead[0].lastChild.cells[5].innerText = "开始日期";
                 }else{
                     grid.showColumn("shifts");
                     grid.showColumn("sClass");
                     grid.hideColumn("prdDateBefore");
+                    grid.thead[0].lastChild.cells[5].innerText = "日期";
                 }
                 $('#Grid').data('kendoGrid').dataSource.page(1);
             }
@@ -181,7 +183,7 @@
         },
         batch: true,
         serverPaging: true,
-        pageSize: 20,
+        //pageSize: 20,
         schema: {
             data: 'rows',
             total: 'total',
@@ -206,7 +208,7 @@
         scrollable: true,
         navigatable: false,
         pageable: {
-            pageSizes: [20, 50,100,500,1000, 2000, 5000, "all"],
+            pageSizes: ["all"],
             refresh: true,
             buttonCount: 10
         },
@@ -215,7 +217,7 @@
             {
                 field: "werks",
                 title: '工厂',
-                width: 60,
+//                width: 60,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -226,7 +228,7 @@
             {
                 field: "fevor",
                 title: '车间',
-                width: 80,
+//                width: 80,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -237,7 +239,7 @@
             {
                 field: "txt",
                 title: '车间名称',
-                width: 120,
+//                width: 120,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -248,7 +250,7 @@
             {
                 field: "arbpl",
                 title: '工作中心',
-                width: 80,
+//                width: 80,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -259,7 +261,7 @@
             {
                 field: "ktext",
                 title: '工作中心名称',
-                width: 160,
+//                width: 160,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -270,7 +272,7 @@
             {
                 field: "prdDateAfter",
                 title: '日期',
-                width: 100,
+//                width: 100,
                 format:"{0:yyyy-MM-dd}",
                 headerAttributes: {
                     style: "text-align: center;"
@@ -282,7 +284,7 @@
             {
                 field: "prdDateBefore",
                 title: '结束日期',
-                width: 100,
+//                width: 100,
                 format:"{0:yyyy-MM-dd}",
                 hidden:true,
                 headerAttributes: {
@@ -295,7 +297,7 @@
             {
                 field: "shifts",
                 title: '班次',
-                width: 80,
+//                width: 80,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -306,7 +308,7 @@
             {
                 field: "sClass",
                 title: '班组',
-                width: 80,
+//                width: 80,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -317,7 +319,7 @@
             {
                 field: "shotStart",
                 title: '起始压射号',
-                width: 100,
+//                width: 100,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -328,7 +330,7 @@
             {
                 field: "shotEnd",
                 title: '终止压射号',
-                width: 100,
+//                width: 100,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -339,7 +341,7 @@
             {
                 field: "shotNum",
                 title: '压射次数',
-                width: 80,
+//                width: 80,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -350,7 +352,7 @@
             {
                 field: "yeild",
                 title: '报告合格数量',
-                width: 100,
+//                width: 100,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -361,7 +363,7 @@
             {
                 field: "wasteNum",
                 title: '废品数量（自动计算）',
-                width: 100,
+//                width: 100,
                 headerAttributes: {
                     style: "text-align: center;"
                 },

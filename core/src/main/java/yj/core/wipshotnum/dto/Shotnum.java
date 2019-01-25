@@ -78,6 +78,15 @@ public class Shotnum extends BaseDTO {
     public void setCreationDate(Date creationDate) {
         this.creationDate = creationDate;
     }
+    private Integer wasteNum;//废品数量
+
+    public Integer getWasteNum() {
+        return wasteNum;
+    }
+
+    public void setWasteNum(Integer wasteNum) {
+        this.wasteNum = wasteNum;
+    }
 
     public Integer getYeild() {
         return yeild;

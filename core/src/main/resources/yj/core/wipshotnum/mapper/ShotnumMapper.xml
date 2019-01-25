@@ -17,21 +17,18 @@
         <result column="CRNAM" property="crnam" jdbcType="VARCHAR"/>
         <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
         <result column="CREATION_DATE" property="creationDate" jdbcType="VARCHAR" />
+        <result column="FEVOR" property="fevor" jdbcType="VARCHAR"/>
+        <result column="TXT" property="txt" jdbcType="VARCHAR"/>
+        <result column="PLNBEZ" property="plnbez" jdbcType="VARCHAR"/>
+        <result column="AUFNR" property="aufnr" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="selectShotnum" parameterType="yj.core.wipshotnum.dto.Shotnum" resultMap="BaseResultMap">
-        select COUNT(sh.werks),sh.arbpl,sh.werks,sh.ktext,sh.prd_date,sh.shifts,sh.class,sh.shot_start,sh.shot_end,ao.fevor,ao.txt,ao.plnbez as plnbez,
-        (select mdnum from sap_mouldcavity where matnr = plnbez) as mdnum,ao.aufnr
-        from wip_shotnum sh,sap_afvc ac,sap_afko ao
+        select DISTINCT sh.* from wip_shotnum sh
         <where>
-            sh.arbpl = ac.arbpl
-            AND ac.vornr = "0010"
-            AND ac.aufpl = ao.aufpl
+            1 = 1
             <if test="werks != null">
                 AND sh.werks = #{werks}
-            </if>
-            <if test="fevor != null">
-                AND ao.fevor = #{fevor}
             </if>
             <if test="prdDateAfter != null">
                 AND  sh.prd_date >= #{prdDateAfter}
@@ -40,24 +37,7 @@
                 AND #{prdDateBefore} >= sh.prd_date
             </if>
         </where>
-        order by  ao.fevor asc,sh.arbpl asc,sh.prd_date asc,sh.shifts asc
-    </select>
-   <!--汇总查询-->
-    <select id="selectShotnum2" parameterType="yj.core.wipshotnum.dto.Shotnum" resultMap="BaseResultMap">
-        select DISTINCT sh.werks,sh.arbpl,sh.ktext,sh.shot_start,sh.shot_end,ao.fevor,ao.txt,ao.plnbez as plnbez,
-        (select mdnum from sap_mouldcavity where matnr = plnbez) as mdnum,ao.aufnr
-        from wip_shotnum sh,sap_afvc ac,sap_afko ao
-        <where>
-            sh.arbpl = ac.arbpl
-            AND ac.vornr = "0010"
-            AND ac.aufpl = ao.aufpl
-            <if test="werks != null">
-                AND sh.werks = #{werks}
-            </if>
-            <if test="fevor != null">
-                AND ao.fevor = #{fevor}
-            </if>
-        </where>
+        order by sh.arbpl asc,sh.prd_date asc,sh.shifts asc
     </select>
 
     <insert id="insertRow" parameterType="yj.core.wipshotnum.dto.Shotnum" >

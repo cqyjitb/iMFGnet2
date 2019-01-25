@@ -75,6 +75,6 @@ public interface InputLogMapper extends Mapper<InputLog>{
      * @param postingDateAfter  过账日期
      * @return
      */
-    Integer selectByOrderno(@Param("orderno")String orderno, @Param("classgrp")String classgrp,
-                            @Param("postingDateAfter")String postingDateAfter,@Param("postingDateBefore")String postingDateBefore);
+    InputLog selectByOrderno(@Param("orderno")String orderno, @Param("classgrp")String classgrp,@Param("postingDateAfter")String postingDateAfter,
+                             @Param("postingDateBefore")String postingDateBefore);
 }

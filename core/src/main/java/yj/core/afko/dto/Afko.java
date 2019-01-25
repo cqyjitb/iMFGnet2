@@ -85,6 +85,16 @@ public class Afko
     @Transient
     private String productdate;
 
+    @Transient
+    private String arbpl;//工作中心
+
+    public String getArbpl() {
+        return arbpl;
+    }
+
+    public void setArbpl(String arbpl) {
+        this.arbpl = arbpl;
+    }
 
     public String getMandt() {
         return mandt;
