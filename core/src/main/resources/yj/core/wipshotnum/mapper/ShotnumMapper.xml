@@ -64,4 +64,15 @@
         insert INTO wip_shotnum(WERKS,ARBPL,PRD_DATE,SHIFTS,CRDAT,CRTIM,CLASS,ZPGDBAR,KTEXT,SHOT_START,SHOT_END,CRNAM,CREATED_BY,CREATION_DATE)
         VALUES (#{werks},#{arbpl},#{prdDate},#{shifts},#{crdat},#{crtim},#{sClass},#{zpgdbar},#{ktext},#{shotStart},#{shotEnd},#{crnam},#{createdBy},#{creationDate})
     </insert>
+
+    <select id="isExit" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * FROM wip_shotnum
+        <where>
+            WERKS = #{werks}
+            and ARBPL = #{arbpl}
+            and PRD_DATE = #{prd_date}
+            and SHIFTS = #{shifts}
+        </where>
+        order by CRDAT,CRTIM desc
+    </select>
 </mapper>

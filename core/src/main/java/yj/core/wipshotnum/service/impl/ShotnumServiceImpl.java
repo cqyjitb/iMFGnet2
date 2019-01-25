@@ -51,4 +51,9 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
     public int insertRow(Shotnum shot) {
         return shotnumMapper.insertRow(shot);
     }
+
+    @Override
+    public List<Shotnum> isExit(String werks, String arbpl, String prd_date, String shifts) {
+        return shotnumMapper.isExit(werks,arbpl,prd_date,shifts);
+    }
 }

@@ -57,7 +57,7 @@ public class ShounumController extends BaseController {
     public ResponseData commitRow(HttpServletRequest request){
         ResponseData rs = new ResponseData();
         String arbpl = request.getParameter("arbpl");
-        String erp_date = request.getParameter("erp_date");
+        String erp_date = request.getParameter("prd_date");
         String shot_start = request.getParameter("shot_start");
         String shot_end = request.getParameter("shot_end");
         String banz = request.getParameter("banz");
@@ -102,6 +102,45 @@ public class ShounumController extends BaseController {
         }else{
             rs.setMessage("提交保存失败");
             rs.setSuccess(false);
+        }
+        return rs;
+    }
+
+    /**
+     *  处理页面请求 根据工厂 工作中心 生产日期 班次 查询记录
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = {"/wip/shotnum/isExit"}, method = {RequestMethod.GET})
+    @ResponseBody
+    public ResponseData isExit(HttpServletRequest request){
+        ResponseData rs = new ResponseData();
+        String werks = "";
+        String arbpl = request.getParameter("arbpl");
+        String prd_date = request.getParameter("erp_date");
+        String shifts = request.getParameter("banc");
+        String zpgdbar = request.getParameter("zpgdbar");
+
+        Cardh cardh = new Cardh();
+        cardh = cardhService.selectByBarcode(zpgdbar);
+        if (cardh == null){
+            rs.setSuccess(false);
+            rs.setMessage("压铸流转卡不存在，请检查流转卡！");
+            return rs;
+        }
+
+        werks = cardh.getWerks();
+        List<Shotnum> list = new ArrayList<>();
+        list = service.isExit(werks,arbpl,prd_date,shifts);
+        if (list.size()>0){
+            rs.setRows(list);
+            rs.setMessage("已于创建时间"+list.get(0).getCrdat()+ " "+list.get(0).getCrtim()+"填报当前班次数据，是否重新填报？");
+            rs.setSuccess(true);
+            rs.setCode("X");
+
+        }else{
+            rs.setSuccess(true);
+            rs.setCode("N");
         }
         return rs;
     }

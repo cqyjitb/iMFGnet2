@@ -22,4 +22,14 @@ public interface IShotnumService extends IBaseService<Shotnum>, ProxySelf<IShotn
      * @return
      */
     int insertRow(Shotnum shot);
+
+    /**
+     *  根据 工厂 工作中心 生产日期 班次 查询记录 917110140
+     * @param werks
+     * @param arbpl
+     * @param prd_date
+     * @param shifts
+     * @return
+     */
+    List<Shotnum> isExit(String werks,String arbpl,String prd_date,String shifts);
 }
