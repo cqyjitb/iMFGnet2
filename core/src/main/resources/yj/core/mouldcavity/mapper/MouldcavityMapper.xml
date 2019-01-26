@@ -32,7 +32,7 @@
     </insert>
 
     <update id="updateMouldcavity" parameterType="yj.core.mouldcavity.dto.Mouldcavity">
-        update sap_mouldcavity set werks = #{werks},matnr = #{matnr},maktx = #{maktx},mdnum = #{mdnum},/*CREATION_DATE=#{creationDate},CREATED_BY=#{createdBy},*/
+        update sap_mouldcavity set werks = #{werks},matnr = #{matnr},maktx = #{maktx},mdnum = #{mdnum},
         LAST_UPDATE_DATE = #{lastUpdateDate},LAST_UPDATED_BY = #{lastUpdatedBy}
         <where>
             werks = #{werks}
