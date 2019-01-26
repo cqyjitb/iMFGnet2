@@ -8,6 +8,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @ExtensionAttribute(disable=true)
 @Table(name = "sap_mouldcavity")
@@ -20,6 +22,54 @@ public class Mouldcavity extends BaseDTO {
     private String maktx;
 
     private Integer mdnum;
+    @NotNull
+    private Long createdBy; //创建人
+    @NotNull
+    private Date creationDate; //创建时间
+
+    private Long lastUpdatedBy; //更新人
+
+    private Date lastUpdateDate; //更新时间
+
+    @Override
+    public Long getCreatedBy() {
+        return createdBy;
+    }
+
+    @Override
+    public void setCreatedBy(Long createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    @Override
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    @Override
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    @Override
+    public Long getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+
+    @Override
+    public void setLastUpdatedBy(Long lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+    @Override
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
+    }
+
+    @Override
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
 
     public String getWerks() {
         return werks;

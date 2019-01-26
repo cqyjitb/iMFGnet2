@@ -39,4 +39,11 @@ public  interface AfkoMapper
       * @return
       */
      Afko selectByFevor(@Param("arbpl")String arbpl,@Param("fevor")String fevor);
+
+     /**
+      * 物料查询LOV_PLNBEZ  918100064
+      * @param plnbez 物料编码
+      * @return
+      */
+     List<Afko> selectByPlnbez(@Param("plnbez")String plnbez);
 }
