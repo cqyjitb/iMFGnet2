@@ -26,6 +26,7 @@
         <result column="APP0020" property="app0020" jdbcType="VARCHAR" />
         <result column="APP0021" property="app0021" jdbcType="VARCHAR" />
         <result column="APP0022" property="app0022" jdbcType="VARCHAR" />
+        <result column="APP0023" property="app0023" jdbcType="VARCHAR" />
     </resultMap>
     <select id="isExit" parameterType="yj.core.tcode.dto.Tcode" resultType="java.lang.Integer">
         select count(*)
@@ -67,7 +68,8 @@
         APP0019 = #{app0019},
         APP0020 = #{app0020},
         APP0021 = #{app0021},
-        APP0022 = #{app0022}
+        APP0022 = #{app0022},
+        APP0023 = #{app0023},
           <where>
               USER_NAME = #{userName}
           </where>

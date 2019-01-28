@@ -237,7 +237,9 @@
                         $.ajax({
                             url:"${base.contextPath}/sap/afvc/getArbpl",
                             type:"get",
-                            data :{"zpgdbar":zpgdbar},
+                            data :{"zpgdbar":zpgdbar,
+                                    "type":"old"
+                                    },
                             contentType :"application/json; charset=utf-8",
                             success:function (res){
                                 if (res.success){
@@ -538,7 +540,7 @@
         </select><br>
         <!--<label class="dcp-label">报工数量</label><input id="yeild" class="cls-attr-input" disabled="true" type="number"><br>-->
         <label class="dcp-label">起始压射号</label><input id="shot_start" class="cls-attr-input" type="number"><br>
-        <label class="dcp-label">起始压射号</label><input id="shot_end" class="cls-attr-input" type="number"><br>
+        <label class="dcp-label">终止压射号</label><input id="shot_end" class="cls-attr-input" type="number"><br>
     </div>
 
     <div style="width: 220px;height: 30px;margin-top: 2px">
