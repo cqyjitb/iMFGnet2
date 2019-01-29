@@ -31,7 +31,7 @@ public class SIQUERYOLDZPGDBARSenderSyncService extends Service {
 
     static {
         URL url = null;
-        url = SIQUERYOLDZPGDBARSenderSyncService.class.getClassLoader().getResource("queryXhcard.xml");
+        url = SIQUERYOLDZPGDBARSenderSyncService.class.getClassLoader().getResource("queryoldzpgdbar.xml");
         System.out.println(url);
         WSDL_LOCATION = url;
     }

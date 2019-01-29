@@ -16,22 +16,93 @@
             <xsd:element name="MT_QUERYOLDZPGDBAR_Send_Res" type="DT_QUERYOLDZPGDBAR_Send_Res"/>
             <xsd:complexType name="DT_QUERYOLDZPGDBAR_Send_Res">
                 <xsd:annotation>
-                    <xsd:appinfo source="http://sap.com/xi/VersionID">da96e9d222a811e9c36a0000002ad1ea</xsd:appinfo>
+                    <xsd:appinfo source="http://sap.com/xi/VersionID">597ae80f22d011e9a0f10000002ad1ea</xsd:appinfo>
                 </xsd:annotation>
                 <xsd:sequence>
                     <xsd:element name="RETURN">
+                        <xsd:annotation>
+                            <xsd:appinfo source="http://sap.com/xi/TextID">fb1ab1e622cf11e99116002324a6066a
+                            </xsd:appinfo>
+                        </xsd:annotation>
                         <xsd:complexType>
                             <xsd:sequence>
-                                <xsd:element name="MSGTY" type="xsd:string"/>
-                                <xsd:element name="MSGNO" type="xsd:string"/>
-                                <xsd:element name="MSGID" type="xsd:string"/>
-                                <xsd:element name="MSGV1" type="xsd:string"/>
-                                <xsd:element name="MSGV2" type="xsd:string"/>
-                                <xsd:element name="MSGV3" type="xsd:string"/>
-                                <xsd:element name="MSGV4" type="xsd:string"/>
-                                <xsd:element name="MESSAGE" type="xsd:string"/>
-                                <xsd:element name="ARBPL" type="xsd:string"/>
-                                <xsd:element name="ARBPLDESC" type="xsd:string"/>
+                                <xsd:element name="MSGTY" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            fb1ab1dc22cf11e99221002324a6066a
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="MSGNO" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            fb1ab1dd22cf11e9b20f002324a6066a
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="MSGID" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            fb1ab1de22cf11e99e5f002324a6066a
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="MSGV1" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            fb1ab1df22cf11e9b84d002324a6066a
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="MSGV2" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            fb1ab1e022cf11e98d59002324a6066a
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="MSGV3" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            fb1ab1e122cf11e9b957002324a6066a
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="MSGV4" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            fb1ab1e222cf11e9bdbc002324a6066a
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="MESSAGE" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            fb1ab1e322cf11e99749002324a6066a
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="ARBPL" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            fb1ab1e422cf11e993ef002324a6066a
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="ARBPLDESC" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            fb1ab1e522cf11e98ef4002324a6066a
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="WERKS" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            fb1ab1e522cf11e98ef4002324a6066a
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
                             </xsd:sequence>
                         </xsd:complexType>
                     </xsd:element>

@@ -16,6 +16,9 @@ import yj.core.afvc.dto.Afvc;
 import yj.core.afvc.service.IAfvcService;
 import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.service.ICardhService;
+import yj.core.webservice_queryoldzpgdbar.components.QueryOldZpgdbarUtil;
+import yj.core.webservice_queryoldzpgdbar.dto.DtqueryParm;
+import yj.core.webservice_queryoldzpgdbar.dto.DtqueryReturn;
 
 @Controller
 public class AfvcController
@@ -27,6 +30,10 @@ public class AfvcController
     private ICardhService cardhService;
     @Autowired
     private IAfkoService afkoService;
+    @Autowired
+    private QueryOldZpgdbarUtil queryOldZpgdbarUtil;
+
+
 
 
     @RequestMapping({"/sap/afvc/query"})
@@ -108,6 +115,22 @@ public class AfvcController
                 rs.setSuccess(false);
             }
         }else if (type.equals("old")){//老派工单
+            DtqueryParm parm = new DtqueryParm();
+            DtqueryReturn re = new DtqueryReturn();
+            parm.setZpgdbar(zpgdbar);
+            re = queryOldZpgdbarUtil.receiveConfirmation(parm);
+            if (re.getMsgty().equals("S")){
+                List<Afvc> list = new ArrayList<>();
+                Afvc afvc = new Afvc();
+                afvc.setArbpl(re.getArbpl());
+                afvc.setKtext(re.getArbpldesc());
+                list.add(afvc);
+                rs.setSuccess(true);
+                rs.setRows(list);
+            }else{
+                rs.setSuccess(false);
+                rs.setMessage(re.getMessage());
+            }
 
         }
 

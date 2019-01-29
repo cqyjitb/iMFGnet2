@@ -10,6 +10,9 @@ import yj.core.afvc.dto.Afvc;
 import yj.core.afvc.service.IAfvcService;
 import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.service.ICardhService;
+import yj.core.webservice_queryoldzpgdbar.components.QueryOldZpgdbarUtil;
+import yj.core.webservice_queryoldzpgdbar.dto.DtqueryParm;
+import yj.core.webservice_queryoldzpgdbar.dto.DtqueryReturn;
 import yj.core.wipshotnum.dto.Shotnum;
 import yj.core.wipshotnum.service.IShotnumService;
 
@@ -31,6 +34,8 @@ public class ShounumController extends BaseController {
     private IAfvcService afvcService;
     @Autowired
     private ICardhService cardhService;
+    @Autowired
+    private QueryOldZpgdbarUtil queryOldZpgdbarUtil;
 
     /**
      * 压射号及压铸报工查询  918100064
@@ -68,15 +73,26 @@ public class ShounumController extends BaseController {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String crdate = sdf.format(new Date());
         String createdBy = request.getParameter("createdBy");
-        List<Afvc> list = new ArrayList<>();
-        list = afvcService.selectByArbpl(arbpl);
-        if (list.size() > 0){
-            ktext = list.get(0).getKtext();
+        String type = request.getParameter("type");
+        String werks = "";
+        if (type.equals("old")){
+            DtqueryParm parm = new DtqueryParm();
+            parm.setZpgdbar(zpgdbar);
+            DtqueryReturn re = queryOldZpgdbarUtil.receiveConfirmation(parm);
+            ktext = re.getArbpldesc();
+            werks = re.getWerks();
+        }else{
+            List<Afvc> list = new ArrayList<>();
+            list = afvcService.selectByArbpl(arbpl);
+            if (list.size() > 0){
+                ktext = list.get(0).getKtext();
+            }
+
+            Cardh cardh = new Cardh();
+            cardh = cardhService.selectByBarcode(zpgdbar);
+            werks = cardh.getWerks();
         }
 
-        Cardh cardh = new Cardh();
-        cardh = cardhService.selectByBarcode(zpgdbar);
-        String werks = cardh.getWerks();
 
 
         Shotnum shot = new Shotnum();
@@ -120,16 +136,27 @@ public class ShounumController extends BaseController {
         String prd_date = request.getParameter("erp_date");
         String shifts = request.getParameter("banc");
         String zpgdbar = request.getParameter("zpgdbar");
+        String type = request.getParameter("type");
 
-        Cardh cardh = new Cardh();
-        cardh = cardhService.selectByBarcode(zpgdbar);
-        if (cardh == null){
-            rs.setSuccess(false);
-            rs.setMessage("压铸流转卡不存在，请检查流转卡！");
-            return rs;
+        if (type.equals("old")){
+            DtqueryParm parm = new DtqueryParm();
+            parm.setZpgdbar(zpgdbar);
+            DtqueryReturn re = queryOldZpgdbarUtil.receiveConfirmation(parm);
+            if (re.getMsgty().equals("S")){
+                werks = re.getWerks();
+            }
+        }else{
+            Cardh cardh = new Cardh();
+            cardh = cardhService.selectByBarcode(zpgdbar);
+            if (cardh == null){
+                rs.setSuccess(false);
+                rs.setMessage("压铸流转卡不存在，请检查流转卡！");
+                return rs;
+            }
+
+            werks = cardh.getWerks();
         }
 
-        werks = cardh.getWerks();
         List<Shotnum> list = new ArrayList<>();
         list = service.isExit(werks,arbpl,prd_date,shifts);
         if (list.size()>0){

@@ -32,6 +32,7 @@ import javax.xml.bind.annotation.XmlType;
  *                   &lt;element name="MESSAGE" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="ARBPL" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="ARBPLDESC" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="WERKS" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                 &lt;/sequence>
  *               &lt;/restriction>
  *             &lt;/complexContent>
@@ -96,6 +97,7 @@ public class DTQUERYOLDZPGDBARSendRes {
      *         &lt;element name="MESSAGE" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="ARBPL" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="ARBPLDESC" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="WERKS" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *       &lt;/sequence>
      *     &lt;/restriction>
      *   &lt;/complexContent>
@@ -106,7 +108,7 @@ public class DTQUERYOLDZPGDBARSendRes {
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = { "msgty", "msgno", "msgid", "msgv1",
-            "msgv2", "msgv3", "msgv4", "message", "arbpl", "arbpldesc" })
+            "msgv2", "msgv3", "msgv4", "message", "arbpl", "arbpldesc", "werks" })
     public static class RETURN {
 
         @XmlElement(name = "MSGTY", required = true)
@@ -129,6 +131,8 @@ public class DTQUERYOLDZPGDBARSendRes {
         protected String arbpl;
         @XmlElement(name = "ARBPLDESC", required = true)
         protected String arbpldesc;
+        @XmlElement(name = "WERKS", required = true)
+        protected String werks;
 
         /**
          * Gets the value of the msgty property.
@@ -340,7 +344,27 @@ public class DTQUERYOLDZPGDBARSendRes {
             this.arbpldesc = value;
         }
 
+        /**
+         * Gets the value of the werks property.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getWERKS() {
+            return werks;
+        }
+
+        /**
+         * Sets the value of the werks property.
+         *
+         * @param value
+         *            allowed object is {@link String }
+         *
+         */
+        public void setWERKS(String value) {
+            this.werks = value;
+        }
+
     }
 
 }
-

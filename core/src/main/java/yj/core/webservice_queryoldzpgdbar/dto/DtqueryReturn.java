@@ -1,6 +1,9 @@
 package yj.core.webservice_queryoldzpgdbar.dto;
 
 public class DtqueryReturn {
+
+    private String werks;
+
     private String msgty;
 
     private String msgno;
@@ -99,5 +102,13 @@ public class DtqueryReturn {
 
     public void setArbpldesc(String arbpldesc) {
         this.arbpldesc = arbpldesc;
+    }
+
+    public String getWerks() {
+        return werks;
+    }
+
+    public void setWerks(String werks) {
+        this.werks = werks;
     }
 }

@@ -46,19 +46,19 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link DTQUERYOLDZPGDBARSendReq.ITEM }
-     *
-     */
-    public DTQUERYOLDZPGDBARSendReq.ITEM createDTQUERYOLDZPGDBARSendReqITEM() {
-        return new DTQUERYOLDZPGDBARSendReq.ITEM();
-    }
-
-    /**
      * Create an instance of {@link DTQUERYOLDZPGDBARSendRes }
      *
      */
     public DTQUERYOLDZPGDBARSendRes createDTQUERYOLDZPGDBARSendRes() {
         return new DTQUERYOLDZPGDBARSendRes();
+    }
+
+    /**
+     * Create an instance of {@link DTQUERYOLDZPGDBARSendReq.ITEM }
+     *
+     */
+    public DTQUERYOLDZPGDBARSendReq.ITEM createDTQUERYOLDZPGDBARSendReqITEM() {
+        return new DTQUERYOLDZPGDBARSendReq.ITEM();
     }
 
     /**
@@ -96,4 +96,3 @@ public class ObjectFactory {
     }
 
 }
-

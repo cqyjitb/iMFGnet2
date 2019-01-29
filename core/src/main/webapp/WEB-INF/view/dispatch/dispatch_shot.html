@@ -169,11 +169,11 @@
                 return null;
             }
 
-            dprd_date.options[0].value = dprd_date.options[0].innerHTML = getTodayDate();
-            dprd_date.options[1].value = dprd_date.options[1].innerHTML = getDate(1);
-            dprd_date.options[2].value = dprd_date.options[2].innerHTML = getDate(2);
-            dprd_date.options[3].value = dprd_date.options[3].innerHTML = getDate(3);
-            dprd_date.options[4].value = dprd_date.options[4].innerHTML = getDate(4);
+            dprd_date.options[1].value = dprd_date.options[1].innerHTML = getTodayDate();
+            dprd_date.options[2].value = dprd_date.options[2].innerHTML = getDate(1);
+            dprd_date.options[3].value = dprd_date.options[3].innerHTML = getDate(2);
+            dprd_date.options[4].value = dprd_date.options[4].innerHTML = getDate(3);
+            dprd_date.options[5].value = dprd_date.options[5].innerHTML = getDate(4);
 
             var cCleanData = document.getElementById("cleanData");
             cCleanData.onclick=function () {
@@ -279,10 +279,35 @@
                 var l_error = "";
                 var shot_start = document.getElementById("shot_start").value;
                 var shot_end = document.getElementById("shot_end").value;
+
+                var Oprd_date = document.getElementById("shot_start");
+                var prd_date = Oprd_date.value;
+                var Obanc  = document.getElementById("banc");
+                var Obanz = document.getElementById("banz");
+                var zbanc = Obanc.value;
+                var zbanz = Obanz.value;
+
                 if (arbpl == "" || arbpl == null){
                     openMsgDialog("错误","未能获取到压铸机台号！","M")
                     l_error = "E";
                 }
+
+                if (prd_date == "" || prd_date == null){
+                    openMsgDialog("错误","请选择班次日期","M")
+                    l_error = "E";
+                }
+
+                if (zbanc == "" || zbanc == null){
+                    openMsgDialog("错误","请选择班次","M")
+                    l_error = "E";
+                }
+
+                if (zbanz == "" || zbanz == null){
+                    openMsgDialog("错误","请选择班组","M")
+                    l_error = "E";
+                }
+
+
 
                 if (l_error == ""){
                     if (shot_start == "" || shot_start == null){
@@ -429,7 +454,8 @@
                             data : {"arbpl":arbpl,
                                 "erp_date":erp_date,
                                 "banc":banc,
-                                "zpgdbar":zpgdbar
+                                "zpgdbar":zpgdbar,
+                                "type":"old"
 
                             },
                             async:false,
@@ -475,7 +501,8 @@
                                 "banc":banc,
                                 "zpgdbar":zpgdbar,
                                 "createdBy":userId,
-                                "userName":username
+                                "userName":username,
+                                "type":"old"
                             },
                             async:false,
                             contentType :"application/json;charset=UTF-8",
@@ -522,6 +549,7 @@
         <label class="dcp-label">压铸机台</label><textarea id="arbplDesc" style="font-size:10px;width: 120px;height: 40px;background-color: #C9C9C9" disabled="true" rows="2"></textarea><br>
         <!--<label class="dcp-label">压铸机台</label><input id="arbplDesc"  style="font-size:10px;width: 120px;height: 40px;background-color: #C9C9C9" disabled="true" type="text"><br>-->
         <label class="dcp-label">班次日期</label><select id="prd_date" class="cls-attr-input"type="text">
+        <option value="">请选择</option>
         <option></option>
         <option></option>
         <option></option>
@@ -529,11 +557,13 @@
         <option></option>
         </select><br>
         <label class="dcp-label">班组</label><select id="banz" class="cls-attr-input">
+        <option value="">请选择</option>
         <option value="A">A</option>
         <option value="B">B</option>
         <option value="C">C</option>
         </select><br>
         <label class="dcp-label">班次</label><select id="banc" class="cls-attr-input">
+        <option value="">请选择</option>
         <option value="1">白班</option>
         <option value="3">夜班</option>shot_start
         <option value="2">中班</option>
