@@ -136,7 +136,7 @@
                     data: {"username": username},
                     contentType: "application/json; charset=utf-8",
                     success: function (res) {
-                        userId = JSON.stringify(res.rows[0].userId);
+                         userId = JSON.stringify(res.rows[0].userId);
                         createdBy = userId;
                         //document.getElementById("user").innerHTML = userId;
                     }
@@ -238,8 +238,8 @@
                             url:"${base.contextPath}/sap/afvc/getArbpl",
                             type:"get",
                             data :{"zpgdbar":zpgdbar,
-                                "type":"old"
-                            },
+                                    "type":"old"
+                                    },
                             contentType :"application/json; charset=utf-8",
                             success:function (res){
                                 if (res.success){
@@ -338,36 +338,85 @@
             }
 
 
-            //消息界面
-            //msgTitle:标题
-            //msgText：内容
-            //msgType：类型(M:提示消息;C:过账确认消息)
-            function openMsgDialog(msgTitle,msgText,msgType) {
-                appendMask2Dialog();
-                disablebanc();
-                disablebanz();
-                disableerpdate();
-                var dMsg=document.getElementById("msg-area");
-                dMsg.style.display="";
-                document.getElementById("msg1").innerHTML="&nbsp"+msgTitle;
-                document.getElementById("msg2").innerHTML=msgText;
-                var bCan=document.getElementById("cancer");
-                var bCls=document.getElementById("close");
-                var userName = getCookie("username");
-                var zpgdbar = document.getElementById("zpgdbar").value;
-                var arbplDesc = document.getElementById("arbplDesc").value;
-                var shot_start =  document.getElementById("shot_start").value;
-                var shot_end =  document.getElementById("shot_end").value;
+        //消息界面
+        //msgTitle:标题
+        //msgText：内容
+        //msgType：类型(M:提示消息;C:过账确认消息)
+        function openMsgDialog(msgTitle,msgText,msgType) {
+            appendMask2Dialog();
+            var dMsg=document.getElementById("msg-area");
+            dMsg.style.display="";
+            document.getElementById("msg1").innerHTML="&nbsp"+msgTitle;
+            document.getElementById("msg2").innerHTML=msgText;
+            var bCan=document.getElementById("cancer");
+            var bCls=document.getElementById("close");
+            var userName = getCookie("username");
+            var zpgdbar = document.getElementById("zpgdbar").value;
+            var arbplDesc = document.getElementById("arbplDesc").value;
+            var shot_start =  document.getElementById("shot_start").value;
+            var shot_end =  document.getElementById("shot_end").value;
 
-                if(msgType == "M"){
-                    bCan.style.display = "none";
-                    bCls.onclick = function () {
-                        dMsg.style.display="none";
-                        removeMask2Dialog();
-                        if(msgTitle == "成功" || msgTitle == "失败"){
-                            //清空页面内容
+            if(msgType == "M"){
+                bCan.style.display = "none";
+                bCls.onclick = function () {
+                    dMsg.style.display="none";
+                    removeMask2Dialog();
+                    if(msgTitle == "成功" || msgTitle == "失败"){
+                        //清空页面内容
+                        document.getElementById("zpgdbar").value = "";
+                        document.getElementById("arbplDesc").value = "";
+                        var dprd_date = document.getElementById("prd_date");
+                        var dbanz = document.getElementById("banz");
+                        var dbanc = document.getElementById("banc");
+                        dprd_date.options[0].selected = true;
+                        dbanz.options[0].selected = true;
+                        dbanc.options[0].selected = true;
+                        document.getElementById("shot_start").value = "";
+                        document.getElementById("shot_end").value = "";
+                        //获取条码页面元素
+                        var roBcd=document.getElementById("zpgdbar");
+
+                        //进入报工页面时，光标定位到条码输入框
+                        roBcd.focus();
+                    }else if(msgTitle == "错误" ){
+                        var length = zpgdbar.length;
+
+
+                        if(zpgdbar == "" || zpgdbar == null){
+
+                            //获取条码页面元素
+                            var roBcd=document.getElementById("zpgdbar");
+                            roBcd.focus();
+                        }
+
+                        if(arbplDesc == "" || arbplDesc == null){
+
+                            //获取条码页面元素
+                            var roBcd=document.getElementById("zpgdbar");
+                            roBcd.focus();
+                        }
+
+                        if(shot_start == "" || shot_start == null || shot_end == "" || shot_end == null){
+                            var dshot_start = document.getElementById("shot_start");
+                            var dshot_end = document.getElementById("shot_end");
+                            if (shot_start == "" || shot_start == null){
+                                dshot_start.focus();
+                            }
+
+                            if (shot_end == "" || shot_end == null){
+                                dshot_end.focus();
+                            }
+
+                            if ((shot_start == null || shot_start == "") && (shot_end == null || shot_end == "")){
+                                dshot_start.focus();
+                            }
+                        }
+
+                        if (length != 18){
                             document.getElementById("zpgdbar").value = "";
+                            var roBcd=document.getElementById("zpgdbar");
                             document.getElementById("arbplDesc").value = "";
+                            arbplDesc = "";
                             var dprd_date = document.getElementById("prd_date");
                             var dbanz = document.getElementById("banz");
                             var dbanc = document.getElementById("banc");
@@ -376,212 +425,109 @@
                             dbanc.options[0].selected = true;
                             document.getElementById("shot_start").value = "";
                             document.getElementById("shot_end").value = "";
-                            //获取条码页面元素
-                            var roBcd=document.getElementById("zpgdbar");
-
-                            //进入报工页面时，光标定位到条码输入框
                             roBcd.focus();
-                        }else if(msgTitle == "错误" ){
-                            var length = zpgdbar.length;
-
-
-                            if(zpgdbar == "" || zpgdbar == null){
-
-                                //获取条码页面元素
-                                var roBcd=document.getElementById("zpgdbar");
-                                roBcd.focus();
-                            }
-
-                            if(arbplDesc == "" || arbplDesc == null){
-
-                                //获取条码页面元素
-                                var roBcd=document.getElementById("zpgdbar");
-                                roBcd.focus();
-                            }
-
-                            if(shot_start == "" || shot_start == null || shot_end == "" || shot_end == null){
-                                var dshot_start = document.getElementById("shot_start");
-                                var dshot_end = document.getElementById("shot_end");
-                                if (shot_start == "" || shot_start == null){
-                                    dshot_start.focus();
-                                }
-
-                                if (shot_end == "" || shot_end == null){
-                                    dshot_end.focus();
-                                }
-
-                                if ((shot_start == null || shot_start == "") && (shot_end == null || shot_end == "")){
-                                    dshot_start.focus();
-                                }
-                            }
-
-                            if (length != 18){
-                                document.getElementById("zpgdbar").value = "";
-                                var roBcd=document.getElementById("zpgdbar");
-                                document.getElementById("arbplDesc").value = "";
-                                arbplDesc = "";
-                                var dprd_date = document.getElementById("prd_date");
-                                var dbanz = document.getElementById("banz");
-                                var dbanc = document.getElementById("banc");
-                                dprd_date.options[0].selected = true;
-                                dbanz.options[0].selected = true;
-                                dbanc.options[0].selected = true;
-                                document.getElementById("shot_start").value = "";
-                                document.getElementById("shot_end").value = "";
-                                roBcd.focus();
-                            }
                         }
-                        ablebanc();
-                        ablebanz();
-                        ableerpdate();
                     }
-                }else if(msgType == "C"){
-                    bCan.style.display = "";
-                    bCan.onclick=function () {
+                }
+            }else if(msgType == "C"){
+                bCan.style.display = "";
+                bCan.onclick=function () {
+                    dMsg.style.display="none";
+                    removeMask2Dialog();
+                }
+
+                bCls.onclick=function () {
+                    if (l_isExit == ""){
                         dMsg.style.display="none";
-                        removeMask2Dialog();
-                        ablebanc();
-                        ablebanz();
-                        ableerpdate();
-                    }
+                        //appendMask2Dialog();
+                        var shot_start = document.getElementById("shot_start").value;
+                        var shot_end = document.getElementById("shot_end").value;
+                        var erp_date = document.getElementById("prd_date").value;
+                        var banz = document.getElementById("banz").value;
+                        var banc = document.getElementById("banc").value;
+                        var arbplDesc = document.getElementById("arbplDesc").value;
+                        var zpgdbar = document.getElementById("zpgdbar").value;
+                        var username = getCookie("username");
+                        $.ajax({
+                            url:"${base.contextPath}/wip/shotnum/isExit",
+                            type:"get",
+                            data : {"arbpl":arbpl,
+                                "erp_date":erp_date,
+                                "banc":banc,
+                                "zpgdbar":zpgdbar,
+                                "type":"old"
 
-                    bCls.onclick=function () {
-                        if (l_isExit == ""){
-                            dMsg.style.display="none";
-                            //appendMask2Dialog();
-                            var shot_start = document.getElementById("shot_start").value;
-                            var shot_end = document.getElementById("shot_end").value;
-                            var erp_date = document.getElementById("prd_date").value;
-                            var banz = document.getElementById("banz").value;
-                            var banc = document.getElementById("banc").value;
-                            var arbplDesc = document.getElementById("arbplDesc").value;
-                            var zpgdbar = document.getElementById("zpgdbar").value;
-                            var username = getCookie("username");
-                            $.ajax({
-                                url:"${base.contextPath}/wip/shotnum/isExit",
-                                type:"get",
-                                data : {"arbpl":arbpl,
-                                    "erp_date":erp_date,
-                                    "banc":banc,
-                                    "zpgdbar":zpgdbar,
-                                    "type":"old"
-
-                                },
-                                async:false,
-                                contentType :"application/json;charset=UTF-8",
-                                success:function (res){
-                                    if (res.success){
-                                        if (res.code == "X"){
-                                            l_isExit = "X";
-                                            openMsgDialog("确认",res.message,"C");
-                                        }else{
-                                            l_isExit = "X";
-                                            openMsgDialog("确认","是否提交数据记录！","C");
-                                        }
+                            },
+                            async:false,
+                            contentType :"application/json;charset=UTF-8",
+                            success:function (res){
+                                if (res.success){
+                                    if (res.code == "X"){
+                                        l_isExit = "X";
+                                        openMsgDialog("确认",res.message,"C");
                                     }else{
-
+                                        l_isExit = "X";
+                                        openMsgDialog("确认","是否提交数据记录！","C");
                                     }
-                                },
-                                error:function (res) {
-                                    openMsgDialog("失败",res.message,"M");
+                                }else{
+
                                 }
-                            });
+                            },
+                            error:function (res) {
+                                openMsgDialog("失败",res.message,"M");
+                            }
+                        });
 
-                        }else if (l_isExit = "X"){
-                            dMsg.style.display="none";
-                            //appendMask2Dialog();
-                            var shot_start = document.getElementById("shot_start").value;
-                            var shot_end = document.getElementById("shot_end").value;
-                            var erp_date = document.getElementById("prd_date").value;
-                            var banz = document.getElementById("banz").value;
-                            var banc = document.getElementById("banc").value;
-                            var arbplDesc = document.getElementById("arbplDesc").value;
-                            var zpgdbar = document.getElementById("zpgdbar").value;
-                            var username = getCookie("username");
-                            $.ajax({
-                                url:"${base.contextPath}/wip/shotnum/commitRow",
-                                type:"get",
-                                data : {"arbpl":arbpl,
-                                    "arbplDesc":arbplDesc,
-                                    "shot_start":shot_start,
-                                    "shot_end":shot_end,
-                                    "prd_date":erp_date,
-                                    "banz":banz,
-                                    "banc":banc,
-                                    "zpgdbar":zpgdbar,
-                                    "createdBy":userId,
-                                    "userName":username,
-                                    "type":"old"
-                                },
-                                async:false,
-                                contentType :"application/json;charset=UTF-8",
-                                success:function (res){
-                                    if (res.success){
-                                        var dZpgdbar = document.getElementById("zpgdbar");
-                                        dZpgdbar.value = "";
-                                        dZpgdbar.focus();
-                                        l_isExit = "";
-                                        openMsgDialog("成功",res.message,"M");
-                                    }else{
-                                        l_isExit = "";
-                                        openMsgDialog("失败",res.message,"M");
-                                    }
-                                },
-                                error:function (res) {
+                    }else if (l_isExit = "X"){
+                        dMsg.style.display="none";
+                        //appendMask2Dialog();
+                        var shot_start = document.getElementById("shot_start").value;
+                        var shot_end = document.getElementById("shot_end").value;
+                        var erp_date = document.getElementById("prd_date").value;
+                        var banz = document.getElementById("banz").value;
+                        var banc = document.getElementById("banc").value;
+                        var arbplDesc = document.getElementById("arbplDesc").value;
+                        var zpgdbar = document.getElementById("zpgdbar").value;
+                        var username = getCookie("username");
+                        $.ajax({
+                            url:"${base.contextPath}/wip/shotnum/commitRow",
+                            type:"get",
+                            data : {"arbpl":arbpl,
+                                "arbplDesc":arbplDesc,
+                                "shot_start":shot_start,
+                                "shot_end":shot_end,
+                                "prd_date":erp_date,
+                                "banz":banz,
+                                "banc":banc,
+                                "zpgdbar":zpgdbar,
+                                "createdBy":userId,
+                                "userName":username,
+                                "type":"old"
+                            },
+                            async:false,
+                            contentType :"application/json;charset=UTF-8",
+                            success:function (res){
+                                if (res.success){
+                                    var dZpgdbar = document.getElementById("zpgdbar");
+                                    dZpgdbar.value = "";
+                                    dZpgdbar.focus();
+                                    l_isExit = "";
+                                    openMsgDialog("成功",res.message,"M");
+                                }else{
                                     l_isExit = "";
                                     openMsgDialog("失败",res.message,"M");
                                 }
-                            });
-                        }
-                        ablebanc();
-                        ablebanz();
-                        ableerpdate();
-
+                            },
+                            error:function (res) {
+                                l_isExit = "";
+                                openMsgDialog("失败",res.message,"M");
+                            }
+                        });
                     }
+
                 }
             }
-
-            function disablebanz(){
-                var obanc=document.getElementById("banc");
-                obanc.disabled="disabled";
-                obanc.style.display = "none";
-                obanc.style.zIndex="-1";
-            }
-
-            function ablebanz() {
-                var obanc=document.getElementById("banc");
-                obanc.disabled="";
-                obanc.style.display = "";
-                obanc.style.zIndex="-1";
-            }
-
-            function disablebanc() {
-                var obanz=document.getElementById("banz");
-                obanz.disabled="disabled";
-                obanz.style.display = "none";
-                obanz.style.zIndex="-1";
-            }
-
-            function ablebanc() {
-                var obanz=document.getElementById("banz");
-                obanz.disabled="";
-                obanz.style.display = "";
-                obanz.style.zIndex="-1";
-            }
-
-            function disableerpdate() {
-                var oprd_date=document.getElementById("prd_date");
-                oprd_date.disabled="disabled";
-                oprd_date.style.display = "none";
-                oprd_date.style.zIndex="-1";
-            }
-
-            function ableerpdate() {
-                var oprd_date=document.getElementById("prd_date");
-                oprd_date.disabled="";
-                oprd_date.style.display = "";
-                oprd_date.style.zIndex="-1";
-            }
+        }
 
         }
     </script>
@@ -609,19 +555,19 @@
         <option></option>
         <option></option>
         <option></option>
-    </select><br>
+        </select><br>
         <label class="dcp-label">班组</label><select id="banz" class="cls-attr-input">
         <option value="">请选择</option>
         <option value="A">A</option>
         <option value="B">B</option>
         <option value="C">C</option>
-    </select><br>
+        </select><br>
         <label class="dcp-label">班次</label><select id="banc" class="cls-attr-input">
         <option value="">请选择</option>
         <option value="1">白班</option>
         <option value="3">夜班</option>shot_start
         <option value="2">中班</option>
-    </select><br>
+        </select><br>
         <!--<label class="dcp-label">报工数量</label><input id="yeild" class="cls-attr-input" disabled="true" type="number"><br>-->
         <label class="dcp-label">起始压射号</label><input id="shot_start" class="cls-attr-input" type="number"><br>
         <label class="dcp-label">终止压射号</label><input id="shot_end" class="cls-attr-input" type="number"><br>
