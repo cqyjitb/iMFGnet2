@@ -66,6 +66,16 @@
         <result column="FLGRG" property="flgrg" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <select id="selectByPlnbez" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select DISTINCT plnbez,maktx from sap_afko
+        <where>
+            <if test="plnbez != null">
+                plnbez = #{plnbez}
+            </if>
+        </where>
+        order by plnbez ASC
+    </select>
+
     <select id="selectByFevor" parameterType="java.lang.String" resultType="yj.core.afko.dto.Afko">
         select DISTINCT ao.fevor,ao.txt,ao.aufnr from sap_afko ao,sap_afvc ac
         <where>

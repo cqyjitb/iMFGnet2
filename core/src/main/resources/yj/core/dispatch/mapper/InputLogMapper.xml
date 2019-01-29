@@ -90,8 +90,8 @@
             <if test="orderno != null">
                 AND orderno = #{orderno}
             </if>
-            <if test="classgrp != null">
-                AND classgrp = #{classgrp}
+            <if test="classno != null">
+                AND classno = #{classno}
             </if>
             <if test="postingDateAfter != null">
                 AND posting_date >= #{postingDateAfter}

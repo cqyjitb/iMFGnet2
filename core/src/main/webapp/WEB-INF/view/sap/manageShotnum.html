@@ -298,6 +298,17 @@
                 field: "shifts",
                 title: '班次',
 //                width: 80,
+                template:function (e) {
+                    if(e.shifts == "1"){
+                        return "早班";
+                    }else if(e.shifts == "2"){
+                        return "中班";
+                    }else if(e.shifts == "3"){
+                        return "晚班";
+                    }else{
+                        return "";
+                    }
+                },
                 headerAttributes: {
                     style: "text-align: center;"
                 },

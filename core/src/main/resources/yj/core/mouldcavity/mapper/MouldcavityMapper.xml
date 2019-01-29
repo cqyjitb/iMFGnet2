@@ -7,7 +7,47 @@
         <result column="MATNR" property="matnr" jdbcType="VARCHAR"/>
         <result column="MAKTX" property="maktx" jdbcType="VARCHAR"/>
         <result column="MDNUM" property="mdnum" jdbcType="DECIMAL"/>
+        <result column="CREATION_DATE" property="creationDate" jdbcType="DATE" />
+        <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
+        <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="DATE" />
+        <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
     </resultMap>
+
+    <select id="selectMouldcavity" parameterType="yj.core.mouldcavity.dto.Mouldcavity" resultMap="BaseResultMap">
+        select werks,matnr,maktx,mdnum from sap_mouldcavity
+        <where>
+            1 = 1
+            <if test="werks != null">
+                AND werks = #{werks}
+            </if>
+            <if test="matnr != null">
+                AND matnr = #{matnr}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertMouldcavity" parameterType="yj.core.mouldcavity.dto.Mouldcavity">
+        insert into sap_mouldcavity(werks,matnr,maktx,mdnum,CREATED_BY,CREATION_DATE)
+        values(#{werks},#{matnr},#{maktx},#{mdnum},#{createdBy},#{creationDate})
+    </insert>
+
+    <update id="updateMouldcavity" parameterType="yj.core.mouldcavity.dto.Mouldcavity">
+        update sap_mouldcavity set werks = #{werks},matnr = #{matnr},maktx = #{maktx},mdnum = #{mdnum},
+        LAST_UPDATE_DATE = #{lastUpdateDate},LAST_UPDATED_BY = #{lastUpdatedBy}
+        <where>
+            werks = #{werks}
+            AND matnr = #{matnr}
+        </where>
+    </update>
+
+    <delete id="deleteMouldcavity" parameterType="yj.core.mouldcavity.dto.Mouldcavity">
+        delete from sap_mouldcavity
+        <where>
+            werks = #{werks}
+            AND matnr = #{matnr}
+        </where>
+    </delete>
+
     <select id="selectByMatnr" parameterType="java.lang.String" resultType="java.lang.Integer">
         select mdnum from sap_mouldcavity
         <where>

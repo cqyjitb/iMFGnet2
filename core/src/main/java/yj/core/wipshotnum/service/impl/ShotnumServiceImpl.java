@@ -44,8 +44,14 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
         Afko afko = new Afko();
         int mdnum = 0,yeild = 0,shotNum = 0;
         if("Y".equals(dto.getTotal())){
-            list1 = shotnumMapper.selectShotnum(dto);
-            if(list1.size() > 0){
+            List<Shotnum> list2 = shotnumMapper.selectShotnum(dto);
+            if(list2.size() > 0){
+                for(int i=0;i<list2.size();i++){
+                    Afko afko1 = afkoMapper.selectByFevor(list2.get(i).getArbpl(),dto.getFevor());
+                    if(afko1 != null){
+                        list1.add(list2.get(i));
+                    }
+                }
                 String date = null;
                 Long lists[] = new Long[list1.size()];
                 for(int i=0;i<list1.size();i++){
