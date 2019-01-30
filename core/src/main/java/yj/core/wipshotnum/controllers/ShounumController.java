@@ -42,9 +42,20 @@ public class ShounumController extends BaseController {
     @ResponseBody
     public ResponseData queryShotnum(Shotnum dto, HttpServletRequest request) {
         IRequest requestContext = createRequestContext(request);
+        ResponseData rs = new ResponseData();
         dto.setPrdDateAfter(dto.getPrdDateAfter().substring(0,10));
         dto.setPrdDateBefore(dto.getPrdDateBefore().substring(0,10));
-        return new ResponseData(service.selectShotnum(dto,requestContext));
+        List<Shotnum> shotnum = service.selectShotnum(dto,requestContext);
+        if(shotnum.size() > 0){
+            for(int i=0;i<shotnum.size();i++){
+                if(shotnum.get(i).getShotNum() == 0){
+                    rs.setSuccess(false);
+                    rs.setMessage("请对物料编码为 "+shotnum.get(i).getAufnr()+" 的产品模具型腔表进行维护");
+                    return rs;
+                }
+            }
+        }
+        return new ResponseData(shotnum);
     }
 
     /**
