@@ -40,4 +40,14 @@ public interface OutsrgrfeMapper extends Mapper<Outsrgrfe>{
     List<Outsrgrfe> selectForSortl(String lifnr);
 
     List<Outsrgrfe> selectAllLifnr();
+
+    /**
+     *  根据sap传入的条件取值 917110140
+     * @param werks
+     * @param matnr
+     * @param lifnr
+     * @param ktsch
+     * @return
+     */
+    List<Outsrgrfe> sapquery(@Param("werks") String werks,@Param("matnr") String matnr,@Param("lifnr") String lifnr,@Param("ktsch") String ktsch);
 }

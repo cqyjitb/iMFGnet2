@@ -39,4 +39,9 @@ public class OutsrgrfeServiceImpl extends BaseServiceImpl<Outsrgrfe> implements 
     public List<Outsrgrfe> selectAllLifnr() {
         return outsrgrfeMapper.selectAllLifnr();
     }
+
+    @Override
+    public List<Outsrgrfe> sapquery(String werks, String matnr, String lifnr, String ktsch) {
+        return outsrgrfeMapper.sapquery(werks,matnr,lifnr,ktsch);
+    }
 }

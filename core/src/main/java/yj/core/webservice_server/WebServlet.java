@@ -107,5 +107,13 @@ public class WebServlet extends CXFNonSpringServlet {
         serverFactoryBean10.setAddress("/SyncoutsrgreceiptHead"); //服务请求路径
         serverFactoryBean10.setServiceBean(syncOutsrgreceiptHead);
         serverFactoryBean10.create();
+
+        //发布sap查询outsrgrfe 数据接口
+        ServerFactoryBean serverFactoryBean11 = new ServerFactoryBean(); //server工厂
+        QueryOutsrgrfeImpl queryOutsrgrfe = new QueryOutsrgrfeImpl();
+        serverFactoryBean11.setServiceClass(IqueryOutsrgrfe.class);
+        serverFactoryBean11.setAddress("/QueryOutsrgrfe"); //服务请求路径
+        serverFactoryBean11.setServiceBean(queryOutsrgrfe);
+        serverFactoryBean11.create();
     }
 }

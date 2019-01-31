@@ -61,4 +61,26 @@
     <select id="selectAllLifnr" resultMap="BaseResultMap">
         select DISTINCT lifnr,sortl from wip_outsrgrfe
     </select>
+
+    <select id="sapquery" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select DISTINCT WERKS,
+                        MATNR,
+                        KTSCH,
+                        LIFNR
+                        <where>
+                            1 = 1
+                            <if test="werks != null">
+                                and WERKS = #{werks}
+                            </if>
+                            <if test="matnr != null">
+                                and matnr = #{matnr}
+                            </if>
+                            <if test="lifnr != null">
+                                and lifnr = #{lifnr}
+                            </if>
+                            <if test="ktsch != null">
+                                and ktsch = #{ktsch}
+                            </if>
+                        </where>
+    </select>
 </mapper>

@@ -40,4 +40,14 @@ public interface IOutsrgrfeService extends IBaseService<Outsrgrfe>, ProxySelf<IO
     List<Outsrgrfe> selectForSortl(String lifnr);
 
     List<Outsrgrfe> selectAllLifnr();
+
+    /**
+     *  根据sap传入的条件取值 917110140
+     * @param werks
+     * @param matnr
+     * @param lifnr
+     * @param ktsch
+     * @return
+     */
+    List<Outsrgrfe> sapquery(String werks,String matnr,String lifnr,String ktsch);
 }
