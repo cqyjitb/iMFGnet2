@@ -23,4 +23,11 @@ public interface QcparamLinesMapper extends Mapper<QcparamLines>{
      */
 
     QcparamLines selectForYz(@Param("lineId") Long line_id, @Param("werks") String werks);
+
+    /**
+     * 根据生产线ID 查询产线参数配置信息 918100064
+     * @param line_id
+     * @return
+     */
+    QcparamLines selectByLineId(@Param("lineId") Long line_id);
 }

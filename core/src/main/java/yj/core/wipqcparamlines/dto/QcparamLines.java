@@ -55,8 +55,134 @@ public class QcparamLines extends BaseDTO {
 
       private Long lastUpdatedBy; //更新人
 
+    private Double wipSqty;//在制队列定额数量
+
+    private Double upscale1;//在制上线比例1
+
+    private Double upscale2;//在制上线比例2
+
+    private Double downscale1;//在制下线比例1
+
+    private Double downscale2;//在制下线比例2
+
+    @Transient
+    private String deptId;//生产车间
+
     @Transient
       private  String name;
+
+    @Transient
+    private String descriptions;//生产线描述
+
+    @Transient
+    private String matnr2;//物料编码
+
+    @Transient
+    private String maktx;//物料描述
+
+    @Transient
+    private Double zsxnum;//在制数量
+
+    @Transient
+    private String gmein;//单位
+
+    private String scale;//超出比例（%）
+
+    public Double getWipSqty() {
+        return wipSqty;
+    }
+
+    public void setWipSqty(Double wipSqty) {
+        this.wipSqty = wipSqty;
+    }
+
+    public Double getUpscale1() {
+        return upscale1;
+    }
+
+    public void setUpscale1(Double upscale1) {
+        this.upscale1 = upscale1;
+    }
+
+    public Double getUpscale2() {
+        return upscale2;
+    }
+
+    public void setUpscale2(Double upscale2) {
+        this.upscale2 = upscale2;
+    }
+
+    public Double getDownscale1() {
+        return downscale1;
+    }
+
+    public void setDownscale1(Double downscale1) {
+        this.downscale1 = downscale1;
+    }
+
+    public Double getDownscale2() {
+        return downscale2;
+    }
+
+    public void setDownscale2(Double downscale2) {
+        this.downscale2 = downscale2;
+    }
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
+
+    public String getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(String descriptions) {
+        this.descriptions = descriptions;
+    }
+
+    public String getMatnr2() {
+        return matnr2;
+    }
+
+    public void setMatnr2(String matnr2) {
+        this.matnr2 = matnr2;
+    }
+
+    public String getMaktx() {
+        return maktx;
+    }
+
+    public void setMaktx(String maktx) {
+        this.maktx = maktx;
+    }
+
+    public Double getZsxnum() {
+        return zsxnum;
+    }
+
+    public void setZsxnum(Double zsxnum) {
+        this.zsxnum = zsxnum;
+    }
+
+    public String getGmein() {
+        return gmein;
+    }
+
+    public void setGmein(String gmein) {
+        this.gmein = gmein;
+    }
+
+    public String getScale() {
+        return scale;
+    }
+
+    public void setScale(String scale) {
+        this.scale = scale;
+    }
 
     public String getName() {
         return name;

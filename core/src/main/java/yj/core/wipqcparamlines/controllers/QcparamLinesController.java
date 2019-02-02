@@ -69,4 +69,22 @@ import java.util.List;
         }
 
         }
+
+        /**
+         * 在制队列预警查询页面请求 918100064
+         * @param request
+         * @param deptId
+         * @param lineId
+         * @return
+         */
+        @RequestMapping(value = {"/wip/qcparam/lines/selectByScale"},method = {RequestMethod.POST})
+        @ResponseBody
+        public ResponseData selectByScale(HttpServletRequest request,String deptId,String lineId){
+            IRequest requestContext = createRequestContext(request);
+            if(lineId == null){
+                return new ResponseData(service.selectByScale(deptId,null));
+            }else{
+                return new ResponseData(service.selectByScale(deptId,Long.parseLong(lineId)));
+            }
+        }
     }

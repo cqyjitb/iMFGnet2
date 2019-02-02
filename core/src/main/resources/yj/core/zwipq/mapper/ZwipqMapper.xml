@@ -136,6 +136,19 @@
         <result column="PMATNR" property="pmatnr" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <select id="selectByLineIdMatnr2" parameterType="java.lang.String" resultType="yj.core.zwipq.dto.Zwipq">
+        select COALESCE(sum(zsxnum),0) as zsxnum,gmein from zwipq
+        <where>
+            (line_id = #{lineId} OR pkg_line_id = #{lineId})
+            AND matnr2 = #{matnr2}
+            AND zremade = '0'
+            AND zzxkl != 1
+            AND zqjkl != 1
+            AND zoffl != 1
+            AND status != 1
+        </where>
+    </select>
+
     <select id="selectLineIdMatnr2" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(*) from zwipq
         <where>

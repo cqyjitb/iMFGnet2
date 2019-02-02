@@ -37,7 +37,7 @@ public interface LinesMapper extends Mapper<Lines>{
      * LOV_LINE_NEW：根据生产车间查询生产线Id 918100064
      * @return
      */
-    Lines selectLov(@Param("deptId")String deptId,@Param("lineId")Long lineId);
+    List<Lines> selectLov(@Param("deptId")String deptId,@Param("lineId")Long lineId);
 
     /**
      * 根据表hr_org_unit_b中unitCode查询记录 918100064
@@ -66,4 +66,11 @@ public interface LinesMapper extends Mapper<Lines>{
      * @return
      */
     List<Lines> selectByPlineId(String line_id);
+
+    /**
+     * 根据生产车间查询车间名称
+     * @param unitCode
+     * @return
+     */
+    String selectByUnitCode(@Param("unitCode")String unitCode);
 }
