@@ -115,7 +115,7 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                             shotnum.setAufnr(cardh.getMatnr());
                             mdnum = mouldcavityMapper.selectByMatnr(cardh.getMatnr());
                             if(mdnum == null){
-                                mdnum = 0;
+                                mdnum = 1;
                             }
                             shotNum = ((int)(shotnum.getShotEnd() - shotnum.getShotStart())*mdnum);
                         }
