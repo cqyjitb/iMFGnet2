@@ -5,6 +5,8 @@ import com.hand.hap.core.ProxySelf;
 import com.hand.hap.system.service.IBaseService;
 import yj.core.wipqcparamlines.dto.QcparamLines;
 
+import java.util.List;
+
 public interface IQcparamLinesService extends IBaseService<QcparamLines>, ProxySelf<IQcparamLinesService>{
 
     /**
@@ -22,5 +24,13 @@ public interface IQcparamLinesService extends IBaseService<QcparamLines>, ProxyS
      * @return
      */
     QcparamLines selectForYz(Long line_id,String werks);
+
+    /**
+     * 根据生产车间和生产线查询在制队列预警 918100064
+     * @param deptId
+     * @param lineId
+     * @return
+     */
+    List<QcparamLines> selectByScale(String deptId,Long lineId);
 
 }

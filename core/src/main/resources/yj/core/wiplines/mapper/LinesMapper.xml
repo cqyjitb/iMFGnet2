@@ -50,6 +50,15 @@
         <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
     </resultMap>
 
+    <select id="selectByUnitCode" parameterType="java.lang.String" resultType="java.lang.String">
+        select name from hr_org_unit_b
+        <where>
+            <if test="unitCode != null">
+                unit_code = #{unitCode}
+            </if>
+        </where>
+    </select>
+
     <select id="selectDescription" parameterType="java.lang.String" resultType="java.lang.String">
         select descriptions from wip_lines
         <where>

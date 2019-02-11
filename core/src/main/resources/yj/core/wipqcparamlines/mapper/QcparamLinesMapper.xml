@@ -24,6 +24,15 @@
         <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
     </resultMap>
 
+    <select id="selectByLineId" parameterType="java.lang.Long" resultType="yj.core.wipqcparamlines.dto.QcparamLines">
+        select qc.*,li.descriptions,qc.line_id as lineId,qc.wip_sqty as wipSqty,qc.werks from wip_qcparam_lines qc,wip_lines li
+        <where>
+            qc.LINE_ID = li.LINE_ID
+            AND qc.LINE_ID = #{lineId}
+        </where>
+        limit 1
+    </select>
+
     <select id="selectForJj" parameterType="java.lang.String" resultMap="BaseResultMap">
         select a.*,
                b.NAME

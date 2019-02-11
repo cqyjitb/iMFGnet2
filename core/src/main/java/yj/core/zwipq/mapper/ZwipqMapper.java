@@ -132,4 +132,12 @@ public interface ZwipqMapper extends Mapper<Zwipq> {
      * @return
      */
     int selectByJjzpgdbar(String zpgdbar);
+
+    /**
+     * 根据生产线和物料描述查询汇总在线数量 918100064
+     * @param lineId
+     * @param matnr2
+     * @return
+     */
+    Zwipq selectByLineIdMatnr2(@Param("lineId")Long lineId,@Param("matnr2")String matnr2);
 }

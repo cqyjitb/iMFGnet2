@@ -42,7 +42,7 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
         Shotnum shotnum = new Shotnum();
         InputLog inputLog = new InputLog();
         Afko afko = new Afko();
-        int mdnum = 0,yeild = 0,shotNum = 0;
+        Integer mdnum = 0,yeild = 0,shotNum = 0;
         if("Y".equals(dto.getTotal())){
             List<Shotnum> list2 = shotnumMapper.selectShotnum(dto);
             if(list2.size() > 0){
@@ -89,7 +89,10 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                 yeild = (inputLog.getYeild()).intValue();
                 if(cardh != null){
                     mdnum = mouldcavityMapper.selectByMatnr(cardh.getMatnr());
-                    shotNum = (int)((shotnum.getShotEnd() - shotnum.getShotStart())*mdnum);
+                    if(mdnum == null){
+                        mdnum = 0;
+                    }
+                    shotNum = ((int)(shotnum.getShotEnd() - shotnum.getShotStart())*mdnum);
                 }
                 shotnum.setYeild(yeild);
                 shotnum.setShotNum(shotNum);
@@ -109,8 +112,12 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
 
                         yeild = (inputLog.getYeild()).intValue();
                         if(cardh != null){
+                            shotnum.setAufnr(cardh.getMatnr());
                             mdnum = mouldcavityMapper.selectByMatnr(cardh.getMatnr());
-                            shotNum = (int)((shotnum.getShotEnd() - shotnum.getShotStart())*mdnum);
+                            if(mdnum == null){
+                                mdnum = 1;
+                            }
+                            shotNum = ((int)(shotnum.getShotEnd() - shotnum.getShotStart())*mdnum);
                         }
                         shotnum.setPrdDateAfter(shotnum.getPrdDate());
                         shotnum.setFevor(dto.getFevor());
