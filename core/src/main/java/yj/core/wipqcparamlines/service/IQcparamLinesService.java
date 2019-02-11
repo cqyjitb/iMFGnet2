@@ -33,4 +33,35 @@ public interface IQcparamLinesService extends IBaseService<QcparamLines>, ProxyS
      */
     List<QcparamLines> selectByScale(String deptId,Long lineId);
 
+    /**
+     *机加质量控制参数维护查询 918100064
+     * @param requestContext
+     * @param dto
+     * @param page
+     * @param pageSize
+     * @return
+     */
+    List<QcparamLines> selectFromPage(IRequest requestContext,QcparamLines dto,int page,int pageSize);
+
+    /**
+     *机加质量控制参数维护验证 918100064
+     * @param dto
+     * @return
+     */
+    String setMessage(List<QcparamLines> dto);
+
+    /**
+     * 机加质量控制参数维护添加和修改 918100064
+     * @param requestContext
+     * @param dto
+     * @param userId
+     * @return
+     */
+    String updateOrInsert(IRequest requestContext,List<QcparamLines> dto,Long userId);
+
+    /**
+     * 机加质量控制参数维护删除 918100064
+     * @param dto
+     */
+    void deleteQcparamLines(List<QcparamLines> dto);
 }

@@ -453,7 +453,8 @@
                         valuePrimitive: true,
                         dataSource:[
                             { text: "0-特殊字符", value: 0},
-                            { text: "1-检测值项", value: 1}
+                            { text: "1-检测值项", value: 1},
+                            { text: "2-产线区分字符", value: 2}
                         ]
                     })
                 },
@@ -462,6 +463,8 @@
                         return "1-检测值项";
                     }else if(e.codeType == "0"){
                         return "0-特殊字符";
+                    }else if(e.codeType == "2"){
+                        return "0-产线区分字符";
                     }else{
                         return "";
                     }

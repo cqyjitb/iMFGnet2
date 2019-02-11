@@ -1,5 +1,7 @@
 package yj.core.wipqcparamlines.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.hand.hap.core.IRequest;
 import com.hand.hap.system.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,7 @@ import yj.core.zwipq.dto.Zwipq;
 import yj.core.zwipq.mapper.ZwipqMapper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -90,5 +93,78 @@ public class QcparamLinesServiceImpl extends BaseServiceImpl<QcparamLines> imple
             }
         }
         return qcparamLines;
+    }
+
+    @Override
+    public List<QcparamLines> selectFromPage(IRequest requestContext, QcparamLines dto, int page, int pageSize) {
+        PageHelper.startPage(page,pageSize);
+        return qcparamLinesMapper.selectQcparamLines(dto);
+    }
+
+    @Override
+    public String setMessage(List<QcparamLines> dto) {
+        if(dto.size() > 0){
+            for(int i=0;i<dto.size();i++){
+                if(dto.get(i).getLineId() == null){
+                    return "产线ID不能为空";
+                }else if (dto.get(i).getFirstclassQty() == null){
+                    return "第一类不合格件数不能为空";
+                }else if (dto.get(i).getSecondclassQty() == null){
+                    return "第二类不合格件数不能为空";
+                }else if (dto.get(i).getThirdclassQty() == null){
+                    return "第三类不合格件数不能为空";
+                }else if (dto.get(i).getFourthclassQty() == null) {
+                    return "第四类不合格件数不能为空";
+                }else if (dto.get(i).getDftrateAlarm() == null || dto.get(i).getDftrateAlarm() == "") {
+                    return "不合格率超限报警不能为空";
+                }else if (dto.get(i).getUpperLimits() == null){
+                    return "不合格率报警上限不能为空";
+                }else if (dto.get(i).getDefaultCastdept() == null || dto.get(i).getDefaultCastdept() == ""){
+                    return "缺省责任机加部门不能为空";
+                }else if (dto.get(i).getDefaultCastdept() == null || dto.get(i).getDefaultCastdept() == ""){
+                    return "缺省责任压铸部门不能为空";
+                }else if ("1".equals(dto.get(i).getDftrateAlarm())){
+                    if (dto.get(i).getLineqcResponsible() == null || dto.get(i).getLineqcResponsible() == ""){
+                        return "不合格率超限报警，报警通知产线质检组长不能为空";
+                    }else if (dto.get(i).getDeptqcResponsible() == null || dto.get(i).getDeptqcResponsible() == ""){
+                        return "不合格率超限报警，报警通知部门质量部长不能为空";
+                    }else if (dto.get(i).getShopqcResponsible() == null || dto.get(i).getShopqcResponsible() == ""){
+                        return "不合格率超限报警，报警通知车间质量主任不能为空";
+                    }else if (dto.get(i).getEngrqcResponsible() == null || dto.get(i).getEngrqcResponsible() == ""){
+                        return "不合格率超限报警，报警通知质量工程师不能为空";
+                    }
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String updateOrInsert(IRequest requestContext, List<QcparamLines> dto, Long userId) {
+        if(dto.size() > 0){
+            for(int i=0;i<dto.size();i++){
+                QcparamLines qcparamLines = dto.get(i);
+                List<QcparamLines> list = qcparamLinesMapper.selectByLineId2(qcparamLines.getLineId());
+                if(list.size() == 0){
+                    qcparamLines.setCreatedBy(userId);
+                    qcparamLines.setCreationDate(new Date());
+                    qcparamLinesMapper.insertQcparamLines(qcparamLines);
+                }else{
+                    qcparamLines.setLastUpdatedBy(userId);
+                    qcparamLines.setLastUpdateDate(new Date());
+                    qcparamLinesMapper.updateQcparamLines(qcparamLines);
+                }
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public void deleteQcparamLines(List<QcparamLines> dto) {
+        if(dto.size() > 0){
+            for(int i=0;i<dto.size();i++){
+                qcparamLinesMapper.deleteQcparamLines(dto.get(i));
+            }
+        }
     }
 }
