@@ -51,7 +51,7 @@ public class QcparamLines extends BaseDTO {
 
       private Long createdBy; //创建人
 
-      private Date lastUpdatedDate; //更新时间
+      private Date lastUpdateDate; //更新时间
 
       private Long lastUpdatedBy; //更新人
 
@@ -328,15 +328,17 @@ public class QcparamLines extends BaseDTO {
          return createdBy;
      }
 
-     public void setLastUpdatedDate(Date lastUpdatedDate){
-         this.lastUpdatedDate = lastUpdatedDate;
-     }
+    @Override
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
+    }
 
-     public Date getLastUpdatedDate(){
-         return lastUpdatedDate;
-     }
+    @Override
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
 
-     public void setLastUpdatedBy(Long lastUpdatedBy){
+    public void setLastUpdatedBy(Long lastUpdatedBy){
          this.lastUpdatedBy = lastUpdatedBy;
      }
 

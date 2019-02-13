@@ -20,26 +20,56 @@ import java.util.List;
     @Autowired
     private IQcparamLinesService service;
 
-
-    @RequestMapping(value = "/wip/qcparam/lines/query")
+    /**
+     *机加质量控制参数维护页面查询请求 918100064
+     * @param dto
+     * @param page
+     * @param pageSize
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/wip/qcparam/lines/queryQcparamLines")
     @ResponseBody
-    public ResponseData query(QcparamLines dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
+    public ResponseData queryQcparamLines(QcparamLines dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
         @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize, HttpServletRequest request) {
         IRequest requestContext = createRequestContext(request);
-        return new ResponseData(service.select(requestContext,dto,page,pageSize));
+        return new ResponseData(service.selectFromPage(requestContext,dto,page,pageSize));
     }
 
-    @RequestMapping(value = "/wip/qcparam/lines/submit")
+    /**
+     *机加质量控制参数维护页面添加和修改请求 918100064
+     * @param request
+     * @param dto
+     * @return
+     */
+    @RequestMapping(value = "/wip/qcparam/lines/submitQcparamLines")
     @ResponseBody
-    public ResponseData update(HttpServletRequest request,@RequestBody List<QcparamLines> dto){
+    public ResponseData updateQcparamLines(HttpServletRequest request,@RequestBody List<QcparamLines> dto){
         IRequest requestCtx = createRequestContext(request);
-        return new ResponseData(service.batchUpdate(requestCtx, dto));
+        ResponseData rs = new ResponseData();
+        Long userId =Long.parseLong("" + request.getSession().getAttribute("userId"));
+        String str = service.setMessage(dto);
+        if(str != null){
+            rs.setSuccess(false);
+            rs.setMessage(str);
+            return rs;
+        }else{
+            String result = service.updateOrInsert(requestCtx,dto,userId);
+            rs.setMessage(result);
+            return rs;
+        }
     }
 
-    @RequestMapping(value = "/wip/qcparam/lines/remove")
+    /**
+     *机加质量控制参数维护页面删除请求 918100064
+     * @param request
+     * @param dto
+     * @return
+     */
+    @RequestMapping(value = "/wip/qcparam/lines/removeQcparamLines")
     @ResponseBody
-    public ResponseData delete(HttpServletRequest request,@RequestBody List<QcparamLines> dto){
-        service.batchDelete(dto);
+    public ResponseData deleteQcparamLines(HttpServletRequest request,@RequestBody List<QcparamLines> dto){
+        service.deleteQcparamLines(dto);
         return new ResponseData();
     }
 
