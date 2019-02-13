@@ -53,4 +53,12 @@ public interface OutsrgissueMapper extends Mapper<Outsrgissue>{
      * @return
      */
     List<Outsrgissue> selectByIssuenmAndStatus(@Param("issuenm") String issuenm,@Param("status") String status);
+
+    /**
+     *  根据箱号条码 状态取外协发料记录
+     * @param barcode
+     * @param status
+     * @return
+     */
+    List<Outsrgissue> selectBybarcodes(@Param("barcode") String barcode,@Param("status") String status);
 }

@@ -21,9 +21,11 @@ public interface IOutsrgrfeService extends IBaseService<Outsrgrfe>, ProxySelf<IO
      * @param vornr
      * @param matnr
      * @param lifnr
+     * @param ebeln
+     * @param ebelp
      * @return
      */
-    Outsrgrfe selectByCondition(String werks,String aufnr,String vornr,String matnr,String lifnr);
+    Outsrgrfe selectByCondition(String werks,String aufnr,String vornr,String matnr,String lifnr,String ebeln,String ebelp);
 
     /**
      *  根据 工厂 生产订单 工序号 物料编码 供应商编码 修改  917110140
@@ -49,5 +51,5 @@ public interface IOutsrgrfeService extends IBaseService<Outsrgrfe>, ProxySelf<IO
      * @param ktsch
      * @return
      */
-    List<Outsrgrfe> sapquery(String werks,String matnr,String lifnr,String ktsch);
+    List<Outsrgrfe> sapquery(String werks,String matnr,String matnr_l,String matnr_h,String lifnr,String lifnr_l,String lifnr_h,String ktsch,String ktsch_l,String ktsch_h);
 }

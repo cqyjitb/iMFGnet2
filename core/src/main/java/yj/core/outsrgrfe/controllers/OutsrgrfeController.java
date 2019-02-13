@@ -170,9 +170,12 @@ import java.util.List;
         String status = "0";
         Outsrgissue outsrgissue = outsrgissueService.selectByBarcode(cardh.getZpgdbar(),status);
             if (outsrgissue != null){
-                rs.setMessage("该流转卡对应毛坯框已进行外协发料操作，请勿重复扫描！");
-                rs.setSuccess(false);
-                return rs;
+                if (outsrgissue.getStatus().equals("0") || outsrgissue.getStatus().equals("2")){
+                    rs.setMessage("该流转卡对应毛坯框已进行外协发料操作，请勿重复扫描！");
+                    rs.setSuccess(false);
+                    return rs;
+                }
+
             }
 
          //查询箱号信息
@@ -203,7 +206,7 @@ import java.util.List;
         //2:查询接口表信息
 
             Outsrgrfe outsrgrfe = new Outsrgrfe();
-            outsrgrfe = service.selectByCondition(cardh.getWerks(),cardh.getAufnr(),listcardt.get(l_index).getVornr(),cardh.getMatnr(),lifnr);
+            outsrgrfe = service.selectByCondition(cardh.getWerks(),cardh.getAufnr(),listcardt.get(l_index).getVornr(),cardh.getMatnr(),lifnr,null,null);
             if (outsrgrfe == null){
                 rs.setSuccess(false);
                 rs.setMessage("未能获取到流转卡对应生产订单的外协采购订单信息！");

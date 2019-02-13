@@ -43,4 +43,12 @@ public interface OutsrgreceiptMapper extends Mapper<Outsrgreceipt>{
      */
 
     int updateOutsrgreceipt(Outsrgreceipt outsrgreceipt);
+
+    /**
+     *  根据流转卡号 收货状态 获取外协收货数据 917110140
+     * @param barcode
+     * @param status
+     * @return
+     */
+    List<Outsrgreceipt> selectByZpgdbarAndStatusM(@Param("barcode") String barcode,@Param("status") String status);
 }

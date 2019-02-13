@@ -51,6 +51,7 @@ import java.util.List;
     @Autowired
     private IOutsrgreceiptService outsrgreceiptService;
 
+
     @RequestMapping(value = "/wip/outsrgissue/query")
     @ResponseBody
     public ResponseData query(Outsrgissue dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
@@ -75,12 +76,12 @@ import java.util.List;
 
     @RequestMapping(value = {"/wip/outsrgissue/wxfl"},method = {RequestMethod.GET})
     @ResponseBody
-    public ResponseData processWxfl(HttpServletRequest request,String barcode,String lifnr,String userId,String ebeln,String menge,String vornr){
+    public ResponseData processWxfl(HttpServletRequest request,String barcode,String lifnr,String userId,String ebeln,String menge,String vornr,String userName){
         ResponseData rs = new ResponseData();
         Cardh cardh = new Cardh();
         cardh = cardhService.selectByBarcode(barcode);
 
-        Outsrgrfe outsrgrfe = outsrgrfeService.selectByCondition(cardh.getWerks(),cardh.getAufnr(),vornr,cardh.getMatnr(),lifnr);
+        Outsrgrfe outsrgrfe = outsrgrfeService.selectByCondition(cardh.getWerks(),cardh.getAufnr(),vornr,cardh.getMatnr(),lifnr,null,null);
         Marc marc = new Marc();
         marc = marcService.selectByMatnr(cardh.getMatnr());
         Cardt cardt = new Cardt();
@@ -158,7 +159,7 @@ import java.util.List;
         //查询该流转卡是否具有已冲销的发货记录
         Outsrgissue outsrgissue = new Outsrgissue();
         outsrgissue = service.selectByBarcode(barcode,"1");
-        if (outsrgissue != null){
+        if (outsrgissue != null && outsrgissue.getIssuenm().equals(outsrgissuehead.getIssuenm())){
             //  使用以前的老航项目
             l_update = "X";
             outsrgissue.setStatus("0");
@@ -200,7 +201,7 @@ import java.util.List;
                 outsrgissue.setCharg(cardh.getCharg2());
                 outsrgissue.setZisdat(curdate1);
                 outsrgissue.setZistim(curtim1);
-                outsrgissue.setZisuser(userId);
+                outsrgissue.setZisuser(userName);
 
             }else{
                 item = 1l;
@@ -230,7 +231,7 @@ import java.util.List;
                 outsrgissue.setCharg(cardh.getCharg2());
                 outsrgissue.setZisdat(curdate1);
                 outsrgissue.setZistim(curtim1);
-                outsrgissue.setZisuser(userId);
+                outsrgissue.setZisuser(userName);
             }
         }
 
@@ -287,7 +288,7 @@ import java.util.List;
             items.setStatus(outsrgissue.getStatus());
             items.setZisdat(curdate);
             items.setZistim(curtim);
-            items.setZisuser(userId);
+            items.setZisuser(userName);
 
         }
         DTOUTSRGISSUEreturn DTRE = new DTOUTSRGISSUEreturn();
@@ -347,9 +348,21 @@ import java.util.List;
         ResponseData selectForCxwxfl(HttpServletRequest request,String barcode){
         ResponseData rs = new ResponseData();
         String status = "0";
-        Outsrgissue outsrgissue = service.selectByBarcode(barcode,status);
+        Outsrgissue outsrgissue = service.selectByBarcode(barcode,null);
         if (outsrgissue == null){
             rs.setMessage("该流转卡尚未进行外协发料！不能对其进行冲销外协发料操作！");
+            rs.setSuccess(false);
+            return rs;
+        }
+
+        if (outsrgissue.getStatus().equals("1")){
+            rs.setMessage("该流转卡对应外协发料已经被冲销，请勿重复操作！");
+            rs.setSuccess(false);
+            return rs;
+        }
+
+        if (outsrgissue.getStatus().equals("2")){
+            rs.setMessage("该流转卡对应外协发料已经收货，不能进行冲销操作！");
             rs.setSuccess(false);
             return rs;
         }
@@ -385,7 +398,7 @@ import java.util.List;
             sum = service.updateOutsrgissue(outsrgissue);
             if (sum == 1){
                 //检查表头对应的行项目是不是全部被冲销 如果是 更新表头的记录状态
-                List<Outsrgissue> list = service.selectByIssuenmAndStatus(outsrgissue.getIssuenm(),"1");
+                List<Outsrgissue> list = service.selectByIssuenmAndStatus(outsrgissue.getIssuenm(),"0");
                 if (list.size() == 0){
                     //更新表头状态
                     Outsrgissuehead outsrgissuehead = outsrgissueheadService.selectByIssuenm(outsrgissue.getIssuenm());
@@ -431,8 +444,8 @@ import java.util.List;
                         item.setEbeln(outsrgissue.getEbeln());
                         item.setDiecd(outsrgissue.getDiecd());
                         item.setZisuser(outsrgissue.getZisuser());
-                        item.setZistim(outsrgissue.getZistim());
-                        item.setZisdat(outsrgissue.getZisdat());
+                        item.setZistim(outsrgissue.getZistim().replaceAll(":",""));
+                        item.setZisdat(outsrgissue.getZisdat().replaceAll("-",""));
 
                         SyncOutsrgissueWebserviceUtil syncOutsrgissueWebserviceUtil = new SyncOutsrgissueWebserviceUtil();
                         DTOUTSRGISSUEreturn re = syncOutsrgissueWebserviceUtil.receiveConfirmation(head,item);
@@ -487,8 +500,8 @@ import java.util.List;
                     item.setEbeln(outsrgissue.getEbeln());
                     item.setDiecd(outsrgissue.getDiecd());
                     item.setZisdat(outsrgissue.getZisdat());
-                    item.setZistim(outsrgissue.getZistim());
-                    item.setZisuser(outsrgissue.getZisuser());
+                    item.setZistim(outsrgissue.getZistim().replaceAll(":",""));
+                    item.setZisuser(outsrgissue.getZisuser().replaceAll("-",""));
 
                     SyncOutsrgissueWebserviceUtil syncOutsrgissueWebserviceUtil = new SyncOutsrgissueWebserviceUtil();
                     DTOUTSRGISSUEreturn re = syncOutsrgissueWebserviceUtil.receiveConfirmation(head,item);
@@ -535,27 +548,76 @@ import java.util.List;
             }
             Marc marc = new Marc();
             marc = marcService.selectByMatnr(cardh.getMatnr());
+            Outsrgreceipt outsrgreceipt = new Outsrgreceipt();
+            List<Outsrgreceipt> list3 = new ArrayList<>();
+            list3 = outsrgreceiptService.selectByZpgdbarAndStatusM(barcode,null);
+            if (list3.size() > 0){
+                String l_status_0 = "";
+                String l_status_1 = "";
+                for (int i = 0;i<list3.size();i++){
+                    if (list3.get(i).getStatus().equals("0")){
+                        l_status_0 = "X";
+                    }
+
+                    if (list3.get(i).getStatus().equals("1")){
+                        l_status_1 = "X";
+                    }
+                }
+
+                if (l_status_0.equals("X")){
+                    rs.setSuccess(false);
+                    rs.setMessage("该流转卡已进行外协收货，请勿重复处理！");
+                    return rs;
+                }
+            }
+
 
             //2:获取外协发料单明细数据
             Outsrgissue outsrgissue = new Outsrgissue();
-            outsrgissue = service.selectByBarcode(barcode,null);
-            if (outsrgissue == null){
+            List<Outsrgissue> list2 = new ArrayList<>();
+            list2 = service.selectBybarcodes(barcode,null);
+            if (list2.size() == 0){
+                rs.setMessage("该流转卡尚未生成外协发料单!");
                 rs.setSuccess(false);
-                rs.setMessage("该流转卡尚未生成外协发料单！");
-                return  rs;
-            }
+                return rs;
+            }else{
+                String l_status_0 = "";
+                String l_status_1 = "";
+                String l_status_2 = "";
+                for (int i=0;i<list2.size();i++){
+                    if (list2.get(i).getStatus().equals("0")){
+                        l_status_0 = "X";
+                        outsrgissue = list2.get(i);
+                    }
 
-            if (!outsrgissue.getStatus().equals("0")){
-                if (outsrgissue.getStatus().equals("1")){
-                    rs.setSuccess(false);
-                    rs.setMessage("流转卡对应的外协发料单已冲销！");
-                    return rs;
+                    if (list2.get(i).getStatus().equals("1")){
+                        l_status_1 = "X";
+                    }
+
+                    if (list2.get(i).getStatus().equals("2")){
+                        l_status_2 = "X";
+                    }
                 }
 
-                if (outsrgissue.getStatus().equals("2")){
+                if (l_status_2.equals("X")){
                     rs.setMessage("流转卡对应的外协发料单已收货！");
                     rs.setSuccess(false);
                     return rs;
+                }else{
+
+                     if (l_status_0.equals("")){
+
+                         if (l_status_1.equals("X")){
+                             rs.setMessage("流转卡对应的外协发料单已冲销！");
+                             rs.setSuccess(false);
+                             return rs;
+                         }else{
+                             rs.setMessage("该流转卡尚未生成外协发料单！");
+                             rs.setSuccess(false);
+                             return  rs;
+                         }
+                     }
+
                 }
             }
 
@@ -584,71 +646,4 @@ import java.util.List;
             rs.setSuccess(true);
             return rs;
         }
-//
-//        @RequestMapping(value = {"/wip/outsrgissue/selectForwxsh"},method = {RequestMethod.GET})
-//        @ResponseBody
-//        ResponseData selectForwxsh(HttpServletRequest request){
-//            ResponseData rs = new ResponseData();
-//            String barcode = request.getParameter("barcode");
-//            //1 获取流转卡信息
-//            Cardh cardh = new Cardh();
-//            cardh = cardhService.selectByBarcode(barcode);
-//
-//            if  (cardh == null){
-//                rs.setSuccess(false);
-//                rs.setMessage("流转卡不存在，请确认流转卡号是否正确！");
-//                return rs;
-//            }
-//
-//            if (cardh.getStatus().equals("HOLD")){
-//                rs.setSuccess(false);
-//                rs.setMessage("流转卡状态为HOLD 不允许外协收货！");
-//                return rs;
-//            }
-//
-//            Marc marc = new Marc();
-//            marc = marcService.selectByMatnr(cardh.getMatnr());
-//
-//
-//            Outsrgissue outsrgissue = new Outsrgissue();
-//            outsrgissue = service.selectByBarcode(barcode,null);
-//            if (outsrgissue == null){
-//                rs.setSuccess(false);
-//                rs.setMessage("流转卡尚未进行外协发料，不允许进行外协收货！");
-//                return rs;
-//            }
-//
-//            if (outsrgissue.getStatus().equals("0")){
-//                rs.setSuccess(false);
-//                rs.setMessage("流转卡对应的外协发料单尚未完成发料，不允许对该流转卡进行外协收货！");
-//                return rs;
-//            }
-//
-//            Outsrgissuehead outsrgissuehead = new Outsrgissuehead();
-//            outsrgissuehead = outsrgissueheadService.selectByIssuenm(outsrgissue.getIssuenm());
-//
-//
-//            //查询该流转卡是否已完成发货
-//            Outsrgreceipt outsrgreceipt = new Outsrgreceipt();
-//            outsrgreceipt = outsrgreceiptService.selectByZpgdbarAndStatus(barcode,"0");
-//            if (outsrgreceipt != null){
-//                rs.setMessage("该流转卡已完成外协收货，请勿重复操作！");
-//                rs.setSuccess(false);
-//                return rs;
-//            }
-//
-//            //查询外协采购订单已收货的数量
-//            List<Outsrgreceipt> list = new ArrayList<>();
-//
-//            list = outsrgreceiptService.selectByEbeln(outsrgissue.getEbeln());
-//            List listall = new ArrayList();
-//            listall.add(cardh);
-//            listall.add(marc);
-//            listall.add(outsrgissue);
-//            listall.add(outsrgissuehead);
-//            listall.add(list);
-//            rs.setSuccess(true);
-//            rs.setRows(listall);
-//            return rs;
-//        }
     }

@@ -46,4 +46,9 @@ public class OutsrgissueServiceImpl extends BaseServiceImpl<Outsrgissue> impleme
     public List<Outsrgissue> selectByIssuenmAndStatus(String issuenm, String status) {
         return OutsrgissueMapper.selectByIssuenmAndStatus(issuenm,status);
     }
+
+    @Override
+    public List<Outsrgissue> selectBybarcodes(String barcode, String status) {
+        return OutsrgissueMapper.selectBybarcodes(barcode,status);
+    }
 }

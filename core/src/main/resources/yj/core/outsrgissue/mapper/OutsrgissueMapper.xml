@@ -66,9 +66,6 @@
         select * from wip_outsrgissue
         <where>
             ZPGDBAR = #{zpgdbar}
-            <if test="status != null">
-                and STATUS = #{status}
-            </if>
         </where>
     </select>
 
@@ -86,7 +83,17 @@
         select * from wip_outsrgissue
         <where>
             ISSUENM = #{issuenm}
-            and STATUS != #{status}
+            and STATUS = #{status}
+        </where>
+    </select>
+
+    <select id="selectBybarcodes" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_outsrgissue
+        <where>
+            ZPGDBAR = #{barcode}
+            <if test="status != null">
+                STATUS = #{status}
+            </if>
         </where>
     </select>
 </mapper>

@@ -39,4 +39,9 @@ public class OutsrgreceiptServiceImpl extends BaseServiceImpl<Outsrgreceipt> imp
     public int updateOutsrgreceipt(Outsrgreceipt outsrgreceipt) {
         return outsrgreceiptMapper.updateOutsrgreceipt(outsrgreceipt);
     }
+
+    @Override
+    public List<Outsrgreceipt> selectByZpgdbarAndStatusM(String barcode, String status) {
+        return outsrgreceiptMapper.selectByZpgdbarAndStatusM(barcode,status);
+    }
 }

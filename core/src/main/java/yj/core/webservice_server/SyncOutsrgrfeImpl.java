@@ -33,6 +33,8 @@ public class SyncOutsrgrfeImpl implements IsyncOutsrgrfe {
         String lifnr = outsrgrfe.getLifnr();
         String tcode = outsrgrfe.getTcode();
         String sortl = outsrgrfe.getSortl();
+        String ebeln = outsrgrfe.getEbeln();
+        String ebelp = outsrgrfe.getEbelp();
         Outsrgrfe newdate = new Outsrgrfe();
         newdate.setAufnr(outsrgrfe.getAufnr());
         newdate.setEbeln(outsrgrfe.getEbeln());
@@ -53,7 +55,7 @@ public class SyncOutsrgrfeImpl implements IsyncOutsrgrfe {
         OutsrgrfeMapper outsrgrfeMapper = ContextLoaderListener.getCurrentWebApplicationContext().getBean(OutsrgrfeMapper.class);
         OutsrgissueMapper outsrgissueMapper = ContextLoaderListener.getCurrentWebApplicationContext().getBean(OutsrgissueMapper.class);
         if (tcode.equals("ME21N")){//新增业务
-            tmp = outsrgrfeMapper.selectByCondition(werks,aufnr,vornr,matnr,lifnr);
+            tmp = outsrgrfeMapper.selectByCondition(werks,aufnr,vornr,matnr,lifnr,null,null);
             if (tmp == null){
                 newdate.setCreatedBy(10001L);
                 newdate.setCreationDate(new Date());
@@ -69,9 +71,7 @@ public class SyncOutsrgrfeImpl implements IsyncOutsrgrfe {
         }
 
         if (tcode.equals("ME22N")){
-            String ebeln = outsrgrfe.getEbeln();
-            String ebelp = outsrgrfe.getEbelp();
-            tmp = outsrgrfeMapper.selectByCondition(werks,aufnr,vornr,matnr,lifnr);
+            tmp = outsrgrfeMapper.selectByCondition(werks,aufnr,vornr,matnr,lifnr,ebeln,ebelp);
             if (tmp == null){
                 newdate.setCreatedBy(10001L);
                 newdate.setCreationDate(new Date());
@@ -108,8 +108,13 @@ public class SyncOutsrgrfeImpl implements IsyncOutsrgrfe {
                         return rs;
                     }
 
-                    if ( !outsrgrfe.equals("")){
-                        rs.setFlag("E4");//已经发生外协发货的外协采购订单行不能删除
+                    if (newdate.getLoekz().equals("L")){
+                        rs.setFlag("E4");
+                        return rs;
+                    }
+
+                    if (newdate.getLoekz().equals("S")){
+                        rs.setFlag("E5");
                         return rs;
                     }
 

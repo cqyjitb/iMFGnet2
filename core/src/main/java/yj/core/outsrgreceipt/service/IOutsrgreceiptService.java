@@ -44,5 +44,13 @@ public interface IOutsrgreceiptService extends IBaseService<Outsrgreceipt>, Prox
 
     int updateOutsrgreceipt(Outsrgreceipt outsrgreceipt);
 
+    /**
+     *  根据流转卡号 收货状态 获取外协收货数据 917110140
+     * @param barcode
+     * @param status
+     * @return
+     */
+    List<Outsrgreceipt> selectByZpgdbarAndStatusM(String barcode,String status);
+
 
 }

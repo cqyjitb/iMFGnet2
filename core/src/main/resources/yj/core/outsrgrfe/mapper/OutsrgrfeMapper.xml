@@ -29,6 +29,13 @@
             AND MATNR = #{matnr}
             AND VORNR = #{vornr}
             AND LIFNR = #{lifnr}
+            <if test="ebeln != null">
+                AND EBELN = #{ebeln}
+            </if>
+            <if test="ebelp != null">
+                AND EBELP = #{ebelp}
+            </if>
+            AND LOEKZ = ''
         </where>
     </select>
 
@@ -38,16 +45,18 @@
     </insert>
 
     <update id="updateByCondition" parameterType="yj.core.outsrgrfe.dto.Outsrgrfe">
-        update wip_outsrgrfe SET LOEKZ = #{loekz}
-                             and MENGE = #{menge}
-                             and LAST_UPDATE_DATE = #{lastUpdateDate}
-                             and LAST_UPDATED_BY = #{lastUpdatedBy}
+        update wip_outsrgrfe SET LOEKZ = #{loekz},
+                              MENGE = #{menge},
+                              LAST_UPDATE_DATE = #{lastUpdateDate},
+                              LAST_UPDATED_BY = #{lastUpdatedBy}
                     <where>
                         WERKS = #{werks}
                         AND AUFNR = #{aufnr}
                         AND MATNR = #{matnr}
                         AND VORNR = #{vornr}
                         AND LIFNR = #{lifnr}
+                        AND EBELN = #{ebeln}
+                        AND EBELP = #{ebelp}
                     </where>
     </update>
 
@@ -67,6 +76,7 @@
                         MATNR,
                         KTSCH,
                         LIFNR
+                        FROM wip_outsrgrfe
                         <where>
                             1 = 1
                             <if test="werks != null">
@@ -75,11 +85,29 @@
                             <if test="matnr != null">
                                 and matnr = #{matnr}
                             </if>
+                            <if test="matnr_l != null">
+                                and matnr >= #{matnr_l}
+                            </if>
+                            <if test="matnr_h != null">
+                                and #{matnr_h} >= #{matnr_h}
+                            </if>
                             <if test="lifnr != null">
                                 and lifnr = #{lifnr}
                             </if>
+                            <if test="lifnr_l != null">
+                                and lifnr >= #{lifnr_l}
+                            </if>
+                            <if test="lifnr_h != null">
+                                and #{lifnr_h} >= lifnr
+                            </if>
                             <if test="ktsch != null">
                                 and ktsch = #{ktsch}
+                            </if>
+                            <if test="ktsch_l != null">
+                                and ktsch >= #{ktsch_l}
+                            </if>
+                            <if test="ktsch_h != null">
+                                and #{ktsch_h} >= ktsch
                             </if>
                         </where>
     </select>

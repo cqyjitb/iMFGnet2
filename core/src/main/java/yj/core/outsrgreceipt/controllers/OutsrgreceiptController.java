@@ -108,6 +108,8 @@ public class OutsrgreceiptController extends BaseController {
         String rsnum = request.getParameter("l");
         String rspos = request.getParameter("m");
         String vornr = request.getParameter("n");
+        String userName = request.getParameter("o");
+        String zeile = request.getParameter("p");
 
         if (lfsum.equals("")){
             lfsum = "0";
@@ -140,7 +142,7 @@ public class OutsrgreceiptController extends BaseController {
         outsrgissue = outsrgissueService.selectByBarcode(barcode,"0");
 
         Outsrgrfe outsrgrfe = new Outsrgrfe();
-        outsrgrfe = outsrgrfeService.selectByCondition(cardh.getWerks(),cardh.getAufnr(),vornr,cardh.getMatnr(),lifnr);
+        outsrgrfe = outsrgrfeService.selectByCondition(cardh.getWerks(),cardh.getAufnr(),vornr,cardh.getMatnr(),lifnr,null,null);
 
         Marc marc = new Marc();
         marc = marcService.selectByMatnr(cardh.getMatnr());
@@ -170,8 +172,8 @@ public class OutsrgreceiptController extends BaseController {
             outsrgreceipthead.setMatnr(cardh.getMatnr());
             outsrgreceipthead.setLifnr(lifnr);
             outsrgreceipthead.setZdpdat(curdate1);
-            outsrgreceipthead.setZipdat(curdate1);
-            outsrgreceipthead.setZiptim(curtim1);
+            outsrgreceipthead.setZipdat("");
+            outsrgreceipthead.setZiptim("");
 
         }else{
             if (list.get(0).getStatus().equals("0")){
@@ -187,7 +189,7 @@ public class OutsrgreceiptController extends BaseController {
                     int num = Integer.valueOf(mxnum) + 1;
                     mxnum = String.format("%06d",num);
                     outsrgreceipthead.setReceiptnm("S" + curdate.substring(2,6) + mxnum);
-                    outsrgreceipthead.setZdpuser(createdBy);
+                    outsrgreceipthead.setZdpuser(userName);
                     outsrgreceipthead.setZdptim(curtim1);
                     outsrgreceipthead.setCreationDate(new Date());
                     outsrgreceipthead.setZipuser("");
@@ -198,8 +200,8 @@ public class OutsrgreceiptController extends BaseController {
                     outsrgreceipthead.setMatnr(cardh.getMatnr());
                     outsrgreceipthead.setLifnr(lifnr);
                     outsrgreceipthead.setZdpdat(curdate1);
-                    outsrgreceipthead.setZipdat(curdate1);
-                    outsrgreceipthead.setZiptim(curtim1);
+                    outsrgreceipthead.setZipdat("");
+                    outsrgreceipthead.setZiptim("");
                 }
             }
         }
@@ -214,14 +216,15 @@ public class OutsrgreceiptController extends BaseController {
             outsrgreceipt.setLastUpdatedBy(Long.valueOf(createdBy));
             outsrgreceipt.setLastUpdateDate(new Date());
             outsrgreceipt.setZthnum(Double.parseDouble(thsum));
-            outsrgreceipt.setZshnum(Double.parseDouble(gfsum) + Double.parseDouble(lfsum) + Double.parseDouble(hgsum));
+            outsrgreceipt.setZshnum(Double.parseDouble(hgsum));
             outsrgreceipt.setZpgdbar(barcode);
             outsrgreceipt.setZlost(Double.parseDouble(yssum));
             outsrgreceipt.setZlfnum(Double.parseDouble(lfsum));
             outsrgreceipt.setZgfnum(Double.parseDouble(gfsum));
-            outsrgreceipt.setZdsuser(createdBy);
+            outsrgreceipt.setZdsuser(userName);
             outsrgreceipt.setMjahr(mjahr);
             outsrgreceipt.setMblnr(mblnr);
+            outsrgreceipt.setZeile(zeile);
             outsrgreceipt.setZthnum(Double.parseDouble(thsum));
             outsrgreceipt.setZdsdat(curdate1);
             outsrgreceipt.setZdstim(curtim1);
@@ -244,12 +247,13 @@ public class OutsrgreceiptController extends BaseController {
                 outsrgreceipt.setZthnum(Double.parseDouble(thsum));
                 outsrgreceipt.setMblnr(mblnr);
                 outsrgreceipt.setMjahr(mjahr);
-                outsrgreceipt.setZdsuser(createdBy);
+                outsrgreceipt.setZeile(zeile);
+                outsrgreceipt.setZdsuser(userName);
                 outsrgreceipt.setZgfnum(Double.parseDouble(gfsum));
                 outsrgreceipt.setZlfnum(Double.parseDouble(lfsum));
                 outsrgreceipt.setZlost(Double.parseDouble(yssum));
                 outsrgreceipt.setZpgdbar(barcode);
-                outsrgreceipt.setZshnum(Double.parseDouble(gfsum) + Double.parseDouble(lfsum) + Double.parseDouble(hgsum) + Double.parseDouble(thsum));
+                outsrgreceipt.setZshnum(Double.parseDouble(hgsum));
                 outsrgreceipt.setStatus("0");
                 outsrgreceipt.setCreatedBy(Long.valueOf(createdBy));
                 outsrgreceipt.setCreationDate(new Date());
@@ -284,13 +288,14 @@ public class OutsrgreceiptController extends BaseController {
                 outsrgreceipt.setZdsdat(curdate1);
                 outsrgreceipt.setZthnum(Double.parseDouble(thsum));
                 outsrgreceipt.setMblnr(mblnr);
+                outsrgreceipt.setZeile(zeile);
                 outsrgreceipt.setMjahr(mjahr);
-                outsrgreceipt.setZdsuser(createdBy);
+                outsrgreceipt.setZdsuser(userName);
                 outsrgreceipt.setZgfnum(Double.parseDouble(gfsum));
                 outsrgreceipt.setZlfnum(Double.parseDouble(lfsum));
                 outsrgreceipt.setZlost(Double.parseDouble(yssum));
                 outsrgreceipt.setZpgdbar(barcode);
-                outsrgreceipt.setZshnum(Double.parseDouble(gfsum) + Double.parseDouble(lfsum) + Double.parseDouble(hgsum) + Double.parseDouble(thsum));
+                outsrgreceipt.setZshnum(Double.parseDouble(hgsum));
                 outsrgreceipt.setStatus("0");
                 outsrgreceipt.setCreatedBy(Long.valueOf(createdBy));
                 outsrgreceipt.setCreationDate(new Date());
@@ -324,17 +329,17 @@ public class OutsrgreceiptController extends BaseController {
         DTOUTSRGRECEIPTHead head = new DTOUTSRGRECEIPTHead();
         DTOUTSRGRECEIPTitem item = new DTOUTSRGRECEIPTitem();
         if (outsrgreceipthead.getReceiptnm() != null){
-            head.setZdpdat(curdate);
+            head.setZdpdat(outsrgreceipthead.getZdpdat());
             head.setReceiptnm(outsrgreceipthead.getReceiptnm());
             head.setPrtflag(outsrgreceipthead.getPrtflag());
             head.setLifnr(outsrgreceipthead.getLifnr());
             head.setMatnr(outsrgreceipthead.getMatnr());
             head.setZipuser(outsrgreceipthead.getZipuser());
-            head.setZipdat(curdate);
-            head.setZiptim(curtim);
+            head.setZipdat(outsrgreceipthead.getZipdat());
+            head.setZiptim(outsrgreceipthead.getZiptim());
             head.setWerks(outsrgreceipthead.getWerks());
             head.setStatus(outsrgreceipthead.getStatus());
-            head.setZdptim(curtim);
+            head.setZdptim(outsrgreceipthead.getZdptim());
             head.setZdpuser(outsrgreceipthead.getZdpuser());
         }else{
             head.setZdpdat("");
@@ -360,8 +365,8 @@ public class OutsrgreceiptController extends BaseController {
             item.setZgfnum(outsrgreceipt.getZgfnum());
             item.setZeile(outsrgreceipt.getZeile());
             item.setZdsuser(outsrgreceipt.getZdsuser());
-            item.setZdstim(curtim);
-            item.setZdsdat(curdate);
+            item.setZdstim(outsrgreceipt.getZdstim());
+            item.setZdsdat(outsrgreceipt.getZdsdat());
             item.setWerks(outsrgreceipt.getWerks());
             item.setVsnda(outsrgreceipt.getVsnda());
             item.setVornr(outsrgreceipt.getVornr());
@@ -375,6 +380,7 @@ public class OutsrgreceiptController extends BaseController {
             item.setMjahr(outsrgreceipt.getMjahr());
             item.setMenge(outsrgreceipt.getMenge());
             item.setMblnr(outsrgreceipt.getMblnr());
+            item.setZeile(outsrgreceipt.getZeile());
             item.setMatnr(outsrgreceipt.getMatnr());
             item.setMatkl(outsrgreceipt.getMatkl());
             item.setLifnr(outsrgreceipt.getLifnr());
@@ -481,6 +487,7 @@ public class OutsrgreceiptController extends BaseController {
         //查询流转卡信息
         String barcode = request.getParameter("barcode");
         String userId = request.getParameter("userId");
+        String userName = request.getParameter("userName");
         //查询查询收货单信息
         Outsrgreceipt outsrgreceipt = new Outsrgreceipt();
         outsrgreceipt = service.selectByZpgdbarAndStatus(barcode,"0");

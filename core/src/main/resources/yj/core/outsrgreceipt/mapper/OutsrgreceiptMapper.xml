@@ -62,6 +62,16 @@
         </where>
     </select>
 
+    <select id="selectByZpgdbarAndStatusM" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_outsrgreceipt
+        <where>
+            ZPGDBAR = #{barcode}
+            <if test="status != null">
+                and STATUS = #{status}
+            </if>
+        </where>
+    </select>
+
     <select id="selectByReceiptDesc" parameterType="java.lang.String" resultMap="BaseResultMap">
         select * from wip_outsrgreceipt
         <where>
@@ -101,4 +111,6 @@
             and ITEM = #{item}
         </where>
     </update>
+
+
 </mapper>

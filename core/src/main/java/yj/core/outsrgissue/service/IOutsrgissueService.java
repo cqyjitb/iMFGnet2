@@ -54,5 +54,11 @@ public interface IOutsrgissueService extends IBaseService<Outsrgissue>, ProxySel
      */
     List<Outsrgissue> selectByIssuenmAndStatus(String issuenm,String status);
 
-
+    /**
+     *  根据箱号条码 状态取外协发料记录
+     * @param barcode
+     * @param status
+     * @return
+     */
+    List<Outsrgissue> selectBybarcodes(String barcode,String status);
 }
