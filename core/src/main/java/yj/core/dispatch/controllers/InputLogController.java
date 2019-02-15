@@ -411,7 +411,12 @@ public class InputLogController extends BaseController{
         inputLog.setZtpbar(xhcard.getZxhbar());
         //获取发料单数据
         Outsrgissue outsrgissue = new Outsrgissue();
-        outsrgissue = outsrgissueService.selectByBarcode(barcode,"0");
+        List<Outsrgissue> list2 = outsrgissueService.selectBybarcodes(barcode,null);
+        for (int i =0;i<list2.size();i++){
+            if (list2.get(i).getStatus().equals("0")){
+                outsrgissue = list2.get(i);
+            }
+        }
 
         //获取工序数据
         Cardt cardt = new Cardt();

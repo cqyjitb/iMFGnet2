@@ -29,4 +29,9 @@ public class OutsrgreceiptheadServiceImpl extends BaseServiceImpl<Outsrgreceipth
     public int updateOutsrgreceipthead(Outsrgreceipthead outsrgreceipthead) {
         return outsrgreceiptheadMapper.updateOutsrgreceipthead(outsrgreceipthead);
     }
+
+    @Override
+    public List<Outsrgreceipthead> selectAllDesc() {
+        return outsrgreceiptheadMapper.selectAllDesc();
+    }
 }

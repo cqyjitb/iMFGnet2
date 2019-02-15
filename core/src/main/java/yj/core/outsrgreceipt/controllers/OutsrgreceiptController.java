@@ -139,7 +139,15 @@ public class OutsrgreceiptController extends BaseController {
         cardh = cardhService.selectByBarcode(barcode);
 
         Outsrgissue outsrgissue = new Outsrgissue();
-        outsrgissue = outsrgissueService.selectByBarcode(barcode,"0");
+        List<Outsrgissue> list2 = outsrgissueService.selectBybarcodes(barcode,null);
+        if (list2.size() > 0){
+            for (int i = 0;i<list2.size();i++){
+                if (list2.get(i).getStatus().equals("0")){
+                    outsrgissue = list2.get(i);
+                }
+            }
+        }
+
 
         Outsrgrfe outsrgrfe = new Outsrgrfe();
         outsrgrfe = outsrgrfeService.selectByCondition(cardh.getWerks(),cardh.getAufnr(),vornr,cardh.getMatnr(),lifnr,null,null);
@@ -180,7 +188,9 @@ public class OutsrgreceiptController extends BaseController {
                 //使用以前的单号
 
             }else{
-                outsrgreceipthead = list.get(0);
+                List<Outsrgreceipthead> listouthead = new ArrayList<>();
+                listouthead = outsrgreceiptheadService.selectAllDesc();
+                outsrgreceipthead = listouthead.get(0);
                 if (!outsrgreceipthead.getReceiptnm().substring(1,5).equals(curdate.substring(2,6))){
                     String no = "S" + curdate.substring(2,6) + "000001";
                     outsrgreceipthead.setReceiptnm(no);
@@ -335,8 +345,8 @@ public class OutsrgreceiptController extends BaseController {
             head.setLifnr(outsrgreceipthead.getLifnr());
             head.setMatnr(outsrgreceipthead.getMatnr());
             head.setZipuser(outsrgreceipthead.getZipuser());
-            head.setZipdat(outsrgreceipthead.getZipdat());
-            head.setZiptim(outsrgreceipthead.getZiptim());
+            head.setZipdat(outsrgreceipthead.getZipdat().replaceAll("-",""));
+            head.setZiptim(outsrgreceipthead.getZiptim().replaceAll(":",""));
             head.setWerks(outsrgreceipthead.getWerks());
             head.setStatus(outsrgreceipthead.getStatus());
             head.setZdptim(outsrgreceipthead.getZdptim());
@@ -365,8 +375,8 @@ public class OutsrgreceiptController extends BaseController {
             item.setZgfnum(outsrgreceipt.getZgfnum());
             item.setZeile(outsrgreceipt.getZeile());
             item.setZdsuser(outsrgreceipt.getZdsuser());
-            item.setZdstim(outsrgreceipt.getZdstim());
-            item.setZdsdat(outsrgreceipt.getZdsdat());
+            item.setZdstim(outsrgreceipt.getZdstim().replaceAll(":",""));
+            item.setZdsdat(outsrgreceipt.getZdsdat().replaceAll("-",""));
             item.setWerks(outsrgreceipt.getWerks());
             item.setVsnda(outsrgreceipt.getVsnda());
             item.setVornr(outsrgreceipt.getVornr());
@@ -642,7 +652,6 @@ public class OutsrgreceiptController extends BaseController {
         head.setZdptim("");
         head.setZdpuser("");
 
-        item.setZthnum(outsrgreceipt.getZthnum());
         item.setZshnum(outsrgreceipt.getZshnum());
         item.setZpgdbar(outsrgreceipt.getZpgdbar());
         item.setZlost(outsrgreceipt.getZlost());
@@ -650,8 +659,8 @@ public class OutsrgreceiptController extends BaseController {
         item.setZgfnum(outsrgreceipt.getZgfnum());
         item.setZeile(outsrgreceipt.getZeile());
         item.setZdsuser(outsrgreceipt.getZdsuser());
-        item.setZdstim(outsrgreceipt.getZdstim());
-        item.setZdsdat(outsrgreceipt.getZdsdat());
+        item.setZdstim(outsrgreceipt.getZdstim().replaceAll(":",""));
+        item.setZdsdat(outsrgreceipt.getZdsdat().replaceAll("-",""));
         item.setWerks(outsrgreceipt.getWerks());
         item.setVsnda(outsrgreceipt.getVsnda());
         item.setVornr(outsrgreceipt.getVornr());

@@ -225,20 +225,23 @@ public class SyncAufnrImp
 
             }
 
-            if (rec_t435t.size() > 0){
-                for (int i = 0;i<rec_t435t.size();i++){
-                    T435t t435t = new T435t();
-                    t435t.setVlsch(rec_t435t.get(i).getVlsch());
-                    t435t.setTxt(rec_t435t.get(i).getTxt());
+            if  (rec_t435t != null){
+                if (rec_t435t.size() > 0){
+                    for (int i = 0;i<rec_t435t.size();i++){
+                        T435t t435t = new T435t();
+                        t435t.setVlsch(rec_t435t.get(i).getVlsch());
+                        t435t.setTxt(rec_t435t.get(i).getTxt());
 
-                    int sum = t435tService.isExit(t435t.getVlsch());
-                    if (sum > 0){
-                        t435tService.updateByVlsch(t435t);
-                    }else{
-                        t435tService.insertByVlsch(t435t);
+                        int sum = t435tService.isExit(t435t.getVlsch());
+                        if (sum > 0){
+                            t435tService.updateByVlsch(t435t);
+                        }else{
+                            t435tService.insertByVlsch(t435t);
+                        }
                     }
                 }
             }
+
 
             if (rec_resbs.size() > 0){
                 String aufpl = rec_resbs.get(0).getAufpl();

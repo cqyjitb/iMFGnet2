@@ -122,6 +122,27 @@ public class Zudlist extends BaseDTO {
     private String createBy1;//创建人
     private String createDate;//创建日期
 
+    @Transient
+    private String ztext;
+
+    @Transient
+    private String kurztext;
+
+    public String getZtext() {
+        return ztext;
+    }
+
+    public void setZtext(String ztext) {
+        this.ztext = ztext;
+    }
+
+    public String getKurztext() {
+        return kurztext;
+    }
+
+    public void setKurztext(String kurztext) {
+        this.kurztext = kurztext;
+    }
 
     public String getCreateDate() {
         return createDate;

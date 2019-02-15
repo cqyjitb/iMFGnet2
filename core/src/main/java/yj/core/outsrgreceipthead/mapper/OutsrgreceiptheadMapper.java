@@ -27,4 +27,10 @@ public interface OutsrgreceiptheadMapper extends Mapper<Outsrgreceipthead>{
      * @return
      */
     int updateOutsrgreceipthead(Outsrgreceipthead outsrgreceipthead);
+
+    /**
+     *  查询所有收货单数据 根据单号倒序排列 917110140
+     * @return
+     */
+    List<Outsrgreceipthead> selectAllDesc();
 }

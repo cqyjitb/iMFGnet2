@@ -59,7 +59,9 @@
         <result column="DIECD" property="diecd" jdbcType="VARCHAR" />
         <result column="SFFLG" property="sfflg" jdbcType="VARCHAR" />
         <result column="ZQXDM" property="zqxdm" jdbcType="VARCHAR" />
+        <result column="ZTEXT" property="ztext" jdbcType="VARCHAR" />
         <result column="ZISSUETXT" property="zissuetxt" jdbcType="VARCHAR" />
+        <result column="KURZTEXT" property="kurztext" jdbcType="VARCHAR" />
         <result column="ZBPJC" property="zbpjc" jdbcType="VARCHAR" />
         <result column="ZOPLO" property="zoplo" jdbcType="VARCHAR" />
         <result column="ZBANZ" property="zbanz" jdbcType="VARCHAR" />
@@ -103,8 +105,8 @@
     </select>
 
     <select id="selectZudlist" parameterType="java.lang.String" resultMap="BaseResultMap2">
-        select distinct zl.*,li.descriptions,cu.sortl,ma.maktx,re.zotype,zl.CREATION_DATE as createDate,b.name
-        from wip_zudlist zl,wip_zudhead zh,wip_lines li,sap_cust cu,sap_marc ma,wip_in_out_record re,hr_org_unit_b b
+        select distinct zl.*,li.descriptions,cu.sortl,ma.maktx,re.zotype,zl.CREATION_DATE as createDate,b.name,df.ztext,qp.kurztext
+        from wip_zudlist zl,wip_zudhead zh,wip_lines li,sap_cust cu,sap_marc ma,wip_in_out_record re,hr_org_unit_b b,sap_qpcd qp,sap_dftdtl df
         <where>
             zh.zudnum = zl.zudnum
             AND li.line_id = zl.line_id
@@ -112,6 +114,8 @@
             AND ma.matnr = zl.matnr2
             AND re.zqjjlh = zl.zqjjlh
             AND zl.rspart = b.unit_code
+            and re.zqxdm = qp.code
+            and ( re.zissuetxt = df.tlevelcode and re.matnr2 = df.matnr )
             <if test="status != null">
                 AND zl.STATUS = #{status}
             </if>

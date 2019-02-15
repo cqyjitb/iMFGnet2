@@ -247,9 +247,9 @@ import java.util.List;
             head.setStatus(outsrgissuehead.getStatus());
             head.setTxz01(outsrgissuehead.getTxz01());
             head.setWerks(outsrgissuehead.getWerks());
-            head.setZiptim(outsrgissuehead.getZiptim());
+            head.setZiptim(outsrgissuehead.getZiptim().replaceAll(":",""));
             head.setZipuser(outsrgissuehead.getZipuser());
-            head.setZipdat(outsrgissuehead.getZipdat());
+            head.setZipdat(outsrgissuehead.getZipdat().replaceAll("-",""));
         }else{
             head.setIssuenm("");
             head.setLifnr("");
@@ -418,8 +418,8 @@ import java.util.List;
                         head.setLifnr(outsrgissuehead.getLifnr());
                         head.setIssuenm(outsrgissuehead.getIssuenm());
                         head.setZipuser(outsrgissuehead.getZipuser());
-                        head.setZiptim(outsrgissuehead.getZiptim());
-                        head.setZipdat(outsrgissuehead.getZipdat());
+                        head.setZiptim(outsrgissuehead.getZiptim().replaceAll(":",""));
+                        head.setZipdat(outsrgissuehead.getZipdat().replaceAll("-",""));
 
                         item.setStatus(outsrgissue.getStatus());
                         item.setCharg(outsrgissue.getCharg());

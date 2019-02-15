@@ -450,7 +450,7 @@
         </where>
     </select>
 
-    <select id="selectByJjzpgdbar" parameterType="java.lang.String">
+    <select id="selectByJjzpgdbar" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(*) from zwipq
         <where>
             ZPGDBAR = #{zpgdbar}
