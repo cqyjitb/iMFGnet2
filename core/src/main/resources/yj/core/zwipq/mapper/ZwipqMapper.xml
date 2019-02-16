@@ -457,4 +457,13 @@
             or  ZPGDBAR1 = #{zpgdbar}
         </where>
     </select>
+
+    <select id="getlastsumbit" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select DISTINCT line_id,zxhbar,CREATION_DATE FROM zwipq
+        <where>
+            line_id = #{line_id}
+            and zxhbar = #{zxhbar}
+        </where>
+        order by CREATION_DATE desc
+    </select>
 </mapper>

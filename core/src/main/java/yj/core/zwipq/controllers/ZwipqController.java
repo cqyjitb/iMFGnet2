@@ -879,4 +879,30 @@ public class ZwipqController extends BaseController {
         List<Zwipq> list = service.selectIORZwipq(requestContext,deptId,lineId,pmatnr,attr1After,attr1Before,shift);
         return new ResponseData(list);
     }
+
+    /**
+     *  处理机加上线时间检查页面请求
+     *  根据扫描的箱号， 当前机加产线ID 获取当前箱号最后一次上线记录的时间
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = {"/zwipq/getlastsumbit"}, method = {RequestMethod.GET})
+    @ResponseBody
+    public ResponseData getlastsumbit(HttpServletRequest request){
+
+        ResponseData rs = new ResponseData();
+        String line_id = request.getParameter("line_id");
+        String zxhbar = request.getParameter("zxhbar");
+        List<Zwipq> list = new ArrayList<>();
+        list = service.getlastsumbit(line_id,zxhbar);
+        if (list.size() == 0){
+            rs.setSuccess(true);
+            rs.setCode("S1");
+        }else if(list.size() > 0) {
+            rs.setSuccess(true);
+            rs.setRows(list);
+            rs.setCode("S");
+        }
+        return rs;
+    }
 }

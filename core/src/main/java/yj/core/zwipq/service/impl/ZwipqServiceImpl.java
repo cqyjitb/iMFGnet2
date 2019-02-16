@@ -270,4 +270,9 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
     public int selectByJjzpgdbar(String zpgdbar) {
         return zwipqMapper.selectByJjzpgdbar(zpgdbar);
     }
+
+    @Override
+    public List<Zwipq> getlastsumbit(String line_id, String zxhbar) {
+        return zwipqMapper.getlastsumbit(line_id,zxhbar);
+    }
 }

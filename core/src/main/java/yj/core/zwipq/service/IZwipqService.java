@@ -51,4 +51,12 @@ public interface IZwipqService extends IBaseService<Zwipq>, ProxySelf<IZwipqServ
      * @return
      */
     int selectByJjzpgdbar(String zpgdbar);
+
+    /**
+     *  根据箱号，产线id 获取最后一次上线的记录
+     * @param line_id
+     * @param zxhbar
+     * @return
+     */
+    List<Zwipq> getlastsumbit(String line_id,String zxhbar);
 }

@@ -114,8 +114,8 @@
             AND ma.matnr = zl.matnr2
             AND re.zqjjlh = zl.zqjjlh
             AND zl.rspart = b.unit_code
-            and re.zqxdm = qp.code
-            and ( re.zissuetxt = df.tlevelcode and re.matnr2 = df.matnr )
+            and zl.zqxdm = qp.code
+            and ( zl.zissuetxt = df.tlevelcode and re.matnr2 = df.matnr )
             <if test="status != null">
                 AND zl.STATUS = #{status}
             </if>
