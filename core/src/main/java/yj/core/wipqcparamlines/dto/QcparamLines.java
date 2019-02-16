@@ -81,7 +81,7 @@ public class QcparamLines extends BaseDTO {
     private String maktx;//物料描述
 
     @Transient
-    private Double zsxnum;//在制数量
+    private Integer zsxnum;//在制数量
 
     @Transient
     private String gmein;//单位
@@ -160,11 +160,11 @@ public class QcparamLines extends BaseDTO {
         this.maktx = maktx;
     }
 
-    public Double getZsxnum() {
+    public Integer getZsxnum() {
         return zsxnum;
     }
 
-    public void setZsxnum(Double zsxnum) {
+    public void setZsxnum(Integer zsxnum) {
         this.zsxnum = zsxnum;
     }
 

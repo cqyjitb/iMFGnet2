@@ -55,7 +55,7 @@ public class QcparamLinesServiceImpl extends BaseServiceImpl<QcparamLines> imple
         List<QcparamLines> qcparamLines = new ArrayList<QcparamLines>();
         QcparamLines qcparamLine = new QcparamLines();
         Marc marc = new Marc();
-        Zwipq zwipq = new Zwipq();
+        Integer zsxnum;
         String name = linesMapper.selectByUnitCode(deptId);
         List<Lines> lines = linesMapper.selectLov(deptId,lineId);
         if(lines.size() > 0){
@@ -65,7 +65,7 @@ public class QcparamLinesServiceImpl extends BaseServiceImpl<QcparamLines> imple
                     Cardh cardh = cardhMapper.selectByBarcode(curlzk.getZpgdbar());
                     if(cardh != null){
                         marc = marcMapper.selectByMatnr(cardh.getMatnr());
-                        zwipq = zwipqMapper.selectByLineIdMatnr2(lines.get(i).getLineId(),cardh.getMatnr());
+                        zsxnum = zwipqMapper.selectByLineIdMatnr2(lines.get(i).getLineId(),cardh.getMatnr());
                         qcparamLine = qcparamLinesMapper.selectByLineId(lines.get(i).getLineId());
                         if(qcparamLine != null){
                             Double wipSqty = qcparamLine.getWipSqty();
@@ -73,18 +73,14 @@ public class QcparamLinesServiceImpl extends BaseServiceImpl<QcparamLines> imple
                             qcparamLine.setName(name);
                             qcparamLine.setMatnr2(cardh.getMatnr());
                             qcparamLine.setMaktx(marc.getMaktx());
-                            qcparamLine.setZsxnum(zwipq.getZsxnum());
+                            qcparamLine.setZsxnum((zsxnum));
                             if(wipSqty == null || wipSqty == 0){
                                 qcparamLine.setScale("0%");
                             }else {
-                                qcparamLine.setScale(Math.round(((zwipq.getZsxnum() - wipSqty)/wipSqty)*100) + "%");
+                                qcparamLine.setScale(Math.round(((zsxnum - wipSqty)/wipSqty)*100) + "%");
                             }
-                            if(zwipq.getGmein() == null || zwipq.getGmein() == ""){
-                                qcparamLine.setGmein("ST");
-                            }else{
-                                qcparamLine.setGmein(zwipq.getGmein());
-                            }
-                            if(wipSqty != null || zwipq.getZsxnum() != null){
+                            qcparamLine.setGmein("ST");
+                            if(wipSqty != null || zsxnum != null){
                                 qcparamLines.add(qcparamLine);
                             }
                         }
