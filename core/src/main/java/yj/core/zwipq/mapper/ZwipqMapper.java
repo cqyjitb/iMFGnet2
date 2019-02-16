@@ -139,5 +139,5 @@ public interface ZwipqMapper extends Mapper<Zwipq> {
      * @param matnr2
      * @return
      */
-    Zwipq selectByLineIdMatnr2(@Param("lineId")Long lineId,@Param("matnr2")String matnr2);
+    int selectByLineIdMatnr2(@Param("lineId")Long lineId,@Param("matnr2")String matnr2);
 }

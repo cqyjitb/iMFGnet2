@@ -136,8 +136,8 @@
         <result column="PMATNR" property="pmatnr" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <select id="selectByLineIdMatnr2" parameterType="java.lang.String" resultType="yj.core.zwipq.dto.Zwipq">
-        select COALESCE(sum(zsxnum),0) as zsxnum,gmein from zwipq
+    <select id="selectByLineIdMatnr2" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select COALESCE(sum(zsxnum),0) from zwipq
         <where>
             (line_id = #{lineId} OR pkg_line_id = #{lineId})
             AND matnr2 = #{matnr2}
