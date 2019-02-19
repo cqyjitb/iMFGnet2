@@ -16,8 +16,8 @@ public class OutsrgreceiptheadServiceImpl extends BaseServiceImpl<Outsrgreceipth
     @Autowired
     private OutsrgreceiptheadMapper outsrgreceiptheadMapper;
     @Override
-    public List<Outsrgreceipthead> selectByMatnrAndLifnrDesc(String matnr, String lifnr) {
-        return outsrgreceiptheadMapper.selectByMatnrAndLifnrDesc(matnr,lifnr);
+    public List<Outsrgreceipthead> selectByMatnrAndLifnrDesc(String matnr, String lifnr,String status) {
+        return outsrgreceiptheadMapper.selectByMatnrAndLifnrDesc(matnr,lifnr,status);
     }
 
     @Override
@@ -33,5 +33,10 @@ public class OutsrgreceiptheadServiceImpl extends BaseServiceImpl<Outsrgreceipth
     @Override
     public List<Outsrgreceipthead> selectAllDesc() {
         return outsrgreceiptheadMapper.selectAllDesc();
+    }
+
+    @Override
+    public String getMaxNo() {
+        return outsrgreceiptheadMapper.getMaxNo();
     }
 }

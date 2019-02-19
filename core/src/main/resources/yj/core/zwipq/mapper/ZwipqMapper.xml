@@ -29,7 +29,7 @@
         <result column="SFFLG" property="sfflg" jdbcType="VARCHAR" />
         <result column="DIECD" property="diecd" jdbcType="VARCHAR" />
         <result column="Q_SENQ" property="qsenq" jdbcType="DECIMAL"/>
-        <result column="CREATION_DATE" property="creationDate" jdbcType="DATE" />
+        <result column="CREATION_DATE" property="creationDate" jdbcType="VARCHAR" />
         <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
         <result column="LAST_UPDATED_DATE" property="lastUpdatedDate" jdbcType="DATE" />
         <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
@@ -459,7 +459,7 @@
     </select>
 
     <select id="getlastsumbit" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select DISTINCT line_id,zxhbar,CREATION_DATE FROM zwipq
+        select DISTINCT  LINE_ID,ZXHBAR,CREATION_DATE FROM zwipq
         <where>
             line_id = #{line_id}
             and zxhbar = #{zxhbar}

@@ -164,10 +164,26 @@ public class OutsrgreceiptController extends BaseController {
 
         Outsrgreceipthead outsrgreceipthead = new Outsrgreceipthead();
         List<Outsrgreceipthead> list = new ArrayList<>();
-        list = outsrgreceiptheadService.selectByMatnrAndLifnrDesc(cardh.getMatnr(),lifnr);
+        list = outsrgreceiptheadService.selectByMatnrAndLifnrDesc(cardh.getMatnr(),lifnr,"0");
         if (list.size() == 0){
             //产生新的单号 F+ 年 + 月 + 6位流水
-            String no = "S" + curdate.substring(2,6) + "000001";
+            //String
+            String no = outsrgreceiptheadService.getMaxNo();
+            if (no == null){
+                no = "S" + curdate.substring(2,6) + "000001";
+            }else{
+                String s1 = no.substring(1,5);
+                String s2 = curdate.substring(2,6);
+                if (!no.substring(1,5).equals(curdate.substring(2,6))){
+                    no = "S" + curdate.substring(2,6) + "000001";
+                }else{
+                    String mxnum = no.substring(5,11);
+                    int num = Integer.valueOf(mxnum) + 1;
+                    mxnum = String.format("%06d",num);
+                    no = "S" + curdate.substring(2,6) + mxnum;
+
+                }
+            }
             outsrgreceipthead.setReceiptnm(no);
             outsrgreceipthead.setZdpuser(createdBy);
             outsrgreceipthead.setZdptim(curtim1);
@@ -217,43 +233,43 @@ public class OutsrgreceiptController extends BaseController {
         }
 
         //准备行数据
-        Outsrgreceipt outsrgreceipt = new Outsrgreceipt();
-        outsrgreceipt = service.selectByZpgdbarAndStatus(barcode,"1");
-        if (outsrgreceipt != null) {
-            //使用以前的行项目
-            l_update = "X";
-            outsrgreceipt.setStatus("0");
-            outsrgreceipt.setLastUpdatedBy(Long.valueOf(createdBy));
-            outsrgreceipt.setLastUpdateDate(new Date());
-            outsrgreceipt.setZthnum(Double.parseDouble(thsum));
-            outsrgreceipt.setZshnum(Double.parseDouble(hgsum));
-            outsrgreceipt.setZpgdbar(barcode);
-            outsrgreceipt.setZlost(Double.parseDouble(yssum));
-            outsrgreceipt.setZlfnum(Double.parseDouble(lfsum));
-            outsrgreceipt.setZgfnum(Double.parseDouble(gfsum));
-            outsrgreceipt.setZdsuser(userName);
-            outsrgreceipt.setMjahr(mjahr);
-            outsrgreceipt.setMblnr(mblnr);
-            outsrgreceipt.setZeile(zeile);
-            outsrgreceipt.setZthnum(Double.parseDouble(thsum));
-            outsrgreceipt.setZdsdat(curdate1);
-            outsrgreceipt.setZdstim(curtim1);
-            outsrgreceipt.setZeile("");
-            outsrgreceipt.setRueck(rsnum);
-            outsrgreceipt.setRmzhl(rspos);
-            outsrgreceipt.setTtreceipts(Double.parseDouble(hjsum));
-        }else{
-            Long item = 0L;
-            outsrgreceipt = new Outsrgreceipt();
+//        Outsrgreceipt outsrgreceipt = new Outsrgreceipt();
+//        outsrgreceipt = service.selectByZpgdbarAndStatus(barcode,"1");
+//        if (outsrgreceipt != null) {
+//            //使用以前的行项目
+//            l_update = "X";
+//            outsrgreceipt.setStatus("0");
+//            outsrgreceipt.setLastUpdatedBy(Long.valueOf(createdBy));
+//            outsrgreceipt.setLastUpdateDate(new Date());
+//            outsrgreceipt.setZthnum(Double.parseDouble(thsum));
+//            outsrgreceipt.setZshnum(Double.parseDouble(hgsum));
+//            outsrgreceipt.setZpgdbar(barcode);
+//            outsrgreceipt.setZlost(Double.parseDouble(yssum));
+//            outsrgreceipt.setZlfnum(Double.parseDouble(lfsum));
+//            outsrgreceipt.setZgfnum(Double.parseDouble(gfsum));
+//            outsrgreceipt.setZdsuser(userName);
+//            outsrgreceipt.setMjahr(mjahr);
+//            outsrgreceipt.setMblnr(mblnr);
+//            outsrgreceipt.setZeile(zeile);
+//            outsrgreceipt.setZthnum(Double.parseDouble(thsum));
+//            outsrgreceipt.setZdsdat(curdate1.replaceAll(":",""));
+//            outsrgreceipt.setZdstim(curtim1.replaceAll(":",""));
+//            outsrgreceipt.setZeile("");
+//            outsrgreceipt.setRueck(rsnum);
+//            outsrgreceipt.setRmzhl(rspos);
+//            outsrgreceipt.setTtreceipts(Double.parseDouble(hjsum));
+//        }else{
+            Long itemnum = 0L;
+            Outsrgreceipt outsrgreceipt = new Outsrgreceipt();
             if (outsrgreceipthead.getReceiptnm() == null){
                 List<Outsrgreceipt> listmx = service.selectByReceiptDesc(list.get(0).getReceiptnm());
-                item = listmx.get(0).getItem() + 1;
+                itemnum = listmx.get(0).getItem() + 1;
 
                 outsrgreceipt.setRmzhl(rspos);
                 outsrgreceipt.setRueck(rsnum);
                 outsrgreceipt.setZeile("");
-                outsrgreceipt.setZdstim(curtim1);
-                outsrgreceipt.setZdsdat(curdate1);
+                outsrgreceipt.setZdstim(curtim1.replaceAll(":",""));
+                outsrgreceipt.setZdsdat(curdate1.replaceAll(":",""));
                 outsrgreceipt.setZthnum(Double.parseDouble(thsum));
                 outsrgreceipt.setMblnr(mblnr);
                 outsrgreceipt.setMjahr(mjahr);
@@ -287,15 +303,15 @@ public class OutsrgreceiptController extends BaseController {
                 outsrgreceipt.setDiecd(cardh.getDiecd());
                 outsrgreceipt.setDeductntenm("");
                 outsrgreceipt.setCharg(cardh.getCharg2());
-                outsrgreceipt.setItem(item);
+                outsrgreceipt.setItem(itemnum);
 
             }else{
-                item = 1L;
+                itemnum = 1L;
                 outsrgreceipt.setRmzhl(rspos);
                 outsrgreceipt.setRueck(rsnum);
                 outsrgreceipt.setZeile("");
-                outsrgreceipt.setZdstim(curtim1);
-                outsrgreceipt.setZdsdat(curdate1);
+                outsrgreceipt.setZdstim(curtim1.replaceAll(":",""));
+                outsrgreceipt.setZdsdat(curdate1.replaceAll("-",""));
                 outsrgreceipt.setZthnum(Double.parseDouble(thsum));
                 outsrgreceipt.setMblnr(mblnr);
                 outsrgreceipt.setZeile(zeile);
@@ -329,17 +345,17 @@ public class OutsrgreceiptController extends BaseController {
                 outsrgreceipt.setDiecd(cardh.getDiecd());
                 outsrgreceipt.setDeductntenm("");
                 outsrgreceipt.setCharg(cardh.getCharg2());
-                outsrgreceipt.setItem(item);
+                outsrgreceipt.setItem(itemnum);
 
 
             }
-        }
+
         int result = 0;
         SyncOutsrgreceiptWebserviceUtil syncOutsrgreceiptWebserviceUtil = new SyncOutsrgreceiptWebserviceUtil();
         DTOUTSRGRECEIPTHead head = new DTOUTSRGRECEIPTHead();
         DTOUTSRGRECEIPTitem item = new DTOUTSRGRECEIPTitem();
         if (outsrgreceipthead.getReceiptnm() != null){
-            head.setZdpdat(outsrgreceipthead.getZdpdat());
+            head.setZdpdat(outsrgreceipthead.getZdpdat().replaceAll("-",""));
             head.setReceiptnm(outsrgreceipthead.getReceiptnm());
             head.setPrtflag(outsrgreceipthead.getPrtflag());
             head.setLifnr(outsrgreceipthead.getLifnr());
@@ -349,7 +365,7 @@ public class OutsrgreceiptController extends BaseController {
             head.setZiptim(outsrgreceipthead.getZiptim().replaceAll(":",""));
             head.setWerks(outsrgreceipthead.getWerks());
             head.setStatus(outsrgreceipthead.getStatus());
-            head.setZdptim(outsrgreceipthead.getZdptim());
+            head.setZdptim(outsrgreceipthead.getZdptim().replaceAll(":",""));
             head.setZdpuser(outsrgreceipthead.getZdpuser());
         }else{
             head.setZdpdat("");
@@ -657,6 +673,7 @@ public class OutsrgreceiptController extends BaseController {
         item.setZlost(outsrgreceipt.getZlost());
         item.setZlfnum(outsrgreceipt.getZlfnum());
         item.setZgfnum(outsrgreceipt.getZgfnum());
+        item.setZthnum(outsrgreceipt.getZthnum());
         item.setZeile(outsrgreceipt.getZeile());
         item.setZdsuser(outsrgreceipt.getZdsuser());
         item.setZdstim(outsrgreceipt.getZdstim().replaceAll(":",""));
@@ -687,6 +704,7 @@ public class OutsrgreceiptController extends BaseController {
         item.setDiecd(outsrgreceipt.getDiecd());
         item.setDeductntenm(outsrgreceipt.getDeductntenm());
         item.setCharg(outsrgreceipt.getCharg());
+        item.setZeile(outsrgreceipt.getZeile());
         DTOUTSRGRECEIPTReturn DTRE = new DTOUTSRGRECEIPTReturn();
         SyncOutsrgreceiptWebserviceUtil syncOutsrgreceiptWebserviceUtil = new SyncOutsrgreceiptWebserviceUtil();
         DTRE = syncOutsrgreceiptWebserviceUtil.receiveConfirmation(head,item);

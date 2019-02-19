@@ -13,7 +13,7 @@ public interface IOutsrgreceiptheadService extends IBaseService<Outsrgreceipthea
      * @param lifnr
      * @return
      */
-    List<Outsrgreceipthead> selectByMatnrAndLifnrDesc(String matnr ,String lifnr);
+    List<Outsrgreceipthead> selectByMatnrAndLifnrDesc(String matnr ,String lifnr,String Status);
 
     /**
      *  插入新行 917110140
@@ -34,4 +34,10 @@ public interface IOutsrgreceiptheadService extends IBaseService<Outsrgreceipthea
      * @return
      */
     List<Outsrgreceipthead> selectAllDesc();
+
+    /**
+     *  获取最大单号
+     * @return
+     */
+    String getMaxNo();
 }

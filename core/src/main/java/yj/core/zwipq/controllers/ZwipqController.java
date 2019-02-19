@@ -40,6 +40,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
 import java.sql.Time;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -893,16 +894,55 @@ public class ZwipqController extends BaseController {
         ResponseData rs = new ResponseData();
         String line_id = request.getParameter("line_id");
         String zxhbar = request.getParameter("zxhbar");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         List<Zwipq> list = new ArrayList<>();
         list = service.getlastsumbit(line_id,zxhbar);
         if (list.size() == 0){
             rs.setSuccess(true);
-            rs.setCode("S1");
-        }else if(list.size() > 0) {
-            rs.setSuccess(true);
-            rs.setRows(list);
             rs.setCode("S");
+        }else if(list.size() > 0) {
+            String lasttime = sdf.format(list.get(0).getCreationDate());
+            String nowtime = sdf.format(new Date());
+            float ca = 0;
+            try {
+                ca = timeandtime(lasttime,nowtime);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            if (ca > 1){
+                rs.setSuccess(true);
+                rs.setCode("S");
+            }else{
+                rs.setSuccess(true);
+                rs.setCode("E");
+                rs.setMessage("机加上线2次提交时间间隔小于1分钟，请稍后再试！");
+            }
+
         }
         return rs;
+    }
+
+    public static float timeandtime(String startTime, String endTime) throws ParseException {
+        Integer ss = 1000;
+        Integer mi = ss * 60;
+        Integer hh = mi * 60;
+        Integer dd = hh * 24;
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        Date start = sdf.parse(startTime);
+        Date end = sdf.parse(endTime);
+        long startLong = start.getTime();
+        System.out.println(startLong);
+        long endLong = end.getTime();
+        System.out.println(endLong);
+        // 计算时间差,单位毫秒
+        float ms = endLong - startLong;
+        System.out.println(ms);
+        float day = ms / 24 / 60 / 60 / 1000;
+        float hour = ms / 1000 / 60 / 60;
+        float minute = ms / 1000 / 60;
+        float second = ms / 1000;
+        float milliSecond = ms;
+        return minute;
     }
 }

@@ -156,16 +156,16 @@ import java.util.List;
         }
 
         //准备行数据
-        //查询该流转卡是否具有已冲销的发货记录
+
         Outsrgissue outsrgissue = new Outsrgissue();
-        outsrgissue = service.selectByBarcode(barcode,"1");
-        if (outsrgissue != null && outsrgissue.getIssuenm().equals(outsrgissuehead.getIssuenm())){
-            //  使用以前的老航项目
-            l_update = "X";
-            outsrgissue.setStatus("0");
-            outsrgissue.setLastUpdatedBy(Long.valueOf(userId));
-            outsrgissue.setLastUpdateDate(new Date());
-        }else{//新的行项目
+//        outsrgissue = service.selectByBarcode(barcode,"1");
+//        if (outsrgissue != null && outsrgissue.getIssuenm().equals(outsrgissuehead.getIssuenm())){
+//            //  使用以前的老航项目
+//            l_update = "X";
+//            outsrgissue.setStatus("0");
+//            outsrgissue.setLastUpdatedBy(Long.valueOf(userId));
+//            outsrgissue.setLastUpdateDate(new Date());
+//        }else{//新的行项目
             Long item = 0l;
             outsrgissue = new Outsrgissue();
             if (outsrgissuehead.getIssuenm() == null){
@@ -233,7 +233,7 @@ import java.util.List;
                 outsrgissue.setZistim(curtim1);
                 outsrgissue.setZisuser(userName);
             }
-        }
+//        }
 
         int result = 0;
         SyncOutsrgissueWebserviceUtil syncOutsrgissueWebserviceUtil = new SyncOutsrgissueWebserviceUtil();
@@ -348,7 +348,7 @@ import java.util.List;
         ResponseData selectForCxwxfl(HttpServletRequest request,String barcode){
         ResponseData rs = new ResponseData();
         String status = "0";
-        Outsrgissue outsrgissue = service.selectByBarcode(barcode,null);
+        Outsrgissue outsrgissue = service.selectByBarcode(barcode,"0");
         if (outsrgissue == null){
             rs.setMessage("该流转卡尚未进行外协发料！不能对其进行冲销外协发料操作！");
             rs.setSuccess(false);
@@ -499,9 +499,9 @@ import java.util.List;
                     item.setEbelp(outsrgissue.getEbelp());
                     item.setEbeln(outsrgissue.getEbeln());
                     item.setDiecd(outsrgissue.getDiecd());
-                    item.setZisdat(outsrgissue.getZisdat());
+                    item.setZisdat(outsrgissue.getZisdat().replaceAll("-",""));
                     item.setZistim(outsrgissue.getZistim().replaceAll(":",""));
-                    item.setZisuser(outsrgissue.getZisuser().replaceAll("-",""));
+                    item.setZisuser(outsrgissue.getZisuser());
 
                     SyncOutsrgissueWebserviceUtil syncOutsrgissueWebserviceUtil = new SyncOutsrgissueWebserviceUtil();
                     DTOUTSRGISSUEreturn re = syncOutsrgissueWebserviceUtil.receiveConfirmation(head,item);

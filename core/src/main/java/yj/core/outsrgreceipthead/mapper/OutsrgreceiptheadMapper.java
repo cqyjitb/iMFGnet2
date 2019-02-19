@@ -13,7 +13,7 @@ public interface OutsrgreceiptheadMapper extends Mapper<Outsrgreceipthead>{
      * @param lifnr
      * @return
      */
-    List<Outsrgreceipthead> selectByMatnrAndLifnrDesc(@Param("matnr") String matnr , @Param("lifnr") String lifnr);
+    List<Outsrgreceipthead> selectByMatnrAndLifnrDesc(@Param("matnr") String matnr , @Param("lifnr") String lifnr,@Param("status") String status);
     /**
      *  插入新行 917110140
      * @param outsrgreceipthead
@@ -33,4 +33,9 @@ public interface OutsrgreceiptheadMapper extends Mapper<Outsrgreceipthead>{
      * @return
      */
     List<Outsrgreceipthead> selectAllDesc();
+
+    /**
+     *  获取最大单号
+     */
+    String getMaxNo();
 }

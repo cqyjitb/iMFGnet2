@@ -26,6 +26,9 @@
         <where>
             MATNR = #{matnr}
             and LIFNR = #{lifnr}
+            <if test="status != null">
+                and STATUS = #{status}
+            </if>
         </where>
         order by RECEIPTNM DESC
     </select>
@@ -50,5 +53,9 @@
 
     <select id="selectAllDesc" parameterType="java.lang.String" resultMap="BaseResultMap">
         select * from wip_outsrgreceipthead order by RECEIPTNM DESC
+    </select>
+
+    <select id="getMaxNo" resultType="java.lang.String">
+        select Max(RECEIPTNM) FROM wip_outsrgreceipthead;
     </select>
 </mapper>

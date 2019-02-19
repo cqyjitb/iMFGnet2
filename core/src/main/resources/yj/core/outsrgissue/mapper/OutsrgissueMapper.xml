@@ -66,6 +66,9 @@
         select * from wip_outsrgissue
         <where>
             ZPGDBAR = #{zpgdbar}
+            <if test="status != null">
+                and STATUS = #{status}
+            </if>
         </where>
     </select>
 
