@@ -76,10 +76,12 @@
         order by plnbez ASC
     </select>
 
-    <select id="selectByFevor" parameterType="java.lang.String" resultType="yj.core.afko.dto.Afko">
+    <select id="selectByFevor" parameterType="java.lang.String" resultMap="BaseResultMap">
         select DISTINCT ao.fevor,ao.txt,ao.aufnr from sap_afko ao,sap_afvc ac
         <where>
             ao.aufpl = ac.aufpl
+            AND ac.vornr = "0010"
+            AND ao.auart in('YZ01','YZ03','YZ04')
             <if test="fevor != null">
                 AND ao.fevor = #{fevor}
             </if>
@@ -87,7 +89,6 @@
                 AND ac.arbpl = #{arbpl}
             </if>
         </where>
-        limit 1
     </select>
 
     <select id="selectFromFevor" parameterType="java.lang.String" resultMap="BaseResultMap">

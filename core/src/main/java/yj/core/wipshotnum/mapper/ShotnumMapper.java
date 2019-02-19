@@ -7,6 +7,11 @@ import yj.core.wipshotnum.dto.Shotnum;
 import java.util.List;
 
 public interface ShotnumMapper extends Mapper<Shotnum> {
+    /**
+     * 根据工厂 工作中心 生产日期 班次查询记录 918100064
+     * @param dto
+     * @return
+     */
     List<Shotnum> selectShotnum(Shotnum dto);
 
     /**
