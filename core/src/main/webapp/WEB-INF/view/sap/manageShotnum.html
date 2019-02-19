@@ -87,7 +87,7 @@
                                     <div class="col-sm-8">
                                         <input id="fevor" class="k-textbox" data-bind="value:model.fevor" style="width: 100%">
                                         <script>
-                                            $("#fevor").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_AFKO")}, {
+                                            $("#fevor").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_FEVOR")}, {
                                                 query: function (e) {
                                                     e.param['enabledFlag'] = 'Y';
                                                 }
@@ -373,7 +373,18 @@
             },
             {
                 field: "wasteNum",
-                title: '废品数量（自动计算）',
+                title: '废品数量',
+//                width: 100,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field: "brgew",
+                title: '浇注重量-KG',
 //                width: 100,
                 headerAttributes: {
                     style: "text-align: center;"

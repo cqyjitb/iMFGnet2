@@ -32,6 +32,13 @@ public class Shotnum extends BaseDTO {
     private String zpgdbar;//机台派工单
 
     private String ktext;//压铸机台号
+
+    private String matnr;//物料号
+
+    private String maktx;//物料描述
+
+    private String mdno;//模号
+
     @NotEmpty
     private Long shotStart;//起始压射号
     @NotEmpty
@@ -58,6 +65,16 @@ public class Shotnum extends BaseDTO {
     private Long createdBy; //创建人
     @Transient
     private Date creationDate; //创建时间
+
+    private Long brgew;//浇注重量-KG
+
+    public Long getBrgew() {
+        return brgew;
+    }
+
+    public void setBrgew(Long brgew) {
+        this.brgew = brgew;
+    }
 
     @Override
     public Long getCreatedBy() {
@@ -174,6 +191,30 @@ public class Shotnum extends BaseDTO {
 
     public void setKtext(String ktext) {
         this.ktext = ktext;
+    }
+
+    public String getMatnr() {
+        return matnr;
+    }
+
+    public void setMatnr(String matnr) {
+        this.matnr = matnr;
+    }
+
+    public String getMaktx() {
+        return maktx;
+    }
+
+    public void setMaktx(String maktx) {
+        this.maktx = maktx;
+    }
+
+    public String getMdno() {
+        return mdno;
+    }
+
+    public void setMdno(String mdno) {
+        this.mdno = mdno;
     }
 
     public Long getShotStart() {

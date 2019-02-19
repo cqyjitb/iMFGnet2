@@ -12,6 +12,9 @@
         <result column="CLASS" property="sClass" jdbcType="VARCHAR"/>
         <result column="ZPGDBAR" property="zpgdbar" jdbcType="VARCHAR"/>
         <result column="KTEXT" property="ktext" jdbcType="VARCHAR"/>
+        <result column="MATNR" property="matnr" jdbcType="VARCHAR" />
+        <result column="MAKTX" property="maktx" jdbcType="VARCHAR" />
+        <result column="MDNO" property="mdno" jdbcType="VARCHAR" />
         <result column="SHOT_START" property="shotStart" jdbcType="DECIMAL"/>
         <result column="SHOT_END" property="shotEnd" jdbcType="DECIMAL"/>
         <result column="CRNAM" property="crnam" jdbcType="VARCHAR"/>
@@ -29,6 +32,12 @@
             1 = 1
             <if test="werks != null">
                 AND sh.werks = #{werks}
+            </if>
+            <if test="arbpl != null">
+                AND sh.arbpl = #{arbpl}
+            </if>
+            <if test="shifts != null">
+                AND sh.shifts = #{shifts}
             </if>
             <if test="prdDateAfter != null">
                 AND  sh.prd_date >= #{prdDateAfter}
