@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import com.hand.hap.mybatis.annotation.ExtensionAttribute;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import com.hand.hap.system.dto.BaseDTO;
 import java.util.Date;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -44,6 +46,11 @@ public class Crhd extends BaseDTO {
 
       private String attr7;
 
+      @Transient
+      private Date creationDate; //创建时间
+      private Long createdBy; //创建人
+      private Date lastUpdatedDate; //更新时间
+      private Long lastUpdatedBy; //更新人
 
      public void setObjid(String objid){
          this.objid = objid;
