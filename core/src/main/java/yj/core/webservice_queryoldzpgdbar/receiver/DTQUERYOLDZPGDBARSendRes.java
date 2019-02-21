@@ -33,6 +33,8 @@ import javax.xml.bind.annotation.XmlType;
  *                   &lt;element name="ARBPL" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="ARBPLDESC" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="WERKS" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="MATNR" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="MAKTX" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                 &lt;/sequence>
  *               &lt;/restriction>
  *             &lt;/complexContent>
@@ -98,6 +100,8 @@ public class DTQUERYOLDZPGDBARSendRes {
      *         &lt;element name="ARBPL" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="ARBPLDESC" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="WERKS" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="MATNR" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="MAKTX" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *       &lt;/sequence>
      *     &lt;/restriction>
      *   &lt;/complexContent>
@@ -133,6 +137,10 @@ public class DTQUERYOLDZPGDBARSendRes {
         protected String arbpldesc;
         @XmlElement(name = "WERKS", required = true)
         protected String werks;
+        @XmlElement(name = "MATNR", required = true)
+        protected String matnr;
+        @XmlElement(name = "MAKTX", required = true)
+        protected String maktx;
 
         /**
          * Gets the value of the msgty property.
@@ -365,6 +373,47 @@ public class DTQUERYOLDZPGDBARSendRes {
             this.werks = value;
         }
 
+        /**
+         * Gets the value of the matnr property.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getMATNR() {
+            return matnr;
+        }
+
+        /**
+         * Sets the value of the matnr property.
+         *
+         * @param value
+         *            allowed object is {@link String }
+         *
+         */
+        public void setMATNR(String value) {
+            this.matnr = value;
+        }
+
+        /**
+         * Gets the value of the maktx property.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getMAKTX() {
+            return maktx;
+        }
+
+        /**
+         * Sets the value of the maktx property.
+         *
+         * @param value
+         *            allowed object is {@link String }
+         *
+         */
+        public void setMAKTX(String value) {
+            this.maktx = value;
+        }
     }
 
 }

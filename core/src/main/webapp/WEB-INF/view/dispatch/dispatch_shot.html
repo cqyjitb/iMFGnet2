@@ -248,7 +248,11 @@
                                     Oarbpldes.value = list[0].ktext;
                                     arbplDesc = list[0].ktext;
                                     arbpl = list[0].arbpl;
+                                    matnr = list[0].matnr;
+                                    maktx = list[0].maktx;
                                     var dshot_start = document.getElementById("shot_start");
+                                    document.getElementById("matnr").value = matnr;
+                                    document.getElementById("maktx").value = maktx;
                                     dshot_start.focus();
                                 }else{
 
@@ -597,11 +601,15 @@
         <div id="user" style="margin-right: 25px;font-size:14px;height:20px;float: right;background-color:white;top: 0px"></div>
     </div>
 
-    <div style="width: 220px;height: 235px">
+    <div style="width: 220px;height: 300px">
         <input id="zpgdbar" style="font-size:16px;width: 200px;height: 22px;margin-bottom: 1px;" type="text"><br>
         <!--<label class="dcp-label">物料描述</label><input id="matDesc"  style="font-size:10px;width: 120px;height: 40px;background-color: #C9C9C9" disabled="true" type="text"><br>-->
         <label class="dcp-label">压铸机台</label><textarea id="arbplDesc" style="font-size:10px;width: 120px;height: 40px;background-color: #C9C9C9" disabled="true" rows="2"></textarea><br>
+        <label class="dcp-label">物料号</label></label><input id="matnr" class="cls-attr-input" disabled="true"><br>
+        <label class="dcp-label">物料描述</label><textarea id="maktx" style="font-size:10px;width: 120px;height: 40px;background-color: #C9C9C9" disabled="true" rows="2"></textarea><br>
         <!--<label class="dcp-label">压铸机台</label><input id="arbplDesc"  style="font-size:10px;width: 120px;height: 40px;background-color: #C9C9C9" disabled="true" type="text"><br>-->
+        <label class="dcp-label">模号</label><select id="mode" class="cls-attr-input"type="text"></select><br>
+        <label class="dcp-label">出模数</label><input id="modenums" class="cls-attr-input" disabled="true"><br>
         <label class="dcp-label">班次日期</label><select id="prd_date" class="cls-attr-input"type="text">
         <option value="">请选择</option>
         <option></option>
@@ -632,7 +640,6 @@
 
         <div> </div>
         <div style="width:50px;height:20px;float: right;"><button id="cleanData" style="width: auto;height: 27px" hidefocus="true" class="login-btn" >清空</button></div>
-
     </div>
 </div>
 

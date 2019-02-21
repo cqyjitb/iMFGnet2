@@ -55,7 +55,9 @@ var newZpgdbar;
 
 var pd_sum;
 var arbpl;
-
+var arbplDesc;
+var matnr;
+var maktx;
 function getDispatchValues() {
     tm = new Date().format("yyyy-MM-dd hh:mm:ss");
     var bg = getTodayDate() + " 23:59:59" ;

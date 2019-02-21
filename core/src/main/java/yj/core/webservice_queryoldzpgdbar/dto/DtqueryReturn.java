@@ -24,6 +24,26 @@ public class DtqueryReturn {
 
     private String arbpldesc;
 
+    private String matnr;
+
+    private String maktx;
+
+    public String getMatnr() {
+        return matnr;
+    }
+
+    public void setMatnr(String matnr) {
+        this.matnr = matnr;
+    }
+
+    public String getMaktx() {
+        return maktx;
+    }
+
+    public void setMaktx(String maktx) {
+        this.maktx = maktx;
+    }
+
     public String getMsgty() {
         return msgty;
     }

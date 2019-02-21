@@ -1,4 +1,4 @@
-package com.hand.hap.Job;
+package yj.core.TaskJob;
 
 import com.hand.hap.job.AbstractJob;
 import org.quartz.JobDetail;

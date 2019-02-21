@@ -2,7 +2,9 @@ package yj.core.werbserver_crhd.components;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.ContextLoaderListener;
 import yj.core.crhd.dto.Crhd;
+import yj.core.crhd.mapper.CrhdMapper;
 import yj.core.crhd.service.ICrhdService;
 import yj.core.fevor.service.IFevorService;
 import yj.core.util.WebServerHelp;
@@ -13,6 +15,8 @@ import yj.core.werbserver_crhd.sender.SIZZ002SenderSynService;
 
 import javax.xml.namespace.QName;
 import java.net.URL;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,8 +24,7 @@ import java.util.Map;
 
 @Component
 public class SyncCrhdWebserviceUtil {
-    @Autowired
-    private ICrhdService crhdService;
+
     private static final QName SERVICE_NAME = new QName("http://www.cq-yj.com/HAP/PP001/SAP_CRHD/Sender","SI_ZZ002_Sender_SynService");
     public String receiveConfirmation(){
         URL wsdlURL = SIZZ002SenderSynService.WSDL_LOCATION;
@@ -50,10 +53,12 @@ public class SyncCrhdWebserviceUtil {
         if (res.getEMESSAGE().getTYPE().equals("S")){
             List<Crhd> listcrhdIns = new ArrayList<>();
             List<Crhd> listcrhdUpd = new ArrayList<>();
-            Crhd crhd = new Crhd();
+
+            CrhdMapper crhdMapper = ContextLoaderListener.getCurrentWebApplicationContext().getBean(CrhdMapper.class);
             for (int i = 0;i<res.getTRETURN().size();i++){
-                int num = crhdService.selectnumByObjid(res.getTRETURN().get(i).getOBJID());
-                crhd.setAedat(new Date(res.getTRETURN().get(i).getAEDATGRND()));
+                Crhd crhd = new Crhd();
+                int num = crhdMapper.selectnumByObjid(res.getTRETURN().get(i).getOBJID());
+                crhd.setAedat(res.getTRETURN().get(i).getAEDATGRND());
                 crhd.setArbpl(res.getTRETURN().get(i).getARBPL());
                 crhd.setVeran(res.getTRETURN().get(i).getVERAN());
                 crhd.setWerks(res.getTRETURN().get(i).getWERKS());
@@ -73,12 +78,17 @@ public class SyncCrhdWebserviceUtil {
 
             }
             if (listcrhdUpd.size() > 0){
-                 num1 = crhdService.updateRows(listcrhdUpd);
+                for (int i = 0;i<listcrhdUpd.size();i++){
+                    num1 = num1 + crhdMapper.updateRow(listcrhdUpd.get(i));
+                }
+
 
             }
 
             if (listcrhdIns.size() > 0){
-                 num2 = crhdService.insertRows(listcrhdIns);
+                for (int i = 0;i<listcrhdIns.size();i++) {
+                    num2 = num2 + crhdMapper.insertRow(listcrhdIns.get(i));
+                }
             }
 
             if (num1 + num2 == res.getTRETURN().size()){

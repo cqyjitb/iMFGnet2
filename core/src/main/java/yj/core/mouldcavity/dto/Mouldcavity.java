@@ -22,6 +22,15 @@ public class Mouldcavity extends BaseDTO {
     private String maktx;
 
     private Integer mdnum;
+
+    private String mdno;
+
+    private String modo2;
+
+    private String mdqrcode;
+
+    private String status;
+
     @NotNull
     private Long createdBy; //创建人
     @NotNull
@@ -101,5 +110,37 @@ public class Mouldcavity extends BaseDTO {
 
     public void setMdnum(Integer mdnum) {
         this.mdnum = mdnum;
+    }
+
+    public String getMdno() {
+        return mdno;
+    }
+
+    public void setMdno(String mdno) {
+        this.mdno = mdno;
+    }
+
+    public String getModo2() {
+        return modo2;
+    }
+
+    public void setModo2(String modo2) {
+        this.modo2 = modo2;
+    }
+
+    public String getMdqrcode() {
+        return mdqrcode;
+    }
+
+    public void setMdqrcode(String mdqrcode) {
+        this.mdqrcode = mdqrcode;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

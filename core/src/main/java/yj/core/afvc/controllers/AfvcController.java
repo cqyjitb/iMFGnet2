@@ -120,10 +120,14 @@ public class AfvcController
             parm.setZpgdbar(zpgdbar);
             re = queryOldZpgdbarUtil.receiveConfirmation(parm);
             if (re.getMsgty().equals("S")){
+                //根据工厂 物料号 获取模号和出模数
+
                 List<Afvc> list = new ArrayList<>();
                 Afvc afvc = new Afvc();
                 afvc.setArbpl(re.getArbpl());
                 afvc.setKtext(re.getArbpldesc());
+                afvc.setMatnr(re.getMatnr());
+                afvc.setMaktx(re.getMaktx());
                 list.add(afvc);
                 rs.setSuccess(true);
                 rs.setRows(list);

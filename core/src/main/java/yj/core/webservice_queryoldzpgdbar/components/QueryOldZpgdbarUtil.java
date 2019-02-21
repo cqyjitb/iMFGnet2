@@ -49,6 +49,8 @@ public class QueryOldZpgdbarUtil {
         re.setMsgv3(dtqueryoldzpgdbarSendRes.getRETURN().getMSGV3());
         re.setMsgv4(dtqueryoldzpgdbarSendRes.getRETURN().getMSGV4());
         re.setWerks(dtqueryoldzpgdbarSendRes.getRETURN().getWERKS());
+        re.setMatnr(dtqueryoldzpgdbarSendRes.getRETURN().getMATNR());
+        re.setMaktx(dtqueryoldzpgdbarSendRes.getRETURN().getMAKTX());
         return re;
     }
 }

@@ -38,7 +38,7 @@
                             LVORM = #{lvorm},
                             AEDAT = #{aedat},
                             VERAN = #{veran},
-                            KTEXT = #{ktext},
+                            KETXT = #{ketxt},
                             LAST_UPDATE_DATE = #{lastUpdatedDate},
                             LAST_UPDATED_BY = #{lastUpdatedBy}
                 <where>

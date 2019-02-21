@@ -26,7 +26,7 @@ public class Crhd extends BaseDTO {
 
       private String lvorm; //删除标记
 
-      private Date aedat;
+      private String aedat;
 
       private String veran;
 
@@ -92,15 +92,53 @@ public class Crhd extends BaseDTO {
          return lvorm;
      }
 
-     public void setAedat(Date aedat){
-         this.aedat = aedat;
-     }
+    public String getAedat() {
+        return aedat;
+    }
 
-     public Date getAedat(){
-         return aedat;
-     }
+    public void setAedat(String aedat) {
+        this.aedat = aedat;
+    }
 
-     public void setVeran(String veran){
+    @Override
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    @Override
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    @Override
+    public Long getCreatedBy() {
+        return createdBy;
+    }
+
+    @Override
+    public void setCreatedBy(Long createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    public Date getLastUpdatedDate() {
+        return lastUpdatedDate;
+    }
+
+    public void setLastUpdatedDate(Date lastUpdatedDate) {
+        this.lastUpdatedDate = lastUpdatedDate;
+    }
+
+    @Override
+    public Long getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+
+    @Override
+    public void setLastUpdatedBy(Long lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+    public void setVeran(String veran){
          this.veran = veran;
      }
 

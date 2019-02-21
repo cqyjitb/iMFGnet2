@@ -30,6 +30,10 @@ public class Afvc
     private String ktsch;
     private String flag;
 
+    @Transient
+    private String matnr;
+    @Transient
+    private String maktx;
 
     @Transient
     private Date creationDate; //创建时间
@@ -150,5 +154,21 @@ public class Afvc
 
     public void setKtsch(String ktsch) {
         this.ktsch = ktsch;
+    }
+
+    public String getMatnr() {
+        return matnr;
+    }
+
+    public void setMatnr(String matnr) {
+        this.matnr = matnr;
+    }
+
+    public String getMaktx() {
+        return maktx;
+    }
+
+    public void setMaktx(String maktx) {
+        this.maktx = maktx;
     }
 }

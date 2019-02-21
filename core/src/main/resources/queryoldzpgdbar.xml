@@ -16,7 +16,7 @@
             <xsd:element name="MT_QUERYOLDZPGDBAR_Send_Res" type="DT_QUERYOLDZPGDBAR_Send_Res"/>
             <xsd:complexType name="DT_QUERYOLDZPGDBAR_Send_Res">
                 <xsd:annotation>
-                    <xsd:appinfo source="http://sap.com/xi/VersionID">597ae80f22d011e9a0f10000002ad1ea</xsd:appinfo>
+                    <xsd:appinfo source="http://sap.com/xi/VersionID">7b56d52e35a311e9a6810000002ad1ea</xsd:appinfo>
                 </xsd:annotation>
                 <xsd:sequence>
                     <xsd:element name="RETURN">
@@ -99,10 +99,12 @@
                                 <xsd:element name="WERKS" type="xsd:string">
                                     <xsd:annotation>
                                         <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            fb1ab1e522cf11e98ef4002324a6066a
+                                            2222b44e35a311e9a46e002324a6066a
                                         </xsd:appinfo>
                                     </xsd:annotation>
                                 </xsd:element>
+                                <xsd:element name="MATNR" type="xsd:string"/>
+                                <xsd:element name="MAKTX" type="xsd:string"/>
                             </xsd:sequence>
                         </xsd:complexType>
                     </xsd:element>
