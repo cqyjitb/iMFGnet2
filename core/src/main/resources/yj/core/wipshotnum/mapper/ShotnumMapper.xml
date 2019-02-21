@@ -25,6 +25,24 @@
         <result column="PLNBEZ" property="plnbez" jdbcType="VARCHAR"/>
         <result column="AUFNR" property="aufnr" jdbcType="VARCHAR"/>
     </resultMap>
+    <resultMap id="BaseResultMap2" type="yj.core.wipshotnum.dto.Shotnum">
+        <result column="WERKS" property="werks" jdbcType="VARCHAR"/>
+        <result column="VERAN" property="veran" jdbcType="VARCHAR"/>
+        <result column="ARBPL" property="arbpl" jdbcType="VARCHAR"/>
+        <result column="PRD_DATE" property="prdDate" jdbcType="DATE"/>
+        <result column="SHIFTS" property="shifts" jdbcType="VARCHAR"/>
+        <result column="CRDAT" property="crdat" jdbcType="DATE"/>
+        <result column="CLASS" property="sClass" jdbcType="VARCHAR"/>
+        <result column="ZPGDBAR" property="zpgdbar" jdbcType="VARCHAR"/>
+        <result column="KTEXT" property="ktext" jdbcType="VARCHAR"/>
+        <result column="MATNR" property="matnr" jdbcType="VARCHAR" />
+        <result column="MAKTX" property="maktx" jdbcType="VARCHAR" />
+        <result column="MDNO" property="mdno" jdbcType="VARCHAR" />
+        <result column="MDNUM" property="mdnum" jdbcType="DECIMAL"/>
+        <result column="SHOT_START" property="shotStart" jdbcType="DECIMAL"/>
+        <result column="SHOT_END" property="shotEnd" jdbcType="DECIMAL"/>
+        <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    </resultMap>
 
     <select id="selectShotnum" parameterType="yj.core.wipshotnum.dto.Shotnum" resultMap="BaseResultMap">
         select DISTINCT sh.* from wip_shotnum sh

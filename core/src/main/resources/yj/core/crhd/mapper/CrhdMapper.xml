@@ -50,4 +50,19 @@
         insert into sap_crhd(OBJID,WERKS,ARBPL,VERWE,LVORM,AEDAT,VERAN,KETXT,ATTR1,ATTR2,ATTR3,ATTR4,ATTR5,ATTR6,ATTR7,CREATION_DATE,CREATED_BY)
         VALUES (#{objid},#{werks},#{arbpl},#{verwe},#{lvorm},#{aedat},#{veran},#{ketxt},#{attr1},#{attr2},#{attr3},#{attr4},#{attr5},#{attr6},#{attr7},#{creationDate},#{createdBy})
     </insert>
+    <select id="selectByVeran" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from sap_crhd
+        <where>
+            1 = 1
+            <if test="werks != null">
+                AND werks = #{werks}
+            </if>
+            <if test="veran != null">
+                AND veran = #{veran}
+            </if>
+            <if test="arbpl != null">
+                AND arbpl = #{arbpl}
+            </if>
+        </where>
+    </select>
 </mapper>

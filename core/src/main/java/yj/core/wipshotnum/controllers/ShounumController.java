@@ -173,4 +173,48 @@ public class ShounumController extends BaseController {
         }
         return rs;
     }
+
+    /**
+     *压射号维护页面查询请求 918100064
+     * @param dto
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/wip/shotnum/selectShotnum")
+    @ResponseBody
+    public ResponseData selectShotnum(Shotnum dto, HttpServletRequest request) {
+        IRequest requestContext = createRequestContext(request);
+        List<Shotnum> shotnum = service.queryShotnum(dto,requestContext);
+        return new ResponseData(shotnum);
+    }
+
+    /**
+     *压射号维护页面修改请求 918100064
+     * @param dto
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/wip/shotnum/updateShotnum")
+    @ResponseBody
+    public ResponseData updateShotnum(@RequestBody List<Shotnum> dto, HttpServletRequest request) {
+        IRequest requestCtx = createRequestContext(request);
+        ResponseData rs =  new ResponseData();
+        String userId ="" + request.getSession().getAttribute("userId");
+        String result = service.updateShotnum(requestCtx,dto,userId);
+        rs.setMessage(result);
+        return rs;
+    }
+
+    /**
+     *压射号维护页面删除请求 918100064
+     * @param dto
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/wip/shotnum/deleteShotnum")
+    @ResponseBody
+    public ResponseData deleteShotnum(@RequestBody List<Shotnum> dto, HttpServletRequest request) {
+        service.deleteShotnum(dto);
+        return new ResponseData();
+    }
 }

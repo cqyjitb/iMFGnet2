@@ -12,7 +12,7 @@ public interface MouldcavityMapper extends Mapper<Mouldcavity> {
      * @param matnr
      * @return
      */
-    Integer selectByMatnr(@Param("matnr")String matnr);
+    Integer selectByMatnr(@Param("matnr")String matnr,@Param("mdno")String mdno);
 
     /**
      * 产品模具型腔表查询  918100064

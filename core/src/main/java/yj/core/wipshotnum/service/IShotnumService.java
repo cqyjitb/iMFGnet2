@@ -32,4 +32,28 @@ public interface IShotnumService extends IBaseService<Shotnum>, ProxySelf<IShotn
      * @return
      */
     List<Shotnum> isExit(String werks,String arbpl,String prd_date,String shifts);
+
+    /**
+     * 压射号维护查询 918100064
+     * @param dto
+     * @param requestContext
+     * @return
+     */
+    List<Shotnum> queryShotnum(Shotnum dto,IRequest requestContext);
+
+    /**
+     * 压射号维护修改 918100064
+     * @param requestContext
+     * @param dto
+     * @param userId
+     * @return
+     */
+    String updateShotnum(IRequest requestContext,List<Shotnum> dto,String userId);
+
+    /**
+     * 压射号维护删除 918100064
+     * @param dto
+     * @return
+     */
+    String deleteShotnum(List<Shotnum> dto);
 }

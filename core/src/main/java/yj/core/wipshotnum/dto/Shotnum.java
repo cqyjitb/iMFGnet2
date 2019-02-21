@@ -68,6 +68,27 @@ public class Shotnum extends BaseDTO {
 
     private Long brgew;//浇注重量-KG
 
+    @Transient
+    private String veran;//车间
+
+    private String userName;//创建人
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public String getVeran() {
+        return veran;
+    }
+
+    public void setVeran(String veran) {
+        this.veran = veran;
+    }
+
     public Long getBrgew() {
         return brgew;
     }

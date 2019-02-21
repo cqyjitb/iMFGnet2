@@ -202,9 +202,73 @@
                 }
             },
             {
+                field: "mdno",
+                title: "模号",
+                width: 60,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
                 field: "mdnum",
                 title: "模具型腔数量",
                 width: 120,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field: "mdqrcode",
+                title: "模具二维码",
+                width: 100,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field: "mdno2",
+                title: "模具编码",
+                width: 80,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field: "status",
+                title: "使用状态",
+                width: 80,
+                editor: function (container,options) {
+                    $('<input name="'+options.field+'"/>').appendTo(container).kendoDropDownList({
+                        dataTextField: "text",
+                        dataValueField: "value",
+                        valuePrimitive: true,
+                        dataSource: [
+                            {text:"有效",value:"1"},
+                            {text:"无效",value:"0"}
+                        ]
+                    })
+                },
+                template:function (e) {
+                    if(e.status == "1"){
+                        return "有效";
+                    }else if(e.status == "0"){
+                        return "无效";
+                    }else{
+                        return "";
+                    }
+                },
                 headerAttributes: {
                     style: "text-align: center;"
                 },

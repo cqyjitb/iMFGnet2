@@ -9,6 +9,7 @@ import yj.core.afko.dto.Afko;
 import yj.core.afko.mapper.AfkoMapper;
 import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.mapper.CardhMapper;
+import yj.core.dispatch.dto.InputLog;
 import yj.core.dispatch.mapper.InputLogMapper;
 import yj.core.marc.dto.Marc;
 import yj.core.marc.mapper.MarcMapper;
@@ -22,6 +23,7 @@ import yj.core.wipshotnum.service.IShotnumService;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -37,8 +39,6 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
     @Autowired
     private AfkoMapper afkoMapper;
     @Autowired
-    private CardhMapper cardhMapper;
-    @Autowired
     private ShiftstimeMapper shiftstimeMapper;
     @Autowired
     private MarcMapper marcMapper;
@@ -47,7 +47,6 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
     public List<Shotnum> selectShotnum(Shotnum dto, IRequest requestContext) {
         List<Shotnum> list = new ArrayList<Shotnum>();
         List<Shotnum> list1 = new ArrayList<Shotnum>();
-        Cardh cardh = new Cardh();
         Shotnum shotnum = new Shotnum();
         List<Shotnum> shotnums = new ArrayList<Shotnum>();
         List<Afko> afko = new ArrayList<Afko>();
@@ -83,43 +82,47 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                     }
                 }
                 for(int j=0;j<list1.size();j++){
-                    dto.setArbpl(list1.get(j).getArbpl());
+                    shotnum = list1.get(j);
+                    dto.setArbpl(shotnum.getArbpl());
                     shotnums = shotnumMapper.selectShotnum(dto);
                     Long startMin = shotnums.get(0).getShotStart();
                     Long endMax = shotnums.get(0).getShotEnd();
-                    for(int a=1;a<shotnums.size();a++){
-                        if(shotnums.get(a).getShotStart() < startMin){
-                            startMin = shotnums.get(a).getShotStart();
+                    for(int a=0;a<shotnums.size();a++){
+                        mdnum = mouldcavityMapper.selectByMatnr(shotnums.get(a).getMatnr(),shotnums.get(a).getMdno());
+                        if(mdnum == null){
+                            mdnum = 1;
                         }
-                        if(shotnums.get(a).getShotEnd() > endMax){
-                            endMax = shotnums.get(a).getShotEnd();
+                        shotNum = shotNum + ((int)(shotnums.get(a).getShotEnd() - shotnums.get(a).getShotStart())*mdnum);
+                        if(a > 0){
+                            if(shotnums.get(a).getShotStart() < startMin){
+                                startMin = shotnums.get(a).getShotStart();
+                            }
+                            if(shotnums.get(a).getShotEnd() > endMax){
+                                endMax = shotnums.get(a).getShotEnd();
+                            }
                         }
                     }
                     shotnum.setShotStart(startMin);
                     shotnum.setShotEnd(endMax);
-                    afko = afkoMapper.selectByFevor(list1.get(j).getArbpl(),dto.getFevor());
+                    afko = afkoMapper.selectByFevor(shotnum.getArbpl(),dto.getFevor());
                     shiftstime = shiftstimeMapper.selectByShift("1");
-                    cardh = cardhMapper.selectByBarcode(list1.get(j).getZpgdbar());
-                    if(cardh != null){
-                        if(Integer.parseInt(cardh.getActst().replace(":","")) >= Integer.parseInt(shiftstime.getBgsTime().replace(":",""))){
+                    Shiftstime shiftstime2 = shiftstimeMapper.selectByShift("3");
+                    String startDate = (dto.getPrdDateAfter() + " " + shiftstime.getBgsTime());
+                    String endDate = (dto.getPrdDateBefore() + " " + shiftstime2.getBgeTime());
+                    InputLog inputLog = inputLogMapper.queryCreationDate(shotnum.getZpgdbar(),shotnum.getWerks(),dto.getFevor());
+                    if(inputLog != null){
+                        String creatDate = inputLog.getCreatDate().substring(0,19);
+                        if(creatDate.compareTo(startDate)>0 && endDate.compareTo(creatDate)>0){
                             if(afko.size() > 0){
                                 for(int i=0;i<afko.size();i++){
                                     yeild = yeild + inputLogMapper.selectByOrderno(afko.get(i).getAufnr(),null,dto.getPrdDateAfter(),dto.getPrdDateBefore());
                                 }
-                                mdnum = mouldcavityMapper.selectByMatnr(list1.get(j).getMatnr());
-                                if(mdnum == null){
-                                    mdnum = 1;
-                                }
-                                shotNum = ((int)(endMax - startMin)*mdnum);
-                                marc = marcMapper.selectByMatnr(list1.get(j).getMatnr());
+                                marc = marcMapper.selectByMatnr(shotnum.getMatnr());
                                 if(marc != null){
                                     grgew = Math.round(yeild * marc.getBrgew());
                                 }
-                                shotnum.setWerks(list1.get(j).getWerks());
                                 shotnum.setFevor(dto.getFevor());
                                 shotnum.setTxt(afko.get(0).getTxt());
-                                shotnum.setArbpl(list1.get(j).getArbpl());
-                                shotnum.setKtext(list1.get(j).getKtext());
                                 shotnum.setPrdDateAfter(dto.getPrdDateAfter());
                                 shotnum.setPrdDateBefore(dto.getPrdDateBefore());
                                 shotnum.setBrgew(grgew);
@@ -169,12 +172,19 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                     shotnums = shotnumMapper.selectShotnum(dto);
                     Long startMin = shotnums.get(0).getShotStart();
                     Long endMax = shotnums.get(0).getShotEnd();
-                    for(int a=1;a<shotnums.size();a++){
-                        if(shotnums.get(a).getShotEnd() > endMax){
-                            endMax = shotnums.get(a).getShotEnd();
+                    for(int a=0;a<shotnums.size();a++){
+                        mdnum = mouldcavityMapper.selectByMatnr(shotnums.get(a).getMatnr(),shotnums.get(a).getMdno());
+                        if(mdnum == null){
+                            mdnum = 1;
                         }
-                        if(shotnums.get(a).getShotStart() < startMin){
-                            startMin = shotnums.get(a).getShotStart();
+                        shotNum = shotNum + ((int)(shotnums.get(a).getShotEnd() - shotnums.get(a).getShotStart())*mdnum);
+                        if(a > 0){
+                            if(shotnums.get(a).getShotEnd() > endMax){
+                                endMax = shotnums.get(a).getShotEnd();
+                            }
+                            if(shotnums.get(a).getShotStart() < startMin){
+                                startMin = shotnums.get(a).getShotStart();
+                            }
                         }
                     }
                     shotnum.setShotStart(startMin);
@@ -182,25 +192,22 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                     afko = afkoMapper.selectByFevor(shotnum.getArbpl(),dto.getFevor());
                     if(afko.size() != 0){
                         shiftstime = shiftstimeMapper.selectByShift(shotnum.getShifts());
-                        cardh = cardhMapper.selectByBarcode(shotnum.getZpgdbar());
+                        InputLog inputLog = inputLogMapper.queryCreationDate(shotnum.getZpgdbar(),shotnum.getWerks(),dto.getFevor());
                         String date = null;
-                        if(cardh != null){
+                        if(inputLog != null){
                             try {
-                                date = sfWeek.format(sf.parse(cardh.getActgstrp()));
+                                date = sfWeek.format(sf.parse(inputLog.getCreatDate()));
                             } catch (ParseException e) {
                                 e.printStackTrace();
                             }
+                            String creatDate = inputLog.getCreatDate().substring(0,19);
                             if("星期日".equals(date)){
-                                if(Integer.parseInt(cardh.getActst().replace(":","")) >= Integer.parseInt(shiftstime.getZsTime().replace(":",""))) {
+                                String startDate = shotnum.getPrdDate() + " " + shiftstime.getZsTime();
+                                if((creatDate.compareTo(startDate)) > 0) {
                                     if(afko.size() > 0){
                                         for(int j=0;j<afko.size();j++){
                                             yeild = yeild + inputLogMapper.selectByOrderno(afko.get(j).getAufnr(),shotnum.getShifts(),shotnum.getPrdDate(),shotnum.getPrdDate());
                                         }
-                                        mdnum = mouldcavityMapper.selectByMatnr(shotnum.getMatnr());
-                                        if(mdnum == null){
-                                            mdnum = 1;
-                                        }
-                                        shotNum = ((int)(endMax - startMin)*mdnum);
                                         marc = marcMapper.selectByMatnr(shotnum.getMatnr());
                                         if(marc != null){
                                             grgew = Math.round(yeild * marc.getBrgew());
@@ -216,16 +223,12 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                                     }
                                 }
                             }else{
-                                if(Integer.parseInt(cardh.getActst().replace(":","")) >= Integer.parseInt(shiftstime.getBgsTime().replace(":",""))){
+                                String startDate = shotnum.getPrdDate() + " " + shiftstime.getBgsTime();
+                                if((creatDate.compareTo(startDate)) > 0){
                                     if(afko.size() > 0){
                                         for(int j=0;j<afko.size();j++){
                                             yeild = yeild + inputLogMapper.selectByOrderno(afko.get(j).getAufnr(),shotnum.getShifts(),shotnum.getPrdDate(),shotnum.getPrdDate());
                                         }
-                                        mdnum = mouldcavityMapper.selectByMatnr(shotnum.getMatnr());
-                                        if(mdnum == null){
-                                            mdnum = 1;
-                                        }
-                                        shotNum = ((int)(endMax - startMin)*mdnum);
                                         marc = marcMapper.selectByMatnr(shotnum.getMatnr());
                                         if(marc != null){
                                             grgew = Math.round(yeild * marc.getBrgew());
@@ -257,5 +260,34 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
     @Override
     public List<Shotnum> isExit(String werks, String arbpl, String prd_date, String shifts) {
         return shotnumMapper.isExit(werks,arbpl,prd_date,shifts);
+    }
+
+    @Override
+    public List<Shotnum> queryShotnum(Shotnum dto, IRequest requestContext) {
+        List<Shotnum> list = shotnumMapper.queryShotnum(dto);
+        return list;
+    }
+
+    @Override
+    public String updateShotnum(IRequest requestContext, List<Shotnum> dto, String userId) {
+        if(dto.size() > 0){
+            for(int i=0;i<dto.size();i++){
+                Shotnum shotnum = dto.get(i);
+                shotnum.setLastUpdatedBy(Long.valueOf(userId));
+                shotnum.setLastUpdateDate(new Date());
+                shotnumMapper.updateShotnum(shotnum);
+            }
+        }
+        return null;
+    }
+
+    @Override
+    public String deleteShotnum(List<Shotnum> dto) {
+        if(dto.size() > 0){
+            for(int i=0;i<dto.size();i++){
+                shotnumMapper.deleteShotnum(dto.get(i));
+            }
+        }
+        return null;
     }
 }

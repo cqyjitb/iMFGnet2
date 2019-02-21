@@ -77,4 +77,6 @@ public interface InputLogMapper extends Mapper<InputLog>{
      */
     int selectByOrderno(@Param("orderno")String orderno, @Param("classno")String classno,@Param("postingDateAfter")String postingDateAfter,
                              @Param("postingDateBefore")String postingDateBefore);
+
+    InputLog queryCreationDate(@Param("dispatch")String dispatch,@Param("plant")String plant,@Param("fevor")String fevor);
 }

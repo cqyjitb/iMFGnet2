@@ -23,14 +23,13 @@ public class Mouldcavity extends BaseDTO {
 
     private Integer mdnum;
 
-    private String mdno;
+    private String mdno;//模号
 
-    private String modo2;
+    private String mdqrcode;//模具二维码
 
-    private String mdqrcode;
+    private String mdno2;//模具编码
 
-    private String status;
-
+    private String status;//使用状态
     @NotNull
     private Long createdBy; //创建人
     @NotNull
@@ -39,6 +38,38 @@ public class Mouldcavity extends BaseDTO {
     private Long lastUpdatedBy; //更新人
 
     private Date lastUpdateDate; //更新时间
+
+    public String getMdno() {
+        return mdno;
+    }
+
+    public void setMdno(String mdno) {
+        this.mdno = mdno;
+    }
+
+    public String getMdqrcode() {
+        return mdqrcode;
+    }
+
+    public void setMdqrcode(String mdqrcode) {
+        this.mdqrcode = mdqrcode;
+    }
+
+    public String getMdno2() {
+        return mdno2;
+    }
+
+    public void setMdno2(String mdno2) {
+        this.mdno2 = mdno2;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 
     @Override
     public Long getCreatedBy() {
@@ -110,37 +141,5 @@ public class Mouldcavity extends BaseDTO {
 
     public void setMdnum(Integer mdnum) {
         this.mdnum = mdnum;
-    }
-
-    public String getMdno() {
-        return mdno;
-    }
-
-    public void setMdno(String mdno) {
-        this.mdno = mdno;
-    }
-
-    public String getModo2() {
-        return modo2;
-    }
-
-    public void setModo2(String modo2) {
-        this.modo2 = modo2;
-    }
-
-    public String getMdqrcode() {
-        return mdqrcode;
-    }
-
-    public void setMdqrcode(String mdqrcode) {
-        this.mdqrcode = mdqrcode;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
     }
 }
