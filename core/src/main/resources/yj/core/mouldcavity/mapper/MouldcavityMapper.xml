@@ -7,6 +7,10 @@
         <result column="MATNR" property="matnr" jdbcType="VARCHAR"/>
         <result column="MAKTX" property="maktx" jdbcType="VARCHAR"/>
         <result column="MDNUM" property="mdnum" jdbcType="DECIMAL"/>
+        <result column="MDNO" property="mdno" jdbcType="VARCHAR"/>
+        <result column="MDQRCODE" property="mdqrcode" jdbcType="VARCHAR"/>
+        <result column="MDNO2" property="mdno2" jdbcType="VARCHAR"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"/>
         <result column="CREATION_DATE" property="creationDate" jdbcType="DATE" />
         <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
         <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="DATE" />
@@ -14,7 +18,7 @@
     </resultMap>
 
     <select id="selectMouldcavity" parameterType="yj.core.mouldcavity.dto.Mouldcavity" resultMap="BaseResultMap">
-        select werks,matnr,maktx,mdnum from sap_mouldcavity
+        select * from sap_mouldcavity
         <where>
             1 = 1
             <if test="werks != null">
@@ -23,20 +27,25 @@
             <if test="matnr != null">
                 AND matnr = #{matnr}
             </if>
+            <if test="mdno != null">
+                AND mdno = #{mdno}
+            </if>
         </where>
     </select>
 
     <insert id="insertMouldcavity" parameterType="yj.core.mouldcavity.dto.Mouldcavity">
-        insert into sap_mouldcavity(werks,matnr,maktx,mdnum,CREATED_BY,CREATION_DATE)
-        values(#{werks},#{matnr},#{maktx},#{mdnum},#{createdBy},#{creationDate})
+        insert into sap_mouldcavity(werks,matnr,maktx,mdnum,mdno,mdno2,mdqrcode,status,CREATED_BY,CREATION_DATE)
+        values(#{werks},#{matnr},#{maktx},#{mdnum},#{mdno},#{mdno2},#{mdqrcode},#{status},#{createdBy},#{creationDate})
     </insert>
 
     <update id="updateMouldcavity" parameterType="yj.core.mouldcavity.dto.Mouldcavity">
         update sap_mouldcavity set werks = #{werks},matnr = #{matnr},maktx = #{maktx},mdnum = #{mdnum},
+        mdno = #{mdno},mdno2 = #{mdno2},mdqrcode = #{mdqrcode},status = #{status},
         LAST_UPDATE_DATE = #{lastUpdateDate},LAST_UPDATED_BY = #{lastUpdatedBy}
         <where>
             werks = #{werks}
             AND matnr = #{matnr}
+            AND mdno = #{mdno}
         </where>
     </update>
 
@@ -45,14 +54,19 @@
         <where>
             werks = #{werks}
             AND matnr = #{matnr}
+            AND mdno = #{mdno}
         </where>
     </delete>
 
     <select id="selectByMatnr" parameterType="java.lang.String" resultType="java.lang.Integer">
         select mdnum from sap_mouldcavity
         <where>
+            1 = 1
             <if test="matnr != null">
-                matnr = #{matnr}
+                AND matnr = #{matnr}
+            </if>
+            <if test="mdno != null">
+                AND mdno = #{mdno}
             </if>
         </where>
         limit 1

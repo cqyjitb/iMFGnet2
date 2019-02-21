@@ -30,4 +30,23 @@ public interface ShotnumMapper extends Mapper<Shotnum> {
      * @return
      */
     List<Shotnum> isExit(@Param("werks") String werks, @Param("arbpl") String arbpl, @Param("prd_date") String prd_date, @Param("shifts") String shifts);
+
+    /**
+     *压射号查询 918100064
+     * @param dto
+     * @return
+     */
+    List<Shotnum> queryShotnum(Shotnum dto);
+
+    /**
+     *压射号修改 918100064
+     * @param dto
+     */
+    void updateShotnum(Shotnum dto);
+
+    /**
+     *压射号删除 918100064
+     * @param dto
+     */
+    void deleteShotnum(Shotnum dto);
 }
