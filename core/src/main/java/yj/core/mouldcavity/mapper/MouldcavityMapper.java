@@ -38,4 +38,12 @@ public interface MouldcavityMapper extends Mapper<Mouldcavity> {
      * @param dto
      */
     void deleteMouldcavity(Mouldcavity dto);
+
+    /**
+     *  根据物料号，工厂获取模号和出模数 917110140
+     * @param matnr
+     * @param werks
+     * @return
+     */
+    List<Mouldcavity> selectByWerksAndMatnr(@Param("matnr") String matnr,@Param("werks") String werks);
 }

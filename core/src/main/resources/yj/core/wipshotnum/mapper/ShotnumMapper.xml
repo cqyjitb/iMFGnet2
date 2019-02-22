@@ -8,7 +8,6 @@
         <result column="PRD_DATE" property="prdDate" jdbcType="DATE"/>
         <result column="SHIFTS" property="shifts" jdbcType="VARCHAR"/>
         <result column="CRDAT" property="crdat" jdbcType="DATE"/>
-        <result column="CRTIM" property="crtim" jdbcType="DATE"/>
         <result column="CLASS" property="sClass" jdbcType="VARCHAR"/>
         <result column="ZPGDBAR" property="zpgdbar" jdbcType="VARCHAR"/>
         <result column="KTEXT" property="ktext" jdbcType="VARCHAR"/>
@@ -68,8 +67,8 @@
     </select>
 
     <insert id="insertRow" parameterType="yj.core.wipshotnum.dto.Shotnum" >
-        insert INTO wip_shotnum(WERKS,ARBPL,PRD_DATE,SHIFTS,CRDAT,CRTIM,CLASS,ZPGDBAR,KTEXT,SHOT_START,SHOT_END,CRNAM,CREATED_BY,CREATION_DATE)
-        VALUES (#{werks},#{arbpl},#{prdDate},#{shifts},#{crdat},#{crtim},#{sClass},#{zpgdbar},#{ktext},#{shotStart},#{shotEnd},#{crnam},#{createdBy},#{creationDate})
+        insert INTO wip_shotnum(WERKS,ARBPL,PRD_DATE,SHIFTS,CRDAT,MATNR,MAKTX,MDNO,CLASS,ZPGDBAR,KTEXT,SHOT_START,SHOT_END,CRNAM,CREATED_BY,CREATION_DATE)
+        VALUES (#{werks},#{arbpl},#{prdDate},#{shifts},#{crdat},#{matnr},#{maktx},#{mdno},#{sClass},#{zpgdbar},#{ktext},#{shotStart},#{shotEnd},#{crnam},#{createdBy},#{creationDate})
     </insert>
 
     <select id="isExit" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -80,6 +79,6 @@
             and PRD_DATE = #{prd_date}
             and SHIFTS = #{shifts}
         </where>
-        order by CRDAT,CRTIM desc
+        order by CRDAT desc
     </select>
 </mapper>

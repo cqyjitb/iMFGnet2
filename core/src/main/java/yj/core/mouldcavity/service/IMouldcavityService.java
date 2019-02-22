@@ -32,4 +32,12 @@ public interface IMouldcavityService extends IBaseService<Mouldcavity>, ProxySel
      * @param dto
      */
     void deleteMouldcavity(List<Mouldcavity> dto);
+
+    /**
+     *  根据物料号 工厂 获取模号和出模数 917110140
+     * @param matnr
+     * @param werks
+     * @return
+     */
+    List<Mouldcavity> selectByWerksAndMatnr(String matnr,String werks);
 }

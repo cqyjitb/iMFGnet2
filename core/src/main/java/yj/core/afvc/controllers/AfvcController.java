@@ -16,6 +16,8 @@ import yj.core.afvc.dto.Afvc;
 import yj.core.afvc.service.IAfvcService;
 import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.service.ICardhService;
+import yj.core.mouldcavity.dto.Mouldcavity;
+import yj.core.mouldcavity.service.IMouldcavityService;
 import yj.core.webservice_queryoldzpgdbar.components.QueryOldZpgdbarUtil;
 import yj.core.webservice_queryoldzpgdbar.dto.DtqueryParm;
 import yj.core.webservice_queryoldzpgdbar.dto.DtqueryReturn;
@@ -32,6 +34,8 @@ public class AfvcController
     private IAfkoService afkoService;
     @Autowired
     private QueryOldZpgdbarUtil queryOldZpgdbarUtil;
+    @Autowired
+    private IMouldcavityService mouldcavityService;
 
 
 
@@ -107,8 +111,16 @@ public class AfvcController
             Afvc afvc = service.selectByZpgdbar(zpgdbar);
             if (afvc != null){
                 List<Afvc> list = new ArrayList<>();
+                afvc.setMatnr(afko.getPlnbez());
+                afvc.setMaktx(afko.getMaktx());
+                afvc.setWerks(afko.getWerks());
                 list.add(afvc);
-                rs.setRows(list);
+                List<Mouldcavity> listm = new ArrayList<>();
+                listm = mouldcavityService.selectByWerksAndMatnr(afvc.getMatnr(),afvc.getWerks());
+                List l1 = new ArrayList();
+                l1.add(list);
+                l1.add(listm);
+                rs.setRows(l1);
                 rs.setSuccess(true);
             }else{
                 rs.setMessage("派工单错误，未能获取到订单信息！");
@@ -117,11 +129,13 @@ public class AfvcController
         }else if (type.equals("old")){//老派工单
             DtqueryParm parm = new DtqueryParm();
             DtqueryReturn re = new DtqueryReturn();
+            List l1 = new ArrayList();
             parm.setZpgdbar(zpgdbar);
             re = queryOldZpgdbarUtil.receiveConfirmation(parm);
             if (re.getMsgty().equals("S")){
                 //根据工厂 物料号 获取模号和出模数
-
+                List<Mouldcavity> listm = new ArrayList<>();
+                listm = mouldcavityService.selectByWerksAndMatnr(re.getMatnr(),re.getWerks());
                 List<Afvc> list = new ArrayList<>();
                 Afvc afvc = new Afvc();
                 afvc.setArbpl(re.getArbpl());
@@ -129,8 +143,10 @@ public class AfvcController
                 afvc.setMatnr(re.getMatnr());
                 afvc.setMaktx(re.getMaktx());
                 list.add(afvc);
+                l1.add(list);
+                l1.add(listm);
                 rs.setSuccess(true);
-                rs.setRows(list);
+                rs.setRows(l1);
             }else{
                 rs.setSuccess(false);
                 rs.setMessage(re.getMessage());

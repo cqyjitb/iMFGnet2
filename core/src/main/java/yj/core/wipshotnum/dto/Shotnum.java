@@ -24,8 +24,6 @@ public class Shotnum extends BaseDTO {
     private String shifts;//班次
     @NotEmpty
     private String crdat;//创建日期
-    @NotEmpty
-    private String crtim;//创建时间
 
     private String sClass;//班组
 
@@ -180,14 +178,6 @@ public class Shotnum extends BaseDTO {
 
     public void setCrdat(String crdat) {
         this.crdat = crdat;
-    }
-
-    public String getCrtim() {
-        return crtim;
-    }
-
-    public void setCrtim(String crtim) {
-        this.crtim = crtim;
     }
 
     public String getsClass() {

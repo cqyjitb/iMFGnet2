@@ -117,7 +117,8 @@
             var dprd_date = document.getElementById("prd_date");
             var dbanz = document.getElementById("banz");
             var dbanc = document.getElementById("banc");
-
+            var Omode =  document.getElementById("mode");
+            var mdnums = {};
             /*用户登录相关操作*/
             //获取当前登录用户用户名
             var username = getCookie("username");
@@ -181,6 +182,17 @@
                 //清空页面元素
                 document.getElementById("zpgdbar").value = "";
                 document.getElementById("arbplDesc").value = "";
+                document.getElementById("matnr").value = "";
+                document.getElementById("maktx").value = "";
+                document.getElementById("mode").value = "";
+                var length = $('#mode option').length;
+                for(var i = 0 ; i < length; i++) {
+                    $('#mode option').eq(0).remove(); //eq等于
+                }
+
+                document.getElementById("mdnum").value = "";
+                var Omode = document.getElementById("mode");
+                Omode.setAttribute("disable",true);
                 dprd_date.options[0].selected = true;
                 dbanz.options[0].selected = true;
                 dbanc.options[0].selected = true;
@@ -245,14 +257,32 @@
                                 if (res.success){
                                     var Oarbpldes = document.getElementById("arbplDesc");
                                     var list = res.rows;
-                                    Oarbpldes.value = list[0].ktext;
-                                    arbplDesc = list[0].ktext;
-                                    arbpl = list[0].arbpl;
-                                    matnr = list[0].matnr;
-                                    maktx = list[0].maktx;
+
+                                    var listafvc = list[0];
+                                    Oarbpldes.value = listafvc[0].ktext;
+                                    arbplDesc = listafvc[0].ktext;
+                                    arbpl = listafvc[0].arbpl;
+                                    matnr = listafvc[0].matnr;
+                                    maktx = listafvc[0].maktx;
                                     var dshot_start = document.getElementById("shot_start");
                                     document.getElementById("matnr").value = matnr;
                                     document.getElementById("maktx").value = maktx;
+
+                                    var listmod = list[1];
+                                    Omode = document.getElementById("mode");
+                                    if (listmod.length > 0){
+                                        for(var i=0;i<listmod.length;i++){
+                                            Omode.innerHTML = Omode.innerHTML + "<option value=" + listmod[i].mdno + ">" + listmod[i].mdno  + "</option>"
+                                            mdnums[i] = listmod[i].mdnum;
+                                        }
+                                        Omode.options[0].selected = true;
+                                        mode = Omode.options[Omode.selectedIndex].value;
+                                        document.getElementById("mdnum").value = mdnums[0];
+                                        mdnum = mdnums[0];
+
+                                    }else{
+                                        Omode.setAttribute("disable",true);
+                                    }
                                     dshot_start.focus();
                                 }else{
 
@@ -276,6 +306,12 @@
                         openMsgDialog("错误","压铸派工单号必输！","M");
                     }
                 }
+            }
+
+            Omode.onblur = function(){
+                mode = Omode.options[Omode.selectedIndex].value;
+                document.getElementById("mdnum").value = mdnums[Omode.selectedIndex];
+                mdnum = mdnums[Omode.selectedIndex];
             }
 
             var dconfirm2 = document.getElementById("confirm2");
@@ -375,11 +411,31 @@
                             var dprd_date = document.getElementById("prd_date");
                             var dbanz = document.getElementById("banz");
                             var dbanc = document.getElementById("banc");
+                            document.getElementById("mode").value = "";
+                            mode = "";
+                            document.getElementById("mdnum").value = "";
+                            mdnum = ""
+                            document.getElementById("matnr").value = "";
+                            matnr = "";
+                            document.getElementById("maktx").value = "";
+                            maktx = "";
                             dprd_date.options[0].selected = true;
                             dbanz.options[0].selected = true;
                             dbanc.options[0].selected = true;
                             document.getElementById("shot_start").value = "";
                             document.getElementById("shot_end").value = "";
+
+                            var length = $('#mode option').length;
+                            for(var i = 0 ; i < length; i++) {
+                                $('#mode option').eq(0).remove(); //eq等于
+                            }
+                            matnr = "";
+                            maktx = "";
+                            mode = "";
+                            mdnum = "";
+                            document.getElementById("matnr").value;
+                            document.getElementById("maktx").value;
+
                             //获取条码页面元素
                             var roBcd=document.getElementById("zpgdbar");
 
@@ -515,6 +571,10 @@
                                     "zpgdbar":zpgdbar,
                                     "createdBy":userId,
                                     "userName":username,
+                                    "mode":mode,
+                                    "mdnum":mdnum,
+                                    "matnr":matnr,
+                                    "maktx":maktx,
                                     "type":"old"
                                 },
                                 async:false,
@@ -609,7 +669,7 @@
         <label class="dcp-label">物料描述</label><textarea id="maktx" style="font-size:10px;width: 120px;height: 40px;background-color: #C9C9C9" disabled="true" rows="2"></textarea><br>
         <!--<label class="dcp-label">压铸机台</label><input id="arbplDesc"  style="font-size:10px;width: 120px;height: 40px;background-color: #C9C9C9" disabled="true" type="text"><br>-->
         <label class="dcp-label">模号</label><select id="mode" class="cls-attr-input"type="text"></select><br>
-        <label class="dcp-label">出模数</label><input id="modenums" class="cls-attr-input" disabled="true"><br>
+        <label class="dcp-label">出模数</label><input id="mdnum" class="cls-attr-input" disabled="true"><br>
         <label class="dcp-label">班次日期</label><select id="prd_date" class="cls-attr-input"type="text">
         <option value="">请选择</option>
         <option></option>

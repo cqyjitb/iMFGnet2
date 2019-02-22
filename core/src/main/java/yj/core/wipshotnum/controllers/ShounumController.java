@@ -17,6 +17,7 @@ import yj.core.wipshotnum.dto.Shotnum;
 import yj.core.wipshotnum.service.IShotnumService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -77,6 +78,16 @@ public class ShounumController extends BaseController {
         String createdBy = request.getParameter("createdBy");
         String type = request.getParameter("type");
         String werks = "";
+        String mode = request.getParameter("mode");
+        Integer mdnum = Integer.valueOf(request.getParameter("mdnum"));
+        String matnr = request.getParameter("matnr");
+        String maktx = null;
+        try {
+            maktx = new String(request.getParameter("maktx").getBytes("iso8859-1"),"utf-8");
+        } catch (UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
         if (type.equals("old")){
             DtqueryParm parm = new DtqueryParm();
             parm.setZpgdbar(zpgdbar);
@@ -107,12 +118,14 @@ public class ShounumController extends BaseController {
         shot.setShotStart(Long.parseLong(shot_start));
         shot.setShotEnd(Long.parseLong(shot_end));
         shot.setCrnam(userName);
-        shot.setCrdat(crdate.substring(0,10));
-        shot.setCrtim(crdate.substring(11,19));
         shot.setKtext(ktext);
         shot.setCreationDate(new Date());
         shot.setCreatedBy(Long.parseLong(createdBy));
-
+        shot.setMatnr(matnr);
+        shot.setMaktx(maktx);
+        shot.setMdno(mode);
+        //shot.setMdnum(mdnum);
+        shot.setCrdat(sdf.format(new Date()));
         int i = service.insertRow(shot);
         if (i  == 1){
             rs.setSuccess(true);
@@ -163,7 +176,7 @@ public class ShounumController extends BaseController {
         list = service.isExit(werks,arbpl,prd_date,shifts);
         if (list.size()>0){
             rs.setRows(list);
-            rs.setMessage("已于创建时间"+list.get(0).getCrdat()+ " "+list.get(0).getCrtim()+"填报当前班次数据，是否重新填报？");
+            rs.setMessage("已于创建时间"+list.get(0).getCrdat()+"填报当前班次数据，是否重新填报？");
             rs.setSuccess(true);
             rs.setCode("X");
 

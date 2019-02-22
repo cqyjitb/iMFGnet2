@@ -54,4 +54,9 @@ public class MouldcavityServiceImpl extends BaseServiceImpl<Mouldcavity> impleme
             }
         }
     }
+
+    @Override
+    public List<Mouldcavity> selectByWerksAndMatnr(String matnr, String werks) {
+        return mouldcavityMapper.selectByWerksAndMatnr(matnr,werks);
+    }
 }

@@ -112,7 +112,8 @@ public class DTQUERYOLDZPGDBARSendRes {
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = { "msgty", "msgno", "msgid", "msgv1",
-            "msgv2", "msgv3", "msgv4", "message", "arbpl", "arbpldesc", "werks" })
+            "msgv2", "msgv3", "msgv4", "message", "arbpl", "arbpldesc",
+            "werks", "matnr", "maktx" })
     public static class RETURN {
 
         @XmlElement(name = "MSGTY", required = true)
@@ -414,6 +415,7 @@ public class DTQUERYOLDZPGDBARSendRes {
         public void setMAKTX(String value) {
             this.maktx = value;
         }
+
     }
 
 }
