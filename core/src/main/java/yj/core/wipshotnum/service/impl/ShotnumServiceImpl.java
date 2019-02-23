@@ -264,8 +264,7 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
 
     @Override
     public List<Shotnum> queryShotnum(Shotnum dto, IRequest requestContext) {
-        List<Shotnum> list = shotnumMapper.queryShotnum(dto);
-        return list;
+        return shotnumMapper.queryShotnum(dto);
     }
 
     @Override

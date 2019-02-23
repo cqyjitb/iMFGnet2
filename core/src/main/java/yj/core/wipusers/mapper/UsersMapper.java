@@ -1,5 +1,6 @@
 package yj.core.wipusers.mapper;
 
+import com.hand.hap.account.dto.User;
 import com.hand.hap.mybatis.common.Mapper;
 import org.apache.ibatis.annotations.Param;
 import yj.core.wipusers.dto.Users;
@@ -32,5 +33,13 @@ public interface UsersMapper extends Mapper<Users> {
      * @param users
      */
     void insertUsers(Users users);
+
+    /**
+     * 用户查询LOV_USER 918100064
+     * @param userId
+     * @param userName
+     * @return
+     */
+    List<User> selectByUserId(@Param("userId")String userId,@Param("userName")String userName);
 
 }
