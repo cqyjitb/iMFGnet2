@@ -84,11 +84,11 @@ public class CardtController
             return rs;
         }
 
-        if (cardt.getSteus().equals("ZP02")){
-            rs.setSuccess(false);
-            rs.setMessage("外协工序请使用外协收货报工");
-            return rs;
-        }
+//        if (cardt.getSteus().equals("ZP02")){
+//            rs.setSuccess(false);
+//            rs.setMessage("外协工序请使用外协收货报工");
+//            return rs;
+//        }
 
             //判断工序是不是首工序
             List<Cardt> listasc = service.selectByZpgdbarAsc(zpgdbar);

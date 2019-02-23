@@ -49,6 +49,7 @@
         select * from wip_outsrgreceipt
         <where>
             EBELN = #{ebeln}
+            and STATUS = '0'
         </where>
     </select>
 
