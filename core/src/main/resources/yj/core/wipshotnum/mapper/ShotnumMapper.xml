@@ -44,6 +44,54 @@
         <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
     </resultMap>
 
+    <select id="queryShotnum" parameterType="yj.core.wipshotnum.dto.Shotnum" resultMap="BaseResultMap2">
+        select DISTINCT sh.*,cr.veran,mo.mdnum,u.user_name from wip_shotnum sh,sap_crhd cr,sap_mouldcavity mo,sys_user u
+        <where>
+            sh.matnr = mo.matnr
+            AND sh.mdno = mo.mdno
+            AND sh.arbpl = cr.arbpl
+            AND sh.created_by = u.user_id
+            <if test="werks != null">
+                AND sh.werks = #{werks}
+            </if>
+            <if test="veran != null">
+                AND cr.veran = #{veran}
+            </if>
+            <if test="arbpl != null">
+                AND sh.arbpl = #{arbpl}
+            </if>
+            <if test="prdDate != null">
+                AND sh.prd_date = #{prdDate}
+            </if>
+            <if test="shifts != null">
+                AND sh.shifts = #{shifts}
+            </if>
+        </where>
+    </select>
+
+    <update id="updateShotnum" parameterType="yj.core.wipshotnum.dto.Shotnum">
+        update wip_shotnum set MDNO = #{mdno},SHOT_START = #{shotStart},SHOT_END = #{shotEnd},
+        LAST_UPDATE_DATE = #{lastUpdateDate},LAST_UPDATED_BY = #{lastUpdatedBy}
+        <where>
+            WERKS = #{werks}
+            and ARBPL = #{arbpl}
+            and PRD_DATE = #{prdDate}
+            and SHIFTS = #{shifts}
+            and CRDAT = #{crdat}
+        </where>
+    </update>
+
+    <delete id="deleteShotnum" parameterType="yj.core.wipshotnum.dto.Shotnum">
+        delete from wip_shotnum
+        <where>
+            WERKS = #{werks}
+            and ARBPL = #{arbpl}
+            and PRD_DATE = #{prdDate}
+            and SHIFTS = #{shifts}
+            and CRDAT = #{crdat}
+        </where>
+    </delete>
+
     <select id="selectShotnum" parameterType="yj.core.wipshotnum.dto.Shotnum" resultMap="BaseResultMap">
         select DISTINCT sh.* from wip_shotnum sh
         <where>
