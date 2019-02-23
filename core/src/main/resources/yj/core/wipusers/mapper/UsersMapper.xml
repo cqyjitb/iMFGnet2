@@ -13,17 +13,51 @@
         <result column="ENABLE_FLAG" property="enableFlag" jdbcType="VARCHAR"/>
         <result column="START_DATE" property="startDate" jdbcType="VARCHAR"/>
         <result column="END_DATE" property="endDate" jdbcType="VARCHAR"/>
+        <result column="USER_NAME" property="userName" jdbcType="VARCHAR"/>
         <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR"/>
         <result column="CREATION_DATE" property="creationDate" jdbcType="DATE"/>
         <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="VARCHAR"/>
         <result column="LAST_UPDATED_DATE" property="lastUpdatedDate" jdbcType="DATE"/>
     </resultMap>
+    <resultMap id="BaseResultMap2" type="com.hand.hap.account.dto.User" extends="com.hand.hap.mapper.StdMapper.STD">
+        <id column="USER_ID" property="userId" jdbcType="DECIMAL" />
+        <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+        <result column="USER_TYPE" property="userType" jdbcType="VARCHAR" />
+        <result column="PASSWORD_ENCRYPTED" property="passwordEncrypted" jdbcType="VARCHAR" />
+        <result column="EMAIL" property="email" jdbcType="VARCHAR" />
+        <result column="PHONE" property="phone" jdbcType="VARCHAR" />
+        <result column="START_ACTIVE_DATE" property="startActiveDate" javaType="DATE"/>
+        <result column="END_ACTIVE_DATE" property="endActiveDate" javaType="DATE"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR" />
+        <result column="LAST_PASSWORD_UPDATE_DATE" property="lastPasswordUpdateDate" javaType="DATE"/>
+        <result column="LAST_LOGIN_DATE" property="lastLoginDate" javaType="DATE"/>
+        <result column="FIRST_LOGIN" property="firstLogin" jdbcType="VARCHAR" />
+        <result column="DESCRIPTION" property="description" jdbcType="VARCHAR" />
+        <result column="EMPLOYEE_ID" property="employeeId" jdbcType="DECIMAL" />
+        <result column="EMPLOYEE_CODE" property="employeeCode" jdbcType="VARCHAR" />
+        <result column="EMPLOYEE_NAME" property="employeeName" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <!--用户查询LOV_USER-->
+    <select id="selectByUserId" parameterType="java.lang.String" resultMap="BaseResultMap2">
+        select * from sys_user
+        <where>
+            1 = 1
+            <if test="userName != null">
+                AND USER_NAME = #{userName}
+            </if>
+            <if test="userId != null">
+                AND USER_ID = #{userId}
+            </if>
+        </where>
+    </select>
 
     <select id="selectFromPage" parameterType="yj.core.wipusers.mapper.UsersMapper" resultMap="BaseResultMap">
-        select us.*,li.dept_id,dot.dot_code,dot.descriptions from wip_users us,wip_lines li,wip_dot dot
+        select us.*,li.dept_id,dot.dot_code,dot.descriptions,su.user_name from wip_users us,wip_lines li,wip_dot dot,sys_user su
         <where>
             us.line_id = li.line_id
             AND us.dot_id = dot.dot_id
+            AND su.user_id = us.userid
             <if test="deptId != null">
                 AND li.dept_id = #{deptId}
             </if>

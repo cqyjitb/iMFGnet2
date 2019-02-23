@@ -33,6 +33,15 @@
             {text:"中班",value:"2"},
             {text:"夜班",value:"3"}
         ],
+        resetForm1: function () {
+            var formData = viewModel.model.toJSON();
+            for (var k in formData) {
+                if(k != "werks"){
+                    viewModel.model.set(k, null);
+                }
+            }
+            $('#Grid').data('kendoGrid').dataSource.read();
+        },
         saveFunction:function () {
             $('#Grid').data('kendoGrid').saveChanges();
         },
@@ -117,6 +126,9 @@
                         <span class="btn btn-primary" data-bind="click:queryGrid" type="submit">
                             <i class="fa fa-search" style="margin-right:3px;"></i>
                         <@spring.message "hap.query"/></span>
+                        <span class="btn btn-default" type="button" data-bind="click:resetForm1">
+                            <i class="fa fa-eraser" style="margin-right:3px;"></i>
+                        <@spring.message "hap.reset"/></span>
                         <span class="btn btn-info" type="button" id="panel_hidden1" onclick="test1()">
                             <i class="fa fa-joomla" style="margin-right:3px;"></i>
                        <@spring.message "hap.panel_hidden"/></span>
