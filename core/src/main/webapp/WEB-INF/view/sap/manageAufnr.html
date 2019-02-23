@@ -486,11 +486,12 @@
                                         message: "请点击选中行-本次可创建数量列，输入本次可创建数量！"
                                     });
                                 } else if (selections["0"].cursum > selections["0"].cansum) {
-                                    kendo.ui.showErrorDialog({
-                                        title: '错误',
-                                        message: "本次创建数量大于可创建数量！"
-                                    });
-
+                                    if(selections["0"].auart != "YZ03"){// 2019-02-23 修改 针对订单类型为YZ03的试模订单 取消创建流转卡数量限制
+                                        kendo.ui.showErrorDialog({
+                                            title: '错误',
+                                            message: "本次创建数量大于可创建数量！"
+                                        });
+                                    }
                                 } else {
                                     var tab = $('#tabstrip').data('kendoTabStrip');
                                     var index = tab.tabGroup["0"].children.length;
