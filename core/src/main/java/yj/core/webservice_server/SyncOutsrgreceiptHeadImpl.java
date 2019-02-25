@@ -9,6 +9,7 @@ import yj.core.outsrgreceipthead.service.IOutsrgreceiptheadService;
 import yj.core.webservice_server.dto.Rec_Outsrgreceipthead;
 import yj.core.webservice_server.dto.ReturnMessage;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class SyncOutsrgreceiptHeadImpl implements IsyncOutsrgreceiptHead {
@@ -17,7 +18,7 @@ public class SyncOutsrgreceiptHeadImpl implements IsyncOutsrgreceiptHead {
     @Override
     public ReturnMessage sync(Rec_Outsrgreceipthead rec_outsrgreceipthead) {
         ReturnMessage rs = new ReturnMessage();
-
+        SimpleDateFormat sdf = new SimpleDateFormat("YYYYMMDD");
         if (rec_outsrgreceipthead.getReceiptnm() == null){
             rs.setFlag("E");
             rs.setMessage("同步数据有误！");
@@ -40,9 +41,11 @@ public class SyncOutsrgreceiptHeadImpl implements IsyncOutsrgreceiptHead {
         if (num == 1){
             rs.setMessage("同步成功！");
             rs.setFlag("S");
+            rs.setSyncdate(sdf.format(new Date()));
         }else{
             rs.setMessage("同步失败！");
             rs.setFlag("E");
+            rs.setSyncdate(sdf.format(new Date()));
         }
         return rs;
     }

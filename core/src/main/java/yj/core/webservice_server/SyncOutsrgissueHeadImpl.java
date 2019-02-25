@@ -9,6 +9,7 @@ import yj.core.outsrgreceipthead.mapper.OutsrgreceiptheadMapper;
 import yj.core.webservice_server.dto.Rec_Outsrgissuehead;
 import yj.core.webservice_server.dto.ReturnMessage;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class SyncOutsrgissueHeadImpl implements IsyncOutsrgissueHead {
@@ -16,6 +17,7 @@ public class SyncOutsrgissueHeadImpl implements IsyncOutsrgissueHead {
     private IOutsrgissueheadService outsrgissueheadService;
     @Override
     public ReturnMessage sync(Rec_Outsrgissuehead rec_outsrgissuehead) {
+        SimpleDateFormat sfd = new SimpleDateFormat("YYYYMMDD");
         ReturnMessage rs = new ReturnMessage();
 
         if (rec_outsrgissuehead.getIssuenm() == null){
@@ -40,10 +42,12 @@ public class SyncOutsrgissueHeadImpl implements IsyncOutsrgissueHead {
         OutsrgissueheadMapper outsrgissueheadMapper = ContextLoaderListener.getCurrentWebApplicationContext().getBean(OutsrgissueheadMapper.class);
         int num = outsrgissueheadMapper.updateOutsrgissueHead(outsrgissuehead);
         if (num == 1){
-            rs.setMessage("同步成功！");
+            rs.setMessage("sync success！");
+            rs.setSyncdate(sfd.format(new Date()));
             rs.setFlag("S");
         }else{
-            rs.setMessage("同步失败！");
+            rs.setMessage("sync faild！");
+            rs.setSyncdate(sfd.format(new Date()));
             rs.setFlag("E");
         }
         return rs;
