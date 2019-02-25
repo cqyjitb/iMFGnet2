@@ -105,17 +105,21 @@
     </select>
 
     <select id="selectZudlist" parameterType="java.lang.String" resultMap="BaseResultMap2">
-        select distinct zl.*,li.descriptions,cu.sortl,ma.maktx,re.zotype,zl.CREATION_DATE as createDate,b.name,df.ztext,qp.kurztext
-        from wip_zudlist zl,wip_zudhead zh,wip_lines li,sap_cust cu,sap_marc ma,wip_in_out_record re,hr_org_unit_b b,sap_qpcd qp,sap_dftdtl df
+        select distinct zl.zudnum,zl.item,zl.line_id,zl.zbanz,zl.zbanc,zl.zpgdbar,zl.matnr2,zl.zgjbar,zl.sfflg,zl.diecd,
+        zl.charg2,zl.charg,zl.zqxdm,zl.zissuetxt,zl.rspart,zl.vornr,zl.zoplo,zl.rsname,zl.reviewc,zl.mark,zl.CREATION_DATE as createDate,
+        b.name,df.ztext,qp.kurztext,us.user_name as createBy1,li.descriptions,qj.rcode,cu.sortl,ma.maktx,re.zotype,re.vornr as vornr_old
+        from wip_zudlist zl,wip_zudhead zh,wip_lines li,sap_cust cu,sap_marc ma,wip_in_out_record re,hr_org_unit_b b,
+        sap_qpcd qp,sap_dftdtl df,sys_user us,wip_qjcode qj
         <where>
-            zh.zudnum = zl.zudnum
-            AND li.line_id = zl.line_id
-            AND cu.kunnr = zl.zbpjc
-            AND ma.matnr = zl.matnr2
-            AND re.zqjjlh = zl.zqjjlh
+            zl.zudnum = zh.zudnum
+            AND zl.line_id = li.line_id
+            AND zl.zbpjc = cu.kunnr
+            AND zl.matnr2 = ma.matnr
+            AND (zl.zqjjlh = re.zqjjlh AND re.zotype = qj.id)
             AND zl.rspart = b.unit_code
             and zl.zqxdm = qp.code
             and ( zl.zissuetxt = df.tlevelcode and re.matnr2 = df.matnr )
+            AND zl.created_by = us.user_id
             <if test="status != null">
                 AND zl.STATUS = #{status}
             </if>
@@ -123,7 +127,7 @@
                 AND li.dept_id = #{deptId}
             </if>
             <if test="lineId != null">
-                AND (zl.line_id = #{lineId} or li.pline_id = #{lineId})
+                AND (li.line_id = #{lineId} or li.pline_id = #{lineId})
             </if>
             <if test="creationDateAfter != null">
                 AND zh.creation_date >= #{creationDateAfter}
@@ -135,7 +139,7 @@
                 AND zh.zudnum = #{zudnum}
             </if>
             <if test="createdBy != null">
-                AND zh.created_by = #{createdBy}
+                AND us.user_name = #{createdBy}
             </if>
         </where>
     </select>
