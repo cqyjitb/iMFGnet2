@@ -15,11 +15,15 @@
 
 
         <intercept-url pattern="/yjlogin.html" access="permitAll"/>
+        <intercept-url pattern="/yjloginpd.html" access="permitAll"/>
         <intercept-url pattern="/yujiang/login" access="permitAll"/>
         <intercept-url pattern="/yujiang/checkVersion" access="permitAll"/>
         <intercept-url pattern="/dispatch/dispatch.html" access="permitAll"/>
         <intercept-url pattern="/dispatch/dispatch_index.html" access="permitAll"/>
+        <intercept-url pattern="/dispatch2/dispatch_index.html" access="permitAll"/>
         <intercept-url pattern="/dispatch/dispatch_pd.html" access="permitAll"/>
+        <intercept-url pattern="/dispatch2/dispatch_pd_tj.html" access="permitAll"/>
+        <intercept-url pattern="/dispatch2/dispatch_pd_gz.html" access="permitAll"/>
         <intercept-url pattern="/dispatch/dispatch_shot.html" access="permitAll"/>
         <intercept-url pattern="/hr/employee/queryByCode" access="permitAll"/>
         <intercept-url pattern="/sys/userrole/queryByUserName" access="permitAll"/>
