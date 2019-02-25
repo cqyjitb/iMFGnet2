@@ -116,7 +116,7 @@
             AND zl.zbpjc = cu.kunnr
             AND zl.matnr2 = ma.matnr
             AND (zl.zqjjlh = re.zqjjlh AND re.zotype = qj.id)
-            AND zl.rspart = b.unit_code
+            AND (zl.rspart = b.unit_code and li.dept_id = b.UNIT_CODE)
             and zl.zqxdm = qp.code
             and ( zl.zissuetxt = df.tlevelcode and re.matnr2 = df.matnr )
             AND zl.created_by = us.user_id
@@ -124,7 +124,7 @@
                 AND zl.STATUS = #{status}
             </if>
             <if test="deptId != null">
-                AND li.dept_id = #{deptId}
+                AND zl.rspart = #{deptId}
             </if>
             <if test="lineId != null">
                 AND (li.line_id = #{lineId} or li.pline_id = #{lineId})
