@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>渝江压铸登陆</title>
+    <title>渝江盘点登陆</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="_csrf" content="${_csrf.token}"/>
@@ -149,11 +149,48 @@
 
 
     function submit2(){
-        window.location.href='${base.contextPath}/dispatch2/dispatch_pd_tj.html';
+        var username = getCookie("username");
+        $.ajax({
+            url:"${base.contextPath}/wip/pandiantcode/checkCode",
+            type:"get",
+            data : {
+                "username":username,
+                "tj":"X",
+                "gz":""
+            },
+            contentType :"application/json",
+            success:function (res){
+                if (res.success == true){
+                    window.location.href='${base.contextPath}/dispatch2/dispatch_pd_tj.html';
+                }else{
+                    alert("用户不具备天津渝江盘点权限！");
+                }
+            }
+        });
+
+
     }
 
     function submit3(){
-        window.location.href='${base.contextPath}/dispatch2/dispatch_pd_gz.html';
+        var username = getCookie("username");
+        $.ajax({
+            url:"${base.contextPath}/wip/pandiantcode/checkCode",
+            type:"get",
+            data : {
+                "username":username,
+                "tj":"",
+                "gz":"X"
+            },
+            contentType :"application/json",
+            success:function (res){
+                if (res.success == true){
+                    window.location.href='${base.contextPath}/dispatch2/dispatch_pd_gz.html';
+                }else{
+                    alert("用户不具备工装制造部盘点权限！");
+                }
+            }
+        });
+
     }
 
 </script>

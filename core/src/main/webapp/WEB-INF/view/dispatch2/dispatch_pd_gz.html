@@ -76,7 +76,7 @@
             background-color: white;
             width: 200px;
             height: 120px;
-            top: 100px;
+            top: 50px;
             left: 20px;
             position: absolute;
             z-index: 1002;
@@ -211,14 +211,72 @@
 
             var bCfr=document.getElementById("confirm2");
             bCfr.onclick=function () {
-                pd_sum = document.getElementById("num");
+                var l_error = "";
+                pd_sum = document.getElementById("num").value;
+                var oPd_sum = document.getElementById("num");
+                var vornr = document.getElementById("vornr").value;
+                var vorlen = vornr.length;
+                var oVornr = document.getElementById("vornr");
+                if (vorlen > 4){
+                    msg = "工序号错误！";
+                    openMsgDialog("错误",msg,"M");
+                    oVornr.focus();
+                    l_error = "E";
+                }
+
                 if ( pd_sum == '' || pd_sum == null || pd_sum == ""){
                     msg = "请输入盘点数量！";
                     openMsgDialog("错误",msg,"M");
                     oPd_sum.focus();
-                }else{
-                    openMsgDialog("确认","是否继续过账","C");
+                    l_error = "E";
                 }
+
+                if (l_error != "E"){
+                    appendMaskDialog();
+                    var barcode = document.getElementById("barcode").value;
+                    var num = document.getElementById("num").value;
+                    var vornr = document.getElementById("vornr").value;
+                    var userName = getCookie("username");
+                    if (barcode != "" && num != "" && vornr != ""){
+                        //保存盘点记录
+                        $.ajax({
+                            url: "${base.contextPath}/wip/pandiantmp/insertNewRow",
+                            type: "get",
+                            data: {
+                                "barcode": barcode,
+                                "vornr": vornr,
+                                "num": num,
+                                "userName": userName,
+                                "werks": "工装制造部",
+                                "userId": createdBy
+                            },
+                            contentType: "application/json; charset=utf-8",
+                            success: function (res) {
+                                if (res.success == true){
+                                    openMsgDialog("成功",res.message,"M");
+                                    removeMaskDialog();
+                                }else{
+                                    openMsgDialog("失败",res.message,"M");
+                                    removeMaskDialog();
+                                }
+                            }
+                        });
+                    }else{
+
+                        if (barcode == ""){
+                            openMsgDialog("失败","请扫描流转卡！","M");
+                            removeMaskDialog();
+                        }else if(vornr == ""){
+                            openMsgDialog("失败","请输入工序行号！","M");
+                            removeMaskDialog();
+                        }else if(num == ""){
+                            openMsgDialog("失败","请输入盘点数量！","M");
+                            removeMaskDialog();
+                        }
+
+                    }
+                }
+
             }
 
         }
@@ -268,57 +326,18 @@
                     }
 
                 }
-            } else if(msgType == "C") {
-                bCan.style.display = "";
-                bCan.onclick=function () {
-                    dMsg.style.display="none";
-                    removeMaskDialog();
-                }
-                bCls2.onclick=function () {
-                    var barcode = document.getElementById("barcode").value;
-                    var num = document.getElementById("num").value;
-                    var vornr = document.getElementById("vornr").value;
-                    if (barcode != "" && num != "" && vornr != ""){
-                        //保存盘点记录
-                        $.ajax({
-                            url: "${base.contextPath}/wip/pandiantmp/insertNewRow",
-                            type: "get",
-                            data: {
-                                "barcode": barcode,
-                                "vornr": vornr,
-                                "num": num,
-                                "userName": userName,
-                                "werks": "工装制造部",
-                                "userId": createdBy
-                            },
-                            contentType: "application/json; charset=utf-8",
-                            success: function (res) {
-                                if (res.success == true){
-                                    openMsgDialog("成功",res.message,"M");
-                                    removeMaskDialog();
-                                }else{
-                                    openMsgDialog("失败",res.message,"M");
-                                    removeMaskDialog();
-                                }
-                            }
-                        });
-                    }else{
-
-                        if (barcode == ""){
-                            openMsgDialog("失败","请扫描流转卡！","M");
-                            removeMaskDialog();
-                        }else if(vornr == ""){
-                            openMsgDialog("失败","请输入工序行号！","M");
-                            removeMaskDialog();
-                        }else if(num == ""){
-                            openMsgDialog("失败","请输入盘点数量！","M");
-                            removeMaskDialog();
-                        }
-
-                    }
-
-                }
             }
+//            else if(msgType == "C") {
+//                bCan.style.display = "";
+//                bCan.onclick=function () {
+//                    dMsg.style.display="none";
+//                    removeMaskDialog();
+//                }
+//                bCls2.onclick=function () {
+//
+//
+//                }
+//            }
         }
 
 
@@ -345,7 +364,7 @@
         <div id="user" style="margin-right: 25px;font-size:14px;height:20px;float: right;background-color:white;top: 0px"></div>
     </div>
 
-    <div style="width: 220px;height: 235px">
+    <div style="width: 220px">
 
         <br>
         <label class="dcp-label">流转卡号</label><input id="barcode"  class="cls-attr-input"  type="text"><br>
