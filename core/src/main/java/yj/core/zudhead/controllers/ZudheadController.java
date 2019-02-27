@@ -28,6 +28,8 @@ import yj.core.webservice_newbg.dto.DTBAOGONGParameters;
 import yj.core.webservice_newbg.dto.DTBAOGONGParametersitem;
 import yj.core.webservice_newbg.dto.DTBAOGONGReturnResult;
 import yj.core.webservice_queryXhcard.receiver.DTQUERYXHCARDRes;
+import yj.core.wiplines.dto.Lines;
+import yj.core.wiplines.service.ILinesService;
 import yj.core.xhcard.dto.Xhcard;
 import yj.core.xhcard.service.IXhcardService;
 import yj.core.zudhead.dto.ParamAndQjjlh;
@@ -68,6 +70,8 @@ public class ZudheadController extends BaseController {
     private ICardtService cardtService;
     @Autowired
     private IZudlogService zudlogService;
+    @Autowired
+    private ILinesService linesService;
 
 
     @RequestMapping(value = "/wip/zudhead/query")
@@ -247,6 +251,12 @@ public class ZudheadController extends BaseController {
             Zudlist zudlist = new Zudlist();
             zudlist = zudlistService.selectByIdAndItem(listtmp.get(i).getZudnum(),listtmp.get(i).getItem());
             zudlist.setReviewc(listtmp.get(i).getReviewc());
+            String lineId = zudlist.getLineId();
+            Lines lines = linesService.selectById(Long.parseLong(lineId));
+            Long PlineId = lines.getPlineId();
+            if (PlineId == null){
+                PlineId = Long.parseLong(lineId);
+            }
             //处理回到取还件记录表的数据记录
             if (zudlist.getReviewc().equals("Q")){
                 zudlist.setStatus("1");
@@ -317,7 +327,7 @@ public class ZudheadController extends BaseController {
                             parameters.setXMNGA("1");
                         }
                         parameters.setZSCBC("");
-                        parameters.setZSCX("");
+                        parameters.setZSCX(PlineId.toString());
                         parameters.setZMNUM("");
                         parameters.setZPGDBAR(cardhjj.getZpgdbar());
                         parameters.setZPGDBH(cardhjj.getZpgdbh());
@@ -372,7 +382,7 @@ public class ZudheadController extends BaseController {
                         parameters.setXMNGA("1");
                     }
                     parameters.setZSCBC("");
-                    parameters.setZSCX("");
+                    parameters.setZSCX(PlineId.toString());
                     parameters.setZMNUM("");
                     parameters.setZPGDBAR(cardhjj.getZpgdbar());
                     parameters.setZPGDBH(cardhjj.getZpgdbh());

@@ -385,7 +385,7 @@ public class InputLogController extends BaseController{
         inputLog.setDispatch(barcode);
         inputLog.setOperation(vornr);
         inputLog.setYeild(Double.parseDouble(hgsum));
-        inputLog.setWorkScrap(Double.parseDouble(gfsum));
+        inputLog.setWorkScrap(Double.parseDouble(gfsum) + Double.parseDouble(yssum));
         inputLog.setRowScrap(Double.parseDouble(lfsum));
         inputLog.setLine("");
         inputLog.setPlant(card.getWerks());
