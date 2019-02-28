@@ -1132,61 +1132,95 @@ public class InputLogController extends BaseController{
         List<InputLog> hislist = service.queryAllWriteOff(requestContext,inputLog,1,100);
 
         InputLog hislog = new InputLog();
-        hislog = hislist.get(0);
 
-        double gamng = hislog.getYeild();//盘点前的报工数量
-        if ( hislog.getYeild() > Double.parseDouble(pd_sum) ){//盘亏
-            Long IOrderno = Long.parseLong(hislog.getOrderno());
-            if ( (IOrderno >= 1000000000L && IOrderno <= 2999999999L) &&
-                    ( hislog.getOperationDesc().equals("压铸") )      &&
-                    ( hislog.getOperation().equals("0010"))){
+        if (hislist.size() == 0){
+            message = "流转卡信息丢失";
+            insertLog2(dispatch,operation,pd_sum,cfwz,message,createdBy);
+        }else{
+            hislog = hislist.get(0);
+
+            double gamng = hislog.getYeild();//盘点前的报工数量
+            if ( hislog.getYeild() > Double.parseDouble(pd_sum) ){//盘亏
+                Long IOrderno = Long.parseLong(hislog.getOrderno());
+                if ( (IOrderno >= 1000000000L && IOrderno <= 2999999999L) &&
+                        ( hislog.getOperationDesc().equals("压铸") )      &&
+                        ( hislog.getOperation().equals("0010"))){
 
 
+                    rs = insertLog(hislist.get(0),gamng, pd_sum, cfwz,createdBy,message);
+                }else{
+                    //先冲销
+                    hislog.setTranType("1");
+                    hislog.setPostingDate(newPostingdate);
+                    DTPP001ReturnResult dtpp001ReturnResult = service.writeOffDispatch(hislog);
+                    if ( dtpp001ReturnResult.getMSGTY().equals("S")){
+                        double chayi = hislog.getYeild() - Double.parseDouble(pd_sum);
+                        double newyeild = hislog.getYeild() - chayi;
+
+                        hislog.setPostingDate(newPostingdate);
+                        hislog.setYeild(newyeild);
+                        hislog.setWorkScrap(hislog.getWorkScrap() + chayi);
+                        hislog.setTranType("0");
+                        hislog.setDispatchLogicID(hislog.getDispatch().substring(14,18));
+                        hislog.setCreated_by(createdBy);
+                        DTPP001ReturnResult dtpp001ReturnResult1 = service.inputDispatch(hislog);
+                        if ( dtpp001ReturnResult1.getMSGTY().equals("S")){
+                            message = "报工已调整";
+                            rs = insertLog(hislist.get(0),gamng,pd_sum,cfwz,createdBy,message);
+
+                        }else{
+                            message = "冲销成功，补报工失败："+dtpp001ReturnResult1.getMESSAGE();
+                            rs = insertLog(hislist.get(0),gamng,pd_sum,cfwz,createdBy,message);
+                        }
+                    }else{//冲销失败 只记录日志
+                        message = "冲销失败："+dtpp001ReturnResult.getMESSAGE();
                         rs = insertLog(hislist.get(0),gamng, pd_sum, cfwz,createdBy,message);
 
-
-            }else{
-
-                //先冲销
-                hislog.setTranType("1");
-                hislog.setPostingDate(newPostingdate);
-                DTPP001ReturnResult dtpp001ReturnResult = service.writeOffDispatch(hislog);
-                if ( dtpp001ReturnResult.getMSGTY().equals("S")){
-                    double chayi = hislog.getYeild() - Double.parseDouble(pd_sum);
-                    double newyeild = hislog.getYeild() - chayi;
-
-                    hislog.setPostingDate(newPostingdate);
-                    hislog.setYeild(newyeild);
-                    hislog.setWorkScrap(hislog.getWorkScrap() + chayi);
-                    hislog.setTranType("0");
-                    hislog.setDispatchLogicID(hislog.getDispatch().substring(14,18));
-                    hislog.setCreated_by(createdBy);
-                    DTPP001ReturnResult dtpp001ReturnResult1 = service.inputDispatch(hislog);
-                    if ( dtpp001ReturnResult1.getMSGTY().equals("S")){
-                        message = "报工已调整";
-                        rs = insertLog(hislist.get(0),gamng,pd_sum,cfwz,createdBy,message);
-
-                    }else{
-                        message = "冲销成功，补报工失败："+dtpp001ReturnResult1.getMESSAGE();
-                        rs = insertLog(hislist.get(0),gamng,pd_sum,cfwz,createdBy,message);
                     }
-                }else{//冲销失败 只记录日志
-                    message = "冲销失败："+dtpp001ReturnResult.getMESSAGE();
-                    rs = insertLog(hislist.get(0),gamng, pd_sum, cfwz,createdBy,message);
-
                 }
-
+            }else if( hislog.getYeild() <= Double.parseDouble(pd_sum) ) {//盘赢 盘平 只记录日志
+                message = "盘点成功.";
+                rs = insertLog(hislist.get(0),gamng, pd_sum, cfwz,createdBy,message);
 
             }
-
-
-
-        }else if( hislog.getYeild() <= Double.parseDouble(pd_sum) ) {//盘赢 盘平 只记录日志
-            message = "盘点成功.";
-            rs = insertLog(hislist.get(0),gamng, pd_sum, cfwz,createdBy,message);
-
         }
         return rs;
+    }
+
+    public ResponseData insertLog2(String dispatch,String operation,String pd_sum,String cfwz,String message,String createdBy){
+        ResponseData rs = new ResponseData();
+        Pandian pd = new Pandian();
+        pd.setAufnr("");
+        pd.setZpgdbar(dispatch+operation);
+//        pd.setGamng();
+        pd.setQrmng(Double.parseDouble(pd_sum));
+//        pd.setMatnr(inputLog.getMaterial());
+//        pd.setMaktx(inputLog.getMatDesc());
+//        pd.setLtxa1(inputLog.getOperationDesc());
+        pd.setVornr(operation);
+//        pd.setWerks(inputLog.getPlant());
+        pd.setCreated_by(createdBy);
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String datastr = df.format(new Date());// new Date()为获取当前系统时间
+        pd.setZpgdbh(dispatch.substring(14,18));
+        pd.setPddat(datastr.substring(0,10));
+        pd.setPdtim(datastr.substring(11,19));
+        pd.setZcfwz(cfwz);
+        pd.setZlylx("1");
+        pd.setZmessage(message);
+
+        int i = pdservice.insertpdlog(pd);
+        if (i == 1){
+            rs.setSuccess(true);
+            rs.setCode("S");
+            rs.setMessage(message);
+        }else{
+            rs.setSuccess(true);
+            rs.setCode("E");
+            rs.setMessage(message);
+        }
+
+        return  rs;
     }
 
     public ResponseData insertLog(InputLog inputLog,double gamng,String pd_sum,String cfwz,String createdBy,String message){
