@@ -176,6 +176,7 @@ public class Qcaudithead extends BaseDTO {
 
     @Transient
     private String kurztext;//缺陷描述
+    private String tlevelcode2;//缺陷代码
 
     @Transient
     private String ztext;//二级缺陷描述
@@ -184,6 +185,14 @@ public class Qcaudithead extends BaseDTO {
     private String name;//部门名称
     private String gstrp2; //生产日期
     private String reportDate2; //报告时间
+
+    public String getTlevelcode2() {
+        return tlevelcode2;
+    }
+
+    public void setTlevelcode2(String tlevelcode2) {
+        this.tlevelcode2 = tlevelcode2;
+    }
 
     public String getKurztext() {
         return kurztext;
