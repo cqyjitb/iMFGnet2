@@ -222,6 +222,11 @@
                     openMsgDialog("错误",msg,"M");
                     oVornr.focus();
                     l_error = "E";
+                }else if(vorlen < 4){
+                    for (var i=0;i<4-vorlen;i++){
+                        vornr = "0"+vornr;
+                    }
+                    document.getElementById("vornr").value = vornr;
                 }
 
                 if ( pd_sum == '' || pd_sum == null || pd_sum == ""){

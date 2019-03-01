@@ -135,6 +135,9 @@ public class OutsrgreceiptController extends BaseController {
             hjsum = "0";
         }
 
+        if (!thsum.equals("0")){
+            zeile = "";
+        }
         Cardh cardh = new Cardh();
         cardh = cardhService.selectByBarcode(barcode);
 
@@ -514,213 +517,306 @@ public class OutsrgreceiptController extends BaseController {
         String barcode = request.getParameter("barcode");
         String userId = request.getParameter("userId");
         String userName = request.getParameter("userName");
-        //查询查询收货单信息
-        Outsrgreceipt outsrgreceipt = new Outsrgreceipt();
-        outsrgreceipt = service.selectByZpgdbarAndStatus(barcode,"0");
-        Cardh cardh = new Cardh();
-        cardh = cardhService.selectByBarcode(barcode);
-        Cardhst cardhst = new Cardhst();
-        List<Cardhst> listcardhst = new ArrayList<>();
-        listcardhst = cardhstService.selectAllActive(barcode);
-        //查询报工日志
-        InputLog inputLog = new InputLog();
-        inputLog.setDispatch(barcode);
-        inputLog.setOperation(outsrgreceipt.getVornr());
-        inputLog = inputLogService.queryByDispatchAndOperation(inputLog);
+        String l_type = request.getParameter("type");
 
-        if (inputLog == null){
-            rs.setMessage("没有获取到该流转卡外协工序报工记录！");
-            rs.setSuccess(false);
-            return rs;
-        }
+        if (l_type.equals("")){
+            //查询查询收货单信息
+            Outsrgreceipt outsrgreceipt = new Outsrgreceipt();
+            outsrgreceipt = service.selectByZpgdbarAndStatus(barcode,"0");
+            Cardh cardh = new Cardh();
+            cardh = cardhService.selectByBarcode(barcode);
+            Cardhst cardhst = new Cardhst();
+            List<Cardhst> listcardhst = new ArrayList<>();
+            listcardhst = cardhstService.selectAllActive(barcode);
+            //查询报工日志
+            InputLog inputLog = new InputLog();
+            inputLog.setDispatch(barcode);
+            inputLog.setOperation(outsrgreceipt.getVornr());
+            inputLog = inputLogService.queryByDispatchAndOperation(inputLog);
 
-        if (!inputLog.getAttr15().equals("5")){
-            rs.setMessage("该流转卡对应的报工记录报工类型错误！");
-            rs.setSuccess(false);
-            return rs;
-        }
-
-        if (cardh.getLgort() != null && cardh.getLgort() != ""){
-            rs.setSuccess(false);
-            rs.setMessage("流转卡已被转移至暂存区，不允许进行冲销操作");
-            return  rs;
-        }
-
-        //排除机加的报工冲销 机加报工冲销只能在装箱系统中操作
-        Afko afko = new Afko();
-        afko = afkoService.selectByAufnr(cardh.getAufnr());
-        if (afko.getAuart().substring(0,1).equals("Q")){//机加订单
-            rs.setSuccess(false);
-            rs.setMessage("机加报工冲销，请到装箱系统冲销！");
-            return rs;
-        }
-
-
-
-        String fstvor = "";
-        String lstvor = "";
-        String message= "";
-        List<DTBAOGONGReturnResult> list = new ArrayList<DTBAOGONGReturnResult>();
-        DTBAOGONGReturnResult returnResult = new DTBAOGONGReturnResult();
-        String l_error = "";
-
-        List<Afvc> afvclist = afvcService.selectByAufnr(inputLog.getOrderno());
-        inputLog.setFstvor("");
-        inputLog.setLstvor("");
-        if (afvclist.get(afvclist.size() - 1).getVornr().equals(inputLog.getOperation())){
-            fstvor = "X";
-            inputLog.setFstvor(fstvor);
-
-        }
-
-        if (afvclist.get(0).getVornr().equals(inputLog.getOperation())){
-            lstvor = "X";
-            inputLog.setLstvor(lstvor);
-
-        }
-
-        inputLog.setAuart(cardh.getAuart());
-        inputLog.setAttr5(cardh.getCharg());//设置箱号日期序列
-        returnResult = inputLogService.writeOffDispatchNew(inputLog);
-        if (returnResult.getMSGTY().equals("S")){
-            outsrgreceipt.setMjahr(returnResult.getMJAHR());
-            outsrgreceipt.setMblnr(returnResult.getMBLNR());
-            cardhst = listcardhst.get(0);//当前流转卡状态
-            if (cardhst.getOperation().equals(inputLog.getOperation())){//判断当前冲销工序是否是首工序或者末工序 只有首末工序需要设置状态
-                cardhst.setIsactive("");
-                cardh.setStatus2(cardhst.getStatus());
-                cardhstService.updateStatus(cardhst);
-                cardhst = listcardhst.get(1);
-                cardh.setStatus(cardhst.getStatus());
+            if (inputLog == null){
+                rs.setMessage("没有获取到该流转卡外协工序报工记录！");
+                rs.setSuccess(false);
+                return rs;
             }
 
+            if (!inputLog.getAttr15().equals("5")){
+                rs.setMessage("该流转卡对应的报工记录报工类型错误！");
+                rs.setSuccess(false);
+                return rs;
+            }
+
+            if (cardh.getLgort() != null && cardh.getLgort() != ""){
+                rs.setSuccess(false);
+                rs.setMessage("流转卡已被转移至暂存区，不允许进行冲销操作");
+                return  rs;
+            }
+
+            //排除机加的报工冲销 机加报工冲销只能在装箱系统中操作
+            Afko afko = new Afko();
+            afko = afkoService.selectByAufnr(cardh.getAufnr());
+            if (afko.getAuart().substring(0,1).equals("Q")){//机加订单
+                rs.setSuccess(false);
+                rs.setMessage("机加报工冲销，请到装箱系统冲销！");
+                return rs;
+            }
+
+
+
+            String fstvor = "";
+            String lstvor = "";
+            String message= "";
+            List<DTBAOGONGReturnResult> list = new ArrayList<DTBAOGONGReturnResult>();
+            DTBAOGONGReturnResult returnResult = new DTBAOGONGReturnResult();
+            String l_error = "";
+
+            List<Afvc> afvclist = afvcService.selectByAufnr(inputLog.getOrderno());
+            inputLog.setFstvor("");
+            inputLog.setLstvor("");
+            if (afvclist.get(afvclist.size() - 1).getVornr().equals(inputLog.getOperation())){
+                fstvor = "X";
+                inputLog.setFstvor(fstvor);
+
+            }
+
+            if (afvclist.get(0).getVornr().equals(inputLog.getOperation())){
+                lstvor = "X";
+                inputLog.setLstvor(lstvor);
+
+            }
+
+            inputLog.setAuart(cardh.getAuart());
+            inputLog.setAttr5(cardh.getCharg());//设置箱号日期序列
+            returnResult = inputLogService.writeOffDispatchNew(inputLog);
+            if (returnResult.getMSGTY().equals("S")){
+                outsrgreceipt.setMjahr(returnResult.getMJAHR());
+                outsrgreceipt.setMblnr(returnResult.getMBLNR());
+                cardhst = listcardhst.get(0);//当前流转卡状态
+                if (cardhst.getOperation().equals(inputLog.getOperation())){//判断当前冲销工序是否是首工序或者末工序 只有首末工序需要设置状态
+                    cardhst.setIsactive("");
+                    cardh.setStatus2(cardhst.getStatus());
+                    cardhstService.updateStatus(cardhst);
+                    cardhst = listcardhst.get(1);
+                    cardh.setStatus(cardhst.getStatus());
+                }
+
+                if (fstvor.equals("X")){//首工序冲销 需要 修改ACTSTRP ACTST FPRDATA SHIFT SFFLG DIECD ECQTY  QTYSM QTYSP
+                    cardh.setFprddat("");
+                    cardh.setShift("");
+                    cardh.setSfflg("");
+                    cardh.setDiecd("");
+                    cardh.setEcqty(0D);
+                    cardh.setQtysp(0D);
+                    cardh.setQtysm(0D);
+                    cardh.setLastUpdatedBy(Long.valueOf(userId));
+                    cardh.setLastUpdatedDate(new Date());
+                    cardhService.updateDatforFsvor(cardh.getZpgdbar());
+                }
+
+                if (lstvor.equals("X")){
+                    cardh.setEprddat("");
+                    cardh.setAlqty(0D);
+                    cardh.setLastUpdatedBy(Long.valueOf(userId));
+                    cardh.setLastUpdatedDate(new Date());
+                    cardhService.updateDatforLsvor(cardh.getZpgdbar());
+                }
+
+            }else{
+                rs.setSuccess(false);
+                rs.setMessage(returnResult.getMESSAGE());
+                return rs;
+            }
+
+            List<Cardh> listcardh = new ArrayList<>();
+            listcardh.add(cardh);
+            cardhService.updateCardhStatus(listcardh);
             if (fstvor.equals("X")){//首工序冲销 需要 修改ACTSTRP ACTST FPRDATA SHIFT SFFLG DIECD ECQTY  QTYSM QTYSP
-                cardh.setFprddat("");
-                cardh.setShift("");
-                cardh.setSfflg("");
-                cardh.setDiecd("");
-                cardh.setEcqty(0D);
-                cardh.setQtysp(0D);
-                cardh.setQtysm(0D);
-                cardh.setLastUpdatedBy(Long.valueOf(userId));
-                cardh.setLastUpdatedDate(new Date());
                 cardhService.updateDatforFsvor(cardh.getZpgdbar());
             }
 
             if (lstvor.equals("X")){
-                cardh.setEprddat("");
-                cardh.setAlqty(0D);
-                cardh.setLastUpdatedBy(Long.valueOf(userId));
-                cardh.setLastUpdatedDate(new Date());
                 cardhService.updateDatforLsvor(cardh.getZpgdbar());
             }
 
-        }else{
-            rs.setSuccess(false);
-            rs.setMessage(returnResult.getMESSAGE());
-            return rs;
-        }
-
-        List<Cardh> listcardh = new ArrayList<>();
-        listcardh.add(cardh);
-        cardhService.updateCardhStatus(listcardh);
-        if (fstvor.equals("X")){//首工序冲销 需要 修改ACTSTRP ACTST FPRDATA SHIFT SFFLG DIECD ECQTY  QTYSM QTYSP
-            cardhService.updateDatforFsvor(cardh.getZpgdbar());
-        }
-
-        if (lstvor.equals("X")){
-            cardhService.updateDatforLsvor(cardh.getZpgdbar());
-        }
-
-        List<Cardt> listcardt = new ArrayList<>();
-        Cardt parmCardt = new Cardt();
-        parmCardt.setZpgdbar(inputLog.getDispatch());
-        parmCardt.setZgxbh(inputLog.getOperation());
-        IRequest requestContext = createRequestContext(request);
-        listcardt = cardtService.queryAfterSort(requestContext,parmCardt,1,1);
-        if (listcardt.size() > 0){
-            for (int i = 0;i<listcardt.size();i++){
-                Cardt cardt = listcardt.get(i);
-                cardt.setConfirmed("");
-                cardtService.updateCardtConfirmed(cardt);
+            List<Cardt> listcardt = new ArrayList<>();
+            Cardt parmCardt = new Cardt();
+            parmCardt.setZpgdbar(inputLog.getDispatch());
+            parmCardt.setZgxbh(inputLog.getOperation());
+            IRequest requestContext = createRequestContext(request);
+            listcardt = cardtService.queryAfterSort(requestContext,parmCardt,1,1);
+            if (listcardt.size() > 0){
+                for (int i = 0;i<listcardt.size();i++){
+                    Cardt cardt = listcardt.get(i);
+                    cardt.setConfirmed("");
+                    cardtService.updateCardtConfirmed(cardt);
+                }
             }
-        }
 
-        //修改发料单行项目状态 并同步到sap
-        outsrgreceipt.setStatus("1");
-        outsrgreceipt.setLastUpdateDate(new Date());
-        outsrgreceipt.setLastUpdatedBy(Long.valueOf(userId));
+            //修改发料单行项目状态 并同步到sap
+            outsrgreceipt.setStatus("1");
+            outsrgreceipt.setLastUpdateDate(new Date());
+            outsrgreceipt.setLastUpdatedBy(Long.valueOf(userId));
 
-        //准备接口表头 行
-        DTOUTSRGRECEIPTHead head = new DTOUTSRGRECEIPTHead();
-        DTOUTSRGRECEIPTitem item = new DTOUTSRGRECEIPTitem();
+            //准备接口表头 行
+            DTOUTSRGRECEIPTHead head = new DTOUTSRGRECEIPTHead();
+            DTOUTSRGRECEIPTitem item = new DTOUTSRGRECEIPTitem();
 
-        head.setZdpdat("");
-        head.setReceiptnm("");
-        head.setPrtflag("");
-        head.setLifnr("");
-        head.setMatnr("");
-        head.setZipuser("");
-        head.setZipdat("");
-        head.setZiptim("");
-        head.setWerks("");
-        head.setStatus("");
-        head.setZdptim("");
-        head.setZdpuser("");
+            head.setZdpdat("");
+            head.setReceiptnm("");
+            head.setPrtflag("");
+            head.setLifnr("");
+            head.setMatnr("");
+            head.setZipuser("");
+            head.setZipdat("");
+            head.setZiptim("");
+            head.setWerks("");
+            head.setStatus("");
+            head.setZdptim("");
+            head.setZdpuser("");
 
-        item.setZshnum(outsrgreceipt.getZshnum());
-        item.setZpgdbar(outsrgreceipt.getZpgdbar());
-        item.setZlost(outsrgreceipt.getZlost());
-        item.setZlfnum(outsrgreceipt.getZlfnum());
-        item.setZgfnum(outsrgreceipt.getZgfnum());
-        item.setZthnum(outsrgreceipt.getZthnum());
-        item.setZeile(outsrgreceipt.getZeile());
-        item.setZdsuser(outsrgreceipt.getZdsuser());
-        item.setZdstim(outsrgreceipt.getZdstim().replaceAll(":",""));
-        item.setZdsdat(outsrgreceipt.getZdsdat().replaceAll("-",""));
-        item.setWerks(outsrgreceipt.getWerks());
-        item.setVsnda(outsrgreceipt.getVsnda());
-        item.setVornr(outsrgreceipt.getVornr());
-        item.setTxz01(outsrgreceipt.getTxz01());
-        item.setTtreceipts(outsrgreceipt.getTtreceipts());
-        item.setStatus(outsrgreceipt.getStatus());
-        item.setSfflg(outsrgreceipt.getSfflg());
-        item.setRueck(outsrgreceipt.getRueck());
-        item.setRmzhl(outsrgreceipt.getRmzhl());
-        item.setReceiptnm(outsrgreceipt.getReceiptnm());
-        item.setMjahr(outsrgreceipt.getMjahr());
-        item.setMenge(outsrgreceipt.getMenge());
-        item.setMblnr(outsrgreceipt.getMblnr());
-        item.setMatnr(outsrgreceipt.getMatnr());
-        item.setMatkl(outsrgreceipt.getMatkl());
-        item.setLifnr(outsrgreceipt.getLifnr());
-        item.setKtsch(outsrgreceipt.getKtsch());
-        item.setItem(outsrgreceipt.getItem().toString());
-        item.setIssuenm(outsrgreceipt.getIssuenm());
-        item.setIssuenmitem(outsrgreceipt.getIssuenmitem());
-        item.setGmein(outsrgreceipt.getGmein());
-        item.setEbelp(outsrgreceipt.getEbelp());
-        item.setEbeln(outsrgreceipt.getEbeln());
-        item.setDiecd(outsrgreceipt.getDiecd());
-        item.setDeductntenm(outsrgreceipt.getDeductntenm());
-        item.setCharg(outsrgreceipt.getCharg());
-        item.setZeile(outsrgreceipt.getZeile());
-        DTOUTSRGRECEIPTReturn DTRE = new DTOUTSRGRECEIPTReturn();
-        SyncOutsrgreceiptWebserviceUtil syncOutsrgreceiptWebserviceUtil = new SyncOutsrgreceiptWebserviceUtil();
-        DTRE = syncOutsrgreceiptWebserviceUtil.receiveConfirmation(head,item);
-        if (DTRE.getMSGTY().equals("S")){
-            int num = service.updateOutsrgreceipt(outsrgreceipt);
-            if (num != 1){
-                rs.setMessage("冲销成功，同步数据成功，单更新IMFGnet平台数据失败，请联系管理员！");
+            item.setZshnum(outsrgreceipt.getZshnum());
+            item.setZpgdbar(outsrgreceipt.getZpgdbar());
+            item.setZlost(outsrgreceipt.getZlost());
+            item.setZlfnum(outsrgreceipt.getZlfnum());
+            item.setZgfnum(outsrgreceipt.getZgfnum());
+            item.setZthnum(outsrgreceipt.getZthnum());
+            item.setZeile(outsrgreceipt.getZeile());
+            item.setZdsuser(outsrgreceipt.getZdsuser());
+            item.setZdstim(outsrgreceipt.getZdstim().replaceAll(":",""));
+            item.setZdsdat(outsrgreceipt.getZdsdat().replaceAll("-",""));
+            item.setWerks(outsrgreceipt.getWerks());
+            item.setVsnda(outsrgreceipt.getVsnda());
+            item.setVornr(outsrgreceipt.getVornr());
+            item.setTxz01(outsrgreceipt.getTxz01());
+            item.setTtreceipts(outsrgreceipt.getTtreceipts());
+            item.setStatus(outsrgreceipt.getStatus());
+            item.setSfflg(outsrgreceipt.getSfflg());
+            item.setRueck(outsrgreceipt.getRueck());
+            item.setRmzhl(outsrgreceipt.getRmzhl());
+            item.setReceiptnm(outsrgreceipt.getReceiptnm());
+            item.setMjahr(outsrgreceipt.getMjahr());
+            item.setMenge(outsrgreceipt.getMenge());
+            item.setMblnr(outsrgreceipt.getMblnr());
+            item.setMatnr(outsrgreceipt.getMatnr());
+            item.setMatkl(outsrgreceipt.getMatkl());
+            item.setLifnr(outsrgreceipt.getLifnr());
+            item.setKtsch(outsrgreceipt.getKtsch());
+            item.setItem(outsrgreceipt.getItem().toString());
+            item.setIssuenm(outsrgreceipt.getIssuenm());
+            item.setIssuenmitem(outsrgreceipt.getIssuenmitem());
+            item.setGmein(outsrgreceipt.getGmein());
+            item.setEbelp(outsrgreceipt.getEbelp());
+            item.setEbeln(outsrgreceipt.getEbeln());
+            item.setDiecd(outsrgreceipt.getDiecd());
+            item.setDeductntenm(outsrgreceipt.getDeductntenm());
+            item.setCharg(outsrgreceipt.getCharg());
+            item.setZeile(outsrgreceipt.getZeile());
+            DTOUTSRGRECEIPTReturn DTRE = new DTOUTSRGRECEIPTReturn();
+            SyncOutsrgreceiptWebserviceUtil syncOutsrgreceiptWebserviceUtil = new SyncOutsrgreceiptWebserviceUtil();
+            DTRE = syncOutsrgreceiptWebserviceUtil.receiveConfirmation(head,item);
+            if (DTRE.getMSGTY().equals("S")){
+                int num = service.updateOutsrgreceipt(outsrgreceipt);
+                if (num != 1){
+                    rs.setMessage("冲销成功，同步数据成功，单更新IMFGnet平台数据失败，请联系管理员！");
+                    rs.setSuccess(false);
+                    return rs;
+                }
+            }else{
                 rs.setSuccess(false);
+                rs.setMessage("冲销成功，但是保存数据和同步数据失败，请联系管理员！");
                 return rs;
             }
-        }else{
-            rs.setSuccess(false);
-            rs.setMessage("冲销成功，但是保存数据和同步数据失败，请联系管理员！");
+            rs.setSuccess(true);
             return rs;
+        }else{
+            //针对冲销退回的收货记录
+            Outsrgreceipt outsrgreceipt = new Outsrgreceipt();
+            outsrgreceipt = service.selectByZpgdbarAndStatus(barcode,"0");
+            Cardh cardh = new Cardh();
+            cardh = cardhService.selectByBarcode(barcode);
+            //排除机加的报工冲销 机加报工冲销只能在装箱系统中操作
+            Afko afko = new Afko();
+            afko = afkoService.selectByAufnr(cardh.getAufnr());
+            if (afko.getAuart().substring(0,1).equals("Q")){//机加订单
+                rs.setSuccess(false);
+                rs.setMessage("机加报工冲销，请到装箱系统冲销！");
+                return rs;
+            }
+            outsrgreceipt.setStatus("1");
+            outsrgreceipt.setLastUpdateDate(new Date());
+            outsrgreceipt.setLastUpdatedBy(Long.valueOf(userId));
+
+            DTOUTSRGRECEIPTHead head = new DTOUTSRGRECEIPTHead();
+            DTOUTSRGRECEIPTitem item = new DTOUTSRGRECEIPTitem();
+
+            head.setZdpdat("");
+            head.setReceiptnm("");
+            head.setPrtflag("");
+            head.setLifnr("");
+            head.setMatnr("");
+            head.setZipuser("");
+            head.setZipdat("");
+            head.setZiptim("");
+            head.setWerks("");
+            head.setStatus("");
+            head.setZdptim("");
+            head.setZdpuser("");
+
+            item.setZshnum(outsrgreceipt.getZshnum());
+            item.setZpgdbar(outsrgreceipt.getZpgdbar());
+            item.setZlost(outsrgreceipt.getZlost());
+            item.setZlfnum(outsrgreceipt.getZlfnum());
+            item.setZgfnum(outsrgreceipt.getZgfnum());
+            item.setZthnum(outsrgreceipt.getZthnum());
+            item.setZeile(outsrgreceipt.getZeile());
+            item.setZdsuser(outsrgreceipt.getZdsuser());
+            item.setZdstim(outsrgreceipt.getZdstim().replaceAll(":",""));
+            item.setZdsdat(outsrgreceipt.getZdsdat().replaceAll("-",""));
+            item.setWerks(outsrgreceipt.getWerks());
+            item.setVsnda(outsrgreceipt.getVsnda());
+            item.setVornr(outsrgreceipt.getVornr());
+            item.setTxz01(outsrgreceipt.getTxz01());
+            item.setTtreceipts(outsrgreceipt.getTtreceipts());
+            item.setStatus(outsrgreceipt.getStatus());
+            item.setSfflg(outsrgreceipt.getSfflg());
+            item.setRueck(outsrgreceipt.getRueck());
+            item.setRmzhl(outsrgreceipt.getRmzhl());
+            item.setReceiptnm(outsrgreceipt.getReceiptnm());
+            item.setMjahr(outsrgreceipt.getMjahr());
+            item.setMenge(outsrgreceipt.getMenge());
+            item.setMblnr(outsrgreceipt.getMblnr());
+            item.setMatnr(outsrgreceipt.getMatnr());
+            item.setMatkl(outsrgreceipt.getMatkl());
+            item.setLifnr(outsrgreceipt.getLifnr());
+            item.setKtsch(outsrgreceipt.getKtsch());
+            item.setItem(outsrgreceipt.getItem().toString());
+            item.setIssuenm(outsrgreceipt.getIssuenm());
+            item.setIssuenmitem(outsrgreceipt.getIssuenmitem());
+            item.setGmein(outsrgreceipt.getGmein());
+            item.setEbelp(outsrgreceipt.getEbelp());
+            item.setEbeln(outsrgreceipt.getEbeln());
+            item.setDiecd(outsrgreceipt.getDiecd());
+            item.setDeductntenm(outsrgreceipt.getDeductntenm());
+            item.setCharg(outsrgreceipt.getCharg());
+            item.setZeile(outsrgreceipt.getZeile());
+            DTOUTSRGRECEIPTReturn DTRE = new DTOUTSRGRECEIPTReturn();
+            SyncOutsrgreceiptWebserviceUtil syncOutsrgreceiptWebserviceUtil = new SyncOutsrgreceiptWebserviceUtil();
+            DTRE = syncOutsrgreceiptWebserviceUtil.receiveConfirmation(head,item);
+            if (DTRE.getMSGTY().equals("S")){
+                int num = service.updateOutsrgreceipt(outsrgreceipt);
+                if (num != 1){
+                    rs.setMessage("冲销失败，请联系管理员！");
+                    rs.setSuccess(false);
+                    return rs;
+                }else if (num == 1){
+                    rs.setSuccess(true);
+                    rs.setMessage("冲销成功！");
+                    return rs;
+                }
+            }
+
+
         }
-        rs.setSuccess(true);
         return rs;
     }
 }

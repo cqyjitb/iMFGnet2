@@ -258,10 +258,14 @@
                                         }
 
                                     }else{
-                                        msg = "派工单不存在，或该派工单未报工！";
-                                        openMsgDialog("错误",msg,"M");
-                                        document.getElementById("barcode").value = "";
-                                        oBcd.focus();
+//                                        msg = "派工单不存在，或该派工单未报工！";
+//                                        openMsgDialog("错误",msg,"M");
+//                                        document.getElementById("barcode").value = "";
+//                                        oBcd.focus();
+                                          dispatch = strBarcode.substring(0, lenBarcode - 4);
+                                          operation = strBarcode.substring(18, 22);
+                                          document.getElementById("operation").value = operation;
+
                                     }
                                 }
                             }
