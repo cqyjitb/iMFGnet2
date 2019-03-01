@@ -54,12 +54,8 @@ import java.util.List;
          */
         @RequestMapping(value = "/wip/zudlist/selectZudlist")
         @ResponseBody
-        public ResponseData selectZudlist(Zudlist dto,String createdBy1,HttpServletRequest request) {
+        public ResponseData selectZudlist(Zudlist dto,HttpServletRequest request) {
             IRequest requestContext = createRequestContext(request);
-            if(createdBy1 != null && createdBy1 != ""){
-                Employee employee = employeeService.queryByCode(createdBy1);
-                dto.setCreatedBy(employee.getEmployeeId());
-            }
             Zudlist zudlist  = resultFormat(dto);
             return new ResponseData(service.selectZudlist(requestContext,zudlist));
         }
