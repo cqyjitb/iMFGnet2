@@ -954,4 +954,22 @@ public class XhcardController
         return rs;
     }
 
+    /**
+     * 线边库毛坯库存状态查询页面请求 918100064
+     * @param dto
+     * @param request
+     * @return
+     */
+    @RequestMapping({"/sap/xhcard/queryByXhcard"})
+    @ResponseBody
+    public ResponseData queryXhcard(Xhcard dto, HttpServletRequest request) {
+        IRequest requestContext = createRequestContext(request);
+        String creationDateBefore = dto.getCreationDateBefore();
+        if ( creationDateBefore!= null){
+            creationDateBefore = creationDateBefore.replace("00:00:00","23:59:59");
+            dto.setCreationDateBefore(creationDateBefore);
+        }
+        return new ResponseData(service.queryXhcard(requestContext, dto));
+    }
+
 }

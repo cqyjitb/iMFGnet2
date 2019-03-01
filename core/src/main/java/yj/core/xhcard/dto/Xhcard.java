@@ -91,6 +91,53 @@ public class Xhcard
     private String wdflag;//围堵状态标识
     @Transient
     private String hdflag;//冻结状态标识
+    @Transient
+    private String lgobe;//线边库名称
+    private String creationDateAfter;
+    private String creationDateBefore;
+    @Transient
+    private String attr7;
+    private Integer dfectQty;//未投不良记录数
+
+    public Integer getDfectQty() {
+        return dfectQty;
+    }
+
+    public void setDfectQty(Integer dfectQty) {
+        this.dfectQty = dfectQty;
+    }
+
+    public String getLgobe() {
+        return lgobe;
+    }
+
+    public void setLgobe(String lgobe) {
+        this.lgobe = lgobe;
+    }
+
+    public String getCreationDateAfter() {
+        return creationDateAfter;
+    }
+
+    public void setCreationDateAfter(String creationDateAfter) {
+        this.creationDateAfter = creationDateAfter;
+    }
+
+    public String getCreationDateBefore() {
+        return creationDateBefore;
+    }
+
+    public void setCreationDateBefore(String creationDateBefore) {
+        this.creationDateBefore = creationDateBefore;
+    }
+
+    public String getAttr7() {
+        return attr7;
+    }
+
+    public void setAttr7(String attr7) {
+        this.attr7 = attr7;
+    }
 
     public String getWdflag() {
         return wdflag;

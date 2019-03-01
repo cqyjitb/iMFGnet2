@@ -80,7 +80,7 @@ public class QcparamLinesServiceImpl extends BaseServiceImpl<QcparamLines> imple
                                 qcparamLine.setScale(Math.round(((zsxnum - wipSqty)/wipSqty)*100) + "%");
                             }
                             qcparamLine.setGmein("ST");
-                            if(wipSqty != null || zsxnum != null){
+                            if(wipSqty != 0 || zsxnum != 0){
                                 qcparamLines.add(qcparamLine);
                             }
                         }

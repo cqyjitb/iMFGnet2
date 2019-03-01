@@ -56,4 +56,12 @@ public  interface IXhcardService
      List<Xhcard> selectByMatnrAndLgortSortS7(String matnr,String lgort);
 
      int updateXhcardFromSapSinger(Xhcard xhcard);
+
+     /**
+      * 线边库毛坯库存状态查询 918100064
+      * @param iRequest
+      * @param dto
+      * @return
+      */
+     List<Xhcard> queryXhcard(IRequest iRequest,Xhcard dto);
 }

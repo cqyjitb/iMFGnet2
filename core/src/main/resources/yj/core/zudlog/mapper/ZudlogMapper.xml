@@ -14,10 +14,11 @@
     </resultMap>
 
     <select id="selectFromPage" parameterType="yj.core.zudlog.dto.Zudlog" resultMap="BaseResultMap">
-        select * from wip_zudlog
+        select zu.*,zu.creation_date as creationDate1,us.user_name as createdBy1 from wip_zudlog zu,sys_user us
         <where>
+            zu.created_by = us.user_id
             <if test="zudnum != null">
-                zudnum = #{zudnum}
+                AND zudnum = #{zudnum}
             </if>
         </where>
         order by CREATION_DATE desc

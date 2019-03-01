@@ -50,6 +50,51 @@
         <result column="DESCRIPTIONS" property="descriptions" jdbcType="VARCHAR" />
     </resultMap>
 
+    <select id="queryXhcard" parameterType="yj.core.xhcard.dto.Xhcard" resultMap="BaseResultMap1">
+        select xh.werks,xh.matnr,ma.maktx,xh.lgort,st.lgobe,xh.zxhbar as bar,xh.chargkc,xh.zmnum,xh.menge as synum,xh.zsxwc,l.attr7,
+        (select COALESCE(sum(zsxnum),0) from zwipq where zremade = 0 AND ZXHBAR = bar) as zsxnum,
+        (select COALESCE(sum(dfect_qty),0) from wip_dftrghlist where cancel_flag = 0 AND ZXHBAR = bar) as dfectQty,
+        (select NULLIF(smenge-bmenge,0) from sap_ztbc0018 where ZXHBAR = bar) as dlsum,
+        (select COALESCE(dlsum,0) ) as changeNum,
+        (select synum-zsxnum-dfectQty+changeNum) as sjjcNum
+        from sap_xhcard xh,sap_marc ma,sap_t001l st,sap_cardh ch,confirmation_input_log l
+        <where>
+            xh.matnr = ma.matnr
+            AND xh.lgort = st.lgort
+            AND xh.zxhzt = '7'
+            and xh.aufnr = ch.aufnr and xh.zxhnum = ch.zxhnum
+            and ch.zpgdbar = l.dispatch
+            and l.operation = "0010"
+            <if test="werks != null">
+                AND xh.werks = #{werks}
+            </if>
+            <if test="lgort != null">
+                AND xh.lgort = #{lgort}
+            </if>
+            <if test="matnr != null">
+                AND xh.matnr = #{matnr}
+            </if>
+            <if test="zxhbar != null">
+                AND xh.zxhbar = #{zxhbar}
+            </if>
+            <if test="chargkc != null">
+                AND xh.chargkc = #{chargkc}
+            </if>
+            <if test="attr7 != null">
+                AND l.attr7 = #{attr7}
+            </if>
+            <if test="creationDateAfter != null">
+                AND xh.creation_date >= #{creationDateAfter}
+            </if>
+            <if test="creationDateBefore != null">
+                AND #{creationDateBefore} >= xh.creation_date
+            </if>
+            <if test="zsxwc != null">
+                AND xh.zsxwc = #{zsxwc}
+            </if>
+        </where>
+    </select>
+
     <insert id="insertXhcard" parameterType="yj.core.xhcard.dto.Xhcard">
         INSERT INTO sap_xhcard(WERKS,MATNR,CHARG,ZXHNUM,ZXHZT,ZXHZT2,LGORT,MENGE,MEINS,ZXHWZ,AUFNR,ZXHBAR,ZJYY,ZSCBC,ZSCX,ZMNUM,ZSCTPTM,ZTXT,ZBQBD,CHARGKC,CREATION_DATE,CREATED_BY,LAST_UPDATE_DATE,LAST_UPDATED_BY)VALUES
         (#{werks},#{matnr},#{charg},#{zxhnum},#{zxhzt},#{zxhzt2},#{lgort},#{menge},#{meins},#{zxhwz},#{aufnr},#{zxhbar},#{zjyy},#{zscbc},#{zscx},#{zmnum},#{zsctptm},#{ztxt},#{zbqbd},#{chargkc},#{creationDate},#{createdBy},#{lastUpdatedDate},#{lastUpdatedBy})
