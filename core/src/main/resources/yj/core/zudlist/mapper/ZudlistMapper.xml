@@ -105,29 +105,23 @@
     </select>
 
     <select id="selectZudlist" parameterType="java.lang.String" resultMap="BaseResultMap2">
-        select distinct zl.zudnum,zl.item,zl.line_id,zl.zbanz,zl.zbanc,zl.zpgdbar,zl.matnr2,zl.zgjbar,zl.sfflg,zl.diecd,
-        zl.charg2,zl.charg,zl.zqxdm,zl.zissuetxt,zl.rspart,zl.vornr,zl.zoplo,zl.rsname,zl.reviewc,zl.mark,zl.CREATION_DATE as createDate,
-        b.name,df.ztext,qp.kurztext,us.user_name as createBy1,li.descriptions,qj.rcode,cu.sortl,ma.maktx,re.zotype,re.vornr as vornr_old
-        from wip_zudlist zl,wip_zudhead zh,wip_lines li,sap_cust cu,sap_marc ma,wip_in_out_record re,hr_org_unit_b b,
-        sap_qpcd qp,sap_dftdtl df,sys_user us,wip_qjcode qj
+        select distinct zl.zudnum,zl.item,zl.line_id,zl.zbanz,zl.zbanc,zl.zpgdbar,zl.matnr2 as matnr3,zl.zgjbar,zl.sfflg,zl.diecd,
+        zl.zbpjc as zbpjc2,zl.charg2,zl.charg,zl.zqxdm as zqxdm2,zl.zissuetxt,zl.rspart as rspart,zl.vornr,zl.zoplo,zl.rsname,zl.reviewc,
+        zl.mark,zl.CREATION_DATE as createDate,df.ztext,us.user_name as createBy1,li.descriptions,qj.rcode,re.zotype,re.vornr as vornr_old,
+        (select name from hr_org_unit_b where UNIT_CODE = rspart) as name,
+        (select maktx from sap_marc where MATNR = matnr3) as maktx,
+        (select KURZTEXT from sap_qpcd where code = zqxdm2) as kurztext,
+        (select sortl from sap_cust where kunnr = zbpjc2) as sortl
+        from wip_zudlist zl,wip_zudhead zh,wip_lines li,wip_in_out_record re,sap_dftdtl df,sys_user us,wip_qjcode qj
         <where>
             zl.zudnum = zh.zudnum
             AND zl.line_id = li.line_id
-            AND zl.zbpjc = cu.kunnr
-            AND zl.matnr2 = ma.matnr
             AND (zl.zqjjlh = re.zqjjlh AND re.zotype = qj.id)
-            AND (zl.rspart = b.unit_code and li.dept_id = b.UNIT_CODE)
-            and zl.zqxdm = qp.code
             and ( zl.zissuetxt = df.tlevelcode and re.matnr2 = df.matnr )
             AND zl.created_by = us.user_id
+            AND (li.line_id = #{lineId} or li.pline_id = #{lineId})
             <if test="status != null">
                 AND zl.STATUS = #{status}
-            </if>
-            <if test="deptId != null">
-                AND zl.rspart = #{deptId}
-            </if>
-            <if test="lineId != null">
-                AND (li.line_id = #{lineId} or li.pline_id = #{lineId})
             </if>
             <if test="creationDateAfter != null">
                 AND zh.creation_date >= #{creationDateAfter}
@@ -138,8 +132,8 @@
             <if test="zudnum != null">
                 AND zh.zudnum = #{zudnum}
             </if>
-            <if test="createdBy != null">
-                AND us.user_name = #{createdBy}
+            <if test="createBy1 != null">
+                AND us.user_name = #{createBy1}
             </if>
         </where>
     </select>

@@ -30,7 +30,15 @@ public class ZudlistServiceImpl extends BaseServiceImpl<Zudlist> implements IZud
 
     @Override
     public List<Zudlist> selectZudlist(IRequest requestContext, Zudlist dto) {
-        return zudlistMapper.selectZudlist(dto);
+        List<Zudlist> list = zudlistMapper.selectZudlist(dto);
+        if(list.size() > 0){
+            for(int i=0;i<list.size();i++){
+                if("".equals(list.get(i).getReviewc()) || list.get(i).getReviewc() == null){
+                    list.get(i).setReviewc("F");
+                }
+            }
+        }
+        return list;
     }
 
 

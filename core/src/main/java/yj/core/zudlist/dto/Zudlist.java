@@ -128,6 +128,16 @@ public class Zudlist extends BaseDTO {
     @Transient
     private String kurztext;
 
+    private String matnr3;
+
+    public String getMatnr3() {
+        return matnr3;
+    }
+
+    public void setMatnr3(String matnr3) {
+        this.matnr3 = matnr3;
+    }
+
     public String getZtext() {
         return ztext;
     }
