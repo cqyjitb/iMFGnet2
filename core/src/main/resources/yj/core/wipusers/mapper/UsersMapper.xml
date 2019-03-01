@@ -57,7 +57,7 @@
         <where>
             us.line_id = li.line_id
             AND us.dot_id = dot.dot_id
-            AND su.user_id = us.userid
+            AND su.user_name = us.userid
             <if test="deptId != null">
                 AND li.dept_id = #{deptId}
             </if>

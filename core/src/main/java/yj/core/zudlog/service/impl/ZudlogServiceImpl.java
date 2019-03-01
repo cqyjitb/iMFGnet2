@@ -20,8 +20,6 @@ import java.util.List;
 public class ZudlogServiceImpl extends BaseServiceImpl<Zudlog> implements IZudlogService {
     @Autowired
     private ZudlogMapper zudlogMapper;
-    @Autowired
-    private EmployeeMapper employeeMapper;
     @Override
     public int insertLog(Zudlog zudlog) {
         return zudlogMapper.insertLog(zudlog);
@@ -30,21 +28,6 @@ public class ZudlogServiceImpl extends BaseServiceImpl<Zudlog> implements IZudlo
     @Override
     public List<Zudlog> selectFromPage(IRequest requestContext, Zudlog dto, int page, int pageSize) {
         PageHelper.startPage(page,pageSize);
-        SimpleDateFormat sdf = new SimpleDateFormat( " yyyy-MM-dd HH:mm:ss " );
-        List<Zudlog> list = zudlogMapper.selectFromPage(dto);
-        if(list.size() > 0){
-            for(int i=0;i<list.size();i++){
-                Employee list1 = new Employee();
-                list1.setEmployeeId(list.get(i).getCreatedBy());
-                Employee employee = employeeMapper.selectOne(list1);
-                if(employee == null){
-                    list.get(i).setCreatedBy1("");
-                }else{
-                    list.get(i).setCreatedBy1(employee.getEmployeeCode());
-                }
-                list.get(i).setCreationDate1(sdf.format(list.get(i).getCreationDate()));;
-            }
-        }
-        return list;
+        return zudlogMapper.selectFromPage(dto);
     }
 }

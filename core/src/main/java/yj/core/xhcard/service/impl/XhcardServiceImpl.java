@@ -337,4 +337,9 @@ public class XhcardServiceImpl
     public int updateXhcardFromSapSinger(Xhcard xhcard) {
         return xhcardMapper.updateXhcard(xhcard);
     }
+
+    @Override
+    public List<Xhcard> queryXhcard(IRequest iRequest, Xhcard dto) {
+        return xhcardMapper.queryXhcard(dto);
+    }
 }

@@ -46,4 +46,10 @@ public  interface XhcardMapper
       */
      List<Xhcard> selectByMatnrAndLgortSortS7(@Param("matnr") String matnr,@Param("lgort") String lgort);
 
+     /**
+      *线边库毛坯库存状态查询   918100064
+      * @param dto
+      * @return
+      */
+     List<Xhcard> queryXhcard(Xhcard dto);
 }
