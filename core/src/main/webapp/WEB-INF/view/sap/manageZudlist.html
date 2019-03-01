@@ -18,7 +18,7 @@
     .action_dangerous {
         color: #eeac5f;
     }
-    #label{
+    .label{
         color: red;
     }
 
@@ -31,10 +31,16 @@
             { text: "已处理",value:"1"}],
         queryGrid: function (e) {
             var deptId = document.getElementById("unit_code").value;
+            var lineId = document.getElementById("line_id").value;
             if (deptId == null || deptId == "" || deptId == ''){
                 kendo.ui.showErrorDialog({
                     title: '错误',
                     message: "查询条件:生产车间,必输！"
+                });
+            }else if (lineId == null || lineId == "" || lineId == '') {
+                kendo.ui.showErrorDialog({
+                    title: '错误',
+                    message: "查询条件:生产线,必输！"
                 });
             }else{
                 $('#Grid').data('kendoGrid').dataSource.page(1);
@@ -51,7 +57,7 @@
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label">生产车间&nbsp;<label id="label">*</label></label>
+                                    <label class="col-sm-4 control-label">生产车间<label class="label">*</label></label>
                                     <div class="col-sm-8">
                                         <input id="unit_code" class="k-textbox" data-bind="value:model.deptId" style="width: 100%">
                                         <script>
@@ -66,7 +72,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label">生产线</label>
+                                    <label class="col-sm-4 control-label">生产线<label class="label">*</label></label>
                                     <div class="col-sm-8">
                                         <input id="line_id" class="k-textbox" data-bind="value:model.lineId" style="width: 100%">
                                         <script>
@@ -114,8 +120,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">创建人</label>
                                     <div class="col-sm-8">
-                                        <input type="text" style="width: 100%"
-                                               data-bind="value:model.createdBy" class="k-textbox">
+                                        <input type="text" style="width: 100%" data-bind="value:model.createBy1" class="k-textbox">
                                     </div>
                                 </div>
                             </div>
@@ -198,7 +203,7 @@
                 fields: {
                     deptId: {type: "string"},
                     zudnum: {type: "string"},
-                    createdBy1: {type: "string"},
+                    createBy1: {type: "string"},
                     createDate:{type:"date"}
                 }
             }
@@ -308,7 +313,7 @@
                 }
             },
             {
-                field: "matnr2",
+                field: "matnr3",
                 title: '物料编号',
                 width: 80,
                 headerAttributes: {
@@ -407,7 +412,7 @@
                 }
             },
             {
-                field: "zqxdm",
+                field: "zqxdm2",
                 title: '不合格品类别',
                 width: 100,
                 headerAttributes: {
