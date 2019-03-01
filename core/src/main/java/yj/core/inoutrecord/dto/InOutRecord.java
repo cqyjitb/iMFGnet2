@@ -133,7 +133,16 @@ public class InOutRecord extends BaseDTO {
     private String pline_id;//主产线ID
     @Transient
     private String desmianlinetxt; //主产线描述
+    @Transient
+    private String descriptions;
 
+    public String getDescriptions() {
+        return descriptions;
+    }
+
+    public void setDescriptions(String descriptions) {
+        this.descriptions = descriptions;
+    }
 
     public String getPlineId() {
         return pline_id;
