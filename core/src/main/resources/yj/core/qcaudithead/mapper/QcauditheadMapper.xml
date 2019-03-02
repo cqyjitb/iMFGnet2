@@ -98,9 +98,9 @@
             <if test="werks != null">
                 AND qh.werks = #{werks}
             </if>
-            <if test="deptResponsible != null">
-                AND qh.dept_responsible = #{deptResponsible}
-            </if>
+            <!--<if test="deptResponsible != null">-->
+                <!--AND qh.dept_responsible = #{deptResponsible}-->
+            <!--</if>-->
             <if test="lineid != null">
                 AND qh.lineid = #{lineid}
             </if>
@@ -114,6 +114,19 @@
                 AND qh.gstrp = #{gstrp}
             </if>
         </where>
+    </select>
+
+    <select id="selectById" parameterType="java.lang.String" resultMap="BaseResultMap">
+                select qh.*,qh.gstrp as gstrp2,qh.report_date as reportDate2,qh.zqxdm as zqxdm,
+                qh.dept_responsible as deptResponsible,qh.tlevelcode as tlevelcode2,
+                (select kurztext from sap_qpcd where code = zqxdm limit 1) as kurztext,
+                (select name from hr_org_unit_b where unit_code = deptResponsible limit 1) as name,
+                (select ztext from sap_dftdtl where tlevelcode = tlevelcode2 limit 1) as ztext
+                from wip_qcaudithead qh
+                <where>
+                    qh.werks = #{werks}
+                    and qh.recordid = #{recordid}
+                </where>
     </select>
 
     <select id="selectMaxRecordId" parameterType="java.lang.String" resultType="java.lang.String">

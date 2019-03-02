@@ -30,4 +30,9 @@ public class QcauditheadServiceImpl extends BaseServiceImpl<Qcaudithead> impleme
     public List<Qcaudithead> selectForQcaudithead(IRequest requestCtx, Qcaudithead dto) {
         return qcauditheadMapper.selectForQcaudithead(dto);
     }
+
+    @Override
+    public List<Qcaudithead> selectById(String werks, String recordid) {
+        return qcauditheadMapper.selectById(werks,recordid);
+    }
 }

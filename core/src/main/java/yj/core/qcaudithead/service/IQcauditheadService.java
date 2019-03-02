@@ -31,4 +31,12 @@ public interface IQcauditheadService extends IBaseService<Qcaudithead>, ProxySel
      * @return
      */
     List<Qcaudithead> selectForQcaudithead(IRequest requestCtx, Qcaudithead dto);
+
+    /**
+     *  根据工厂 单号查询不合格品审理单2表头信息 917110140
+     * @param werks
+     * @param recordid
+     * @return
+     */
+    List<Qcaudithead> selectById(String werks,String recordid);
 }

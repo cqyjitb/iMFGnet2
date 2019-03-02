@@ -60,6 +60,24 @@ public class QcauditheadController extends BaseController {
         return new ResponseData();
     }
 
+    @RequestMapping(value = {"/wip/qcaudithead/selectById"}, method = {RequestMethod.POST})
+    @ResponseBody
+    public ResponseData selectById(HttpServletRequest request){
+        ResponseData rs = new ResponseData();
+        String werks = request.getParameter("werks");
+        String recordid = request.getParameter("recordid");
+        List<Qcaudithead> list = new ArrayList<>();
+        list = service.selectById(werks,recordid);
+        if (list.size() > 0){
+            rs.setSuccess(true);
+            rs.setRows(list);
+        }else{
+            rs.setSuccess(false);
+            rs.setMessage("没有符合条件的数据记录！");
+        }
+        return rs;
+    }
+
     @RequestMapping(value = {"/wip/qcaudithead/createQcaudit1"}, method = {RequestMethod.POST})
     @ResponseBody
     public ResponseData createQcaudit1(HttpServletRequest request, @RequestBody List<InOutRecord> dto) throws ParseException {

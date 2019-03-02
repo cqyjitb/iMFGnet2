@@ -28,4 +28,12 @@ public interface QcauditheadMapper extends Mapper<Qcaudithead>{
      * @return
      */
     List<Qcaudithead> selectForQcaudithead(Qcaudithead dto);
+
+    /**
+     *  根据工厂 单号查询不合格品审理单2表头信息 917110140
+     * @param werks
+     * @param recordid
+     * @return
+     */
+    List<Qcaudithead> selectById(@Param("werks") String werks,@Param("recordid") String recordid);
 }
