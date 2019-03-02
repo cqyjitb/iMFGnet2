@@ -131,7 +131,9 @@
         select distinct li.line_id,li.dept_id,li.descriptions from wip_lines li,hr_org_unit_b b
         <where>
             li.dept_id = b.unit_code
-            AND li.dept_id = #{deptId}
+            <if test="deptId != null">
+                AND li.dept_id = #{deptId}
+            </if>
             <if test="lineId != null">
                 AND li.line_id = #{lineId}
             </if>

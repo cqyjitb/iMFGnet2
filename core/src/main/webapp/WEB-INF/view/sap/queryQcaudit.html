@@ -54,10 +54,11 @@
         resetForm: function () {
             var formData = viewModel.model.toJSON();
             for (var k in formData) {
-                viewModel.model.set(k, null);
+                if(k != "werks"){
+                    viewModel.model.set(k, null);
+                }
             }
             $('#Grid').data('kendoGrid').dataSource.read();
-            document.getElementById("werks").value = '1001';
         },
         queryGrid: function (e) {
             var werks = document.getElementById("werks").value;
@@ -455,7 +456,7 @@
                 }
             },
             {
-                field:"tlevelcode",
+                field:"tlevelcode2",
                 title:"二级缺陷代码",
                 width:80,
                 headerAttributes: {

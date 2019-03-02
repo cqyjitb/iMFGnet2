@@ -87,10 +87,12 @@
     </resultMap>
 
     <select id="selectForQcaudithead" parameterType="yj.core.qcaudithead.dto.Qcaudithead" resultMap="BaseResultMap">
-        select COUNT(qh.recordid),qh.*,df.ztext,qp.kurztext,b.name
-        from wip_qcaudithead qh LEFT JOIN sap_dftdtl df ON qh.tlevelcode = df.tlevelcode
-                                LEFT JOIN sap_qpcd qp ON qh.zqxdm = qp.code
-                                LEFT JOIN hr_org_unit_b b ON qh.dept_responsible = b.unit_code
+        select qh.*,qh.gstrp as gstrp2,qh.report_date as reportDate2,qh.zqxdm as zqxdm,
+        qh.dept_responsible as deptResponsible,qh.tlevelcode as tlevelcode2,
+        (select kurztext from sap_qpcd where code = zqxdm limit 1) as kurztext,
+        (select name from hr_org_unit_b where unit_code = deptResponsible limit 1) as name,
+        (select ztext from sap_dftdtl where tlevelcode = tlevelcode2 limit 1) as ztext
+        from wip_qcaudithead qh
         <where>
             1 = 1
             <if test="werks != null">
@@ -112,7 +114,6 @@
                 AND qh.gstrp = #{gstrp}
             </if>
         </where>
-        group by qh.recordid having count(qh.recordid)>1
     </select>
 
     <select id="selectMaxRecordId" parameterType="java.lang.String" resultType="java.lang.String">
