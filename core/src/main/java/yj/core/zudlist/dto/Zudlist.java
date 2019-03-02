@@ -129,6 +129,15 @@ public class Zudlist extends BaseDTO {
     private String kurztext;
 
     private String matnr3;
+    private String zqxdm2;
+
+    public String getZqxdm2() {
+        return zqxdm2;
+    }
+
+    public void setZqxdm2(String zqxdm2) {
+        this.zqxdm2 = zqxdm2;
+    }
 
     public String getMatnr3() {
         return matnr3;
