@@ -234,7 +234,7 @@ public class InOutRecordController extends BaseController {
             gstrp = gstrp.substring(0,10);
         }
 
-        if (gytype.equals("1")){
+        if (gytype.equals("Q1")){
             if (matnr == null && matnr2 == null){
                 rs.setSuccess(false);
                 rs.setMessage("条件产品物料号，毛坯物料号必须录入其中一项！");
@@ -257,7 +257,7 @@ public class InOutRecordController extends BaseController {
 
 
 
-        }else if (gytype.equals("2")){
+        }else if (gytype.equals("Q2")){
             if (matnr == null && matnr2 == null){
                 rs.setSuccess(false);
                 rs.setMessage("条件产品物料号，毛坯物料号必须录入其中一项！");
@@ -270,7 +270,7 @@ public class InOutRecordController extends BaseController {
                 rs.setSuccess(true);
             }
 
-        }else if (gytype.equals("3")){
+        }else if (gytype.equals("Q3")){
 
         }
         return rs;
