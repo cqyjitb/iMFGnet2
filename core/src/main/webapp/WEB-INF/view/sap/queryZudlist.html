@@ -615,41 +615,56 @@
 
     $("#createZudlist").on('click',function () {
         var data = grid._data;
+        var dMask2 = document.getElementById("mask2");
+        dMask2.style.display = "";
         var tmparry= new Array();
-        for (var i = 0;i<data.length;i++){
-            var viewModel3 = kendo.observable({
-                model: {
-                    zudnum:data[i].zudnum,
-                    item:data[i].item,
-                    reviewc:data[i].reviewc
+        if  (data == undefined){
+            kendo.ui.showErrorDialog({
+                message:"没有需要处理的不合格品审理单1数据！"
+            });
+            dMask2.style.display = "none";
+        }else{
+            for (var i = 0;i<data.length;i++){
+                var viewModel3 = kendo.observable({
+                    model: {
+                        zudnum:data[i].zudnum,
+                        item:data[i].item,
+                        reviewc:data[i].reviewc
 
+                    }
+                });
+                tmparry[i] = viewModel3.model.toJSON();
+            }
+            var postdata = JSON.stringify(tmparry);
+            var BaseUrl = _basePath;
+            $.ajax({
+                type   : 'POST',
+                url    : BaseUrl + "/wip/zudhead/processZud",
+                contentType: "application/json; charset=utf-8",
+                async: false,
+                data   : postdata,
+                success: function (data) {
+                    if(data.success==false){
+                        kendo.ui.showErrorDialog({
+                            message:data.message
+                        });
+                        dMask2.style.display = "none";
+                    }
+                    else{
+                        dMask2.style.display = "none";
+                        kendo.ui.showConfirmDialog({
+                            message:data.message
+                        });
+                        viewModel.model.set('status',0);
+                        $('#Grid').data('kendoGrid').dataSource.page(1);
+                    }
+                },
+                error:function () {
+                    dMask2.style.display = "none";
                 }
             });
-            tmparry[i] = viewModel3.model.toJSON();
         }
-        var postdata = JSON.stringify(tmparry);
-        var BaseUrl = _basePath;
-        $.ajax({
-            type   : 'POST',
-            url    : BaseUrl + "/wip/zudhead/processZud",
-            contentType: "application/json; charset=utf-8",
-            async: false,
-            data   : postdata,
-            success: function (data) {
-                if(data.success==false){
-                    kendo.ui.showErrorDialog({
-                        message:data.message
-                    });
-                }
-                else{
-                    kendo.ui.showConfirmDialog({
-                        message:data.message
-                    });
-                    viewModel.model.set('status',0);
-                    $('#Grid').data('kendoGrid').dataSource.page(1);
-                }
-            }
-        });
+
     });
     Hap.autoResizeGrid("#Grid");
 </script>
