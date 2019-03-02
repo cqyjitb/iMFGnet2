@@ -105,7 +105,7 @@
     </select>
 
     <select id="selectZudlist" parameterType="java.lang.String" resultMap="BaseResultMap2">
-        select distinct zl.zudnum,zl.item,zl.line_id,zl.zbanz,zl.zbanc,zl.zpgdbar,zl.matnr2 as matnr3,zl.zgjbar,zl.sfflg,zl.diecd,
+        select distinct zl.zudnum,zl.item,zl.line_id,zl.zbanz,zl.zbanc,zl.zpgdbar,zl.matnr2 as matnr3,zl.zgjbar,zl.sfflg,zl.diecd,zl.zdnum,
         zl.zbpjc as zbpjc2,zl.charg2,zl.charg,zl.zqxdm as zqxdm2,zl.zissuetxt,zl.rspart as rspart,zl.vornr,zl.zoplo,zl.rsname,zl.reviewc,
         zl.mark,zl.CREATION_DATE as createDate,df.ztext,us.user_name as createBy1,li.descriptions,qj.rcode,re.zotype,re.vornr as vornr_old,
         (select name from hr_org_unit_b where UNIT_CODE = rspart) as name,
