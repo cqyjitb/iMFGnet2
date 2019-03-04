@@ -55,12 +55,15 @@ import java.util.UUID;
         UUID uuid = java.util.UUID.randomUUID();
         String uuidstr = uuid.toString().replaceAll("-", "");
         Long userId = Long.parseLong(request.getParameter("userId"));
-            String werks = null;
-            try {
-                werks = new String(request.getParameter("werks").getBytes("iso8859-1"),"utf-8");
-            } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
+
+            String werks = request.getParameter("werks");
+            if (werks.equals("gzzzb")){
+                werks = "工装制造部";
+            }else if (werks.equals("tjyj")){
+                werks = "天津渝江";
             }
+
+
             Pandiantmp pdtmp = new Pandiantmp();
         pdtmp.setRcdid(uuidstr);
         pdtmp.setCardno(barcode);

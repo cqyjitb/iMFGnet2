@@ -34,14 +34,16 @@
     </resultMap>
 
     <select id="selectByContidion" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select * from wip_outsrgissue
+        select * from wip_outsrgissue a
+        INNER join wip_outsrgissuehead b on a.issuenm = b.issuenm
         <where>
-            WERKS = #{werks}
-            AND EBELN = #{ebeln}
-            AND EBELP = #{ebelp}
-            AND MATNR = #{matnr}
-            AND LIFNR = #{lifnr}
-            AND STATUS != "1"
+            a.WERKS = #{werks}
+            AND a.EBELN = #{ebeln}
+            AND a.EBELP = #{ebelp}
+            AND a.MATNR = #{matnr}
+            AND a.LIFNR = #{lifnr}
+            AND a.STATUS != '1'
+            AND b.STATUS = '0'
         </where>
     </select>
 

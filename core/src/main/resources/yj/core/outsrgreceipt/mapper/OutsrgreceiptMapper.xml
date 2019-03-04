@@ -46,10 +46,12 @@
     </resultMap>
 
     <select id="selectByEbeln" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select * from wip_outsrgreceipt
+        select * from wip_outsrgreceipt a
+        INNER join wip_outsrgreceipthead b on a.receiptnm = b.receiptnm
         <where>
-            EBELN = #{ebeln}
-            and STATUS = '0'
+            a.EBELN = #{ebeln}
+            and a.STATUS = '0'
+            and b.STATUS = '0'
         </where>
     </select>
 

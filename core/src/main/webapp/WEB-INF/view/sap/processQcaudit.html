@@ -40,7 +40,7 @@
                 text: "C班",
                 value: "C"
             }],
-        comboboxType: [
+        combboxTypeo: [
             {
                 text: "已加工未入库产品",
                 value: "Q1"
@@ -61,12 +61,8 @@
         },
         queryGrid: function (e) {
             var werks = document.getElementById("werks").value;
-            var gytype = document.getElementById("gytype").value;
-            var deptId = document.getElementById("deptId").value;
-            var line_id = document.getElementById("line_id").value;
-            var zbanz = document.getElementById("zbanz").value;
-            var gstrp = document.getElementById("gstrp").value;
-            if (werks == "" || gytype == "" || deptId == "" || line_id == "" || zbanz == "" || gstrp == "") {
+            var recordid = document.getElementById("recid_q").value;
+            if (werks == "" || recordid == "" ) {
                 kendo.ui.showErrorDialog({
                     title: '错误',
                     message: "请完整输入必输查询条件后进行查询！"
@@ -173,9 +169,19 @@
     dataSource = new kendo.data.DataSource({
         transport: {
             read: {
-                url: BaseUrl + "/wip/qcaudithead/selectForQcaudithead",
+                url: BaseUrl + "/wip/qcaudithead/selectById",
                 type: "POST",
                 dataType: "json"
+            },
+            update: {
+                url: BaseUrl + "/wip/qcaudithead/submit",
+                contentType: "application/json",
+                type: "POST"
+            },
+            destroy: {
+                url: BaseUrl + "/wip/qcaudithead/remove",
+                contentType: "application/json",
+                type: "POST"
             },
             parameterMap: function (options, type) {
                 if (type !== "read" && options.models) {
@@ -196,8 +202,29 @@
             model: {
                 id: "recordid",
                 fields: {
-                    werks: {type: "string"},
-                    recordid: {type: "string"}
+                    werks: {type: "string",editable: false},
+
+                    recordid: {type: "string",editable: false},
+
+                    lineDesc:{type: "string",editable: false},
+                    kunnr:{type: "string",editable: false},
+                    kunnrDesc:{type: "string",editable: false},
+                    zpgdbar:{type: "string",editable: false},
+                    matnr:{type: "string",editable: false},
+                    maktx:{type: "string",editable: false},
+                    matnr2:{type: "string",editable: false},
+                    maktx2:{type: "string",editable: false},
+                    zqxdm:{type: "string",editable: false},
+                    kurztext:{type: "string",editable: false},
+                    tlevelcode:{type: "string",editable: false},
+                    ztext:{type: "string",editable: false},
+                    charg:{type: "string",editable: false},
+                    sfflg:{type: "string",editable: false},
+                    diecd:{type: "string",editable: false},
+                    gstrp2:{type: "string",editable: false}
+
+
+
                 }
             }
         }
@@ -220,6 +247,34 @@
                 template: '<span id="printBtn" class="btn btn-success">处理报废</span>'
             }],
         columns: [
+            {
+                command: [
+                    {
+                        name: "edit",
+                        isEnable: function (data) {
+                            return true;
+                        }
+                    },
+                    {name: "destroy"},
+                    {
+                        name: 'ding',//注意这里定义好name后，模板中一定要有对应的样式 k-grid-[name]
+                        template: '<a class="k-button k-button-icontext k-grid-ding"><span class="fa fa-thumbs-up"></span></a>',
+                        click: function (e) {
+                            e.preventDefault();
+                            alert('顶!~')
+                        }
+                    }
+                ],
+                locked: true,
+                title: "操作",
+                width: 150,
+                headerAttributes: {
+                    style: "text-align:center"
+                },
+                attributes: {
+                    style: "text-align:center"
+                }
+            },
             {
                 field: "werks",
                 title: '工厂',
@@ -257,6 +312,15 @@
                         return "";
                     }
                 },
+                editor:function (container, options){
+                    $('<input required name="' + options.field + '"/>')
+                        .appendTo(container)
+                        .kendoComboBox({
+                            dataTextField: "text",
+                            dataValueField: "value",
+                            dataSource: viewModel.combboxTypeo
+                        });
+                },
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -267,13 +331,24 @@
             {
                 field: "deptResponsible",
                 title: '责任部门',
-                width: 80,
+                width: 120,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
                 attributes: {
                     style: "text-align: center;"
+                },
+                template: function (dataItem) {
+                    return dataItem['deptResponsible'] || ''//如果不加，此行会根据field添写字段
+                },
+                editor:function (container,options) {
+                    $('<input name="' + options.field + '"/>').appendTo(container).kendoLov($.extend(<@lov "LOV_UNIT_NEW2"/>,
+                        {
+                            textField: 'name',//显示的字段
+                            model    : options.model//将lov选中数据放在model中
+                        }));
                 }
+
             },
             {
                 field:"name",
@@ -1209,7 +1284,7 @@
                 }
             }
         ],
-        editable: false
+        editable: 'inline'
     });
 
     Hap.autoResizeGrid("#Grid");
