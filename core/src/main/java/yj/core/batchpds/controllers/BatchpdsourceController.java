@@ -31,6 +31,8 @@ import yj.core.dispatch.dto.InputLog;
 import yj.core.dispatch.service.IInputLogService;
 import yj.core.webservice.dto.DTPP001ReturnResult;
 import yj.core.webservice_newbg.dto.DTBAOGONGReturnResult;
+import yj.core.xhcard.dto.Xhcard;
+import yj.core.xhcard.service.IXhcardService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -68,6 +70,9 @@ public class BatchpdsourceController extends BaseController {
 
     @Autowired
     private IAppidconfService appidconfService;
+
+    @Autowired
+    private IXhcardService xhcardService;
 
     @RequestMapping(value = "/sap/batchpdsource/querybyflag")
     @ResponseBody
@@ -353,6 +358,21 @@ public class BatchpdsourceController extends BaseController {
                     continue;
                 }
 
+                Xhcard xhcard = new Xhcard();
+                xhcard = xhcardService.selectForZxhbar(cardh.getWerks(),cardh.getAufnr(),cardh.getZxhnum());
+                if (!xhcard.getZxhzt().equals("1")){
+                    logs.setZpgdbar(dispatch);
+                    logs.setVornr(operation);
+                    logs.setPostflag("E");
+                    logs.setWirteoffflag("E");
+                    logs.setWirteoffmsg("箱号状态错误，只能处理箱号状态为1的记录，当前箱号状态为："+xhcard.getZxhzt());
+                    batchpdlogsService.insert(requestContext, logs);
+                    bs.setZpgdbar(dispatch);
+                    bs.setZflag("E");
+                    service.updateflag(bs);
+                    continue;
+                }
+
                 List<Afvc> afvclist = afvcService.selectByAufnr(cardh.getAufnr());
                 wirteoffinput.setFstvor("");
                 wirteoffinput.setLstvor("");
@@ -376,6 +396,7 @@ public class BatchpdsourceController extends BaseController {
 
                 //查询到需要冲销的记录之后第一步 进行冲销
                 wirteoffinput.setPostingDate(newPostingdate);
+                wirteoffinput.setAuart(cardh.getAuart());
                 DTBAOGONGReturnResult dtbaogongReturnResult = inputLogService.writeOffDispatchNew(wirteoffinput);
 
                 if (dtbaogongReturnResult.getMSGTY().equals("S")) {
@@ -447,8 +468,12 @@ public class BatchpdsourceController extends BaseController {
                     wirteoffinput.setPostingDate(newPostingdate);
                     wirteoffinput.setDispatchLogicID(wirteoffinput.getBarcode().substring(14, 18));
                     wirteoffinput.setCreated_by(createdBy);
-                    Cardt cardt = cardtService.selectByZpgdbarAndVornr(dispatch,operation);
+                    wirteoffinput.setZtpbar("");
+                    wirteoffinput.setZprtp("1");
 
+                    Cardt cardt = cardtService.selectByZpgdbarAndVornr(dispatch,operation);
+                    wirteoffinput.setArbpl(cardt.getArbpl());
+                    wirteoffinput.setCharg("");
                     String appconfid = "";
                     Appidconf appidconf = new Appidconf();
 
@@ -462,6 +487,7 @@ public class BatchpdsourceController extends BaseController {
                         appconfid = "app0003";
                         appidconf = appidconfService.selectByAppid(appconfid);
                     }
+
                     DTBAOGONGReturnResult dtbaogongReturnResult1 = inputLogService.inputDispatchNew(wirteoffinput,cardh,cardt,appidconf,fstvor);
 
                     if (dtbaogongReturnResult1.getMSGTY().equals("S")) {
@@ -511,11 +537,15 @@ public class BatchpdsourceController extends BaseController {
                             }
                         }
 
-                        if (wirteoffinput.getLstvor().equals("X")){
-                            cardh.setEprddat(newPostingdate);
-                            cardh.setActgltrp(newPostingdate);
-                            cardh.setActdt(df.format(new Date()).substring(11,19).replaceAll(":",""));
-                            cardh.setAlqty(wirteoffinput.getYeild());
+                        if (wirteoffinput.getFstvor().equals("X")){
+                            cardh.setFprddat(newPostingdate);
+                            cardh.setShift(wirteoffinput.getClassgrp());
+                            cardh.setSfflg(wirteoffinput.getAttr7());
+                            cardh.setDiecd(wirteoffinput.getModelNo());
+                            cardh.setCharg2(dtbaogongReturnResult1.getCHARG());
+                            cardh.setActgstrp(newPostingdate);
+                            cardh.setEcqty(wirteoffinput.getYeild());
+                            cardh.setActst(df.format(new Date()).substring(11,19).replaceAll(":",""));
                         }
 
                         if (wirteoffinput.getLstvor().equals("X")){
