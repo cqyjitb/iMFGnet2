@@ -29,6 +29,8 @@ import yj.core.cardt.dto.Cardt;
 import yj.core.cardt.service.ICardtService;
 import yj.core.dispatch.dto.InputLog;
 import yj.core.dispatch.service.IInputLogService;
+import yj.core.outsrgissue.dto.Outsrgissue;
+import yj.core.outsrgissue.service.IOutsrgissueService;
 import yj.core.webservice.dto.DTPP001ReturnResult;
 import yj.core.webservice_newbg.dto.DTBAOGONGReturnResult;
 import yj.core.xhcard.dto.Xhcard;
@@ -73,6 +75,9 @@ public class BatchpdsourceController extends BaseController {
 
     @Autowired
     private IXhcardService xhcardService;
+
+    @Autowired
+    private IOutsrgissueService outsrgissueService;
 
     @RequestMapping(value = "/sap/batchpdsource/querybyflag")
     @ResponseBody
@@ -279,7 +284,22 @@ public class BatchpdsourceController extends BaseController {
                     continue;
                 }
 
-                if (wirteoffinput.getAttr15().equals("5")){
+//                if (wirteoffinput.getAttr15().equals("5")){
+//                    logs.setZpgdbar(dispatch);
+//                    logs.setVornr(operation);
+//                    logs.setPostflag("E");
+//                    logs.setWirteoffflag("E");
+//                    logs.setWirteoffmsg("外协工序收货/报工只能通过手机APP进行冲销！");
+//                    batchpdlogsService.insert(requestContext, logs);
+//                    bs.setZpgdbar(dispatch);
+//                    bs.setZflag("E");
+//                    service.updateflag(bs);
+//                    continue;
+//                }
+
+                Outsrgissue outsrgissue = new Outsrgissue();
+                outsrgissue = outsrgissueService.selectByBarcode(dispatch,"0");
+                if (outsrgissue != null){
                     logs.setZpgdbar(dispatch);
                     logs.setVornr(operation);
                     logs.setPostflag("E");
@@ -323,7 +343,7 @@ public class BatchpdsourceController extends BaseController {
                 String l_error = "";
                 String message = "";
                 for (int n = 0;n < listcardhst.size();n++){
-                    if (listcardhst.get(i).getStatus().equals("HOLD") && listcardhst.get(i).getIsactive().equals("X")){
+                    if (listcardhst.get(n).getStatus().equals("HOLD") && listcardhst.get(n).getIsactive().equals("X")){
                         l_error = "E";
                         message = "流转卡状态为HOLD，不允许进行冲销操作！";
                         break;
