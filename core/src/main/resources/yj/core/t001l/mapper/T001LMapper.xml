@@ -16,7 +16,9 @@
         select * from sap_t001l
         <where>
             lgort like "9%"
-            AND werks = "1001"
+            <if test="werks != null">
+                AND werks = #{werks}
+            </if>
             <if test="lgort != null">
                 AND lgort = #{lgort}
             </if>

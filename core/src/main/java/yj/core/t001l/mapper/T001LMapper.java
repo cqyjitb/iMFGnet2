@@ -9,8 +9,9 @@ import java.util.List;
 public interface T001LMapper extends Mapper<T001L> {
     /**
      * 以9开头的仓库LOV_LGORT  918100064
+     * @param werks
      * @param lgort
      * @return
      */
-    List<T001L> selectLgort(@Param("lgort")String lgort);
+    List<T001L> selectLgort(@Param("werks")String werks,@Param("lgort")String lgort);
 }
