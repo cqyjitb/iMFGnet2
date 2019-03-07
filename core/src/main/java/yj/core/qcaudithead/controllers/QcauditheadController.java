@@ -50,7 +50,17 @@ public class QcauditheadController extends BaseController {
     @ResponseBody
     public ResponseData update(HttpServletRequest request, @RequestBody List<Qcaudithead> dto) {
         IRequest requestCtx = createRequestContext(request);
-        return new ResponseData(service.batchUpdate(requestCtx, dto));
+        ResponseData rs = new ResponseData();
+        int m = 0;
+        m = service.updateRow(dto);
+        if (m != dto.size()){
+            rs.setSuccess(false);
+            rs.setMessage("更新数据失败！");
+        }else{
+            rs.setSuccess(true);
+            rs.setMessage("更新数据成功！");
+        }
+        return rs;
     }
 
     @RequestMapping(value = "/wip/qcaudithead/remove")

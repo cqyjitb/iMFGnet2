@@ -203,10 +203,7 @@
                 id: "recordid",
                 fields: {
                     werks: {type: "string",editable: false},
-
                     recordid: {type: "string",editable: false},
-
-                    lineDesc:{type: "string",editable: false},
                     kunnr:{type: "string",editable: false},
                     kunnrDesc:{type: "string",editable: false},
                     zpgdbar:{type: "string",editable: false},
@@ -218,13 +215,67 @@
                     kurztext:{type: "string",editable: false},
                     tlevelcode:{type: "string",editable: false},
                     ztext:{type: "string",editable: false},
+                    diecd:{type: "string",editable: false},
                     charg:{type: "string",editable: false},
                     sfflg:{type: "string",editable: false},
-                    diecd:{type: "string",editable: false},
-                    gstrp2:{type: "string",editable: false}
-
-
-
+                    gstrp:{type: "string",editable: false},
+                    shift:{type: "string",editable: false},
+                    dfectQty:{type: "string",editable: false},
+                    gmein:{type: "string",editable: false},
+                    oaPresscls:{type: "string",editable: false},
+                    oaStatus:{type: "string",editable: false},
+                    defctType:{type: "string",editable: false},
+                    handleResults2:{type: "string",editable: false},
+                    handleResults3:{type: "string",editable: false},
+                    scrapQty:{type: "string",editable: false},
+                    rworkQty:{type: "string",editable: false},
+                    conssQty:{type: "string",editable: false},
+                    dfectTxt:{type: "string",editable: false},
+                    reportDept:{type: "string",editable: false},
+                    reportor:{type: "string",editable: false},
+                    reportDate2:{type: "string",editable: false},
+                    auditTxt:{type: "string",editable: false},
+                    qcEnger:{type: "string",editable: false},
+                    auditor1:{type: "string",editable: false},
+                    auditHandle1:{type: "string",editable: false},
+                    auditDate1:{type: "string",editable: false},
+                    auditor2:{type: "string",editable: false},
+                    auditHandle2:{type: "string",editable: false},
+                    auditDate2:{type: "string",editable: false},
+                    auditor3:{type: "string",editable: false},
+                    auditHandle3:{type: "string",editable: false},
+                    auditDate3:{type: "string",editable: false},
+                    auditor4:{type: "string",editable: false},
+                    auditHandle4:{type: "string",editable: false},
+                    auditDate4:{type: "string",editable: false},
+                    auditor5:{type: "string",editable: false},
+                    auditHandle5:{type: "string",editable: false},
+                    auditDate5:{type: "string",editable: false},
+                    auditor6:{type: "string",editable: false},
+                    auditHandle6:{type: "string",editable: false},
+                    auditDate6:{type: "string",editable: false},
+                    auditor7:{type: "string",editable: false},
+                    auditHandle7:{type: "string",editable: false},
+                    auditDate7:{type: "string",editable: false},
+                    auditor8:{type: "string",editable: false},
+                    auditHandle8:{type: "string",editable: false},
+                    auditDate8:{type: "string",editable: false},
+                    auditor9:{type: "string",editable: false},
+                    auditHandle9:{type: "string",editable: false},
+                    auditDate9:{type: "string",editable: false},
+                    auditor10:{type: "string",editable: false},
+                    auditHandle10:{type: "string",editable: false},
+                    auditDate10:{type: "string",editable: false},
+                    handleResults:{type: "string",editable: false},
+                    qmNotification:{type: "string",editable: false},
+                    qmNotntype:{type: "string",editable: false},
+                    qmNotncrtdt:{type: "string",editable: false},
+                    reworkOrder:{type: "string",editable: false},
+                    reworkOrdercrtdt:{type: "string",editable: false},
+                    rwkQty:{type: "string",editable: false},
+                    rwkQlfqty:{type: "string",editable: false},
+                    rwkScrapqty:{type: "string",editable: false},
+//                    customerConfirm:{type: "string",editable: false}
                 }
             }
         }
@@ -365,6 +416,20 @@
                 field: "lineid",
                 title: '责任首工作中心/产线',
                 width: 110,
+                template: function (dataItem) {
+                    return dataItem['lineid'] || ''//如果不加，此行会根据field添写字段
+                },
+                editor:function (container,options) {
+                    $('<input name="' + options.field + '"/>').appendTo(container).kendoLov($.extend(<@lov "LOV_LINE_NEW"/>,
+                        {
+                            textField: 'name',//显示的字段
+                            model    : options.model,//将lov选中数据放在model中
+                            query: function (e) {
+                                e.param['deptId'] = options.model.deptResponsible;
+                                e.param['enabledFlag'] = 'Y';
+                            }
+                        }));
+                },
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -376,6 +441,39 @@
                 field: "lineDesc",
                 title: '责任首工作中心/产线描述',
                 width: 160,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field: "gstrp",
+                title: '生产日期',
+                width: 150,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field: "vornr",
+                title: '责任工序/工位',
+                width: 150,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field: "responsible",
+                title: '责任人',
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -545,43 +643,9 @@
                 }
             },
             {
-                field: " diecd",
+                field: "diecd",
                 title: '模号',
-                width: 60,
-                headerAttributes: {
-                    style: "text-align: center;"
-                },
-                attributes: {
-                    style: "text-align: center;"
-                }
-            },
-            {
-                field: "gstrp2",
-                title: '生产日期',
-                width: 100,
-                headerAttributes: {
-                    style: "text-align: center;"
-                },
-                attributes: {
-                    style: "text-align: center;"
-                }
-            },
-
-            {
-                field: "vornr",
-                title: '责任工序/工位',
-                width: 100,
-                headerAttributes: {
-                    style: "text-align: center;"
-                },
-                attributes: {
-                    style: "text-align: center;"
-                }
-            },
-            {
-                field: "responsible",
-                title: '责任人',
-                width: 60,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -592,7 +656,7 @@
             {
                 field: "dfectQty",
                 title: '不合格件数',
-                width: 90,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -603,7 +667,7 @@
             {
                 field: "gmein",
                 title: '计量单位',
-                width: 80,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -614,7 +678,7 @@
             {
                 field: "oaPresscls",
                 title: '流程类别',
-                width: 90,
+                width: 150,
                 template:function (e) {
                     if(e.oaPresscls == "1"){
                         return "质管部长审批";
@@ -634,7 +698,7 @@
             {
                 field: "oaStatus",
                 title: 'OA流程状态',
-                width: 90,
+                width: 150,
                 template:function (e) {
                     if(e.oaStatus == "0"){
                         return "未提交";
@@ -656,7 +720,7 @@
             {
                 field: "defctType",
                 title: '不合格品类别',
-                width: 100,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -667,7 +731,7 @@
             {
                 field: "handleResults1",
                 title: '是否报废',
-                width: 80,
+                width: 150,
                 template:function (e) {
                     if(e.handleResults1 == "0"){
                         return "不报废";
@@ -687,7 +751,7 @@
             {
                 field: "handleResults2",
                 title: '是否返工返修',
-                width: 100,
+                width: 150,
                 template:function (e) {
                     if(e.handleResults2 == "0"){
                         return "不返工";
@@ -707,7 +771,7 @@
             {
                 field: "handleResults3",
                 title: '是否让步接收',
-                width: 100,
+                width: 150,
                 template:function (e) {
                     if(e.handleResults3 == "0"){
                         return "不让步";
@@ -727,7 +791,7 @@
             {
                 field: "scrapQty",
                 title: '报废数量',
-                width: 80,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -738,7 +802,7 @@
             {
                 field: "rworkQty",
                 title: '返工返修数量',
-                width: 100,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -750,7 +814,7 @@
             {
                 field: "conssQty",
                 title: '让步接收数量',
-                width: 100,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -761,7 +825,7 @@
             {
                 field: "dfectTxt",
                 title: '不合格品描述',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -772,7 +836,7 @@
             {
                 field: "reportDept",
                 title: '报告部门',
-                width: 100,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -782,7 +846,7 @@
             }, {
                 field: "reportor",
                 title: '报告人',
-                width: 60,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -792,7 +856,7 @@
             }, {
                 field: "reportDate2",
                 title: '报告时间',
-                width: 100,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -803,7 +867,7 @@
             {
                 field: "auditTxt",
                 title: '评审结论',
-                width: 80,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -814,7 +878,7 @@
             {
                 field: "qcEnger",
                 title: '产品质量工程师',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -825,7 +889,7 @@
             {
                 field: "auditor1",
                 title: '评审人员1责任车间主任',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -836,7 +900,7 @@
             {
                 field: "auditHandle1",
                 title: '评审意见1责任车间主任',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -847,7 +911,7 @@
             {
                 field: "auditDate1",
                 title: '评审日期1责任车间主任',
-                width: 120,
+                width: 150,
                 format: "{0: yyyy-MM-dd}",
                 headerAttributes: {
                     style: "text-align: center;"
@@ -859,7 +923,7 @@
             {
                 field: "auditor2",
                 title: '评审人员2责任部门部长',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -870,7 +934,7 @@
             {
                 field: "auditHandle2",
                 title: '评审意见2责任部门部长',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -881,7 +945,7 @@
             {
                 field: "auditDate2",
                 title: '评审日期2责任部门部长',
-                width: 120,
+                width: 150,
                 format: "{0: yyyy-MM-dd}",
                 headerAttributes: {
                     style: "text-align: center;"
@@ -893,7 +957,7 @@
             {
                 field: "auditor3",
                 title: '评审人员3压铸质量工程师',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -904,7 +968,7 @@
             {
                 field: "auditHandle3",
                 title: '评审意见3压铸质量工程师',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -915,7 +979,7 @@
             {
                 field: "auditDate3",
                 title: '评审日期3压铸质量工程师',
-                width: 120,
+                width: 150,
                 format: "{0: yyyy-MM-dd}",
                 headerAttributes: {
                     style: "text-align: center;"
@@ -927,7 +991,7 @@
             {
                 field: "auditor4",
                 title: '评审人员4机加质量工程师',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -938,7 +1002,7 @@
             {
                 field: "auditHandle4",
                 title: '评审意见4机加质量工程师',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -949,7 +1013,7 @@
             {
                 field: "auditDate4",
                 title: '评审日期4机加质量工程师',
-                width: 120,
+                width: 150,
                 format: "{0: yyyy-MM-dd}",
                 headerAttributes: {
                     style: "text-align: center;"
@@ -961,7 +1025,7 @@
             {
                 field: "auditor5",
                 title: '评审人员5压铸技术员',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -972,7 +1036,7 @@
             {
                 field: "auditHandle5",
                 title: '评审意见5压铸技术员',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -983,7 +1047,7 @@
             {
                 field: "auditDate5",
                 title: '评审日期5压铸技术员',
-                width: 120,
+                width: 150,
                 format: "{0: yyyy-MM-dd}",
                 headerAttributes: {
                     style: "text-align: center;"
@@ -995,7 +1059,7 @@
             {
                 field: "auditor6",
                 title: '评审人员6汽车技术开发部技术员',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -1006,7 +1070,7 @@
             {
                 field: "auditHandle6",
                 title: '评审意见6汽车技术开发部技术员',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -1017,7 +1081,7 @@
             {
                 field: "auditDate6",
                 title: '评审日期6汽车技术开发部技术员',
-                width: 120,
+                width: 150,
                 format: "{0: yyyy-MM-dd}",
                 headerAttributes: {
                     style: "text-align: center;"
@@ -1029,7 +1093,7 @@
             {
                 field: "auditor7",
                 title: '评审人员7压铸质管部长',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -1040,7 +1104,7 @@
             {
                 field: "auditHandle7",
                 title: '评审意见7压铸质管部长',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -1051,7 +1115,7 @@
             {
                 field: "auditDate7",
                 title: '评审日期7压铸质管部长',
-                width: 120,
+                width: 150,
                 format: "{0: yyyy-MM-dd}",
                 headerAttributes: {
                     style: "text-align: center;"
@@ -1063,7 +1127,7 @@
             {
                 field: "auditor8",
                 title: '评审人员8机加质管部长',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -1074,7 +1138,7 @@
             {
                 field: "auditHandle8",
                 title: '评审意见8机加质管部长',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -1085,7 +1149,7 @@
             {
                 field: "auditDate8",
                 title: '评审日期8机加质管部长',
-                width: 120,
+                width: 150,
                 format: "{0: yyyy-MM-dd}",
                 headerAttributes: {
                     style: "text-align: center;"
@@ -1097,7 +1161,7 @@
             {
                 field: "auditor9",
                 title: '评审人员9主管副总',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -1108,7 +1172,7 @@
             {
                 field: "auditHandle9",
                 title: '评审意见9主管副总',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -1119,7 +1183,7 @@
             {
                 field: "auditDate9",
                 title: '评审日期9主管副总',
-                width: 120,
+                width: 150,
                 format: "{0: yyyy-MM-dd}",
                 headerAttributes: {
                     style: "text-align: center;"
@@ -1131,7 +1195,7 @@
             {
                 field: "auditor10",
                 title: '审批人10总经理',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -1142,7 +1206,7 @@
             {
                 field: "auditHandle10",
                 title: '审批意见10总经理',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -1153,7 +1217,7 @@
             {
                 field: "auditDate10",
                 title: '审批日期10总经理',
-                width: 120,
+                width: 150,
                 format: "{0: yyyy-MM-dd}",
                 headerAttributes: {
                     style: "text-align: center;"
@@ -1165,7 +1229,7 @@
             {
                 field: "handleResults",
                 title: '责任部门处理结果',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -1176,7 +1240,7 @@
             {
                 field: "qmNotification",
                 title: '质量通知单',
-                width: 90,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -1187,7 +1251,7 @@
             {
                 field: "qmNotntype",
                 title: '质量通知单类型',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -1198,7 +1262,7 @@
             {
                 field: "qmNotncrtdt",
                 title: '质量通知单创建日期',
-                width: 120,
+                width: 150,
                 format: "{0: yyyy-MM-dd}",
                 headerAttributes: {
                     style: "text-align: center;"
@@ -1210,7 +1274,7 @@
             {
                 field: "reworkOrder",
                 title: '返工返修订单',
-                width: 120,
+                width: 150,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -1221,7 +1285,7 @@
             {
                 field: "reworkOrdercrtdt",
                 title: '返工返修订单创建日期',
-                width: 120,
+                width: 150,
                 format: "{0: yyyy-MM-dd}",
                 headerAttributes: {
                     style: "text-align: center;"
@@ -1262,27 +1326,27 @@
                 attributes: {
                     style: "text-align: center;"
                 }
-            },
-            {
-                field: "customerConfirm",
-                title: '客户确认',
-                width: 80,
-                template:function (e) {
-                    if(e.customerConfirm == "0"){
-                        return "不需要";
-                    }else if(e.customerConfirm == "1"){
-                        return "需要";
-                    }else{
-                        return "";
-                    }
-                },
-                headerAttributes: {
-                    style: "text-align: center;"
-                },
-                attributes: {
-                    style: "text-align: center;"
-                }
             }
+//            {
+//                field: "customerConfirm",
+//                title: '客户确认',
+//                width: 80,
+//                template:function (e) {
+//                    if(e.customerConfirm == "0"){
+//                        return "不需要";
+//                    }else if(e.customerConfirm == "1"){
+//                        return "需要";
+//                    }else{
+//                        return "";
+//                    }
+//                },
+//                headerAttributes: {
+//                    style: "text-align: center;"
+//                },
+//                attributes: {
+//                    style: "text-align: center;"
+//                }
+//            }
         ],
         editable: 'inline'
     });

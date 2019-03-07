@@ -202,6 +202,7 @@
                 var roBcd=document.getElementById("zpgdbar");
 
                 //进入报工页面时，光标定位到条码输入框
+                roBcd.removeAttribute("disabled");
                 roBcd.focus();
 
             }
@@ -270,7 +271,10 @@
 
                                     var listmod = list[1];
                                     Omode = document.getElementById("mode");
+                                    roBcd.setAttribute("disabled",true);
+                                    Omode.innerHTML = "<option value=" + '' + ">" + "请选择"  + "</option>";
                                     if (listmod.length > 0){
+                                        Omode.removeAttribute("disabled");
                                         for(var i=0;i<listmod.length;i++){
                                             Omode.innerHTML = Omode.innerHTML + "<option value=" + listmod[i].mdno + ">" + listmod[i].mdno  + "</option>"
                                             mdnums[i] = listmod[i].mdnum;
@@ -281,7 +285,7 @@
                                         mdnum = mdnums[0];
 
                                     }else{
-                                        Omode.setAttribute("disable",true);
+                                        Omode.setAttribute("disabled",true);
                                     }
                                     dshot_start.focus();
                                 }else{
@@ -303,7 +307,7 @@
                     }else{
                         var dzpgdbar = document.getElementById("zpgdbar");
                         dzpgdbar.focus();
-                        openMsgDialog("错误","压铸派工单号必输！","M");
+                        openMsgDialog("错误","压铸派工单号格式错误！","M");
                     }
                 }
             }
@@ -319,30 +323,36 @@
                 var l_error = "";
                 var shot_start = document.getElementById("shot_start").value;
                 var shot_end = document.getElementById("shot_end").value;
-
-                var Oprd_date = document.getElementById("shot_start");
-                var prd_date = Oprd_date.value;
+                var Oprd_date = document.getElementById("prd_date");
+                var prd_date = Oprd_date.options[Oprd_date.selectedIndex].value;
                 var Obanc  = document.getElementById("banc");
                 var Obanz = document.getElementById("banz");
                 var zbanc = Obanc.value;
                 var zbanz = Obanz.value;
+                var mode =  Omode.options[Omode.selectedIndex].value;
+                if (Omode.length > 1){
+                    if (mode == ""){
+                        openMsgDialog("错误","请选择模号！","M")
+                        l_error = "E";
+                    }
+                }
 
                 if (arbpl == "" || arbpl == null){
                     openMsgDialog("错误","未能获取到压铸机台号！","M")
                     l_error = "E";
                 }
 
-                if (prd_date == "" || prd_date == null){
+                if ((prd_date == "" || prd_date == null) && l_error != "E"){
                     openMsgDialog("错误","请选择班次日期","M")
                     l_error = "E";
                 }
 
-                if (zbanc == "" || zbanc == null){
+                if ((zbanc == "" || zbanc == null) && l_error != "E"){
                     openMsgDialog("错误","请选择班次","M")
                     l_error = "E";
                 }
 
-                if (zbanz == "" || zbanz == null){
+                if ((zbanz == "" || zbanz == null) && l_error != "E"){
                     openMsgDialog("错误","请选择班组","M")
                     l_error = "E";
                 }
@@ -438,24 +448,21 @@
 
                             //获取条码页面元素
                             var roBcd=document.getElementById("zpgdbar");
-
+                            roBcd.removeAttribute("disabled")
                             //进入报工页面时，光标定位到条码输入框
                             roBcd.focus();
                         }else if(msgTitle == "错误" ){
                             var length = zpgdbar.length;
-
-
+                            var roBcd=document.getElementById("zpgdbar");
                             if(zpgdbar == "" || zpgdbar == null){
 
                                 //获取条码页面元素
-                                var roBcd=document.getElementById("zpgdbar");
                                 roBcd.focus();
                             }
 
                             if(arbplDesc == "" || arbplDesc == null){
 
                                 //获取条码页面元素
-                                var roBcd=document.getElementById("zpgdbar");
                                 roBcd.focus();
                             }
 
@@ -488,6 +495,7 @@
                                 dbanc.options[0].selected = true;
                                 document.getElementById("shot_start").value = "";
                                 document.getElementById("shot_end").value = "";
+
                                 roBcd.focus();
                             }
                         }
@@ -535,8 +543,54 @@
                                             l_isExit = "X";
                                             openMsgDialog("确认",res.message,"C");
                                         }else{
-                                            l_isExit = "X";
-                                            openMsgDialog("确认","是否提交数据记录！","C");
+                                            //dMsg.style.display="none";
+                                            //appendMask2Dialog();
+                                            var shot_start = document.getElementById("shot_start").value;
+                                            var shot_end = document.getElementById("shot_end").value;
+                                            var erp_date = document.getElementById("prd_date").value;
+                                            var banz = document.getElementById("banz").value;
+                                            var banc = document.getElementById("banc").value;
+                                            var arbplDesc = document.getElementById("arbplDesc").value;
+                                            var zpgdbar = document.getElementById("zpgdbar").value;
+                                            var username = getCookie("username");
+                                            $.ajax({
+                                                url:"${base.contextPath}/wip/shotnum/commitRow",
+                                                type:"get",
+                                                data : {"arbpl":arbpl,
+                                                    "arbplDesc":arbplDesc,
+                                                    "shot_start":shot_start,
+                                                    "shot_end":shot_end,
+                                                    "prd_date":erp_date,
+                                                    "banz":banz,
+                                                    "banc":banc,
+                                                    "zpgdbar":zpgdbar,
+                                                    "createdBy":userId,
+                                                    "userName":username,
+                                                    "mode":mode,
+                                                    "mdnum":mdnum,
+                                                    "matnr":matnr,
+                                                    "maktx":maktx,
+                                                    "type":"old"
+                                                },
+                                                async:false,
+                                                contentType :"application/json;charset=UTF-8",
+                                                success:function (res){
+                                                    if (res.success){
+                                                        var dZpgdbar = document.getElementById("zpgdbar");
+                                                        dZpgdbar.value = "";
+                                                        dZpgdbar.focus();
+                                                        l_isExit = "";
+                                                        openMsgDialog("成功",res.message,"M");
+                                                    }else{
+                                                        l_isExit = "";
+                                                        openMsgDialog("失败",res.message,"M");
+                                                    }
+                                                },
+                                                error:function (res) {
+                                                    l_isExit = "";
+                                                    openMsgDialog("失败",res.message,"M");
+                                                }
+                                            });
                                         }
                                     }else{
 
@@ -546,6 +600,7 @@
                                     openMsgDialog("失败",res.message,"M");
                                 }
                             });
+                            roBcd.removeAttribute("disabled")
 
                         }else if (l_isExit = "X"){
                             dMsg.style.display="none";
@@ -597,6 +652,7 @@
                                 }
                             });
                         }
+                        roBcd.removeAttribute("disabled")
                         ablebanc();
                         ablebanz();
                         ableerpdate();

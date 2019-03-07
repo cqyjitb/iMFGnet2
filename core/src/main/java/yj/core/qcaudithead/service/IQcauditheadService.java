@@ -39,4 +39,6 @@ public interface IQcauditheadService extends IBaseService<Qcaudithead>, ProxySel
      * @return
      */
     List<Qcaudithead> selectById(String werks,String recordid);
+
+    int updateRow(List<Qcaudithead> list);
 }

@@ -35,4 +35,13 @@ public class QcauditheadServiceImpl extends BaseServiceImpl<Qcaudithead> impleme
     public List<Qcaudithead> selectById(String werks, String recordid) {
         return qcauditheadMapper.selectById(werks,recordid);
     }
+
+    @Override
+    public int updateRow(List<Qcaudithead> list) {
+        int m = 0;
+        for (int i=0;i<list.size();i++){
+            m = m + qcauditheadMapper.updateRow(list.get(i));
+        }
+        return m;
+    }
 }

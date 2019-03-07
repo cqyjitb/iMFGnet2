@@ -79,7 +79,11 @@ public class ShounumController extends BaseController {
         String type = request.getParameter("type");
         String werks = "";
         String mode = request.getParameter("mode");
-        Integer mdnum = Integer.valueOf(request.getParameter("mdnum"));
+        String smdnum = request.getParameter("mdnum");
+        if (smdnum != null && smdnum != ""){
+            Integer mdnum = Integer.valueOf(smdnum);
+        }
+
         String matnr = request.getParameter("matnr");
         String maktx = null;
         try {

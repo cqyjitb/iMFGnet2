@@ -36,4 +36,11 @@ public interface QcauditheadMapper extends Mapper<Qcaudithead>{
      * @return
      */
     List<Qcaudithead> selectById(@Param("werks") String werks,@Param("recordid") String recordid);
+
+    /**
+     *  更新行 917110140
+     * @param qcaudithead
+     * @return
+     */
+    int updateRow(Qcaudithead qcaudithead);
 }
