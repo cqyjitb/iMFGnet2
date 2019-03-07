@@ -54,7 +54,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">工厂</label>
                                     <div class="col-sm-8">
-                                        <input type="text" style="width: 100%" data-bind="value:model.werks" class="k-textbox" readonly="readonly">
+                                        <input id="werks" type="text" style="width: 100%" data-bind="value:model.werks" class="k-textbox" readonly="readonly">
                                     </div>
                                 </div>
                             </div>
@@ -66,6 +66,7 @@
                                         <script>
                                             $("#lgort").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_LGORT")}, {
                                                 query: function (e) {
+                                                    e.param['werks'] = document.getElementById("werks").value;
                                                     e.param['enabledFlag'] = 'Y';
                                                 }
                                             }));
