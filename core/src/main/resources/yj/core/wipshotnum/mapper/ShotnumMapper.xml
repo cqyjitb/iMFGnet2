@@ -69,7 +69,7 @@
     </select>
 
     <update id="updateShotnum" parameterType="yj.core.wipshotnum.dto.Shotnum">
-        update wip_shotnum set MDNO = #{mdno},SHOT_START = #{shotStart},SHOT_END = #{shotEnd},
+        update wip_shotnum set WERKS = #{werks},ARBPL = #{arbpl}, MDNO = #{mdno},PRD_DATE = #{prdDate},SHIFTS = #{shifts},CRDAT = #{crdat},SHOT_START = #{shotStart},SHOT_END = #{shotEnd},
         LAST_UPDATE_DATE = #{lastUpdateDate},LAST_UPDATED_BY = #{lastUpdatedBy}
         <where>
             WERKS = #{werks}
@@ -91,12 +91,17 @@
         </where>
     </delete>
 
-    <select id="selectShotnum" parameterType="yj.core.wipshotnum.dto.Shotnum" resultMap="BaseResultMap">
-        select DISTINCT sh.* from wip_shotnum sh
+    <select id="selectShotnum" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select sh.*,fe.fevor,fe.txt,sh.class as sClass
+        from wip_shotnum sh,sap_fevor fe,sap_crhd cr
         <where>
-            1 = 1
+            sh.arbpl = cr.arbpl
+            AND cr.veran = fe.fevor
             <if test="werks != null">
                 AND sh.werks = #{werks}
+            </if>
+            <if test="fevor != null">
+                AND fe.fevor = #{fevor}
             </if>
             <if test="arbpl != null">
                 AND sh.arbpl = #{arbpl}
@@ -111,7 +116,7 @@
                 AND #{prdDateBefore} >= sh.prd_date
             </if>
         </where>
-        order by sh.arbpl asc,sh.prd_date asc,sh.shifts asc
+        order by sh.prd_date asc,sh.shifts asc,sh.arbpl asc
     </select>
 
     <insert id="insertRow" parameterType="yj.core.wipshotnum.dto.Shotnum" >

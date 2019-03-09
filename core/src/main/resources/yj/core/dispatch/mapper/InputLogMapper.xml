@@ -83,7 +83,7 @@
         <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
     </resultMap>
 
-    <select id="queryCreationDate" resultMap="BaseResultMap" parameterType="yj.core.dispatch.dto.InputLog">
+    <select id="queryCreationDate" resultMap="BaseResultMap" parameterType="java.lang.String">
         SELECT DISTINCT il.CREATION_DATE as creatDate
         FROM confirmation_input_log il,confirmation_result r,confirmation_log l
         <where>
@@ -96,9 +96,6 @@
             <if test="plant != null">
                 and il.plant = #{plant}
             </if>
-            <!--<if test="orderno != null">
-                and il.orderno = #{orderno}
-            </if>-->
             <if test="dispatch != null">
                 and il.dispatch = #{dispatch}
             </if>
