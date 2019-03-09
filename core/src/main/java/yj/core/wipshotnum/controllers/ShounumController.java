@@ -48,7 +48,6 @@ public class ShounumController extends BaseController {
     @ResponseBody
     public ResponseData queryShotnum(Shotnum dto, HttpServletRequest request) {
         IRequest requestContext = createRequestContext(request);
-        ResponseData rs = new ResponseData();
         dto.setPrdDateAfter(dto.getPrdDateAfter().substring(0,10));
         dto.setPrdDateBefore(dto.getPrdDateBefore().substring(0,10));
         List<Shotnum> shotnum = service.selectShotnum(dto,requestContext);

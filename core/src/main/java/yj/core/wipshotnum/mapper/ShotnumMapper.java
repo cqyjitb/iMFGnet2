@@ -9,10 +9,15 @@ import java.util.List;
 public interface ShotnumMapper extends Mapper<Shotnum> {
     /**
      * 根据工厂 工作中心 生产日期 班次查询记录 918100064
-     * @param dto
+     * @param werks
+     * @param fevor
+     * @param shifts
+     * @param prdDateAfter
+     * @param prdDateBefore
      * @return
      */
-    List<Shotnum> selectShotnum(Shotnum dto);
+    List<Shotnum> selectShotnum(@Param("werks")String werks,@Param("fevor")String fevor,@Param("shifts")String shifts,@Param("arbpl")String arbpl,
+                                @Param("prdDateAfter")String prdDateAfter,@Param("prdDateBefore")String prdDateBefore);
 
     /**
      *  插入新记录 917110140

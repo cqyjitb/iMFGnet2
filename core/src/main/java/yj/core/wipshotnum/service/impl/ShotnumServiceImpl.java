@@ -22,9 +22,7 @@ import yj.core.wipshotnum.service.IShotnumService;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -45,207 +43,183 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
 
     @Override
     public List<Shotnum> selectShotnum(Shotnum dto, IRequest requestContext) {
+        List<Shotnum> list1 = shotnumMapper.selectShotnum(dto.getWerks(),dto.getFevor(),null,null,dto.getPrdDateAfter(),dto.getPrdDateBefore());
         List<Shotnum> list = new ArrayList<Shotnum>();
-        List<Shotnum> list1 = new ArrayList<Shotnum>();
-        Shotnum shotnum = new Shotnum();
-        List<Shotnum> shotnums = new ArrayList<Shotnum>();
+        List<Shotnum> list2 = new ArrayList<Shotnum>();
         List<Afko> afko = new ArrayList<Afko>();
-        Shiftstime shiftstime = new Shiftstime();
+        List<InputLog> inputLog = new ArrayList<InputLog>();
+        Shotnum shotnum = new Shotnum();
         Marc marc = new Marc();
-        Integer mdnum = 0,yeild = 0,shotNum = 0;
-        Long grgew = 0L;
-        if("Y".equals(dto.getTotal())){
-            List<Shotnum> list2 = shotnumMapper.selectShotnum(dto);
-            if(list2.size() > 0){
-                for(int i=0;i<list2.size();i++){
-                    if(i == 0){
-                        afko = afkoMapper.selectByFevor(list2.get(0).getArbpl(),dto.getFevor());
-                        if(afko.size() != 0) {
-                            list1.add(list2.get(0));
-                        }
-                    }else{
-                        afko = afkoMapper.selectByFevor(list2.get(i).getArbpl(),dto.getFevor());
-                        if(afko.size() != 0){
-                            String arbpl1 = list2.get(i-1).getArbpl();
-                            for(int j=i;j<list2.size();j++){
-                                String arbpl2 = list2.get(j).getArbpl();
-                                if(arbpl1.equals(arbpl2)){
-                                    continue;
-                                }else{
-                                    List<Afko> afko1 = afkoMapper.selectByFevor(list2.get(j).getArbpl(),dto.getFevor());
-                                    if(afko1.size() != 0){
-                                        list1.add(list2.get(j));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                for(int j=0;j<list1.size();j++){
-                    shotnum = list1.get(j);
-                    dto.setArbpl(shotnum.getArbpl());
-                    shotnums = shotnumMapper.selectShotnum(dto);
-                    Long startMin = shotnums.get(0).getShotStart();
-                    Long endMax = shotnums.get(0).getShotEnd();
-                    for(int a=0;a<shotnums.size();a++){
-                        mdnum = mouldcavityMapper.selectByMatnr(shotnums.get(a).getMatnr(),shotnums.get(a).getMdno());
-                        if(mdnum == null){
-                            mdnum = 1;
-                        }
-                        shotNum = shotNum + ((int)(shotnums.get(a).getShotEnd() - shotnums.get(a).getShotStart())*mdnum);
-                        if(a > 0){
-                            if(shotnums.get(a).getShotStart() < startMin){
-                                startMin = shotnums.get(a).getShotStart();
-                            }
-                            if(shotnums.get(a).getShotEnd() > endMax){
-                                endMax = shotnums.get(a).getShotEnd();
-                            }
-                        }
-                    }
-                    shotnum.setShotStart(startMin);
-                    shotnum.setShotEnd(endMax);
-                    afko = afkoMapper.selectByFevor(shotnum.getArbpl(),dto.getFevor());
-                    shiftstime = shiftstimeMapper.selectByShift("1");
-                    Shiftstime shiftstime2 = shiftstimeMapper.selectByShift("3");
-                    String startDate = (dto.getPrdDateAfter() + " " + shiftstime.getBgsTime());
-                    String endDate = (dto.getPrdDateBefore() + " " + shiftstime2.getBgeTime());
-                    InputLog inputLog = inputLogMapper.queryCreationDate(shotnum.getZpgdbar(),shotnum.getWerks(),dto.getFevor());
-                    if(inputLog != null){
-                        String creatDate = inputLog.getCreatDate().substring(0,19);
-                        if(creatDate.compareTo(startDate)>0 && endDate.compareTo(creatDate)>0){
-                            if(afko.size() > 0){
-                                for(int i=0;i<afko.size();i++){
-                                    yeild = yeild + inputLogMapper.selectByOrderno(afko.get(i).getAufnr(),null,dto.getPrdDateAfter(),dto.getPrdDateBefore());
-                                }
-                                marc = marcMapper.selectByMatnr(shotnum.getMatnr());
-                                if(marc != null){
-                                    grgew = Math.round(yeild * marc.getBrgew());
-                                }
-                                shotnum.setFevor(dto.getFevor());
-                                shotnum.setTxt(afko.get(0).getTxt());
-                                shotnum.setPrdDateAfter(dto.getPrdDateAfter());
-                                shotnum.setPrdDateBefore(dto.getPrdDateBefore());
-                                shotnum.setBrgew(grgew);
-                                shotnum.setYeild(yeild);
-                                shotnum.setShotNum(shotNum);
-                                shotnum.setWasteNum(shotNum - yeild);
-                                list.add(shotnum);
-                            }
-                        }
-                    }
-                }
-            }
-        }else{
+        Shiftstime shiftstime = new Shiftstime();
+        if(list1.size() > 0){
             SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             SimpleDateFormat sfWeek = new SimpleDateFormat("EEEE");
-            List<Shotnum> list2 = shotnumMapper.selectShotnum(dto);
-            if(list2.size() > 0){
-                for(int i=0;i<list2.size();i++){
-                    if(i == 0){
-                        afko = afkoMapper.selectByFevor(list2.get(0).getArbpl(),dto.getFevor());
-                        if(afko.size() != 0){
-                            list1.add(list2.get(0));
-                        }
-                    }else{
-                        afko = afkoMapper.selectByFevor(list2.get(i).getArbpl(),dto.getFevor());
-                        if(afko.size() != 0){
-                            for(int j=i;j<list2.size();j++){
-                                if((list2.get(i-1).getArbpl().equals(list2.get(j).getArbpl()))&&(list2.get(i-1).getPrdDate().equals(list2.get(j).getPrdDate()))&&
-                                        (list2.get(i-1).getShifts().equals(list2.get(j).getShifts()))){
-                                    continue;
-                                }else {
-                                    List<Afko> afko1 = afkoMapper.selectByFevor(list2.get(j).getArbpl(),dto.getFevor());
-                                    if(afko1.size() != 0){
-                                        list1.add(list2.get(j));
-                                    }
-                                }
-                            }
+            Calendar cal = new GregorianCalendar();
+            if("Y".equals(dto.getTotal())){
+                for(int i=0;i<list1.size();i++){
+                    list.add(list1.get(i));
+                    for(int j=i+1;j<list1.size();j++){
+                        if(list1.get(i).getArbpl().equals(list1.get(j).getArbpl())){
+                            list1.remove(j);
+                            j--;
                         }
                     }
                 }
-                for(int i=0;i<list1.size();i++){
-                    shotnum = list1.get(i);
-                    dto.setArbpl(shotnum.getArbpl());
-                    dto.setPrdDateBefore(shotnum.getPrdDate());
-                    dto.setPrdDateAfter(shotnum.getPrdDate());
-                    dto.setShifts(shotnum.getShifts());
-                    shotnums = shotnumMapper.selectShotnum(dto);
-                    Long startMin = shotnums.get(0).getShotStart();
-                    Long endMax = shotnums.get(0).getShotEnd();
-                    for(int a=0;a<shotnums.size();a++){
-                        mdnum = mouldcavityMapper.selectByMatnr(shotnums.get(a).getMatnr(),shotnums.get(a).getMdno());
-                        if(mdnum == null){
-                            mdnum = 1;
+                for(int i=0;i<list.size();i++){
+                    Integer mdnum = 1,shotNum = 0,yeild = 0;
+                    Long grgew = 0L;
+                    shotnum = list.get(i);
+                    list2 = shotnumMapper.selectShotnum(shotnum.getWerks(),shotnum.getFevor(),null,
+                            shotnum.getArbpl(),dto.getPrdDateAfter(),dto.getPrdDateBefore());
+                    String minTime = list2.get(0).getPrdDate();
+                    String maxTime = list2.get(0).getPrdDate();
+                    Long startMin = list2.get(0).getShotStart();
+                    Long endMax = list2.get(0).getShotEnd();
+                    for(int a=0;a<list2.size();a++){
+                        mdnum = mouldcavityMapper.selectByMatnr(list2.get(a).getMatnr(),list2.get(a).getMdno());
+                        marc = marcMapper.selectByMatnr(list2.get(a).getMatnr());
+                        if(mdnum != null && mdnum > 1){
+                            Integer shotNum1 = ((int)(list2.get(a).getShotEnd() - list2.get(a).getShotStart())*(mdnum-1));
+                            shotNum = shotNum + shotNum1;
+                            if(marc != null){
+                                grgew = grgew + Math.round(shotNum1 * 2 * marc.getBrgew());
+                            }
+                        }else{
+                            if(marc != null){
+                                grgew = grgew + Math.round(((int)(list2.get(a).getShotEnd() - list2.get(a).getShotStart())) * marc.getBrgew());
+                            }
                         }
-                        shotNum = shotNum + ((int)(shotnums.get(a).getShotEnd() - shotnums.get(a).getShotStart())*mdnum);
-                        if(a > 0){
-                            if(shotnums.get(a).getShotEnd() > endMax){
-                                endMax = shotnums.get(a).getShotEnd();
-                            }
-                            if(shotnums.get(a).getShotStart() < startMin){
-                                startMin = shotnums.get(a).getShotStart();
-                            }
+                        if(minTime.compareTo(list2.get(a).getPrdDate()) > 0){
+                            minTime = list2.get(a).getPrdDate();
+                        }else{
+                            maxTime = list2.get(a).getPrdDate();
+                        }
+                        if(list2.get(a).getShotStart() < startMin){
+                            startMin = list2.get(a).getShotStart();
+                        }
+                        if(list2.get(a).getShotEnd() > endMax){
+                            endMax = list2.get(a).getShotEnd();
                         }
                     }
+                    shotnum.setPrdDateAfter(minTime);
+                    shotnum.setPrdDateBefore(maxTime);
+                    shotNum = (int)(shotNum + (endMax - startMin));
+                    shotnum.setShotNum(shotNum);
+                    shotnum.setBrgew(grgew);
                     shotnum.setShotStart(startMin);
                     shotnum.setShotEnd(endMax);
                     afko = afkoMapper.selectByFevor(shotnum.getArbpl(),dto.getFevor());
-                    if(afko.size() != 0){
-                        shiftstime = shiftstimeMapper.selectByShift(shotnum.getShifts());
-                        InputLog inputLog = inputLogMapper.queryCreationDate(shotnum.getZpgdbar(),shotnum.getWerks(),dto.getFevor());
-                        String date = null;
-                        if(inputLog != null){
-                            try {
-                                date = sfWeek.format(sf.parse(inputLog.getCreatDate()));
-                            } catch (ParseException e) {
-                                e.printStackTrace();
+                    if(afko.size() > 0){
+                        shiftstime = shiftstimeMapper.selectByShift("1");
+                        Shiftstime shiftstime2 = shiftstimeMapper.selectByShift("3");
+                        String startDate = (minTime + " " + shiftstime.getBgsTime());
+                        try {
+                            cal.setTime(sf.parse(maxTime));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        cal.add(cal.DATE,1);
+                        String endDate = sf.format(cal.getTime())+ " " + shiftstime2.getBgeTime();
+                        for(int j=0;j<afko.size();j++){
+                            yeild = yeild + inputLogMapper.selectByOrderno(afko.get(j).getAufnr(),startDate,endDate);
+                        }
+                    }
+                    shotnum.setYeild(yeild);
+                    shotnum.setWasteNum(shotNum - yeild);
+                }
+            }else{
+                for(int i=0;i<list1.size();i++){
+                    list.add(list1.get(i));
+                    for(int j=i+1;j<list1.size();j++){
+                        if((list1.get(i).getArbpl().equals(list1.get(j).getArbpl()))&&(list1.get(i).getPrdDate().equals(list1.get(j).getPrdDate()))&&
+                                (list1.get(i).getShifts().equals(list1.get(j).getShifts()))){
+                            list1.remove(j);
+                            j--;
+                        }
+                    }
+                }
+                for(int i=0;i<list.size();i++){
+                    Integer mdnum = 1,shotNum = 0,yeild = 0;
+                    Long grgew = 0L;
+                    shotnum = list.get(i);
+                    list2 = shotnumMapper.selectShotnum(shotnum.getWerks(),shotnum.getFevor(),shotnum.getShifts(),
+                            shotnum.getArbpl(),shotnum.getPrdDate(),shotnum.getPrdDate());
+                    Long startMin = list2.get(0).getShotStart();
+                    Long endMax = list2.get(0).getShotEnd();
+                    for(int a=0;a<list2.size();a++){
+                        mdnum = mouldcavityMapper.selectByMatnr(list2.get(a).getMatnr(),list2.get(a).getMdno());
+                        marc = marcMapper.selectByMatnr(list2.get(a).getMatnr());
+                        if(mdnum == null){
+                            mdnum = 1;
+                        }
+                        Integer shotNum1 = ((int)(list2.get(a).getShotEnd() - list2.get(a).getShotStart())*mdnum);
+                        shotNum = shotNum + shotNum1;
+                        if(marc != null){
+                            grgew = grgew + Math.round(shotNum1 * marc.getBrgew());
+                        }
+                        if(a > 0){
+                            if(list2.get(a).getShotEnd() > endMax){
+                                endMax = list2.get(a).getShotEnd();
                             }
-                            String creatDate = inputLog.getCreatDate().substring(0,19);
-                            if("星期日".equals(date)){
-                                String startDate = shotnum.getPrdDate() + " " + shiftstime.getZsTime();
-                                if((creatDate.compareTo(startDate)) > 0) {
-                                    if(afko.size() > 0){
-                                        for(int j=0;j<afko.size();j++){
-                                            yeild = yeild + inputLogMapper.selectByOrderno(afko.get(j).getAufnr(),shotnum.getShifts(),shotnum.getPrdDate(),shotnum.getPrdDate());
-                                        }
-                                        marc = marcMapper.selectByMatnr(shotnum.getMatnr());
-                                        if(marc != null){
-                                            grgew = Math.round(yeild * marc.getBrgew());
-                                        }
-                                        shotnum.setBrgew(grgew);
-                                        shotnum.setPrdDateAfter(shotnum.getPrdDate());
-                                        shotnum.setFevor(dto.getFevor());
-                                        shotnum.setTxt(afko.get(0).getTxt());
-                                        shotnum.setYeild(yeild);
-                                        shotnum.setShotNum(shotNum);
-                                        shotnum.setWasteNum(shotNum - yeild);
-                                        list.add(shotnum);
-                                    }
-                                }
-                            }else{
-                                String startDate = shotnum.getPrdDate() + " " + shiftstime.getBgsTime();
-                                if((creatDate.compareTo(startDate)) > 0){
-                                    if(afko.size() > 0){
-                                        for(int j=0;j<afko.size();j++){
-                                            yeild = yeild + inputLogMapper.selectByOrderno(afko.get(j).getAufnr(),shotnum.getShifts(),shotnum.getPrdDate(),shotnum.getPrdDate());
-                                        }
-                                        marc = marcMapper.selectByMatnr(shotnum.getMatnr());
-                                        if(marc != null){
-                                            grgew = Math.round(yeild * marc.getBrgew());
-                                        }
-                                        shotnum.setPrdDateAfter(shotnum.getPrdDate());
-                                        shotnum.setFevor(dto.getFevor());
-                                        shotnum.setTxt(afko.get(0).getTxt());
-                                        shotnum.setYeild(yeild);
-                                        shotnum.setShotNum(shotNum);
-                                        shotnum.setWasteNum(shotNum - yeild);
-                                        shotnum.setBrgew(grgew);
-                                        list.add(shotnum);
-                                    }
-                                }
+                            if(list2.get(a).getShotStart() < startMin){
+                                startMin = list2.get(a).getShotStart();
                             }
                         }
                     }
+                    shotnum.setPrdDateAfter(shotnum.getPrdDate());
+                    shotnum.setShotStart(startMin);
+                    shotnum.setShotEnd(endMax);
+                    shotnum.setShotNum(shotNum);
+                    shotnum.setBrgew(grgew);
+                    afko = afkoMapper.selectByFevor(shotnum.getArbpl(),shotnum.getFevor());
+                    if(afko.size() > 0){
+                        shiftstime = shiftstimeMapper.selectByShift(shotnum.getShifts());
+                        String date = null;
+                        try {
+                            date = sfWeek.format(sf.parse(shotnum.getPrdDate()));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        if("星期日".equals(date)){
+                            String startDate = shotnum.getPrdDate() + " " + shiftstime.getZsTime();
+                            String endDate = shotnum.getPrdDate();
+                            if(shotnum.getShifts().equals("3")){
+                                try {
+                                    cal.setTime(sf.parse(endDate));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                cal.add(cal.DATE,1);
+                                endDate = sf.format(cal.getTime())+ " " + shiftstime.getZeTime();
+                            }else{
+                                endDate = endDate + " " + shiftstime.getZeTime();
+                            }
+
+                            for(int j=0;j<afko.size();j++){
+                                yeild = yeild + inputLogMapper.selectByOrderno(afko.get(j).getAufnr(),startDate,endDate);
+                            }
+                        }else{
+                            String startDate = shotnum.getPrdDate() + " " + shiftstime.getBgsTime();
+                            String endDate = shotnum.getPrdDate();
+                            if(shotnum.getShifts().equals("3")){
+                                try {
+                                    cal.setTime(sf.parse(endDate));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                cal.add(cal.DATE,1);
+                                endDate = sf.format(cal.getTime())+ " " + shiftstime.getBgeTime();
+                            }else{
+                                endDate = endDate + " " + shiftstime.getBgeTime();
+                            }
+                            for(int j=0;j<afko.size();j++){
+                                yeild = yeild + inputLogMapper.selectByOrderno(afko.get(j).getAufnr(),startDate,endDate);
+                            }
+                        }
+                    }
+                    shotnum.setYeild(yeild);
+                    shotnum.setWasteNum(shotNum - yeild);
                 }
             }
         }
