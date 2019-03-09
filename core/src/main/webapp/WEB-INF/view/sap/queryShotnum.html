@@ -43,7 +43,22 @@
             $('#Grid').data('kendoGrid').dataSource.read();
         },
         saveFunction:function () {
-            $('#Grid').data('kendoGrid').saveChanges();
+            var data = grid.selectedDataItems();
+            if(data.length > 0){
+                for(var i=0;i<data.length;i++){
+                    if(parseInt(data[i].shotStart) > parseInt(data[i].shotEnd)){
+                        kendo.ui.showErrorDialog({
+                            title: '错误',
+                            message: "起始压射号不能大于终止压射号！"
+                        });
+                    }
+                }
+                $('#Grid').data('kendoGrid').saveChanges();
+            }else{
+                kendo.ui.showInfoDialog({
+                    message: '请至少选择一行数据'
+                })
+            }
         },
         queryGrid: function () {
             $('#Grid').data('kendoGrid').dataSource.page(1);
