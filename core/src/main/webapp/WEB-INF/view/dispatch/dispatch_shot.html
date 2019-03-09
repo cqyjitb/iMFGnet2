@@ -76,7 +76,7 @@
             background-color: white;
             width: 200px;
             height: 120px;
-            top: 100px;
+            top: 80px;
             left: 20px;
             position: absolute;
             z-index: 1002;
@@ -118,6 +118,8 @@
             var dbanz = document.getElementById("banz");
             var dbanc = document.getElementById("banc");
             var Omode =  document.getElementById("mode");
+            var roBcd=document.getElementById("zpgdbar");
+            roBcd.focus();
             var mdnums = {};
             /*用户登录相关操作*/
             //获取当前登录用户用户名
@@ -159,6 +161,7 @@
             //初始化界面状态
             dMsg.style.display = "none";
             dMask2.style.display = "none";
+            disablemodel();
             //返回点击事件
             cLot.onclick = function () {
                 delCookie("username");
@@ -185,14 +188,9 @@
                 document.getElementById("matnr").value = "";
                 document.getElementById("maktx").value = "";
                 document.getElementById("mode").value = "";
-                var length = $('#mode option').length;
-                for(var i = 0 ; i < length; i++) {
-                    $('#mode option').eq(0).remove(); //eq等于
-                }
-
                 document.getElementById("mdnum").value = "";
                 var Omode = document.getElementById("mode");
-                Omode.setAttribute("disable",true);
+                disablemodel();
                 dprd_date.options[0].selected = true;
                 dbanz.options[0].selected = true;
                 dbanc.options[0].selected = true;
@@ -272,15 +270,18 @@
                                     var listmod = list[1];
                                     Omode = document.getElementById("mode");
                                     roBcd.setAttribute("disabled",true);
-                                    Omode.innerHTML = "<option value=" + '' + ">" + "请选择"  + "</option>";
+
                                     if (listmod.length > 0){
                                         Omode.removeAttribute("disabled");
+                                        mdnums[0] = "";
                                         for(var i=0;i<listmod.length;i++){
-                                            Omode.innerHTML = Omode.innerHTML + "<option value=" + listmod[i].mdno + ">" + listmod[i].mdno  + "</option>"
-                                            mdnums[i] = listmod[i].mdnum;
+//                                            Omode.innerHTML = Omode.innerHTML + "<option value=" + listmod[i].mdno + ">" + listmod[i].mdno  + "</option>"
+                                            Omode.options[i+1].value = Omode.options[i+1].innerHTML = listmod[i].mdno;
+                                            mdnums[i+1] = listmod[i].mdnum;
                                         }
                                         Omode.options[0].selected = true;
                                         mode = Omode.options[Omode.selectedIndex].value;
+                                        ablemodel();
                                         document.getElementById("mdnum").value = mdnums[0];
                                         mdnum = mdnums[0];
 
@@ -312,10 +313,20 @@
                 }
             }
 
-            Omode.onblur = function(){
-                mode = Omode.options[Omode.selectedIndex].value;
-                document.getElementById("mdnum").value = mdnums[Omode.selectedIndex];
-                mdnum = mdnums[Omode.selectedIndex];
+            Omode.onchange = function(){
+                if (Omode.selectedIndex != 0){
+                    mode = Omode.options[Omode.selectedIndex].value;
+                    if(mode != ""){
+                        mode = Omode.options[Omode.selectedIndex].value;
+                        document.getElementById("mdnum").value = mdnums[Omode.selectedIndex];
+                        mdnum = mdnums[Omode.selectedIndex];
+                    }else{
+                        Omode.options[0].selected = true;
+                        mdnum = "";
+                        document.getElementById("mdnum").value = "";
+                    }
+                }
+
             }
 
             var dconfirm2 = document.getElementById("confirm2");
@@ -396,6 +407,7 @@
                 appendMask2Dialog();
                 disablebanc();
                 disablebanz();
+                disablemodel();
                 disableerpdate();
                 var dMsg=document.getElementById("msg-area");
                 dMsg.style.display="";
@@ -435,10 +447,10 @@
                             document.getElementById("shot_start").value = "";
                             document.getElementById("shot_end").value = "";
 
-                            var length = $('#mode option').length;
-                            for(var i = 0 ; i < length; i++) {
-                                $('#mode option').eq(0).remove(); //eq等于
-                            }
+//                            var length = $('#mode option').length;
+//                            for(var i = 0 ; i < length; i++) {
+//                                $('#mode option').eq(0).remove(); //eq等于
+//                            }
                             matnr = "";
                             maktx = "";
                             mode = "";
@@ -451,6 +463,11 @@
                             roBcd.removeAttribute("disabled")
                             //进入报工页面时，光标定位到条码输入框
                             roBcd.focus();
+                            ablemodel();
+                            ableerpdate()
+                            ablebanz();
+                            ablebanc();
+
                         }else if(msgTitle == "错误" ){
                             var length = zpgdbar.length;
                             var roBcd=document.getElementById("zpgdbar");
@@ -497,24 +514,29 @@
                                 document.getElementById("shot_end").value = "";
 
                                 roBcd.focus();
+
                             }
+                            var str = mode = Omode.options[1].value;
+                            if (str != ""){
+                                ablemodel();
+                            }
+
+                            ableerpdate()
+                            ablebanz();
+                            ablebanc();
                         }
-                        ablebanc();
-                        ablebanz();
-                        ableerpdate();
                     }
                 }else if(msgType == "C"){
+
                     bCan.style.display = "";
                     bCan.onclick=function () {
                         dMsg.style.display="none";
                         removeMask2Dialog();
-                        ablebanc();
-                        ablebanz();
-                        ableerpdate();
                     }
 
                     bCls.onclick=function () {
                         if (l_isExit == ""){
+
                             dMsg.style.display="none";
                             //appendMask2Dialog();
                             var shot_start = document.getElementById("shot_start").value;
@@ -543,66 +565,68 @@
                                             l_isExit = "X";
                                             openMsgDialog("确认",res.message,"C");
                                         }else{
-                                            //dMsg.style.display="none";
-                                            //appendMask2Dialog();
-                                            var shot_start = document.getElementById("shot_start").value;
-                                            var shot_end = document.getElementById("shot_end").value;
-                                            var erp_date = document.getElementById("prd_date").value;
-                                            var banz = document.getElementById("banz").value;
-                                            var banc = document.getElementById("banc").value;
-                                            var arbplDesc = document.getElementById("arbplDesc").value;
-                                            var zpgdbar = document.getElementById("zpgdbar").value;
-                                            var username = getCookie("username");
-                                            $.ajax({
-                                                url:"${base.contextPath}/wip/shotnum/commitRow",
-                                                type:"get",
-                                                data : {"arbpl":arbpl,
-                                                    "arbplDesc":arbplDesc,
-                                                    "shot_start":shot_start,
-                                                    "shot_end":shot_end,
-                                                    "prd_date":erp_date,
-                                                    "banz":banz,
-                                                    "banc":banc,
-                                                    "zpgdbar":zpgdbar,
-                                                    "createdBy":userId,
-                                                    "userName":username,
-                                                    "mode":mode,
-                                                    "mdnum":mdnum,
-                                                    "matnr":matnr,
-                                                    "maktx":maktx,
-                                                    "type":"old"
-                                                },
-                                                async:false,
-                                                contentType :"application/json;charset=UTF-8",
-                                                success:function (res){
-                                                    if (res.success){
-                                                        var dZpgdbar = document.getElementById("zpgdbar");
-                                                        dZpgdbar.value = "";
-                                                        dZpgdbar.focus();
-                                                        l_isExit = "";
-                                                        openMsgDialog("成功",res.message,"M");
-                                                    }else{
-                                                        l_isExit = "";
-                                                        openMsgDialog("失败",res.message,"M");
-                                                    }
-                                                },
-                                                error:function (res) {
-                                                    l_isExit = "";
-                                                    openMsgDialog("失败",res.message,"M");
-                                                }
-                                            });
-                                        }
-                                    }else{
 
+                                        }
                                     }
                                 },
                                 error:function (res) {
                                     openMsgDialog("失败",res.message,"M");
                                 }
                             });
+
+                            if (l_isExit == ""){
+                                //dMsg.style.display="none";
+                                //appendMask2Dialog();
+                                var shot_start = document.getElementById("shot_start").value;
+                                var shot_end = document.getElementById("shot_end").value;
+                                var erp_date = document.getElementById("prd_date").value;
+                                var banz = document.getElementById("banz").value;
+                                var banc = document.getElementById("banc").value;
+                                var arbplDesc = document.getElementById("arbplDesc").value;
+                                var zpgdbar = document.getElementById("zpgdbar").value;
+                                var username = getCookie("username");
+                                $.ajax({
+                                    url:"${base.contextPath}/wip/shotnum/commitRow",
+                                    type:"get",
+                                    data : {"arbpl":arbpl,
+                                        "arbplDesc":arbplDesc,
+                                        "shot_start":shot_start,
+                                        "shot_end":shot_end,
+                                        "prd_date":erp_date,
+                                        "banz":banz,
+                                        "banc":banc,
+                                        "zpgdbar":zpgdbar,
+                                        "createdBy":userId,
+                                        "userName":username,
+                                        "mode":mode,
+                                        "mdnum":mdnum,
+                                        "matnr":matnr,
+                                        "maktx":maktx,
+                                        "type":"old"
+                                    },
+                                    async:false,
+                                    contentType :"application/json;charset=UTF-8",
+                                    success:function (res){
+                                        if (res.success){
+//                                                        var dZpgdbar = document.getElementById("zpgdbar");
+//                                                        dZpgdbar.value = "";
+//                                                        dZpgdbar.focus();
+                                            l_isExit = "";
+                                            openMsgDialog("成功",res.message,"M");
+                                        }else{
+                                            l_isExit = "";
+                                            openMsgDialog("失败",res.message,"M");
+                                        }
+                                    },
+                                    error:function (res) {
+                                        l_isExit = "";
+                                        openMsgDialog("失败",res.message,"M");
+                                    }
+                                });
+                            }
                             roBcd.removeAttribute("disabled")
 
-                        }else if (l_isExit = "X"){
+                        }else if (l_isExit == "X"){
                             dMsg.style.display="none";
                             //appendMask2Dialog();
                             var shot_start = document.getElementById("shot_start").value;
@@ -653,12 +677,23 @@
                             });
                         }
                         roBcd.removeAttribute("disabled")
-                        ablebanc();
-                        ablebanz();
-                        ableerpdate();
 
                     }
                 }
+            }
+
+            function disablemodel() {
+                var Omodo = document.getElementById("mode")
+                Omodo.disabled="disabled";
+                Omodo.style.display = "none";
+                Omodo.style.zIndex="-1";
+            }
+
+            function  ablemodel() {
+                var Omodo = document.getElementById("mode")
+                Omodo.disabled="";
+                Omodo.style.display = "";
+                Omodo.style.zIndex="-1";
             }
 
             function disablebanz(){
@@ -717,14 +752,22 @@
         <div id="user" style="margin-right: 25px;font-size:14px;height:20px;float: right;background-color:white;top: 0px"></div>
     </div>
 
-    <div style="width: 220px;height: 300px">
+    <div style="width: 220px;height: 260px">
         <input id="zpgdbar" style="font-size:16px;width: 200px;height: 22px;margin-bottom: 1px;" type="text"><br>
         <!--<label class="dcp-label">物料描述</label><input id="matDesc"  style="font-size:10px;width: 120px;height: 40px;background-color: #C9C9C9" disabled="true" type="text"><br>-->
-        <label class="dcp-label">压铸机台</label><textarea id="arbplDesc" style="font-size:10px;width: 120px;height: 40px;background-color: #C9C9C9" disabled="true" rows="2"></textarea><br>
+        <!--<label class="dcp-label">压铸机台</label><textarea id="arbplDesc" style="font-size:10px;width: 120px;height: 40px;background-color: #C9C9C9" disabled="true" rows="2"></textarea><br>-->
+        <label class="dcp-label">压铸机台</label><input id="arbplDesc"  style="font-size:10px;width: 120px;background-color: #C9C9C9" disabled="true" type="text"><br>
         <label class="dcp-label">物料号</label></label><input id="matnr" class="cls-attr-input" disabled="true"><br>
-        <label class="dcp-label">物料描述</label><textarea id="maktx" style="font-size:10px;width: 120px;height: 40px;background-color: #C9C9C9" disabled="true" rows="2"></textarea><br>
-        <!--<label class="dcp-label">压铸机台</label><input id="arbplDesc"  style="font-size:10px;width: 120px;height: 40px;background-color: #C9C9C9" disabled="true" type="text"><br>-->
-        <label class="dcp-label">模号</label><select id="mode" class="cls-attr-input"type="text"></select><br>
+        <label class="dcp-label">物料描述</label><input id="maktx"  style="font-size:10px;width: 120px;background-color: #C9C9C9" disabled="true" type="text"><br>
+        <!--<label class="dcp-label">物料描述</label><textarea id="maktx" style="font-size:10px;width: 120px;height: 40px;background-color: #C9C9C9" disabled="true" rows="2"></textarea><br>-->
+        <label class="dcp-label">模号</label><select id="mode" class="cls-attr-input"type="text">
+        <option value="">请选择</option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        </select><br>
         <label class="dcp-label">出模数</label><input id="mdnum" class="cls-attr-input" disabled="true"><br>
         <label class="dcp-label">班次日期</label><select id="prd_date" class="cls-attr-input"type="text">
         <option value="">请选择</option>
@@ -738,7 +781,6 @@
         <option value="">请选择</option>
         <option value="A">A</option>
         <option value="B">B</option>
-        <option value="C">C</option>
     </select><br>
         <label class="dcp-label">班次</label><select id="banc" class="cls-attr-input">
         <option value="">请选择</option>

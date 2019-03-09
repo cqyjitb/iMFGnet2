@@ -158,22 +158,15 @@
     </insert>
 
     <update id="updateRow" parameterType="yj.core.qcaudithead.dto.Qcaudithead">
-        update wip_qcaudithead set(WERKS,RECORDID,SOURCETYPE,DEPT_RESPONSIBLE,LINEID,LINE_DESC,SHIFT,KUNNR,KUNNR_DESC,
-        ZPGDBAR,MATNR,MAKTX,MATNR2,MAKTX2,CHARG,SFFLG,DIECD,GSTRP,VORNR,
-        RESPONSIBLE,DFECT_QTY,GMEIN,OA_PRESSCLS,OA_STATUS,DEFCT_TYPE,HANDLE_RESULTS1,HANDLE_RESULTS2,HANDLE_RESULTS3,SCRAP_QTY,
-        RWORK_QTY,CONSS_QTY,DFECT_TXT,REPORT_DEPT,REPORTOR,REPORT_DATE,AUDIT_TXT,QC_ENGER,AUDITOR1,AUDIT_HANDLE1,
-        AUDIT_DATE1,AUDITOR2,AUDIT_HANDLE2,AUDIT_DATE2,AUDITOR3,AUDIT_HANDLE3,AUDIT_DATE3,AUDITOR4,AUDIT_HANDLE4,AUDIT_DATE4,
-        AUDITOR5,AUDIT_HANDLE5,AUDIT_DATE5,AUDITOR6,AUDIT_HANDLE6,AUDIT_DATE6,AUDITOR7,AUDIT_HANDLE7,AUDIT_DATE7,AUDITOR8,
-        AUDIT_HANDLE8,AUDIT_DATE8,AUDITOR9,AUDIT_HANDLE9,AUDIT_DATE9,AUDITOR10,AUDIT_HANDLE10,AUDIT_DATE10,HANDLE_RESULTS,QM_NOTIFICATION,
-        QM_NOTNTYPE,QM_NOTNCRTDT,REWORK_ORDER,REWORK_ORDERCRTDT,RWK_QTY,RWK_QLFQTY,RWK_SCRAPQTY,CUSTOMER_CONFIRM,CREATION_DATE,CREATED_BY)VALUES
-        (#{werks},#{recordid},#{sourcetype},#{deptResponsible},#{lineid},#{lineDesc},#{shift},#{kunnr},#{kunnrDesc},#{zpgdbar},
-        #{matnr},#{maktx},#{matnr2},#{maktx2},#{charg},#{sfflg},#{diecd},#{gstrp},#{vornr},#{responsible},
-        #{dfectQty},#{gmein},#{oaPresscls},#{oaStatus},#{defctType},#{handleResults1},#{handleResults2},#{handleResults3},#{scrapQty},#{rworkQty},
-        #{conssQty},#{dfectTxt},#{reportDept},#{reportor},#{reportDate},#{auditTxt},#{qcEnger},#{auditor1},#{auditHandle1},#{auditDate1},
-        #{auditor2},#{auditHandle2},#{auditDate2},#{auditor3},#{auditHandle3},#{auditDate3},#{auditor4},#{auditHandle4},#{auditDate4},#{auditor5},
-        #{auditHandle5},#{auditDate5},#{auditor6},#{auditHandle6},#{auditDate6},#{auditor7},#{auditHandle7},#{auditDate7},#{auditor8},#{auditHandle8},
-        #{auditDate8},#{auditor9},#{auditHandle9},#{auditDate9},#{auditor10},#{auditHandle10},#{auditDate10},#{handleResults},#{qmNotification},#{qmNotntype},
-        #{qmNotncrtdt},#{reworkOrder},#{reworkOrdercrtdt},#{rwkQty},#{rwkQlfqty},#{rwkScrapqty},#{customerConfirm},#{creationDate},#{createdBy})
+        update wip_qcaudithead set WERKS = #{werks},
+        SOURCETYPE= #{sourcetype},
+        DEPT_RESPONSIBLE = #{deptResponsible},
+        LINEID = #{lineid},
+        LINE_DESC = #{lineDesc},
+        VORNR = #{vornr},
+        RESPONSIBLE = #{responsible},
+        LAST_UPDATE_DATE = #{lastUpdateDate},
+        LAST_UPDATED_BY = #{lastUpdatedBy}
         <where>
             WERKS = #{werks}
             and RECORDID = #{recordid}

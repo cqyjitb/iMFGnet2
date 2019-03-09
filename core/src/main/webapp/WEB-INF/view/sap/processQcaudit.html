@@ -287,6 +287,7 @@
         resizable: true,
         scrollable: true,
         navigatable: false,
+        selectable: 'rowbox',
         pageable: {
             pageSizes: ["all"],
             refresh: true,
@@ -294,8 +295,8 @@
         },
         toolbar: [
             {
-                name: "print",
-                template: '<span id="printBtn" class="btn btn-success">处理报废</span>'
+                name: "process",
+                template: '<span id="processBtn" class="btn btn-success">处理报废</span>'
             }],
         columns: [
             {
@@ -304,17 +305,18 @@
                         name: "edit",
                         isEnable: function (data) {
                             return true;
+                            return data.url == '403.html'
                         }
                     },
                     {name: "destroy"},
-                    {
-                        name: 'ding',//注意这里定义好name后，模板中一定要有对应的样式 k-grid-[name]
-                        template: '<a class="k-button k-button-icontext k-grid-ding"><span class="fa fa-thumbs-up"></span></a>',
-                        click: function (e) {
-                            e.preventDefault();
-                            alert('顶!~')
-                        }
-                    }
+//                    {
+//                        name: 'ding',//注意这里定义好name后，模板中一定要有对应的样式 k-grid-[name]
+//                        template: '<a class="k-button k-button-icontext k-grid-ding"><span class="fa fa-thumbs-up"></span></a>',
+//                        click: function (e) {
+//                            e.preventDefault();
+//                            alert('顶!~')
+//                        }
+//                    }
                 ],
                 locked: true,
                 title: "操作",
@@ -422,7 +424,7 @@
                 editor:function (container,options) {
                     $('<input name="' + options.field + '"/>').appendTo(container).kendoLov($.extend(<@lov "LOV_LINE_NEW"/>,
                         {
-                            textField: 'name',//显示的字段
+                            textField: 'descriptions',//显示的字段
                             model    : options.model,//将lov选中数据放在model中
                             query: function (e) {
                                 e.param['deptId'] = options.model.deptResponsible;
@@ -479,6 +481,19 @@
                 },
                 attributes: {
                     style: "text-align: center;"
+                },
+                template:function(dataItem){
+                    return dataItem['responsible'] || ''
+                },
+                editor:function (container,options) {
+                    $('<input name="' + options.field + '"/>').appendTo(container).kendoLov($.extend(<@lov "LOV_EMPLOYEE2"/>,
+
+                        {
+                            textField:"username",
+                            model:options.model
+                        }
+                ));
+
                 }
             },
             {
@@ -1352,6 +1367,33 @@
     });
 
     Hap.autoResizeGrid("#Grid");
+    var tabCounter = 0;
+    $('#processBtn').on('click', function () {
+        var grid = $("#Grid").data("kendoGrid"),
+            selections = grid.selectedDataItems();
+        if (selections.length > 0) {
+            var tab = $('#tabstrip').data('kendoTabStrip');
+            var txt1 = "处理不合格品审理单2-" + selections["0"].recordid + " ";
+            var index = tab.tabGroup["0"].children.length;
+            if (index == 2){
+
+            }else{
+                tab.append({
+                    tabid: 'Item-' + (++tabCounter),
+                    text:txt1 + '<span class="k-icon k-i-close"></span>',
+                    encoded:false,
+                    content:'<div id="grid2"></div>'
+                });
+            }
+
+        }else{
+            kendo.ui.showErrorDialog({
+                title: '错误',
+                message: "请选择需要处理的不合格品审理单行！"
+            });
+        }
+    });
+
 </script>
 </body>
 </html>

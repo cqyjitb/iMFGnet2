@@ -51,6 +51,11 @@ public class QcauditheadController extends BaseController {
     public ResponseData update(HttpServletRequest request, @RequestBody List<Qcaudithead> dto) {
         IRequest requestCtx = createRequestContext(request);
         ResponseData rs = new ResponseData();
+        String createdBy1 = "" + request.getSession().getAttribute("userId");
+        for (int i =0;i<dto.size();i++){
+            dto.get(i).setLastUpdatedBy(Long.parseLong(createdBy1));
+            dto.get(i).setLastUpdateDate(new Date());
+        }
         int m = 0;
         m = service.updateRow(dto);
         if (m != dto.size()){

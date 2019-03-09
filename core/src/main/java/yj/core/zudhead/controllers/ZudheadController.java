@@ -135,7 +135,7 @@ public class ZudheadController extends BaseController {
             zudhead.setCreationDate(new Date());
             List<ParamAndQjjlh> listparamQjjlh = new ArrayList<>();
             List<InOutRecord> listinout = new ArrayList<>();
-
+            String l_error = "";
             //准备审理单行数据 和 报工数据
             for (int i = 0; i < a.size(); i++) {
                 //审理单行数据
@@ -189,34 +189,42 @@ public class ZudheadController extends BaseController {
 
                 InOutRecord inOutRecord = new InOutRecord();
                 inOutRecord = iInOutRecordService.selectById(zudlist.getZqjjlh());
+                if  (!inOutRecord.getReflag().equals("0")){
+                    responseData.setMessage("选择的取件记录中存在状态已经变更的行，请重新查询后创建不合格品审理单！");
+                    l_error = "E";
+                    break;
+                }
                 inOutRecord.setReflag(2L);
                 inOutRecord.setLastUpdatedBy(Long.valueOf(createdBy));
                 inOutRecord.setLastUpdateDate(new Date());
                 listinout.add(inOutRecord);
             }
 
-            //保存不合格品审理单1 表头
-            if (zudhead != null){
-                int num = service.insertHead(zudhead);
-                if (num == 1){
-                    num = zudlistService.insertItem(listitem);
-                    if (num != listitem.size()){
+            if (l_error.equals("E")){
+                responseData.setSuccess(false);
+            }else{
+                //保存不合格品审理单1 表头
+                if (zudhead != null){
+                    int num = service.insertHead(zudhead);
+                    if (num == 1){
+                        num = zudlistService.insertItem(listitem);
+                        if (num != listitem.size()){
+                            responseData.setCode("E");
+                            responseData.setSuccess(false);
+                            responseData.setMessage("创建不合格品审理单1行失败！");
+                        }else{
+                            iInOutRecordService.batchUpdateReflag(listinout);
+                            responseData.setCode("S");
+                            responseData.setSuccess(true);
+                            responseData.setMessage("创建不合格品审理单1成功！单号：" + zudhead.getZudnum());
+                        }
+                    }else{
                         responseData.setCode("E");
                         responseData.setSuccess(false);
-                        responseData.setMessage("创建不合格品审理单1行失败！");
-                    }else{
-                        iInOutRecordService.batchUpdateReflag(listinout);
-                        responseData.setCode("S");
-                        responseData.setSuccess(true);
-                        responseData.setMessage("创建不合格品审理单1成功！单号：" + zudhead.getZudnum());
+                        responseData.setMessage("创建不合格品审理单1表头失败！");
                     }
-                }else{
-                    responseData.setCode("E");
-                    responseData.setSuccess(false);
-                    responseData.setMessage("创建不合格品审理单1表头失败！");
                 }
             }
-
 
         }
         return responseData;

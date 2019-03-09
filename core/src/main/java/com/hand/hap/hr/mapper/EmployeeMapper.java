@@ -19,4 +19,6 @@ public interface EmployeeMapper extends Mapper<Employee> {
     Employee getDeptDirector(String var1);
 
     List<Employee> queryAll(Employee var1);
+
+    List<Employee> selectEmployeeCode(String code);
 }

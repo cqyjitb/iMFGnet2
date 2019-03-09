@@ -26,4 +26,6 @@ public interface IEmployeeService extends IBaseService<Employee>, ProxySelf<IEmp
     void updateUser(IRequest var1, UserAndRoles var2);
 
     Employee queryByCode(String code);
+
+    List<Employee> selectEmployeeCode(String code);
 }

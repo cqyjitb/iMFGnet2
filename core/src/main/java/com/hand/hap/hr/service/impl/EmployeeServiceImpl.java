@@ -104,4 +104,9 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee> implements IE
     public Employee getDeptDirector(String employeeCode) {
         return this.employeeMapper.getDeptDirector(employeeCode);
     }
+
+    @Override
+    public List<Employee> selectEmployeeCode(String code) {
+        return employeeMapper.selectEmployeeCode(code);
+    }
 }

@@ -186,6 +186,19 @@ public class Qcaudithead extends BaseDTO {
     private String gstrp2; //生产日期
     private String reportDate2; //报告时间
 
+    @Transient
+    private Long createdBy;
+
+    @Transient
+    private Date creationDate;
+
+    @Transient
+    private Long lastUpdatedBy;
+
+    @Transient
+    private  Date lastUpdateDate;
+
+
     public String getTlevelcode2() {
         return tlevelcode2;
     }
@@ -864,5 +877,45 @@ public class Qcaudithead extends BaseDTO {
 
     public void setTlevelcode(String tlevelcode) {
         this.tlevelcode = tlevelcode;
+    }
+
+    @Override
+    public Long getCreatedBy() {
+        return createdBy;
+    }
+
+    @Override
+    public void setCreatedBy(Long createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    @Override
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    @Override
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    @Override
+    public Long getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+
+    @Override
+    public void setLastUpdatedBy(Long lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+    @Override
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
+    }
+
+    @Override
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
     }
 }
