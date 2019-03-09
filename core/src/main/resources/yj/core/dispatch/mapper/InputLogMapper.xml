@@ -96,8 +96,8 @@
             <if test="plant != null">
                 and il.plant = #{plant}
             </if>
-            <if test="dispatch != null">
-                and il.dispatch = #{dispatch}
+            <if test="orderno != null">
+                AND il.orderno = #{orderno}
             </if>
             <if test="fevor != null">
                 and r.fevor = #{fevor}
@@ -107,20 +107,20 @@
     </select>
 
     <select id="selectByOrderno" parameterType="java.lang.String" resultType="java.lang.Integer">
-        SELECT COALESCE(sum(yeild),0) from confirmation_input_log
+        SELECT COUNT(*) from confirmation_input_log
         <where>
-            1 = 1
+            (yeild = null OR yeild = 0)
             <if test="orderno != null">
                 AND orderno = #{orderno}
             </if>
-            <if test="classno != null">
+            <!--<if test="classno != null">
                 AND classno = #{classno}
-            </if>
+            </if>-->
             <if test="postingDateAfter != null">
-                AND posting_date >= #{postingDateAfter}
+                AND CREATION_DATE >= #{postingDateAfter}
             </if>
             <if test="postingDateBefore != null">
-                AND #{postingDateBefore} >= posting_date
+                AND #{postingDateBefore} >= CREATION_DATE
             </if>
         </where>
     </select>

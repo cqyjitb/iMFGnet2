@@ -70,13 +70,19 @@ public interface InputLogMapper extends Mapper<InputLog>{
     /**
      * 查询表格confirmation_input_log中合格品数量汇总 918100064
      * @param orderno 订单
-     * @param classno 班次
      * @param postingDateBefore 过账日期
      * @param postingDateAfter  过账日期
      * @return
      */
-    int selectByOrderno(@Param("orderno")String orderno, @Param("classno")String classno,@Param("postingDateAfter")String postingDateAfter,
+    int selectByOrderno(@Param("orderno")String orderno, @Param("postingDateAfter")String postingDateAfter,
                              @Param("postingDateBefore")String postingDateBefore);
 
-    List<InputLog> queryCreationDate(@Param("dispatch")String dispatch,@Param("plant")String plant,@Param("fevor")String fevor);
+    /**
+     *
+     * @param orderno
+     * @param plant
+     * @param fevor
+     * @return
+     */
+    List<InputLog> queryCreationDate(@Param("orderno")String orderno,@Param("plant")String plant,@Param("fevor")String fevor);
 }

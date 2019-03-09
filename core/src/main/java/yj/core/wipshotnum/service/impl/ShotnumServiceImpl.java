@@ -22,9 +22,7 @@ import yj.core.wipshotnum.service.IShotnumService;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Service
 @Transactional
@@ -53,11 +51,11 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
         Shotnum shotnum = new Shotnum();
         Marc marc = new Marc();
         Shiftstime shiftstime = new Shiftstime();
-        Integer mdnum = 1,shotNum = 0,yeild = 0;
-        Long grgew = 0L;
         if(list1.size() > 0){
             SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             SimpleDateFormat sfWeek = new SimpleDateFormat("EEEE");
+            Calendar cal = new GregorianCalendar();
             if("Y".equals(dto.getTotal())){
                 for(int i=0;i<list1.size();i++){
                     list.add(list1.get(i));
@@ -69,6 +67,8 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                     }
                 }
                 for(int i=0;i<list.size();i++){
+                    Integer mdnum = 1,shotNum = 0,yeild = 0;
+                    Long grgew = 0L;
                     shotnum = list.get(i);
                     list2 = shotnumMapper.selectShotnum(shotnum.getWerks(),shotnum.getFevor(),null,
                             shotnum.getArbpl(),dto.getPrdDateAfter(),dto.getPrdDateBefore());
@@ -114,15 +114,15 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                         shiftstime = shiftstimeMapper.selectByShift("1");
                         Shiftstime shiftstime2 = shiftstimeMapper.selectByShift("3");
                         String startDate = (minTime + " " + shiftstime.getBgsTime());
-                        String endDate = (maxTime + " " + shiftstime2.getBgeTime());
-                        inputLog = inputLogMapper.queryCreationDate(shotnum.getZpgdbar(),shotnum.getWerks(),shotnum.getFevor());
-                        for(int n=0;n<inputLog.size();n++){
-                            String creatDate = inputLog.get(n).getCreatDate().substring(0,19);
-                            if(creatDate.compareTo(startDate)>0 && endDate.compareTo(creatDate)>0){
-                                for(int j=0;j<afko.size();j++){
-                                    yeild = yeild + inputLogMapper.selectByOrderno(afko.get(j).getAufnr(),null,minTime,maxTime);
-                                }
-                            }
+                        try {
+                            cal.setTime(sf.parse(maxTime));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        cal.add(cal.DATE,1);
+                        String endDate = sf.format(cal.getTime())+ " " + shiftstime2.getBgeTime();
+                        for(int j=0;j<afko.size();j++){
+                            yeild = yeild + inputLogMapper.selectByOrderno(afko.get(j).getAufnr(),startDate,endDate);
                         }
                     }
                     shotnum.setYeild(yeild);
@@ -140,7 +140,8 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                     }
                 }
                 for(int i=0;i<list.size();i++){
-                    shotNum = 0;
+                    Integer mdnum = 1,shotNum = 0,yeild = 0;
+                    Long grgew = 0L;
                     shotnum = list.get(i);
                     list2 = shotnumMapper.selectShotnum(shotnum.getWerks(),shotnum.getFevor(),shotnum.getShifts(),
                             shotnum.getArbpl(),shotnum.getPrdDate(),shotnum.getPrdDate());
@@ -180,26 +181,40 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        inputLog = inputLogMapper.queryCreationDate(shotnum.getZpgdbar(),shotnum.getWerks(),shotnum.getFevor());
                         if("星期日".equals(date)){
                             String startDate = shotnum.getPrdDate() + " " + shiftstime.getZsTime();
-                            for(int m=0;m<inputLog.size();m++){
-                                String creatDate = inputLog.get(m).getCreatDate().substring(0,19);
-                                if((creatDate.compareTo(startDate)) > 0) {
-                                    for(int j=0;j<afko.size();j++){
-                                        yeild = yeild + inputLogMapper.selectByOrderno(afko.get(j).getAufnr(),shotnum.getShifts(),shotnum.getPrdDate(),shotnum.getPrdDate());
-                                    }
+                            String endDate = shotnum.getPrdDate();
+                            if(shotnum.getShifts().equals("3")){
+                                try {
+                                    cal.setTime(sf.parse(endDate));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
                                 }
+                                cal.add(cal.DATE,1);
+                                endDate = sf.format(cal.getTime())+ " " + shiftstime.getZeTime();
+                            }else{
+                                endDate = endDate + " " + shiftstime.getZeTime();
+                            }
+
+                            for(int j=0;j<afko.size();j++){
+                                yeild = yeild + inputLogMapper.selectByOrderno(afko.get(j).getAufnr(),startDate,endDate);
                             }
                         }else{
                             String startDate = shotnum.getPrdDate() + " " + shiftstime.getBgsTime();
-                            for(int m=0;m<inputLog.size();m++){
-                                String creatDate = inputLog.get(m).getCreatDate().substring(0,19);
-                                if((creatDate.compareTo(startDate)) > 0){
-                                    for(int j=0;j<afko.size();j++){
-                                        yeild = yeild + inputLogMapper.selectByOrderno(afko.get(j).getAufnr(),shotnum.getShifts(),shotnum.getPrdDate(),shotnum.getPrdDate());
-                                    }
+                            String endDate = shotnum.getPrdDate();
+                            if(shotnum.getShifts().equals("3")){
+                                try {
+                                    cal.setTime(sf.parse(endDate));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
                                 }
+                                cal.add(cal.DATE,1);
+                                endDate = sf.format(cal.getTime())+ " " + shiftstime.getBgeTime();
+                            }else{
+                                endDate = endDate + " " + shiftstime.getBgeTime();
+                            }
+                            for(int j=0;j<afko.size();j++){
+                                yeild = yeild + inputLogMapper.selectByOrderno(afko.get(j).getAufnr(),startDate,endDate);
                             }
                         }
                     }
