@@ -153,6 +153,11 @@ public class ZwipqController extends BaseController {
 
         //查询箱号信息
         Xhcard xhcard = xhcardService.selectByBacode(zxhbar);
+        if (xhcard.getZsxwc().equals("X")){
+            rs.setSuccess(false);
+            rs.setMessage("该箱号已完成上线，不允许进行机加上线操作！");
+            return rs;
+        }
 
         //查询机加派工单
         Cardh cardh = cardhService.selectByBarcode(zpgdbar);

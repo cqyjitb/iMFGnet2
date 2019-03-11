@@ -196,6 +196,14 @@
                 dbanc.options[0].selected = true;
                 document.getElementById("shot_start").value = "";
                 document.getElementById("shot_end").value = "";
+                if (Omode.options.length > 1){
+                    for (var i =1;i<Omode.options.length;i++){
+                        if (Omode.options[i].innerHTML != ""){
+                            Omode.options[i].innerHTML = Omode.options[i].value = "";
+                        }
+                    }
+                }
+
                 //获取条码页面元素
                 var roBcd=document.getElementById("zpgdbar");
 
@@ -269,6 +277,14 @@
 
                                     var listmod = list[1];
                                     Omode = document.getElementById("mode");
+                                    if (Omode.options.length > 1){
+                                        for (var i =1;i<Omode.options.length;i++){
+                                            if (Omode.options[i].innerHTML != ""){
+                                                Omode.options[i].innerHTML = Omode.options[i].value = "";
+                                            }
+                                        }
+                                    }
+
                                     roBcd.setAttribute("disabled",true);
 
                                     if (listmod.length > 0){

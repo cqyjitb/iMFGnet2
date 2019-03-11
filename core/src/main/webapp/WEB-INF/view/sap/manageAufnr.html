@@ -485,7 +485,9 @@
                                         title: '错误',
                                         message: "请点击选中行-本次可创建数量列，输入本次可创建数量！"
                                     });
-                                } else if ((selections["0"].cursum > selections["0"].cansum) && (selections["0"].auart != "YZ03") ) {
+                                } else if ((selections["0"].cursum > selections["0"].cansum) && (selections["0"].auart != "YZ03") &&
+                                    (selections["0"].auart != "YZ01") && (selections["0"].auart != "YZ02") && (selections["0"].auart != "YZ04")
+                                && (selections["0"].auart != "YZ06")) {
                                     // 2019-02-23 修改 针对订单类型为YZ03的试模订单 取消创建流转卡数量限制
                                         kendo.ui.showErrorDialog({
                                             title: '错误',
