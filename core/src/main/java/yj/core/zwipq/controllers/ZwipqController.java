@@ -273,6 +273,11 @@ public class ZwipqController extends BaseController {
 
         //查询箱号信息
         Xhcard xhcard = xhcardService.selectByBacode(zxhbar);
+        if (xhcard.getZsxwc().equals("X")){
+            rs.setSuccess(false);
+            rs.setMessage("该箱号已完成上线，本次上线无效！");
+            return rs;
+        }
         //查询压铸流转卡
         Cardh cardhyz = cardhService.selectByZxhbar(xhcard.getAufnr(),xhcard.getZxhnum());
 
@@ -393,6 +398,13 @@ public class ZwipqController extends BaseController {
     @ResponseBody
     public ResponseData writeOffZwipq(HttpServletRequest request, String line_id, String zxhbar, String zpgdbar, int cursum) {
         ResponseData rs = new ResponseData();
+        Xhcard xhcard = new Xhcard();
+        xhcard = xhcardService.selectByBacode(zxhbar);
+        if (xhcard.getZsxwc().equals("X")){
+            rs.setSuccess(false);
+            rs.setMessage("该箱号已完成上线，本次取消操作无效！");
+            return rs;
+        }
         //1：查询当前机加流转卡 当前箱号 所有的队列信息 按照 上线序列号倒序排列
         List<Zwipq> list = service.selectBylineidAndZxhbarAndZpgdbar(line_id, zxhbar, zpgdbar);
         if (list.size() == 0 || list.size() - cursum < 0) {
@@ -424,6 +436,14 @@ public class ZwipqController extends BaseController {
     @ResponseBody
     public ResponseData callmigo(HttpServletRequest request, String line_id, String zxhbar, int cynum, String bwart, int createBy, String zpgdbar) {
         ResponseData rd = new ResponseData();
+        Xhcard xhcard = new Xhcard();
+        xhcard = xhcardService.selectByBacode(zxhbar);
+        if (xhcard.getZsxwc().equals("X")){
+            rd.setSuccess(false);
+            rd.setMessage("该箱号已完成上线！上线无效！");
+            return rd;
+        }
+
         List<Ztbc0018> list = new ArrayList<>();
         list = ztbc0018Service.selectByZxhbar(zxhbar);
         if (list.size() > 0){
@@ -793,6 +813,13 @@ public class ZwipqController extends BaseController {
     ResponseData updatesxwc(HttpServletRequest request,String zxhbar){
         ResponseData rs = new ResponseData();
         Xhcard xhcard = xhcardService.selectByBacode(zxhbar);
+        if (xhcard.getZsxwc() != null){
+            if (xhcard.getZsxwc().equals("X")){
+                rs.setSuccess(false);
+                rs.setMessage("该箱号已经上线完成，本次操作无效！");
+                return rs;
+            }
+        }
         xhcard.setZsxwc("X");
         int i = xhcardService.updateZsxwc(xhcard);
         if (i == 1){
