@@ -7,8 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import yj.core.afko.dto.Afko;
 import yj.core.afko.mapper.AfkoMapper;
-import yj.core.cardh.dto.Cardh;
-import yj.core.cardh.mapper.CardhMapper;
 import yj.core.dispatch.dto.InputLog;
 import yj.core.dispatch.mapper.InputLogMapper;
 import yj.core.marc.dto.Marc;
@@ -83,10 +81,16 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                             Integer shotNum1 = ((int)(list2.get(a).getShotEnd() - list2.get(a).getShotStart())*(mdnum-1));
                             shotNum = shotNum + shotNum1;
                             if(marc != null){
+                                if(marc.getBrgew() == null){
+                                    marc.setBrgew(0.0);
+                                }
                                 grgew = grgew + Math.round(shotNum1 * 2 * marc.getBrgew());
                             }
                         }else{
                             if(marc != null){
+                                if(marc.getBrgew() == null){
+                                    marc.setBrgew(0.0);
+                                }
                                 grgew = grgew + Math.round(((int)(list2.get(a).getShotEnd() - list2.get(a).getShotStart())) * marc.getBrgew());
                             }
                         }
@@ -156,6 +160,9 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                         Integer shotNum1 = ((int)(list2.get(a).getShotEnd() - list2.get(a).getShotStart())*mdnum);
                         shotNum = shotNum + shotNum1;
                         if(marc != null){
+                            if(marc.getBrgew() == null){
+                                marc.setBrgew(0.0);
+                            }
                             grgew = grgew + Math.round(shotNum1 * marc.getBrgew());
                         }
                         if(a > 0){
