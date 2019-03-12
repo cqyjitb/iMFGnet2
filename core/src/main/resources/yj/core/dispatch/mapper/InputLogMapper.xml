@@ -107,10 +107,9 @@
     </select>
 
     <select id="selectByOrderno" parameterType="java.lang.String" resultType="java.lang.Integer">
-        SELECT COUNT(*) from confirmation_input_log il,confirmation_result r,confirmation_log l
+        SELECT COALESCE(sum(il.yeild),0) from confirmation_input_log il,confirmation_result r,confirmation_log l
         <where>
-            (yeild = null OR yeild = 0)
-            AND il.id= r.input_id
+            il.id= r.input_id
             AND l.ref_id = il.id
             AND r.is_reversed ='0'
             AND l.tran_type = '0'
