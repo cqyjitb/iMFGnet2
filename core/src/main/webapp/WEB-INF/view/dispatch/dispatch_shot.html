@@ -357,12 +357,19 @@
                 var zbanc = Obanc.value;
                 var zbanz = Obanz.value;
                 var mode =  Omode.options[Omode.selectedIndex].value;
-                if (Omode.length > 1){
-                    if (mode == ""){
-                        openMsgDialog("错误","请选择模号！","M")
+                for (var i = 0;i< Omode.length ;i++){
+                    if (Omode.options[i].value != "" && mode == ""){
+                        openMsgDialog("错误","请选择模号！","M");
                         l_error = "E";
+                        break;
                     }
                 }
+//                if (Omode.length > 1){
+//                    if (mode == ""){
+//                        openMsgDialog("错误","请选择模号！","M")
+//                        l_error = "E";
+//                    }
+//                }
 
                 if (arbpl == "" || arbpl == null){
                     openMsgDialog("错误","未能获取到压铸机台号！","M")

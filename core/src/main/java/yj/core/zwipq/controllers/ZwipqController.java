@@ -273,11 +273,14 @@ public class ZwipqController extends BaseController {
 
         //查询箱号信息
         Xhcard xhcard = xhcardService.selectByBacode(zxhbar);
-        if (xhcard.getZsxwc().equals("X")){
-            rs.setSuccess(false);
-            rs.setMessage("该箱号已完成上线，本次上线无效！");
-            return rs;
+        if (xhcard.getZsxwc() != null){
+            if (xhcard.getZsxwc().equals("X")){
+                rs.setSuccess(false);
+                rs.setMessage("该箱号已完成上线，本次上线无效！");
+                return rs;
+            }
         }
+
         //查询压铸流转卡
         Cardh cardhyz = cardhService.selectByZxhbar(xhcard.getAufnr(),xhcard.getZxhnum());
 
@@ -400,10 +403,12 @@ public class ZwipqController extends BaseController {
         ResponseData rs = new ResponseData();
         Xhcard xhcard = new Xhcard();
         xhcard = xhcardService.selectByBacode(zxhbar);
-        if (xhcard.getZsxwc().equals("X")){
-            rs.setSuccess(false);
-            rs.setMessage("该箱号已完成上线，本次取消操作无效！");
-            return rs;
+        if (xhcard.getZsxwc() != null){
+            if (xhcard.getZsxwc().equals("X")){
+                rs.setSuccess(false);
+                rs.setMessage("该箱号已完成上线，本次取消操作无效！");
+                return rs;
+            }
         }
         //1：查询当前机加流转卡 当前箱号 所有的队列信息 按照 上线序列号倒序排列
         List<Zwipq> list = service.selectBylineidAndZxhbarAndZpgdbar(line_id, zxhbar, zpgdbar);
