@@ -544,7 +544,7 @@
                                 ablemodel();
                             }
 
-                            ableerpdate()
+                            ableerpdate();
                             ablebanz();
                             ablebanc();
                         }
@@ -553,6 +553,38 @@
 
                     bCan.style.display = "";
                     bCan.onclick=function () {
+                        l_isExit = "";
+                        var Omodo = document.getElementById("mode");
+                        var obanc=document.getElementById("banc");
+                        var obanz=document.getElementById("banz");
+                        var oprd_date=document.getElementById("prd_date");
+
+                        obanz.disabled="";
+                        obanz.style.display = "";
+                        obanz.style.zIndex="-1";
+
+                        obanc.disabled="";
+                        obanc.style.display = "";
+                        obanc.style.zIndex="-1";
+
+
+
+                        oprd_date.disabled="";
+                        oprd_date.style.display = "";
+                        oprd_date.style.zIndex="-1";
+
+                        for (var i = 0;i< Omode.length ;i++){
+                            if (Omode.options[i].value != ""){
+                                Omodo.disabled="";
+                                Omodo.style.display = "";
+                                Omodo.style.zIndex="-1";
+                                break;
+                            }
+                        }
+//                        ablemodel();
+//                        ableerpdate()
+//                        ablebanz();
+//                        ablebanc();
                         dMsg.style.display="none";
                         removeMask2Dialog();
                     }
