@@ -189,7 +189,7 @@ public class ZudheadController extends BaseController {
 
                 InOutRecord inOutRecord = new InOutRecord();
                 inOutRecord = iInOutRecordService.selectById(zudlist.getZqjjlh());
-                if  (!inOutRecord.getReflag().equals("0")){
+                if  (inOutRecord.getReflag() != 0){
                     responseData.setMessage("选择的取件记录中存在状态已经变更的行，请重新查询后创建不合格品审理单！");
                     l_error = "E";
                     break;
