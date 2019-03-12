@@ -115,12 +115,12 @@
             AND l.tran_type = '0'
             AND l.msgty = 'S'
             and il.operation = '0010'
-           <!-- <if test="orderno != null">
+            <if test="orderno != null">
                 AND il.orderno = #{orderno}
-            </if>-->
-            <if test="fevor != null">
-                and r.fevor = #{fevor}
             </if>
+            <!--<if test="fevor != null">
+                and r.fevor = #{fevor}
+            </if>-->
             <if test="postingDateAfter != null">
                 AND il.CREATION_DATE >= #{postingDateAfter}
             </if>

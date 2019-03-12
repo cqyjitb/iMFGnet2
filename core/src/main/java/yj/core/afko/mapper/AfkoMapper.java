@@ -35,10 +35,9 @@ public  interface AfkoMapper
      /**
       * 根据工作中心和生产部门查询 918100064
       * @param arbpl
-      * @param fevor
       * @return
       */
-     List<Afko> selectByFevor(@Param("arbpl")String arbpl,@Param("fevor")String fevor);
+     List<Afko> selectByFevor(@Param("arbpl")String arbpl);
 
      /**
       * 物料查询LOV_PLNBEZ  918100064

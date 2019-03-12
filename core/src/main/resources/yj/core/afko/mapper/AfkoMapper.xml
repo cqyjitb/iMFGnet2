@@ -77,14 +77,14 @@
     </select>
 
     <select id="selectByFevor" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select DISTINCT ao.fevor,ao.txt,ao.aufnr from sap_afko ao,sap_afvc ac
+        select DISTINCT ao.aufnr from sap_afko ao,sap_afvc ac
         <where>
             ao.aufpl = ac.aufpl
-            AND ac.vornr = "0010"
+--             AND ac.vornr = "0010"
             AND ao.auart in('YZ01','YZ03','YZ04')
-            <if test="fevor != null">
+            <!--<if test="fevor != null">
                 AND ao.fevor = #{fevor}
-            </if>
+            </if>-->
             <if test="arbpl != null">
                 AND ac.arbpl = #{arbpl}
             </if>

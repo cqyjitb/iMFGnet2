@@ -113,18 +113,21 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                     shotnum.setBrgew(grgew);
                     shotnum.setShotStart(startMin);
                     shotnum.setShotEnd(endMax);
-                    shiftstime = shiftstimeMapper.selectByShift("1");
-                    Shiftstime shiftstime2 = shiftstimeMapper.selectByShift("3");
-                    String startDate = (minTime + " " + shiftstime.getBgsTime());
-                    try {
-                        cal.setTime(sf.parse(maxTime));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    cal.add(cal.DATE,1);
-                    String endDate = sf.format(cal.getTime())+ " " + shiftstime2.getBgeTime();
-                    for(int j=0;j<afko.size();j++){
-                        yeild = yeild + inputLogMapper.selectByOrderno(shotnum.getFevor(),startDate,endDate);
+                    afko = afkoMapper.selectByFevor(shotnum.getArbpl());
+                    if(afko.size() > 0){
+                        shiftstime = shiftstimeMapper.selectByShift("1");
+                        Shiftstime shiftstime2 = shiftstimeMapper.selectByShift("3");
+                        String startDate = (minTime + " " + shiftstime.getBgsTime());
+                        try {
+                            cal.setTime(sf.parse(maxTime));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        cal.add(cal.DATE,1);
+                        String endDate = sf.format(cal.getTime())+ " " + shiftstime2.getBgeTime();
+                        for(int j=0;j<afko.size();j++){
+                            yeild = yeild + inputLogMapper.selectByOrderno(afko.get(j).getAufnr(),startDate,endDate);
+                        }
                     }
                     shotnum.setYeild(yeild);
                     shotnum.setWasteNum(shotNum - yeild);
@@ -183,40 +186,42 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-                    if("星期日".equals(date)){
-                        String startDate = shotnum.getPrdDate() + " " + shiftstime.getZsTime();
-                        String endDate = shotnum.getPrdDate();
-                        if(shotnum.getShifts().equals("3")){
-                            try {
-                                cal.setTime(sf.parse(endDate));
-                            } catch (ParseException e) {
-                                e.printStackTrace();
+                    afko = afkoMapper.selectByFevor(shotnum.getArbpl());
+                    if(afko.size() > 0){
+                        if("星期日".equals(date)){
+                            String startDate = shotnum.getPrdDate() + " " + shiftstime.getZsTime();
+                            String endDate = shotnum.getPrdDate();
+                            if(shotnum.getShifts().equals("3")){
+                                try {
+                                    cal.setTime(sf.parse(endDate));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                cal.add(cal.DATE,1);
+                                endDate = sf.format(cal.getTime())+ " " + shiftstime.getZeTime();
+                            }else{
+                                endDate = endDate + " " + shiftstime.getZeTime();
                             }
-                            cal.add(cal.DATE,1);
-                            endDate = sf.format(cal.getTime())+ " " + shiftstime.getZeTime();
-                        }else{
-                            endDate = endDate + " " + shiftstime.getZeTime();
-                        }
-
-                        for(int j=0;j<afko.size();j++){
-                            yeild = yeild + inputLogMapper.selectByOrderno(shotnum.getFevor(),startDate,endDate);
-                        }
-                    }else{
-                        String startDate = shotnum.getPrdDate() + " " + shiftstime.getBgsTime();
-                        String endDate = shotnum.getPrdDate();
-                        if(shotnum.getShifts().equals("3")){
-                            try {
-                                cal.setTime(sf.parse(endDate));
-                            } catch (ParseException e) {
-                                e.printStackTrace();
+                            for(int j=0;j<afko.size();j++){
+                                yeild = yeild + inputLogMapper.selectByOrderno(afko.get(j).getAufnr(),startDate,endDate);
                             }
-                            cal.add(cal.DATE,1);
-                            endDate = sf.format(cal.getTime())+ " " + shiftstime.getBgeTime();
                         }else{
-                            endDate = endDate + " " + shiftstime.getBgeTime();
-                        }
-                        for(int j=0;j<afko.size();j++){
-                            yeild = yeild + inputLogMapper.selectByOrderno(shotnum.getFevor(),startDate,endDate);
+                            String startDate = shotnum.getPrdDate() + " " + shiftstime.getBgsTime();
+                            String endDate = shotnum.getPrdDate();
+                            if(shotnum.getShifts().equals("3")){
+                                try {
+                                    cal.setTime(sf.parse(endDate));
+                                } catch (ParseException e) {
+                                    e.printStackTrace();
+                                }
+                                cal.add(cal.DATE,1);
+                                endDate = sf.format(cal.getTime())+ " " + shiftstime.getBgeTime();
+                            }else{
+                                endDate = endDate + " " + shiftstime.getBgeTime();
+                            }
+                            for(int j=0;j<afko.size();j++){
+                                yeild = yeild + inputLogMapper.selectByOrderno(afko.get(j).getAufnr(),startDate,endDate);
+                            }
                         }
                     }
                     shotnum.setYeild(yeild);
