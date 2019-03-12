@@ -53,6 +53,8 @@ public class Lines extends BaseDTO {
 
       private String execoffFlag;
 
+      private String cgroup;//终检组
+
      @NotNull
       private Long createdBy; //创建人
 
@@ -75,6 +77,14 @@ public class Lines extends BaseDTO {
     private String uname;
 
     private String pdescriptions; //产线描述
+
+    public String getCgroup() {
+        return cgroup;
+    }
+
+    public void setCgroup(String cgroup) {
+        this.cgroup = cgroup;
+    }
 
     public String getPkgBindFlag() {
         return pkgBindFlag;

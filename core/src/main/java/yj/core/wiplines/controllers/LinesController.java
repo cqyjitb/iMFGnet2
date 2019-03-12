@@ -79,15 +79,9 @@ public class LinesController extends BaseController {
         IRequest requestContext = createRequestContext(request);
         List<Lines> list = service.selectFromPage(dto,requestContext,page,pageSize);
         for(int i=0;i<list.size();i++){
-            Lines lines = list.get(i);
-            String deptId = lines.getDeptId();
-            Long plineId = lines.getPlineId();
-            if (plineId != null){
-                lines.setPdescriptions(service.selectDescription(plineId));
-            }
-            Lines li = service.selectUnitCode(deptId);
-            lines.setUnitCode(li.getUnitCode());
-            lines.setUname(li.getName());
+            Lines li = service.selectUnitCode(list.get(i).getDeptId());
+            list.get(i).setUnitCode(li.getUnitCode());
+            list.get(i).setUname(li.getName());
         }
         return new ResponseData(list);
     }

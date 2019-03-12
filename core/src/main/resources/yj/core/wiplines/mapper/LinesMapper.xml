@@ -40,6 +40,7 @@
         <result column="PKGTYPE" property="pkgtype" jdbcType="VARCHAR"/>
         <result column="SEG_OPR_NAME" property="segOprName" jdbcType="VARCHAR"/>
         <result column="PKG_BIND_FLAG" property="pkgBindFlag" jdbcType="VARCHAR"/>
+        <result column="CGROUP" property="cgroup" jdbcType="VARCHAR"/>
         <result column="POINT_NUM" property="pointNum" jdbcType="DECIMAL" />
         <result column="UNIT_ID" property="unitId" jdbcType="DECIMAL"/>
         <result column="PARENT_ID" property="parentId" jdbcType="DECIMAL"/>
@@ -89,7 +90,8 @@
         li.WERKS,
         li.LINE_CODE,
         li.DESCRIPTIONS,
-        li.PLINE_ID,
+        li.PLINE_ID as plineId,
+        (select descriptions from wip_lines where line_id = plineId) as pdescriptions,
         li.ARBPL,
         li.ENABLE_FLAG,
         li.END_DATE,
@@ -105,6 +107,7 @@
         li.LAST_UPDATED_BY,
         li.EXECOFF_FLAG,
         li.PKG_BIND_FLAG,
+        li.cgroup,
         un.unit_id,
         un.parent_id,
         un.UNIT_CODE,
@@ -143,7 +146,7 @@
     <update id="updateLines" parameterType="yj.core.wiplines.dto.Lines" >
         update wip_lines set WERKS=#{werks},DEPT_ID=#{deptId},LINE_ID=#{lineId},LINE_CODE = #{lineCode},
         DESCRIPTIONS=#{descriptions},PLINE_ID=#{plineId},ARBPL=#{arbpl},TAKT_TIME=#{taktTime},
-        ENABLE_FLAG=#{enableFlag},START_DATE=#{startDate},PKG_BIND_FLAG=#{pkgBindFlag},
+        ENABLE_FLAG=#{enableFlag},START_DATE=#{startDate},PKG_BIND_FLAG=#{pkgBindFlag},CGROUP=#{cgroup},
         END_DATE=#{endDate},ONLINETYPE=#{onlinetype},PKGTYPE=#{pkgtype},EXECOFF_FLAG=#{execoffFlag},
         SEG_OPR_NAME=#{segOprName},POINT_NUM=#{pointNum},CREATION_DATE=#{creationDate},
         CREATED_BY=#{createdBy},LAST_UPDATED_DATE=#{lastUpdatedDate},LAST_UPDATED_BY=#{lastUpdatedBy}
@@ -158,10 +161,10 @@
 
     <insert id="insertLines" parameterType="yj.core.wiplines.dto.Lines">
         insert into wip_lines(WERKS,DEPT_ID,LINE_CODE,LINE_ID,DESCRIPTIONS,PLINE_ID,ARBPL,TAKT_TIME,
-        ENABLE_FLAG,START_DATE,END_DATE,ONLINETYPE,PKGTYPE,EXECOFF_FLAG,PKG_BIND_FLAG,
+        ENABLE_FLAG,START_DATE,END_DATE,ONLINETYPE,PKGTYPE,EXECOFF_FLAG,PKG_BIND_FLAG,CGROUP,
         SEG_OPR_NAME,POINT_NUM,CREATION_DATE,CREATED_BY)
         VALUES(#{werks},#{deptId},#{lineCode},#{lineId},#{descriptions},#{plineId},#{arbpl},#{taktTime},
-        #{enableFlag},#{startDate},#{endDate},#{onlinetype},#{pkgtype},#{execoffFlag},#{pkgBindFlag},
+        #{enableFlag},#{startDate},#{endDate},#{onlinetype},#{pkgtype},#{execoffFlag},#{pkgBindFlag},#{cgroup},
         #{segOprName},#{pointNum},#{creationDate},#{createdBy})
     </insert>
 
