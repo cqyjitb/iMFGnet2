@@ -107,20 +107,26 @@
     </select>
 
     <select id="selectByOrderno" parameterType="java.lang.String" resultType="java.lang.Integer">
-        SELECT COUNT(*) from confirmation_input_log
+        SELECT COUNT(*) from confirmation_input_log il,confirmation_result r,confirmation_log l
         <where>
             (yeild = null OR yeild = 0)
-            <if test="orderno != null">
-                AND orderno = #{orderno}
-            </if>
-            <!--<if test="classno != null">
-                AND classno = #{classno}
+            AND il.id= r.input_id
+            AND l.ref_id = il.id
+            AND r.is_reversed ='0'
+            AND l.tran_type = '0'
+            AND l.msgty = 'S'
+            and il.operation = '0010'
+           <!-- <if test="orderno != null">
+                AND il.orderno = #{orderno}
             </if>-->
+            <if test="fevor != null">
+                and r.fevor = #{fevor}
+            </if>
             <if test="postingDateAfter != null">
-                AND CREATION_DATE >= #{postingDateAfter}
+                AND il.CREATION_DATE >= #{postingDateAfter}
             </if>
             <if test="postingDateBefore != null">
-                AND #{postingDateBefore} >= CREATION_DATE
+                AND #{postingDateBefore} >= il.CREATION_DATE
             </if>
         </where>
     </select>
