@@ -189,7 +189,7 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                     afko = afkoMapper.selectByFevor(shotnum.getArbpl());
                     if(afko.size() > 0){
                         if("星期日".equals(date)){
-                            String startDate = shotnum.getPrdDate() + " " + shiftstime.getZsTime();
+                            String startDate = shotnum.getPrdDate() + " " + shiftstime.getZbgsTime();
                             String endDate = shotnum.getPrdDate();
                             if(shotnum.getShifts().equals("3")){
                                 try {
@@ -198,9 +198,9 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                                     e.printStackTrace();
                                 }
                                 cal.add(cal.DATE,1);
-                                endDate = sf.format(cal.getTime())+ " " + shiftstime.getZeTime();
+                                endDate = sf.format(cal.getTime())+ " " + shiftstime.getZbgeTime();
                             }else{
-                                endDate = endDate + " " + shiftstime.getZeTime();
+                                endDate = endDate + " " + shiftstime.getZbgeTime();
                             }
                             for(int j=0;j<afko.size();j++){
                                 yeild = yeild + inputLogMapper.selectByOrderno(afko.get(j).getAufnr(),startDate,endDate);

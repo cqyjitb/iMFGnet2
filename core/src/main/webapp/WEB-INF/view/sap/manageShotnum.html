@@ -23,10 +23,14 @@
     }
 
 </style>
+<Script src="${base.contextPath}/resources/js/yj-pda.js"></Script>
 <script type="text/javascript">
+    var date = getYesterdayDate();
     var viewModel = kendo.observable({
         model: {
-            werks:"1001"
+            werks:"1001",
+            prdDateAfter: date,
+            prdDateBefore: date
         },
         queryGrid: function () {
             var fevor = document.getElementById("fevor").value;
