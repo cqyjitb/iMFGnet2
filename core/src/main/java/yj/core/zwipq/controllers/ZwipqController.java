@@ -18,6 +18,8 @@ import yj.core.inoutrecord.dto.InOutRecord;
 import yj.core.inoutrecord.service.IInOutRecordService;
 import yj.core.lineiocfg.dto.LineioCfg;
 import yj.core.lineiocfg.service.ILineioCfgService;
+import yj.core.logdtl.dto.Logdtl;
+import yj.core.logdtl.service.ILogdtlService;
 import yj.core.marc.dto.Marc;
 import yj.core.marc.service.IMarcService;
 import yj.core.resb.dto.Resb;
@@ -45,6 +47,7 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 
 import static java.lang.Math.abs;
+import static java.lang.Math.log;
 import static javafx.scene.input.KeyCode.L;
 
 @Controller
@@ -74,6 +77,8 @@ public class ZwipqController extends BaseController {
     private IDftrghlistService dftrghlistService;
     @Autowired
     private IZtbc0018Service ztbc0018Service;
+    @Autowired
+    private ILogdtlService logdtlService;
 
 
     @RequestMapping(value = "/zwipq/query")
@@ -266,7 +271,7 @@ public class ZwipqController extends BaseController {
     @RequestMapping(value = {"/zwipq/insertIntoZwipq"}, method = {RequestMethod.GET})
     @ResponseBody
     public ResponseData insertIntoZwipq(HttpServletRequest request, int cursum, Long line_id, String shift, String zpgdbar, String zxhbar, String attr7, String createBy,
-                                        String classgrp, String isAll) {
+                                        String classgrp, String isAll,String uuidH) {
         ResponseData rs = new ResponseData();
         //1；获取产线信息
         Lines lines = linesService.selectById(line_id);
@@ -277,6 +282,21 @@ public class ZwipqController extends BaseController {
             if (xhcard.getZsxwc().equals("X")){
                 rs.setSuccess(false);
                 rs.setMessage("该箱号已完成上线，本次上线无效！");
+
+                Logdtl logdtl = new Logdtl();
+                logdtl.setId(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
+                logdtl.setLogid(uuidH);
+                logdtl.setKeyword1(zxhbar);
+                logdtl.setKeyword2(zpgdbar);
+                logdtl.setKeyword3(line_id.toString());
+                logdtl.setKeyword4("");
+                logdtl.setOperation("selectByBacode");
+                logdtl.setMessage("该箱号已完成上线，本次上线无效！");
+                logdtl.setMsgtype("E");
+                logdtl.setCreatedBy(Long.parseLong(createBy));
+                logdtl.setCreationDate(new Date());
+                logdtlService.insertNewDtl(logdtl);
+
                 return rs;
             }
         }
@@ -298,6 +318,19 @@ public class ZwipqController extends BaseController {
         if (curlzk == null){
             rs.setSuccess(false);
             rs.setMessage("未获取到当前生产线，当前机加流转卡信息！");
+            Logdtl logdtl = new Logdtl();
+            logdtl.setId(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
+            logdtl.setLogid(uuidH);
+            logdtl.setKeyword1(zxhbar);
+            logdtl.setKeyword2(zpgdbar);
+            logdtl.setKeyword3(line_id.toString());
+            logdtl.setKeyword4("");
+            logdtl.setOperation("selectByBacode");
+            logdtl.setMessage("未获取到当前生产线，当前机加流转卡信息！");
+            logdtl.setMsgtype("E");
+            logdtl.setCreatedBy(Long.parseLong(createBy));
+            logdtl.setCreationDate(new Date());
+            logdtlService.insertNewDtl(logdtl);
             return rs;
         }
         //查询队列获取最大序列号
@@ -367,6 +400,21 @@ public class ZwipqController extends BaseController {
         }
         if (list.size() == cursum) {
             int num = service.InsertIntoZwipq(list);
+            Logdtl logdtl = new Logdtl();
+            logdtl.setId(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
+            logdtl.setLogid(uuidH);
+            logdtl.setKeyword1(zxhbar);
+            logdtl.setKeyword2(zpgdbar);
+            logdtl.setKeyword3(line_id.toString());
+            logdtl.setKeyword4(String.valueOf(cursum));
+            logdtl.setOperation("insertIntoZwipq");
+            logdtl.setMessage("插入在制队列"+num+"条");
+            logdtl.setMsgtype("S");
+            logdtl.setCreatedBy(Long.parseLong(createBy));
+            logdtl.setCreationDate(new Date());
+            logdtlService.insertNewDtl(logdtl);
+
+
         }
         //如果是毛坯框的第一件物料上线 要更新当前产线的当前毛坯框码
         if (curlzk.getZxhbar() == null ) {
@@ -374,6 +422,20 @@ public class ZwipqController extends BaseController {
             curlzk.setLastUpdatedBy(Long.valueOf(createBy));
             curlzk.setLastUpdateDate(new Date());
             curlzkService.updateZxhbar(curlzk);
+
+            Logdtl logdtl = new Logdtl();
+            logdtl.setId(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
+            logdtl.setLogid(uuidH);
+            logdtl.setKeyword1(zxhbar);
+            logdtl.setKeyword2(line_id.toString());
+            logdtl.setKeyword3("");
+            logdtl.setKeyword4("");
+            logdtl.setOperation("updateZxhbar");
+            logdtl.setMessage("更新当前产线毛坯框码！");
+            logdtl.setMsgtype("S");
+            logdtl.setCreatedBy(Long.parseLong(createBy));
+            logdtl.setCreationDate(new Date());
+            logdtlService.insertNewDtl(logdtl);
         }
 
         if (!curlzk.getZxhbar().equals(zxhbar)){
@@ -381,11 +443,39 @@ public class ZwipqController extends BaseController {
             curlzk.setLastUpdatedBy(Long.valueOf(createBy));
             curlzk.setLastUpdateDate(new Date());
             curlzkService.updateZxhbar(curlzk);
+
+            Logdtl logdtl = new Logdtl();
+            logdtl.setId(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
+            logdtl.setLogid(uuidH);
+            logdtl.setKeyword1(zxhbar);
+            logdtl.setKeyword2(line_id.toString());
+            logdtl.setKeyword3("");
+            logdtl.setKeyword4("");
+            logdtl.setOperation("updateZxhbar");
+            logdtl.setMessage("更新当前产线毛坯框码！");
+            logdtl.setMsgtype("S");
+            logdtl.setCreatedBy(Long.parseLong(createBy));
+            logdtl.setCreationDate(new Date());
+            logdtlService.insertNewDtl(logdtl);
         }
         //如果勾选了上线完成标识 更新箱号的上线完成标识
         if (isAll.equals("true")) {
             xhcard.setZsxwc("X");
             xhcardService.updateZsxwc(xhcard);
+
+            Logdtl logdtl = new Logdtl();
+            logdtl.setId(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
+            logdtl.setLogid(uuidH);
+            logdtl.setKeyword1(zxhbar);
+            logdtl.setKeyword2(line_id.toString());
+            logdtl.setKeyword3("");
+            logdtl.setKeyword4("");
+            logdtl.setOperation("updateZsxwc");
+            logdtl.setMessage("设置箱号上线完成标识！");
+            logdtl.setMsgtype("S");
+            logdtl.setCreatedBy(Long.parseLong(createBy));
+            logdtl.setCreationDate(new Date());
+            logdtlService.insertNewDtl(logdtl);
         }
 
         rs.setSuccess(true);
@@ -399,14 +489,29 @@ public class ZwipqController extends BaseController {
      */
     @RequestMapping(value = {"/zwipq/writeOffZwipq"}, method = {RequestMethod.GET})
     @ResponseBody
-    public ResponseData writeOffZwipq(HttpServletRequest request, String line_id, String zxhbar, String zpgdbar, int cursum) {
+    public ResponseData writeOffZwipq(HttpServletRequest request, String line_id, String zxhbar, String zpgdbar, int cursum,String uuidH,String createdBy) {
         ResponseData rs = new ResponseData();
         Xhcard xhcard = new Xhcard();
         xhcard = xhcardService.selectByBacode(zxhbar);
+
+        Logdtl logdtl = new Logdtl();
+        logdtl.setId(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
+        logdtl.setLogid(uuidH);
+        logdtl.setKeyword1(zxhbar);
+        logdtl.setKeyword2(zpgdbar);
+        logdtl.setKeyword3(line_id.toString());
+        logdtl.setKeyword4(String.valueOf(cursum));
+        logdtl.setOperation("writeOffZwipq");
+        logdtl.setCreationDate(new Date());
+        logdtl.setCreatedBy(Long.valueOf(createdBy));
+
         if (xhcard.getZsxwc() != null){
             if (xhcard.getZsxwc().equals("X")){
                 rs.setSuccess(false);
                 rs.setMessage("该箱号已完成上线，本次取消操作无效！");
+                logdtl.setMsgtype("E");
+                logdtl.setMessage("该箱号已完成上线，本次取消操作无效！");
+                logdtlService.insertNewDtl(logdtl);
                 return rs;
             }
         }
@@ -415,6 +520,9 @@ public class ZwipqController extends BaseController {
         if (list.size() == 0 || list.size() - cursum < 0) {
             rs.setSuccess(false);
             rs.setMessage("队列中没有足够的数量进行取消上线操作！");
+            logdtl.setMsgtype("E");
+            logdtl.setMessage("该箱号已完成上线，本次取消操作无效！");
+            logdtlService.insertNewDtl(logdtl);
         } else {
             List<Zwipq> dellist = new ArrayList<>();
             for (int i = 0; i < list.size(); i++) {
@@ -428,6 +536,9 @@ public class ZwipqController extends BaseController {
             if (sum == cursum) {
                 rs.setSuccess(true);
                 rs.setMessage("取消上线记录共：" + sum + " 条！");
+                logdtl.setMsgtype("s");
+                logdtl.setMessage("取消上线记录共：" + sum + " 条！");
+                logdtlService.insertNewDtl(logdtl);
             }
         }
 
@@ -439,21 +550,41 @@ public class ZwipqController extends BaseController {
      */
     @RequestMapping(value = {"/zwipq/callmigo"}, method = {RequestMethod.GET})
     @ResponseBody
-    public ResponseData callmigo(HttpServletRequest request, String line_id, String zxhbar, int cynum, String bwart, int createBy, String zpgdbar) {
+    public ResponseData callmigo(HttpServletRequest request, String line_id, String zxhbar, int cynum, String bwart, int createBy, String zpgdbar,String uuidH) {
         ResponseData rd = new ResponseData();
+        Logdtl logdtl = new Logdtl();
+        logdtl.setId(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
+        logdtl.setLogid(uuidH);
+        logdtl.setKeyword1(zxhbar);
+        logdtl.setKeyword2(line_id);
+        logdtl.setKeyword3(bwart);
+        logdtl.setKeyword4(String.valueOf(cynum));
+        logdtl.setOperation("callmigo");
+        logdtl.setCreationDate(new Date());
+        logdtl.setCreatedBy(Long.valueOf(cynum));
+
         Xhcard xhcard = new Xhcard();
         xhcard = xhcardService.selectByBacode(zxhbar);
-        if (xhcard.getZsxwc().equals("X")){
-            rd.setSuccess(false);
-            rd.setMessage("该箱号已完成上线！上线无效！");
-            return rd;
+        if (xhcard.getZsxwc() != null){
+            if (xhcard.getZsxwc().equals("X")){
+                rd.setSuccess(false);
+                rd.setMessage("该箱号已完成上线！上线无效！");
+                logdtl.setMsgtype("E");
+                logdtl.setMessage("该箱号已完成上线！上线无效！");
+                logdtlService.insertNewDtl(logdtl);
+                return rd;
+            }
         }
+
 
         List<Ztbc0018> list = new ArrayList<>();
         list = ztbc0018Service.selectByZxhbar(zxhbar);
         if (list.size() > 0){
             rd.setSuccess(false);
             rd.setMessage("该箱号已经调账完成，不允许重复调账！");
+            logdtl.setMsgtype("E");
+            logdtl.setMessage("该箱号已经调账完成，不允许重复调账！");
+            logdtlService.insertNewDtl(logdtl);
             return rd;
         }
         DTMIGOReturn rs = service.callMigo(zxhbar, cynum, line_id, bwart, createBy, zpgdbar);
@@ -463,10 +594,16 @@ public class ZwipqController extends BaseController {
             rd.setMessage("数据调整成功！");
             rd.setSuccess(true);
             rd.setCode("S");
+            logdtl.setMsgtype("S");
+            logdtl.setMessage("数据调整成功！");
+            logdtlService.insertNewDtl(logdtl);
         } else {
             //盘点失败
             rd.setSuccess(true);
             rd.setMessage(rs.getMTMSG());
+            logdtl.setMsgtype("E");
+            logdtl.setMessage(rs.getMTMSG());
+            logdtlService.insertNewDtl(logdtl);
             rd.setCode("E");
         }
         return rd;
@@ -816,10 +953,25 @@ public class ZwipqController extends BaseController {
     @RequestMapping(value = {"/zwipq/setZsxwc"}, method = {RequestMethod.GET})
     @ResponseBody
     ResponseData updatesxwc(HttpServletRequest request,String zxhbar){
+        String uuidH = request.getParameter("uuidH");
+        String createBy = request.getParameter("createdBy");
         ResponseData rs = new ResponseData();
         Xhcard xhcard = xhcardService.selectByBacode(zxhbar);
         if (xhcard.getZsxwc() != null){
             if (xhcard.getZsxwc().equals("X")){
+                Logdtl logdtl = new Logdtl();
+                logdtl.setId(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
+                logdtl.setLogid(uuidH);
+                logdtl.setKeyword1(zxhbar);
+                logdtl.setKeyword2("");
+                logdtl.setKeyword3("");
+                logdtl.setKeyword4("");
+                logdtl.setOperation("updateZsxwc");
+                logdtl.setCreationDate(new Date());
+                logdtl.setCreatedBy(Long.valueOf(createBy));
+                logdtl.setMessage("该箱号已经上线完成，本次操作无效！");
+                logdtl.setMsgtype("E");
+                logdtlService.insertNewDtl(logdtl);
                 rs.setSuccess(false);
                 rs.setMessage("该箱号已经上线完成，本次操作无效！");
                 return rs;
@@ -829,9 +981,36 @@ public class ZwipqController extends BaseController {
         int i = xhcardService.updateZsxwc(xhcard);
         if (i == 1){
             rs.setMessage("上线完成标识设置成功！");
+            Logdtl logdtl = new Logdtl();
+            logdtl.setId(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
+            logdtl.setLogid(uuidH);
+            logdtl.setKeyword1(zxhbar);
+            logdtl.setKeyword2("");
+            logdtl.setKeyword3("");
+            logdtl.setKeyword4("");
+            logdtl.setOperation("updateZsxwc");
+            logdtl.setCreationDate(new Date());
+            logdtl.setCreatedBy(Long.valueOf(createBy));
+            logdtl.setMessage("上线完成标识设置成功！");
+            logdtl.setMsgtype("S");
+            logdtlService.insertNewDtl(logdtl);
+
             rs.setSuccess(true);
         }else{
             rs.setMessage("上线完成标识设置失败！");
+            Logdtl logdtl = new Logdtl();
+            logdtl.setId(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
+            logdtl.setLogid(uuidH);
+            logdtl.setKeyword1(zxhbar);
+            logdtl.setKeyword2("");
+            logdtl.setKeyword3("");
+            logdtl.setKeyword4("");
+            logdtl.setOperation("updateZsxwc");
+            logdtl.setCreationDate(new Date());
+            logdtl.setCreatedBy(Long.valueOf(createBy));
+            logdtl.setMessage("上线完成标识设置失败！");
+            logdtl.setMsgtype("E");
+            logdtlService.insertNewDtl(logdtl);
             rs.setSuccess(false);
         }
         return rs;

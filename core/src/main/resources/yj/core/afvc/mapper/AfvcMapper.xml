@@ -90,6 +90,7 @@
 				<where>
                     and card.zpgdbar = #{zpgdbar}
                     and afvc.vornr = '0010'
+                    and ( afvc.flag  = '' OR afvc.flag is null )
                 </where>
 
     </select>

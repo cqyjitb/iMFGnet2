@@ -10,6 +10,8 @@ import yj.core.afvc.dto.Afvc;
 import yj.core.afvc.service.IAfvcService;
 import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.service.ICardhService;
+import yj.core.marc.dto.Marc;
+import yj.core.marc.service.IMarcService;
 import yj.core.webservice_queryoldzpgdbar.components.QueryOldZpgdbarUtil;
 import yj.core.webservice_queryoldzpgdbar.dto.DtqueryParm;
 import yj.core.webservice_queryoldzpgdbar.dto.DtqueryReturn;
@@ -37,6 +39,8 @@ public class ShounumController extends BaseController {
     private ICardhService cardhService;
     @Autowired
     private QueryOldZpgdbarUtil queryOldZpgdbarUtil;
+    @Autowired
+    private IMarcService marcService;
 
     /**
      * 压射号及压铸报工查询  918100064
@@ -84,12 +88,18 @@ public class ShounumController extends BaseController {
         }
 
         String matnr = request.getParameter("matnr");
-        String maktx = null;
-        try {
-            maktx = new String(request.getParameter("maktx").getBytes("iso8859-1"),"utf-8");
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+        String maktx = "";
+        Marc marc = new Marc();
+        marc = marcService.selectByMatnr(matnr);
+        if (marc != null){
+            maktx = marc.getMaktx();
         }
+//        String maktx = null;
+//        try {
+//            maktx = new String(request.getParameter("maktx").getBytes("iso8859-1"),"utf-8");
+//        } catch (UnsupportedEncodingException e) {
+//            e.printStackTrace();
+//        }
 
         if (type.equals("old")){
             DtqueryParm parm = new DtqueryParm();

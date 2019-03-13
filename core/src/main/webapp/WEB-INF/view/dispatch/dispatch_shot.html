@@ -220,7 +220,7 @@
                     var shot_start = dshot_start.value;
                     var shot_end = dshot_end.value;
                     if ((shot_start != null || shot_start != "") && (shot_end != null || shot_end != "")){
-                        if (shot_start > shot_end){
+                        if (Number(shot_start) >= Number(shot_end)){
                             dshot_start.value = "";
                             dshot_end.value = "";
                             openMsgDialog("错误","起始压射数不能大于终止压射数！")
@@ -235,7 +235,7 @@
                     var shot_start = dshot_start.value;
                     var shot_end = dshot_end.value;
                     if ((shot_start != null || shot_start != "") && (shot_end != null || shot_end != "")){
-                        if (shot_start > shot_end){
+                        if (Number(shot_start) >= Number(shot_end)){
                             dshot_start.value = "";
                             dshot_end.value = "";
                             openMsgDialog("错误","起始压射数不能大于终止压射数！")
@@ -406,7 +406,7 @@
                         l_error = "E";
                         openMsgDialog("错误","终止压射数必输！","M");
 
-                    }else if( shot_start >= shot_end){
+                    }else if( Number(shot_start) >= Number(shot_end)){
                         l_error = "E";
                         document.getElementById("shot_start").value = "";
                         document.getElementById("shot_end").value = "";

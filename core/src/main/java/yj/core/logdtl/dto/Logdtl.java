@@ -7,6 +7,9 @@ import com.hand.hap.mybatis.annotation.ExtensionAttribute;
 import javax.persistence.Table;
 import com.hand.hap.system.dto.BaseDTO;
 import org.hibernate.validator.constraints.NotEmpty;
+
+import java.util.Date;
+
 @ExtensionAttribute(disable=true)
 @Table(name = "wip_logdtl")
 public class Logdtl extends BaseDTO {
@@ -38,8 +41,53 @@ public class Logdtl extends BaseDTO {
      @NotEmpty
       private String message; //消息
 
+    private Long createdBy; //创建人
 
-     public void setId(String id){
+    private Date creationDate; //创建时间
+
+    private Long lastUpdatedBy; //更新人
+
+    private Date lastUpdatedDate;
+
+    @Override
+    public Long getCreatedBy() {
+        return createdBy;
+    }
+
+    @Override
+    public void setCreatedBy(Long createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    @Override
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    @Override
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    @Override
+    public Long getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+
+    @Override
+    public void setLastUpdatedBy(Long lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+    public Date getLastUpdatedDate() {
+        return lastUpdatedDate;
+    }
+
+    public void setLastUpdatedDate(Date lastUpdatedDate) {
+        this.lastUpdatedDate = lastUpdatedDate;
+    }
+
+    public void setId(String id){
          this.id = id;
      }
 
