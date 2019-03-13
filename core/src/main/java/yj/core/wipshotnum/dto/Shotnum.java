@@ -64,7 +64,7 @@ public class Shotnum extends BaseDTO {
     @Transient
     private Date creationDate; //创建时间
 
-    private Long brgew;//浇注重量-KG
+    private String brgew;//浇注重量-KG
 
     @Transient
     private String veran;//车间
@@ -87,11 +87,11 @@ public class Shotnum extends BaseDTO {
         this.veran = veran;
     }
 
-    public Long getBrgew() {
+    public String getBrgew() {
         return brgew;
     }
 
-    public void setBrgew(Long brgew) {
+    public void setBrgew(String brgew) {
         this.brgew = brgew;
     }
 
