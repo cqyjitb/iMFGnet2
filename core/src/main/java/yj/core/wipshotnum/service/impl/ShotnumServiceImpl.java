@@ -18,6 +18,7 @@ import yj.core.wipshotnum.dto.Shotnum;
 import yj.core.wipshotnum.mapper.ShotnumMapper;
 import yj.core.wipshotnum.service.IShotnumService;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
@@ -51,9 +52,9 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
         Shiftstime shiftstime = new Shiftstime();
         if(list1.size() > 0){
             SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             SimpleDateFormat sfWeek = new SimpleDateFormat("EEEE");
             Calendar cal = new GregorianCalendar();
+            DecimalFormat df = new DecimalFormat("#0.00");
             if("Y".equals(dto.getTotal())){
                 for(int i=0;i<list1.size();i++){
                     list.add(list1.get(i));
@@ -66,7 +67,7 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                 }
                 for(int i=0;i<list.size();i++){
                     Integer mdnum = 1,shotNum = 0,yeild = 0;
-                    Long grgew = 0L;
+                    Double grgew = 0.00;
                     shotnum = list.get(i);
                     list2 = shotnumMapper.selectShotnum(shotnum.getWerks(),shotnum.getFevor(),null,
                             shotnum.getArbpl(),dto.getPrdDateAfter(),dto.getPrdDateBefore());
@@ -84,14 +85,14 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                                 if(marc.getBrgew() == null){
                                     marc.setBrgew(0.0);
                                 }
-                                grgew = grgew + Math.round(shotNum1 * 2 * marc.getBrgew());
+                                grgew = grgew + shotNum1 * 2 * marc.getBrgew();
                             }
                         }else{
                             if(marc != null){
                                 if(marc.getBrgew() == null){
                                     marc.setBrgew(0.0);
                                 }
-                                grgew = grgew + Math.round(((int)(list2.get(a).getShotEnd() - list2.get(a).getShotStart())) * marc.getBrgew());
+                                grgew = grgew + ((list2.get(a).getShotEnd() - list2.get(a).getShotStart())) * marc.getBrgew();
                             }
                         }
                         if(minTime.compareTo(list2.get(a).getPrdDate()) > 0){
@@ -110,7 +111,7 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                     shotnum.setPrdDateBefore(maxTime);
                     shotNum = (int)(shotNum + (endMax - startMin));
                     shotnum.setShotNum(shotNum);
-                    shotnum.setBrgew(grgew);
+                    shotnum.setBrgew(df.format(grgew));
                     shotnum.setShotStart(startMin);
                     shotnum.setShotEnd(endMax);
                     afko = afkoMapper.selectByFevor(shotnum.getArbpl());
@@ -131,6 +132,13 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                     }
                     shotnum.setYeild(yeild);
                     shotnum.setWasteNum(shotNum - yeild);
+                    if(shotnum.getShifts().equals("1")){
+                        shotnum.setShifts("早班");
+                    }else if(shotnum.getShifts().equals("2")){
+                        shotnum.setShifts("中班");
+                    }else if(shotnum.getShifts().equals("3")){
+                        shotnum.setShifts("晚班");
+                    }
                 }
             }else{
                 for(int i=0;i<list1.size();i++){
@@ -145,7 +153,7 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                 }
                 for(int i=0;i<list.size();i++){
                     Integer mdnum = 1,shotNum = 0,yeild = 0;
-                    Long grgew = 0L;
+                    Double grgew = 0.00;
                     shotnum = list.get(i);
                     list2 = shotnumMapper.selectShotnum(shotnum.getWerks(),shotnum.getFevor(),shotnum.getShifts(),
                             shotnum.getArbpl(),shotnum.getPrdDate(),shotnum.getPrdDate());
@@ -163,7 +171,7 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                             if(marc.getBrgew() == null){
                                 marc.setBrgew(0.0);
                             }
-                            grgew = grgew + Math.round(shotNum1 * marc.getBrgew());
+                            grgew = grgew + (shotNum1 * marc.getBrgew());
                         }
                         if(a > 0){
                             if(list2.get(a).getShotEnd() > endMax){
@@ -178,7 +186,7 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                     shotnum.setShotStart(startMin);
                     shotnum.setShotEnd(endMax);
                     shotnum.setShotNum(shotNum);
-                    shotnum.setBrgew(grgew);
+                    shotnum.setBrgew(df.format(grgew));
                     shiftstime = shiftstimeMapper.selectByShift(shotnum.getShifts());
                     String date = null;
                     try {
@@ -226,6 +234,13 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                     }
                     shotnum.setYeild(yeild);
                     shotnum.setWasteNum(shotNum - yeild);
+                    if(shotnum.getShifts().equals("1")){
+                        shotnum.setShifts("早班");
+                    }else if(shotnum.getShifts().equals("2")){
+                        shotnum.setShifts("中班");
+                    }else if(shotnum.getShifts().equals("3")){
+                        shotnum.setShifts("晚班");
+                    }
                 }
             }
         }
