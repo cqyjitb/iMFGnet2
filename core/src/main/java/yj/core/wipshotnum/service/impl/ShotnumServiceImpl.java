@@ -133,11 +133,11 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                     shotnum.setYeild(yeild);
                     shotnum.setWasteNum(shotNum - yeild);
                     if(shotnum.getShifts().equals("1")){
-                        shotnum.setShifts("早班");
+                        shotnum.setShifts("白班");
                     }else if(shotnum.getShifts().equals("2")){
                         shotnum.setShifts("中班");
                     }else if(shotnum.getShifts().equals("3")){
-                        shotnum.setShifts("晚班");
+                        shotnum.setShifts("夜班");
                     }
                 }
             }else{
@@ -235,11 +235,11 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                     shotnum.setYeild(yeild);
                     shotnum.setWasteNum(shotNum - yeild);
                     if(shotnum.getShifts().equals("1")){
-                        shotnum.setShifts("早班");
+                        shotnum.setShifts("白班");
+                    }else if(shotnum.getShifts().equals("3")){
+                        shotnum.setShifts("夜班");
                     }else if(shotnum.getShifts().equals("2")){
                         shotnum.setShifts("中班");
-                    }else if(shotnum.getShifts().equals("3")){
-                        shotnum.setShifts("晚班");
                     }
                 }
             }
