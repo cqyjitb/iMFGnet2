@@ -14,4 +14,27 @@ public interface IQcauditlistService extends IBaseService<Qcauditlist>, ProxySel
      */
     int insertNewRow(List<Qcauditlist> list);
 
+    /**
+     *  根据主记录ID 查询明细行 917110140
+     * @param werks
+     * @param recordid
+     * @return
+     */
+    List<Qcauditlist> selectById(String werks,String recordid);
+
+    /**
+     *  根据工厂 ID 查询行项目数量
+     * @param werks
+     * @param recordid
+     * @return
+     */
+    int selectCounts(String werks,String recordid);
+
+    /**
+     *  根据工厂 ID 删除行数据
+     * @param werks
+     * @param recordid
+     * @return
+     */
+    int deleteById(String werks,String recordid);
 }

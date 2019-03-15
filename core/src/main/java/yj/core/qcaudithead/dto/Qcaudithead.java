@@ -13,6 +13,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 @ExtensionAttribute(disable=true)
 @Table(name = "wip_qcaudithead")
 public class Qcaudithead extends BaseDTO {
+
+    private static final long serialVersionUID = 2776430709705510697L;
+
      @Id
      @GeneratedValue
       private String werks; //工厂

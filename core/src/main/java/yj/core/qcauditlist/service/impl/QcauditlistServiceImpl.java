@@ -26,4 +26,19 @@ public class QcauditlistServiceImpl extends BaseServiceImpl<Qcauditlist> impleme
         }
         return num;
     }
+
+    @Override
+    public List<Qcauditlist> selectById(String werks, String recordid) {
+        return qcauditlistMapper.selectById(werks,recordid);
+    }
+
+    @Override
+    public int selectCounts(String werks, String recordid) {
+        return qcauditlistMapper.selectCounts(werks,recordid);
+    }
+
+    @Override
+    public int deleteById(String werks, String recordid) {
+        return qcauditlistMapper.deleteById(werks,recordid);
+    }
 }

@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.List;
 
     @Controller
@@ -42,4 +43,14 @@ import java.util.List;
         service.batchDelete(dto);
         return new ResponseData();
     }
+
+        @RequestMapping(value = "/wip/qcauditlist/selectById")
+        @ResponseBody
+        public ResponseData selectById(HttpServletRequest request){
+           String werks = request.getParameter("werks");
+           String recordid = request.getParameter("recordid");
+           List<Qcauditlist> list = new ArrayList<>();
+           list = service.selectById(werks,recordid);
+           return new ResponseData(list);
+        }
     }

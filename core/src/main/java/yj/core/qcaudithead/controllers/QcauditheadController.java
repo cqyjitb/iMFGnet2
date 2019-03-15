@@ -92,6 +92,40 @@ public class QcauditheadController extends BaseController {
         }
         return rs;
     }
+    @RequestMapping(value = {"/wip/qcaudithead/deleteById"}, method = {RequestMethod.POST})
+    @ResponseBody
+    public ResponseData deleteById(HttpServletRequest request,@RequestBody List<Qcaudithead> dto){
+        ResponseData rs = new ResponseData();
+        String werks = dto.get(0).getWerks();
+        String recordid = dto.get(0).getRecordid();
+        DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+        def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+        TransactionStatus status = transactionManager.getTransaction(def); // 获得事务状态
+        try{
+            int num1 = service.deleteById(werks,recordid);
+
+            int num2 = qcauditlistService.selectCounts(werks,recordid);
+
+            int num3 = qcauditlistService.deleteById(werks,recordid);
+
+            if (num1 == 1 && num2 != 0 && num3 == num2 ){
+                transactionManager.commit(status);
+                rs.setSuccess(true);
+                rs.setMessage("删除不合格品审理单2成功！");
+            } else {
+                transactionManager.rollback(status);
+                rs.setMessage("删除不合格品审理单2失败！");
+                rs.setSuccess(false);
+            }
+
+        }catch (Exception e){
+            transactionManager.rollback(status);
+            rs.setMessage("删除不合格品审理单2失败！");
+            rs.setSuccess(false);
+        }
+
+        return rs;
+    }
 
     @RequestMapping(value = {"/wip/qcaudithead/createQcaudit1"}, method = {RequestMethod.POST})
     @ResponseBody
@@ -170,12 +204,14 @@ public class QcauditheadController extends BaseController {
                 qcauditlist.setZxhbar(dto.get(i).getZxhbar());
                 qcauditlist.setMatnr(dto.get(i).getMatnr());
                 qcauditlist.setCharg("");
-                qcauditlist.setZbanc(dto.get(i).getZbanc());
-                qcauditlist.setShift(dto.get(i).getZbanz());
-                qcauditlist.setGstrp(sdf.parse(dto.get(i).getAttr1()));
+                qcauditlist.setZbanc("");
+                qcauditlist.setShift("");
+                qcauditlist.setYgstrp(sdf.parse(dto.get(i).getAttr1()));
                 qcauditlist.setMatnr2(dto.get(i).getMatnr2());
                 qcauditlist.setYcharg(dto.get(i).getCharg());
                 qcauditlist.setSfflg(dto.get(i).getSfflg());
+                qcauditlist.setYzbanc(dto.get(i).getZbanc());
+                qcauditlist.setYshift(dto.get(i).getZbanz());
                 qcauditlist.setDiecd(dto.get(i).getDiecd());
                 qcauditlist.setCode(dto.get(i).getZqxdm());
                 qcauditlist.setTlevelcode(dto.get(i).getZissuetxt());

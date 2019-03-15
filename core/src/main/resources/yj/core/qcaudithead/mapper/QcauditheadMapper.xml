@@ -172,4 +172,12 @@
             and RECORDID = #{recordid}
         </where>
     </update>
+
+    <delete id="deleteById" parameterType="java.lang.String">
+        delete FROM wip_qcaudithead
+        <where>
+            WERKS = #{werks}
+            and RECORDID = #{recordid}
+        </where>
+    </delete>
 </mapper>

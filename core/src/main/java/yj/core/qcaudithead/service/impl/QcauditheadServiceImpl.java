@@ -44,4 +44,9 @@ public class QcauditheadServiceImpl extends BaseServiceImpl<Qcaudithead> impleme
         }
         return m;
     }
+
+    @Override
+    public int deleteById(String werks, String recordid) {
+        return qcauditheadMapper.deleteById(werks,recordid);
+    }
 }

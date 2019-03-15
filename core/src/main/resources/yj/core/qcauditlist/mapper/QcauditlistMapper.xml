@@ -42,5 +42,27 @@
         #{gmein},#{creationDate},#{createdBy});
     </insert>
 
+    <select id="selectById" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_qcauditlist
+        <where>
+            WERKS = #{werks}
+            and RECORDID = #{recordid}
+        </where>
+    </select>
 
+    <select id="selectCounts" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select COUNT(*) from wip_qcauditlist
+        <where>
+            WERKS = #{werks}
+            and RECORDID = #{recordid}
+        </where>
+    </select>
+
+    <delete id="deleteById" parameterType="java.lang.String">
+        delete FROM wip_qcauditlist
+        <where>
+            WERKS = #{werks}
+            and RECORDID = #{recordid}
+        </where>
+    </delete>
 </mapper>

@@ -43,4 +43,12 @@ public interface QcauditheadMapper extends Mapper<Qcaudithead>{
      * @return
      */
     int updateRow(Qcaudithead qcaudithead);
+
+    /**
+     *  根据工厂 ID 删除行 917110140
+     * @param werks
+     * @param recordid
+     * @return
+     */
+    int deleteById(@Param("werks") String werks,@Param("recordid") String recordid);
 }

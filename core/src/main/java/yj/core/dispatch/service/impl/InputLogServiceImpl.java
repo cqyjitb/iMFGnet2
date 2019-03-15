@@ -17,6 +17,9 @@ import yj.core.dispatch.mapper.InputLogMapper;
 import yj.core.dispatch.mapper.LogMapper;
 import yj.core.dispatch.mapper.ResultMapper;
 import yj.core.dispatch.service.IInputLogService;
+import yj.core.outsrgissue.dto.Outsrgissue;
+import yj.core.outsrgissue.mapper.OutsrgissueMapper;
+import yj.core.outsrgissuehead.mapper.OutsrgissueheadMapper;
 import yj.core.webservice.components.ConfirmationWebserviceUtil;
 import yj.core.webservice.dto.DTPP001Parameters;
 import yj.core.webservice.dto.DTPP001ReturnResult;
@@ -52,6 +55,9 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
 
     @Autowired
     private CardhMapper cardhMapper;
+
+    @Autowired
+    private OutsrgissueMapper outsrgissueMapper;
 
     DateFormat df = new SimpleDateFormat("yyyyMMdd");
 
@@ -251,6 +257,17 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
             returnResult.setMESSAGE("工序标准值码错误，或工序记录不存在！");
             returnResult.setMSGTY("E");
             return returnResult;
+        }
+
+        //检查当前报工工序是否为外协工序
+        if (cardt.getSteus().equals("ZP02")){
+            Outsrgissue outsrgissue = new Outsrgissue();
+            outsrgissue = outsrgissueMapper.selectByBarcode(cardh.getZpgdbar(),"0");
+            if (outsrgissue.getIssuenm() != null){
+                returnResult.setMESSAGE("当前外协工序已发料，请使用外协收货进行报工！");
+                returnResult.setMSGTY("E");
+                return returnResult;
+            }
         }
 
         if (appidconf.getAppid() != null){

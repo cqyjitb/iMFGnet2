@@ -86,6 +86,15 @@ import java.util.List;
         marc = marcService.selectByMatnr(cardh.getMatnr());
         Cardt cardt = new Cardt();
         cardt = cardtService.selectByZpgdbarAndVornr(cardh.getZpgdbar(),vornr);
+        //判断外协工序是否已经报工
+        if  (cardt.getConfirmed() != null){
+            if (cardt.getConfirmed().equals("X")){
+                rs.setMessage("外协工序已报工，本次外协发货无效！");
+                rs.setSuccess(false);
+                return rs;
+            }
+        }
+
         //查询并生成发料单号
         List<Outsrgissuehead> list = new ArrayList<>();
         list = outsrgissueheadService.selectByMatnrAndLifnrDesc(cardh.getMatnr(),lifnr);
@@ -366,6 +375,17 @@ import java.util.List;
             rs.setSuccess(false);
             return rs;
         }
+
+        Outsrgreceipt outsrgreceipt = new Outsrgreceipt();
+        outsrgreceipt = outsrgreceiptService.selectByZpgdbarAndStatus(barcode,"0");
+        if (outsrgreceipt != null){
+            rs.setSuccess(false);
+            rs.setMessage("外协已收货，本次外协发货冲销无效！");
+            return rs;
+        }
+
+
+
 
         Cardh cardh = new Cardh();
         cardh = cardhService.selectByBarcode(barcode);
