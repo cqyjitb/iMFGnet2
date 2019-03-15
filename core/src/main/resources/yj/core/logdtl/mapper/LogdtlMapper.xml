@@ -12,10 +12,14 @@
         <result column="operation" property="operation" jdbcType="VARCHAR" />
         <result column="msgtype" property="msgtype" jdbcType="VARCHAR" />
         <result column="message" property="message" jdbcType="VARCHAR" />
+        <result column="CREATION_DATE" property="creationDate" jdbcType="VARCHAR" />
+        <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
+        <result column="LAST_UPDATE_DATE" property="lastUpdatedDate" jdbcType="DATE" />
+        <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
     </resultMap>
 
     <insert id="insertNewDtl" parameterType="yj.core.logdtl.dto.Logdtl">
-        insert into wip_logdtl(id,logid,keyword1,keyword2,keyword3,keyword4,operation,msgtype,message,createdBy,creationDate)
+        insert into wip_logdtl(id,logid,keyword1,keyword2,keyword3,keyword4,operation,msgtype,message,CREATED_BY,CREATION_DATE)
         VALUES (#{id},#{logid},#{keyword1},#{keyword2},#{keyword3},#{keyword4},#{operation},#{msgtype},#{message},#{createdBy},#{creationDate})
     </insert>
 
