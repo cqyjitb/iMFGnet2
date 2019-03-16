@@ -837,12 +837,12 @@ public class InputLogController extends BaseController {
             list.add(returnResult);
             return new ResponseData(list);
         } else {
-            if (inputLog.getAttr15().equals("5")) {
-                ResponseData rs = new ResponseData();
-                rs.setSuccess(false);
-                rs.setMessage("外协工序收货/报工只能通过手机APP进行冲销！");
-                return rs;
-            }
+//            if (inputLog.getAttr15().equals("5")) {
+//                ResponseData rs = new ResponseData();
+//                rs.setSuccess(false);
+//                rs.setMessage("外协工序收货/报工只能通过手机APP进行冲销！");
+//                return rs;
+//            }
 
             String fstvor = "";
             String lstvor = "";
@@ -909,7 +909,7 @@ public class InputLogController extends BaseController {
                     if (afvclist.get(i).getSteus().equals("ZP02")){
                         Outsrgreceipt outsrgreceipt = new Outsrgreceipt();
                         outsrgreceipt = outsrgreceiptService.selectByZpgdbarAndStatus(cardh.getZpgdbar(),"0");
-                        if (outsrgreceipt.getReceiptnm() != null){
+                        if (outsrgreceipt != null){
                             returnResult.setMSGTY("E");
                             returnResult.setMESSAGE("当前外协工序已收货，请使用APP进行外协工序冲销！");
                             list.add(returnResult);
@@ -927,7 +927,7 @@ public class InputLogController extends BaseController {
                         if (afvclist.get(i+1).getSteus().equals("ZP02")){
                             Outsrgissue outsrgissue = new Outsrgissue();
                             outsrgissue = outsrgissueService.selectByBarcode(cardh.getZpgdbar(),"0");
-                            if (outsrgissue.getIssuenm() != null){
+                            if (outsrgissue != null){
                                 returnResult.setMSGTY("E");
                                 returnResult.setMESSAGE("当前外协工序已发料，本次冲销操作无效！");
                                 list.add(returnResult);

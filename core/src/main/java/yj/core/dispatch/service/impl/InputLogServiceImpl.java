@@ -263,7 +263,7 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         if (cardt.getSteus().equals("ZP02")){
             Outsrgissue outsrgissue = new Outsrgissue();
             outsrgissue = outsrgissueMapper.selectByBarcode(cardh.getZpgdbar(),"0");
-            if (outsrgissue.getIssuenm() != null){
+            if (outsrgissue != null){
                 returnResult.setMESSAGE("当前外协工序已发料，请使用外协收货进行报工！");
                 returnResult.setMSGTY("E");
                 return returnResult;

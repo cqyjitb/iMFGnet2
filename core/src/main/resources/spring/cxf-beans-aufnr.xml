@@ -24,6 +24,10 @@
     <bean id="service5" class="yj.core.webservice_server.QueryCardhImpl"/>
     <jaxws:endpoint id="queryCardh" implementor="#service5" address="/QueryCardh" >
     </jaxws:endpoint>
+
+    <bean id="service6" class="yj.core.webservice_server.QueryShotnumImpl"/>
+    <jaxws:endpoint id="QueryShotnum" implementor="#service6" address="/QueryShotnum" >
+    </jaxws:endpoint>
     <!--<bean id="service5" class="yj.core.webservice_server.QueryXhcardImp" />-->
     <!--<jaxws:endpoint id="queryxhcard" implementor="#service5" address="/QueryXhcard">-->
     <!--</jaxws:endpoint>-->

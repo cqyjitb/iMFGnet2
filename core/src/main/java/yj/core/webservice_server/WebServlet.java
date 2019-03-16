@@ -115,5 +115,6 @@ public class WebServlet extends CXFNonSpringServlet {
         serverFactoryBean11.setAddress("/QueryOutsrgrfe"); //服务请求路径
         serverFactoryBean11.setServiceBean(queryOutsrgrfe);
         serverFactoryBean11.create();
+
     }
 }
