@@ -66,6 +66,16 @@ public class Qcauditlist extends BaseDTO {
 
       private String gmein; //计量单位
 
+      private Long reflag;//源数据的取件状态
+
+
+    public Long getReflag() {
+        return reflag;
+    }
+
+    public void setReflag(Long reflag) {
+        this.reflag = reflag;
+    }
 
     public String getRghitem() {
         return rghitem;

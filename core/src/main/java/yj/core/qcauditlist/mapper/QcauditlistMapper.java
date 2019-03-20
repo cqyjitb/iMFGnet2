@@ -28,7 +28,7 @@ public interface QcauditlistMapper extends Mapper<Qcauditlist>{
      * @param recordid
      * @return
      */
-    int selectCounts(@Param("werks") String werks,@Param("recordid") String recordid);
+    List<Qcauditlist> selectCounts(@Param("werks") String werks,@Param("recordid") String recordid);
 
     /**
      *  根据工厂 ID 删除行记录

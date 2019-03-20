@@ -271,7 +271,7 @@ public class ZwipqController extends BaseController {
     @RequestMapping(value = {"/zwipq/insertIntoZwipq"}, method = {RequestMethod.GET})
     @ResponseBody
     public ResponseData insertIntoZwipq(HttpServletRequest request, int cursum, Long line_id, String shift, String zpgdbar, String zxhbar, String attr7, String createBy,
-                                        String classgrp, String isAll,String uuidH) {
+                                        String classgrp, String isAll,String uuidH,String bwart,int cynum) {
         ResponseData rs = new ResponseData();
         //1；获取产线信息
         Lines lines = linesService.selectById(line_id);
@@ -296,7 +296,6 @@ public class ZwipqController extends BaseController {
                 logdtl.setCreatedBy(Long.parseLong(createBy));
                 logdtl.setCreationDate(new Date());
                 logdtlService.insertNewDtl(logdtl);
-
                 return rs;
             }
         }
@@ -333,6 +332,65 @@ public class ZwipqController extends BaseController {
             logdtlService.insertNewDtl(logdtl);
             return rs;
         }
+
+        //移动类型不为空，需要进行调账
+        if (!bwart.equals("") && cynum != 0){
+            Logdtl logdtl = new Logdtl();
+            logdtl.setId(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
+            logdtl.setLogid(uuidH);
+            logdtl.setKeyword1(zxhbar);
+            logdtl.setKeyword2(line_id.toString());
+            logdtl.setKeyword3(bwart);
+            logdtl.setKeyword4(String.valueOf(cynum));
+            logdtl.setOperation("callmigo");
+            logdtl.setCreationDate(new Date());
+            logdtl.setCreatedBy(Long.valueOf(createBy));
+
+
+            xhcard = xhcardService.selectByBacode(zxhbar);
+            if (xhcard.getZsxwc() != null){
+                if (xhcard.getZsxwc().equals("X")){
+                    rs.setSuccess(false);
+                    rs.setMessage("该箱号已完成上线！上线无效！");
+                    logdtl.setMsgtype("E");
+                    logdtl.setMessage("该箱号已完成上线！上线无效！");
+                    logdtlService.insertNewDtl(logdtl);
+                    return rs;
+                }
+            }
+
+
+            List<Ztbc0018> list = new ArrayList<>();
+            list = ztbc0018Service.selectByZxhbar(zxhbar);
+            if (list.size() > 0){
+                rs.setSuccess(false);
+                rs.setMessage("该箱号已经调账完成，不允许重复调账！");
+                logdtl.setMsgtype("E");
+                logdtl.setMessage("该箱号已经调账完成，不允许重复调账！");
+                logdtlService.insertNewDtl(logdtl);
+                return rs;
+            }
+            DTMIGOReturn dtmigoReturn = service.callMigo(zxhbar, cynum, line_id.toString(), bwart,Integer.parseInt(createBy), zpgdbar);
+
+            if (dtmigoReturn.getMTYPE().equals("S")) {
+                //盘点成功
+                rs.setMessage("数据调整成功！");
+                rs.setSuccess(true);
+                rs.setCode("S");
+                logdtl.setMsgtype("S");
+                logdtl.setMessage("数据调整成功！");
+                logdtlService.insertNewDtl(logdtl);
+            } else {
+                //盘点失败
+                rs.setSuccess(true);
+                rs.setMessage(dtmigoReturn.getMTMSG());
+                logdtl.setMsgtype("E");
+                logdtl.setMessage(dtmigoReturn.getMTMSG());
+                logdtlService.insertNewDtl(logdtl);
+                rs.setCode("E");
+            }
+        }
+
         //查询队列获取最大序列号
         String line_id_str = line_id.toString();
         Map m = new HashMap();
@@ -398,7 +456,7 @@ public class ZwipqController extends BaseController {
             list.add(zwipq);
             qsenq = qsenq + 1;
         }
-        if (list.size() == cursum) {
+        if (list.size() == cursum && list.size() != 0) {
             int num = service.InsertIntoZwipq(list);
             Logdtl logdtl = new Logdtl();
             logdtl.setId(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
@@ -561,7 +619,7 @@ public class ZwipqController extends BaseController {
         logdtl.setKeyword4(String.valueOf(cynum));
         logdtl.setOperation("callmigo");
         logdtl.setCreationDate(new Date());
-        logdtl.setCreatedBy(Long.valueOf(cynum));
+        logdtl.setCreatedBy(Long.valueOf(createBy));
 
         Xhcard xhcard = new Xhcard();
         xhcard = xhcardService.selectByBacode(zxhbar);

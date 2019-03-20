@@ -295,7 +295,7 @@
 
     <select id="selectforQcaudit1" parameterType="java.lang.String" resultMap="BaseResultMap3">
         select
-        c.WERKS,
+        d.WERKS,
         i.ZQJJLH,
         i.ZWIPQID,
         l.DEPT_ID,
@@ -324,17 +324,18 @@
         i.GMEIN,
         i.ZBANZ,
         i.ZBANC,
-        c.ATTR1,
+        c.CREATION_DATE as gstrp,
         i.zpgdbar2,
         i.zpgdbar,
         cfg.KUNNR,
         k.name1 as SORTL,
+        i.REFLAG,
         i.ZOPLO,
         i.OUTDAT,
         i.OUTNAM
         FROM wip_in_out_record i
         LEFT JOIN wip_lines l on l.line_id = i.line_id
-        LEFT JOIN sap_cardh c on i.ZPGDBAR = c.ZPGDBAR
+        LEFT JOIN zwipq c on i.ZWIPQID = c.ZSXJLH
         LEFT JOIN sap_marc m on i.MATNR = m.matnr
         LEFT JOIN SAP_marc m2 on i.MATNR2 = m2.matnr
         LEFT JOIN hr_org_unit_b org on org.UNIT_CODE = l.DEPT_ID
@@ -344,11 +345,11 @@
         left JOIN sap_dftdtl dtl on ( dtl.matnr = i.matnr2 and dtl.TLEVELCODE = i.ZISSUETXT )
         left join wip_products_cfg cfg on ( cfg.PMATNR = i.matnr2 and cfg.line_id = i.line_id )
         left JOIN sap_cust k on k.kunnr = cfg.kunnr
+        left join sap_xhcard d on d.zxhbar = i.zxhbar
         <where>
-            i.ZPGDBAR = c.ZPGDBAR
             and REFLAG in ('0','3')
             and i.LINE_ID = #{line_id}
-            and c.WERKS = #{werks}
+            and d.WERKS = #{werks}
             and i.ZBANZ = #{zbanz}
             AND i.ZQXDM = #{zqxdm}
             and i.ZISSUETXT = #{zissuetxt}
@@ -358,10 +359,10 @@
             <if test="matnr2 != null">
                 and i.MATNR2 = #{matnr2}
             </if><if test="gstrp != null">
-                and c.ATTR1 = #{gstrp}
+                and c.CREATION_DATE like #{gstrp}
             </if>
         </where>
-            order BY c.attr1,i.ZBANZ,i.ZQXDM,i.ZISSUETXT;
+            order BY c.CREATION_DATE,i.ZBANZ,i.ZQXDM,i.ZISSUETXT;
     </select>
 
 </mapper>

@@ -24,6 +24,7 @@
         <result column="DIECD" property="diecd" jdbcType="VARCHAR" />
         <result column="YGSTRP" property="ygstrp" jdbcType="DATE" />
         <result column="CODE" property="code" jdbcType="VARCHAR" />
+        <result column="REFLAG" property="reflag" jdbcType="DECIMAL"/>
         <result column="TLEVELCODE" property="tlevelcode" jdbcType="VARCHAR" />
         <result column="MENGE" property="menge" jdbcType="DECIMAL" />
         <result column="DFECT_QTY" property="dfectQty" jdbcType="DECIMAL" />
@@ -36,9 +37,9 @@
 
     <insert id="insertNewRow" parameterType="yj.core.qcauditlist.dto.Qcauditlist">
         insert into wip_qcauditlist(WERKS,RECORDID,ITEM,ZQJJLH,ZGJBAR,ZPGDBAR,ZXHBAR,MATNR,CHARG,ZBANC,SHIFT,GSTRP,MATNR2,YCHARG,YSHIFT,
-        YZBANC,SFFLG,DIECD,YGSTRP,CODE,TLEVELCODE,MENGE,DFECT_QTY,GMEIN,CREATION_DATE,CREATED_BY)
+        YZBANC,SFFLG,DIECD,YGSTRP,CODE,REFLAG,TLEVELCODE,MENGE,DFECT_QTY,GMEIN,CREATION_DATE,CREATED_BY)
         VALUES (#{werks},#{recordid},#{item},#{zqjjlh},#{zgjbar},#{zpgdbar},#{zxhbar},#{matnr},#{charg},#{zbanc},#{shift},#{gstrp},
-        #{matnr2},#{ycharg},#{yshift},#{yzbanc},#{sfflg},#{diecd},#{ygstrp},#{code},#{tlevelcode},#{menge},#{dfectQty},
+        #{matnr2},#{ycharg},#{yshift},#{yzbanc},#{sfflg},#{diecd},#{ygstrp},#{code},#{reflag},#{tlevelcode},#{menge},#{dfectQty},
         #{gmein},#{creationDate},#{createdBy});
     </insert>
 
@@ -50,8 +51,8 @@
         </where>
     </select>
 
-    <select id="selectCounts" parameterType="java.lang.String" resultType="java.lang.Integer">
-        select COUNT(*) from wip_qcauditlist
+    <select id="selectCounts" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_qcauditlist
         <where>
             WERKS = #{werks}
             and RECORDID = #{recordid}

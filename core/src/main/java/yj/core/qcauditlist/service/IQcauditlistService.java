@@ -28,7 +28,7 @@ public interface IQcauditlistService extends IBaseService<Qcauditlist>, ProxySel
      * @param recordid
      * @return
      */
-    int selectCounts(String werks,String recordid);
+    List<Qcauditlist> selectCounts(String werks,String recordid);
 
     /**
      *  根据工厂 ID 删除行数据

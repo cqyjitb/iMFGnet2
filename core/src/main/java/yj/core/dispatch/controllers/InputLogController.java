@@ -924,7 +924,7 @@ public class InputLogController extends BaseController {
                 //判断下工序是否为外协工序 ，如果是 检查是否具有status = 0 的外协发料记录，如果有则不允许进行冲销
                 for (int i=0;i<afvclist.size();i++){
                     if (afvclist.get(i).getVornr().equals(inputLog.getOperation())){
-                        if (afvclist.get(i+1).getSteus().equals("ZP02")){
+                        if (afvclist.get(i-1).getSteus().equals("ZP02")){
                             Outsrgissue outsrgissue = new Outsrgissue();
                             outsrgissue = outsrgissueService.selectByBarcode(cardh.getZpgdbar(),"0");
                             if (outsrgissue != null){

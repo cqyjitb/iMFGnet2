@@ -191,6 +191,16 @@ public class InOutRecord extends BaseDTO {
     private String userName;
     @Transient
     private String userNameQC;
+    @Transient
+    private String dfectTxt;
+
+    public String getDfectTxt() {
+        return dfectTxt;
+    }
+
+    public void setDfectTxt(String dfectTxt) {
+        this.dfectTxt = dfectTxt;
+    }
 
     public String getDepartbm() {
         return departbm;

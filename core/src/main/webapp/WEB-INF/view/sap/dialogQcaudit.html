@@ -18,6 +18,7 @@
                     var vornr1 = document.getElementById("vornr").value;
                     var userName = document.getElementById("userName").value;
                     var userNameQC = document.getElementById("userNameQC").value;
+                    var dfectTxt = document.getElementById("dfectTxt").value;
                     var message = "请录入：";
                     var l_flg = "";
                     if (departbm == "") {
@@ -101,8 +102,10 @@
                                         deslinetxt: selections2[i].deslinetxt,
                                         zissuetxt: selections2[i].zissuetxt,
                                         ztext: selections2[i].ztext,
+                                        gstrp: selections2[i].gstrp,
                                         departbm: departbm,
                                         departcj: departcj,
+                                        dfectTxt:dfectTxt,
                                         vornr1: vornr1,
                                         userName: userName,
                                         userNameQC: userNameQC
@@ -175,11 +178,14 @@
                                         zotype: selections2[i].zotype,
                                         zissuetxt: selections2[i].zissuetxt,
                                         ztext: selections2[i].ztext,
+                                        gstrp: selections2[i].gstrp,
+                                        reflag: selections2[i].reflag,
                                         departbm: departbm,
                                         departcj: departcj,
                                         vornr1: vornr1,
                                         userName: userName,
                                         userNameQC: userNameQC,
+                                        dfectTxt:dfectTxt,
                                         outdat: selections2[i].outdat,
                                         outnam: selections2[i].outnam
                                     }
@@ -296,8 +302,8 @@
                         <div class="form-group">
                             <div class="col-sm-12">
                                 <div class="col-sm-9">
-                                    <textarea id="editor" rows="10" cols="30" style="height:300px;width: 800px"
-                                              aria-label="editor"></textarea>
+                                    <textarea id="dfectTxt" rows="10" cols="30" style="height:300px;width: 800px"
+                                              aria-label="editor" data-bind="value:model.dfectTxt"></textarea>
                                 </div>
                             </div>
                         </div>

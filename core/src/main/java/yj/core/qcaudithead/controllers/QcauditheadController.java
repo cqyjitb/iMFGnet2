@@ -9,6 +9,8 @@ import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.TransactionStatus;
 import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.web.bind.annotation.*;
+import yj.core.cardh.dto.Cardh;
+import yj.core.cardh.service.ICardhService;
 import yj.core.inoutrecord.dto.InOutRecord;
 import yj.core.inoutrecord.service.IInOutRecordService;
 import yj.core.qcaudithead.dto.Qcaudithead;
@@ -37,6 +39,8 @@ public class QcauditheadController extends BaseController {
     private IInOutRecordService inOutRecordService;
     @Resource(name = "transactionManager")
     private DataSourceTransactionManager transactionManager;
+    @Autowired
+    private ICardhService cardhService;
 
     @RequestMapping(value = "/wip/qcaudithead/query")
     @ResponseBody
@@ -104,11 +108,23 @@ public class QcauditheadController extends BaseController {
         try{
             int num1 = service.deleteById(werks,recordid);
 
-            int num2 = qcauditlistService.selectCounts(werks,recordid);
+            List<Qcauditlist> list = qcauditlistService.selectCounts(werks,recordid);
+
+            int num2 = list.size();
+
+            List<InOutRecord> list2 = new ArrayList<>();
+            for (int i=0;i<list.size();i++){
+                InOutRecord inOutRecord = new InOutRecord();
+                inOutRecord = inOutRecordService.selectById(list.get(i).getZqjjlh());
+                inOutRecord.setReflag(list.get(i).getReflag());
+                list2.add(inOutRecord);
+            }
+
+            int num4 = inOutRecordService.batchUpdateReflag(list2);
 
             int num3 = qcauditlistService.deleteById(werks,recordid);
 
-            if (num1 == 1 && num2 != 0 && num3 == num2 ){
+            if (num1 == 1 && num2 != 0 && num3 == num2 && num3 == num4){
                 transactionManager.commit(status);
                 rs.setSuccess(true);
                 rs.setMessage("删除不合格品审理单2成功！");
@@ -142,7 +158,7 @@ public class QcauditheadController extends BaseController {
                 if (i == 0) {
                     //生成单号
                     String recordID = "";
-                    String outdatstr = dto.get(i).getAttr1().toString().substring(0, 10).replace("-", "");
+                    String outdatstr = dto.get(i).getGstrp().toString().substring(0, 10).replace("-", "");
                     //获取当前生产日期 最大流水号
                     String MaxRecordId = service.selectMaxRecordId(dto.get(i).getWerks(), dto.get(i).getAttr1());
                     if (MaxRecordId == null) {
@@ -163,15 +179,16 @@ public class QcauditheadController extends BaseController {
                     qcaudithead.setKunnr(dto.get(i).getKunnr());
                     qcaudithead.setKunnrDesc(dto.get(i).getSortl());
                     qcaudithead.setZpgdbar(dto.get(i).getZpgdbar());
-                    qcaudithead.setMatnr(dto.get(i).getMatnr());
-                    qcaudithead.setMaktx(dto.get(i).getMaktx());
-                    qcaudithead.setMatnr2(dto.get(i).getMatnr2());
+                    qcaudithead.setMatnr(dto.get(i).getMatnr2());
+                    qcaudithead.setMaktx(dto.get(i).getMaktx2());
+                    qcaudithead.setMatnr2(dto.get(i).getMatnr());
+                    qcaudithead.setMaktx2(dto.get(i).getMaktx());
                     qcaudithead.setZqxdm(dto.get(i).getZqxdm());
                     qcaudithead.setTlevelcode(dto.get(i).getZissuetxt());
                     qcaudithead.setCharg("");//
                     qcaudithead.setSfflg(dto.get(i).getSfflg());
                     qcaudithead.setDiecd(dto.get(i).getDiecd());
-                    qcaudithead.setGstrp(sdf.parse(dto.get(i).getAttr1()));
+                    qcaudithead.setGstrp(sdf.parse(dto.get(i).getGstrp().toString().substring(0, 10)));
                     qcaudithead.setVornr(dto.get(i).getVornr1());
                     qcaudithead.setResponsible(dto.get(i).getUserName());
                     qcaudithead.setDfectQty(Double.valueOf(dto.size()));
@@ -184,7 +201,7 @@ public class QcauditheadController extends BaseController {
                     qcaudithead.setScrapQty(0D);
                     qcaudithead.setRworkQty(0D);
                     qcaudithead.setConssQty(0D);
-                    qcaudithead.setDfectTxt("");
+                    qcaudithead.setDfectTxt(dto.get(i).getDfectTxt());
                     qcaudithead.setReportDept("");
                     qcaudithead.setReportor("");
                     qcaudithead.setReportDate(new Date());
@@ -206,7 +223,11 @@ public class QcauditheadController extends BaseController {
                 qcauditlist.setCharg("");
                 qcauditlist.setZbanc("");
                 qcauditlist.setShift("");
-                qcauditlist.setYgstrp(sdf.parse(dto.get(i).getAttr1()));
+                Cardh cardh = new Cardh();
+                cardh = cardhService.selectByBarcode(dto.get(i).getZpgdbar2());
+                if (cardh.getAttr1() != null){
+                    qcauditlist.setYgstrp(sdf.parse(cardh.getAttr1()));
+                }
                 qcauditlist.setMatnr2(dto.get(i).getMatnr2());
                 qcauditlist.setYcharg(dto.get(i).getCharg());
                 qcauditlist.setSfflg(dto.get(i).getSfflg());
@@ -220,6 +241,7 @@ public class QcauditheadController extends BaseController {
                 qcauditlist.setGmein(dto.get(i).getGmein());
                 qcauditlist.setCreatedBy(Long.parseLong(userId));
                 qcauditlist.setCreationDate(new Date());
+                qcauditlist.setReflag(dto.get(i).getReflag());
                 list.add(qcauditlist);
 
                 InOutRecord inOutRecord = new InOutRecord();

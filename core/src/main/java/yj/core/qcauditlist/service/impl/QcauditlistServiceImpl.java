@@ -33,7 +33,7 @@ public class QcauditlistServiceImpl extends BaseServiceImpl<Qcauditlist> impleme
     }
 
     @Override
-    public int selectCounts(String werks, String recordid) {
+    public List<Qcauditlist> selectCounts(String werks, String recordid) {
         return qcauditlistMapper.selectCounts(werks,recordid);
     }
 

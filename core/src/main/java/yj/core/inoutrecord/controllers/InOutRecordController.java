@@ -231,7 +231,7 @@ public class InOutRecordController extends BaseController {
         String gstrp = request.getParameter("gstrp");
 
         if (gstrp != null){
-            gstrp = gstrp.substring(0,10);
+            gstrp = gstrp.substring(0,10) + "%";
         }
 
         if (gytype.equals("Q1")){
