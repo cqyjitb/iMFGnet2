@@ -20,7 +20,8 @@ public interface InOutRecordMapper extends Mapper<InOutRecord>{
          * @param classgrp 班组
          * @return
          */
-        List<InOutRecord> selectforZud(@Param("pline_id") String Pline_id, @Param("line_id") String line_id, @Param("classgrp") String classgrp);
+        List<InOutRecord> selectforZud(@Param("pline_id") String Pline_id, @Param("line_id") String line_id, @Param("classgrp") String classgrp,@Param("matnr2") String matnr2,
+                                       @Param("creationDateBefore") String creationDateBefore,@Param("creationDateAfter") String creationDateAfter);
 
         InOutRecord selectById(String zqjjlh);
 

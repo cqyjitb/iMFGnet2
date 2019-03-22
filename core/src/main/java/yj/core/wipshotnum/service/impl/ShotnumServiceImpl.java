@@ -54,6 +54,7 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
             SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
             SimpleDateFormat sfWeek = new SimpleDateFormat("EEEE");
             Calendar cal = new GregorianCalendar();
+            Calendar cal2 = Calendar.getInstance();
             DecimalFormat df = new DecimalFormat("#0.00");
             if("Y".equals(dto.getTotal())){
                 for(int i=0;i<list1.size();i++){
@@ -188,15 +189,21 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                     shotnum.setShotNum(shotNum);
                     shotnum.setBrgew(df.format(grgew));
                     shiftstime = shiftstimeMapper.selectByShift(shotnum.getShifts());
-                    String date = null;
+                    /*String date = null;
                     try {
                         date = sfWeek.format(sf.parse(shotnum.getPrdDate()));
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }*/
+                    try {
+                        cal2.setTime(sf.parse(shotnum.getPrdDate()));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
                     afko = afkoMapper.selectByFevor(shotnum.getArbpl());
                     if(afko.size() > 0){
-                        if("星期日".equals(date)){
+                        //if("星期日".equals(date)){
+                        if(cal2.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY){
                             String startDate = shotnum.getPrdDate() + " " + shiftstime.getZbgsTime();
                             String endDate = shotnum.getPrdDate();
                             if(shotnum.getShifts().equals("3")){

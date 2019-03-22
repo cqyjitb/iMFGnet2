@@ -69,9 +69,9 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
 
     @Override
 //    public List<Zudlist> selectforZud(String line_id, String classgrp, int page, int pagesize, IRequest iRequest) {
-    public List<Zudlist> selectforZud(String Pline_id,String line_id, String classgrp) {
+    public List<Zudlist> selectforZud(String Pline_id,String line_id, String classgrp,String matnr2,String creationDateBefore,String creationDateAfter) {
 //        PageHelper.startPage(page, pagesize);
-        List<InOutRecord> list = inOutRecordMapper.selectforZud(Pline_id,line_id,classgrp);
+        List<InOutRecord> list = inOutRecordMapper.selectforZud(Pline_id,line_id,classgrp,matnr2,creationDateBefore,creationDateAfter);
         List<Zudlist> listzuds = new ArrayList<>();
         if (list.size() > 0){
             for (int i = 0;i<list.size();i++){
