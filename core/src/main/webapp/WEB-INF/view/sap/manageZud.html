@@ -32,11 +32,7 @@
         z-index: 1001;
     }
 
-    #label{
-        color: red;
-    }
-
-    #label2{
+    .label{
         color: red;
     }
 </style>
@@ -84,23 +80,24 @@
                 <div class="panel-body">
                     <div id="test">
                         <div class="row">
-
                             <div class="col-sm-4">
-                                <label class="col-sm-4 control-label">生产车间&nbsp;<label id="label">*</label></label>
-                                <div class="col-sm-8">
-                                    <input id="unit_code" class="k-textbox" data-bind="value:model.deptId" style="width: 100%">
-                                    <script>
-                                        $("#unit_code").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_UNIT_NEW2")}, {
-                                            query: function (e) {
-                                                e.param['enabledFlag'] = 'Y';
-                                            }
-                                        }));
-                                    </script>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">生产车间<label class="label">*</label></label>
+                                    <div class="col-sm-8">
+                                        <input id="unit_code" class="k-textbox" data-bind="value:model.deptId" style="width: 100%">
+                                        <script>
+                                            $("#unit_code").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_UNIT_NEW2")}, {
+                                                query: function (e) {
+                                                    e.param['enabledFlag'] = 'Y';
+                                                }
+                                            }));
+                                        </script>
+                                    </div>
                                 </div>
                             </div>
-
                             <div class="col-sm-4">
-                                    <label class="col-sm-4 control-label">生产线&nbsp;<label id="label2">*</label></label>
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">生产线<label class="label">*</label></label>
                                     <div class="col-sm-8">
                                         <input id="line_id" class="k-textbox" data-bind="value:model.line_id" style="width: 100%">
                                         <script>
@@ -112,16 +109,51 @@
                                             }))
                                         </script>
                                     </div>
+                                </div>
                             </div>
-
                             <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">产品</label>
+                                    <div class="col-sm-8">
+                                        <input id="matnr2" class="k-textbox" data-bind="value:model.matnr2" style="width: 100%">
+                                        <script>
+                                            $("#matnr2").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_PRODUCTS")}, {
+                                                query: function (e) {
+                                                    e.param['lineId'] = document.getElementById("line_id").value;
+                                                    e.param['enabledFlag'] = 'Y';
+                                                }
+                                            }))
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">开始时间</label>
+                                    <div class="col-sm-8">
+                                        <input style="width: 100%" data-role="datepicker" data-bind="value:model.creationDateBefore" class="k-datepicker">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">结束时间</label>
+                                    <div class="col-sm-8">
+                                        <input type="text" style="width: 100%" data-role="datepicker" data-bind="value:model.creationDateAfter" class="k-datepicker">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
                                     <label class="col-sm-4 control-label">班组</label>
                                     <div class="col-sm-8">
                                         <input id="combobox" name="combobox" required placeholder="班组" data-role="combobox" data-value-primitive="true" data-text-field="text" data-value-field="value"
                                                data-bind="enabled: isEnabled, source: comboboxSource, value:model.classgrp" style="width: 100%;"/>
                                     </div>
+                                </div>
                             </div>
-
                         </div>
                     </div>
                     <div class="row" style="margin-right: -8px;">

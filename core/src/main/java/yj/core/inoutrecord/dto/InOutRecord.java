@@ -135,6 +135,24 @@ public class InOutRecord extends BaseDTO {
     private String desmianlinetxt; //主产线描述
     @Transient
     private String descriptions;
+    private String creationDateBefore;//开始时间
+    private String creationDateAfter;//结束时间
+
+    public String getCreationDateBefore() {
+        return creationDateBefore;
+    }
+
+    public void setCreationDateBefore(String creationDateBefore) {
+        this.creationDateBefore = creationDateBefore;
+    }
+
+    public String getCreationDateAfter() {
+        return creationDateAfter;
+    }
+
+    public void setCreationDateAfter(String creationDateAfter) {
+        this.creationDateAfter = creationDateAfter;
+    }
 
     public String getDescriptions() {
         return descriptions;

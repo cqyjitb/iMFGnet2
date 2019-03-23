@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.wiplockusers.mapper.LockUsersMapper">
+    <resultMap id="BaseResultMap" type="yj.core.wiplockusers.dto.LockUsers">
+        <result column="WERKS" property="werks" jdbcType="VARCHAR" />
+        <result column="LINE_ID" property="lineId" jdbcType="DECIMAL" />
+        <result column="USERID" property="userid" jdbcType="VARCHAR" />
+        <result column="CREATION_DATE" property="creationDate" jdbcType="DATE" />
+        <result column="CREATED_BY" property="createdBy" jdbcType="VARCHAR" />
+        <result column="LAST_UPDATED_DATE" property="lastUpdatedDate" jdbcType="DATE" />
+        <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="VARCHAR" />
+    </resultMap>
+
+</mapper>

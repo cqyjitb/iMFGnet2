@@ -263,6 +263,15 @@
             <if test="classgrp != null">
                 and a.ZBANZ = #{classgrp}
             </if>
+            <if test="matnr2 != null">
+                and a.matnr2 = #{matnr2}
+            </if>
+            <if test="creationDateBefore != null">
+                and a.creation_date >= #{creationDateBefore}
+            </if>
+            <if test="creationDateAfter != null">
+                and #{creationDateAfter} >= a.creation_date
+            </if>
             ORDER BY a.LINE_ID ASC;
 
         </where>
