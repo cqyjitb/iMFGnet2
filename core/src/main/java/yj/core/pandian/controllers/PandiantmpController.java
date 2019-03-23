@@ -5,6 +5,7 @@ import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.dto.ResponseData;
 import org.springframework.web.bind.annotation.*;
+import yj.core.SqlConn.SqlConnGzb;
 import yj.core.pandian.dto.Pandiantmp;
 import yj.core.pandian.service.IPandiantmpService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -77,6 +78,17 @@ import java.util.UUID;
 
         int i = service.insertNewRow(pdtmp);
         if (i == 1){
+            if (werks.equals("工装制造部")){
+                SqlConnGzb connGzb = new SqlConnGzb();
+                try {
+                    connGzb.insertPanDianTmp(pdtmp);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }else if (werks.equals("天津渝江")){
+
+            }
+
             rs.setMessage("盘点数据保存成功！");
             rs.setSuccess(true);
         }else{
