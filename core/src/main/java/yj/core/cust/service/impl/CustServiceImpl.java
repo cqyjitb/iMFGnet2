@@ -19,4 +19,9 @@ public class CustServiceImpl extends BaseServiceImpl<Cust> implements ICustServi
     public List<Cust> selectForLov(String kunnr) {
         return custMapper.selectForLov(kunnr);
     }
+
+    @Override
+    public Cust selectByKunnr(String kunnr) {
+        return null;
+    }
 }

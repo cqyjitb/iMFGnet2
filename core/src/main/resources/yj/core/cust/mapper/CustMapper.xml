@@ -17,4 +17,13 @@
             </if>
         </where>
     </select>
+
+    <select id="selectByKunnr" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from sap_cust
+        <where>
+            <if test="kunnr != null">
+                KUNNR = #{kunnr}
+            </if>
+        </where>
+    </select>
 </mapper>

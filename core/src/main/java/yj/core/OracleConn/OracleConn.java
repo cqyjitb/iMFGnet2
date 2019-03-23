@@ -1,6 +1,10 @@
 package yj.core.OracleConn;
 
 import java.sql.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class OracleConn {
     private static final String dbUrl="jdbc:oracle:thin:@192.168.94.93:1521:orclyj";
@@ -40,46 +44,31 @@ public class OracleConn {
         return conn;
     }
 
-    public ResultSet select(String sql) throws Exception {
+    public List select(String sql) throws Exception {
         Connection con = this.getConnection();
         PreparedStatement pstmt = con.prepareStatement(sql);
         ResultSet rs = pstmt.executeQuery();
-//        this.processResult(rs);
-//        this.closeConnection(con, pstmt);
-        return rs;
+        List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+        list = this.processResult(rs);
+        this.closeConnection(con, pstmt);
+
+        return list;
     }
 
-    private void processResult(ResultSet rs) throws Exception {
-        if (rs.next()) {
-            ResultSetMetaData rsmd = rs.getMetaData();
-            int colNum = rsmd.getColumnCount();
-            for (int i = 1; i <= colNum; i++) {
-                if (i == 1) {
-                    System.out.print(rsmd.getColumnName(i));
-                } else {
-                    System.out.print("\t" + rsmd.getColumnName(i));
-                }
+    private List<Map<String, Object>> processResult(ResultSet rs) throws Exception {
+
+        ResultSetMetaData md = rs.getMetaData();
+        int columnCount = md.getColumnCount();
+        List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+        while (rs.next()){
+            Map<String,Object> rowData = new HashMap<String,Object>();
+            for (int i = 1; i <= columnCount; i++) {
+                rowData.put(md.getColumnName(i), rs.getObject(i));
 
             }
-            System.out.print("\n");
-            System.out.println("———————–");
-            do {
-                for (int i = 1; i <= colNum; i++) {
-                    if (i == 1) {
-                        System.out.print(rs.getString(i));
-                    } else {
-                        System.out.print("\t"
-                                + (rs.getString(i) == null ? "null" : rs
-                                .getString(i).trim()));
-                    }
-
-                }
-                System.out.print("\n");
-            } while (rs.next());
-        } else {
-            System.out.println("query not result.");
+            list.add(rowData);
         }
-
+        return list;
     }
 
     private void closeConnection(Connection con, Statement stmt)  throws Exception{

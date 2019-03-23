@@ -73,4 +73,12 @@ public interface LinesMapper extends Mapper<Lines>{
      * @return
      */
     String selectByUnitCode(@Param("unitCode")String unitCode);
+
+    /**
+     *  根据工厂 车间ID 查询产线
+     * @param werks
+     * @param deptId
+     * @return
+     */
+    List<Lines> selectByWerksAndDeptid(@Param("werks") String werks,@Param("deptId") String deptId);
 }

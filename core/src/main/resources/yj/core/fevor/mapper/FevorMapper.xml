@@ -5,6 +5,7 @@
     <resultMap id="BaseResultMap" type="yj.core.fevor.dto.Fevor">
         <result column="WERKS" property="werks" jdbcType="VARCHAR"/>
         <result column="FEVOR" property="fevor" jdbcType="VARCHAR"/>
+        <result column="UNIT_CODE" property="unitCode" jdbcType="VARCHAR"/>
         <result column="TXT" property="txt" jdbcType="VARCHAR"/>
         <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL"/>
         <result column="CREATION_DATE" property="creationDate" jdbcType="DATE"/>
@@ -22,5 +23,16 @@
 		</where>
 		order by fevor desc
 	</select>
+
+    <select id="selectFevor2" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from sap_fevor
+        <where>
+            fevor not like "4%"
+            <if test="fevor != null">
+                AND fevor = #{fevor}
+            </if>
+        </where>
+        order by fevor desc
+    </select>
 	
 </mapper>

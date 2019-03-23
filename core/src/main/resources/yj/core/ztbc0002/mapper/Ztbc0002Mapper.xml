@@ -32,5 +32,11 @@
         <result column="CHTIM" property="chtim" jdbcType="DATE" />
     </resultMap>
 
-
+    <select id="selectByTpcode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from sap_ztbc0002
+        <where>
+            WERKS = #{werks}
+            and ZTPBAR = #{ztpbar}
+        </where>
+    </select>
 </mapper>

@@ -8,4 +8,6 @@ import java.util.List;
 
 public interface ICustService extends IBaseService<Cust>, ProxySelf<ICustService>{
     List<Cust> selectForLov(String kunnr);
+
+    Cust selectByKunnr(String kunnr);
 }

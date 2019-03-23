@@ -13,4 +13,11 @@ public interface FevorMapper extends Mapper<Fevor> {
      * @return
      */
     List<Fevor> selectFevor(@Param("fevor") String fevor);
+
+    /**
+     *  查询 1 2 3 开头的记录 917110140
+     * @param fevor
+     * @return
+     */
+    List<Fevor> selectFevor2(@Param("fevor") String fevor);
 }

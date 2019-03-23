@@ -17,10 +17,19 @@ public class Fevor extends BaseDTO {
     @NotNull
     private String fevor;
     private String txt;
+    private String unitCode;
     private Date creationDate; //创建时间
     private Long createdBy; //创建人
     private Date lastUpdateDate; //更新时间
     private Long lastUpdatedBy; //更新人
+
+    public String getUnitCode() {
+        return unitCode;
+    }
+
+    public void setUnitCode(String unitCode) {
+        this.unitCode = unitCode;
+    }
 
     public String getWerks() {
         return werks;
