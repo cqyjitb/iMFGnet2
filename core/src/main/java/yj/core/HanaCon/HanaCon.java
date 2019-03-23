@@ -4,9 +4,9 @@ import java.sql.*;
 
 public class HanaCon {
     private static final String DRIVER = "com.sap.db.jdbc.Driver";
-//    private static final String URL = "jdbc:sap://192.168.3.20:36015?reconnect=true";
+    //    private static final String URL = "jdbc:sap://192.168.3.20:36015?reconnect=true";
     private static final String URL = "jdbc:sap://192.168.3.20:35015?reconnect=true";
-//    private static final String USERNAME = "FINEREPORT";prd
+    //    private static final String USERNAME = "FINEREPORT";prd
 //    private static final String PASSWORD = "Finereport3333";
     private static final String USERNAME = "FINEREPORT";
     private static final String PASSWORD = "Finereport159";

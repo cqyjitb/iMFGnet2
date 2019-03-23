@@ -3,6 +3,7 @@ package yj.core.SqlConn;
 import yj.core.pandian.dto.Pandiantmp;
 
 import java.sql.*;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -54,25 +55,25 @@ public class SqlConnGzb {
         return list;
     }
 
-    public boolean insertPanDianTmp(Pandiantmp pandiantmp) throws Exception{
+    public int insertPanDianTmp(Pandiantmp pandiantmp) throws Exception{
         Connection con = this.getConnection();
         String sql = "insert INTO jb_data.dbo.pandiantmp (RCDID, WERKS, CARDNO, CARDH, NUM, OPERATOR, RCDDAT, CREATED_BY, CREATION_DATE) VALUES " +
                 "(?,?,?,?,?,?,?,?,?)";
-        boolean result = false;
-
-            PreparedStatement pstmt = con.prepareStatement(sql);
-            pstmt.setString(1,pandiantmp.getRcdid());
-            pstmt.setString(2,pandiantmp.getWerks());
-            pstmt.setString(3,pandiantmp.getCardno());
-            pstmt.setString(4,pandiantmp.getCardh());
-            pstmt.setDouble(5,pandiantmp.getNum());
-            pstmt.setString(6,pandiantmp.getOperator());
-            pstmt.setString(7,pandiantmp.getRcddat().toString());
-            pstmt.setLong(8,pandiantmp.getCreatedBy());
-            pstmt.setString(9,pandiantmp.getCreationDate().toString());
-            result = pstmt.execute();
-            this.closeConnection(con, pstmt);
-            return result;
+        int result = 0;
+        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        PreparedStatement pstmt = con.prepareStatement(sql);
+        pstmt.setString(1,pandiantmp.getRcdid());
+        pstmt.setString(2,pandiantmp.getWerks());
+        pstmt.setString(3,pandiantmp.getCardno());
+        pstmt.setString(4,pandiantmp.getCardh());
+        pstmt.setDouble(5,pandiantmp.getNum());
+        pstmt.setString(6,pandiantmp.getOperator());
+        pstmt.setString(7,format.format(pandiantmp.getRcddat()));
+        pstmt.setLong(8,pandiantmp.getCreatedBy());
+        pstmt.setString(9,format.format(pandiantmp.getCreationDate()));
+        result = pstmt.executeUpdate();
+        this.closeConnection(con, pstmt);
+        return result;
     }
 
     private List<Map<String, Object>> processResult(ResultSet rs) throws Exception {

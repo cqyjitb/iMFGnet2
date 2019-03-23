@@ -6,6 +6,7 @@ import com.hand.hap.core.IRequest;
 import com.hand.hap.system.dto.ResponseData;
 import org.springframework.web.bind.annotation.*;
 import yj.core.SqlConn.SqlConnGzb;
+import yj.core.SqlConn.SqlConnTj;
 import yj.core.pandian.dto.Pandiantmp;
 import yj.core.pandian.service.IPandiantmpService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,26 +77,36 @@ import java.util.UUID;
         pdtmp.setCreatedBy(userId);
         pdtmp.setWerks(werks);
 
-        int i = service.insertNewRow(pdtmp);
-        if (i == 1){
-            if (werks.equals("工装制造部")){
-                SqlConnGzb connGzb = new SqlConnGzb();
-                try {
-                    connGzb.insertPanDianTmp(pdtmp);
-                } catch (Exception e) {
-                    e.printStackTrace();
+            int i = service.insertNewRow(pdtmp);
+            if (i == 1){
+                int result = 0;
+                if (werks.equals("工装制造部")){
+                    SqlConnGzb connGzb = new SqlConnGzb();
+                    try {
+                        result =  connGzb.insertPanDianTmp(pdtmp);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else if (werks.equals("天津渝江")){
+                    SqlConnTj connTj = new SqlConnTj();
+                    try {
+                        result = connTj.insertPanDianTmp(pdtmp);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
-            }else if (werks.equals("天津渝江")){
-
+                if (result == i){
+                    rs.setMessage("盘点数据保存成功！");
+                    rs.setSuccess(true);
+                }else{
+                    rs.setMessage("盘点数据保存失败！");
+                    rs.setSuccess(false);
+                }
+            }else{
+                rs.setMessage("盘点数据保存失败！");
+                rs.setSuccess(false);
             }
 
-            rs.setMessage("盘点数据保存成功！");
-            rs.setSuccess(true);
-        }else{
-            rs.setMessage("盘点数据保存失败！");
-            rs.setSuccess(false);
+            return rs;
         }
-
-        return rs;
-        }
-    }
+}
