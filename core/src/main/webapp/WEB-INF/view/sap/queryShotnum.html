@@ -43,10 +43,10 @@
             $('#Grid').data('kendoGrid').dataSource.read();
         },
         saveFunction:function () {
-            var data = grid.selectedDataItems();
-            if(data.length > 0){
-                for(var i=0;i<data.length;i++){
-                    if(parseInt(data[i].shotStart) > parseInt(data[i].shotEnd)){
+            var formData = grid.selectedDataItems();
+            if(formData.length > 0){
+                for(var i=0;i<formData.length;i++){
+                    if(parseInt(formData[i].shotStart) > parseInt(formData[i].shotEnd)){
                         kendo.ui.showErrorDialog({
                             title: '错误',
                             message: "起始压射号不能大于终止压射号！"
@@ -189,6 +189,11 @@
                 type:"POST",
                 contentType: "application/json"
             },
+            create:{
+                url:BaseUrl + "/wip/shotnum/updateShotnum",
+                type:"POST",
+                contentType: "application/json"
+            },
             destroy: {
                 url: BaseUrl + "/wip/shotnum/deleteShotnum",
                 type: "POST",
@@ -210,7 +215,7 @@
             data: 'rows',
             total: 'total',
             model: {
-                id: "mdno",
+                id: "werks",
                 parentId:"matnr",
                 fields: {
                     werks:{type:'string',editable:false},

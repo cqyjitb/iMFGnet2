@@ -107,7 +107,7 @@
     </select>
 
     <select id="selectByOrderno" parameterType="java.lang.String" resultType="java.lang.Integer">
-        SELECT COALESCE(sum(il.yeild),0) from confirmation_input_log il,confirmation_result r,confirmation_log l
+        SELECT COALESCE(sum(il.yeild),0) from confirmation_input_log il,confirmation_result r,confirmation_log l,sap_afko ao,sap_afvc ac
         <where>
             il.id= r.input_id
             AND l.ref_id = il.id
@@ -115,10 +115,17 @@
             AND l.tran_type = '0'
             AND l.msgty = 'S'
             and il.operation = '0010'
-            <if test="orderno != null">
+            AND ao.aufnr = il.orderno
+            AND ao.aufpl = ac.aufpl
+            and (ac.flag = '' or ac.flag is null)
+            AND ao.auart in('YZ01','YZ03','YZ04')
+            <if test="arbpl != null">
+                AND ac.arbpl = #{arbpl}
+            </if>
+            <!--<if test="orderno != null">
                 AND il.orderno = #{orderno}
             </if>
-            <!--<if test="fevor != null">
+            <if test="fevor != null">
                 and r.fevor = #{fevor}
             </if>-->
             <if test="postingDateAfter != null">
