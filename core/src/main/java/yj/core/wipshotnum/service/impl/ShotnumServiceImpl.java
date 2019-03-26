@@ -257,6 +257,12 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                 Shotnum shotnum = list.get(i);
                 if(shotnum.getMdno() == null || shotnum.getMdno().equals("")){
                     shotnum.setMdnum(1);
+                }else{
+                    Integer mdnum = mouldcavityMapper.selectByMatnr(shotnum.getMatnr(),shotnum.getMdno());
+                    if(mdnum == null){
+                        mdnum = 1;
+                    }
+                    shotnum.setMdnum(mdnum);
                 }
             }
         }
