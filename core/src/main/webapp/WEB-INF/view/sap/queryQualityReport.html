@@ -39,6 +39,8 @@
     var viewModel = kendo.observable({
         model: {
             werks:"1001",
+            project:"",
+            id:""
 
         },
         shiftsSource:[
@@ -66,7 +68,16 @@
         },
 
         queryGrid: function () {
-            $('#treelist').data('kendoTreeList').dataSource.read();
+            var lineId = document.getElementById("lineId").value;
+            var unitCode = document.getElementById("veran").value;
+            var matnr = document.getElementById("matnr").value;
+            var zgjbar = document.getElementById("zgjbar").value;
+            var tpcode = document.getElementById("tpcode").value;
+
+            if (lineId != "" && unitCode != "" && !(matnr == "" && tpcode == "" && zgjbar == "")){
+                $('#treelist').data('kendoTreeList').dataSource.read();
+            }
+
         }
     });
 </script>
@@ -90,7 +101,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">车间</label>
                                     <div class="col-sm-8">
-                                        <input id="veran" class="k-textbox" data-bind="value:model.unitCode" style="width: 100%">
+                                        <input id="veran" class="k-textbox" data-bind="value:model.unitCode" style="width: 100%" data-defaultValue="">
                                         <script>
                                             $("#veran").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_FEVOR2")}, {
                                                 query: function (e) {
@@ -106,7 +117,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">产线</label>
                                     <div class="col-sm-8">
-                                        <input id="lineId" type="text" style="width: 100%" data-bind="value:model.lineId" class="k-textbox">
+                                        <input id="lineId" type="text" style="width: 100%" data-bind="value:model.lineId" class="k-textbox" data-defaultValue="">
                                         <script>
                                             $("#lineId").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_WIPLINES")}, {
                                                 query: function (e) {
@@ -125,7 +136,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">物料编码</label>
                                     <div class="col-sm-8">
-                                        <input id="matnr" type="text" class="k-textbox" style="width: 100%;"  data-bind="value:model.matnr"  required placeholder="编码为1开头的物料">
+                                        <input id="matnr" type="text" class="k-textbox" style="width: 100%;"  data-bind="value:model.matnr"  required placeholder="编码为1开头的物料" data-defaultValue="">
                                     </div>
                                 </div>
                             </div>
@@ -134,7 +145,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">托盘条码</label>
                                     <div class="col-sm-8">
-                                        <input id="tpcode" type="text" class="k-textbox" style="width: 100%;"  data-bind="value:model.tpcode" >
+                                        <input id="tpcode" type="text" class="k-textbox" style="width: 100%;"  data-bind="value:model.tpcode" data-defaultValue="">
                                     </div>
                                 </div>
                             </div>
@@ -143,7 +154,7 @@
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">产品二维码</label>
                                     <div class="col-sm-8">
-                                        <input id="zgjbar" type="text" class="k-textbox" style="width: 100%;"  data-bind="value:model.zgjbar" >
+                                        <input id="zgjbar" type="text" class="k-textbox" style="width: 100%;"  data-bind="value:model.zgjbar" data-defaultValue="">
                                     </div>
                                 </div>
                             </div>
@@ -269,7 +280,21 @@
             </form>
         </div>
         <!--<div style="clear:both">-->
-            <div id="treelist"></div>
+        <div id="example">
+            <div id="treelist" data-role="treelist"
+                 data-selectable="true"
+                 data-columns="[
+                                 { 'field': 'project','title':'追溯项目','width': 400},
+                                 { 'field': 'content','title':'内容'},
+                              ]"
+                 data-bind="source: dataSource,
+                            visible: isVisible,
+                            events: { change: onChange }">
+
+            </div>
+        </div>
+
+    </div>
         <!--</div>-->
     </div>
 </div>
@@ -289,8 +314,22 @@
             apply.hide();     //如果元素为显现,则将其隐藏
         }
     }
+
     var BaseUrl = _basePath;
-    var dataSource = new kendo.data.TreeListDataSource({
+    var viewModel2 = kendo.observable({
+        isVisible: true,
+        onChange: function(e) {
+            var widget = e.sender;
+            var dataItem = widget.dataItem(widget.select());
+            console.log("event :: change(" + kendo.stringify(dataItem, null, 4) + ")");
+            viewModel.model.id = dataItem.id;
+            viewModel.model.project = dataItem.project;
+            viewModel.model.parentId = dataItem.parentId;
+            if(dataItem.project == "分零件信息"){
+                viewModel.queryGrid();
+            }
+        },
+        dataSource: new kendo.data.TreeListDataSource({
             transport: {
                 read: {
                     url: BaseUrl + "/wip/Qaulity/quertQaulityReport",
@@ -298,41 +337,78 @@
                     dataType: "json"
                 },
                 parameterMap: function (options, type) {
-                    if (type !== "read" && options.models) {
-                        var datas = Hap.prepareSubmitParameter(options, type);
-                        return kendo.stringify(datas);
-                    } else if (type === "read") {
-                        return Hap.prepareQueryParameter(viewModel.model.toJSON(), options);
+                    var lineId = document.getElementById("lineId").value;
+                    var unitCode = document.getElementById("veran").value;
+                    var matnr = document.getElementById("matnr").value;
+                    var zgjbar = document.getElementById("zgjbar").value;
+                    var tpcode = document.getElementById("tpcode").value;
+
+                    if (lineId != "" && unitCode != "" && !(matnr == "" && tpcode == "" && zgjbar == "")){
+                        if (type !== "read" && options.models) {
+                            var datas = Hap.prepareSubmitParameter(options, type);
+                            return kendo.stringify(datas);
+                        } else if (type === "read") {
+                            return Hap.prepareQueryParameter(viewModel.model.toJSON(), options);
+                        }
                     }
                 }
             },
             schema: {
                 data  : 'rows',
                 model: {
-                    id: "id",
-                    expanded: false
+                    id: "id"
                 }
             }
-        });
-
-    $("#treelist").kendoTreeList({
-        dataSource:dataSource,
-        resizable: true,
-        autoBind:false,
-        height: 540,
-        sortable: true,
-        columns: [
-//            { field: "zgjbar", title: "", width: 280},
-//            { field: "zpgdbar", title: "Last Name", width: 160 }
-            { field: "id",title:"追溯项目"},
-            { field: "zpgdbar",title:"内容"}
-        ],
-        pageable: {
-            pageSize: 15,
-            pageSizes: true
-        }
+        })
     });
+//    var BaseUrl = _basePath;
+//    var dataSource = new kendo.data.TreeListDataSource({
+//            transport: {
+//                read: {
+//                    url: BaseUrl + "/wip/Qaulity/quertQaulityReport",
+//                    type: "POST",
+//                    dataType: "json"
+//                },
+//                onChange:function(e){
+//                    var widget = e.sender;
+//                    var dataItem = widget.dataItem(widget.select());
+//                    console.log("event :: change(" + kendo.stringify(dataItem, null, 4) + ")");
+//                },
+//                parameterMap: function (options, type) {
+//                    if (type !== "read" && options.models) {
+//                        var datas = Hap.prepareSubmitParameter(options, type);
+//                        return kendo.stringify(datas);
+//                    } else if (type === "read") {
+//                        return Hap.prepareQueryParameter(viewModel.model.toJSON(), options);
+//                    }
+//                }
+//            },
+//            schema: {
+//                data  : 'rows',
+//                model: {
+//                    id: "id",
+//                    expanded: false
+//                }
+//            }
+//        });
 
+//    $("#treelist").kendoTreeList({
+//        dataSource:dataSource,
+//        resizable: true,
+//        selectable:true,
+//        autoBind:false,
+//        height: 800,
+//        sortable: false,
+//        columns: [
+//            { field: "project",title:"追溯项目",width:400},
+//            { field: "content",title:"内容"}
+//        ],
+//        pageable: {
+//            pageSize: 15,
+//            pageSizes: true
+//        }
+//    });
+    kendo.bind($("#example"), viewModel2);
 </script>
 </body>
 </html>

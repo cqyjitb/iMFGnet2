@@ -106,7 +106,7 @@ public class EmployeeServiceImpl extends BaseServiceImpl<Employee> implements IE
     }
 
     @Override
-    public List<Employee> selectEmployeeCode(String code) {
-        return employeeMapper.selectEmployeeCode(code);
+    public Employee queryById(Long id) {
+        return employeeMapper.queryById(id);
     }
 }

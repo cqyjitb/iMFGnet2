@@ -15,6 +15,33 @@ public class QualityParam {
     private String yzbanz ;
     private String yzcharg ;
     private String werks ;
+    private String id;
+    private String project;
+    private String parentId;
+
+    public String getParentId() {
+        return parentId;
+    }
+
+    public void setParentId(String parentId) {
+        this.parentId = parentId;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public String getProject() {
+        return project;
+    }
+
+    public void setProject(String project) {
+        this.project = project;
+    }
 
     public String getTpcode() {
         return tpcode;

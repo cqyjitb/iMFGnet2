@@ -27,5 +27,6 @@ public interface IEmployeeService extends IBaseService<Employee>, ProxySelf<IEmp
 
     Employee queryByCode(String code);
 
-    List<Employee> selectEmployeeCode(String code);
+    Employee queryById(Long id);
+
 }

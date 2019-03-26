@@ -4,7 +4,8 @@ public class QualityTree {
 
     private String id;
     private String parentId;
-    private String zpgdbar;
+    private String content;
+    private String project;
 
     public String getId() {
         return id;
@@ -22,11 +23,19 @@ public class QualityTree {
         this.parentId = parentId;
     }
 
-    public String getZpgdbar() {
-        return zpgdbar;
+    public String getContent() {
+        return content;
     }
 
-    public void setZpgdbar(String zpgdbar) {
-        this.zpgdbar = zpgdbar;
+    public void setContent(String content) {
+        this.content = content;
+    }
+
+    public String getProject() {
+        return project;
+    }
+
+    public void setProject(String project) {
+        this.project = project;
     }
 }
