@@ -19,7 +19,7 @@ public class LockConstController extends BaseController {
     private ILockConstService service;
 
     /**
-     *
+     * 装箱报错锁程序常量维护页面查询请求 918100064
      * @param dto
      * @param page
      * @param pageSize
@@ -35,7 +35,7 @@ public class LockConstController extends BaseController {
     }
 
     /**
-     *
+     * 装箱报错锁程序常量维护页面添加和修改请求 918100064
      * @param request
      * @param dto
      * @return
@@ -58,7 +58,7 @@ public class LockConstController extends BaseController {
     }
 
     /**
-     *
+     * 装箱报错锁程序常量维护页面删除请求 918100064
      * @param request
      * @param dto
      * @return
@@ -71,7 +71,7 @@ public class LockConstController extends BaseController {
     }
 
     /**
-     *
+     * 装箱报错锁程序常量维护页面字段为空判断 918100064
      * @param dto
      * @return
      */

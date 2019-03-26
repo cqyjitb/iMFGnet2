@@ -44,12 +44,13 @@
     </resultMap>
 
     <select id="queryShotnum" parameterType="yj.core.wipshotnum.dto.Shotnum" resultMap="BaseResultMap2">
-        select DISTINCT sh.*,cr.veran,mo.mdnum,u.user_name from wip_shotnum sh,sap_crhd cr,sap_mouldcavity mo,sys_user u
+        select DISTINCT sh.*,cr.veran,u.user_name from wip_shotnum sh
+        left join  sap_crhd cr on sh.arbpl = cr.arbpl
+        left join sys_user u on sh.created_by = u.user_id
         <where>
-            sh.matnr = mo.matnr
-            AND sh.mdno = mo.mdno
-            AND sh.arbpl = cr.arbpl
-            AND sh.created_by = u.user_id
+            1 = 1
+            /*AND sh.matnr = mo.matnr
+            AND sh.mdno = mo.mdno*/
             <if test="werks != null">
                 AND sh.werks = #{werks}
             </if>

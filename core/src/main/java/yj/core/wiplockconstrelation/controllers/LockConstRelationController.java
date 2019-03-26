@@ -18,6 +18,14 @@ public class LockConstRelationController extends BaseController {
     @Autowired
     private ILockConstRelationService service;
 
+    /**
+     * 装箱报错锁程序常量关系维护页面查询请求 918100064
+     * @param dto
+     * @param page
+     * @param pageSize
+     * @param request
+     * @return
+     */
     @RequestMapping(value = "/wip/lock/const/relation/queryLockConstRelation")
     @ResponseBody
     public ResponseData queryLockConstRelation(LockConstRelation dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
@@ -26,6 +34,12 @@ public class LockConstRelationController extends BaseController {
         return new ResponseData(service.selectFromPage(requestContext,dto,page,pageSize));
     }
 
+    /**
+     * 装箱报错锁程序常量关系维护页面添加和修改请求 918100064
+     * @param request
+     * @param dto
+     * @return
+     */
     @RequestMapping(value = "/wip/lock/const/relation/submitLockConstRelation")
     @ResponseBody
     public ResponseData updateLockConstRelation(HttpServletRequest request,@RequestBody List<LockConstRelation> dto) {
@@ -37,6 +51,12 @@ public class LockConstRelationController extends BaseController {
         return rs;
     }
 
+    /**
+     * 装箱报错锁程序常量关系维护页面删除请求 918100064
+     * @param request
+     * @param dto
+     * @return
+     */
     @RequestMapping(value = "/wip/lock/const/relation/remove")
     @ResponseBody
     public ResponseData delete(HttpServletRequest request, @RequestBody List<LockConstRelation> dto) {
