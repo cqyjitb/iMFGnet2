@@ -1,11 +1,10 @@
 <!--
-        机加采集点配置维护对话框 918100064
+        装箱报错锁程序解锁用户维护对话框 918100064
  -->
 <#include "../include/header.html">
 <body>
 <script src="${base.contextPath}/lib/bootstrap-3.3.7/js/bootstrap.min.js"></script>
 <script type="text/javascript">
-    var isedit = location.search.substring(1);
     var newViewModel = kendo.observable({
         model: {
             werks:"1001"
@@ -144,14 +143,6 @@
 </div>
 <script type="text/javascript">
     kendo.bind($('#page-content2'), newViewModel);
-    var checked = window.parent.$("#Grid").data('kendoGrid').selectedDataItems()[0];
-    if(isedit != 0){
-        newViewModel.model.set("id",checked.id);
-        newViewModel.model.set("deptId",checked.deptId);
-        newViewModel.model.set("lineId",checked.lineId);
-        newViewModel.model.set("werks",checked.werks);
-        newViewModel.model.set("userid",checked.userid);
-    }
 </script>
 </body>
 </html>

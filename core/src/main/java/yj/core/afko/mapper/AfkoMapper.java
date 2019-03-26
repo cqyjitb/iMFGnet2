@@ -37,7 +37,7 @@ public  interface AfkoMapper
       * @param arbpl
       * @return
       */
-     List<Afko> selectByFevor(@Param("arbpl")String arbpl);
+//     List<Afko> selectByFevor(@Param("arbpl")String arbpl);
 
      /**
       * 物料查询LOV_PLNBEZ  918100064

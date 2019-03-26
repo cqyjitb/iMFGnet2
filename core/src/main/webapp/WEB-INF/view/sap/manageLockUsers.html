@@ -18,19 +18,7 @@
     var viewModel = kendo.observable({
         model: {},
         createFunction: function () {
-            var url = 'manageLockUsers_edit.html?0';
-            newData(url);
-        },
-        saveFunction: function () {
-            var selections = grid.selectedDataItems();
-            if(selections.length == 1){
-                var url = 'manageLockUsers_edit.html?1';
-                newData(url);
-            }else{
-                kendo.ui.showInfoDialog({
-                    message: '请选择一行数据'
-                })
-            }
+            newData();
         },
         resetForm: function () {
             var formData = viewModel.model.toJSON();
@@ -50,13 +38,13 @@
             }
         }
     });
-    function newData(url) {
+    function newData() {
         var dialog = $("#newWin").kendoWindow({
             actions: ["Close"],
             width: 900,
             height: 600,
             title: '<@spring.message "hap.edit"/>',
-            content: url,
+            content: 'manageLockUsers_edit.html',
             iframe: true,
             visible: false,
             resizable: false,
@@ -113,7 +101,6 @@
                     <div class="pull-left" style="padding-bottom:10px;">
                         <span class="btn btn-primary k-grid-add" style="float:left;margin-right:5px;" data-bind="click:createFunction"><@spring.message "hap.new"/></span>
                         <span onclick="deleteData()" class="btn btn-danger" style="float:left;margin-right:5px;"><@spring.message "hap.delete"/></span>
-                        <span class="btn btn-success k-grid-save-changes" data-bind="click:saveFunction" type="submit" style="float:left;margin-right:5px;">修改</span>
                     </div>
                     <div class="pull-right" style="padding-bottom:10px">
                         <span class="btn btn-primary" data-bind="click:queryGrid" type="submit">
@@ -180,9 +167,10 @@
             data: 'rows',
             total: 'total',
             model: {
-                id: "id",
+                id: "werks",
+                parentId:"lineId",
                 fields: {
-                    id:{type:"string"},
+                    werks:{type:"string"},
                     deptId:{type:"string"},
                     lineId: {type: "string"},
                     descriptions: {type: "string"},
