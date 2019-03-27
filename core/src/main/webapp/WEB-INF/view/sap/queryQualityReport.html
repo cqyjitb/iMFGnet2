@@ -76,6 +76,11 @@
 
             if (lineId != "" && unitCode != "" && !(matnr == "" && tpcode == "" && zgjbar == "")){
                 $('#treelist').data('kendoTreeList').dataSource.read();
+            }else{
+                kendo.ui.showErrorDialog({
+                    title: '错误',
+                    message: "请输入必要查询条件，物料编码、托盘条码，产品二维码至少选择一个条件进行查询！"
+                });
             }
 
         }
@@ -90,7 +95,7 @@
                         <div class="row">
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label">工厂</label>
+                                    <label class="col-sm-4 control-label">工厂<label class="label">*</label></label>
                                     <div class="col-sm-8">
                                         <input id="werks" type="text" style="width: 100%" data-bind="value:model.werks" class="k-textbox" readonly="readonly">
                                     </div>
@@ -99,7 +104,7 @@
 
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label">车间</label>
+                                    <label class="col-sm-4 control-label">车间<label class="label">*</label></label>
                                     <div class="col-sm-8">
                                         <input id="veran" class="k-textbox" data-bind="value:model.unitCode" style="width: 100%" data-defaultValue="">
                                         <script>
@@ -115,7 +120,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label">产线</label>
+                                    <label class="col-sm-4 control-label">产线<label class="label">*</label></label>
                                     <div class="col-sm-8">
                                         <input id="lineId" type="text" style="width: 100%" data-bind="value:model.lineId" class="k-textbox" data-defaultValue="">
                                         <script>
@@ -279,20 +284,22 @@
                 </div>
             </form>
         </div>
-        <!--<div style="clear:both">-->
-        <div id="example">
-            <div id="treelist" data-role="treelist"
-                 data-selectable="true"
-                 data-columns="[
-                                 { 'field': 'project','title':'追溯项目','width': 400},
-                                 { 'field': 'content','title':'内容'},
-                              ]"
-                 data-bind="source: dataSource,
-                            visible: isVisible,
-                            events: { change: onChange }">
-
-            </div>
+        <div style="clear:both">
+            <div id="treelist" />
         </div>
+        <!--<div id="example">-->
+            <!--<div id="treelist" data-role="treelist"-->
+                 <!--data-selectable="true"-->
+                 <!--data-columns="[-->
+                                 <!--{ 'field': 'project','title':'追溯项目','width': 400},-->
+                                 <!--{ 'field': 'content','title':'内容'},-->
+                              <!--]"-->
+                 <!--data-bind="source: dataSource,-->
+                            <!--visible: isVisible,-->
+                            <!--events: { change: onChange }">-->
+
+            <!--</div>-->
+        <!--</div>-->
 
     </div>
         <!--</div>-->
@@ -316,99 +323,106 @@
     }
 
     var BaseUrl = _basePath;
-    var viewModel2 = kendo.observable({
-        isVisible: true,
-        onChange: function(e) {
-            var widget = e.sender;
-            var dataItem = widget.dataItem(widget.select());
-            console.log("event :: change(" + kendo.stringify(dataItem, null, 4) + ")");
-            viewModel.model.id = dataItem.id;
-            viewModel.model.project = dataItem.project;
-            viewModel.model.parentId = dataItem.parentId;
-            if(dataItem.project == "分零件信息"){
-                viewModel.queryGrid();
-            }
-        },
-        dataSource: new kendo.data.TreeListDataSource({
-            transport: {
-                read: {
-                    url: BaseUrl + "/wip/Qaulity/quertQaulityReport",
-                    type: "POST",
-                    dataType: "json"
-                },
-                parameterMap: function (options, type) {
-                    var lineId = document.getElementById("lineId").value;
-                    var unitCode = document.getElementById("veran").value;
-                    var matnr = document.getElementById("matnr").value;
-                    var zgjbar = document.getElementById("zgjbar").value;
-                    var tpcode = document.getElementById("tpcode").value;
-
-                    if (lineId != "" && unitCode != "" && !(matnr == "" && tpcode == "" && zgjbar == "")){
-                        if (type !== "read" && options.models) {
-                            var datas = Hap.prepareSubmitParameter(options, type);
-                            return kendo.stringify(datas);
-                        } else if (type === "read") {
-                            return Hap.prepareQueryParameter(viewModel.model.toJSON(), options);
-                        }
-                    }
-                }
-            },
-            schema: {
-                data  : 'rows',
-                model: {
-                    id: "id"
-                }
-            }
-        })
-    });
-//    var BaseUrl = _basePath;
-//    var dataSource = new kendo.data.TreeListDataSource({
+//    var viewModel2 = kendo.observable({
+//        isVisible: true,
+//        onChange: function(e) {
+//            var widget = e.sender;
+//            var dataItem = widget.dataItem(widget.select());
+//            console.log("event :: change(" + kendo.stringify(dataItem, null, 4) + ")");
+//            viewModel.model.id = dataItem.id;
+//            viewModel.model.project = dataItem.project;
+//            viewModel.model.parentId = dataItem.parentId;
+//            if(dataItem.project == "分零件信息"){
+//                viewModel.queryGrid();
+//            }
+//        },
+//        dataSource: new kendo.data.TreeListDataSource({
 //            transport: {
 //                read: {
 //                    url: BaseUrl + "/wip/Qaulity/quertQaulityReport",
 //                    type: "POST",
 //                    dataType: "json"
 //                },
-//                onChange:function(e){
-//                    var widget = e.sender;
-//                    var dataItem = widget.dataItem(widget.select());
-//                    console.log("event :: change(" + kendo.stringify(dataItem, null, 4) + ")");
-//                },
 //                parameterMap: function (options, type) {
-//                    if (type !== "read" && options.models) {
-//                        var datas = Hap.prepareSubmitParameter(options, type);
-//                        return kendo.stringify(datas);
-//                    } else if (type === "read") {
-//                        return Hap.prepareQueryParameter(viewModel.model.toJSON(), options);
+//                    var lineId = document.getElementById("lineId").value;
+//                    var unitCode = document.getElementById("veran").value;
+//                    var matnr = document.getElementById("matnr").value;
+//                    var zgjbar = document.getElementById("zgjbar").value;
+//                    var tpcode = document.getElementById("tpcode").value;
+//
+//                    if (lineId != "" && unitCode != "" && !(matnr == "" && tpcode == "" && zgjbar == "")){
+//                        if (type !== "read" && options.models) {
+//                            var datas = Hap.prepareSubmitParameter(options, type);
+//                            return kendo.stringify(datas);
+//                        } else if (type === "read") {
+//                            return Hap.prepareQueryParameter(viewModel.model.toJSON(), options);
+//                        }
 //                    }
 //                }
 //            },
 //            schema: {
 //                data  : 'rows',
 //                model: {
-//                    id: "id",
-//                    expanded: false
+//                    id: "id"
 //                }
 //            }
-//        });
-
-//    $("#treelist").kendoTreeList({
-//        dataSource:dataSource,
-//        resizable: true,
-//        selectable:true,
-//        autoBind:false,
-//        height: 800,
-//        sortable: false,
-//        columns: [
-//            { field: "project",title:"追溯项目",width:400},
-//            { field: "content",title:"内容"}
-//        ],
-//        pageable: {
-//            pageSize: 15,
-//            pageSizes: true
-//        }
+//        })
 //    });
-    kendo.bind($("#example"), viewModel2);
+    var BaseUrl = _basePath;
+    var dataSource = new kendo.data.TreeListDataSource({
+            transport: {
+                read: {
+                    url: BaseUrl + "/wip/Qaulity/quertQaulityReport",
+                    type: "POST",
+                    dataType: "json"
+                },
+                onChange:function(e){
+                    var widget = e.sender;
+                    var dataItem = widget.dataItem(widget.select());
+                    console.log("event :: change(" + kendo.stringify(dataItem, null, 4) + ")");
+                },
+                parameterMap: function (options, type) {
+
+                        if (type !== "read" && options.models) {
+                            var datas = Hap.prepareSubmitParameter(options, type);
+                            return kendo.stringify(datas);
+                        } else if (type === "read") {
+                            return Hap.prepareQueryParameter(viewModel.model.toJSON(), options);
+                        }
+
+                }
+            },
+            schema: {
+                data  : 'rows',
+                model: {
+                    id: "id",
+                    expanded: false
+                }
+            }
+        });
+
+    $("#treelist").kendoTreeList({
+        dataSource:dataSource,
+        toolbar: [ "excel" ],
+        excel: {
+            fileName: "Kendo UI TreeList Export.xlsx",
+            filterable: true
+        },
+        resizable: true,
+        selectable:true,
+        autoBind:false,
+        height: 800,
+        sortable: false,
+        columns: [
+            { field: "project",title:"追溯项目",width:400},
+            { field: "content",title:"内容"}
+        ],
+        pageable: {
+            pageSize: 15,
+            pageSizes: true
+        }
+    });
+//    kendo.bind($("#example"), viewModel2);
 </script>
 </body>
 </html>

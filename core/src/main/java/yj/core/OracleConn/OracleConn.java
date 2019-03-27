@@ -7,21 +7,22 @@ import java.util.List;
 import java.util.Map;
 
 public class OracleConn {
-    private static final String dbUrl="jdbc:oracle:thin:@192.168.94.93:1521:orclyj";
-    private static final String dbUserName="mes_query_usr"; // 用户名
-    private static final String dbPassword="mesapp12345";
-    private static final String jdbcName="oracle.jdbc.OracleDriver";
-    //        String dbUrl="jdbc:oracle:thin:@192.168.4.37:1521:orclyj"; // 数据库连接地址 生产环境
-    //        String dbUserName="mes_query_usr"; // 用户名
-    //        String dbPassword="mesapp12345"; // 密码
-    //        String jdbcName="oracle.jdbc.OracleDriver";
 
-    public OracleConn(){
 
+    public String dbUrl;
+    public String dbUserName;
+    public String dbPassword;
+    public String  jdbcName;
+
+    public OracleConn(String dbUrl,String dbUserName,String dbPassword,String jdbcName){
+        this.dbUrl = dbUrl;
+        this.dbUserName = dbUserName;
+        this.dbPassword = dbPassword;
+        this.jdbcName = jdbcName;
     }
     public static void main(String[] args) {
 
-        OracleConn oracleConn = new OracleConn();
+        OracleConn oracleConn = new OracleConn("","","","");
         String sql = "select * from MES_M264L01.WIP_MAIN_DATA";
         try {
             oracleConn.select(sql);
@@ -30,11 +31,11 @@ public class OracleConn {
         }
     }
 
-    private static Connection getConnection(){
+    private  Connection getConnection(){
         Connection conn = null;
         try {
-            Class.forName(jdbcName);
-            conn = DriverManager.getConnection(dbUrl,dbUserName,dbPassword);
+            Class.forName(this.jdbcName);
+            conn = DriverManager.getConnection(this.dbUrl,this.dbUserName,this.dbPassword);
             System.out.println(conn);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
@@ -81,4 +82,6 @@ public class OracleConn {
         }
 
     }
+
+
 }

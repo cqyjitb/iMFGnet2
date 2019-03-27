@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>渝江压铸登陆</title>
+    <title>机加盘点功能选择</title>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="_csrf" content="${_csrf.token}"/>
@@ -12,9 +12,9 @@
     <script src="${base.contextPath}/resources/js/yj-pda.js?v=201706261447"></script>
 
     <!--<script>-->
-        <!--window.onload=function () {-->
-            <!--delCookie("username");-->
-        <!--}-->
+    <!--window.onload=function () {-->
+    <!--delCookie("username");-->
+    <!--}-->
     <!--</script>-->
 </head>
 
@@ -137,15 +137,15 @@
 
 
     <div id="login_btn">
-        <button id="btn" onclick="submit1()">报工入口</button>
+        <button id="btn" onclick="submit1()">线边毛坯框盘点</button>
     </div>
 
     <div id="login_shot">
-        <button id="btn_shot" onclick="submit3()">压射号填报</button>
+        <button id="btn_shot" onclick="submit3()">线边毛坯框盘点(无码)</button>
     </div>
 
     <div id="login_pd">
-        <button id="btn_pd" onclick="submit2()">机加盘点</button>
+        <button id="btn_pd" onclick="submit2()">已加工在制盘点</button>
     </div>
 
 
@@ -154,16 +154,16 @@
 
     function submit1(){
 
-                    window.location.href='${base.contextPath}/dispatch/dispatch.html';
-                    // window.open("/dispatch/dispatch.html");
+        window.location.href='${base.contextPath}/dispatch/dispatch_jjpd1.html';
+        // window.open("/dispatch/dispatch.html");
     }
 
     function submit2(){
-        window.location.href='${base.contextPath}/dispatch/dispatch_pd_index.html';
+        window.location.href='${base.contextPath}/dispatch/dispatch_jjpd2.html';
     }
 
     function submit3(){
-        window.location.href='${base.contextPath}/dispatch/dispatch_shot.html';
+        window.location.href='${base.contextPath}/dispatch/dispatch_jjpd3.html';
     }
 
 </script>

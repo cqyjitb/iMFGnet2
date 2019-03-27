@@ -7,19 +7,21 @@ import java.util.List;
 import java.util.Map;
 
 public class HanaCon {
-    private static final String DRIVER = "com.sap.db.jdbc.Driver";
-    //    private static final String URL = "jdbc:sap://192.168.3.20:36015?reconnect=true";
-    private static final String URL = "jdbc:sap://192.168.3.20:35015?reconnect=true";
-    //    private static final String USERNAME = "FINEREPORT";prd
-//    private static final String PASSWORD = "Finereport3333";
-    private static final String USERNAME = "FINEREPORT";
-    private static final String PASSWORD = "Finereport159";
-    public HanaCon(){
 
+    public String DRIVER;
+    public String URL;
+    public String USERNAME;
+    public String PASSWORD;
+    public HanaCon(String url,String username,String password,String driver){
+
+        this.DRIVER = driver;
+        this.URL    = url;
+        this.USERNAME = username;
+        this.PASSWORD = password;
     }
 
     public static void main(String[] args) {
-        HanaCon hanaCon = new HanaCon();
+        HanaCon hanaCon = new HanaCon("","","","");
         String sql = "select * from "+ "SAPABAP1"+ "."+"MARA";
 
         try {
@@ -44,8 +46,8 @@ public class HanaCon {
     private Connection getConnection(){
         Connection conn = null;
         try {
-            Class.forName(DRIVER);
-            conn = DriverManager.getConnection(URL,USERNAME,PASSWORD);
+            Class.forName(this.DRIVER);
+            conn = DriverManager.getConnection(this.URL,this.USERNAME,this.PASSWORD);
             System.out.println(conn);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
