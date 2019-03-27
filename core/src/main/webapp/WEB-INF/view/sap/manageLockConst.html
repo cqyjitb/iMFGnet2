@@ -32,10 +32,24 @@
         saveFunction: function () {
             var selections = grid.selectedDataItems();
             if(selections.length  > 0){
-                /*for(var i=selections.length;i++){
-                    var date =
-                }*/
-                $('#Grid').data('kendoGrid').saveChanges();
+                $.ajax({
+                    type   : 'POST',
+                    url    : BaseUrl + "/wip/lock/const/submitLockConst",
+                    dataType : "json",
+                    contentType : "application/json",
+                    data   : kendo.stringify(selections),
+                    success: function (data) {
+                        if(data.success==false){
+                            kendo.ui.showErrorDialog({
+                                title: '错误',
+                                message: data.message
+                            });
+                        }else{
+                            $('#Grid').data('kendoGrid').dataSource.page(1);
+                        }
+                    }
+                });
+                //$('#Grid').data('kendoGrid').saveChanges();
             }else{
                 kendo.ui.showInfoDialog({
                     message: '请至少选择一行数据'
@@ -47,6 +61,7 @@
             for (var k in formData) {
                 viewModel.model.set(k, null);
             }
+            $('#Grid').data('kendoGrid').dataSource.read();
         },
         queryGrid: function () {
             var deptId = document.getElementById("unit-code").value;
@@ -152,20 +167,10 @@
                 type: "POST",
                 dataType: "json"
             },
-            update: {
-                url: BaseUrl + "/wip/lock/const/submitLockConst",
-                    type: "POST",
-                    contentType: "application/json"
-            },
             destroy: {
                 url: BaseUrl + "/wip/lock/const/remove",
                     type: "POST",
                     contentType: "application/json"
-            },
-            create: {
-                url: BaseUrl + "/wip/lock/const/submitLockConst",
-                type: "POST",
-                contentType: "application/json"
             },
             parameterMap: function (options, type) {
                 if (type !== "read" && options.models) {
