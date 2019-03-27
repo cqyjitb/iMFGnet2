@@ -8,10 +8,16 @@ import yj.core.fevor.dto.Fevor;
 import yj.core.fevor.mapper.FevorMapper;
 import yj.core.fevor.service.IFevorService;
 
+import java.util.List;
+
 @Service
 @Transactional
 public class FevorServiceImpl extends BaseServiceImpl<Fevor> implements IFevorService {
     @Autowired
     FevorMapper fevorMapper;
 
+    @Override
+    public List<Fevor> selectFevor2(String fevor) {
+        return fevorMapper.selectFevor2(fevor);
+    }
 }
