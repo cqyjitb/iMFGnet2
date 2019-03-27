@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.qppdrcd.mapper.QppdrcdMapper">
+    <resultMap id="BaseResultMap" type="yj.core.qppdrcd.dto.Qppdrcd">
+        <result column="RCDID" property="rcdid" jdbcType="VARCHAR" />
+        <result column="RCDTYPE" property="rcdtype" jdbcType="VARCHAR" />
+        <result column="WERKS" property="werks" jdbcType="VARCHAR" />
+        <result column="FEVOR" property="fevor" jdbcType="VARCHAR" />
+        <result column="FEVORTXT" property="fevortxt" jdbcType="VARCHAR" />
+        <result column="ZXHBAR" property="zxhbar" jdbcType="VARCHAR" />
+        <result column="LINE_ID" property="lineId" jdbcType="VARCHAR" />
+        <result column="LINE_NAME" property="lineName" jdbcType="VARCHAR" />
+        <result column="MATNR" property="matnr" jdbcType="VARCHAR" />
+        <result column="MAKTX" property="maktx" jdbcType="VARCHAR" />
+        <result column="NUM" property="num" jdbcType="DECIMAL" />
+        <result column="PDNUM" property="pdnum" jdbcType="DECIMAL" />
+        <result column="OPERATOR" property="operator" jdbcType="VARCHAR" />
+        <result column="RCDDAT" property="rcddat" jdbcType="DATE" />
+    </resultMap>
+
+
+</mapper>
