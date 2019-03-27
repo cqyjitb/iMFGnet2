@@ -39,12 +39,7 @@
                     contentType : "application/json",
                     data   : kendo.stringify([data]),
                     success: function (data) {
-                        if(data.success==false){
-                            kendo.ui.showErrorDialog({
-                                message:data.message
-                            });
-                        }
-                        else{
+                        if(data.success==true){
                             window.parent.$("#newWin").data("kendoWindow").close();
                         }
                     }

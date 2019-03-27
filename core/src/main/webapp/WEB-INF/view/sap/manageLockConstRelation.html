@@ -38,6 +38,7 @@
             for (var k in formData) {
                 viewModel.model.set(k, null);
             }
+            $('#Grid').data('kendoGrid').dataSource.read();
         },
         queryGrid: function () {
             var deptId = document.getElementById("unit-code").value;
