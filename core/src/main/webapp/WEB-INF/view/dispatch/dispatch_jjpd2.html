@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="X-CSRF-TOKEN" />
-    <title>线边库毛坯框盘点(有码)</title>
+    <title>线边库毛坯框盘点(无码)</title>
 
     <!--
         Created by Rebs on 2017/6/12.
@@ -120,16 +120,13 @@
 
             var l_error = "";
 
-            var oBcd = document.getElementById("zxhbar");
+            var oMatnr = document.getElementById("matnr");
             var oFevor = document.getElementById("fevor");
-            var zxhbar = "";
             var fevor = "";
             var matnr = "";
-            var num = "";
             var pd_sum = "";
-            var matnr = "";
             //进入报工页面时，光标定位到条码输入框
-            oBcd.focus();
+            oMatnr.focus();
 
             //获取主界面DIV页面元素
             var dDpt = document.getElementById("dispatch-area");
@@ -229,30 +226,26 @@
             }
 
             var oPd_sum = document.getElementById("pdnum");
-            var cBarcode = document.getElementById("zxhbar");
+            var cBarcode = document.getElementById("matnr");
             cBarcode.onkeydown = function () {
-                zxhbar = cBarcode.value;
+                matnr =  document.getElementById("matnr").value;
                 if (event.keyCode == 13) {
-                    if (zxhbar.length < 24){
-                            msg = "箱号格式错误！";
-                            openMsgDialog("错误",msg,"M");
+                    if (matnr.length != 8){
+                        msg = "物料编码格式错误！";
+                        openMsgDialog("错误",msg,"M");
                     }else{
                         $.ajax({
-                            url:"${base.contextPath}/sap/xhcard/queryXhcard",
+                            url:"${base.contextPath}/sap/marc/selectByMatnr",
                             type: "get",
                             data:{
-                                "zxhbar":zxhbar
+                                "matnr":matnr
                             },
                             contentType: "application/json; charset=utf-8",
                             success: function (res) {
                                 if (res.success){
-                                    var xh = res.rows[0];
-                                    var marc = res.rows[1];
-                                    document.getElementById("matnr").value = marc[0].matnr;
-                                    document.getElementById("maktx").value = marc[0].maktx;
-                                    document.getElementById("num").value = xh[0].menge;
-                                    document.getElementById("zxhzt").value = xh[0].zxhzt;
-
+                                    var marc = res.rows[0];
+                                    document.getElementById("matnr").value = marc.matnr;
+                                    document.getElementById("maktx").value = marc.maktx;
                                 }else{
 
                                 }
@@ -303,15 +296,15 @@
                         clearData();
 
                         //获取条码页面元素
-                        var roBcd=document.getElementById("zxhbar");
+                        var oMatnr=document.getElementById("matnr");
 
                         //进入报工页面时，光标定位到条码输入框
-                        roBcd.focus();
+                        oMatnr.focus();
                     }
-                    if(zxhbar == "" || zxhbar == null){
+                    if(matnr == "" || matnr == null){
 
                         //获取条码页面元素
-                        var roBcd=document.getElementById("zxhbar");
+                        var roBcd=document.getElementById("matnr");
 
                         //进入报工页面时，光标定位到条码输入框
                         roBcd.focus();
@@ -328,8 +321,8 @@
                     var oFevor = document.getElementById("fevor");
                     fevor = oFevor.options[oFevor.selectedIndex].value;
                     matnr = document.getElementById("matnr").value;
-                    num = document.getElementById("num").value;
-                    zxhbar = document.getElementById("zxhbar").value;
+                    var zbeiz = document.getElementById("zbeiz").value;
+
                     var username = getCookie("username");
                     $.ajax({
                         url:"${base.contextPath}/wip/qppdrcd/insertPdRow",
@@ -337,11 +330,9 @@
                         data:{
                             "fevor":fevor,
                             "matnr":matnr,
-                            "zxhbar":zxhbar,
-                            "num":num,
                             "pdnum":pd_sum,
                             "operator":username,
-                            "type":"1"
+                            "type":"2"
                         },
                         contentType: "application/json; charset=utf-8",
                         success: function (res) {
@@ -364,9 +355,7 @@
             document.getElementById("matnr").value = "";
             document.getElementById("pdnum").value = "";
             document.getElementById("maktx").value = "";
-            document.getElementById("num").value = "";
-            document.getElementById("zxhbar").value = "";
-            document.getElementById("zxhzt").value = "";
+            document.getElementById("zbeiz").value = "";
         }
 
 
@@ -391,13 +380,11 @@
         <br />
         <label class="dcp-label">车间</label><select id="fevor" class="cls-attr-input" type="text"></select><br>
         <!--<label class="dcp-label">物料描述</label><input id="matDesc"  style="font-size:10px;width: 120px;height: 40px;background-color: #C9C9C9" disabled="true" type="text"><br>-->
-        <label class="dcp-label">毛坯框码</label><input id="zxhbar"  style="font-size:1px;" class="cls-attr-input" type="text"><br>
-        <label class="dcp-label">箱号状态</label><input id="zxhzt"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>
-        <label class="dcp-label">物料编码</label><input id="matnr"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>
+        <label class="dcp-label">物料编码</label><input id="matnr"  style="font-size:1px;" class="cls-attr-input" type="text"><br>
         <label class="dcp-label">物料描述</label><textarea id="maktx" style="font-size:10px;width: 120px;height: 50px;background-color: #C9C9C9" disabled="true" rows="4"></textarea><br>
         <!--<label class="dcp-label">报工数量</label><input id="yeild" class="cls-attr-input" disabled="true" type="number"><br>-->
-        <label class="dcp-label">账面数量</label><input id="num" class="cls-attr-input" type="number" disabled="true"><br>
         <label class="dcp-label">盘点数量</label><input id="pdnum" class="cls-attr-input" type="number"><br>
+        <label class="dcp-label">备注</label><input id="zbeiz"  style="font-size:1px;" class="cls-attr-input" type="text"><br>
     </div>
 
     <div style="width: 220px;height: 30px;margin-top: 2px">
