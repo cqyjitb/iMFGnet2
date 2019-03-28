@@ -193,10 +193,12 @@
                     success: function (res) {
                         if (res.success){
                             var rows = res.rows;
-                            oFevor.innerHTML = "<option>" + "请选择" + "</option>"
+                            //oFevor.innerHTML = "<option>" + "请选择" + "</option>"
                             if (rows.length > 0){
                                 for (var i=0;i<rows.length;i++){
-                                    oFevor.innerHTML = oFevor.innerHTML + "<option value=" + rows[i].fevor + ">" + rows[i].fevor + "." + rows[i].txt + "</option>"
+                                      oFevor.options[i+1].value = rows[i].fevor;
+                                    oFevor.options[i+1].innerHTML = rows[i].txt;
+//                                    oFevor.innerHTML = oFevor.innerHTML + "<option value=" + rows[i].fevor + ">" + rows[i].fevor + "." + rows[i].txt + "</option>"
                                 }
                             }
                         }
@@ -378,6 +380,7 @@
                                 "num":num,
                                 "pdnum":pd_sum,
                                 "operator":username,
+                                "createdBy":createdBy,
                                 "type":"1"
                             },
                             contentType: "application/json; charset=utf-8",
@@ -426,7 +429,21 @@
     <div style="width: 220px;height: 235px">
         <!--<input id="barcode" style="font-size:16px;width: 200px;height: 22px;margin-bottom: 1px;" type="text"><br>-->
         <br />
-        <label class="dcp-label">车间</label><select id="fevor" class="cls-attr-input" type="text"></select><br>
+        <label class="dcp-label">车间</label><select id="fevor" class="cls-attr-input" type="text">
+        <option value="">请选择</option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        </select><br>
         <!--<label class="dcp-label">物料描述</label><input id="matDesc"  style="font-size:10px;width: 120px;height: 40px;background-color: #C9C9C9" disabled="true" type="text"><br>-->
         <label class="dcp-label">毛坯框码</label><input id="zxhbar"  style="font-size:1px;" class="cls-attr-input" type="text"><br>
         <label class="dcp-label">箱号状态</label><input id="zxhzt"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>

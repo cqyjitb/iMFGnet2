@@ -312,7 +312,12 @@ public class QualityController extends BaseController {
               //托盘信息
               Ztbc0002 ztbc0002 = new Ztbc0002();
               ztbc0002 = ztbc0002Service.selectByTpcode(list.get(i).get("CARTON_CODE").toString(),param.getWerks());
-              list.get(i).put("ZTPBZ",ztbc0002.getZtxt2());
+              if (ztbc0002.getZtpzt2() == null){
+                  list.get(i).put("ZTPBZ","");
+              }else{
+                  list.get(i).put("ZTPBZ",ztbc0002.getZtxt2());
+              }
+
 
 
               //根据托盘码 查询SAP 成品入库时间

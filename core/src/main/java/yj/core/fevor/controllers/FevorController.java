@@ -25,7 +25,11 @@ public class FevorController extends BaseController {
         ResponseData rs = new ResponseData();
         List<Fevor> list = new ArrayList<>();
         list = service.selectFevor2(null);
+
         if (list.size() > 0){
+            for (int i =0;i<list.size();i++){
+                list.get(i).setTxt(list.get(i).getTxt().replaceAll("汽车机加",""));
+            }
             rs.setRows(list);
             rs.setSuccess(true);
         }else{

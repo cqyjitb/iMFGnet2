@@ -63,7 +63,7 @@ import java.util.UUID;
         public ResponseData insertPdRow(HttpServletRequest request){
             ResponseData rs = new ResponseData();
             Qppdrcd qppdrcd = new Qppdrcd();
-            String createdBy = "" + request.getSession().getAttribute("userId");
+            String createdBy = "" + request.getParameter("createdBy");
             String lineId = request.getParameter("lineId") == null ?"":request.getParameter("lineId");
             String matnr = request.getParameter("matnr") == null ?"":request.getParameter("matnr");
             String pdnum = request.getParameter("pdnum") == null ?"0":request.getParameter("pdnum");
