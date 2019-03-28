@@ -34,4 +34,12 @@ public interface IProductsCfgService extends IBaseService<ProductsCfg>, ProxySel
     List<ProductsCfg> selectFromPage(IRequest requestContext, ProductsCfg dto, int page, int pageSize);
     String updateOrInsert(IRequest requestContext,List<ProductsCfg> dto,String userId);
     String deleteProductsCfg(List<ProductsCfg> dto);
+
+    /**
+     * 根据产线ID 物料号查询
+     * @param lineId
+     * @param pmatnr
+     * @return
+     */
+    List<ProductsCfg> selectByLineId(String lineId,String pmatnr);
 }

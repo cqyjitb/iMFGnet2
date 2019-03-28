@@ -4,13 +4,11 @@ import org.springframework.stereotype.Controller;
 import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.dto.ResponseData;
+import org.springframework.web.bind.annotation.*;
 import yj.core.wipproductscfg.dto.ProductsCfg;
 import yj.core.wipproductscfg.service.IProductsCfgService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -95,4 +93,19 @@ import java.util.List;
                 return new ResponseData();
             }
         }
+
+        @RequestMapping(value = "/wip/products/cfg/queryByLineId", method = {RequestMethod.GET})
+        @ResponseBody
+        public ResponseData selectProductsCfgBylineId(HttpServletRequest request,String lineId){
+            ResponseData rs =  new ResponseData();
+            List<ProductsCfg> list = service.selectByLineId(lineId,null);
+            if(list != null){
+                rs.setSuccess(true);
+                rs.setRows(list);
+            }else {
+                rs.setSuccess(false);
+            }
+            return rs;
+        }
+
     }
