@@ -106,7 +106,7 @@
             var oMatnr2 = document.getElementById("matnr2");
             var oMatDesc = document.getElementById("matDesc");
             var oPdNum = document.getElementById("pdSum");
-
+            var createdBy = "";
             //进入产线条码页面时，光标定位到条码输入框
             oLineId.focus();
 
@@ -377,7 +377,8 @@
                             "matnr":matnr,
                             "pdnum":pdNum,
                             "operator":username,
-                            "type":"3"
+                            "type":"3",
+                            "createdBy":createdBy
                         },
                         contentType: "application/json; charset=utf-8",
                         success: function (res) {
