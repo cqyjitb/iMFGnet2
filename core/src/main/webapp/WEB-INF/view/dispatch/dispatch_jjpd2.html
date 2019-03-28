@@ -190,10 +190,11 @@
                     success: function (res) {
                         if (res.success){
                             var rows = res.rows;
-                            oFevor.innerHTML = "<option>" + "请选择" + "</option>"
                             if (rows.length > 0){
                                 for (var i=0;i<rows.length;i++){
-                                    oFevor.innerHTML = oFevor.innerHTML + "<option value=" + rows[i].fevor + ">" + rows[i].fevor + "." + rows[i].txt + "</option>"
+                                    oFevor.options[i+1].value = rows[i].fevor;
+                                    oFevor.options[i+1].innerHTML = rows[i].txt;
+//                                    oFevor.innerHTML = oFevor.innerHTML + "<option value=" + rows[i].fevor + ">" + rows[i].fevor + "." + rows[i].txt + "</option>"
                                 }
                             }
                         }
@@ -361,6 +362,7 @@
                                 "pdnum":pd_sum,
                                 "operator":username,
                                 "zbeiz":zbeiz,
+                                "createdBy":createdBy,
                                 "type":"2"
                             },
                             contentType: "application/json; charset=utf-8",
@@ -407,7 +409,21 @@
     <div style="width: 220px;height: 235px">
         <!--<input id="barcode" style="font-size:16px;width: 200px;height: 22px;margin-bottom: 1px;" type="text"><br>-->
         <br />
-        <label class="dcp-label">车间</label><select id="fevor" class="cls-attr-input" type="text"></select><br>
+        <label class="dcp-label">车间</label><select id="fevor" class="cls-attr-input" type="text">
+        <option value="">请选择</option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+    </select><br>
         <!--<label class="dcp-label">物料描述</label><input id="matDesc"  style="font-size:10px;width: 120px;height: 40px;background-color: #C9C9C9" disabled="true" type="text"><br>-->
         <label class="dcp-label">物料编码</label><input id="matnr"  style="font-size:1px;" class="cls-attr-input" type="text"><br>
         <label class="dcp-label">物料描述</label><textarea id="maktx" style="font-size:10px;width: 120px;height: 50px;background-color: #C9C9C9" disabled="true" rows="4"></textarea><br>
