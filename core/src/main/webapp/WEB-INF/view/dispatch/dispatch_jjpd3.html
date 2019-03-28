@@ -198,14 +198,14 @@
                                         var rows = res.rows;
                                         oLineDesc.value = rows[0].descriptions;
                                         $.ajax({
-                                            url:"${base.contextPath}/wip/products/cfg/queryByLineId",
+                                            url: "${base.contextPath}/wip/products/cfg/queryByLineId",
                                             type: "get",
-                                            data:{
-                                                lineId:lineId
+                                            data: {
+                                                lineId: lineId
                                             },
                                             contentType: "application/json; charset=utf-8",
                                             success: function (res) {
-                                                if (res.success){
+                                                if (res.success) {
                                                     var rows = res.rows;
                                                     oMatnr2.hidden = true;
                                                     oMatnr.hidden = false;
@@ -216,19 +216,14 @@
                                                             oMatDescs[i] = rows[i].maktx;
                                                         }
                                                     }
-                                                }else{
+                                                } else {
                                                     msg = "该产线没有物料编码，请重新输入!";
-                                                    openMsgDialog("错误",msg,"M");
+                                                    openMsgDialog("错误", msg, "M");
                                                     oLineId.value = "";
                                                     removeMask2Dialog();
                                                 }
                                             }
                                         });
-                                    }else {
-                                        msg = "没有该产线，请重新输入!";
-                                        openMsgDialog("错误",msg,"M");
-                                        oLineId.value = "";
-                                        removeMask2Dialog();
                                     }
                                 }
                             });
@@ -304,15 +299,17 @@
             bCfr.onclick=function () {
                 var fevor = oFevor.options[oFevor.selectedIndex].value;
                 pdNum = oPdNum.value;
-                matnr2 = oMatnr2.value;
                 lineId = oLineId.value;
+                if(matnr == '' || matnr == null || matnr == ""){
+                    matnr = document.getElementById("matnr2").value;
+                }
                 if(fevor == "请选择"){
                     openMsgDialog("错误","请选择车间！","M");
                     removeMask2Dialog();
                 }else if(oMatnr.value == "请选择"){
                     openMsgDialog("错误","请选择物料号！","M");
                     removeMask2Dialog();
-                }else if((lineId == '' || lineId == null || lineId == "")&&(matnr2 == '' || matnr2 == null || matnr2 == "")){
+                }else if(matnr == '' || matnr == null || matnr == ""){
                     openMsgDialog("错误","请输入物料号！","M");
                     removeMask2Dialog();
                 }else if(pdNum == '' || pdNum == null || pdNum == ""){
@@ -363,6 +360,7 @@
                     var oFevor = document.getElementById("fevor");
                     fevor = oFevor.options[oFevor.selectedIndex].value;
                     var lineId = document.getElementById("lineId").value;
+                    var lineName = document.getElementById("lineDesc").value;
                     var matnr = document.getElementById("matnr").value;
                     if(matnr == '' || matnr == null || matnr == ""){
                         matnr = document.getElementById("matnr2").value;
@@ -375,6 +373,7 @@
                         data:{
                             "fevor":fevor,
                             "lineId":lineId,
+                            "lineName":lineName,
                             "matnr":matnr,
                             "pdnum":pdNum,
                             "operator":username,
@@ -422,7 +421,7 @@
         <label class="dcp-label">车间</label><select id="fevor" class="cls-attr-input" type="text"></select><br>
         <!--<label class="dcp-label">车间名称</label><input id="txt"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>-->
         <label class="dcp-label">产线条码</label><input id="lineId" class="cls-attr-input" type="number"><br>
-        <label class="dcp-label">产线名称</label><textarea id="lineDesc"  style="font-size:10px;width: 120px;height: 50px;background-color: #C9C9C9" disabled="true" rows="3"></textarea><br>
+        <label class="dcp-label">产线名称</label><input id="lineDesc" class="cls-attr-input" type="text"><br>
         <label class="dcp-label">物料编号</label><select id="matnr" class="cls-attr-input" type="text" hidden="true"></select>
                                                  <input id="matnr2" class="cls-attr-input" type="number"><br>
         <label class="dcp-label">物料描述</label><textarea id="matDesc" style="font-size:10px;width: 120px;height: 60px;background-color: #C9C9C9" disabled="true" rows="4"></textarea><br>
