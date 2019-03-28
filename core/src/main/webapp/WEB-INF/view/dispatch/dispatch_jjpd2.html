@@ -221,7 +221,7 @@
             }
 
             back.onclick = function () {
-                window.location.href = '${base.contextPath}/dispatch/dispatch_index.html';
+                window.location.href = '${base.contextPath}/dispatch/dispatch_pd_index.html';
                 return null;
             }
 
@@ -317,36 +317,64 @@
                     removeMaskDialog();
                 }
                 bCls2.onclick=function () {
+                    var l_error = "";
                     pd_sum = document.getElementById("pdnum").value;
                     var oFevor = document.getElementById("fevor");
                     fevor = oFevor.options[oFevor.selectedIndex].value;
                     matnr = document.getElementById("matnr").value;
+                    maktx = document.getElementById("maktx").value;
                     var zbeiz = document.getElementById("zbeiz").value;
 
                     var username = getCookie("username");
-                    $.ajax({
-                        url:"${base.contextPath}/wip/qppdrcd/insertPdRow",
-                        type: "get",
-                        data:{
-                            "fevor":fevor,
-                            "matnr":matnr,
-                            "pdnum":pd_sum,
-                            "operator":username,
-                            "type":"2"
-                        },
-                        contentType: "application/json; charset=utf-8",
-                        success: function (res) {
-                            if (res.success){
-                                openMsgDialog("成功",res.message,"M");
-                                removeMaskDialog();
 
-                            }else{
-                                openMsgDialog("失败",res.message,"M");
-                                removeMaskDialog();
+                    if (fevor == "" || fevor == "请选择"){
+                        l_error = "E";
+                        openMsgDialog("错误","请选择车间！","M");
+                        removeMaskDialog();
+                    }
+
+                    if (matnr == "" & l_error != "E"){
+                        l_error = "E";
+                        openMsgDialog("错误","物料编码不能为空！","M");
+                        removeMaskDialog();
+                    }
+
+                    if (maktx == "" & l_error != "E"){
+                        l_error = "E";
+                        openMsgDialog("错误","未能获取到物料数据！","M");
+                        removeMaskDialog();
+                    }
+
+                    if (Number(pd_sum) < 0 && l_error != "E"){
+                        l_error = "E";
+                        openMsgDialog("错误","盘点数量必须大于0！","M");
+                        removeMaskDialog();
+                    }
+
+                    if (l_error != "E"){
+                        $.ajax({
+                            url:"${base.contextPath}/wip/qppdrcd/insertPdRow",
+                            type: "get",
+                            data:{
+                                "fevor":fevor,
+                                "matnr":matnr,
+                                "pdnum":pd_sum,
+                                "operator":username,
+                                "type":"2"
+                            },
+                            contentType: "application/json; charset=utf-8",
+                            success: function (res) {
+                                if (res.success){
+                                    openMsgDialog("成功",res.message,"M");
+                                    removeMaskDialog();
+
+                                }else{
+                                    openMsgDialog("失败",res.message,"M");
+                                    removeMaskDialog();
+                                }
                             }
-                        }
-                    });
-
+                        });
+                    }
                 }
             }
         }
