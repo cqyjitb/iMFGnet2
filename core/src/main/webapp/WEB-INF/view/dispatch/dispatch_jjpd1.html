@@ -121,7 +121,13 @@
             var l_error = "";
 
             var oBcd = document.getElementById("zxhbar");
-
+            var oFevor = document.getElementById("fevor");
+            var zxhbar = "";
+            var fevor = "";
+            var matnr = "";
+            var num = "";
+            var pd_sum = "";
+            var matnr = "";
             //进入报工页面时，光标定位到条码输入框
             oBcd.focus();
 
@@ -179,17 +185,29 @@
             }
 
             //初始化车间选择列表
-            if (username == "" || username == null) {
+            if (username != "" && username != null) {
                 $.ajax({
                     url:"${base.contextPath}/sap/fevor/selectFevor2",
                     type: "get",
                     contentType: "application/json; charset=utf-8",
                     success: function (res) {
                         if (res.success){
-                            var rows = res.row;
+                            var rows = res.rows;
+                            oFevor.innerHTML = "<option>" + "请选择" + "</option>"
+                            if (rows.length > 0){
+                                for (var i=0;i<rows.length;i++){
+                                    oFevor.innerHTML = oFevor.innerHTML + "<option value=" + rows[i].fevor + ">" + rows[i].fevor + "." + rows[i].txt + "</option>"
+                                }
+                            }
                         }
                     }
                 });
+            }
+
+            oFevor.onchange = function() {
+                var strfevor = oFevor.options[oFevor.selectedIndex].value;
+                fevor = strfevor;
+                console.log(fevor);
             }
 
             /*用户注销相关操作*/
@@ -213,8 +231,34 @@
             var oPd_sum = document.getElementById("pdnum");
             var cBarcode = document.getElementById("zxhbar");
             cBarcode.onkeydown = function () {
+                zxhbar = cBarcode.value;
                 if (event.keyCode == 13) {
+                    if (zxhbar.length < 24){
+                            msg = "箱号格式错误！";
+                            openMsgDialog("错误",msg,"M");
+                    }else{
+                        $.ajax({
+                            url:"${base.contextPath}/sap/xhcard/queryXhcard",
+                            type: "get",
+                            data:{
+                                "zxhbar":zxhbar
+                            },
+                            contentType: "application/json; charset=utf-8",
+                            success: function (res) {
+                                if (res.success){
+                                    var xh = res.rows[0];
+                                    var marc = res.rows[1];
+                                    document.getElementById("matnr").value = marc[0].matnr;
+                                    document.getElementById("maktx").value = marc[0].maktx;
+                                    document.getElementById("num").value = xh[0].menge;
+                                    document.getElementById("zxhzt").value = xh[0].zxhzt;
 
+                                }else{
+
+                                }
+                            }
+                        });
+                    }
                 }
             }
 
@@ -240,113 +284,76 @@
 
 
         function openMsgDialog(msgTitle,msgText,msgType) {
-//            appendMaskDialog();
-//            var dMsg=document.getElementById("msg-area");
-//            dMsg.style.display="";
-//            document.getElementById("msg1").innerHTML="&nbsp"+msgTitle;
-//            document.getElementById("msg2").innerHTML=msgText;
-//            var bCan=document.getElementById("cancer");
-//            var bCls2=document.getElementById("put");
-//            var userName = getCookie("username");
-//            if(msgType == "M"){
-//                bCan.style.display = "none";
-//                bCls2.onclick=function () {
-//                    dMsg.style.display="none";
-//                    removeMaskDialog();
-//
-//                    if(msgTitle == "成功" || msgTitle == "失败"){
-//                        //清空页面元素
-//                        clearData();
-//
-//                        //获取条码页面元素
-//                        var roBcd=document.getElementById("barcode");
-//
-//                        //进入报工页面时，光标定位到条码输入框
-//                        roBcd.focus();
-//                    }
-//                    if(barcode == "" || barcode == null){
-//
-//                        //获取条码页面元素
-//                        var roBcd=document.getElementById("barcode");
-//
-//                        //进入报工页面时，光标定位到条码输入框
-//                        roBcd.focus();
-//                    }
-//                    if(msgText == "请输入数量"){
-//                        //获取条码页面元素
-//                        var roYed=document.getElementById("yeild");
-//
-//                        //进入报工页面时，光标定位到条码输入框
-//                        roYed.focus();
-//
-//                    }
-//
-//                }
-//            } else if(msgType == "C") {
-//                bCan.style.display = "";
-//                bCan.onclick=function () {
-//                    dMsg.style.display="none";
-//                    removeMaskDialog();
-//                }
-//                bCls2.onclick=function () {
-//                    var strBarcode = document.getElementById("barcode").value;
-//                    var lenBarcode = strBarcode.length;
-//                    dispatch = strBarcode.substring(0, lenBarcode - 4);
-//                    operation = strBarcode.substring(18, 22);
-//                    pd_sum = document.getElementById("pd_sum").value;
-//                    var cfwz = document.getElementById("cfwz").value;
-//
-//                    if (pd_sum != "" && operation != ""){
-//                        $.ajax({
-//                            url: "${base.contextPath}/confirmation/input/log/pandian",
-//                            type: "get",
-//                            async:false,
-//                            data: {
-//                                dispatch:dispatch,
-//                                operation:operation,
-//                                pd_sum:pd_sum,
-//                                cfwz:cfwz,
-//                                createBy:createdBy
-//                            },
-//                            contentType: "application/json; charset=utf-8",
-//                            success: function (res) {
-//                                if (res.success) {
-//                                    removeMask2Dialog();
-//                                    if(res.success){
-//                                        var message = res.message;
-//                                        var code = res.code;
-//                                        if(code == "S"){
-//                                            openMsgDialog("成功",message,"M");
-//                                            clearData();
-//                                            removeMaskDialog();
-//                                        }else{
-//                                            openMsgDialog("失败",message,"M");
-//                                            removeMaskDialog();
-//                                        }
-//
-//                                    }else{
-//                                        var falsemsg = JSON.stringify(res.message);
-//                                        falsemsg = falsemsg.substring(1,falsemsg.length-1);
-//                                        if(falsemsg == "Read timed out"){
-//                                            falsemsg = "请求超时-";
-//                                        }
-//                                        openMsgDialog("失败",falsemsg + "盘点失败","M");
-//                                        removeMaskDialog();
-//                                    }
-//                                }
-//                            },
-//                            error:function (res) {
-//                                openMsgDialog("失败","盘点失败","M");
-//                                removeMaskDialog();
-//                            }
-//                        });
-//                    }else{
-//                        openMsgDialog("失败","请扫描工序条码并输入盘点数量","M");
-//                        removeMaskDialog();
-//                    }
-//
-//                }
-//            }
+            appendMaskDialog();
+            var dMsg=document.getElementById("msg-area");
+            dMsg.style.display="";
+            document.getElementById("msg1").innerHTML="&nbsp"+msgTitle;
+            document.getElementById("msg2").innerHTML=msgText;
+            var bCan=document.getElementById("cancer");
+            var bCls2=document.getElementById("put");
+            var userName = getCookie("username");
+            if(msgType == "M"){
+                bCan.style.display = "none";
+                bCls2.onclick=function () {
+                    dMsg.style.display="none";
+                    removeMaskDialog();
+
+                    if(msgTitle == "成功" || msgTitle == "失败"){
+                        //清空页面元素
+                        clearData();
+
+                        //获取条码页面元素
+                        var roBcd=document.getElementById("zxhbar");
+
+                        //进入报工页面时，光标定位到条码输入框
+                        roBcd.focus();
+                    }
+                    if(zxhbar == "" || zxhbar == null){
+
+                        //获取条码页面元素
+                        var roBcd=document.getElementById("zxhbar");
+
+                        //进入报工页面时，光标定位到条码输入框
+                        roBcd.focus();
+                    }
+                }
+            } else if(msgType == "C") {
+                bCan.style.display = "";
+                bCan.onclick=function () {
+                    dMsg.style.display="none";
+                    removeMaskDialog();
+                }
+                bCls2.onclick=function () {
+                    pd_sum = document.getElementById("pdnum").value;
+                    var oFevor = document.getElementById("fevor");
+                    fevor = oFevor.options[oFevor.selectedIndex].value;
+                    matnr = document.getElementById("matnr").value;
+                    num = document.getElementById("num").value;
+                    zxhbar = document.getElementById("zxhbar").value;
+                    var username = getCookie("username");
+                    $.ajax({
+                        url:"${base.contextPath}/wip/qppdrcd/insertPdRow",
+                        type: "get",
+                        data:{
+                            "fevor":fevor,
+                            "matnr":matnr,
+                            "zxhbar":zxhbar,
+                            "num":num,
+                            "pdnum":pd_sum,
+                            "operator":username,
+                            "type":"1"
+                        },
+                        contentType: "application/json; charset=utf-8",
+                        success: function (res) {
+                            if (res.success){
+                                openMsgDialog("成功",res.message,"M");
+                            }else{
+                                openMsgDialog("失败",res.message,"M");
+                            }
+                        }
+                    });
+                }
+            }
         }
 
         function clearData() {
@@ -377,10 +384,12 @@
     </div>
 
     <div style="width: 220px;height: 235px">
-        <input id="barcode" style="font-size:16px;width: 200px;height: 22px;margin-bottom: 1px;" type="text"><br>
+        <!--<input id="barcode" style="font-size:16px;width: 200px;height: 22px;margin-bottom: 1px;" type="text"><br>-->
+        <br />
         <label class="dcp-label">车间</label><select id="fevor" class="cls-attr-input" type="text"></select><br>
         <!--<label class="dcp-label">物料描述</label><input id="matDesc"  style="font-size:10px;width: 120px;height: 40px;background-color: #C9C9C9" disabled="true" type="text"><br>-->
-        <label class="dcp-label">毛坯框码</label><input id="zxhbar"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"></textarea><br>
+        <label class="dcp-label">毛坯框码</label><input id="zxhbar"  style="font-size:1px;" class="cls-attr-input" type="text"><br>
+        <label class="dcp-label">箱号状态</label><input id="zxhzt"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>
         <label class="dcp-label">物料编码</label><input id="matnr"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>
         <label class="dcp-label">物料描述</label><textarea id="maktx" style="font-size:10px;width: 120px;height: 50px;background-color: #C9C9C9" disabled="true" rows="4"></textarea><br>
         <!--<label class="dcp-label">报工数量</label><input id="yeild" class="cls-attr-input" disabled="true" type="number"><br>-->
