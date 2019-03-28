@@ -20,4 +20,9 @@ public class FevorServiceImpl extends BaseServiceImpl<Fevor> implements IFevorSe
     public List<Fevor> selectFevor2(String fevor) {
         return fevorMapper.selectFevor2(fevor);
     }
+
+    @Override
+    public Fevor selectByfevorSinger(String fevor) {
+        return fevorMapper.selectByfevorSinger(fevor);
+    }
 }

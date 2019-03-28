@@ -20,4 +20,6 @@ public interface FevorMapper extends Mapper<Fevor> {
      * @return
      */
     List<Fevor> selectFevor2(@Param("fevor") String fevor);
+
+    Fevor selectByfevorSinger(@Param("fevor") String fevor);
 }

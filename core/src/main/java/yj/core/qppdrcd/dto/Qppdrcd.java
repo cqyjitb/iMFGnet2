@@ -5,6 +5,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import com.hand.hap.mybatis.annotation.ExtensionAttribute;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+
 import com.hand.hap.system.dto.BaseDTO;
 import java.util.Date;
 import org.hibernate.validator.constraints.NotEmpty;
@@ -51,8 +53,42 @@ public class Qppdrcd extends BaseDTO {
 
       private Date rcddat; //盘点日期
 
+      private String  zbeiz;
 
-     public void setRcdid(String rcdid){
+    @Transient
+    private Long createdBy; //创建人
+    @Transient
+    private Date creationDate; //创建时间
+
+    @Override
+    public Long getCreatedBy() {
+        return createdBy;
+    }
+
+    @Override
+    public void setCreatedBy(Long createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    @Override
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    @Override
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public String getZbeiz() {
+        return zbeiz;
+    }
+
+    public void setZbeiz(String zbeiz) {
+        this.zbeiz = zbeiz;
+    }
+
+    public void setRcdid(String rcdid){
          this.rcdid = rcdid;
      }
 

@@ -5,4 +5,5 @@ import yj.core.qppdrcd.dto.Qppdrcd;
 
 public interface QppdrcdMapper extends Mapper<Qppdrcd>{
 
+    int insertPdRow(Qppdrcd qppdrcd);
 }

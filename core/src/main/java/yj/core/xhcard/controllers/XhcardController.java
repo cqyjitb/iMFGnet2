@@ -30,6 +30,8 @@ import yj.core.resb.service.IResbService;
 import yj.core.webserver_weidu.components.WeiduWebserviceUtil;
 import yj.core.webserver_weidu.dto.DTWEIDUParam;
 import yj.core.webserver_weidu.dto.DTWEIDUReturn;
+import yj.core.webservice_queryXhcard.components.QueryXhcardWebserviceUtil;
+import yj.core.webservice_queryXhcard.dto.QueryXhcardParam;
 import yj.core.webservice_queryXhcard.dto.QueryXhcardReturnResult;
 import yj.core.wipcurlzk.dto.Curlzk;
 import yj.core.wipcurlzk.service.ICurlzkService;
@@ -104,20 +106,38 @@ public class XhcardController
     @ResponseBody
     public ResponseData selectByBacode(HttpServletRequest request, String zxhbar) {
         ResponseData rs = new ResponseData();
-        List<Xhcard> list = new ArrayList<>();
+        List<Xhcard> listxh = new ArrayList<>();
+        List<Marc> listmarc = new ArrayList<>();
+        List list = new ArrayList();
         Xhcard xhcard = new Xhcard();
-//        QueryXhcardReturnResult qrs = new QueryXhcardReturnResult();
-//            qrs =  service.selectByBacodeFromSap(zxhbar);
-//
-//        if (qrs.getMSGTY().equals("S")){
-//            xhcard = service.selectByBacode(zxhbar);
-//            list.add(xhcard);
-//            rs.setSuccess(true);
-//            rs.setRows(list);
-//        }else{
-//            rs.setSuccess(false);
-//            rs.setMessage(qrs.getMESSAGE());
-//        }
+        Marc marc = new Marc();
+        xhcard = service.selectByBacode(zxhbar);
+        if (xhcard == null){
+            QueryXhcardWebserviceUtil queryXhcardWebserviceUtil = new QueryXhcardWebserviceUtil();
+            QueryXhcardParam queryXhcardParam = new QueryXhcardParam();
+            queryXhcardParam.setZxhbar(zxhbar);
+            queryXhcardParam.setLgort("");
+            queryXhcardParam.setMatnr("");
+            queryXhcardParam.setQtype("");
+            QueryXhcardReturnResult queryXhcardReturnResult = queryXhcardWebserviceUtil.receiveConfirmation(queryXhcardParam);
+            if (queryXhcardReturnResult.getMSGTY().equals("S")){
+                xhcard = service.selectByBacode(zxhbar);
+            }
+        }
+
+        if (xhcard != null){
+           listxh.add(xhcard);
+           marc = marcService.selectByMatnr(xhcard.getMatnr());
+           listmarc.add(marc);
+           list.add(listxh);
+           list.add(listmarc);
+            rs.setRows(list);
+            rs.setSuccess(true);
+        }else{
+            rs.setSuccess(false);
+            rs.setMessage("未能获取到箱号数据，请检查箱号是否正确！");
+        }
+
         return rs;
     }
 

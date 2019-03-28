@@ -9,4 +9,6 @@ import java.util.List;
 public interface IFevorService extends IBaseService<Fevor>, ProxySelf<IFevorService> {
 
     List<Fevor> selectFevor2 (String fevor);
+
+    Fevor selectByfevorSinger(String fevor);
 }

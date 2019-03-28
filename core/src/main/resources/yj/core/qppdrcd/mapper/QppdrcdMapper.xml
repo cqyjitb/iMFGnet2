@@ -17,7 +17,11 @@
         <result column="PDNUM" property="pdnum" jdbcType="DECIMAL" />
         <result column="OPERATOR" property="operator" jdbcType="VARCHAR" />
         <result column="RCDDAT" property="rcddat" jdbcType="DATE" />
+        <result column="ZBEIZ" property="zbeiz" jdbcType="VARCHAR" />
     </resultMap>
 
-
+    <insert id="insertPdRow" parameterType="yj.core.qppdrcd.dto.Qppdrcd">
+        insert INTO wip_qppdrcd (RCDID,RCDTYPE,WERKS,FEVOR,FEVORTXT,ZXHBAR,LINE_ID,LINE_NAME,MATNR,MAKTX,NUM,PDNUM,OPERATOR,RCDDAT,ZBEIZ,CREATED_BY,CREATION_DATE)
+        VALUES (#{rcdid},#{rcdtype},#{werks},#{fevor},#{fevortxt},#{zxhbar},#{lineId},#{lineName},#{matnr},#{maktx},#{num},#{pdnum},#{operator},#{rcddat},#{zbeiz},#{createdBy},#{creationDate})
+    </insert>
 </mapper>

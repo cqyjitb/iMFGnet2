@@ -34,5 +34,12 @@
         </where>
         order by fevor desc
     </select>
+
+    <select id="selectByfevorSinger" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from sap_fevor
+        <where>
+            FEVOR = #{fevor}
+        </where>
+    </select>
 	
 </mapper>

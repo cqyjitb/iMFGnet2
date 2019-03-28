@@ -24,7 +24,7 @@ public class FevorController extends BaseController {
     public ResponseData selectfevor2(HttpServletRequest request){
         ResponseData rs = new ResponseData();
         List<Fevor> list = new ArrayList<>();
-        list = service.selectFevor2("");
+        list = service.selectFevor2(null);
         if (list.size() > 0){
             rs.setRows(list);
             rs.setSuccess(true);
