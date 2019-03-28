@@ -65,7 +65,7 @@ import java.util.UUID;
             Qppdrcd qppdrcd = new Qppdrcd();
             String createdBy = "" + request.getSession().getAttribute("userId");
             String lineId = request.getParameter("lineId") == null ?"":request.getParameter("lineId");
-            String lineName = request.getParameter("lineId") == null ?"":request.getParameter("lineName");
+            String lineName = request.getParameter("lineName") == null ?"":request.getParameter("lineName");
             String matnr = request.getParameter("matnr") == null ?"":request.getParameter("matnr");
             String pdnum = request.getParameter("pdnum") == null ?"0":request.getParameter("pdnum");
             String type = request.getParameter("type") == null ?"":request.getParameter("type");
