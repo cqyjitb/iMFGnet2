@@ -101,9 +101,9 @@
 
             var l_error = "";
 
-            var oBcd = document.getElementById("barcode");
+            var oBcd = document.getElementById("lineId");
 
-            //进入报工页面时，光标定位到条码输入框
+            //进入产线条码页面时，光标定位到条码输入框
             oBcd.focus();
 
             //获取主界面DIV页面元素
@@ -157,6 +157,113 @@
                         document.getElementById("user").innerHTML = strname;
                     }
                 });
+                //初始化车间选择列表
+                var oFevor = document.getElementById("fevor");
+                $.ajax({
+                    url:"${base.contextPath}/sap/fevor/selectFevor2",
+                    type: "get",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (res) {
+                        if (res.success){
+                            var rows = res.rows;
+                            oFevor.innerHTML = "<option>" + "请选择" + "</option>"
+                            if (rows.length > 0){
+                                for (var i=0;i<rows.length;i++){
+                                    oFevor.innerHTML = oFevor.innerHTML + "<option value=" + rows[i].fevor + ">" + rows[i].fevor + "." + rows[i].txt + "</option>"
+                                }
+                            }
+                        }
+                    }
+                });
+                var oLineId = document.getElementById("lineId");
+                var oLineDesc = document.getElementById("lineDesc");
+                var oMaterial = document.getElementById("material");
+                var oMaterial2 = document.getElementById("material2");
+                var oMatDesc = document.getElementById("matDesc");
+                oLineId.onkeydown = function () {
+                    if(event.keyCode == 13){
+                        l_error = "";
+                        msg = "";
+                        //根据产线条码查询
+                        var lineId = oLineId.value;
+                        var oMatDescs = {};
+                        if(lineId != ""){
+                            $.ajax({
+                                url: "${base.contextPath}/wip/lines/selectByLineId",
+                                type: "get",
+                                data: {
+                                    lineId:lineId
+                                },
+                                contentType: "application/json; charset=utf-8",
+                                success: function (res) {
+                                    if (res.success) {
+                                        var rows = res.rows;
+                                        oLineDesc.value = rows[0].descriptions;
+                                        $.ajax({
+                                            url:"${base.contextPath}/wip/products/cfg/queryByLineId",
+                                            type: "get",
+                                            data:{
+                                                lineId:lineId
+                                            },
+                                            contentType: "application/json; charset=utf-8",
+                                            success: function (res) {
+                                                if (res.success){
+                                                    var rows = res.rows;
+                                                    oMaterial2.hidden = true;
+                                                    oMaterial.hidden = false;
+                                                    oMaterial.innerHTML = "<option>" + "请选择" + "</option>";
+                                                    if (rows.length > 0){
+                                                        for (var i=0;i<rows.length;i++){
+                                                            oMaterial.innerHTML = oMaterial.innerHTML + "<option value=" + rows[i].pmatnr + ">" + rows[i].pmatnr +"</option>"
+                                                            oMatDescs[i] = rows[i].maktx;
+                                                        }
+                                                    }
+                                                }
+                                            }
+                                        });
+                                    }else {
+                                        openMsgDialog("错误","没有该产线，请重新输入","M");
+                                        oLineId.value = "";
+                                    }
+                                }
+                            });
+                            oMaterial.onchange = function () {
+                                oMatDesc.value = oMatDescs[oMaterial.selectedIndex - 1];
+                            }
+                        }
+                    }else{
+                        oLineDesc.value = "";
+                    }
+                };
+                if(oLineId.value == ""){
+                    oMaterial2.onkeydown = function () {
+                        if(event.keyCode == 13) {
+                            l_error = "";
+                            msg = "";
+                            var matnr = oMaterial2.value;
+                            if(matnr != ""){
+                                $.ajax({
+                                    url: "${base.contextPath}/sap/marc/selectByMatnr",
+                                    type: "get",
+                                    data: {
+                                        matnr:matnr
+                                    },
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function (res) {
+                                        if (res.success) {
+                                            var rows = res.rows;
+                                            oMatDesc.value = rows[0].maktx;
+                                        }else{
+
+                                        }
+                                    }
+                                });
+                            }else{
+
+                            }
+                        }
+                    }
+                }
             }
 
             /*用户注销相关操作*/
@@ -170,11 +277,18 @@
                 delCookie("username");
                 window.location.href = '${base.contextPath}/yjlogin.html';
                 return null;
-            }
+            };
 
             back.onclick = function () {
                 window.location.href = '${base.contextPath}/dispatch/dispatch_pd_index.html';
                 return null;
+            };
+
+
+
+            var bCfr=document.getElementById("confirm2");
+            bCfr.onclick=function () {
+                openMsgDialog("确认","是否继续过账","C");
             };
 
             var bClear = document.getElementById("cleanData");
@@ -191,7 +305,25 @@
             }
 
         };
-
+        function openMsgDialog(msgTitle,msgText,msgType) {
+            appendMaskDialog();
+            var dMsg=document.getElementById("msg-area");
+            dMsg.style.display="";
+            document.getElementById("msg1").innerHTML="&nbsp"+msgTitle;
+            document.getElementById("msg2").innerHTML=msgText;
+            var bCan=document.getElementById("cancer");
+            var bCls2=document.getElementById("put");
+            if(msgType == "M"){
+                bCan.style.display = "none";
+                bCls2.onclick=function () {
+                    dMsg.style.display = "none";
+                    removeMaskDialog();
+                    var oBcd = document.getElementById("lineId");
+                    //进入产线条码页面时，光标定位到条码输入框
+                    oBcd.focus();
+                }
+            }
+        }
         function clearData() {
             document.getElementById("fevor").value = "";
             document.getElementById("txt").value = "";
@@ -221,12 +353,13 @@
         <div style="width:100px;height:20px;float: right;"><button id="jjpd2" style="width: 100px;height: 27px" hidefocus="true">无筐码录入</button></div>
     </div>
     <div style="width: 220px;height: 235px">
-        <label class="dcp-label">车间</label><input id="fevor"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" type="text"><br>
-        <label class="dcp-label">车间名称</label><input id="txt"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>
-        <label class="dcp-label">产线条码</label><input id="lineId"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" type="text"><br>
-        <label class="dcp-label">产线名称</label><input id="lineDesc"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>
-        <label class="dcp-label">物料编号</label><input id="material"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" type="text"><br>
-        <label class="dcp-label">物料描述</label><textarea id="matDesc" style="font-size:10px;width: 120px;height: 50px;background-color: #C9C9C9" disabled="true" rows="4"></textarea><br>
+        <label class="dcp-label">车间</label><select id="fevor" class="cls-attr-input" type="text"></select><br>
+        <!--<label class="dcp-label">车间名称</label><input id="txt"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>-->
+        <label class="dcp-label">产线条码</label><input id="lineId" class="cls-attr-input" type="number"><br>
+        <label class="dcp-label">产线名称</label><textarea id="lineDesc"  style="font-size:10px;width: 120px;height: 50px;background-color: #C9C9C9" disabled="true" rows="3"></textarea><br>
+        <label class="dcp-label">物料编号</label><select id="material" class="cls-attr-input" type="text" hidden="true">
+                                                 <input id="material2" class="cls-attr-input" type="number"><br>
+        <label class="dcp-label">物料描述</label><textarea id="matDesc" style="font-size:10px;width: 120px;height: 60px;background-color: #C9C9C9" disabled="true" rows="4"></textarea><br>
         <label class="dcp-label">盘点数量</label><input id="pdSum" class="cls-attr-input" type="number"><br>
 
     </div>

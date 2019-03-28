@@ -4,14 +4,14 @@ import org.springframework.stereotype.Controller;
 import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.dto.ResponseData;
+import org.springframework.web.bind.annotation.*;
 import yj.core.marc.dto.Marc;
 import yj.core.marc.service.IMarcService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import yj.core.wiplines.dto.Lines;
+
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -60,6 +60,28 @@ import java.util.List;
             ResponseData rs = new ResponseData();
             rs.setSuccess(true);
             rs.setMessage("已经修改数据记录" + sum + "条！");
+            return rs;
+        }
+
+        /**
+         * 根据物料查询 918100064
+         * @param request
+         * @param matnr
+         * @return
+         */
+        @RequestMapping(value = {"/sap/marc/selectByMatnr"}, method = {RequestMethod.GET})
+        @ResponseBody
+        public ResponseData selectByMatnr(HttpServletRequest request, String matnr){
+            ResponseData rs = new ResponseData();
+            Marc marc = service.selectByMatnr(matnr);
+            if (marc != null){
+                List<Marc> list = new ArrayList<Marc>();
+                list.add(marc);
+                rs.setRows(list);
+                rs.setSuccess(true);
+            }else{
+                rs.setSuccess(false);
+            }
             return rs;
         }
     }

@@ -308,4 +308,26 @@ public class LinesController extends BaseController {
         rs.setRows(list);
         return rs;
     }
+
+    /**
+     * 扫描产线ID 检查 918100064
+     * @param request
+     * @param lineId
+     * @return
+     */
+    @RequestMapping(value = {"/wip/lines/selectByLineId"}, method = {RequestMethod.GET})
+    @ResponseBody
+    public ResponseData selectByLineId(HttpServletRequest request, String lineId){
+        ResponseData rs = new ResponseData();
+        Lines lines = service.selectById(Long.valueOf(lineId));
+        if (lines != null){
+            List<Lines> list = new ArrayList<Lines>();
+            list.add(lines);
+            rs.setRows(list);
+            rs.setSuccess(true);
+        }else{
+            rs.setSuccess(false);
+        }
+        return rs;
+    }
 }
