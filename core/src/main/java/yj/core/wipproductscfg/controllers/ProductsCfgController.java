@@ -94,6 +94,12 @@ import java.util.List;
             }
         }
 
+        /**
+         * 根据产线查询物料 918100064
+         * @param request
+         * @param lineId
+         * @return
+         */
         @RequestMapping(value = "/wip/products/cfg/queryByLineId", method = {RequestMethod.GET})
         @ResponseBody
         public ResponseData selectProductsCfgBylineId(HttpServletRequest request,String lineId){

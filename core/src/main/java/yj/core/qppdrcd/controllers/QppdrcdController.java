@@ -96,8 +96,11 @@ import java.util.UUID;
             }else{
                 qppdrcd.setMaktx("");
             }
-
-            qppdrcd.setNum(Double.parseDouble(num));
+            if(num != ""){
+                qppdrcd.setNum(Double.parseDouble(num));
+            }else{
+                qppdrcd.setNum(0.0);
+            }
             qppdrcd.setPdnum(Double.parseDouble(pdnum));
             qppdrcd.setCreationDate(new Date());
             qppdrcd.setRcddat(new Date());
