@@ -45,6 +45,13 @@
         <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
     </resultMap>
 
+    <select id="selectByMatnr" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select matnr as pmatnr, (select maktx FROM sap_marc where matnr = pmatnr) as maktx FROM wip_products_cfg
+        <where>
+            LINE_ID = #{lineId}
+        </where>
+    </select>
+
     <select id="selectFromPage" parameterType="yj.core.wipproductscfg.dto.ProductsCfg" resultMap="BaseResultMap1">
         select WERKS,LINE_ID as lineId,(select descriptions from wip_lines where line_id = lineId) as descriptions,PMATNR as pmatnr,
         (select maktx from sap_marc where matnr = pmatnr) as maktx,MATNR as matnr2,(select maktx from sap_marc where matnr = matnr2) as maktx2,

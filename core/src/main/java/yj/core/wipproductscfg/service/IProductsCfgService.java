@@ -38,8 +38,7 @@ public interface IProductsCfgService extends IBaseService<ProductsCfg>, ProxySel
     /**
      * 根据产线ID 物料号查询
      * @param lineId
-     * @param pmatnr
      * @return
      */
-    List<ProductsCfg> selectByLineId(String lineId,String pmatnr);
+    List<ProductsCfg> selectByMatnr(Long lineId);
 }

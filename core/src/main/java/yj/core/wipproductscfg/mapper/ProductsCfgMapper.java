@@ -56,4 +56,11 @@ public interface ProductsCfgMapper extends Mapper<ProductsCfg>{
      * @param productsCfg
      */
     void deleteProductsCfg(ProductsCfg productsCfg);
+
+    /**
+     * 根据产线查询物料编码 918100064
+     * @param lineId
+     * @return
+     */
+    List<ProductsCfg> selectByMatnr(@Param("lineId")Long lineId);
 }

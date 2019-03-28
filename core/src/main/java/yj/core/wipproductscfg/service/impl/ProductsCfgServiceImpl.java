@@ -100,7 +100,7 @@ public class ProductsCfgServiceImpl extends BaseServiceImpl<ProductsCfg> impleme
     }
 
     @Override
-    public List<ProductsCfg> selectByLineId(String lineId, String pmatnr) {
-        return productsCfgMapper.selectByLineId(lineId,pmatnr);
+    public List<ProductsCfg> selectByMatnr(Long lineId) {
+        return productsCfgMapper.selectByMatnr(lineId);
     }
 }
