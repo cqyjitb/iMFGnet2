@@ -65,6 +65,7 @@ import java.util.UUID;
             Qppdrcd qppdrcd = new Qppdrcd();
             String createdBy = "" + request.getParameter("createdBy");
             String lineId = request.getParameter("lineId") == null ?"":request.getParameter("lineId");
+            String lineName = request.getParameter("lineName") == null ?"":request.getParameter("lineName");
             String matnr = request.getParameter("matnr") == null ?"":request.getParameter("matnr");
             String pdnum = request.getParameter("pdnum") == null ?"0":request.getParameter("pdnum");
             String type = request.getParameter("type") == null ?"":request.getParameter("type");
@@ -80,13 +81,7 @@ import java.util.UUID;
             qppdrcd.setOperator(operator);
             qppdrcd.setZbeiz(zbeiz);
             qppdrcd.setLineId(lineId);
-            if (!lineId.equals("")){
-                Lines lines = new Lines();
-                lines = linesService.selectById(Long.parseLong(qppdrcd.getLineId()));
-                qppdrcd.setLineName(lines.getDescriptions());
-            }else{
-                qppdrcd.setLineName("");
-            }
+            qppdrcd.setLineName(lineName);
 
             qppdrcd.setMatnr(matnr);
             if (!matnr.equals("")){
