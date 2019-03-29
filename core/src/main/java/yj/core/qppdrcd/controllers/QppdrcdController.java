@@ -19,6 +19,7 @@ import yj.core.wiplines.dto.Lines;
 import yj.core.wiplines.service.ILinesService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -91,6 +92,7 @@ public class QppdrcdController extends BaseController {
         String werks = "1001";
         String zxhbar = request.getParameter("zxhbar") == null ? "" : request.getParameter("zxhbar");
 
+
         qppdrcd.setZxhbar(zxhbar);
         qppdrcd.setCreatedBy(Long.parseLong(createdBy));
         qppdrcd.setOperator(operator);
@@ -111,9 +113,12 @@ public class QppdrcdController extends BaseController {
         } else {
             qppdrcd.setNum(0.0);
         }
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        String rcddat = sdf.format(new Date());
+
         qppdrcd.setPdnum(Double.parseDouble(pdnum));
         qppdrcd.setCreationDate(new Date());
-        qppdrcd.setRcddat(new Date().toString());
+        qppdrcd.setRcddat(rcddat);
         qppdrcd.setRcdtype(type);
         qppdrcd.setFevor(fevorstr);
         if (!fevorstr.equals("")) {

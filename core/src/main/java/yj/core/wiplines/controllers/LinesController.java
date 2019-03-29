@@ -319,6 +319,13 @@ public class LinesController extends BaseController {
     @ResponseBody
     public ResponseData selectByLineId(HttpServletRequest request, String lineId){
         ResponseData rs = new ResponseData();
+        String lineIdtmp = "";
+        if (!lineId.equals("")){
+            lineIdtmp = lineId.replaceAll("L","");
+            lineIdtmp.trim();
+            lineId = lineIdtmp;
+        }
+
         Lines lines = service.selectById(Long.valueOf(lineId));
         if (lines != null){
             List<Lines> list = new ArrayList<Lines>();

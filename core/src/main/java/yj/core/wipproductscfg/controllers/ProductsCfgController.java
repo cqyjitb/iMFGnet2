@@ -104,6 +104,13 @@ import java.util.List;
         @ResponseBody
         public ResponseData selectProductsCfgBylineId(HttpServletRequest request,String lineId){
             ResponseData rs =  new ResponseData();
+            String lineIdtmp = "";
+            if (!lineId.equals("")){
+                lineIdtmp = lineId.replaceAll("L","");
+                lineIdtmp.trim();
+                lineId = lineIdtmp;
+            }
+
             List<ProductsCfg> list = service.selectByMatnr(Long.parseLong(lineId));
             if(list != null){
                 rs.setSuccess(true);

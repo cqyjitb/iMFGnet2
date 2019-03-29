@@ -106,7 +106,7 @@
             /*var oMatnr2 = document.getElementById("matnr2");*/
             var oMatDesc = document.getElementById("matDesc");
             var oPdNum = document.getElementById("pdSum");
-            var createdBy = "";
+
             var oMatDescs = {};
             var len = 0;
             //进入产线条码页面时，光标定位到条码输入框
@@ -183,6 +183,7 @@
                 });
                 oLineId.onkeydown = function () {
                     if(event.keyCode == 13){
+
                         l_error = "";
                         msg = "";
                         //根据产线条码查询
@@ -224,13 +225,23 @@
                                                     }
                                                 } else {
                                                     msg = "该产线没有物料编码，请重新输入!";
-                                                    openMsgDialog("错误", msg, "M");
+//                                                    openMsgDialog("错误", msg, "M");
+                                                    alert(msg);
                                                     oLineId.value = "";
                                                     oLineDesc.value = "";
                                                     removeMask2Dialog();
+
                                                 }
                                             }
                                         });
+                                    }else{
+                                        msg = "未能获取到生产线数据！";
+//                                        openMsgDialog("错误", msg, "M");
+                                        alert(msg);
+                                        oLineId.value = "";
+                                        oLineDesc.value = "";
+                                        removeMask2Dialog();
+
                                     }
                                 }
                             });
@@ -311,24 +322,31 @@
             var bCfr=document.getElementById("confirm2");
             bCfr.onclick=function () {
                 var fevor = oFevor.options[oFevor.selectedIndex].value;
-                pdNum = oPdNum.value;
-                lineId = oLineId.value;
+                var pdNum = oPdNum.value;
+                var lineId = oLineId.value;
                 var matnr = oMatnr.options[oMatnr.selectedIndex].value;
                 if(fevor == "请选择" || fevor == '' || fevor == null || fevor == ""){
-                    openMsgDialog("错误","请选择车间！","M");
+//                    disableLine();
+//                    disableMatnr();
+//                    openMsgDialog("错误","请选择车间！","M");
+                    alert("请选择车间！");
                     removeMask2Dialog();
                 }else if(lineId == '' || lineId == null || lineId == "") {
-                    openMsgDialog("错误", "请输入产线条码！", "M");
+
+                    alert("请输入产线条码！");
                     removeMask2Dialog();
                 }else if(matnr == "请选择" || matnr == '' || matnr == null || matnr == ""){
-                    openMsgDialog("错误","请选择物料号！","M");
+
+                    alert("请选择物料号！");
                     removeMask2Dialog();
                 }else if(pdNum == '' || pdNum == null || pdNum == ""){
-                    msg = "请输入盘点数量！";
-                    openMsgDialog("错误",msg,"M");
+//                    msg = "请输入盘点数量！";
+//                    openMsgDialog("错误",msg,"M");
+                    alert("请输入盘点数量！");
                     removeMask2Dialog();
                     oPdNum.focus();
                 }else{
+                    disableMatnr();
                     openMsgDialog("确认","是否继续过账","C");
                     removeMask2Dialog();
                 }
@@ -340,7 +358,9 @@
             };
         };
         function openMsgDialog(msgTitle,msgText,msgType) {
+
             appendMask2Dialog();
+            disableMatnr();
             var dMsg=document.getElementById("msg-area");
             dMsg.style.display="";
             document.getElementById("msg1").innerHTML="&nbsp"+msgTitle;
@@ -348,6 +368,7 @@
             var bCan=document.getElementById("cancer");
             var bCls2=document.getElementById("put");
             if(msgType == "M"){
+
                 bCan.style.display = "none";
                 bCls2.onclick=function () {
                     dMsg.style.display = "none";
@@ -359,23 +380,28 @@
                         var roBcd=document.getElementById("lineId");
                         //进入报工页面时，光标定位到条码输入框
                         roBcd.focus();
+                        ableMatnr();
                     }
+
                 }
+
             }else if(msgType == "C") {
                 bCan.style.display = "";
                 bCan.onclick=function () {
                     dMsg.style.display="none";
                     removeMask2Dialog();
+                    ableMatnr();
                 };
                 bCls2.onclick=function () {
                     var oFevor = document.getElementById("fevor");
-                    fevor = oFevor.options[oFevor.selectedIndex].value;
+                    var fevor = oFevor.options[oFevor.selectedIndex].value;
                     var lineId = document.getElementById("lineId").value;
                     var lineName = document.getElementById("lineDesc").value;
                     var oMatnr = document.getElementById("matnr");
-                    matnr = oMatnr.options[oMatnr.selectedIndex].value;
+                    var matnr = oMatnr.options[oMatnr.selectedIndex].value;
                     var pdNum = document.getElementById("pdSum").value;
                     var username = getCookie("username");
+
                     $.ajax({
                         url:"${base.contextPath}/wip/qppdrcd/insertPdRow",
                         type: "get",
@@ -394,24 +420,66 @@
                             if (res.success){
                                 openMsgDialog("成功",res.message,"M");
                                 removeMask2Dialog();
+                                clearData();
+
                             }else{
                                 openMsgDialog("失败",res.message,"M");
                                 removeMask2Dialog();
+                                clearData();
+
                             }
                         }
                     });
                 }
             }
+
         }
         function clearData() {
+
             //document.getElementById("fevor").value = "";
             document.getElementById("lineId").value = "";
             document.getElementById("lineDesc").value = "";
+            var oMatnr = document.getElementById("matnr");
             document.getElementById("matnr").value = "";
             //document.getElementById("matnr2").value = "";
             document.getElementById("matDesc").value = "";
             document.getElementById("pdSum").value = "";
-        };
+            for (var i =0;i<oMatnr.length;i++){
+                if (oMatnr.options[i].value != ""){
+                    oMatnr.options[i].value = "";
+                    oMatnr.options[i].innerHTML = "";
+                }
+            }
+
+        }
+
+        function disableLine(){
+            var OLine = document.getElementById("lineId")
+            OLine.disabled="disabled";
+            OLine.style.display = "none";
+            OLine.style.zIndex="-1";
+        }
+
+        function ableLine(){
+            var OLine = document.getElementById("lineId")
+            OLine.disabled="";
+            OLine.style.display = "";
+            OLine.style.zIndex="-1";
+        }
+
+        function disableMatnr(){
+            var OMatnr = document.getElementById("matnr")
+            OMatnr.disabled="disabled";
+            OMatnr.style.display = "none";
+            OMatnr.style.zIndex="-1";
+        }
+
+        function ableMatnr() {
+            var OMatnr = document.getElementById("matnr")
+            OMatnr.disabled="";
+            OMatnr.style.display = "";
+            OMatnr.style.zIndex="-1";
+        }
 
     </script>
 </head>
@@ -426,7 +494,7 @@
         <div style="width:20px;height:20px;float: left;background-color:white;top: 0px"></div>
         <div id="user" style="margin-right: 25px;font-size:14px;height:20px;float: right;background-color:white;top: 0px"></div>
     </div>
-    <div style="width: 220px;height: 235px">
+    <div style="width: 220px;height: 174px">
         <br/>
         <label class="dcp-label">车间</label><select id="fevor" class="cls-attr-input" type="text">
             <option value="">请选择</option>
@@ -443,9 +511,8 @@
             <option></option>
             <option></option>
         </select><br>
-        <!--<label class="dcp-label">车间名称</label><input id="txt"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>-->
-        <label class="dcp-label">产线条码</label><input id="lineId" class="cls-attr-input" type="number"><br>
-        <label class="dcp-label">产线名称</label><textarea id="lineDesc" style="font-size:10px;width: 120px;height: 60px;background-color: #C9C9C9" disabled="true" rows="4"></textarea><br>
+        <label class="dcp-label">产线条码</label><input id="lineId" class="cls-attr-input"><br>
+        <label class="dcp-label">产线名称</label><textarea id="lineDesc" style="width: 120px;height: 30px;background-color: #C9C9C9" disabled="true" rows="4"></textarea><br>
         <label class="dcp-label">物料编号</label><select id="matnr" class="cls-attr-input" type="text">
         <option value="">请选择</option>
             <option></option>
@@ -458,7 +525,7 @@
             <option></option>
         </select>
         <!--<label class="dcp-label"></label><input id="matnr2" class="cls-attr-input" type="number"><br>-->
-        <label class="dcp-label">物料描述</label><textarea id="matDesc" style="font-size:10px;width: 120px;height: 60px;background-color: #C9C9C9" disabled="true" rows="4"></textarea><br>
+        <label class="dcp-label">物料描述</label><textarea id="matDesc" style="width: 120px;height: 30px;background-color: #C9C9C9" disabled="true" rows="4"></textarea><br>
         <label class="dcp-label">盘点数量</label><input id="pdSum" class="cls-attr-input" type="number"><br>
 
     </div>

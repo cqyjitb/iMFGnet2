@@ -319,34 +319,38 @@
                 }
                 bCls2.onclick=function () {
                     var l_error = "";
-                    pd_sum = document.getElementById("pdnum").value;
+                    var pd_sum = document.getElementById("pdnum").value;
                     var oFevor = document.getElementById("fevor");
-                    fevor = oFevor.options[oFevor.selectedIndex].value;
-                    matnr = document.getElementById("matnr").value;
-                    maktx = document.getElementById("maktx").value;
+                    var fevor = oFevor.options[oFevor.selectedIndex].value;
+                    var matnr = document.getElementById("matnr").value;
+                    var maktx = document.getElementById("maktx").value;
                     var zbeiz = document.getElementById("zbeiz").value;
 
                     var username = getCookie("username");
 
                     if (fevor == "" || fevor == "请选择"){
+                        dMsg.style.display="none";
                         l_error = "E";
                         openMsgDialog("错误","请选择车间！","M");
                         removeMaskDialog();
                     }
 
                     if (matnr == "" & l_error != "E"){
+                        dMsg.style.display="none";
                         l_error = "E";
                         openMsgDialog("错误","物料编码不能为空！","M");
                         removeMaskDialog();
                     }
 
                     if (maktx == "" & l_error != "E"){
+                        dMsg.style.display="none";
                         l_error = "E";
                         openMsgDialog("错误","未能获取到物料数据！","M");
                         removeMaskDialog();
                     }
 
                     if (Number(pd_sum) < 0 && l_error != "E"){
+                        dMsg.style.display="none";
                         l_error = "E";
                         openMsgDialog("错误","盘点数量必须大于0！","M");
                         removeMaskDialog();
@@ -406,7 +410,7 @@
         <div id="user" style="margin-right: 25px;font-size:14px;height:20px;float: right;background-color:white;top: 0px"></div>
     </div>
 
-    <div style="width: 220px;height: 235px">
+    <div style="width: 220px;height: 170px">
         <!--<input id="barcode" style="font-size:16px;width: 200px;height: 22px;margin-bottom: 1px;" type="text"><br>-->
         <br />
         <label class="dcp-label">车间</label><select id="fevor" class="cls-attr-input" type="text">
@@ -425,8 +429,8 @@
         <option></option>
     </select><br>
         <!--<label class="dcp-label">物料描述</label><input id="matDesc"  style="font-size:10px;width: 120px;height: 40px;background-color: #C9C9C9" disabled="true" type="text"><br>-->
-        <label class="dcp-label">物料编码</label><input id="matnr"  style="font-size:1px;" class="cls-attr-input" type="text"><br>
-        <label class="dcp-label">物料描述</label><textarea id="maktx" style="font-size:10px;width: 120px;height: 50px;background-color: #C9C9C9" disabled="true" rows="4"></textarea><br>
+        <label class="dcp-label">物料编码</label><input id="matnr"  class="cls-attr-input" type="text"><br>
+        <label class="dcp-label">物料描述</label><textarea id="maktx" style="width: 120px;height: 50px;" disabled="true" rows="4"></textarea><br>
         <!--<label class="dcp-label">报工数量</label><input id="yeild" class="cls-attr-input" disabled="true" type="number"><br>-->
         <label class="dcp-label">盘点数量</label><input id="pdnum" class="cls-attr-input" type="number"><br>
         <label class="dcp-label">备注</label><input id="zbeiz"  style="font-size:1px;" class="cls-attr-input" type="text"><br>

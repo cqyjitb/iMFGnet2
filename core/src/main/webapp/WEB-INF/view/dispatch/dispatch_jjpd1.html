@@ -253,8 +253,8 @@
                                     document.getElementById("matnr").value = marc[0].matnr;
                                     document.getElementById("maktx").value = marc[0].maktx;
                                     document.getElementById("num").value = xh[0].menge;
-                                    document.getElementById("zxhzt").value = xh[0].zxhzt;
-
+//                                    document.getElementById("zxhzt").value = xh[0].zxhzt;
+                                    oPd_sum.focus();
                                 }else{
 
                                 }
@@ -266,7 +266,7 @@
 
             var bCfr=document.getElementById("confirm2");
             bCfr.onclick=function () {
-                pd_sum = document.getElementById("pdnum");
+                var pd_sum = document.getElementById("pdnum");
                 if ( pd_sum == '' || pd_sum == null || pd_sum == ""){
                     msg = "请输入盘点数量！";
                     openMsgDialog("错误",msg,"M");
@@ -320,55 +320,67 @@
                     }
                 }
             } else if(msgType == "C") {
+
                 bCan.style.display = "";
                 bCan.onclick=function () {
                     dMsg.style.display="none";
                     removeMaskDialog();
                 }
                 bCls2.onclick=function () {
+//                    alert("111");
                     var l_error = "";
-                    pd_sum = document.getElementById("pdnum").value;
+
+                    var pd_sum = document.getElementById("pdnum").value;
                     var oFevor = document.getElementById("fevor");
-                    fevor = oFevor.options[oFevor.selectedIndex].value;
-                    matnr = document.getElementById("matnr").value;
+                    var fevor = oFevor.options[oFevor.selectedIndex].value;
+                    var matnr = document.getElementById("matnr").value;
                     var maktx =  document.getElementById("maktx").value;
-                    num = document.getElementById("num").value;
-                    zxhbar = document.getElementById("zxhbar").value;
-                    var zxhzt = document.getElementById("zxhzt").value;
+                    var num = document.getElementById("num").value;
+                    var zxhbar = document.getElementById("zxhbar").value;
                     var username = getCookie("username");
 
 
                     if (fevor == "" || fevor == "请选择"){
                         l_error = "E";
+                        dMsg.style.display="none";
                         openMsgDialog("错误","请选择车间！","M");
                         removeMaskDialog();
+//                        alert("请选择车间！");
                     }
-
+//                    alert(l_error);
                     if (zxhbar == "" < 0 && l_error != "E"){
                         l_error = "E";
+                        dMsg.style.display="none";
                         openMsgDialog("错误","箱号不能为空！","M");
                         removeMaskDialog();
+//                        alert("箱号不能为空！");
                     }
-
-
-                    if (zxhzt == "" < 0 && l_error != "E"){
-                        l_error = "E";
-                        openMsgDialog("错误","未能获取箱号数据！","M");
-                        removeMaskDialog();
-                    }
-
+//
+//
+////                    if (zxhzt == "" < 0 && l_error != "E"){
+////                        l_error = "E";
+////                        openMsgDialog("错误","未能获取箱号数据！","M");
+////                        removeMaskDialog();
+//
+////                    }
+//
                     if (maktx == "" < 0 && l_error != "E"){
                         l_error = "E";
+                        dMsg.style.display="none";
                         openMsgDialog("错误","物料编码不能为空！","M");
                         removeMaskDialog();
+//                        alert("物料编码不能为空！");
                     }
-
+//
                     if (Number(pd_sum) < 0 && l_error != "E"){
                         l_error = "E";
+                        dMsg.style.display="none";
                         openMsgDialog("错误","盘点数量必须大于0！","M");
                         removeMaskDialog();
+//                        alert("物料编码不能为空！");
                     }
 
+//                        alert(l_error);
                     if (l_error != "E"){
                         $.ajax({
                             url:"${base.contextPath}/wip/qppdrcd/insertPdRow",
@@ -396,6 +408,8 @@
                             }
                         });
                     }
+
+
                 }
             }
         }
@@ -406,8 +420,10 @@
             document.getElementById("maktx").value = "";
             document.getElementById("num").value = "";
             document.getElementById("zxhbar").value = "";
-            document.getElementById("zxhzt").value = "";
+//            document.getElementById("zxhzt").value = "";
         }
+
+
 
 
 
@@ -426,7 +442,7 @@
         <div id="user" style="margin-right: 25px;font-size:14px;height:20px;float: right;background-color:white;top: 0px"></div>
     </div>
 
-    <div style="width: 220px;height: 235px">
+    <div style="width: 220px;height: 180px">
         <!--<input id="barcode" style="font-size:16px;width: 200px;height: 22px;margin-bottom: 1px;" type="text"><br>-->
         <br />
         <label class="dcp-label">车间</label><select id="fevor" class="cls-attr-input" type="text">
@@ -445,10 +461,10 @@
         <option></option>
         </select><br>
         <!--<label class="dcp-label">物料描述</label><input id="matDesc"  style="font-size:10px;width: 120px;height: 40px;background-color: #C9C9C9" disabled="true" type="text"><br>-->
-        <label class="dcp-label">毛坯框码</label><input id="zxhbar"  style="font-size:1px;" class="cls-attr-input" type="text"><br>
-        <label class="dcp-label">箱号状态</label><input id="zxhzt"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>
-        <label class="dcp-label">物料编码</label><input id="matnr"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>
-        <label class="dcp-label">物料描述</label><textarea id="maktx" style="font-size:10px;width: 120px;height: 50px;background-color: #C9C9C9" disabled="true" rows="4"></textarea><br>
+        <label class="dcp-label">毛坯框码</label><input id="zxhbar"  class="cls-attr-input" type="text"><br>
+        <!--<label class="dcp-label">箱号状态</label><input id="zxhzt"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>-->
+        <label class="dcp-label">物料编码</label><input id="matnr"  style="width: 120px;height: 20px;" disabled="true" type="text"><br>
+        <label class="dcp-label">物料描述</label><textarea id="maktx" style="width: 120px;height: 35px;" disabled="true" rows="2"></textarea><br>
         <!--<label class="dcp-label">报工数量</label><input id="yeild" class="cls-attr-input" disabled="true" type="number"><br>-->
         <label class="dcp-label">账面数量</label><input id="num" class="cls-attr-input" type="number" disabled="true"><br>
         <label class="dcp-label">盘点数量</label><input id="pdnum" class="cls-attr-input" type="number"><br>
