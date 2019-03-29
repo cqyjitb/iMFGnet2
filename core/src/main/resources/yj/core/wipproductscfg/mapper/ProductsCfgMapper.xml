@@ -46,7 +46,7 @@
     </resultMap>
 
     <select id="selectByMatnr" parameterType="java.lang.Long" resultMap="BaseResultMap">
-        select matnr as pmatnr, (select maktx FROM sap_marc where matnr = pmatnr) as maktx FROM wip_products_cfg
+        select matnr as matnr2, (select maktx FROM sap_marc where matnr = matnr2) as maktx FROM wip_products_cfg
         <where>
             LINE_ID = #{lineId}
         </where>

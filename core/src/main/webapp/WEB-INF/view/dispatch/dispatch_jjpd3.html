@@ -103,10 +103,12 @@
             var oLineId = document.getElementById("lineId");
             var oLineDesc = document.getElementById("lineDesc");
             var oMatnr = document.getElementById("matnr");
-            var oMatnr2 = document.getElementById("matnr2");
+            /*var oMatnr2 = document.getElementById("matnr2");*/
             var oMatDesc = document.getElementById("matDesc");
             var oPdNum = document.getElementById("pdSum");
             var createdBy = "";
+            var oMatDescs = {};
+            var len = 0;
             //进入产线条码页面时，光标定位到条码输入框
             oLineId.focus();
 
@@ -185,7 +187,6 @@
                         msg = "";
                         //根据产线条码查询
                         var lineId = oLineId.value;
-                        var oMatDescs = {};
                         if(lineId != ""){
                             $.ajax({
                                 url: "${base.contextPath}/wip/lines/selectByLineId",
@@ -198,6 +199,10 @@
                                     if (res.success) {
                                         var rows = res.rows;
                                         oLineDesc.value = rows[0].descriptions;
+                                        for(var j=1;j<len;j++){
+                                            oMatDescs[j] = "";
+                                            oMatnr.options[j].innerHTML = oMatnr.options[j].value = "";
+                                        }
                                         $.ajax({
                                             url: "${base.contextPath}/wip/products/cfg/queryByLineId",
                                             type: "get",
@@ -208,10 +213,12 @@
                                             success: function (res) {
                                                 if (res.success) {
                                                     var rows = res.rows;
+                                                    len = rows.length + 1;
                                                     if (rows.length > 0) {
+                                                        oMatDescs[0] = "";
                                                         for (var i = 0; i < rows.length; i++) {
-                                                            oMatnr.options[i+1].value = rows[i].pmatnr;
-                                                            oMatnr.options[i+1].innerHTML = rows[i].pmatnr;
+                                                            oMatnr.options[i+1].value = rows[i].matnr2;
+                                                            oMatnr.options[i+1].innerHTML = rows[i].matnr2;
                                                             oMatDescs[i+1] = rows[i].maktx;
                                                         }
                                                     }
@@ -227,13 +234,20 @@
                                     }
                                 }
                             });
-                            oMatnr.onchange = function () {
-                                oMatDesc.value = oMatDescs[oMatnr.selectedIndex];
-                            }
                         }else{
                             msg = "产线条码不能为空，请重新输入!";
                             openMsgDialog("错误", msg, "M");
                             removeMask2Dialog();
+                        }
+                    }
+                };
+                oMatnr.onchange = function () {
+                    if(oMatnr.selectedIndex != 0){
+                        var matnr = oMatnr.options[oMatnr.selectedIndex].value;
+                        if(matnr != ""){
+                            oMatDesc.value = oMatDescs[oMatnr.selectedIndex];
+                        }else{
+                            oMatDesc.value = "";
                         }
                     }
                 };
@@ -299,8 +313,8 @@
                 var fevor = oFevor.options[oFevor.selectedIndex].value;
                 pdNum = oPdNum.value;
                 lineId = oLineId.value;
-                matnr = oMatnr.value;
-                if(fevor == "请选择"){
+                var matnr = oMatnr.options[oMatnr.selectedIndex].value;
+                if(fevor == "请选择" || fevor == '' || fevor == null || fevor == ""){
                     openMsgDialog("错误","请选择车间！","M");
                     removeMask2Dialog();
                 }else if(lineId == '' || lineId == null || lineId == "") {
