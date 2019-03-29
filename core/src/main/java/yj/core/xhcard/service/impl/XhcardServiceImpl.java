@@ -189,8 +189,15 @@ public class XhcardServiceImpl
         int result = 0;
         if (list.size() > 0){
             for(int i = 0;i<list.size();i++){
-                if (xhcardMapper.updateXhcard(list.get(i)) == 1) {
-                    result += 1;
+//                if (xhcardMapper.updateXhcard(list.get(i)) == 1) {
+//                    result += 1;
+//                }
+                Xhcard xhcard = new Xhcard();
+                xhcard = xhcardMapper.selectByBacode(list.get(i).getZxhbar());
+                if (xhcard != null){
+                    result = result + xhcardMapper.updateXhcard(list.get(i));
+                }else{
+                    result = result + xhcardMapper.insertXhcard(list.get(i));
                 }
             }
         }else{

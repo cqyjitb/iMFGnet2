@@ -51,9 +51,29 @@ public class Qppdrcd extends BaseDTO {
      @NotEmpty
       private String operator; //盘点者员工编号
 
-      private Date rcddat; //盘点日期
+      private String rcddat; //盘点日期
 
       private String  zbeiz;
+
+      private String pddatbefore;
+
+      private String pddatafter;
+
+    public String getPddatbefore() {
+        return pddatbefore;
+    }
+
+    public void setPddatbefore(String pddatbefore) {
+        this.pddatbefore = pddatbefore;
+    }
+
+    public String getPddatafter() {
+        return pddatafter;
+    }
+
+    public void setPddatafter(String pddatafter) {
+        this.pddatafter = pddatafter;
+    }
 
     @Transient
     private Long createdBy; //创建人
@@ -192,12 +212,11 @@ public class Qppdrcd extends BaseDTO {
          return operator;
      }
 
-     public void setRcddat(Date rcddat){
-         this.rcddat = rcddat;
-     }
+    public String getRcddat() {
+        return rcddat;
+    }
 
-     public Date getRcddat(){
-         return rcddat;
-     }
-
-     }
+    public void setRcddat(String rcddat) {
+        this.rcddat = rcddat;
+    }
+}

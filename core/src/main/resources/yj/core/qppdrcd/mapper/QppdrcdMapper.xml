@@ -24,4 +24,23 @@
         insert INTO wip_qppdrcd (RCDID,RCDTYPE,WERKS,FEVOR,FEVORTXT,ZXHBAR,LINE_ID,LINE_NAME,MATNR,MAKTX,NUM,PDNUM,OPERATOR,RCDDAT,ZBEIZ,CREATED_BY,CREATION_DATE)
         VALUES (#{rcdid},#{rcdtype},#{werks},#{fevor},#{fevortxt},#{zxhbar},#{lineId},#{lineName},#{matnr},#{maktx},#{num},#{pdnum},#{operator},#{rcddat},#{zbeiz},#{createdBy},#{creationDate})
     </insert>
+
+    <select id="queryAll" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_qppdrcd
+        <where>
+            1 = 1
+            <if test="werks != null">
+                and WERKS = #{werks}
+            </if>
+            <if test="fevor != null">
+                and FEVOR = #{fevor}
+            </if>
+            <if test="pddatbefore != null">
+                and RCDDAT >= #{pddatbefore}
+            </if>
+            <if test="pddatafter != null">
+                and #{pddatafter} >= RCDDAT
+            </if>
+        </where>
+    </select>
 </mapper>
