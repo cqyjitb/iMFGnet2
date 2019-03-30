@@ -341,7 +341,7 @@ public class QualityController extends BaseController {
               List<Map<String, Object>> listztbc0004 = new ArrayList<Map<String,Object>>();
               String ztbc0004sql = "select * from SAPABAP1.ZTBC0004 where ZDATE =" + "'" + list.get(i).get("CARTON_CODE").toString().substring(0,8) + "'" +
                       " AND ZTPNUM =" + "'" + list.get(i).get("CARTON_CODE").toString().substring(9,13) + "'" +
-                      " AND MANDT = '300' AND ZTYPE = '2'";
+                      " AND MANDT = '"+webServerHelp.getMandt()+"' AND ZTYPE = '2'";
               try {
                   listztbc0004 = hanaCon.select(ztbc0004sql);
                   if (listztbc0004.size() > 0){
@@ -365,7 +365,7 @@ public class QualityController extends BaseController {
               List<Map<String, Object>> listztbc0005 = new ArrayList<Map<String,Object>>();
               String ztbc0005sql = "select * from SAPABAP1.ZTBC0005 where ZDATE =" + "'" + list.get(i).get("CARTON_CODE").toString().substring(0,8) + "'" +
                       " AND ZTPNUM =" + "'" + list.get(i).get("CARTON_CODE").toString().substring(9,13) + "'" +
-                      " AND MANDT = '300' AND ZGZBS = '3' AND ZZDEL = ''";
+                      " AND MANDT = '"+webServerHelp.getMandt()+"' AND ZGZBS = '3' AND ZZDEL = ''";
 
               try {
                   listztbc0005 = hanaCon.select(ztbc0005sql);
@@ -388,7 +388,7 @@ public class QualityController extends BaseController {
               }else{
                   List<Map<String, Object>> listztbc0018 = new ArrayList<Map<String,Object>>();
                   String ztbc0018sql = "select * from SAPABAP1.ZTBC0018 where RUECK = " + "'" + list.get(i).get("RSNUM").toString()+ "'" +
-                          " and RMZHL = " + "'" + list.get(i).get("RSPOS").toString() + "' and mandt = '300' and ZTRAN_TYPE = '01'";
+                          " and RMZHL = " + "'" + list.get(i).get("RSPOS").toString() + "' and mandt = '"+webServerHelp.getMandt()+"' and ZTRAN_TYPE = '01'";
 
                   try {
                       listztbc0018 = hanaCon.select(ztbc0018sql);
@@ -407,7 +407,7 @@ public class QualityController extends BaseController {
               List<Map<String, Object>> listztbc0014 = new ArrayList<Map<String,Object>>();
 
               String ztbc0014sql = "select  CAST(ZKHBAR1 AS varchar) as ZKHBAR1 from SAPABAP1.ZTBC0014 where ZTPBAR = " + "'" + list.get(i).get("CARTON_CODE").toString()+ "'" +
-                       " and mandt = '300' and werks = '"+werks+"'";
+                       " and mandt = '"+webServerHelp.getMandt()+"' and werks = '"+werks+"'";
 
               try {
                   listztbc0014 = hanaCon.select(ztbc0014sql);
@@ -666,17 +666,17 @@ public class QualityController extends BaseController {
 //                        "inner join sapabap1.mara m on r.MATNR = m.MATNR " +
 //                        " INNER JOIN SAPABAP1.MAKT mk ON r.matnr = mk.matnr " +
 //                        " INNER JOIN SAPABAP1.AFKO AF ON af.aufpl = r.aufpl " +
-//                        " where af.aufnr =" + "'" + aufnryz + "'" + " AND m.MATKL in ('3101','4801') and af.mandt = '300' and m.mandt = '300'";
+//                        " where af.aufnr =" + "'" + aufnryz + "'" + " AND m.MATKL in ('3101','4801') and af.mandt = '"+webServerHelp.getMandt()+"' and m.mandt = '"+webServerHelp.getMandt()+"'";
 //
 //                String sqlmseg1yz = "select DISTINCT matbf,charg_sid from sapabap1.matdoc m inner join sapabap1.afru  a on a.WABLNR = m.mblnr" +
 //                        " where a.rueck = '" + list.get(i).get("RSNUMYZ").toString() +"'" +
 //                        "  and a.rmzhl = '" + list.get(i).get("RSPOSYZ").toString() +"'" +
-//                        "  and a.mandt = '300'";
+//                        "  and a.mandt = '"+webServerHelp.getMandt()+"'";
 //
 //                String sqlmseg2yz = "select DISTINCT matbf,charg_sid from sapabap1.matdoc m inner join sapabap1.afwi  a on a.mblnr = m.mblnr" +
 //                        " where a.rueck = '" + list.get(i).get("RSNUMYZ").toString() +"'" +
 //                        "  and a.rmzhl = '" + list.get(i).get("RSPOSYZ").toString() +"'" +
-//                        "  and a.mandt = '300'";
+//                        "  and a.mandt = '"+webServerHelp.getMandt()+"'";
 //
 //                try {
 //                    listresbyz = hanaCon.select(sqlresbyz);
@@ -734,7 +734,7 @@ public class QualityController extends BaseController {
 //
 //            if (!list.get(i).get("CHARGLY").toString().equals("")){
 //                //熔炼炉号 熔炼时间
-//                String sqlztpp0017 = "select mandt,werks,charg1,ztllh,bldat,cputm from sapabap1.ZTPP0017 where mandt = '300'" +
+//                String sqlztpp0017 = "select mandt,werks,charg1,ztllh,bldat,cputm from sapabap1.ZTPP0017 where mandt = '"+webServerHelp.getMandt()+"'" +
 //                        " and werks = '" + werks + "'" + " and charg1 = '" + list.get(i).get("CHARGLY").toString() + "'";
 //
 //                List<Map<String, Object>> listztpp0017 = new ArrayList<Map<String,Object>>();
@@ -764,7 +764,7 @@ public class QualityController extends BaseController {
 //                }
 //
 //                if (listresbyz.get(0).get("MATKL").toString().equals("3101")){
-//                    String sqlztpp00017_2 = "select mandt,werks,charg1,ztllh,bldat,cputm from sapabap1.ZTPP0017 where mandt = '300'" +
+//                    String sqlztpp00017_2 = "select mandt,werks,charg1,ztllh,bldat,cputm from sapabap1.ZTPP0017 where mandt = '"+webServerHelp.getMandt()+"'" +
 //                            " and werks = '" + werks + "'" + " and charg1 = '" + list.get(i).get("CHARGLY").toString() + "' and matnr2 = '" +
 //                            listresbyz.get(0).get("MATNR").toString() + "'";
 //                    try {
@@ -822,12 +822,12 @@ public class QualityController extends BaseController {
 //            List<Map<String, Object>> listmcha = new ArrayList<Map<String,Object>>();
 //            if (!list.get(i).get("CHARGLY").toString().equals("")){
 //                 sqlmcha = "select matnr,charg,m.lifnr,licha ,f.sortl from sapabap1.mcha m inner join sapabap1.lfa1 f on f.lifnr = m.lifnr" +
-//                        " where m.mandt = '300' and charg = '" + list.get(i).get("CHARGLY").toString() + "' and matnr = '" +
-//                        list.get(i).get("MATNRLY").toString() +"' and f.mandt = '300'";
+//                        " where m.mandt = '"+webServerHelp.getMandt()+"' and charg = '" + list.get(i).get("CHARGLY").toString() + "' and matnr = '" +
+//                        list.get(i).get("MATNRLY").toString() +"' and f.mandt = '"+webServerHelp.getMandt()+"'";
 //            }else if (!list.get(i).get("CHARGLD").toString().equals("")){
 //                sqlmcha = "select matnr,charg,m.lifnr,licha ,f.sortl from sapabap1.mcha m inner join sapabap1.lfa1 f on f.lifnr = m.lifnr" +
-//                        " where m.mandt = '300' and charg = '" + list.get(i).get("CHARGLD").toString() + "' and matnr = '" +
-//                        list.get(i).get("MATNRLD").toString() +"' and f.mandt = '300'";
+//                        " where m.mandt = '"+webServerHelp.getMandt()+"' and charg = '" + list.get(i).get("CHARGLD").toString() + "' and matnr = '" +
+//                        list.get(i).get("MATNRLD").toString() +"' and f.mandt = '"+webServerHelp.getMandt()+"'";
 //            }
 //
 //            if (!sqlmcha.equals("")){
@@ -942,17 +942,17 @@ public class QualityController extends BaseController {
                             "inner join sapabap1.mara m on r.MATNR = m.MATNR " +
                             " INNER JOIN SAPABAP1.MAKT mk ON r.matnr = mk.matnr " +
                             " INNER JOIN SAPABAP1.AFKO AF ON af.aufpl = r.aufpl " +
-                            " where af.aufnr =" + "'" + aufnrjj + "'" + " AND m.MATKL = '3102' and af.mandt = '300' and m.mandt = '300'";
+                            " where af.aufnr =" + "'" + aufnrjj + "'" + " AND m.MATKL = '3102' and af.mandt = '"+webServerHelp.getMandt()+"' and m.mandt = '"+webServerHelp.getMandt()+"'";
 
                     String sqlmseg1 = "select matbf,charg_sid from sapabap1.matdoc m inner join sapabap1.afru  a on a.WABLNR = m.mblnr" +
                             " where a.rueck = '" + list.get(i).get("RSNUM").toString() +"'" +
                             "  and a.rmzhl = '" + list.get(i).get("RSPOS").toString() +"'" +
-                            "and a.mandt = '300'";
+                            "and a.mandt = '"+webServerHelp.getMandt()+"'";
 
                     String sqlmseg2 = "select matbf,charg_sid from sapabap1.matdoc m inner join sapabap1.afwi  a on a.mblnr = m.mblnr" +
                             " where a.rueck = '" + list.get(i).get("RSNUM").toString() +"'" +
                             "  and a.rmzhl = '" + list.get(i).get("RSPOS").toString() +"'" +
-                            "and a.mandt = '300'";
+                            "and a.mandt = '"+webServerHelp.getMandt()+"'";
 
 
                     List<Map<String, Object>> listresb = new ArrayList<Map<String,Object>>();
