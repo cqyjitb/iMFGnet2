@@ -10,6 +10,7 @@ import yj.core.qppdrcd.mapper.QppdrcdMapper;
 import yj.core.qppdrcd.service.IQppdrcdService;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -25,6 +26,8 @@ public class QppdrcdServiceImpl extends BaseServiceImpl<Qppdrcd> implements IQpp
     @Override
     public List<Qppdrcd> queryAll(String werks, String pddatbefore, String pddatafter, String fevor,int page,int pageSize,IRequest iRequest) {
         PageHelper.startPage(page, pageSize);
-        return qppdrcdMapper.queryAll(werks,pddatbefore,pddatafter,fevor);
+        List<Qppdrcd> list = new ArrayList<>();
+         list = qppdrcdMapper.queryAll(werks,pddatbefore,pddatafter,fevor);
+        return list;
     }
 }

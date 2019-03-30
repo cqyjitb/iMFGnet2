@@ -18,6 +18,9 @@
         <result column="OPERATOR" property="operator" jdbcType="VARCHAR" />
         <result column="RCDDAT" property="rcddat" jdbcType="DATE" />
         <result column="ZBEIZ" property="zbeiz" jdbcType="VARCHAR" />
+        <result column="RCDDAT" property="rcddat" jdbcType="DATE" />
+        <result column="CREATION_DATE" property="creationDate" jdbcType="VARCHAR" />
+        <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
     </resultMap>
 
     <insert id="insertPdRow" parameterType="yj.core.qppdrcd.dto.Qppdrcd">

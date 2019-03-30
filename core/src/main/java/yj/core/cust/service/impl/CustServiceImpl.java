@@ -22,6 +22,6 @@ public class CustServiceImpl extends BaseServiceImpl<Cust> implements ICustServi
 
     @Override
     public Cust selectByKunnr(String kunnr) {
-        return null;
+        return custMapper.selectByKunnr(kunnr);
     }
 }
