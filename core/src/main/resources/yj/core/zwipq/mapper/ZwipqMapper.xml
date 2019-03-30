@@ -466,4 +466,11 @@
         </where>
         order by CREATION_DATE desc
     </select>
+
+    <select id="selectSumzsxnum" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * FROM  zwipq
+        <where>
+            ZXHBAR = #{zxhbar}
+        </where>
+    </select>
 </mapper>

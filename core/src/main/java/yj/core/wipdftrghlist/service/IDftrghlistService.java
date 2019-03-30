@@ -2,6 +2,7 @@ package yj.core.wipdftrghlist.service;
 
 import com.hand.hap.core.ProxySelf;
 import com.hand.hap.system.service.IBaseService;
+import org.apache.ibatis.annotations.Param;
 import yj.core.wipdftrghlist.dto.Dftrghlist;
 
 import java.util.List;
@@ -96,4 +97,11 @@ public interface IDftrghlistService extends IBaseService<Dftrghlist>, ProxySelf<
      * @return
      */
     List<Dftrghlist> selectforQcaudit2(String werks,String line_id,String matnr,String matnr2,String deptId,String gstrp,String zqxdm,String zissuetxt,String zbanz);
+
+    /**
+     *  汇总 CANCEL_FLAG = 1 的记录
+     * @param zxhbar
+     * @return
+     */
+    List<Dftrghlist> selectSum(String zxhbar );
 }

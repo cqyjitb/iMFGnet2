@@ -65,4 +65,9 @@ public class DftrghlistServiceImpl extends BaseServiceImpl<Dftrghlist> implement
     public List<Dftrghlist> selectforQcaudit2(String werks, String line_id, String matnr, String matnr2, String deptId, String gstrp, String zqxdm, String zissuetxt, String zbanz) {
         return dftrghlistMapper.selectforQcaudit2(werks,line_id,matnr,matnr2,deptId,gstrp,zqxdm,zissuetxt,zbanz);
     }
+
+    @Override
+    public List<Dftrghlist> selectSum(String zxhbar) {
+        return dftrghlistMapper.selectSum(zxhbar);
+    }
 }

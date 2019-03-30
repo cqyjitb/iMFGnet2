@@ -148,4 +148,11 @@ public interface ZwipqMapper extends Mapper<Zwipq> {
      * @return
      */
     List<Zwipq> getlastsumbit(@Param("line_id") String line_id,@Param("zxhbar") String zxhbar);
+
+    /**
+     *  汇总箱号的上线数量 917110140
+     * @param zxhbar
+     * @return
+     */
+    List<Zwipq> selectSumzsxnum(@Param("zxhbar") String zxhbar);
 }

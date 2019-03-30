@@ -59,4 +59,11 @@ public interface IZwipqService extends IBaseService<Zwipq>, ProxySelf<IZwipqServ
      * @return
      */
     List<Zwipq> getlastsumbit(String line_id,String zxhbar);
+
+    /**
+     *  汇总箱号的上线数量 917110140
+     * @param zxhbar
+     * @return
+     */
+    List<Zwipq> selectSumzsxnum(String zxhbar);
 }

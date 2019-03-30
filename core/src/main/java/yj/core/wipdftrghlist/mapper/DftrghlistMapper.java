@@ -97,4 +97,11 @@ public interface DftrghlistMapper extends Mapper<Dftrghlist>{
     List<Dftrghlist> selectforQcaudit2(@Param("werks") String werks,@Param("line_id") String line_id,@Param("matnr") String matnr,
                                        @Param("matnr2") String matnr2,@Param("deptId") String deptId,@Param("gstrp") String gstrp,
                                        @Param("zqxdm") String zqxdm,@Param("zissuetxt") String zissuetxt,@Param("zbanz") String zbanz);
+
+    /**
+     *  汇总 CANCEL_FLAG = 1 的记录
+     * @param zxhbar
+     * @return
+     */
+    List<Dftrghlist> selectSum(@Param("zxhbar") String zxhbar );
 }

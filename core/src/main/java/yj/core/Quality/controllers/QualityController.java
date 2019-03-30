@@ -107,9 +107,9 @@ public class QualityController extends BaseController {
         String sqlzx = "select a.main_id,a.item_code,a.barcode,c.carton_code,b.zpgdbar,b.zxhbar,b.rsnum,b.rspos,b.zsxjlh,b.line_id,b.created_by from "+serverSetting.getDbUsername()+".wip_main_data  a"
                 +" inner join  "+serverSetting.getDbUsername()+".wip_pallet_sn_rel  b on a.main_id = b.main_id"
                 +" inner join  "+serverSetting.getDbUsername()+".mtl_barcode c on b.barcode_id = c.barcode_id";
-        String where = " where b.line_id = " + "'" + param.getLineId() + "' ";
+        String where = " where b.line_id = " + "'" + param.getLineId() + "' and c.status = 0 and b.status = 0 and a.ENABLE_FLAG = '1' ";
         if (param.getMatnr() != null){
-            where = where + "and a.item_code = " + "'" + param.getMatnr() + "' ";
+            where = where + "and a.item_code = " + "'" + param.getMatnr() + "' " ;
         }
 
         if (param.getTpcode() != null){

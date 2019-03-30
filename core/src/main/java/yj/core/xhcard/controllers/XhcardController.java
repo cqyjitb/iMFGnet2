@@ -23,6 +23,7 @@ import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.service.ICardhService;
 import yj.core.dispatch.dto.InputLog;
 import yj.core.dispatch.service.IInputLogService;
+import yj.core.fevor.service.IFevorService;
 import yj.core.marc.dto.Marc;
 import yj.core.marc.service.IMarcService;
 import yj.core.resb.dto.Resb;
@@ -70,6 +71,7 @@ public class XhcardController
     private IDftrghlistService dftrghlistService;
     @Autowired
     private IZwipqService zwipqService;
+
 
     @RequestMapping({"/sap/xhcard/query"})
     @ResponseBody
@@ -126,6 +128,27 @@ public class XhcardController
         }
 
         if (xhcard != null){
+            List<Dftrghlist> listdf = new ArrayList<>();
+            listdf = dftrghlistService.selectSum(zxhbar);
+            List<Zwipq> listzwipq = new ArrayList<>();
+            listzwipq = zwipqService.selectSumzsxnum(zxhbar);
+            Double df = 0D;
+            Double zw = 0D;
+
+            if (listdf.size() > 0){
+                for (int i=0;i<listdf.size();i++){
+                    df = df + listdf.get(i).getDfectQty();
+                }
+            }
+
+            if (listzwipq.size() > 0){
+                for (int i=0;i<listzwipq.size();i++){
+                    zw = zw + listzwipq.get(i).getZsxnum();
+                }
+            }
+            Double xh = Double.parseDouble(xhcard.getMenge());
+            Double a = xh - df -zw;
+            xhcard.setMenge(a.toString());
            listxh.add(xhcard);
            marc = marcService.selectByMatnr(xhcard.getMatnr());
            listmarc.add(marc);

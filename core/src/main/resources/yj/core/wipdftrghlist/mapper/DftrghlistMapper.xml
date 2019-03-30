@@ -225,4 +225,12 @@
             </where>
             order by a.gstrp ,zbanz, a.code ,a.TLEVELCODE
     </select>
+
+    <select id="selectSum" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * FROM wip_dftrghlist
+        <where>
+            ZXHBAR = #{zxhbar}
+            and CANCEL_FLAG = '1'
+        </where>
+    </select>
 </mapper>
