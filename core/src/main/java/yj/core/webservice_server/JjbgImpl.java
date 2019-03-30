@@ -102,7 +102,14 @@ public class JjbgImpl implements IJjbg {
         result.setOperationDesc(rs.getLTXA1());
         log.setMsgty(rs.getMSGTY());
         log.setMsgtx(rs.getMESSAGE());
-        log.setTranType("0");
+
+        if (params.getREVERSE().equals("X")){
+
+            log.setTranType("1");
+        }else{
+
+            log.setTranType("0");
+        }
         log.setRefId(id);
         log.setCreated_by(inputLog.getCreated_by());
         resultMapper.insertResult(result);
