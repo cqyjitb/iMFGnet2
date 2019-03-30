@@ -44,6 +44,7 @@
             <if test="pddatafter != null">
                 and #{pddatafter} >= RCDDAT
             </if>
+            order by CREATED_BY ASC
         </where>
     </select>
 </mapper>
