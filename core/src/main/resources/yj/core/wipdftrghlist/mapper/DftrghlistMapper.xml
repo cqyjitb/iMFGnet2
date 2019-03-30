@@ -230,7 +230,7 @@
         select * FROM wip_dftrghlist
         <where>
             ZXHBAR = #{zxhbar}
-            and CANCEL_FLAG = '1'
+            and CANCEL_FLAG = '0'
         </where>
     </select>
 </mapper>
