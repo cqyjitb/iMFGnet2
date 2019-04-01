@@ -308,7 +308,8 @@
 
                                     var listcrhd = list[2];
                                     if (listcrhd.length > 0){
-                                        if (listcrhd.attr1 != null && listcrhd != 0){
+                                        var attr1 = listcrhd[0].attr1;
+                                        if (attr1 != null && attr1 != 0){
                                             crhdnm = listcrhd[0].attr1;
                                         }
                                     }
@@ -420,7 +421,7 @@
                         document.getElementById("shot_end").value = "";
                         openMsgDialog("错误","起始压射数不能大于或等于终止压射数！","M");
                     }else if ( crhdnm != 0){
-                        if (Number(shot_end) - Number(Number(shot_end)) > crhdnm){
+                        if (Number(shot_end) - Number(Number(shot_start)) > crhdnm){
                             l_error = "E";
                             document.getElementById("shot_start").value = "";
                             document.getElementById("shot_end").value = "";
