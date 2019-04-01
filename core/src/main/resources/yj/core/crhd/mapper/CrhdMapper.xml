@@ -51,18 +51,20 @@
         VALUES (#{objid},#{werks},#{arbpl},#{verwe},#{lvorm},#{aedat},#{veran},#{ketxt},#{attr1},#{attr2},#{attr3},#{attr4},#{attr5},#{attr6},#{attr7},#{creationDate},#{createdBy})
     </insert>
     <select id="selectByVeran" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select * from sap_crhd
+        select cr.*,fe.txt from sap_crhd cr,sap_fevor fe
         <where>
-            1 = 1
+            cr.veran = fe.fevor
+            AND (cr.lvorm = '' or cr.lvorm is null)
             <if test="werks != null">
-                AND werks = #{werks}
+                AND cr.werks = #{werks}
             </if>
             <if test="veran != null">
-                AND veran = #{veran}
+                AND cr.veran = #{veran}
             </if>
             <if test="arbpl != null">
-                AND arbpl = #{arbpl}
+                AND cr.arbpl = #{arbpl}
             </if>
+            order by cr.arbpl asc
         </where>
     </select>
 </mapper>
