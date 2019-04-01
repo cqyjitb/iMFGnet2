@@ -11,9 +11,10 @@ public interface CrhdMapper extends Mapper<Crhd>{
      * 根据工厂、车间条件加载工作中心LOV_ARBPL 918100064
      * @param werks
      * @param veran
+     * @param arbpl
      * @return
      */
-    List<Crhd> selectByVeran(@Param("werks")String werks,@Param("veran")String veran);
+    List<Crhd> selectByVeran(@Param("werks")String werks,@Param("veran")String veran,@Param("arbpl")String arbpl);
 
     /**
      *  根据OBJID 查询记录数量 917110140
