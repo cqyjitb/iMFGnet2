@@ -43,9 +43,9 @@ public class WebServerHelp {
         //prd
 
         this.HanaDRIVER = "com.sap.db.jdbc.Driver";
-        this.HanaUrl ="jdbc:sap://192.168.3.20:36015?reconnect=true";
+        this.HanaUrl ="jdbc:sap://192.168.3.11:30015?reconnect=true";
         this.HanaUserName = "FINEREPORT";
-        this.HanaPass = "Finereport3333";
+        this.HanaPass = "Finereport6666";
         this.mandt = "800";
 
 

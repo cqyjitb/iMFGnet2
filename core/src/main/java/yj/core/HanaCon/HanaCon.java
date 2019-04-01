@@ -21,7 +21,14 @@ public class HanaCon {
     }
 
     public static void main(String[] args) {
-        HanaCon hanaCon = new HanaCon("","","","");
+//        this.HanaDRIVER = "com.sap.db.jdbc.Driver";
+//        this.HanaUrl ="jdbc:sap://192.168.3.11:30015?reconnect=true";
+//        this.HanaUserName = "FINEREPORT";
+//        this.HanaPass = "Finereport3333";
+//        this.mandt = "800";
+
+
+        HanaCon hanaCon = new HanaCon("jdbc:sap://192.168.3.11:30015?reconnect=true","FINEREPORT","Finereport6666","com.sap.db.jdbc.Driver");
         String sql = "select * from "+ "SAPABAP1"+ "."+"MARA";
 
         try {
