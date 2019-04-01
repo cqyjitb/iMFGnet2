@@ -39,4 +39,9 @@ public class CrhdServiceImpl extends BaseServiceImpl<Crhd> implements ICrhdServi
         }
         return num;
     }
+
+    @Override
+    public List<Crhd> selecByWerksAndArbpl(String werks, String arbpl) {
+        return crhdMapper.selecByWerksAndArbpl(werks,arbpl);
+    }
 }

@@ -35,4 +35,12 @@ public interface CrhdMapper extends Mapper<Crhd>{
      * @return
      */
     int insertRow(Crhd crhd);
+
+    /**
+     *  根据工作中心编号，工厂查询记录
+     * @param werks
+     * @param arbpl
+     * @return
+     */
+    List<Crhd> selecByWerksAndArbpl(@Param("werks") String werks,@Param("arbpl") String arbpl);
 }

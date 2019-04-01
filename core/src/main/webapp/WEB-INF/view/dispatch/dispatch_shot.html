@@ -119,6 +119,7 @@
             var dbanc = document.getElementById("banc");
             var Omode =  document.getElementById("mode");
             var roBcd=document.getElementById("zpgdbar");
+            var crhdnm = 0;
             roBcd.focus();
             var mdnums = {};
             /*用户登录相关操作*/
@@ -304,6 +305,13 @@
                                     }else{
                                         Omode.setAttribute("disabled",true);
                                     }
+
+                                    var listcrhd = list[2];
+                                    if (listcrhd.length > 0){
+                                        if (listcrhd.attr1 != null && listcrhd != 0){
+                                            crhdnm = listcrhd[0].attr1;
+                                        }
+                                    }
                                     dshot_start.focus();
                                 }else{
 
@@ -411,6 +419,13 @@
                         document.getElementById("shot_start").value = "";
                         document.getElementById("shot_end").value = "";
                         openMsgDialog("错误","起始压射数不能大于或等于终止压射数！","M");
+                    }else if ( crhdnm != 0){
+                        if (Number(shot_end) - Number(Number(shot_end)) > crhdnm){
+                            l_error = "E";
+                            document.getElementById("shot_start").value = "";
+                            document.getElementById("shot_end").value = "";
+                            openMsgDialog("错误","压射次数超出班次上限！请检查。","M");
+                        }
                     }
                 }
 

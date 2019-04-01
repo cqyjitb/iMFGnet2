@@ -16,6 +16,8 @@ import yj.core.afvc.dto.Afvc;
 import yj.core.afvc.service.IAfvcService;
 import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.service.ICardhService;
+import yj.core.crhd.dto.Crhd;
+import yj.core.crhd.service.ICrhdService;
 import yj.core.mouldcavity.dto.Mouldcavity;
 import yj.core.mouldcavity.service.IMouldcavityService;
 import yj.core.webservice_queryoldzpgdbar.components.QueryOldZpgdbarUtil;
@@ -36,6 +38,8 @@ public class AfvcController
     private QueryOldZpgdbarUtil queryOldZpgdbarUtil;
     @Autowired
     private IMouldcavityService mouldcavityService;
+    @Autowired
+    private ICrhdService crhdService;
 
 
 
@@ -85,6 +89,7 @@ public class AfvcController
         ResponseData rs = new ResponseData();
         String zpgdbar = request.getParameter("zpgdbar");
         String type = request.getParameter("type");
+
         if (type.equals("new")){//新派工单
             Cardh cardh = new Cardh();
             cardh = cardhService.selectByBarcode(zpgdbar);
@@ -114,12 +119,15 @@ public class AfvcController
                 afvc.setMatnr(afko.getPlnbez());
                 afvc.setMaktx(afko.getMaktx());
                 afvc.setWerks(afko.getWerks());
+                List<Crhd> listcrhd = new ArrayList<>();
+                listcrhd = crhdService.selecByWerksAndArbpl(afvc.getWerks(),afvc.getArbpl());
                 list.add(afvc);
                 List<Mouldcavity> listm = new ArrayList<>();
                 listm = mouldcavityService.selectByWerksAndMatnr(afvc.getMatnr(),afvc.getWerks());
                 List l1 = new ArrayList();
                 l1.add(list);
                 l1.add(listm);
+                l1.add(listcrhd);
                 rs.setRows(l1);
                 rs.setSuccess(true);
             }else{
@@ -142,9 +150,12 @@ public class AfvcController
                 afvc.setKtext(re.getArbpldesc());
                 afvc.setMatnr(re.getMatnr());
                 afvc.setMaktx(re.getMaktx());
+                List<Crhd> listcrhd = new ArrayList<>();
+                listcrhd = crhdService.selecByWerksAndArbpl(re.getWerks(),re.getArbpl());
                 list.add(afvc);
                 l1.add(list);
                 l1.add(listm);
+                l1.add(listcrhd);
                 rs.setSuccess(true);
                 rs.setRows(l1);
             }else{

@@ -32,7 +32,7 @@ public class Crhd extends BaseDTO {
 
       private String ketxt;
 
-      private String attr1;
+      private Integer attr1;
 
       private String attr2;
 
@@ -154,15 +154,15 @@ public class Crhd extends BaseDTO {
          return ketxt;
      }
 
-     public void setAttr1(String attr1){
-         this.attr1 = attr1;
-     }
+    public Integer getAttr1() {
+        return attr1;
+    }
 
-     public String getAttr1(){
-         return attr1;
-     }
+    public void setAttr1(Integer attr1) {
+        this.attr1 = attr1;
+    }
 
-     public void setAttr2(String attr2){
+    public void setAttr2(String attr2){
          this.attr2 = attr2;
      }
 

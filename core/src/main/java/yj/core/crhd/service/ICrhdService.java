@@ -28,4 +28,12 @@ public interface ICrhdService extends IBaseService<Crhd>, ProxySelf<ICrhdService
      * @return
      */
     int insertRows(List<Crhd> list);
+
+    /**
+     *  根据工作中心编号，工厂查询记录
+     * @param werks
+     * @param arbpl
+     * @return
+     */
+    List<Crhd> selecByWerksAndArbpl(String werks,String arbpl);
 }

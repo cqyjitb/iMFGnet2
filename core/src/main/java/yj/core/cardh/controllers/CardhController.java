@@ -1051,7 +1051,7 @@ public class CardhController
                         if (j ==  0){
                             cardh.setStwks(listAfvc.get(j).getArbpl());
                         }
-                         if (listAfvc.get(j).getSteus().equals("ZP04")){
+                         if (listAfvc.get(j).getSteus().equals("ZP04") || listAfvc.get(j).getSteus().equals("ZP05")){
                             Cardt cardt = new Cardt();
                             cardt.setZpgdbar(cardh.getZpgdbar());
                             cardt.setZpgdbh(cardh.getZpgdbh());

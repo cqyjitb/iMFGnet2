@@ -2,6 +2,8 @@ package yj.core.wipshotnum.service.impl;
 
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.service.impl.BaseServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -37,9 +39,10 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
     private ShiftstimeMapper shiftstimeMapper;
     @Autowired
     private MarcMapper marcMapper;
-
+    private Logger logger = LoggerFactory.getLogger(ShotnumServiceImpl.class);
     @Override
     public List<Shotnum> selectShotnum(Shotnum dto, IRequest requestContext) {
+
         List<Shotnum> list1 = shotnumMapper.selectShotnum(dto.getWerks(),dto.getFevor(),null,null,dto.getPrdDateAfter(),dto.getPrdDateBefore());
         List<Shotnum> list = new ArrayList<Shotnum>();
         List<Shotnum> list2 = new ArrayList<Shotnum>();
@@ -194,6 +197,7 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                     }
                     //if("星期日".equals(date)){
                     if (cal2.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+                        logger.debug(shotnum.getZpgdbar() + " ******this is sunday*****");
                         String startDate = shotnum.getPrdDate() + " " + shiftstime.getZbgsTime();
                         String endDate = shotnum.getPrdDate();
                         if (shotnum.getShifts().equals("3")) {

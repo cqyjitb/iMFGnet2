@@ -1,10 +1,10 @@
 package yj.core.OracleConn;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
+import java.util.Date;
 
 public class OracleConn {
 
@@ -21,14 +21,33 @@ public class OracleConn {
         this.jdbcName = jdbcName;
     }
     public static void main(String[] args) {
+        //        this.mesOraDriver = "oracle.jdbc.OracleDriver";
+        //        this.mesOraUrl = "jdbc:oracle:thin:@192.168.4.37:1521:orclyj";
+        //        this.mesOraPass = "mes_query_usr";
+        //        this.mesOraUserName = "mesapp12345";
+//        OracleConn oracleConn = new OracleConn("jdbc:oracle:thin:@192.168.4.37:1521:orclyj","mes_query_usr","mesapp12345","oracle.jdbc.OracleDriver");
+//        String sql = "select * from MES_M264Q01.WIP_MAIN_DATA";
+//        try {
+//            List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+//            list = oracleConn.select(sql);
+//            if (list.size() > 0){
+//                System.out.println(list.size());
+//            }
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
 
-        OracleConn oracleConn = new OracleConn("","","","");
-        String sql = "select * from MES_M264L01.WIP_MAIN_DATA";
+        SimpleDateFormat sd = new SimpleDateFormat("YYYY-MM-DD");
+        Calendar cal =  Calendar.getInstance();
         try {
-            oracleConn.select(sql);
-        } catch (Exception e) {
+            cal.setTime(sd.parse("2019-04-21"));
+            if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+                System.out.print("this is sunday");
+            }
+        } catch (ParseException e) {
             e.printStackTrace();
         }
+
     }
 
     private  Connection getConnection(){
