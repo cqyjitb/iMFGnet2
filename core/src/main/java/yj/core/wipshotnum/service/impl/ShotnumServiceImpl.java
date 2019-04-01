@@ -7,6 +7,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import yj.core.afko.dto.Afko;
 import yj.core.afko.mapper.AfkoMapper;
+import yj.core.crhd.dto.Crhd;
+import yj.core.crhd.mapper.CrhdMapper;
 import yj.core.dispatch.dto.InputLog;
 import yj.core.dispatch.mapper.InputLogMapper;
 import yj.core.marc.dto.Marc;
@@ -37,6 +39,8 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
     private ShiftstimeMapper shiftstimeMapper;
     @Autowired
     private MarcMapper marcMapper;
+    @Autowired
+    private CrhdMapper crhdMapper;
 
     @Override
     public List<Shotnum> selectShotnum(Shotnum dto, IRequest requestContext) {
@@ -47,12 +51,14 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
         Shotnum shotnum = new Shotnum();
         Marc marc = new Marc();
         Shiftstime shiftstime = new Shiftstime();
+        SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat st = new SimpleDateFormat("HH:mm:ss");
+        Calendar sTime = Calendar.getInstance();
+        Calendar eTime = Calendar.getInstance();
+        Calendar cal = new GregorianCalendar();
+        Calendar cal2 = Calendar.getInstance();
+        DecimalFormat df = new DecimalFormat("#0.00");
         if(list1.size() > 0) {
-            SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
-            SimpleDateFormat sfWeek = new SimpleDateFormat("EEEE");
-            Calendar cal = new GregorianCalendar();
-            Calendar cal2 = Calendar.getInstance();
-            DecimalFormat df = new DecimalFormat("#0.00");
             if ("Y".equals(dto.getTotal())) {
                 for (int i = 0; i < list1.size(); i++) {
                     list.add(list1.get(i));
@@ -125,13 +131,13 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                     yeild = yeild + inputLogMapper.selectByOrderno(shotnum.getArbpl(), startDate, endDate);
                     shotnum.setYeild(yeild);
                     shotnum.setWasteNum(shotNum - yeild);
-                    if (shotnum.getShifts().equals("1")) {
+                    /*if (shotnum.getShifts().equals("1")) {
                         shotnum.setShifts("白班");
                     } else if (shotnum.getShifts().equals("2")) {
                         shotnum.setShifts("中班");
                     } else if (shotnum.getShifts().equals("3")) {
                         shotnum.setShifts("夜班");
-                    }
+                    }*/
                 }
             } else {
                 for (int i = 0; i < list1.size(); i++) {
@@ -195,17 +201,22 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                     //if("星期日".equals(date)){
                     if (cal2.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
                         String startDate = shotnum.getPrdDate() + " " + shiftstime.getZbgsTime();
-                        String endDate = shotnum.getPrdDate();
-                        if (shotnum.getShifts().equals("3")) {
-                            try {
-                                cal.setTime(sf.parse(endDate));
-                            } catch (ParseException e) {
-                                e.printStackTrace();
-                            }
-                            cal.add(cal.DATE, 1);
+                        String endDate = shotnum.getPrdDate() + " " + shiftstime.getZbgeTime();
+                        try {
+                            sTime.setTime(st.parse(shiftstime.getZbgsTime()));
+                            eTime.setTime(st.parse(shiftstime.getZbgeTime()));
+                            cal.setTime(sf.parse(shotnum.getPrdDate()));
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                        cal.add(cal.DATE, 1);
+                        if((sTime.after(eTime))&&(shotnum.getShifts().equals("2"))){
                             endDate = sf.format(cal.getTime()) + " " + shiftstime.getZbgeTime();
-                        } else {
-                            endDate = endDate + " " + shiftstime.getZbgeTime();
+                        }else if((sTime.before(eTime))&&(shotnum.getShifts().equals("3"))){
+                            startDate = sf.format(cal.getTime()) + " " + shiftstime.getZbgsTime();
+                            endDate = sf.format(cal.getTime()) + " " + shiftstime.getZbgeTime();
+                        }else if((sTime.after(eTime))&&(shotnum.getShifts().equals("3"))){
+                            endDate = sf.format(cal.getTime()) + " " + shiftstime.getZbgeTime();
                         }
                         yeild = yeild + inputLogMapper.selectByOrderno(shotnum.getArbpl(), startDate, endDate);
                     } else {
@@ -226,13 +237,119 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                     }
                     shotnum.setYeild(yeild);
                     shotnum.setWasteNum(shotNum - yeild);
-                    if (shotnum.getShifts().equals("1")) {
+                    /*if (shotnum.getShifts().equals("1")) {
                         shotnum.setShifts("白班");
                     } else if (shotnum.getShifts().equals("3")) {
                         shotnum.setShifts("夜班");
                     } else if (shotnum.getShifts().equals("2")) {
                         shotnum.setShifts("中班");
+                    }*/
+                }
+                List<Crhd> crhds = crhdMapper.selectByVeran(dto.getWerks(),dto.getFevor(),null);
+                Integer num = list.size();
+                Date prdDateBefore = null;
+                Date prdDateAfter = null;
+                try {
+                    prdDateBefore = sf.parse(dto.getPrdDateAfter());
+                    prdDateAfter = sf.parse(dto.getPrdDateBefore());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                cal2.setTime(prdDateBefore);
+                cal.setTime(prdDateAfter);
+                cal.add(cal.DATE, 1);
+                Date endTime = cal.getTime();
+                while(cal2.getTime().before(endTime)){
+                    Integer shift = 2;
+                    Calendar cal3 = Calendar.getInstance();
+                    if (cal2.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+                        shift = 3;
                     }
+                    for (int a = 0; a < shift; a++) {
+                        List<Crhd> crhd = new ArrayList<Crhd>();
+                        String shifts = null;
+                        if (a == 0) {
+                            shifts = "1";
+                        } else if (a == 1) {
+                            shifts = "3";
+                        } else if (a == 2) {
+                            shifts = "2";
+                        }
+                        if(num > 0){
+                            for (int i = 0; i < crhds.size(); i++) {
+                                int j;
+                                for(j=0;j<num;j++){
+                                    if((crhds.get(i).getArbpl().equals(list.get(j).getArbpl()))&&(shifts.equals(list.get(j).getShifts()))){
+                                        break;
+                                    }
+                                }
+                                if(j == num){
+                                    crhd.add(crhds.get(i));
+                                }
+                            }
+                        }else{
+                            crhd.addAll(crhds);
+                        }
+                        if(crhd.size() > 0) {
+                            shiftstime = shiftstimeMapper.selectByShift(shifts);
+                            for (int i = 0; i < crhd.size(); i++) {
+                                Integer yeild = 0;
+                                Shotnum shotnum1 = new Shotnum();
+                                shotnum1.setWerks(dto.getWerks());
+                                shotnum1.setFevor(dto.getFevor());
+                                shotnum1.setTxt(crhd.get(i).getTxt());
+                                shotnum1.setArbpl(crhd.get(i).getArbpl());
+                                shotnum1.setKtext(crhd.get(i).getKetxt());
+                                shotnum1.setPrdDateAfter(sf.format(cal2.getTime()));
+                                shotnum1.setShifts(shifts);
+                                shotnum1.setShotStart(0L);
+                                shotnum1.setShotEnd(0L);
+                                shotnum1.setShotNum(0);
+                                shotnum1.setBrgew("0.00");
+                                if (shift == 3) {
+                                    String startDate = shotnum.getPrdDate() + " " + shiftstime.getZbgsTime();
+                                    String endDate = shotnum.getPrdDate() + " " + shiftstime.getZbgeTime();
+                                    try {
+                                        sTime.setTime(st.parse(shiftstime.getZbgsTime()));
+                                        eTime.setTime(st.parse(shiftstime.getZbgeTime()));
+                                        cal3.setTime(cal2.getTime());
+                                    } catch (ParseException e) {
+                                        e.printStackTrace();
+                                    }
+                                    cal3.add(cal.DATE, 1);
+                                    if((sTime.after(eTime))&&(shifts.equals("2"))){
+                                        endDate = sf.format(cal3.getTime()) + " " + shiftstime.getZbgeTime();
+                                    }else if(shifts.equals("3")){
+                                        endDate = sf.format(cal3.getTime()) + " " + shiftstime.getZbgeTime();
+                                        if(sTime.before(eTime)){
+                                            startDate = sf.format(cal3.getTime()) + " " + shiftstime.getZbgsTime();
+                                        }
+                                    }
+                                    yeild = inputLogMapper.selectByOrderno(crhd.get(i).getArbpl(), startDate, endDate);
+                                } else {
+                                    String startDate = sf.format(cal2.getTime()) + " " + shiftstime.getBgsTime();
+                                    String endDate = sf.format(cal2.getTime()) + " " + shiftstime.getBgeTime();
+                                    if (shifts.equals("3")) {
+                                        cal3.setTime(cal2.getTime());
+                                        cal3.add(cal3.DATE, 1);
+                                        endDate = sf.format(cal3.getTime()) + " " + shiftstime.getBgeTime();
+                                    }
+                                    yeild = inputLogMapper.selectByOrderno(crhd.get(i).getArbpl(), startDate, endDate);
+                                }
+                                shotnum1.setYeild(yeild);
+                                shotnum1.setWasteNum(0-yeild);
+                                /*if (shifts.equals("1")) {
+                                    shotnum1.setShifts("白班");
+                                } else if (shifts.equals("3")) {
+                                    shotnum1.setShifts("夜班");
+                                } else if (shifts.equals("2")) {
+                                    shotnum1.setShifts("中班");
+                                }*/
+                                list.add(shotnum1);
+                            }
+                        }
+                    }
+                    cal2.add(cal2.DATE, 1);
                 }
             }
         }

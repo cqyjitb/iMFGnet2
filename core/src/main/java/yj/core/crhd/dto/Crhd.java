@@ -51,8 +51,18 @@ public class Crhd extends BaseDTO {
       private Long createdBy; //创建人
       private Date lastUpdatedDate; //更新时间
       private Long lastUpdatedBy; //更新人
+    @Transient
+    private String txt;//车间描述
 
-     public void setObjid(String objid){
+    public String getTxt() {
+        return txt;
+    }
+
+    public void setTxt(String txt) {
+        this.txt = txt;
+    }
+
+    public void setObjid(String objid){
          this.objid = objid;
      }
 
