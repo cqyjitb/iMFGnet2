@@ -908,7 +908,7 @@ public class CardhController
                     xhcard.setMeins(cardh.getGmein());
                     xhcard.setAufnr(cardh.getAufnr());
                     xhcard.setZxhbar(cardh.getMatnr() + "_" + maxChargnum.toString() + "_" + cardh.getZxhnum());
-                    xhcard.setMenge("");
+                    xhcard.setMenge("0");
                     xhcard.setZbqbd("");
                     xhcard.setZtxt("");
                     xhcard.setZsctptm("");
