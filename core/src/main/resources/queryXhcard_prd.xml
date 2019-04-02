@@ -223,12 +223,12 @@
     <wsdl:service name="SI_QUERYXHCARD_Sender_SynService">
         <wsdl:port name="HTTP_Port" binding="p1:SI_QUERYXHCARD_Sender_SynBinding">
             <soap:address
-                    location="http://pidev1:50000/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_HAP_DEV&amp;receiverParty=&amp;receiverService=&amp;interface=SI_QUERYXHCARD_Sender_Syn&amp;interfaceNamespace=http%3A%2F%2Fwww.cq-yj.com%2FHAP%2FqueryXhcard%2FSender"
+                    location="http://piprd1:52000/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_HAP_PRD&amp;receiverParty=&amp;receiverService=&amp;interface=SI_QUERYXHCARD_Sender_Syn&amp;interfaceNamespace=http%3A%2F%2Fwww.cq-yj.com%2FHAP%2FqueryXhcard%2FSender"
                     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
         </wsdl:port>
         <wsdl:port name="HTTPS_Port" binding="p1:SI_QUERYXHCARD_Sender_SynBinding">
             <soap:address
-                    location="https://pidev1:50001/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_HAP_DEV&amp;receiverParty=&amp;receiverService=&amp;interface=SI_QUERYXHCARD_Sender_Syn&amp;interfaceNamespace=http%3A%2F%2Fwww.cq-yj.com%2FHAP%2FqueryXhcard%2FSender"
+                    location="https://piprd1:52001/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_HAP_PRD&amp;receiverParty=&amp;receiverService=&amp;interface=SI_QUERYXHCARD_Sender_Syn&amp;interfaceNamespace=http%3A%2F%2Fwww.cq-yj.com%2FHAP%2FqueryXhcard%2FSender"
                     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
         </wsdl:port>
     </wsdl:service>
