@@ -154,9 +154,62 @@
         #{attr1},#{attr2},#{attr3},#{attr4},#{attr5},#{attr6},#{attr7},#{attr8},#{attr9},#{attr10},#{attr11},#{attr12},#{attr13},#{attr14},#{attr15},#{created_by}
         )
     </insert>
-<!--
-    报功冲销
--->
+
+    <select id="queryInputlogByJjuuid" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        DISTINCT
+        il.id,
+        il.barcode,
+        il.dispatch,
+        il.orderno,
+        il.operation,
+        il.CREATION_DATE,
+        il.posting_date,
+        il.yeild,
+        il.work_scrap,
+        il.row_scrap,
+        il.classgrp,
+        il.model_no,
+        il.line,
+        il.plant,
+        il.CREATED_BY,
+        il.attr1,
+        il.attr2,
+        il.attr3,
+        il.attr4,
+        il.attr5,
+        il.attr6,
+        il.attr7,
+        il.attr8,
+        il.attr9,
+        il.attr10,
+        il.attr11,
+        il.attr12,
+        il.attr13,
+        il.attr14,
+        il.attr15,
+        r.mat_desc,
+        r.material,
+        r.confirmation_no,
+        r.confirmation_pos,
+        u.user_name,
+        r.operation_desc,
+        r.fevor,
+        r.fevor_txt
+        FROM confirmation_input_log il,confirmation_result r,sys_user u,confirmation_log l
+        <where>
+            il.id= r.input_id
+            AND il.CREATED_BY = u.user_id
+            AND l.ref_id = il.id
+            And il.attr15 = #{bguuid}
+        </where>
+
+    </select>
+
+    <!--
+       报功冲销
+   -->
+
     <select id="queryAllWriteOff" resultMap="BaseResultMap" parameterType="yj.core.dispatch.dto.InputLog">
         SELECT
         DISTINCT

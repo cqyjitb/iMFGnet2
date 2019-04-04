@@ -37,6 +37,15 @@ public class DTBAOGONGParameters
     private String FSTVOR;//首工序 ""
     private String LSTVOR;//末工序（"X"）
     private String CHARG;//""
+    private String bguuid;//机加报工uuid
+
+    public String getBguuid() {
+        return bguuid;
+    }
+
+    public void setBguuid(String bguuid) {
+        this.bguuid = bguuid;
+    }
 
     public String getARBPL() {
         return ARBPL;

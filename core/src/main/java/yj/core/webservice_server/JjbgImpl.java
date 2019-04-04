@@ -82,6 +82,8 @@ public class JjbgImpl implements IJjbg {
         inputLog.setUserName(params.getUSERNAME());
         inputLog.setMaterial(rs.getMATNR());
         inputLog.setMatDesc(rs.getMAKTX());
+        inputLog.setAttr15(params.getBguuid());//保存机加报工的UUID
+
         inputLogMapper.insertInputLog(inputLog);
 
         Long id = inputLogMapper.selectNextId();

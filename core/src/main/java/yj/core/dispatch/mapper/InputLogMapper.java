@@ -85,4 +85,13 @@ public interface InputLogMapper extends Mapper<InputLog>{
      * @return
      */
     List<InputLog> queryCreationDate(@Param("orderno")String orderno,@Param("plant")String plant,@Param("fevor")String fevor);
+
+    /**
+     *  根据机加 bguuid 查询报工日志 917110140
+     * @param bguuid
+     * @return
+     */
+    InputLog queryInputlogByJjuuid(@Param("bguuid") String bguuid);
+
+
 }

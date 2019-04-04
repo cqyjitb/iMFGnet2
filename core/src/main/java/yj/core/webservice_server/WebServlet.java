@@ -116,5 +116,13 @@ public class WebServlet extends CXFNonSpringServlet {
         serverFactoryBean11.setServiceBean(queryOutsrgrfe);
         serverFactoryBean11.create();
 
+        //通过报工uuid查询机加报工 数据接口
+        ServerFactoryBean serverFactoryBean12 = new ServerFactoryBean(); //server工厂
+        QueryJJbglogimpl queryJJbglogimpl = new QueryJJbglogimpl();
+        serverFactoryBean12.setServiceClass(IQueryJJbglog.class);
+        serverFactoryBean12.setAddress("/QueryJJbg"); //服务请求路径
+        serverFactoryBean12.setServiceBean(queryJJbglogimpl);
+        serverFactoryBean12.create();
+
     }
 }

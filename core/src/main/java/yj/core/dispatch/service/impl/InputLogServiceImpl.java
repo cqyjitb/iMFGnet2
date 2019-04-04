@@ -669,4 +669,9 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
     public InputLog queryByDispatchAndOperation(InputLog inputLog) {
         return inputLogMapper.queryByDispatchAndOperation(inputLog);
     }
+
+    @Override
+    public InputLog queryInputlogByJjuuid(String bguuid) {
+        return inputLogMapper.queryInputlogByJjuuid(bguuid);
+    }
 }

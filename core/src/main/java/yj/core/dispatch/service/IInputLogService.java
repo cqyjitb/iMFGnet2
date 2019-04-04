@@ -47,4 +47,6 @@ public interface IInputLogService extends IBaseService<InputLog>, ProxySelf<IInp
     String queryDispatchMaxOperation (String dispatch);
 
     InputLog queryByDispatchAndOperation(InputLog inputLog);
+
+    InputLog queryInputlogByJjuuid(String bguuid);
 }
