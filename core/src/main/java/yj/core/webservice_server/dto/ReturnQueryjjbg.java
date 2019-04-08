@@ -41,34 +41,34 @@ public class ReturnQueryjjbg  {
 
     private String MSGV4;
 
-    private Double yeild;
+    private Double YEILD;
 
-    private Double workscrap;
+    private Double WORKSCRP;
 
-    private Double rowscrap;
+    private Double ROWSCRAP;
 
-    public Double getYeild() {
-        return yeild;
+    public Double getYEILD() {
+        return YEILD;
     }
 
-    public void setYeild(Double yeild) {
-        this.yeild = yeild;
+    public void setYEILD(Double YEILD) {
+        this.YEILD = YEILD;
     }
 
-    public Double getWorkscrap() {
-        return workscrap;
+    public Double getWORKSCRP() {
+        return WORKSCRP;
     }
 
-    public void setWorkscrap(Double workscrap) {
-        this.workscrap = workscrap;
+    public void setWORKSCRP(Double WORKSCRP) {
+        this.WORKSCRP = WORKSCRP;
     }
 
-    public Double getRowscrap() {
-        return rowscrap;
+    public Double getROWSCRAP() {
+        return ROWSCRAP;
     }
 
-    public void setRowscrap(Double rowscrap) {
-        this.rowscrap = rowscrap;
+    public void setROWSCRAP(Double ROWSCRAP) {
+        this.ROWSCRAP = ROWSCRAP;
     }
 
     /**

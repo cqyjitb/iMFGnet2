@@ -29,9 +29,9 @@ public class QueryJJbglogimpl implements IQueryJJbglog {
                 rs.setRSPOS(inputLog.getConfirmationPos());
                 rs.setFEVOR(inputLog.getFevor());
                 rs.setTXT(inputLog.getFevorTxt());
-                rs.setYeild(inputLog.getYeild());
-                rs.setWorkscrap(inputLog.getWorkScrap());
-                rs.setRowscrap(inputLog.getRowScrap());
+                rs.setYEILD(inputLog.getYeild());
+                rs.setWORKSCRP(inputLog.getWorkScrap());
+                rs.setROWSCRAP(inputLog.getRowScrap());
 
 
 //                returnResult.setAUFNR(aufnr);
@@ -56,9 +56,9 @@ public class QueryJJbglogimpl implements IQueryJJbglog {
             }else{
                 rs.setMSGTY("E");
                 rs.setMESSAGE(inputLog.getMsgtx());
-                rs.setYeild(inputLog.getYeild());
-                rs.setWorkscrap(inputLog.getWorkScrap());
-                rs.setRowscrap(inputLog.getRowScrap());
+                rs.setYEILD(inputLog.getYeild());
+                rs.setWORKSCRP(inputLog.getWorkScrap());
+                rs.setROWSCRAP(inputLog.getRowScrap());
             }
         }
         return rs;
