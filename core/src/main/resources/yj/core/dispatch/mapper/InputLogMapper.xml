@@ -195,7 +195,9 @@
         u.user_name,
         r.operation_desc,
         r.fevor,
-        r.fevor_txt
+        r.fevor_txt,
+        l.msgty,
+        l.msgtx
         FROM confirmation_input_log il,confirmation_result r,sys_user u,confirmation_log l
         <where>
             il.id= r.input_id

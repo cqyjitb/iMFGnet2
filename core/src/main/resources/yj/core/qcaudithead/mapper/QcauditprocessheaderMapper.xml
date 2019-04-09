@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.qcaudithead.mapper.QcauditprocessheaderMapper">
+    <resultMap id="BaseResultMap" type="yj.core.qcaudithead.dto.Qcauditprocessheader">
+        <result column="WERKS" property="werks" jdbcType="VARCHAR" />
+        <result column="RECORDID" property="recordid" jdbcType="VARCHAR" />
+        <result column="CONFIRM_QTY" property="confirmQty" jdbcType="DECIMAL" />
+        <result column="attr1" property="attr1" jdbcType="VARCHAR" />
+        <result column="attr2" property="attr2" jdbcType="VARCHAR" />
+        <result column="attr3" property="attr3" jdbcType="VARCHAR" />
+        <result column="attr4" property="attr4" jdbcType="VARCHAR" />
+        <result column="attr5" property="attr5" jdbcType="VARCHAR" />
+        <result column="attr6" property="attr6" jdbcType="VARCHAR" />
+        <result column="attr7" property="attr7" jdbcType="VARCHAR" />
+        <result column="attr8" property="attr8" jdbcType="VARCHAR" />
+    </resultMap>
+
+
+</mapper>
