@@ -1,5 +1,6 @@
 package yj.core.xhcard.controllers;
 
+import com.github.pagehelper.PageHelper;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.system.dto.ResponseData;
@@ -1008,6 +1009,15 @@ public class XhcardController
     public ResponseData queryXhcard(Xhcard dto, HttpServletRequest request) {
         IRequest requestContext = createRequestContext(request);
         String creationDateBefore = dto.getCreationDateBefore();
+        String chargkc = dto.getChargkc();
+        String zsxwc = dto.getZsxwc();
+        if(chargkc != null){
+            chargkc = chargkc.replace("-","").substring(2,8);
+            dto.setChargkc(chargkc);
+        }
+        if("Y".equals(zsxwc)){
+            dto.setDfectQty(1);
+        }
         if ( creationDateBefore!= null){
             creationDateBefore = creationDateBefore.replace("00:00:00","23:59:59");
             dto.setCreationDateBefore(creationDateBefore);

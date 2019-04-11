@@ -53,6 +53,16 @@
         <result column="ZPGDBAR2" property="zpgdbar2" jdbcType="VARCHAR" />
     </resultMap>
 
+    <select id="selectByZxhbar2" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select COALESCE(sum(dfect_qty),0) from wip_dftrghlist
+        <where>
+            CANCEL_FLAG = '0'
+            <if test="zxhbar != null">
+                and ZXHBAR = #{zxhbar}
+            </if>
+        </where>
+    </select>
+
     <select id="selectByCondition" parameterType="java.lang.String" resultMap="BaseResultMap">
         select * from wip_dftrghlist
         <where>

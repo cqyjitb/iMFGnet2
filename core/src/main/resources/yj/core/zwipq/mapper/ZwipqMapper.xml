@@ -136,6 +136,22 @@
         <result column="PMATNR" property="pmatnr" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <select id="selectSumZxhbar" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select COALESCE(sum(zsxnum),0) from zwipq
+        <where>
+            zremade = 0
+            <if test="zxhbar != null">
+                AND ZXHBAR = #{zxhbar}
+            </if>
+            <if test="attr1After != null">
+                AND creation_date >= #{attr1After}
+            </if>
+            <if test="attr1Before != null">
+                AND #{attr1Before} >= creation_date
+            </if>
+        </where>
+    </select>
+
     <select id="selectByLineIdMatnr2" parameterType="java.lang.String" resultType="java.lang.Integer">
         select COALESCE(sum(zsxnum),0) from zwipq
         <where>

@@ -104,4 +104,10 @@ public interface DftrghlistMapper extends Mapper<Dftrghlist>{
      * @return
      */
     List<Dftrghlist> selectSum(@Param("zxhbar") String zxhbar );
+    /**
+     *  根据箱号查询未投不良记录数 918100064
+     * @param zxhbar
+     * @return
+     */
+    Integer selectByZxhbar2(@Param("zxhbar")String zxhbar);
 }

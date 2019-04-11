@@ -51,20 +51,16 @@
     </resultMap>
 
     <select id="queryXhcard" parameterType="yj.core.xhcard.dto.Xhcard" resultMap="BaseResultMap1">
-        select xh.werks,xh.matnr,ma.maktx,xh.lgort,st.lgobe,xh.zxhbar as bar,xh.chargkc,xh.zmnum,xh.menge as synum,xh.zsxwc,l.attr7,
-        (select COALESCE(sum(zsxnum),0) from zwipq where zremade = 0 AND ZXHBAR = bar) as zsxnum,
-        (select COALESCE(sum(dfect_qty),0) from wip_dftrghlist where cancel_flag = 0 AND ZXHBAR = bar) as dfectQty,
-        (select NULLIF(smenge-bmenge,0) from sap_ztbc0018 where ZXHBAR = bar) as dlsum,
-        (select COALESCE(dlsum,0) ) as changeNum,
-        (select synum-zsxnum-dfectQty+changeNum) as sjjcNum
-        from sap_xhcard xh,sap_marc ma,sap_t001l st,sap_cardh ch,confirmation_input_log l
+        select xh.werks,xh.matnr,ma.maktx,xh.lgort,st.lgobe,xh.zxhbar,xh.chargkc,xh.zmnum,
+        xh.menge,xh.zsxwc,xh.zscbc
+        from sap_xhcard xh,sap_marc ma,sap_t001l st/*,sap_cardh ch,confirmation_input_log l*/
         <where>
             xh.matnr = ma.matnr
             AND xh.lgort = st.lgort
             AND xh.zxhzt = '7'
-            and xh.aufnr = ch.aufnr and xh.zxhnum = ch.zxhnum
+            /*and xh.aufnr = ch.aufnr and xh.zxhnum = ch.zxhnum
             and ch.zpgdbar = l.dispatch
-            and l.operation = "0010"
+            and l.operation = "0010"*/
             <if test="werks != null">
                 AND xh.werks = #{werks}
             </if>
@@ -78,19 +74,22 @@
                 AND xh.zxhbar = #{zxhbar}
             </if>
             <if test="chargkc != null">
-                AND xh.chargkc = #{chargkc}
+                AND xh.chargkc like concat(#{chargkc},'%')
             </if>
-            <if test="attr7 != null">
+            <if test="zscbc != null">
+                AND xh.zscbc = #{zscbc}
+            </if>
+            <!--<if test="attr7 != null">
                 AND l.attr7 = #{attr7}
-            </if>
-            <if test="creationDateAfter != null">
+            </if>-->
+            <!--<if test="creationDateAfter != null">
                 AND xh.creation_date >= #{creationDateAfter}
             </if>
             <if test="creationDateBefore != null">
                 AND #{creationDateBefore} >= xh.creation_date
-            </if>
-            <if test="zsxwc != null">
-                AND xh.zsxwc = #{zsxwc}
+            </if>-->
+            <if test="dfectQty != 1">
+                AND (xh.zsxwc = '' or xh.zsxwc is null)
             </if>
         </where>
     </select>

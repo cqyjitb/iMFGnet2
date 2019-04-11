@@ -18,10 +18,28 @@ public class Fevor extends BaseDTO {
     private String fevor;
     private String txt;
     private String unitCode;
+    private String shiftSeq;//班次轮换类型
+    private String shiftDay;//班次轮换日
     private Date creationDate; //创建时间
     private Long createdBy; //创建人
     private Date lastUpdateDate; //更新时间
     private Long lastUpdatedBy; //更新人
+
+    public String getShiftSeq() {
+        return shiftSeq;
+    }
+
+    public void setShiftSeq(String shiftSeq) {
+        this.shiftSeq = shiftSeq;
+    }
+
+    public String getShiftDay() {
+        return shiftDay;
+    }
+
+    public void setShiftDay(String shiftDay) {
+        this.shiftDay = shiftDay;
+    }
 
     public String getUnitCode() {
         return unitCode;

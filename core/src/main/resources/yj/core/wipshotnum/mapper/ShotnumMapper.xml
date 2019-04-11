@@ -93,7 +93,7 @@
     </delete>
 
     <select id="selectShotnum" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select sh.*,fe.fevor,fe.txt,sh.class as sClass
+        select sh.*,fe.fevor,fe.txt,sh.class as sClass,fe.shift_seq as shiftSeq
         from wip_shotnum sh,sap_fevor fe,sap_crhd cr
         <where>
             sh.arbpl = cr.arbpl
