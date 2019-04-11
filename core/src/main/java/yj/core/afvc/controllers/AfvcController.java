@@ -106,7 +106,7 @@ public class AfvcController
                 rs.setSuccess(false);
                 return rs;
             }else{
-                if (!afko.getAuart().equals("YZ01") && !afko.getAuart().equals("YZ03") && !afko.getAuart().equals("YZ03"))
+                if (!afko.getAuart().equals("YZ01") && !afko.getAuart().equals("YZ03") && !afko.getAuart().equals("YZ04"))
                 {
                     rs.setSuccess(false);
                     rs.setMessage("请扫描压铸类派工单！");

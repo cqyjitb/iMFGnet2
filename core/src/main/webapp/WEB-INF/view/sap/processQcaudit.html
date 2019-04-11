@@ -74,6 +74,10 @@
             }
         }
     });
+
+    var viewModel2 = kendo.observable({
+
+    });
 </script>
     <div id="tabstrip">
         <ul>
@@ -1377,6 +1381,8 @@
     $('#processBtn').on('click', function () {
         var grid = $("#Grid").data("kendoGrid"),
             selections = grid.selectedDataItems();
+        var head;
+        var item;
         if (selections.length > 0) {
             var tab = $('#tabstrip').data('kendoTabStrip');
             var txt1 = "处理不合格品审理单2-" + selections["0"].recordid + " ";
@@ -1384,6 +1390,28 @@
             if (index == 2){
 
             }else{
+
+                $.ajax({
+                    url: "${base.contextPath}/wip/qcauditprocessheader/queryHeadAndDtl",
+                    type: "get",
+                    data: {
+                        werks:selections["0"].werks,
+                        recordid:selections["0"].recordid
+                    },
+                    contentType: "application/json; charset=utf-8",
+                    success: function (res) {
+                        if (res.success) {
+                            if  (res.code != "E"){
+                                if (res.rows.length > 1){
+                                    head = res.rows[0];
+                                    item = res.rows[1];
+                                }
+                            }
+                        }
+                    }
+                });
+
+
                 tab.append({
                     tabid: 'Item-' + (++tabCounter),
                     text:txt1 + '<span class="k-icon k-i-close"></span>',
@@ -1400,7 +1428,7 @@
                     '                                        <div class="form-group">\n' +
                     '                                            <label class="col-sm-5 control-label">判定报废数</label>\n' +
                     '                                            <div class="col-sm-7">\n' +
-                    '                                                <input type="text" id="werks" style="width: 100%" class="k-textbox" readonly="readonly" data-bind="value:model.werks">\n' +
+                    '                                                <input type="text" id="confirmnum" style="width: 100%" class="k-textbox" data-bind="value:model.confirmnum">\n' +
                     '                                            </div>\n' +
                     '                                        </div>\n' +
                     '                                    </div>\n' +
@@ -1408,7 +1436,7 @@
                     '                                        <div class="form-group">\n' +
                     '                                            <label class="col-sm-4 control-label">已报废数</label>\n' +
                     '                                            <div class="col-sm-8">\n' +
-                    '                                                <input type="text" id="recid_q" style="width: 100%" class="k-textbox" readonly="readonly" data-bind="value:model.recordid">\n' +
+                    '                                                <input type="text" id="recid_q" style="width: 100%" class="k-textbox" readonly="readonly" data-bind="value:model.bfnum">\n' +
                     '                                            </div>\n' +
                     '                                        </div>\n' +
                     '                                    </div>\n' +
@@ -1416,7 +1444,7 @@
                     '                                        <div class="form-group">\n' +
                     '                                            <label class="col-sm-4 control-label">选中数</label>\n' +
                     '                                            <div class="col-sm-8">\n' +
-                    '                                                <input type="text" id="recid_q" style="width: 100%" class="k-textbox" readonly="readonly" data-bind="value:model.recordid">\n' +
+                    '                                                <input type="text" id="recid_q" style="width: 100%" class="k-textbox" readonly="readonly" data-bind="value:model.selectednum">\n' +
                     '                                            </div>\n' +
                     '                                        </div>\n' +
                     '                                    </div>\n' +
@@ -1462,18 +1490,10 @@
                     '                    </form>\n' +
                     '                    <div class="row" style="margin-right: -8px;">\n' +
                     '                        <div class="pull-right" style="margin-right:15px">\n' +
-                    '                <span class="btn btn-primary" data-bind="click:queryGrid" type="submit">\n' +
-                    '                    <i class="fa fa-search" style="margin-right:3px;"></i>\n' +
-                    '                    <@spring.message "hap.query"/></span>\n' +
-                    '                            <span class="btn btn-default" type="button" data-bind="click:resetForm">\n' +
-                    '                        <i class="fa fa-eraser" style="margin-right:3px;"></i>\n' +
-                    '                        <@spring.message "hap.reset"/></span>\n' +
-                    '                            <span class="btn btn-info" type="button" id="panel_hidden" onclick="test()">\n' +
-                    '                    <i class="fa fa-joomla" style="margin-right:3px;"></i>\n' +
-                    '                   <@spring.message "hap.panel_hidden"/></span>\n' +
-                    '                            <span class="btn btn-info" type="button" id="panel_show" onclick="test()" style="display: none">\n' +
-                    '                    <i class="fa fa-joomla" style="margin-right:3px;"></i>\n' +
-                    '                   <@spring.message "hap.panel_show"/></span>\n' +
+                    '                <span class="btn btn-primary" type="button" id="savebtn" onclick="savedata()">\n' +
+                    '                    保存报废清单</span>\n' +
+                    '                <span class="btn btn-default" type="button" id="sumbitbtn" onclick="sumbitbg()">\n' +
+                    '                 废品报工</span>\n' +
                     '                        </div>\n' +
                     '                    </div>\n' +
                     '                    <div style="clear:both">\n' +
@@ -1521,6 +1541,8 @@
 
                 }
             });
+
+
 
             $("#grid2").kendoGrid({
                 autoBind: true,
@@ -1669,6 +1691,8 @@
                 editable: false
             });
             tab.select(tab.tabGroup.children().length - 1);
+
+
             Hap.autoResizeGrid("#grid2");
         }else{
             kendo.ui.showErrorDialog({
@@ -1678,6 +1702,57 @@
         }
     });
 
+    function savedata() {
+        var dataarray = new Array();
+        var grid = $("#Grid").data("kendoGrid"),
+            selections = grid.selectedDataItems();
+            var recordid = selections["0"].recordid;
+        var confirmnum = document.getElementById("confirmnum").value;
+        var grid2 =  $("#grid2").data("kendoGrid"),
+            selections2 = grid2.selectedDataItems();
+        if (selections2.length > 0){
+            for(var i=0;i<selections2.length;i++){
+                var viewModel3 = kendo.observable({
+                    model: {
+                        werks:selections2[i].werks,
+                        recordid:selections[0].recordid,
+                        item:selections2[i].item,
+                        confirmnum:confirmnum
+                    }
+                });
+                dataarray[i] = viewModel3.model.toJSON();
+            }
+
+
+            var data = JSON.stringify(dataarray);
+        }
+
+
+        $.ajax({
+            url: "${base.contextPath}/wip/qcauditprocessheader/saveData",
+            type: "POST",
+            data: data,
+            contentType: "application/json; charset=utf-8",
+            success: function (res) {
+                if (res.success) {
+                    kendo.ui.showErrorDialog({
+                        title: '提示',
+                        message: res.message
+                    });
+                }else{
+                    kendo.ui.showErrorDialog({
+                        title: '提示',
+                        message: res.message
+                    });
+                }
+            }
+        });
+    }
+
+    function sumbitbg() {
+        alert("click sumbitbg");
+
+    }
 </script>
 </body>
 </html>

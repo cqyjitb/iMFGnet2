@@ -271,8 +271,8 @@ public class OutsrgreceiptController extends BaseController {
                 outsrgreceipt.setRmzhl(rspos);
                 outsrgreceipt.setRueck(rsnum);
                 outsrgreceipt.setZeile("");
-                outsrgreceipt.setZdstim(curtim1.replaceAll(":",""));
-                outsrgreceipt.setZdsdat(curdate1.replaceAll(":",""));
+                outsrgreceipt.setZdstim(curtim1);
+                outsrgreceipt.setZdsdat(curdate1);
                 outsrgreceipt.setZthnum(Double.parseDouble(thsum));
                 outsrgreceipt.setMblnr(mblnr);
                 outsrgreceipt.setMjahr(mjahr);
@@ -313,8 +313,8 @@ public class OutsrgreceiptController extends BaseController {
                 outsrgreceipt.setRmzhl(rspos);
                 outsrgreceipt.setRueck(rsnum);
                 outsrgreceipt.setZeile("");
-                outsrgreceipt.setZdstim(curtim1.replaceAll(":",""));
-                outsrgreceipt.setZdsdat(curdate1.replaceAll("-",""));
+                outsrgreceipt.setZdstim(curtim1);
+                outsrgreceipt.setZdsdat(curdate1);
                 outsrgreceipt.setZthnum(Double.parseDouble(thsum));
                 outsrgreceipt.setMblnr(mblnr);
                 outsrgreceipt.setZeile(zeile);

@@ -425,7 +425,7 @@ public class BatchpdsourceController extends BaseController {
 
                     try {
 //                                Thread.sleep(2000);
-                        TimeUnit.MILLISECONDS.sleep(2000);
+                        TimeUnit.MILLISECONDS.sleep(4000);
                     } catch (Exception e) {
 
                     }
@@ -601,7 +601,7 @@ public class BatchpdsourceController extends BaseController {
 
                         try {
 //                                Thread.sleep(2000);
-                            TimeUnit.MILLISECONDS.sleep(2000);
+                            TimeUnit.MILLISECONDS.sleep(4000);
                         } catch (Exception e) {
 
                         }

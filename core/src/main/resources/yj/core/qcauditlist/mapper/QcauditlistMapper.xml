@@ -66,4 +66,13 @@
             and RECORDID = #{recordid}
         </where>
     </delete>
+
+    <select id="selectBatch" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_qcauditlist
+        <where>
+            WERKS = #{werks}
+            and RECORDID = #{recordid}
+            and ITEM = #{item}
+        </where>
+    </select>
 </mapper>

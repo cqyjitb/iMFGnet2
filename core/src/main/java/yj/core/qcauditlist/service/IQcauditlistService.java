@@ -37,4 +37,13 @@ public interface IQcauditlistService extends IBaseService<Qcauditlist>, ProxySel
      * @return
      */
     int deleteById(String werks,String recordid);
+
+    /**
+     *  根据工厂 id 行号 批量查询不合格品审理单2 行数据 917110140
+     * @param werks
+     * @param recordid
+     * @param item
+     * @return
+     */
+    Qcauditlist selectBatch(String werks,String recordid,String item);
 }

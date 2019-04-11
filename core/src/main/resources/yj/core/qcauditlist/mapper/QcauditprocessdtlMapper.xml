@@ -30,5 +30,25 @@
         <result column="REFLAG" property="reflag" jdbcType="DECIMAL" />
     </resultMap>
 
+    <delete id="deleteById" parameterType="java.lang.String" >
+        delete from wip_qcauditprocessdtl
+        <where>
+            RECORDID = #{recordid}
+            and WERKS = #{werks}
+        </where>
+    </delete>
 
+    <insert id="insertData" parameterType="yj.core.qcauditlist.dto.Qcauditprocessdtl">
+        insert into wip_qcauditprocessdtl(WERKS,RECORDID,ITEM,ZQJJLH,ZGJBAR,ZPGDBAR,ZXHBAR,MATNR,CHARG,ZBANC,SHIFT,GSTRP,MATNR2,YCHARG,YSHIFT,YZBANC,SFFLG,DIECD,YGSTRP,CODE,TLEVELCODE,MENGE,DFECT_QTY,GMEIN,REFLAG)
+               VALUES (#{werks},#{recordid},#{item},#{zqjjlh},#{zgjbar},#{zpgdbar},#{zxhbar},#{matnr},#{charg},#{zbanc},#{shift},#{gstrp},#{matnr2},#{ycharg},#{yshift},
+               #{yzbanc},#{sfflg},#{diecd},#{ygstrp},#{code},#{tlevelcode},#{menge},#{dfectQty},#{gmein},#{reflag})
+    </insert>
+
+    <select id="selectById" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_qcauditprocessdtl
+        <where>
+            WERKS = #{werks}
+            and RECOR
+        </where>
+    </select>
 </mapper>

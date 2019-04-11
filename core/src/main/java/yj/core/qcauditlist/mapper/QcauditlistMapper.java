@@ -37,4 +37,14 @@ public interface QcauditlistMapper extends Mapper<Qcauditlist>{
      * @return
      */
     int deleteById(@Param("werks") String werks,@Param("recordid") String recordid);
+
+
+    /**
+     *  根据工厂 id 行号 批量查询不合格品审理单2 行数据 917110140
+     * @param werks
+     * @param recordid
+     * @param item
+     * @return
+     */
+    Qcauditlist selectBatch(@Param("werks") String werks,@Param("recordid") String recordid,@Param("item") String item);
 }
