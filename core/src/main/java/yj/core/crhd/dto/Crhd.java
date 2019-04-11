@@ -53,6 +53,16 @@ public class Crhd extends BaseDTO {
       private Long lastUpdatedBy; //更新人
     @Transient
     private String txt;//车间描述
+    @Transient
+    private String shiftSeq;//班次轮换类型
+
+    public String getShiftSeq() {
+        return shiftSeq;
+    }
+
+    public void setShiftSeq(String shiftSeq) {
+        this.shiftSeq = shiftSeq;
+    }
 
     public String getTxt() {
         return txt;

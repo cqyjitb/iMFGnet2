@@ -203,7 +203,9 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                         e.printStackTrace();
                     }
                     //if("星期日".equals(date)){
-                    if (cal2.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+                    Integer week = cal2.get(Calendar.WEEK_OF_YEAR) % 2;
+                    if ((cal2.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)&&((shotnum.getShiftSeq().equals("0"))
+                            ||((shotnum.getShiftSeq().equals("1"))&&(week == 1))||((shotnum.getShiftSeq().equals("2"))&&(week == 0)))) {
                         logger.debug(shotnum.getZpgdbar() + " ******this is sunday*****");
                         String startDate = shotnum.getPrdDate() + " " + shiftstime.getZbgsTime();
                         String endDate = shotnum.getPrdDate() + " " + shiftstime.getZbgeTime();
@@ -267,7 +269,9 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                 while(cal2.getTime().before(endTime)){
                     Integer shift = 2;
                     Calendar cal3 = Calendar.getInstance();
-                    if (cal2.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
+                    Integer week = cal2.get(Calendar.WEEK_OF_YEAR) % 2;
+                    if ((cal2.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY)&&((crhds.get(0).getShiftSeq().equals("0"))
+                            ||((crhds.get(0).getShiftSeq().equals("1"))&&(week == 1))||((crhds.get(0).getShiftSeq().equals("2"))&&(week == 0)))) {
                         shift = 3;
                     }
                     for (int a = 0; a < shift; a++) {
@@ -284,7 +288,8 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                             for (int i = 0; i < crhds.size(); i++) {
                                 int j;
                                 for(j=0;j<num;j++){
-                                    if((crhds.get(i).getArbpl().equals(list.get(j).getArbpl()))&&(shifts.equals(list.get(j).getShifts()))){
+                                    if((crhds.get(i).getArbpl().equals(list.get(j).getArbpl()))&&(shifts.equals(list.get(j).getShifts()))
+                                            &&(sf.format(cal2.getTime()).equals(list.get(j).getPrdDate()))){
                                         break;
                                     }
                                 }

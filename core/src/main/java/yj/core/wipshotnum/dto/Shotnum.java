@@ -70,6 +70,16 @@ public class Shotnum extends BaseDTO {
     private String veran;//车间
 
     private String userName;//创建人
+    @Transient
+    private String shiftSeq;//班次轮换类型
+
+    public String getShiftSeq() {
+        return shiftSeq;
+    }
+
+    public void setShiftSeq(String shiftSeq) {
+        this.shiftSeq = shiftSeq;
+    }
 
     public String getUserName() {
         return userName;

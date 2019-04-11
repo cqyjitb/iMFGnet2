@@ -155,4 +155,12 @@ public interface ZwipqMapper extends Mapper<Zwipq> {
      * @return
      */
     List<Zwipq> selectSumzsxnum(@Param("zxhbar") String zxhbar);
+
+    /**
+     * 汇总箱号的投料数量 918100064
+     * @param zxhbar
+     * @return
+     */
+    Integer selectSumZxhbar(@Param("zxhbar") String zxhbar,@Param("attr1After") String attr1After,
+                            @Param("attr1Before") String attr1Before);
 }

@@ -24,9 +24,13 @@ import yj.core.webservice_queryXhcard.dto.QueryXhcardReturnResult;
 import yj.core.webservice_xhcard.components.XhcardSyncWebserviceUtil;
 import yj.core.webservice_xhcard.dto.XhcardParameters;
 import yj.core.webservice_xhcard.dto.XhcardReturnResult;
+import yj.core.wipdftrghlist.mapper.DftrghlistMapper;
 import yj.core.xhcard.dto.Xhcard;
 import yj.core.xhcard.mapper.XhcardMapper;
 import yj.core.xhcard.service.IXhcardService;
+import yj.core.ztbc0018.dto.Ztbc0018;
+import yj.core.ztbc0018.mapper.Ztbc0018Mapper;
+import yj.core.zwipq.mapper.ZwipqMapper;
 
 @Service
 @Transactional
@@ -40,6 +44,12 @@ public class XhcardServiceImpl
     XhcardSyncWebserviceUtil xhcardSyncWebserviceUtil;
     @Autowired
     QueryXhcardWebserviceUtil queryXhcardWebserviceUtil;
+    @Autowired
+    ZwipqMapper zwipqMapper;
+    @Autowired
+    Ztbc0018Mapper ztbc0018Mapper;
+    @Autowired
+    DftrghlistMapper dftrghlistMapper;
 
     public int insertXhcard(List<Xhcard> list)
     {
@@ -347,6 +357,44 @@ public class XhcardServiceImpl
 
     @Override
     public List<Xhcard> queryXhcard(IRequest iRequest, Xhcard dto) {
-        return xhcardMapper.queryXhcard(dto);
+        //PageHelper.startPage(page,pageSize);
+        List<Xhcard> list = xhcardMapper.queryXhcard(dto);
+        List<Ztbc0018> ztbc0018 = new ArrayList<Ztbc0018>();
+        if(list.size() > 0){
+            for(int i=0;i<list.size();i++){
+                Integer zsxnum = 0,zsxnumDate = 0,dfectQty=0;
+                Long changeNum=0L,sjjcNum=0L;
+                Xhcard xhcard = list.get(i);
+                zsxnum = zwipqMapper.selectSumZxhbar(xhcard.getZxhbar(),null,null);
+                if(dto.getCreationDateAfter()!=null || dto.getCreationDateBefore()!=null){
+                    if(zsxnum == 0){
+                        list.remove(i);
+                        i--;
+                        continue;
+                    }
+                    zsxnumDate = zwipqMapper.selectSumZxhbar(xhcard.getZxhbar(),dto.getCreationDateAfter(),dto.getCreationDateBefore());
+                    if(!(zsxnum.equals(zsxnumDate))){
+                        list.remove(i);
+                        i--;
+                        continue;
+                    }
+                }
+                ztbc0018 = ztbc0018Mapper.selectByZxhbar(xhcard.getZxhbar());
+                if(ztbc0018.size() > 0){
+                    changeNum = ztbc0018.get(0).getSmenge()-ztbc0018.get(0).getBmenge();
+                }
+                dfectQty = dftrghlistMapper.selectByZxhbar2(xhcard.getZxhbar());
+                sjjcNum = Double.valueOf(xhcard.getMenge()).longValue()-zsxnum-dfectQty+changeNum;
+                String chargkc = xhcard.getChargkc().substring(0,6);
+                String zscbc = xhcard.getZscbc();
+                String attr7 = chargkc + zscbc;
+                xhcard.setAttr7(attr7);
+                xhcard.setZsxnum(zsxnum.longValue());
+                xhcard.setChangeNum(changeNum);
+                xhcard.setDfectQty(dfectQty);
+                xhcard.setSjjcNum(sjjcNum);
+            }
+        }
+        return list;
     }
 }

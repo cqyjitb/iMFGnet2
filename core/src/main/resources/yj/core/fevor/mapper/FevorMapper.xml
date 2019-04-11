@@ -6,6 +6,8 @@
         <result column="WERKS" property="werks" jdbcType="VARCHAR"/>
         <result column="FEVOR" property="fevor" jdbcType="VARCHAR"/>
         <result column="UNIT_CODE" property="unitCode" jdbcType="VARCHAR"/>
+        <result column="SHIFT_SEQ" property="shiftSeq" jdbcType="VARCHAR"/>
+        <result column="SHIFT_DAY" property="shiftDay" jdbcType="VARCHAR"/>
         <result column="TXT" property="txt" jdbcType="VARCHAR"/>
         <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL"/>
         <result column="CREATION_DATE" property="creationDate" jdbcType="DATE"/>
