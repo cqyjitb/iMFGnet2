@@ -1399,6 +1399,7 @@
                         recordid:selections["0"].recordid
                     },
                     contentType: "application/json; charset=utf-8",
+                    async: false,
                     success: function (res) {
                         if (res.success) {
                             if  (res.code != "E"){
@@ -1504,6 +1505,8 @@
                     '            </div>\n' +
                     '        </div>'
                 });
+
+                document.getElementById("confirmnum").value = head.confirmQty;
             }
 
             var dataSource2 = new kendo.data.DataSource({
@@ -1691,9 +1694,18 @@
                 editable: false
             });
             tab.select(tab.tabGroup.children().length - 1);
-
-
             Hap.autoResizeGrid("#grid2");
+
+            var grid2 =$("#grid2").data("kendoGrid");
+
+            for (var i=0;i<10;i++){
+                var rowIndex = i;
+                var row = grid2.tbody.find(">tr:not(.k-grouping-row)").eq(rowIndex);
+                grid2.select(row);
+            }
+
+            grid2.refresh();
+
         }else{
             kendo.ui.showErrorDialog({
                 title: '错误',
@@ -1750,7 +1762,9 @@
     }
 
     function sumbitbg() {
-        alert("click sumbitbg");
+
+
+
 
     }
 </script>

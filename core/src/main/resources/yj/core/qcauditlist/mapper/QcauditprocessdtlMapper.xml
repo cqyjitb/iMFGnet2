@@ -48,7 +48,7 @@
         select * from wip_qcauditprocessdtl
         <where>
             WERKS = #{werks}
-            and RECOR
+            and RECORDID = #{recordid}
         </where>
     </select>
 </mapper>

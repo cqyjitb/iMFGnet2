@@ -37,16 +37,21 @@ public class OracleConn {
 //            e.printStackTrace();
 //        }
 
-        SimpleDateFormat sd = new SimpleDateFormat("YYYY-MM-DD");
-        Calendar cal =  Calendar.getInstance();
+        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sd2 = new SimpleDateFormat("yyyyMMdd");
+
+        SimpleDateFormat sd3 = new SimpleDateFormat("HHmmSS");
+        SimpleDateFormat sd4 = new SimpleDateFormat("HH:mm:SS");
+        Date date = null;
         try {
-            cal.setTime(sd.parse("2019-04-21"));
-            if (cal.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) {
-                System.out.print("this is sunday");
-            }
+            date = sd3.parse("135922");
         } catch (ParseException e) {
             e.printStackTrace();
         }
+        String s = sd4.format(date);
+
+            System.out.println(s);
+
 
     }
 

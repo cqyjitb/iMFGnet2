@@ -40,6 +40,7 @@ import yj.core.zwipq.service.IZwipqService;
 import javax.servlet.http.HttpServletRequest;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 
@@ -187,6 +188,8 @@ public class QualityController extends BaseController {
               }else{
                   //机加生产日期
                   list.get(i).put("BUDATJJ","");
+                  list.get(i).put("SHIFTJJ","");
+                  list.get(i).put("USERCODEJJ","");
                   //机加班组
                   listzwipq.add(zwipq);
               }
@@ -647,221 +650,251 @@ public class QualityController extends BaseController {
             qualityTree4.setProject("物流信息");
             treeList.add(qualityTree4);
 
-//            QualityTree qualityTree42 = new QualityTree();
-//            qualityTree42.setId(list.get(i).get("BARCODE").toString()+"42");
-//            qualityTree42.setParentId(list.get(i).get("BARCODE").toString()+"4");
-//            qualityTree42.setProject("原材料部分");
-//            treeList.add(qualityTree42);
+            QualityTree qualityTree42 = new QualityTree();
+            qualityTree42.setId(list.get(i).get("BARCODE").toString()+"42");
+            qualityTree42.setParentId(list.get(i).get("BARCODE").toString()+i + "4");
+            qualityTree42.setProject("原材料部分");
+            treeList.add(qualityTree42);
 
             //根据压铸生产订单取
-//            String aufnryz = list.get(i).get("AUFNRYZ").toString();
-//            List<Map<String, Object>> listresbyz = new ArrayList<Map<String,Object>>();
-//            List<Map<String, Object>> listmseg1yz = new ArrayList<Map<String,Object>>();
-//            List<Map<String, Object>> listmseg2yz = new ArrayList<Map<String,Object>>();
-//            if (aufnryz != ""){
-//                if (aufnryz.length() < 12){
-//                    for (int m=0;m<=12 - aufnryz.length();m++){
-//                        aufnryz = "0" + aufnryz;
-//                    }
-//                }
-//                String sqlresbyz = "select DISTINCT r.matnr, mk.maktx ,m.groes ,m.matkl from sapabap1.resb r " +
-//                        "inner join sapabap1.mara m on r.MATNR = m.MATNR " +
-//                        " INNER JOIN SAPABAP1.MAKT mk ON r.matnr = mk.matnr " +
-//                        " INNER JOIN SAPABAP1.AFKO AF ON af.aufpl = r.aufpl " +
-//                        " where af.aufnr =" + "'" + aufnryz + "'" + " AND m.MATKL in ('3101','4801') and af.mandt = '"+webServerHelp.getMandt()+"' and m.mandt = '"+webServerHelp.getMandt()+"'";
-//
-//                String sqlmseg1yz = "select DISTINCT matbf,charg_sid from sapabap1.matdoc m inner join sapabap1.afru  a on a.WABLNR = m.mblnr" +
-//                        " where a.rueck = '" + list.get(i).get("RSNUMYZ").toString() +"'" +
-//                        "  and a.rmzhl = '" + list.get(i).get("RSPOSYZ").toString() +"'" +
-//                        "  and a.mandt = '"+webServerHelp.getMandt()+"'";
-//
-//                String sqlmseg2yz = "select DISTINCT matbf,charg_sid from sapabap1.matdoc m inner join sapabap1.afwi  a on a.mblnr = m.mblnr" +
-//                        " where a.rueck = '" + list.get(i).get("RSNUMYZ").toString() +"'" +
-//                        "  and a.rmzhl = '" + list.get(i).get("RSPOSYZ").toString() +"'" +
-//                        "  and a.mandt = '"+webServerHelp.getMandt()+"'";
-//
-//                try {
-//                    listresbyz = hanaCon.select(sqlresbyz);
-//                    listmseg1yz = hanaCon.select(sqlmseg1yz);
-//
-//                    if (listmseg1yz.size() == 0){
-//                        listmseg2yz = hanaCon.select(sqlmseg2yz);
-//                    }
-//
-//                    if (listresbyz.size() > 0){
-//                        for (int k =0;k<listresbyz.size();k++){
-//                            QualityTree qualityTreetmp = new QualityTree();
-//                            qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"42" + k);
-//                            qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString()+"42");
-//                            qualityTreetmp.setProject("铝液信息");
-//                            if (listmseg1yz.size() > 0){
-//                                for (int h=0;h<listmseg1yz.size();h++){
-//                                    if (listmseg1yz.get(h).get("MATBF").toString().equals(listresbyz.get(k).get("MATNR").toString())){
-//                                        System.out.println(listmseg2yz.get(h).get("MATBF").toString());
-//                                        System.out.println(listresbyz.get(k).get("MATNR").toString());
-//                                        qualityTreetmp.setContent("【铝液牌号】:" + listresbyz.get(k).get("GROES").toString() +
-//                                                " 【铝液批次】:" + listmseg1yz.get(h).get("CHARG_SID").toString() +
-//                                                " 【铝液编码】:" +listresbyz.get(k).get("MATNR").toString() + " 【铝液描述】:" + listresbyz.get(k).get("MAKTX").toString() );
-//                                        list.get(i).put("MATNRLY",listresbyz.get(k).get("MATNR").toString());
-//                                        list.get(i).put("CHARGLY",listmseg1yz.get(h).get("CHARG_SID").toString());
-//
-//                                    }
-//                                }
-//                            }else if (listmseg2yz.size() > 0){
-//                                for (int h=0;h<listmseg2yz.size();h++){
-//                                    if (listmseg2yz.get(h).get("MATBF").toString().equals(listresbyz.get(k).get("MATNR").toString())){
-//                                        System.out.println(listmseg2yz.get(h).get("MATBF").toString());
-//                                        System.out.println(listresbyz.get(k).get("MATNR").toString());
-//                                        qualityTreetmp.setContent("【铝液牌号】:" + listresbyz.get(k).get("GROES").toString() +
-//                                                " 【铝液批次】:" + listmseg2yz.get(h).get("CHARG_SID").toString() +
-//                                                " 【铝液编码】:" +listresbyz.get(k).get("MATNR").toString() + " 【铝液描述】:" + listresbyz.get(k).get("MAKTX").toString() );
-//                                        list.get(i).put("CHARGLY",listmseg2yz.get(h).get("CHARG_SID").toString());
-//                                        list.get(i).put("MATNRLY",listresbyz.get(k).get("MATNR").toString());
-//                                    }
-//                                }
-//                            }else{
-//
-//                                qualityTreetmp.setContent("【铝液牌号】:" + listresbyz.get(k).get("GROES").toString() + " 【铝液编码】:" +listresbyz.get(k).get("MATNR").toString() + " 【铝液描述】:" + listresbyz.get(k).get("MAKTX").toString() );
-//                                list.get(i).put("CHARGLY","");
-//                            }
-//                            treeList.add(qualityTreetmp);
-//
-//                        }
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//
-//            }
-//
-//            if (!list.get(i).get("CHARGLY").toString().equals("")){
-//                //熔炼炉号 熔炼时间
-//                String sqlztpp0017 = "select mandt,werks,charg1,ztllh,bldat,cputm from sapabap1.ZTPP0017 where mandt = '"+webServerHelp.getMandt()+"'" +
-//                        " and werks = '" + werks + "'" + " and charg1 = '" + list.get(i).get("CHARGLY").toString() + "'";
-//
-//                List<Map<String, Object>> listztpp0017 = new ArrayList<Map<String,Object>>();
-//                List<Map<String, Object>> listztpp0017_2 = new ArrayList<Map<String,Object>>();
-//
-//                try {
-//                    listztpp0017 = hanaCon.select(sqlztpp0017);
-//                    if (listztpp0017.size() > 0){
-//                        for (int k = 0;k<listztpp0017.size();k++){
-//                            QualityTree qualityTreetmp = new QualityTree();
-//                            qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"42"+list.get(i).get("CHARGLY").toString() + k);
-//                            qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString()+"42");
-//                            qualityTreetmp.setProject("熔炼信息");
-//                            qualityTreetmp.setContent("【熔炼炉号】:" + listztpp0017.get(k).get("ZTLLH").toString() + " 【熔炼时间】:" + listztpp0017.get(k).get("BLDAT").toString() + " " + listztpp0017.get(k).get("CPUTM").toString());
-//                            treeList.add(qualityTreetmp);
-//                        }
-//
-//                    }else{
-//                        QualityTree qualityTreetmp = new QualityTree();
-//                        qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"42"+list.get(i).get("CHARGLY").toString() + "RLXX");
-//                        qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString()+"42");
-//                        qualityTreetmp.setProject("熔炼信息");
-//                        treeList.add(qualityTreetmp);
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//
-//                if (listresbyz.get(0).get("MATKL").toString().equals("3101")){
-//                    String sqlztpp00017_2 = "select mandt,werks,charg1,ztllh,bldat,cputm from sapabap1.ZTPP0017 where mandt = '"+webServerHelp.getMandt()+"'" +
-//                            " and werks = '" + werks + "'" + " and charg1 = '" + list.get(i).get("CHARGLY").toString() + "' and matnr2 = '" +
-//                            listresbyz.get(0).get("MATNR").toString() + "'";
-//                    try {
-//                        listztpp0017_2 = hanaCon.select(sqlztpp00017_2);
-//                        if (listztpp0017_2.size() > 0){
-//                            QualityTree qualityTreetmp = new QualityTree();
-//                            qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"42"+list.get(i).get("CHARGLY").toString() + "LDXX");
-//                            qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString()+"42");
-//                            qualityTreetmp.setProject("铝锭信息");
-//                            for (int m =0;m<listztpp0017_2.size();m++){
-//                                list.get(i).put("CHARGLD",listztpp0017_2.get(m).get("CHARG2").toString());
-//                                list.get(i).put("MATNRLD",listztpp0017_2.get(m).get("MATNR2").toString());
-//                                qualityTreetmp.setContent("【铝锭牌号】:" + listresbyz.get(0).get("GROES").toString() +
-//                                        " 【铝锭批次】:" + listztpp0017_2.get(m).get("CHARG").toString() +
-//                                        " 【铝锭编码】:" + listresbyz.get(0).get("MATNR").toString() + " 【铝液描述】:" + listresbyz.get(0).get("MATKX").toString());
-//                                treeList.add(qualityTreetmp);
-//                            }
-//
-//                        }else{
-//                            QualityTree qualityTreetmp = new QualityTree();
-//                            qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"42"+list.get(i).get("CHARGLY").toString() + "LDXX");
-//                            qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString()+"42");
-//                            qualityTreetmp.setProject("铝锭信息");
-//                            treeList.add(qualityTreetmp);
-//                        }
-//                    } catch (Exception e) {
-//                        e.printStackTrace();
-//                    }
-//                }else{
-//                    QualityTree qualityTreetmp = new QualityTree();
-//                    qualityTreetmp = new QualityTree();
-//                    qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"42"+ "LDXX");
-//                    qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString()+"42");
-//                    qualityTreetmp.setProject("铝锭信息");
-//                    treeList.add(qualityTreetmp);
-//                }
-//            }else{
-//
-//                QualityTree qualityTreetmp = new QualityTree();
-//                qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"41" + "RLXX");
-//                qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString() + "4");
-//                qualityTreetmp.setProject("熔炼信息");
-//                treeList.add(qualityTreetmp);
-//
-//                 qualityTreetmp = new QualityTree();
-//                qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"42"+ "LDXX");
-//                qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString()+"42");
-//                qualityTreetmp.setProject("铝锭信息");
-//                treeList.add(qualityTreetmp);
-//            }
-//
-//            //获取供应商
-//            //根据铝锭批次号 铝液批次号
-//            String sqlmcha = "";
-//            List<Map<String, Object>> listmcha = new ArrayList<Map<String,Object>>();
-//            if (!list.get(i).get("CHARGLY").toString().equals("")){
-//                 sqlmcha = "select matnr,charg,m.lifnr,licha ,f.sortl from sapabap1.mcha m inner join sapabap1.lfa1 f on f.lifnr = m.lifnr" +
-//                        " where m.mandt = '"+webServerHelp.getMandt()+"' and charg = '" + list.get(i).get("CHARGLY").toString() + "' and matnr = '" +
-//                        list.get(i).get("MATNRLY").toString() +"' and f.mandt = '"+webServerHelp.getMandt()+"'";
-//            }else if (!list.get(i).get("CHARGLD").toString().equals("")){
-//                sqlmcha = "select matnr,charg,m.lifnr,licha ,f.sortl from sapabap1.mcha m inner join sapabap1.lfa1 f on f.lifnr = m.lifnr" +
-//                        " where m.mandt = '"+webServerHelp.getMandt()+"' and charg = '" + list.get(i).get("CHARGLD").toString() + "' and matnr = '" +
-//                        list.get(i).get("MATNRLD").toString() +"' and f.mandt = '"+webServerHelp.getMandt()+"'";
-//            }
-//
-//            if (!sqlmcha.equals("")){
-//
-//                try {
-//                    listmcha = hanaCon.select(sqlmcha);
-//                    if (listmcha.size() > 0){
-//                        for (int j = 0;j<listmcha.size();j++){
-//                            QualityTree qualityTreetmp = new QualityTree();
-//                            qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"42"+ "QYSXX");
-//                            qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString()+"42");
-//                            qualityTreetmp.setProject("供应商信息");
-//                            qualityTreetmp.setContent("【供应商编号】:" + listmcha.get(j).get("LIFNR").toString() + " 【供应商名称】:" + listmcha.get(j).get("SORTL").toString() + " 【供应商炉批号】:" + listmcha.get(j).get("LICHA").toString());
-//                            treeList.add(qualityTreetmp);
-//                        }
-//                    }else{
-//                        QualityTree qualityTreetmp = new QualityTree();
-//                        qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"42"+ "QYSXX");
-//                        qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString()+"42");
-//                        qualityTreetmp.setProject("供应商信息");
-//                        treeList.add(qualityTreetmp);
-//                    }
-//                } catch (Exception e) {
-//                    e.printStackTrace();
-//                }
-//            }else{
-//                QualityTree qualityTreetmp = new QualityTree();
-//                qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"42"+ "QYSXX");
-//                qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString()+"42");
-//                qualityTreetmp.setProject("供应商信息");
-//                treeList.add(qualityTreetmp);
-//            }
+            String aufnryz = list.get(i).get("AUFNRYZ").toString();
+            List<Map<String, Object>> listresbyz = new ArrayList<Map<String,Object>>();
+            List<Map<String, Object>> listmseg1yz = new ArrayList<Map<String,Object>>();
+            List<Map<String, Object>> listmseg2yz = new ArrayList<Map<String,Object>>();
+            if (aufnryz != ""){
+                if (aufnryz.length() < 12){
+                    for (int m=0;m<=12 - aufnryz.length();m++){
+                        aufnryz = "0" + aufnryz;
+                    }
+                }
+                String sqlresbyz = "select DISTINCT r.matnr, mk.maktx ,m.groes ,m.matkl from sapabap1.resb r " +
+                        "inner join sapabap1.mara m on r.MATNR = m.MATNR " +
+                        " INNER JOIN SAPABAP1.MAKT mk ON r.matnr = mk.matnr " +
+                        " INNER JOIN SAPABAP1.AFKO AF ON af.aufpl = r.aufpl " +
+                        " where af.aufnr =" + "'" + aufnryz + "'" + " AND m.MATKL in ('3101','4801') and af.mandt = '"+webServerHelp.getMandt()+"' and m.mandt = '"+webServerHelp.getMandt()+"'";
+
+                String sqlmseg1yz = "select DISTINCT matbf,charg_sid from sapabap1.matdoc m inner join sapabap1.afru  a on a.WABLNR = m.mblnr" +
+                        " where a.rueck = '" + list.get(i).get("RSNUMYZ").toString() +"'" +
+                        "  and a.rmzhl = '" + list.get(i).get("RSPOSYZ").toString() +"'" +
+                        "  and a.mandt = '"+webServerHelp.getMandt()+"'";
+
+                String sqlmseg2yz = "select DISTINCT matbf,charg_sid from sapabap1.matdoc m inner join sapabap1.afwi  a on a.mblnr = m.mblnr" +
+                        " where a.rueck = '" + list.get(i).get("RSNUMYZ").toString() +"'" +
+                        "  and a.rmzhl = '" + list.get(i).get("RSPOSYZ").toString() +"'" +
+                        "  and a.mandt = '"+webServerHelp.getMandt()+"'";
+
+                try {
+                    listresbyz = hanaCon.select(sqlresbyz);
+                    listmseg1yz = hanaCon.select(sqlmseg1yz);
+
+                    if (listmseg1yz.size() == 0){
+                        listmseg2yz = hanaCon.select(sqlmseg2yz);
+                    }
+
+                    if (listresbyz.size() > 0){
+                        String l1 = "0";
+                        for (int k =0;k<listresbyz.size();k++){
+                            QualityTree qualityTreetmp = new QualityTree();
+                            if (listmseg1yz.size() > 0){
+                                for (int h=0;h<listmseg1yz.size();h++){
+                                    if (listmseg1yz.get(h).get("MATBF").toString().equals(listresbyz.get(k).get("MATNR").toString())){
+                                        System.out.println(listmseg2yz.get(h).get("MATBF").toString());
+                                        System.out.println(listresbyz.get(k).get("MATNR").toString());
+
+                                        qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"42" + k);
+                                        qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString()+"42");
+                                        qualityTreetmp.setProject("铝液信息");
+                                        qualityTreetmp.setContent("【铝液牌号】:" + listresbyz.get(k).get("GROES").toString() +
+                                                " 【铝液批次】:" + listmseg1yz.get(h).get("CHARG_SID").toString() +
+                                                " 【铝液编码】:" +listresbyz.get(k).get("MATNR").toString() + " 【铝液描述】:" + listresbyz.get(k).get("MAKTX").toString() );
+                                        list.get(i).put("MATNRLY",listresbyz.get(k).get("MATNR").toString());
+                                        list.get(i).put("CHARGLY",listmseg1yz.get(h).get("CHARG_SID").toString());
+                                        l1 = "1";
+                                        treeList.add(qualityTreetmp);
+                                    }
+                                }
+                            }else if (listmseg2yz.size() > 0){
+                                for (int h=0;h<listmseg2yz.size();h++){
+                                    if (listmseg2yz.get(h).get("MATBF").toString().equals(listresbyz.get(k).get("MATNR").toString())){
+                                        System.out.println(listmseg2yz.get(h).get("MATBF").toString());
+                                        System.out.println(listresbyz.get(k).get("MATNR").toString());
+
+                                        qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"42" + k);
+                                        qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString()+"42");
+                                        qualityTreetmp.setProject("铝液信息");
+                                        qualityTreetmp.setContent("【铝液牌号】:" + listresbyz.get(k).get("GROES").toString() +
+                                                " 【铝液批次】:" + listmseg2yz.get(h).get("CHARG_SID").toString() +
+                                                " 【铝液编码】:" +listresbyz.get(k).get("MATNR").toString() + " 【铝液描述】:" + listresbyz.get(k).get("MAKTX").toString() );
+                                        list.get(i).put("CHARGLY",listmseg2yz.get(h).get("CHARG_SID").toString());
+                                        list.get(i).put("MATNRLY",listresbyz.get(k).get("MATNR").toString());
+                                        l1 = "1";
+                                        treeList.add(qualityTreetmp);
+                                    }
+                                }
+                            }else{
+                                l1 = "1";
+
+                                qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"42" + k);
+                                qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString()+"42");
+                                qualityTreetmp.setProject("铝液信息");
+                                qualityTreetmp.setContent("【铝液牌号】:" + listresbyz.get(k).get("GROES").toString() + " 【铝液编码】:" +listresbyz.get(k).get("MATNR").toString() + " 【铝液描述】:" + listresbyz.get(k).get("MAKTX").toString() );
+                                list.get(i).put("CHARGLY","");
+                                treeList.add(qualityTreetmp);
+                            }
+
+
+                        }
+
+                        if (l1.equals("0")){
+                            QualityTree qualityTreetmp = new QualityTree();
+                            qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"42" + "111111");
+                            qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString()+"42");
+                            qualityTreetmp.setProject("铝液信息");
+                            qualityTreetmp.setContent("【铝液牌号】:" + listresbyz.get(0).get("GROES").toString() + " 【铝液编码】:" +listresbyz.get(0).get("MATNR").toString() + " 【铝液描述】:" + listresbyz.get(0).get("MAKTX").toString() );
+                            list.get(i).put("CHARGLY","");
+                            treeList.add(qualityTreetmp);
+                        }
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+            }
+
+            if (!list.get(i).get("CHARGLY").toString().equals("")){
+                //熔炼炉号 熔炼时间
+                String sqlztpp0017 = "select mandt,werks,charg1,ztllh,bldat,cputm from sapabap1.ZTPP0017 where mandt = '"+webServerHelp.getMandt()+"'" +
+                        " and werks = '" + werks + "'" + " and charg1 = '" + list.get(i).get("CHARGLY").toString() + "'";
+
+                List<Map<String, Object>> listztpp0017 = new ArrayList<Map<String,Object>>();
+                List<Map<String, Object>> listztpp0017_2 = new ArrayList<Map<String,Object>>();
+
+                try {
+                    listztpp0017 = hanaCon.select(sqlztpp0017);
+                    if (listztpp0017.size() > 0){
+                        for (int k = 0;k<listztpp0017.size();k++){
+                            QualityTree qualityTreetmp = new QualityTree();
+                            qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"42"+list.get(i).get("CHARGLY").toString() + k);
+                            qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString()+"42");
+                            qualityTreetmp.setProject("熔炼信息");
+                            qualityTreetmp.setContent("【熔炼炉号】:" + listztpp0017.get(k).get("ZTLLH").toString() + " 【熔炼时间】:" + listztpp0017.get(k).get("BLDAT").toString() + " " + listztpp0017.get(k).get("CPUTM").toString());
+                            treeList.add(qualityTreetmp);
+                        }
+
+                    }else{
+                        QualityTree qualityTreetmp = new QualityTree();
+                        qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"42"+list.get(i).get("CHARGLY").toString() + "RLXX");
+                        qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString()+"42");
+                        qualityTreetmp.setProject("熔炼信息");
+                        treeList.add(qualityTreetmp);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+                if (listresbyz.get(0).get("MATKL").toString().equals("3101")){
+                    String sqlztpp00017_2 = "select mandt,werks,charg1,ztllh,bldat,cputm from sapabap1.ZTPP0017 where mandt = '"+webServerHelp.getMandt()+"'" +
+                            " and werks = '" + werks + "'" + " and charg1 = '" + list.get(i).get("CHARGLY").toString() + "' and matnr2 = '" +
+                            listresbyz.get(0).get("MATNR").toString() + "'";
+                    try {
+                        listztpp0017_2 = hanaCon.select(sqlztpp00017_2);
+                        if (listztpp0017_2.size() > 0){
+                            QualityTree qualityTreetmp = new QualityTree();
+                            qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"42"+list.get(i).get("CHARGLY").toString() + "LDXX");
+                            qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString()+"42");
+                            qualityTreetmp.setProject("铝锭信息");
+                            for (int m =0;m<listztpp0017_2.size();m++){
+                                list.get(i).put("CHARGLD",listztpp0017_2.get(m).get("CHARG2").toString());
+                                list.get(i).put("MATNRLD",listztpp0017_2.get(m).get("MATNR2").toString());
+                                qualityTreetmp.setContent("【铝锭牌号】:" + listresbyz.get(0).get("GROES").toString() +
+                                        " 【铝锭批次】:" + listztpp0017_2.get(m).get("CHARG").toString() +
+                                        " 【铝锭编码】:" + listresbyz.get(0).get("MATNR").toString() + " 【铝液描述】:" + listresbyz.get(0).get("MATKX").toString());
+                                treeList.add(qualityTreetmp);
+                            }
+
+                        }else{
+                            QualityTree qualityTreetmp = new QualityTree();
+                            qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"42"+list.get(i).get("CHARGLY").toString() + "LDXX");
+                            qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString()+"42");
+                            qualityTreetmp.setProject("铝锭信息");
+                            list.get(i).put("CHARGLD","");
+                            list.get(i).put("MATNRLD","");
+                            treeList.add(qualityTreetmp);
+                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                }else{
+                    QualityTree qualityTreetmp = new QualityTree();
+                    qualityTreetmp = new QualityTree();
+                    qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"42"+ "LDXX");
+                    qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString()+"42");
+                    qualityTreetmp.setProject("铝锭信息");
+                    list.get(i).put("CHARGLD","");
+                    list.get(i).put("MATNRLD","");
+                    treeList.add(qualityTreetmp);
+                }
+            }else{
+
+                QualityTree qualityTreetmp = new QualityTree();
+                qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"41" + "RLXX");
+                qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString() + "4");
+                qualityTreetmp.setProject("熔炼信息");
+                treeList.add(qualityTreetmp);
+
+                 qualityTreetmp = new QualityTree();
+                qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"42"+ "LDXX");
+                qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString()+"42");
+                qualityTreetmp.setProject("铝锭信息");
+                list.get(i).put("CHARGLD","");
+                list.get(i).put("MATNRLD","");
+                treeList.add(qualityTreetmp);
+            }
+
+            //获取供应商
+            //根据铝锭批次号 铝液批次号
+            String sqlmcha = "";
+            List<Map<String, Object>> listmcha = new ArrayList<Map<String,Object>>();
+            if (!list.get(i).get("CHARGLY").toString().equals("")){
+                 sqlmcha = "select matnr,charg,m.lifnr,licha ,f.sortl from sapabap1.mcha m inner join sapabap1.lfa1 f on f.lifnr = m.lifnr" +
+                        " where m.mandt = '"+webServerHelp.getMandt()+"' and charg = '" + list.get(i).get("CHARGLY").toString() + "' and matnr = '" +
+                        list.get(i).get("MATNRLY").toString() +"' and f.mandt = '"+webServerHelp.getMandt()+"'";
+            }else if (!list.get(i).get("CHARGLD").toString().equals("")){
+                sqlmcha = "select matnr,charg,m.lifnr,licha ,f.sortl from sapabap1.mcha m inner join sapabap1.lfa1 f on f.lifnr = m.lifnr" +
+                        " where m.mandt = '"+webServerHelp.getMandt()+"' and charg = '" + list.get(i).get("CHARGLD").toString() + "' and matnr = '" +
+                        list.get(i).get("MATNRLD").toString() +"' and f.mandt = '"+webServerHelp.getMandt()+"'";
+            }
+
+            if (!sqlmcha.equals("")){
+
+                try {
+                    listmcha = hanaCon.select(sqlmcha);
+                    if (listmcha.size() > 0){
+                        for (int j = 0;j<listmcha.size();j++){
+                            QualityTree qualityTreetmp = new QualityTree();
+                            qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"42"+ "QYSXX");
+                            qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString()+"42");
+                            qualityTreetmp.setProject("供应商信息");
+                            qualityTreetmp.setContent("【供应商编号】:" + listmcha.get(j).get("LIFNR").toString() + " 【供应商名称】:" + listmcha.get(j).get("SORTL").toString() + " 【供应商炉批号】:" + listmcha.get(j).get("LICHA").toString());
+                            treeList.add(qualityTreetmp);
+                        }
+                    }else{
+                        QualityTree qualityTreetmp = new QualityTree();
+                        qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"42"+ "QYSXX");
+                        qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString()+"42");
+                        qualityTreetmp.setProject("供应商信息");
+                        treeList.add(qualityTreetmp);
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }else{
+                QualityTree qualityTreetmp = new QualityTree();
+                qualityTreetmp.setId(list.get(i).get("BARCODE").toString()+"42"+ "QYSXX");
+                qualityTreetmp.setParentId(list.get(i).get("BARCODE").toString()+"42");
+                qualityTreetmp.setProject("供应商信息");
+                treeList.add(qualityTreetmp);
+            }
 
 
 
@@ -891,12 +924,31 @@ public class QualityController extends BaseController {
             qualityTree418.setProject("客户条码");
             qualityTree418.setContent(list.get(i).get("ZKHBAR1").toString());
             treeList.add(qualityTree418);
+            SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+            SimpleDateFormat sd2 = new SimpleDateFormat("yyyyMMdd");
+
+            SimpleDateFormat sd3 = new SimpleDateFormat("HHmmSS");
+            SimpleDateFormat sd4 = new SimpleDateFormat("HH:mm:SS");
 
             QualityTree qualityTree411 = new QualityTree();
             qualityTree411.setId(list.get(i).get("BARCODE").toString()+i+"411");
             qualityTree411.setParentId(list.get(i).get("BARCODE").toString()+i + "41");
             qualityTree411.setProject("成品入库时间");
-            qualityTree411.setContent("日期:" + list.get(i).get("BUDATJJRK").toString() + " "+"时间:" + list.get(i).get("ZPTIMEJJRK").toString());
+            if (!list.get(i).get("BUDATJJRK").toString().equals("")){
+                Date date1 = null;
+                Date date2 = null;
+                try {
+                    date1 = sd2.parse(list.get(i).get("BUDATJJRK").toString());
+                    date2 = sd3.parse(list.get(i).get("ZPTIMEJJRK").toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                qualityTree411.setContent("日期:" + sd.format(date1) + " "+"时间:" + sd4.format(date2));
+            }else{
+                qualityTree411.setContent("日期:" + list.get(i).get("BUDATJJRK").toString() + " "+"时间:" + list.get(i).get("ZPTIMEJJRK").toString());
+            }
+
+
             treeList.add(qualityTree411);
 
             QualityTree qualityTree412 = new QualityTree();
