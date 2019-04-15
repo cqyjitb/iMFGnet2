@@ -21,7 +21,6 @@
         <where>
             WERKS = #{werks}
             and RECORDID = #{recordid}
-            and CONFIRM_QTY = #{confirmQty}
         </where>
     </update>
 

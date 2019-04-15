@@ -116,6 +116,9 @@ import java.util.List;
 
                 for (int i=0;i< list.size();i++){
                     Qcauditprocessdtl qcauditprocessdtl = new Qcauditprocessdtl();
+                    if (list.get(i).getItem().equals("")){
+                        break;
+                    }
                     qcauditlist = qcauditlistService.selectBatch(list.get(i).getWerks(),list.get(i).getRecordid(),list.get(i).getItem());
                     qcauditprocessdtl.setGmein(qcauditlist.getGmein());
                     qcauditprocessdtl.setDiecd(qcauditlist.getDiecd());
@@ -157,20 +160,33 @@ import java.util.List;
             TransactionStatus status = transactionManager.getTransaction(def); // 获得事务状态
             //将信息更新到表中
             try {
-                int num1 = service.updateData(qcauditprocessheader);
+                int num1 = 0;
+                int num2 = 0;
+                int num3 = 0;
+                num1 = service.updateData(qcauditprocessheader);
 
-                           qcauditprocessdtlService.deleteById(qcauditprocessheader.getWerks(),qcauditprocessheader.getRecordid());
-                int num2 = qcauditprocessdtlService.insertData(list2);
-
-
-                if (num2 == list2.size() && num1 == 1) {
-                    transactionManager.commit(status);
-                    rs.setSuccess(true);
-                    rs.setMessage("合格品审理单2数据保存成功！");
-                } else {
-                    transactionManager.rollback(status);
-                    rs.setMessage("合格品审理单2数据保存失败！");
-                    rs.setSuccess(false);
+                num3 = qcauditprocessdtlService.deleteById(qcauditprocessheader.getWerks(),qcauditprocessheader.getRecordid());
+                if (list2.size() > 0){
+                    num2 = qcauditprocessdtlService.insertData(list2);
+                    if (num2 == list2.size() && num1 == 1) {
+                        transactionManager.commit(status);
+                        rs.setSuccess(true);
+                        rs.setMessage("合格品审理单2数据保存成功！");
+                    } else {
+                        transactionManager.rollback(status);
+                        rs.setMessage("合格品审理单2数据保存失败！");
+                        rs.setSuccess(false);
+                    }
+                }else{
+                    if (num1 == 1){
+                        transactionManager.commit(status);
+                        rs.setSuccess(true);
+                        rs.setMessage("合格品审理单2数据保存成功！");
+                    }else{
+                        transactionManager.rollback(status);
+                        rs.setMessage("合格品审理单2数据保存失败！");
+                        rs.setSuccess(false);
+                    }
                 }
             } catch (Exception e) {
                 transactionManager.rollback(status);

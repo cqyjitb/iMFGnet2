@@ -154,6 +154,9 @@
         });
     </script>
 <script type="text/javascript">
+    var head;
+    var item;
+
     kendo.bind($('#page-content'), viewModel);
     function test() {
         var apply = $("#test");
@@ -293,16 +296,15 @@
     $("#Grid").kendoGrid({
         dataSource: dataSource,
         autoBind:false,
-        height: '100%',
         resizable: true,
         scrollable: true,
         navigatable: false,
         selectable: 'rowbox',
-        pageable: {
-            pageSizes: ["all"],
-            refresh: true,
-            buttonCount: 10
-        },
+//        pageable: {
+//            pageSizes: ["all"],
+//            refresh: true,
+//            buttonCount: 10
+//        },
         toolbar: [
             {
                 name: "process",
@@ -1381,8 +1383,7 @@
     $('#processBtn').on('click', function () {
         var grid = $("#Grid").data("kendoGrid"),
             selections = grid.selectedDataItems();
-        var head;
-        var item;
+
         if (selections.length > 0) {
             var tab = $('#tabstrip').data('kendoTabStrip');
             var txt1 = "处理不合格品审理单2-" + selections["0"].recordid + " ";
@@ -1390,7 +1391,8 @@
             if (index == 2){
 
             }else{
-
+                head = "";
+                item = "";
                 $.ajax({
                     url: "${base.contextPath}/wip/qcauditprocessheader/queryHeadAndDtl",
                     type: "get",
@@ -1406,6 +1408,9 @@
                                 if (res.rows.length > 1){
                                     head = res.rows[0];
                                     item = res.rows[1];
+                                }else{
+                                    head = res.rows[0];
+                                    item = "";
                                 }
                             }
                         }
@@ -1445,7 +1450,7 @@
                     '                                        <div class="form-group">\n' +
                     '                                            <label class="col-sm-4 control-label">选中数</label>\n' +
                     '                                            <div class="col-sm-8">\n' +
-                    '                                                <input type="text" id="recid_q" style="width: 100%" class="k-textbox" readonly="readonly" data-bind="value:model.selectednum">\n' +
+                    '                                                <input type="text" id="selectednum" style="width: 100%" class="k-textbox" readonly="readonly" data-bind="value:model.selectednum">\n' +
                     '                                            </div>\n' +
                     '                                        </div>\n' +
                     '                                    </div>\n' +
@@ -1453,7 +1458,7 @@
                     '                                        <div class="form-group">\n' +
                     '                                            <label class="col-sm-4 control-label">确认压铸班标</label>\n' +
                     '                                            <div class="col-sm-8">\n' +
-                    '                                                <input type="text" id="recid_q" style="width: 100%" class="k-textbox" data-bind="value:model.recordid">\n' +
+                    '                                                <input type="text" id="conf_banb" style="width: 100%" class="k-textbox" data-bind="value:model.conf_banb">\n' +
                     '                                            </div>\n' +
                     '                                        </div>\n' +
                     '                                    </div>\n' +
@@ -1461,7 +1466,7 @@
                     '                                        <div class="form-group">\n' +
                     '                                            <label class="col-sm-4 control-label">确认班标报废数量</label>\n' +
                     '                                            <div class="col-sm-8">\n' +
-                    '                                                <input type="text" id="recid_q" style="width: 100%" class="k-textbox" data-bind="value:model.recordid">\n' +
+                    '                                                <input type="number" id="conf_num" style="width: 100%" class="k-textbox" data-bind="value:model.conf_num" onchange="selectbybanb()">\n' +
                     '                                            </div>\n' +
                     '                                        </div>\n' +
                     '                                    </div>\n' +
@@ -1505,8 +1510,12 @@
                     '            </div>\n' +
                     '        </div>'
                 });
+                if (head == ""){
+                    document.getElementById("confirmnum").value = 0;
+                }else{
+                    document.getElementById("confirmnum").value = head.confirmQty;
+                }
 
-                document.getElementById("confirmnum").value = head.confirmQty;
             }
 
             var dataSource2 = new kendo.data.DataSource({
@@ -1529,17 +1538,7 @@
                     data: 'rows',
                     total: 'total',
                     model: {
-                        //id: "id",
-                        fields: {
-                            aufpl: {type: "string"},
-                            aufnr: {type: "string"},
-                            werks: {type: "string"},
-                            maxno: {type: "string"},
-                            gstrp: {type: "string"},
-                            gltrp: {type: "string"},
-                            cansum: {type: "int"}
-
-                        }
+                        id: "item"
                     }
 
                 }
@@ -1554,6 +1553,7 @@
                 resizable: true,
                 scrollable: true,
                 navigatable: true,
+                persistSelection: true,
                 selectable: 'rowbox,multiple',
                 columns: [
                     {
@@ -1566,7 +1566,7 @@
                         attributes: {
                             style: "text-align: center;"
                         }
-                    },            {
+                    }, {
                         field: "item",
                         title: '行号',
                         width: 60,
@@ -1691,20 +1691,25 @@
 
 
                 ],
+                dataBound: onDataBound,
+                change: function () {
+//                    var grid2 = $("#grid2").data("kendoGrid"),
+//                        selections2 = grid2.selectedDataItems();
+//                    document.getElementById("selectednum").value = selections2.length;
+                },
                 editable: false
             });
             tab.select(tab.tabGroup.children().length - 1);
+            //$("#grid2").resize();
             Hap.autoResizeGrid("#grid2");
 
-            var grid2 =$("#grid2").data("kendoGrid");
 
-            for (var i=0;i<10;i++){
-                var rowIndex = i;
-                var row = grid2.tbody.find(">tr:not(.k-grouping-row)").eq(rowIndex);
-                grid2.select(row);
-            }
 
-            grid2.refresh();
+
+
+
+
+
 
         }else{
             kendo.ui.showErrorDialog({
@@ -1714,12 +1719,122 @@
         }
     });
 
+
+
+    function onDataBound() {
+        var grid2 =$("#grid2").data("kendoGrid");
+        var data = grid2._data;
+        var selections2 = grid2.selectedDataItems();
+        var m = 0;
+        for (var i=0;i<item.length;i++){
+
+            for (var k =0;k<data.length;k++){
+                if (data[k].item == item[i].item){
+                    grid2.select("tr[data-uid='" + data[k].uid + "']");
+                    m = m + 1;
+                }
+            }
+        }
+        document.getElementById("selectednum").value = m;
+
+        for(var i=0;i<=grid2.dataItems().length;i++){
+            if(i == 0){
+                $("#grid2").on("click","tr:eq("+i+") th:eq(0)",function (e) {
+                    //console.log("111")
+                    selections2 = grid2.selectedDataItems();
+                    document.getElementById("selectednum").value = selections2.length;
+                })
+            }else{
+                $("#grid2").on("click", "tr:eq("+i+") td:eq(0)", function (e) {
+                    //console.log("222")
+                    selections2 = grid2.selectedDataItems();
+                    document.getElementById("selectednum").value = selections2.length;
+                });
+            }
+        }
+    }
+
+//    function onChange(e) {
+//        var grid2 = $("#grid2").data("kendoGrid"),
+//            selections2 = grid2.selectedDataItems();
+//        document.getElementById("selectednum").value = selections2.length;
+//    }
+
+    function selectbybanb() {
+        var banb = document.getElementById("conf_banb").value;
+        var num = document.getElementById("conf_num").value;
+        var grid2 =$("#grid2").data("kendoGrid");
+        var data = grid2._data;
+        var selections2 = grid2.selectedDataItems();
+
+        if (banb == ""){
+            kendo.ui.showErrorDialog({
+                title: '错误',
+                message: "请输入需要选中的班标！"
+            });
+        }else{
+            if (num <= 0){
+                kendo.ui.showErrorDialog({
+                    title: '错误',
+                    message: "请输入需要选中的班标为："+banb+" 的记录的数量！数量必须大于0"
+                });
+            }else{
+                //开始选中逻辑
+                var selected_num = 0;
+                for (var i=0;i<data.length;i++){
+                    if (selected_num == num){
+                        break;
+                    }
+                    if (data[i].sfflg == banb){
+                        var l_select = "";
+                        selections2 = grid2.selectedDataItems();
+                        for (var j=0;j<selections2.length;j++){
+                            if (data[i].uid == selections2[j].uid){
+                                //已被选中
+                                l_select =  "X"
+                                break;
+                            }
+                        }
+
+                        if (l_select == "X"){
+                            continue;
+                        }else{
+                            grid2.select("tr[data-uid='" + data[i].uid + "']");
+                            selected_num = selected_num + 1;
+                            selections2 = grid2.selectedDataItems();
+                            document.getElementById("selectednum").value = selections2.length;
+                        }
+                    }
+                }
+
+                if (selected_num == 0){
+                    kendo.ui.showErrorDialog({
+                        title: '错误',
+                        message: "明细表中不存在未选中的，压铸班标为:"+banb+"的记录！"
+                    });
+                    document.getElementById("conf_num").value == "";
+                }else if (selected_num > 0){
+                    kendo.ui.showInfoDialog(
+                        {
+                            title: '提示',
+                            message: "成功选中"+selected_num+"条压铸班标为:"+banb+"的记录！"
+                        }
+                    )
+                    document.getElementById("conf_num").value = "";
+                }
+            }
+        }
+
+    }
+
     function savedata() {
+        var data;
         var dataarray = new Array();
         var grid = $("#Grid").data("kendoGrid"),
             selections = grid.selectedDataItems();
             var recordid = selections["0"].recordid;
         var confirmnum = document.getElementById("confirmnum").value;
+        var werks = document.getElementById("werks").value;
         var grid2 =  $("#grid2").data("kendoGrid"),
             selections2 = grid2.selectedDataItems();
         if (selections2.length > 0){
@@ -1736,7 +1851,19 @@
             }
 
 
-            var data = JSON.stringify(dataarray);
+             data = JSON.stringify(dataarray);
+        }else{
+            var viewModel3 = kendo.observable({
+                model: {
+                    werks:werks,
+                    recordid:selections[0].recordid,
+                    item:"",
+                    confirmnum:confirmnum
+                }
+
+            });
+            dataarray[0] = viewModel3.model.toJSON();
+             data = JSON.stringify(dataarray);
         }
 
 
@@ -1747,7 +1874,7 @@
             contentType: "application/json; charset=utf-8",
             success: function (res) {
                 if (res.success) {
-                    kendo.ui.showErrorDialog({
+                    kendo.ui.showConfirmDialog({
                         title: '提示',
                         message: res.message
                     });
