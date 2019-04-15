@@ -2,6 +2,7 @@ package yj.core.Quality.controllers;
 
 import com.hand.hap.account.dto.User;
 import com.hand.hap.account.service.IUserService;
+import com.hand.hap.core.IRequest;
 import com.hand.hap.hr.dto.Employee;
 import com.hand.hap.hr.service.IEmployeeService;
 import com.hand.hap.system.controllers.BaseController;
@@ -179,7 +180,10 @@ public class QualityController extends BaseController {
                   list.get(i).put("USERIDJJ",zwipq.getCreatedBy() == null ?"":zwipq.getCreatedBy());
                   if (zwipq.getCreatedBy() != null){
 //                      Employee employee =  employeeService.queryById(zwipq.getCreatedBy());
-                      User user = userService.selectById(zwipq.getCreatedBy());
+                      User tmp = new User();
+                      tmp.setUserId(zwipq.getCreatedBy());
+                      IRequest requestContext = createRequestContext(request);
+                      User user = userService.selectByPrimaryKey(requestContext,tmp);
                       if (user == null){
                           list.get(i).put("USERCODEJJ","");
                       }else{
