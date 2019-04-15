@@ -195,4 +195,16 @@ import java.util.List;
             }
             return rs;
         }
+
+        @RequestMapping(value = "/wip/qcauditprocessheader/sumbitBf")
+        @ResponseBody
+        public ResponseData sumbitBf(HttpServletRequest request){
+            ResponseData rs = new ResponseData();
+            String werks = request.getParameter("werks");
+            String recordid = request.getParameter("recid_q");
+            String confirmnum_str = request.getParameter("confirmnum");
+            String baofeinum_str = request.getParameter("baofeinum");
+            String selectednum_str = request.getParameter("selectednum");
+            return rs;
+        }
     }

@@ -1442,7 +1442,7 @@
                     '                                        <div class="form-group">\n' +
                     '                                            <label class="col-sm-4 control-label">已报废数</label>\n' +
                     '                                            <div class="col-sm-8">\n' +
-                    '                                                <input type="text" id="recid_q" style="width: 100%" class="k-textbox" readonly="readonly" data-bind="value:model.bfnum">\n' +
+                    '                                                <input type="text" id="baofeinum" style="width: 100%" class="k-textbox" readonly="readonly" data-bind="value:model.baofeinum">\n' +
                     '                                            </div>\n' +
                     '                                        </div>\n' +
                     '                                    </div>\n' +
@@ -1888,8 +1888,14 @@
         });
     }
 
+    //提交报废处理
     function sumbitbg() {
 
+        var recordid = document.getElementById("recid_q").value;
+        var werks = document.getElementById("werks").value;
+        var confirmnum = document.getElementById("confirmnum").value;
+        var baofeinum = document.getElementById("baofeinum").value;
+        var selectednum = document.getElementById("selectednum").value;
 
 
 
