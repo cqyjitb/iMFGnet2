@@ -28,5 +28,5 @@ public interface IUserService extends IBaseService<User>, ProxySelf<IUserService
 
     List<IRole> selectUserAndRoles(IRequest var1, User var2, int var3, int var4);
 
-    User selectById(String userId);
+    User selectById(Long userId);
 }

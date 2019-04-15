@@ -1,5 +1,7 @@
 package yj.core.Quality.controllers;
 
+import com.hand.hap.account.dto.User;
+import com.hand.hap.account.service.IUserService;
 import com.hand.hap.hr.dto.Employee;
 import com.hand.hap.hr.service.IEmployeeService;
 import com.hand.hap.system.controllers.BaseController;
@@ -69,6 +71,8 @@ public class QualityController extends BaseController {
     private ICardtService cardtService;
     @Autowired
     private IServerSettingService serverSettingService;
+    @Autowired
+    private IUserService userService;
 
     @RequestMapping(value = "/wip/Qaulity/quertQaulityReport")
     @ResponseBody
@@ -174,11 +178,12 @@ public class QualityController extends BaseController {
                   //机加班组
                   list.get(i).put("USERIDJJ",zwipq.getCreatedBy() == null ?"":zwipq.getCreatedBy());
                   if (zwipq.getCreatedBy() != null){
-                      Employee employee =  employeeService.queryById(zwipq.getCreatedBy());
-                      if (employee == null){
+//                      Employee employee =  employeeService.queryById(zwipq.getCreatedBy());
+                      User user = userService.selectById(zwipq.getCreatedBy());
+                      if (user == null){
                           list.get(i).put("USERCODEJJ","");
                       }else{
-                          list.get(i).put("USERCODEJJ",employee.getEmployeeCode() == null ?"":employee.getEmployeeCode());
+                          list.get(i).put("USERCODEJJ",user.getUserName() == null ?"":user.getUserName());
                       }
 
                   }else{

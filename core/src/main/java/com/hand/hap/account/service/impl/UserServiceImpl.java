@@ -115,7 +115,7 @@ public class UserServiceImpl extends BaseServiceImpl<User> implements IUserServi
     }
 
     @Override
-    public User selectById(String userId) {
+    public User selectById(Long userId) {
         return userMapper.selectById(userId);
     }
 }

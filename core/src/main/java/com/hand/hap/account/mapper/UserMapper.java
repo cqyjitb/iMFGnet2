@@ -23,5 +23,5 @@ public interface UserMapper extends Mapper<User> {
 
     List<User> selectUsers(User var1);
 
-    User selectById(@Param("userId") String userId);
+    User selectById(@Param("userId") Long userId);
 }
