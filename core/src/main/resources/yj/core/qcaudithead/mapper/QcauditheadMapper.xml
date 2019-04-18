@@ -84,6 +84,7 @@
         <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL"/>
         <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="VARCHAR"/>
         <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="selectForQcaudithead" parameterType="yj.core.qcaudithead.dto.Qcaudithead" resultMap="BaseResultMap">
@@ -146,7 +147,7 @@
         AUDIT_DATE1,AUDITOR2,AUDIT_HANDLE2,AUDIT_DATE2,AUDITOR3,AUDIT_HANDLE3,AUDIT_DATE3,AUDITOR4,AUDIT_HANDLE4,AUDIT_DATE4,
         AUDITOR5,AUDIT_HANDLE5,AUDIT_DATE5,AUDITOR6,AUDIT_HANDLE6,AUDIT_DATE6,AUDITOR7,AUDIT_HANDLE7,AUDIT_DATE7,AUDITOR8,
         AUDIT_HANDLE8,AUDIT_DATE8,AUDITOR9,AUDIT_HANDLE9,AUDIT_DATE9,AUDITOR10,AUDIT_HANDLE10,AUDIT_DATE10,HANDLE_RESULTS,QM_NOTIFICATION,
-        QM_NOTNTYPE,QM_NOTNCRTDT,REWORK_ORDER,REWORK_ORDERCRTDT,RWK_QTY,RWK_QLFQTY,RWK_SCRAPQTY,CUSTOMER_CONFIRM,CREATION_DATE,CREATED_BY)
+        QM_NOTNTYPE,QM_NOTNCRTDT,REWORK_ORDER,REWORK_ORDERCRTDT,RWK_QTY,RWK_QLFQTY,RWK_SCRAPQTY,CUSTOMER_CONFIRM,CREATION_DATE,CREATED_BY,STATUS)
         VALUES (#{werks},#{recordid},#{sourcetype},#{deptResponsible},#{lineid},#{lineDesc},#{shift},#{kunnr},#{kunnrDesc},#{zpgdbar},
         #{matnr},#{maktx},#{matnr2},#{maktx2},#{charg},#{sfflg},#{diecd},#{gstrp},#{vornr},#{responsible},
         #{dfectQty},#{gmein},#{oaPresscls},#{oaStatus},#{defctType},#{handleResults1},#{handleResults2},#{handleResults3},#{scrapQty},#{rworkQty},
@@ -154,7 +155,7 @@
         #{auditor2},#{auditHandle2},#{auditDate2},#{auditor3},#{auditHandle3},#{auditDate3},#{auditor4},#{auditHandle4},#{auditDate4},#{auditor5},
         #{auditHandle5},#{auditDate5},#{auditor6},#{auditHandle6},#{auditDate6},#{auditor7},#{auditHandle7},#{auditDate7},#{auditor8},#{auditHandle8},
         #{auditDate8},#{auditor9},#{auditHandle9},#{auditDate9},#{auditor10},#{auditHandle10},#{auditDate10},#{handleResults},#{qmNotification},#{qmNotntype},
-        #{qmNotncrtdt},#{reworkOrder},#{reworkOrdercrtdt},#{rwkQty},#{rwkQlfqty},#{rwkScrapqty},#{customerConfirm},#{creationDate},#{createdBy})
+        #{qmNotncrtdt},#{reworkOrder},#{reworkOrdercrtdt},#{rwkQty},#{rwkQlfqty},#{rwkScrapqty},#{customerConfirm},#{creationDate},#{createdBy},#{status})
     </insert>
 
     <update id="updateRow" parameterType="yj.core.qcaudithead.dto.Qcaudithead">

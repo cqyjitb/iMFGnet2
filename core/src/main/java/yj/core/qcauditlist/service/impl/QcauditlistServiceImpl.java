@@ -4,6 +4,7 @@ import com.hand.hap.system.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import yj.core.qcauditlist.dto.Qcauditlist;
+import yj.core.qcauditlist.dto.Qcauditprocessdtl;
 import yj.core.qcauditlist.mapper.QcauditlistMapper;
 import yj.core.qcauditlist.service.IQcauditlistService;
 import org.springframework.transaction.annotation.Transactional;
@@ -62,5 +63,14 @@ public class QcauditlistServiceImpl extends BaseServiceImpl<Qcauditlist> impleme
 
 
        return qcauditlist;
+    }
+
+    @Override
+    public int updateStatus(List<Qcauditlist> list) {
+        int num  = 0;
+        for (int i=0;i<list.size();i++){
+            num = qcauditlistMapper.updateStatus(list.get(i));
+        }
+        return num;
     }
 }

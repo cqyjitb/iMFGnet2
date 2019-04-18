@@ -33,14 +33,15 @@
         <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL"/>
         <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="VARCHAR"/>
         <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL"/>
+        <result column="STATUS" property="status" jdbcType="VARCHAR"/>
     </resultMap>
 
     <insert id="insertNewRow" parameterType="yj.core.qcauditlist.dto.Qcauditlist">
         insert into wip_qcauditlist(WERKS,RECORDID,ITEM,ZQJJLH,ZGJBAR,ZPGDBAR,ZXHBAR,MATNR,CHARG,ZBANC,SHIFT,GSTRP,MATNR2,YCHARG,YSHIFT,
-        YZBANC,SFFLG,DIECD,YGSTRP,CODE,REFLAG,TLEVELCODE,MENGE,DFECT_QTY,GMEIN,CREATION_DATE,CREATED_BY)
+        YZBANC,SFFLG,DIECD,YGSTRP,CODE,REFLAG,TLEVELCODE,MENGE,DFECT_QTY,GMEIN,CREATION_DATE,CREATED_BY,STATUS)
         VALUES (#{werks},#{recordid},#{item},#{zqjjlh},#{zgjbar},#{zpgdbar},#{zxhbar},#{matnr},#{charg},#{zbanc},#{shift},#{gstrp},
         #{matnr2},#{ycharg},#{yshift},#{yzbanc},#{sfflg},#{diecd},#{ygstrp},#{code},#{reflag},#{tlevelcode},#{menge},#{dfectQty},
-        #{gmein},#{creationDate},#{createdBy});
+        #{gmein},#{creationDate},#{createdBy},#{status});
     </insert>
 
     <select id="selectById" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -48,6 +49,7 @@
         <where>
             WERKS = #{werks}
             and RECORDID = #{recordid}
+            and STATUS = '0'
         </where>
     </select>
 
@@ -75,4 +77,13 @@
             and ITEM = #{item}
         </where>
     </select>
+
+    <update id="updateStatus" parameterType="yj.core.qcauditlist.dto.Qcauditlist">
+        update wip_qcauditlist set STATUS = '1'
+        <where>
+            WERKS = #{werks}
+            and RECORDID = #{recordid}
+            and ITEM = #{item}
+        </where>
+    </update>
 </mapper>

@@ -76,7 +76,7 @@
     });
 
     var viewModel2 = kendo.observable({
-
+        model: {}
     });
 </script>
     <div id="tabstrip">
@@ -156,6 +156,7 @@
 <script type="text/javascript">
     var head;
     var item;
+    var bfnum;
 
     kendo.bind($('#page-content'), viewModel);
     function test() {
@@ -1408,9 +1409,12 @@
                                 if (res.rows.length > 1){
                                     head = res.rows[0];
                                     item = res.rows[1];
+                                    bfnum = res.code;
+
                                 }else{
                                     head = res.rows[0];
                                     item = "";
+                                    bfnum = "0";
                                 }
                             }
                         }
@@ -1424,7 +1428,7 @@
                     encoded:false,
 //                    content:'<div id="grid2"></div>'
                     content:'<div id="content-container">\n' +
-                    '            <div id="page-content">\n' +
+                    '            <div id="page-content2">\n' +
                     '                <div class="panel" style="padding: 0px;border:none;box-shadow: none;">\n' +
                     '                    <form class="form-horizontal" id="myForm">\n' +
                     '                        <div class="panel-body">\n' +
@@ -1476,7 +1480,7 @@
                     '                                        <div class="form-group">\n' +
                     '                                            <label class="col-sm-5 control-label">选中工件二维码</label>\n' +
                     '                                            <div class="col-sm-7">\n' +
-                    '                                                <input type="text" id="recid_q" style="width: 100%" class="k-textbox" data-bind="value:model.recordid">\n' +
+                    '                                                <input type="text" id="recid_q" style="width: 100%" class="k-textbox">\n' +
                     '                                            </div>\n' +
                     '                                        </div>\n' +
                     '                                    </div>\n' +
@@ -1484,7 +1488,7 @@
                     '                                        <div class="form-group">\n' +
                     '                                            <label class="col-sm-5 control-label">取消工件二维码</label>\n' +
                     '                                            <div class="col-sm-7">\n' +
-                    '                                                <input type="text" id="recid_q" style="width: 100%" class="k-textbox" data-bind="value:model.recordid">\n' +
+                    '                                                <input type="text" id="recid_q" style="width: 100%" class="k-textbox" >\n' +
                     '                                            </div>\n' +
                     '                                        </div>\n' +
                     '                                    </div>\n' +
@@ -1503,6 +1507,7 @@
                     '                        </div>\n' +
                     '                    </div>\n' +
                     '                    <div style="clear:both">\n' +
+                    '                    <div id="newWin" style="display: none"></div>'+
                     '                        <div id="grid2"></div>\n' +
                     '                    </div>\n' +
                     '\n' +
@@ -1512,6 +1517,7 @@
                 });
                 if (head == ""){
                     document.getElementById("confirmnum").value = 0;
+                    document.getElementById("baofeinum").value = 0;
                 }else{
                     document.getElementById("confirmnum").value = head.confirmQty;
                 }
@@ -1701,16 +1707,8 @@
             });
             tab.select(tab.tabGroup.children().length - 1);
             //$("#grid2").resize();
+
             Hap.autoResizeGrid("#grid2");
-
-
-
-
-
-
-
-
-
         }else{
             kendo.ui.showErrorDialog({
                 title: '错误',
@@ -1722,8 +1720,14 @@
 
 
     function onDataBound() {
+
+        console.log("1");
         var grid2 =$("#grid2").data("kendoGrid");
         var data = grid2._data;
+
+
+        document.getElementById("baofeinum").value = bfnum;
+
         var selections2 = grid2.selectedDataItems();
         var m = 0;
         for (var i=0;i<item.length;i++){
@@ -1752,6 +1756,7 @@
                 });
             }
         }
+
     }
 
 //    function onChange(e) {
@@ -1896,9 +1901,121 @@
         var confirmnum = document.getElementById("confirmnum").value;
         var baofeinum = document.getElementById("baofeinum").value;
         var selectednum = document.getElementById("selectednum").value;
+        var aufnr = "";
+        var lineId = head.attr1;
+        var shift = head.attr2;
+        var matnr = head.attr3;
+        var url = "dialogQcauditprocess.html";
+            //获取当前机加生产线生产订单
+        var viewModel4 = kendo.observable({
+            model: {
+                werks:werks,
+                recordid:head.recordid,
+                attr1:head.attr1,
+                attr2:head.attr2
+            }
+
+        });
+
+        $.ajax({
+            url: "${base.contextPath}/wip/curlzk/selectById",
+            type: "get",
+            data: {
+                "lineId":lineId,
+                "shift":shift,
+                "matnr":matnr
+
+            },
+            contentType: "application/json; charset=utf-8",
+            success: function (res) {
+                if (res.success) {
+                    if (res.code != ""){
+                        aufnr = res.code;
+                        if(confirmnum - baofeinum != selectednum){
+                              kendo.ui.showErrorDialog({
+                                title: '错误',
+                                message: "判定报废数量必须等于，已报废数量加上选中数量！"
+                                    });
+                        }else{
+                                $.ajax({
+                                    url: "${base.contextPath}/wip/qcauditprocessheader/sumbitBf",
+                                    type: "get",
+                                    data: {
+                                        "recordid":recordid,
+                                        "werks":werks,
+                                        "confirmnum":confirmnum,
+                                        "baofeinum":baofeinum,
+                                        "selectednum":selectednum,
+                                        "aufnr":aufnr
+                                    },
+                                    contentType: "application/json; charset=utf-8",
+                                    success: function (res) {
+                                        if (res.success) {
+                                            var grid2 =  $("#grid2").data("kendoGrid");
+                                            grid2.dataSource.read();
+                                        }else{
+                                            kendo.ui.showErrorDialog({
+                                                title: '提示',
+                                                message: res.message
+                                            });
+                                        }
+                                    }
+                                });
+                            }
+                    }else{
+
+                        var dialog = $("#newWin").kendoWindow({
+                            actions: ["Close"],
+                            width: 400,
+                            height: 200,
+                            title: '输入机加生产订单',
+                            content: url,
+                            iframe: true,
+                            visible: false,
+                            modal: true,
+                            close:function (sender) {
+                                console.log("close");
+                                var grid2 =  $("#grid2").data("kendoGrid");
+                                grid2.dataSource.read();
+                            }
+                        }).data("kendoWindow");
+                        dialog.center().open();
+                    }
+                }
+            }
+        });
 
 
-
+//            if(confirmnum - baofeinum != selectednum){
+//                kendo.ui.showErrorDialog({
+//                    title: '错误',
+//                    message: "判定报废数量必须等于，已报废数量加上选中数量！"
+//                });
+//            }else{
+//                $.ajax({
+//                    url: "${base.contextPath}/wip/qcauditprocessheader/sumbitBf",
+//                    type: "get",
+//                    data: {
+//                        "recordid":recordid,
+//                        "werks":werks,
+//                        "confirmnum":confirmnum,
+//                        "baofeinum":baofeinum,
+//                        "selectednum":selectednum,
+//                        "aufnr":aufnr
+//                    },
+//                    contentType: "application/json; charset=utf-8",
+//                    success: function (res) {
+//                        if (res.success) {
+//
+//                        }else{
+//                            kendo.ui.showErrorDialog({
+//                                title: '提示',
+//                                message: res.message
+//                            });
+//                        }
+//                    }
+//                });
+//            }
     }
 </script>
 </body>

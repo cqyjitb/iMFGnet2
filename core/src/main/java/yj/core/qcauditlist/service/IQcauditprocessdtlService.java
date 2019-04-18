@@ -28,5 +28,12 @@ public interface IQcauditprocessdtlService extends IBaseService<Qcauditprocessdt
      * @param recordid
      * @return
      */
-    List<Qcauditprocessdtl> selectById(String werks,String recordid);
+    List<Qcauditprocessdtl> selectById(String werks,String recordid,String status);
+
+    /**
+     *  根据不合格平审理单中间表ID 和行ID 修改处理状态
+     * @param list
+     * @return
+     */
+    int updateStatus(List<Qcauditprocessdtl> list);
 }

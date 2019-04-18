@@ -47,4 +47,11 @@ public interface QcauditlistMapper extends Mapper<Qcauditlist>{
      * @return
      */
     Qcauditlist selectBatch(@Param("werks") String werks,@Param("recordid") String recordid,@Param("item") String item);
+
+    /**
+     *  更新不合格品审理单2 处理状态 917110140
+     * @param qcauditlist
+     * @return
+     */
+    int updateStatus(Qcauditlist qcauditlist);
 }

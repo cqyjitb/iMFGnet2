@@ -91,4 +91,9 @@ public class CardtServiceImpl
     public Cardt selectByZpgdbarAndVornr(String zpgdbar, String vornr) {
         return cardtMapper.selectByZpgdbarAndVornr(zpgdbar,vornr);
     }
+
+    @Override
+    public Cardt selectByAufnrAndKtsch(String aufnr, String ktsch) {
+        return cardtMapper.selectByAufnrAndKtsch(aufnr,ktsch);
+    }
 }

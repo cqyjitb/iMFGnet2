@@ -28,5 +28,12 @@ public interface QcauditprocessdtlMapper extends Mapper<Qcauditprocessdtl>{
      * @param recordid
      * @return
      */
-    List<Qcauditprocessdtl> selectById(@Param("werks") String werks,@Param("recordid") String recordid);
+    List<Qcauditprocessdtl> selectById(@Param("werks") String werks,@Param("recordid") String recordid ,@Param("status") String status);
+
+    /**
+     *  根据不合格平审理单中间表ID 和行ID 修改处理状态
+     * @param list
+     * @return
+     */
+    int updateStatus(Qcauditprocessdtl list);
 }

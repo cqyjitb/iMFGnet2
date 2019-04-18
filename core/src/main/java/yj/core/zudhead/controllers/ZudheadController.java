@@ -354,7 +354,7 @@ public class ZudheadController extends BaseController {
                         parameters.setLSTVOR("X");
                         parameters.setFSTVOR("");
                         parameters.setZPRTP("4");
-                        parameters.setAUART(cardhjj.getAuart());
+                        parameters.setAUART("");
                         parameters.setARBPL(cardt.getArbpl());
                         parameters.setCHARG("");
                         listparam.add(parameters);

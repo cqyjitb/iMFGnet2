@@ -28,6 +28,7 @@
         <result column="DFECT_QTY" property="dfectQty" jdbcType="DECIMAL" />
         <result column="GMEIN" property="gmein" jdbcType="VARCHAR" />
         <result column="REFLAG" property="reflag" jdbcType="DECIMAL" />
+        <result column="STATUS" property="status" jdbcType="VARCHAR" />
     </resultMap>
 
     <delete id="deleteById" parameterType="java.lang.String" >
@@ -35,13 +36,14 @@
         <where>
             RECORDID = #{recordid}
             and WERKS = #{werks}
+            and STATUS != '1'
         </where>
     </delete>
 
     <insert id="insertData" parameterType="yj.core.qcauditlist.dto.Qcauditprocessdtl">
-        insert into wip_qcauditprocessdtl(WERKS,RECORDID,ITEM,ZQJJLH,ZGJBAR,ZPGDBAR,ZXHBAR,MATNR,CHARG,ZBANC,SHIFT,GSTRP,MATNR2,YCHARG,YSHIFT,YZBANC,SFFLG,DIECD,YGSTRP,CODE,TLEVELCODE,MENGE,DFECT_QTY,GMEIN,REFLAG)
+        insert into wip_qcauditprocessdtl(WERKS,RECORDID,ITEM,ZQJJLH,ZGJBAR,ZPGDBAR,ZXHBAR,MATNR,CHARG,ZBANC,SHIFT,GSTRP,MATNR2,YCHARG,YSHIFT,YZBANC,SFFLG,DIECD,YGSTRP,CODE,TLEVELCODE,MENGE,DFECT_QTY,GMEIN,REFLAG,STATUS)
                VALUES (#{werks},#{recordid},#{item},#{zqjjlh},#{zgjbar},#{zpgdbar},#{zxhbar},#{matnr},#{charg},#{zbanc},#{shift},#{gstrp},#{matnr2},#{ycharg},#{yshift},
-               #{yzbanc},#{sfflg},#{diecd},#{ygstrp},#{code},#{tlevelcode},#{menge},#{dfectQty},#{gmein},#{reflag})
+               #{yzbanc},#{sfflg},#{diecd},#{ygstrp},#{code},#{tlevelcode},#{menge},#{dfectQty},#{gmein},#{reflag},#{status})
     </insert>
 
     <select id="selectById" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -49,6 +51,18 @@
         <where>
             WERKS = #{werks}
             and RECORDID = #{recordid}
+            <if test="status != null">
+                and STATUS =  #{status}
+            </if>
         </where>
     </select>
+
+    <update id="updateStatus" parameterType="yj.core.qcauditlist.dto.Qcauditprocessdtl">
+        update wip_qcauditprocessdtl set STATUS = #{status}
+        <where>
+            WERKS = #{werks}
+            and RECORDID = #{recordid}
+            and ITEM = #{item}
+        </where>
+    </update>
 </mapper>

@@ -37,4 +37,12 @@ public  interface ICardtService
       * @return
       */
      Cardt selectByZpgdbarAndVornr(String zpgdbar,String vornr);
+
+     /**
+      *  根据标准文本码，生产订单 取工序号 917110140
+      * @param aufnr
+      * @param ktsch
+      * @return
+      */
+     Cardt selectByAufnrAndKtsch(String aufnr,String ktsch);
 }

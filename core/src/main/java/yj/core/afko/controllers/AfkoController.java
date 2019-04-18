@@ -3,6 +3,8 @@ package yj.core.afko.controllers;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.system.dto.ResponseData;
+
+import java.util.ArrayList;
 import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -178,5 +180,47 @@ public class AfkoController
     {
         service.batchDelete(dto);
         return new ResponseData();
+    }
+
+    /**
+     *  根据生产订单号 查询SAP_AFKO  917110140 2019-04-16
+     * @return
+     */
+    @RequestMapping({"/sap/afko/selectByAufnr"})
+    @ResponseBody
+    public ResponseData selectByAufnr(HttpServletRequest request){
+        ResponseData rs = new ResponseData();
+            String aufnr = request.getParameter("aufnr");
+        String matnr = request.getParameter("matnr");
+
+        Afko afko = new Afko();
+        afko = service.selectByAufnr(aufnr);
+        if (afko == null){
+            rs.setSuccess(false);
+            rs.setMessage("生产订单不存在！请重新输入生产订单号！");
+        }else{
+            String status = afko.getStatus();
+            if (status.contains("REL"))
+            {
+                rs.setSuccess(false);
+                rs.setMessage("该生产订单已关闭！请重新输入生产订单号！");
+            }else{
+                if (!afko.getPlnbez().equals(matnr)){
+                    rs.setSuccess(false);
+                    rs.setMessage("生产订单物料与不合格品审理单2物料不一致！请重新输入生产订单号！");
+                }else{
+                    List<Cardh> cardhList = new ArrayList<>();
+                    cardhList = cardhService.selectByAufnr(aufnr);
+                    if (cardhList.size() > 0){
+                        rs.setSuccess(true);
+                    }else{
+                        rs.setSuccess(false);
+                        rs.setMessage("该生产订单尚未生成工序流转卡，请更换生产订单处理！");
+                    }
+
+                }
+            }
+        }
+        return rs;
     }
 }

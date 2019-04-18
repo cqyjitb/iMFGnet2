@@ -46,4 +46,11 @@ public interface IQcauditlistService extends IBaseService<Qcauditlist>, ProxySel
      * @return
      */
     Qcauditlist selectBatch(String werks,String recordid,String item);
+
+    /**
+     *  更新不合格品审理单2 处理状态 917110140
+     * @param list
+     * @return
+     */
+    int updateStatus(List<Qcauditlist> list);
 }

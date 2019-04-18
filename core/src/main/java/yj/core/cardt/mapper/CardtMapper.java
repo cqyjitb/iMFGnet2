@@ -37,4 +37,12 @@ public  interface CardtMapper
       * @return
       */
      Cardt selectByZpgdbarAndVornr(@Param("zpgdbar") String zpgdbar, @Param("vornr") String vornr);
+
+     /**
+      *  根据标准文本码，生产订单 取工序号 917110140
+      * @param aufnr
+      * @param ktsch
+      * @return
+      */
+     Cardt selectByAufnrAndKtsch(@Param("aufnr") String aufnr,@Param("ktsch") String ktsch);
 }

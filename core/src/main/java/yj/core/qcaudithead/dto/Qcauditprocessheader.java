@@ -19,6 +19,7 @@ public class Qcauditprocessheader extends BaseDTO {
 
       private Double confirmQty; //确认报废数
 
+      private String status;//0:未处理    1：部分处理     2：完全处理
       private String attr1;
 
       private String attr2;
@@ -35,8 +36,15 @@ public class Qcauditprocessheader extends BaseDTO {
 
       private String attr8;
 
+    public String getStatus() {
+        return status;
+    }
 
-     public void setWerks(String werks){
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public void setWerks(String werks){
          this.werks = werks;
      }
 

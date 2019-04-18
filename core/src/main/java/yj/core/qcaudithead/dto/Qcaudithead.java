@@ -177,6 +177,8 @@ public class Qcaudithead extends BaseDTO {
 
       private String customerConfirm; //客户确认
 
+      private String status;//0：未处理 1：部分处理 2：完全处理
+
     @Transient
     private String kurztext;//缺陷描述
     private String tlevelcode2;//缺陷代码
@@ -920,5 +922,13 @@ public class Qcaudithead extends BaseDTO {
     @Override
     public void setLastUpdateDate(Date lastUpdateDate) {
         this.lastUpdateDate = lastUpdateDate;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }

@@ -186,4 +186,12 @@
             and VORNR = #{vornr}
         </where>
     </select>
+
+    <select id="selectByAufnrAndKtsch" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select DISTINCT vornr,ktsch,arbpl from sap_cardt
+        <where>
+            AUFNR = #{aufnr}
+            and KTSCH = #{ktsch}
+        </where>
+    </select>
 </mapper>

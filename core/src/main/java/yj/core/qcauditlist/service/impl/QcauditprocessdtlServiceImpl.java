@@ -31,7 +31,17 @@ public class QcauditprocessdtlServiceImpl extends BaseServiceImpl<Qcauditprocess
     }
 
     @Override
-    public List<Qcauditprocessdtl> selectById(String werks, String recordid) {
-        return qcauditprocessdtlMapper.selectById(werks,recordid);
+    public List<Qcauditprocessdtl> selectById(String werks, String recordid,String status) {
+        return qcauditprocessdtlMapper.selectById(werks,recordid,status);
     }
+
+    @Override
+    public int updateStatus(List<Qcauditprocessdtl> list) {
+        int num = 0;
+        for (int i=0;i<list.size();i++){
+             num =qcauditprocessdtlMapper.updateStatus(list.get(i)) + num;
+
+        }
+        return num;
+        }
 }
