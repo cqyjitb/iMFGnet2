@@ -29,7 +29,6 @@
         <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL"/>
         <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="DATE"/>
     </resultMap>
-
     <select id="selectFromPage" parameterType="java.lang.String" resultMap="BaseResultMap1">
         select distinct df.werks,df.matnr,df.code,df.tlevelcode,df.ztext,df.maching_flag,
         df.casting_flag,df.dftalarm,df.default_dept,df.matnr2 as matnr2,
@@ -115,6 +114,10 @@
                    AND CODE = #{code}
                    AND CASTING_FLAG = '1'
                </where>
+
+    </select>
+
+    <select id="selectforQcaudit2" parameterType="java.lang.String" resultMap="BaseResultMap">
 
     </select>
 </mapper>

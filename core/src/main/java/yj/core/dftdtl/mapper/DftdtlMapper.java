@@ -51,4 +51,5 @@ public interface DftdtlMapper extends Mapper<Dftdtl>{
      * @param dftdtl
      */
     void deleteDftdtl(Dftdtl dftdtl);
+
 }

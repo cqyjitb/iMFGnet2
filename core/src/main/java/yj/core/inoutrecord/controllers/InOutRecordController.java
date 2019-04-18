@@ -246,14 +246,6 @@ public class InOutRecordController extends BaseController {
                 rs.setMessage("条件产品物料号，毛坯物料号必须录入其中一项！");
                 return rs;
             }
-
-//            if (matnr.equals("") && matnr2.equals("")){
-//                rs.setSuccess(false);
-//                rs.setMessage("条件产品物料号，毛坯物料号必须录入其中一项！");
-//                return rs;
-//            }
-
-
                   //根据条件查询
                 List<InOutRecord> list = service.selectforQcaudit1(werks,line_id,matnr,matnr2,deptId,gstrp,zqxdm,zissuetxt,zbanz);
                 if (list.size() > 0) {
@@ -278,6 +270,17 @@ public class InOutRecordController extends BaseController {
 
         }else if (gytype.equals("Q3")){
 
+            if (matnr == null && matnr2 == null){
+                rs.setSuccess(false);
+                rs.setMessage("条件产品物料号，毛坯物料号必须录入其中一项！");
+                return rs;
+            }
+            //根据条件查询
+            List<InOutRecord> list = service.selectforQcaudit3(werks,line_id,matnr,matnr2,deptId,gstrp,zqxdm,zissuetxt,zbanz);
+            if (list.size() > 0) {
+                rs.setRows(list);
+                rs.setSuccess(true);
+            }
         }
         return rs;
     }

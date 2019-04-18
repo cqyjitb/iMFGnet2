@@ -362,6 +362,7 @@
             and i.ZBANZ = #{zbanz}
             AND i.ZQXDM = #{zqxdm}
             and i.ZISSUETXT = #{zissuetxt}
+            and i.ZREMADE = '0'
             <if test="matnr != null">
                 and i.MATNR = #{matnr}
             </if>
@@ -374,4 +375,76 @@
             order BY c.CREATION_DATE,i.ZBANZ,i.ZQXDM,i.ZISSUETXT;
     </select>
 
+    <select id="selectforQcaudit3" parameterType="java.lang.String" resultMap="BaseResultMap3">
+        select
+        d.WERKS,
+        i.ZQJJLH,
+        i.ZWIPQID,
+        l.DEPT_ID,
+        org.NAME as depttxt,
+        i.LINE_ID,
+        l.DESCRIPTIONS as DESLINETXT,
+        l.PLINE_ID,
+        l1.DESCRIPTIONS as DESMINALINETXT,
+        i.matnr,
+        m.maktx,
+        i.matnr2,
+        m2.MAKTX as maktx2,
+        i.ZGJBAR,
+        i.ZXHBAR,
+        i.SFFLG,
+        i.CHARG,
+        i.DIECD,
+        i.ZOTYPE,
+        qj.RCODE,
+        i.vornr,
+        i.ZQXDM,
+        qp.KURZTEXT,
+        i.ZISSUETXT,
+        dtl.ZTEXT,
+        i.ZOUTNUM,
+        i.GMEIN,
+        i.ZBANZ,
+        i.ZBANC,
+        c.CREATION_DATE as gstrp,
+        i.zpgdbar2,
+        i.zpgdbar,
+        cfg.KUNNR,
+        k.name1 as SORTL,
+        i.REFLAG,
+        i.ZOPLO,
+        i.OUTDAT,
+        i.OUTNAM
+        FROM wip_in_out_record i
+        LEFT JOIN wip_lines l on l.line_id = i.line_id
+        LEFT JOIN zwipq c on i.ZWIPQID = c.ZSXJLH
+        LEFT JOIN sap_marc m on i.MATNR = m.matnr
+        LEFT JOIN SAP_marc m2 on i.MATNR2 = m2.matnr
+        LEFT JOIN hr_org_unit_b org on org.UNIT_CODE = l.DEPT_ID
+        LEFT JOIN wip_lines l1 on l1.LINE_ID	= l.PLINE_ID
+        LEFT JOIN wip_qjcode qj on qj.id = i.ZOTYPE
+        LEFT JOIN sap_qpcd qp on qp.code = i.zqxdm
+        left JOIN sap_dftdtl dtl on ( dtl.matnr = i.matnr2 and dtl.TLEVELCODE = i.ZISSUETXT )
+        left join wip_products_cfg cfg on ( cfg.PMATNR = i.matnr2 and cfg.line_id = i.line_id )
+        left JOIN sap_cust k on k.kunnr = cfg.kunnr
+        left join sap_xhcard d on d.zxhbar = i.zxhbar
+        <where>
+            and REFLAG in ('0','3')
+            and i.LINE_ID = #{line_id}
+            and d.WERKS = #{werks}
+            and i.ZBANZ = #{zbanz}
+            AND i.ZQXDM = #{zqxdm}
+            and i.ZISSUETXT = #{zissuetxt}
+            and i.ZREMADE = '1'
+            <if test="matnr != null">
+                and i.MATNR = #{matnr}
+            </if>
+            <if test="matnr2 != null">
+                and i.MATNR2 = #{matnr2}
+            </if><if test="gstrp != null">
+            and c.CREATION_DATE like #{gstrp}
+        </if>
+        </where>
+        order BY c.CREATION_DATE,i.ZBANZ,i.ZQXDM,i.ZISSUETXT;
+    </select>
 </mapper>
