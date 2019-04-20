@@ -10,6 +10,7 @@ import yj.core.dispatch.mapper.ResultMapper;
 import yj.core.webservice_newbg.dto.DTBAOGONGReturnResult;
 import yj.core.webservice_readbglog.components.ReadbglogWebsrviceUtil;
 import yj.core.webservice_readbglog.dto.ReadlogParam;
+import yj.core.webservice_server.dto.QueryLogParam;
 import yj.core.webservice_server.dto.ReturnQueryjjbg;
 
 import javax.jws.WebService;
@@ -17,7 +18,7 @@ import javax.jws.WebService;
 @WebService
 public class QueryJJbglogimpl implements IQueryJJbglog {
     @Override
-    public ReturnQueryjjbg querybglog(String uuid,String reverse) {
+    public ReturnQueryjjbg querybglog(QueryLogParam queryLogParamparam) {
         ReturnQueryjjbg rs = new ReturnQueryjjbg();
         InputLogMapper inputLogMapper = ContextLoaderListener.getCurrentWebApplicationContext().getBean(InputLogMapper.class);
         ResultMapper resultMapper = ContextLoaderListener.getCurrentWebApplicationContext().getBean(ResultMapper.class);
@@ -26,9 +27,9 @@ public class QueryJJbglogimpl implements IQueryJJbglog {
         ReadbglogWebsrviceUtil readbglogWebsrviceUtil = new ReadbglogWebsrviceUtil();
         DTBAOGONGReturnResult returnResult = new DTBAOGONGReturnResult();
         ReadlogParam param = new ReadlogParam();
-        if (reverse.equals("")){
+        if (queryLogParamparam.getReverse().equals("")){
             param.setReverse("");
-            param.setUuid(uuid);
+            param.setUuid(queryLogParamparam.getUuid());
             returnResult = readbglogWebsrviceUtil.receiveConfirmation(param);
             if (returnResult.getMSGTY().equals("S")){
                 rs.setMSGTY(returnResult.getMSGTY());
@@ -40,7 +41,7 @@ public class QueryJJbglogimpl implements IQueryJJbglog {
                 rs.setRSPOS(returnResult.getRSPOS());
                 rs.setFEVOR(returnResult.getFEVOR());
                 rs.setTXT(returnResult.getTXT());
-                inputLog = inputLogMapper.queryInputlogByJjuuidbg(uuid);
+                inputLog = inputLogMapper.queryInputlogByJjuuidbg(queryLogParamparam.getUuid());
                 if (inputLog != null){
                     rs.setYEILD(inputLog.getYeild());
                     rs.setWORKSCRP(inputLog.getWorkScrap());
@@ -76,7 +77,7 @@ public class QueryJJbglogimpl implements IQueryJJbglog {
             }
         }else{
             param.setReverse("X");
-            param.setUuid(uuid);
+            param.setUuid(queryLogParamparam.getUuid());
             returnResult = readbglogWebsrviceUtil.receiveConfirmation(param);
             if (returnResult.getMSGTY().equals("S")){
                 rs.setMSGTY(returnResult.getMSGTY());
@@ -89,7 +90,7 @@ public class QueryJJbglogimpl implements IQueryJJbglog {
                 rs.setFEVOR(returnResult.getFEVOR());
                 rs.setTXT(returnResult.getTXT());
 
-                inputLog = inputLogMapper.queryInputlogByJjuuidcx(uuid);
+                inputLog = inputLogMapper.queryInputlogByJjuuidcx(queryLogParamparam.getUuid());
                 if (inputLog != null){
                     rs.setYEILD(inputLog.getYeild());
                     rs.setWORKSCRP(inputLog.getWorkScrap());

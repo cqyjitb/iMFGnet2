@@ -48,5 +48,4 @@ public interface IInputLogService extends IBaseService<InputLog>, ProxySelf<IInp
 
     InputLog queryByDispatchAndOperation(InputLog inputLog);
 
-    InputLog queryInputlogByJjuuid(String bguuid);
 }
