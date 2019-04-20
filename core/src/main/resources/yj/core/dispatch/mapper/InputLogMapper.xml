@@ -33,6 +33,8 @@
         <result column="attr13" property="attr13" jdbcType="VARCHAR" />
         <result column="attr14" property="attr14" jdbcType="VARCHAR" />
         <result column="attr15" property="attr15" jdbcType="VARCHAR" />
+        <result column="BGUUID" property="bguuid" jdbcType="VARCHAR" />
+        <result column="CXUUID" property="cxuuid" jdbcType="VARCHAR" />
         <result column="msgty" property="msgty" jdbcType="VARCHAR" />
         <result column="msgtx" property="msgtx" jdbcType="VARCHAR" />
         <result column="tran_type" property="tranType" jdbcType="VARCHAR" />
@@ -146,16 +148,16 @@
     <insert id="insertInputLog" parameterType="yj.core.dispatch.dto.InputLog">
         INSERT INTO confirmation_input_log(
         barcode,orderno,dispatch,operation,yeild,work_scrap,row_scrap,classno,classgrp,shop_code,line,model_no,posting_date,plant,
-        attr1,attr2,attr3,attr4,attr5,attr6,attr7,attr8,attr9,attr10,attr11,attr12,attr13,attr14,attr15,CREATED_BY
+        attr1,attr2,attr3,attr4,attr5,attr6,attr7,attr8,attr9,attr10,attr11,attr12,attr13,attr14,attr15,CREATED_BY,BGUUID,CXUUID
         )
         VALUES (
         #{barcode}, #{orderno},#{dispatch},
         #{operation},#{yeild},#{workScrap},#{rowScrap},#{classno},#{classgrp},#{shopCode},#{line},#{modelNo},#{postingDate},#{plant},
-        #{attr1},#{attr2},#{attr3},#{attr4},#{attr5},#{attr6},#{attr7},#{attr8},#{attr9},#{attr10},#{attr11},#{attr12},#{attr13},#{attr14},#{attr15},#{created_by}
+        #{attr1},#{attr2},#{attr3},#{attr4},#{attr5},#{attr6},#{attr7},#{attr8},#{attr9},#{attr10},#{attr11},#{attr12},#{attr13},#{attr14},#{attr15},#{created_by},#{bguuid},#{cxuuid}
         )
     </insert>
 
-    <select id="queryInputlogByJjuuid" resultMap="BaseResultMap" parameterType="java.lang.String">
+    <select id="queryInputlogByJjuuidbg" resultMap="BaseResultMap" parameterType="java.lang.String">
         SELECT
         DISTINCT
         il.id,
@@ -203,11 +205,63 @@
             il.id= r.input_id
             AND il.CREATED_BY = u.user_id
             AND l.ref_id = il.id
-            And il.attr15 = #{bguuid}
+            And il.BGUUID = #{bguuid}
         </where>
 
     </select>
 
+    <select id="queryInputlogByJjuuidcx" resultMap="BaseResultMap" parameterType="java.lang.String">
+        SELECT
+        DISTINCT
+        il.id,
+        il.barcode,
+        il.dispatch,
+        il.orderno,
+        il.operation,
+        il.CREATION_DATE,
+        il.posting_date,
+        il.yeild,
+        il.work_scrap,
+        il.row_scrap,
+        il.classgrp,
+        il.model_no,
+        il.line,
+        il.plant,
+        il.CREATED_BY,
+        il.attr1,
+        il.attr2,
+        il.attr3,
+        il.attr4,
+        il.attr5,
+        il.attr6,
+        il.attr7,
+        il.attr8,
+        il.attr9,
+        il.attr10,
+        il.attr11,
+        il.attr12,
+        il.attr13,
+        il.attr14,
+        il.attr15,
+        r.mat_desc,
+        r.material,
+        r.confirmation_no,
+        r.confirmation_pos,
+        u.user_name,
+        r.operation_desc,
+        r.fevor,
+        r.fevor_txt,
+        l.msgty,
+        l.msgtx
+        FROM confirmation_input_log il,confirmation_result r,sys_user u,confirmation_log l
+        <where>
+            il.id= r.input_id
+            AND il.CREATED_BY = u.user_id
+            AND l.ref_id = il.id
+            And il.CXUUID = #{bguuid}
+        </where>
+
+    </select>
     <!--
        报功冲销
    -->
@@ -634,6 +688,17 @@
         </where>
     </select>
 
+    <select id="queryAllGTOperationJj" resultMap="BaseResultMap1" parameterType="yj.core.dispatch.dto.InputLog">
+        select *
+        from confirmation_input_log i
+        inner join confirmation_result r on i.id = r.input_id
+        inner join confirmation_log l on i.id = l.ref_id
+        <where>
+            i.dispatch = #{dispatch} and i.operation > #{operation} and r.is_reversed = '0' and l.msgty = 'S' and l.tran_type = '0'
+            and r.confirmation_no = #{confirmationNo} and r.confirmation_pos = #{confirmationPos}
+        </where>
+    </select>
+
 
     <select id="confirmationBeforeMaxOperation" resultType="java.lang.String" parameterType="yj.core.dispatch.dto.InputLog">
         select MAX(ci.operation) as operation  from confirmation_input_log ci
@@ -754,4 +819,11 @@
         </where>
     </select>
 
+    <update id="updateCxuuid" parameterType="yj.core.dispatch.dto.InputLog">
+        update confirmation_input_log SET
+               CXUUID = #{cxuuid}
+               <where>
+                   id = #{id}
+               </where>
+    </update>
 </mapper>

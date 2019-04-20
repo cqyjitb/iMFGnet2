@@ -33,6 +33,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 @Transactional
@@ -440,6 +441,8 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
     }
 
     public DTBAOGONGReturnResult returnResultAndUpdateConfirmationNew(InputLog inputLog) {
+        UUID uuid = java.util.UUID.randomUUID();
+        String uuidstr = uuid.toString().replaceAll("-", "");
         DTBAOGONGParameters param = new DTBAOGONGParameters();
         param.setPWERK(inputLog.getPlant());
         param.setAUFNR(inputLog.getOrderno());
@@ -464,8 +467,16 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         param.setATTR5(inputLog.getAttr5());
         param.setATTR6(inputLog.getAttr6().replaceAll("-", ""));
         param.setATTR7(inputLog.getAttr7());
+        param.setATTR8(inputLog.getAttr8());
+        param.setATTR9(inputLog.getAttr9());
+        param.setATTR10(inputLog.getAttr10());
+        param.setATTR11(inputLog.getAttr11());
+        param.setATTR12(inputLog.getAttr12());
+        param.setATTR13(inputLog.getAttr13());
+        param.setATTR14(inputLog.getAttr14());
+        param.setATTR15(inputLog.getAttr15());
+        param.setBGUUID(uuidstr);
         param.setUSERNAME(inputLog.getUserName());
-
         param.setARBPL(inputLog.getArbpl());
         param.setLSTVOR(inputLog.getLstvor());
         param.setFSTVOR(inputLog.getFstvor());
@@ -497,6 +508,7 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         Result result = new Result();
         inputLog.setMaterial(returnResult.getMATNR());
         inputLog.setMatDesc(returnResult.getMAKTX());
+        inputLog.setBguuid(uuidstr);
         inputLogMapper.insertInputLog(inputLog);
         Long id = inputLogMapper.selectNextId();
         result.setPlant(inputLog.getPlant());
@@ -546,6 +558,8 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
     }
 
     public DTBAOGONGReturnResult returnWriteOffResultAndUpdateConfirmationNew(InputLog inputLog) {
+        UUID uuid = java.util.UUID.randomUUID();
+        String uuidstr = uuid.toString().replaceAll("-", "");
         DTBAOGONGParameters param = new DTBAOGONGParameters();
         DTBAOGONGParametersitem paramitem = new DTBAOGONGParametersitem();
         List<DTBAOGONGParametersitem> list = new ArrayList<>();
@@ -573,6 +587,15 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         param.setATTR5(inputLog.getAttr5());
         param.setATTR6(inputLog.getAttr6().replaceAll("-", ""));
         param.setATTR7(inputLog.getAttr7());
+        param.setATTR8(inputLog.getAttr8());
+        param.setATTR9(inputLog.getAttr9());
+        param.setATTR10(inputLog.getAttr10());
+        param.setATTR11(inputLog.getAttr11());
+        param.setATTR12(inputLog.getAttr12());
+        param.setATTR13(inputLog.getAttr13());
+        param.setATTR14(inputLog.getAttr14());
+        param.setATTR15(inputLog.getAttr15());
+        param.setBGUUID(uuidstr);
         param.setUSERNAME(inputLog.getUserName());
         param.setAUART(inputLog.getAuart());
         param.setARBPL("");
@@ -587,6 +610,8 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         param.setZTPBAR("");
 
         DTBAOGONGReturnResult returnResult = webserviceUtilNew.receiveConfirmation(param, list);
+        inputLog.setCxuuid(uuidstr);
+        inputLogMapper.updateCxuuid(inputLog);
         Log log = new Log();
         log.setMsgtx(returnResult.getMESSAGE());
         log.setMsgty(returnResult.getMSGTY());
@@ -599,6 +624,7 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         }
 
         return returnResult;
+
     }
 
     public DTPP001ReturnResult returnWriteOffResultAndUpdateConfirmation(InputLog inputLog) {

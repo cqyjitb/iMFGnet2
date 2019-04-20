@@ -6,5 +6,5 @@ import javax.jws.WebService;
 
 @WebService
 public interface IQueryJJbglog {
-    ReturnQueryjjbg querybglog(String uuid);
+    ReturnQueryjjbg querybglog(String uuid,String reverse);
 }

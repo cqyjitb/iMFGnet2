@@ -16,4 +16,8 @@ public interface ResultMapper extends Mapper<Result>{
     public void nextId(InputLog input);
 
     void updateReveseByInputId(Long inputId);
+
+    Result selectByInputId(Long inputId);
+
+    int updateRsnumAndRspos(Result result);
 }

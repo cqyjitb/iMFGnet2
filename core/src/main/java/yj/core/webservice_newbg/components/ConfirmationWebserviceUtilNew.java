@@ -66,6 +66,15 @@ public class ConfirmationWebserviceUtilNew {
         item.setATTR5(params.getATTR5());
         item.setATTR6(params.getATTR6());
         item.setATTR7(params.getATTR7());
+        item.setATTR8(params.getATTR8());
+        item.setATTR9(params.getATTR9());
+        item.setATTR10(params.getATTR10());
+        item.setATTR11(params.getATTR11());
+        item.setATTR12(params.getATTR12());
+        item.setATTR13(params.getATTR13());
+        item.setATTR14(params.getATTR14());
+        item.setATTR15(params.getATTR15());
+        item.setUUID(params.getBGUUID());
         item.setUSERNAME(params.getUSERNAME());
         item.setLSTVOR(params.getLSTVOR());
         item.setAUART(params.getAUART());

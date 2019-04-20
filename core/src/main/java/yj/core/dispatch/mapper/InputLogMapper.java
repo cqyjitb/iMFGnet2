@@ -91,7 +91,13 @@ public interface InputLogMapper extends Mapper<InputLog>{
      * @param bguuid
      * @return
      */
-    InputLog queryInputlogByJjuuid(@Param("bguuid") String bguuid);
+    InputLog queryInputlogByJjuuidbg(@Param("bguuid") String bguuid);
+
+    InputLog queryInputlogByJjuuidcx(@Param("bguuid") String bguuid);
+
+    int updateCxuuid(InputLog inputLog);
+
+    InputLog queryAllGTOperationJj(InputLog inputLog);
 
 
 }

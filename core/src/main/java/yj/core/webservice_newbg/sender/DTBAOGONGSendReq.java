@@ -1,14 +1,14 @@
 package yj.core.webservice_newbg.sender;
 
-        import java.util.ArrayList;
-        import java.util.List;
-        import javax.xml.bind.annotation.XmlAccessType;
-        import javax.xml.bind.annotation.XmlAccessorType;
-        import javax.xml.bind.annotation.XmlElement;
-        import javax.xml.bind.annotation.XmlType;
+import java.util.ArrayList;
+import java.util.List;
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlType;
 
 /**
- * ����������ݽṹ
+ * 报工接收数据结构
  *
  * <p>
  * Java class for DT_BAOGONG_Send_Req complex type.
@@ -51,6 +51,15 @@ package yj.core.webservice_newbg.sender;
  *                   &lt;element name="ATTR5" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="ATTR6" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="ATTR7" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ATTR8" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ATTR9" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ATTR10" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ATTR11" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ATTR12" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ATTR13" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ATTR14" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ATTR15" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="UUID" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="ZPRTP" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="ARBPL" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="ZTPBAR" type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -195,6 +204,15 @@ public class DTBAOGONGSendReq {
      *         &lt;element name="ATTR5" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="ATTR6" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="ATTR7" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="ATTR8" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="ATTR9" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="ATTR10" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="ATTR11" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="ATTR12" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="ATTR13" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="ATTR14" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="ATTR15" type="{http://www.w3.org/2001/XMLSchema}string"/>
+     *         &lt;element name="UUID" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="ZPRTP" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="ARBPL" type="{http://www.w3.org/2001/XMLSchema}string"/>
      *         &lt;element name="ZTPBAR" type="{http://www.w3.org/2001/XMLSchema}string"/>
@@ -215,7 +233,9 @@ public class DTBAOGONGSendReq {
             "gmnga", "xmnga", "rmnga", "zscbc", "zscx", "zmnum", "datum",
             "zpgdbar", "zpgdbh", "rsnum", "rspos", "reverse", "username",
             "attr1", "attr2", "attr3", "attr4", "attr5", "attr6", "attr7",
-            "zprtp", "arbpl", "ztpbar", "auart", "charg", "fstvor", "lstvor" })
+            "attr8", "attr9", "attr10", "attr11", "attr12", "attr13", "attr14",
+            "attr15", "uuid", "zprtp", "arbpl", "ztpbar", "auart", "charg",
+            "fstvor", "lstvor" })
     public static class ITEM {
 
         @XmlElement(name = "PWERK", required = true)
@@ -266,6 +286,24 @@ public class DTBAOGONGSendReq {
         protected String attr6;
         @XmlElement(name = "ATTR7", required = true)
         protected String attr7;
+        @XmlElement(name = "ATTR8", required = true)
+        protected String attr8;
+        @XmlElement(name = "ATTR9", required = true)
+        protected String attr9;
+        @XmlElement(name = "ATTR10", required = true)
+        protected String attr10;
+        @XmlElement(name = "ATTR11", required = true)
+        protected String attr11;
+        @XmlElement(name = "ATTR12", required = true)
+        protected String attr12;
+        @XmlElement(name = "ATTR13", required = true)
+        protected String attr13;
+        @XmlElement(name = "ATTR14", required = true)
+        protected String attr14;
+        @XmlElement(name = "ATTR15", required = true)
+        protected String attr15;
+        @XmlElement(name = "UUID", required = true)
+        protected String uuid;
         @XmlElement(name = "ZPRTP", required = true)
         protected String zprtp;
         @XmlElement(name = "ARBPL", required = true)
@@ -783,6 +821,195 @@ public class DTBAOGONGSendReq {
          */
         public void setATTR7(String value) {
             this.attr7 = value;
+        }
+
+        /**
+         * Gets the value of the attr8 property.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getATTR8() {
+            return attr8;
+        }
+
+        /**
+         * Sets the value of the attr8 property.
+         *
+         * @param value
+         *            allowed object is {@link String }
+         *
+         */
+        public void setATTR8(String value) {
+            this.attr8 = value;
+        }
+
+        /**
+         * Gets the value of the attr9 property.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getATTR9() {
+            return attr9;
+        }
+
+        /**
+         * Sets the value of the attr9 property.
+         *
+         * @param value
+         *            allowed object is {@link String }
+         *
+         */
+        public void setATTR9(String value) {
+            this.attr9 = value;
+        }
+
+        /**
+         * Gets the value of the attr10 property.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getATTR10() {
+            return attr10;
+        }
+
+        /**
+         * Sets the value of the attr10 property.
+         *
+         * @param value
+         *            allowed object is {@link String }
+         *
+         */
+        public void setATTR10(String value) {
+            this.attr10 = value;
+        }
+
+        /**
+         * Gets the value of the attr11 property.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getATTR11() {
+            return attr11;
+        }
+
+        /**
+         * Sets the value of the attr11 property.
+         *
+         * @param value
+         *            allowed object is {@link String }
+         *
+         */
+        public void setATTR11(String value) {
+            this.attr11 = value;
+        }
+
+        /**
+         * Gets the value of the attr12 property.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getATTR12() {
+            return attr12;
+        }
+
+        /**
+         * Sets the value of the attr12 property.
+         *
+         * @param value
+         *            allowed object is {@link String }
+         *
+         */
+        public void setATTR12(String value) {
+            this.attr12 = value;
+        }
+
+        /**
+         * Gets the value of the attr13 property.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getATTR13() {
+            return attr13;
+        }
+
+        /**
+         * Sets the value of the attr13 property.
+         *
+         * @param value
+         *            allowed object is {@link String }
+         *
+         */
+        public void setATTR13(String value) {
+            this.attr13 = value;
+        }
+
+        /**
+         * Gets the value of the attr14 property.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getATTR14() {
+            return attr14;
+        }
+
+        /**
+         * Sets the value of the attr14 property.
+         *
+         * @param value
+         *            allowed object is {@link String }
+         *
+         */
+        public void setATTR14(String value) {
+            this.attr14 = value;
+        }
+
+        /**
+         * Gets the value of the attr15 property.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getATTR15() {
+            return attr15;
+        }
+
+        /**
+         * Sets the value of the attr15 property.
+         *
+         * @param value
+         *            allowed object is {@link String }
+         *
+         */
+        public void setATTR15(String value) {
+            this.attr15 = value;
+        }
+
+        /**
+         * Gets the value of the uuid property.
+         *
+         * @return possible object is {@link String }
+         *
+         */
+        public String getUUID() {
+            return uuid;
+        }
+
+        /**
+         * Sets the value of the uuid property.
+         *
+         * @param value
+         *            allowed object is {@link String }
+         *
+         */
+        public void setUUID(String value) {
+            this.uuid = value;
         }
 
         /**

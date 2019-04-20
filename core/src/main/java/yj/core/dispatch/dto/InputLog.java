@@ -85,6 +85,10 @@ public class InputLog extends BaseDTO {
 
     private String attr15; //属性15
 
+    private String bguuid;
+
+    private String cxuuid;
+
     private String creatDate;
 
     private String creatDateAfter;
@@ -610,5 +614,21 @@ public class InputLog extends BaseDTO {
 
     public void setLstvor(String lstvor) {
         this.lstvor = lstvor;
+    }
+
+    public String getBguuid() {
+        return bguuid;
+    }
+
+    public void setBguuid(String bguuid) {
+        this.bguuid = bguuid;
+    }
+
+    public String getCxuuid() {
+        return cxuuid;
+    }
+
+    public void setCxuuid(String cxuuid) {
+        this.cxuuid = cxuuid;
     }
 }

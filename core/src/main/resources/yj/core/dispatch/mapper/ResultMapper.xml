@@ -40,4 +40,19 @@
         WHERE input_id = #{inputId}
     </update>
 
+    <update id="updateRsnumAndRspos" parameterType="yj.core.dispatch.dto.Result">
+        UPDATE confirmation_result
+        SET confirmation_no = #{confirmationNo},
+            confirmation_pos = #{confirmationPos}
+        WHERE input_id = #{inputId}
+    </update>
+
+    <select id="selectByInputId" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select * from confirmation_result
+        <where>
+            input_id = #{inputId}
+        </where>
+    </select>
+
+
 </mapper>

@@ -25,4 +25,29 @@
         #{tranType}, #{refId},#{msgty},#{msgtx},#{created_by}
       )
     </insert>
+
+    <select id="queryLogByRefidbg" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select * from confirmation_log
+        <where>
+            ref_id = #{refId}
+            and tran_type = '0'
+        </where>
+    </select>
+
+    <select id="queryLogByRefidcx" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select * from confirmation_log
+        <where>
+            ref_id = #{refId}
+            and tran_type = '1'
+        </where>
+    </select>
+
+    <update id="updateMsgty" parameterType="yj.core.dispatch.dto.Log">
+        UPDATE confirmation_log set msgty = #{msgty},
+                                    msgtx = #{msgtx}
+             <where>
+                 id = #{id}
+             </where>
+
+    </update>
 </mapper>

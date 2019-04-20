@@ -15,7 +15,7 @@
             <xsd:complexType name="DT_BAOGONG_Send_Req">
                 <xsd:annotation>
                     <xsd:documentation xml:lang="EN">报工接收数据结构</xsd:documentation>
-                    <xsd:appinfo source="http://sap.com/xi/VersionID">e2df9d8da9d111e884ce0000002ad1ea</xsd:appinfo>
+                    <xsd:appinfo source="http://sap.com/xi/VersionID">ca843342630511e9cc870000002ad1ea</xsd:appinfo>
                 </xsd:annotation>
                 <xsd:sequence>
                     <xsd:element name="ITEM" maxOccurs="unbounded">
@@ -217,6 +217,15 @@
                                         <xsd:documentation>班标</xsd:documentation>
                                     </xsd:annotation>
                                 </xsd:element>
+                                <xsd:element name="ATTR8" type="xsd:string"/>
+                                <xsd:element name="ATTR9" type="xsd:string"/>
+                                <xsd:element name="ATTR10" type="xsd:string"/>
+                                <xsd:element name="ATTR11" type="xsd:string"/>
+                                <xsd:element name="ATTR12" type="xsd:string"/>
+                                <xsd:element name="ATTR13" type="xsd:string"/>
+                                <xsd:element name="ATTR14" type="xsd:string"/>
+                                <xsd:element name="ATTR15" type="xsd:string"/>
+                                <xsd:element name="UUID" type="xsd:string"/>
                                 <xsd:element name="ZPRTP" type="xsd:string">
                                     <xsd:annotation>
                                         <xsd:appinfo source="http://sap.com/xi/TextID">

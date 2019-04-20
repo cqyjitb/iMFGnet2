@@ -29,6 +29,14 @@ public class DTBAOGONGParameters
     private String ATTR5;//日期序列
     private String ATTR6;//生产日期
     private String ATTR7;//班标
+    private String ATTR8;
+    private String ATTR9;
+    private String ATTR10;
+    private String ATTR11;
+    private String ATTR12;
+    private String ATTR13;
+    private String ATTR14;
+    private String ATTR15;
     private String USERNAME;//创建人ID
     private String ARBPL;//工作中心
     private String ZPRTP;//1-正常，2-盘亏调整，3-盘盈调整；
@@ -37,7 +45,7 @@ public class DTBAOGONGParameters
     private String FSTVOR;//首工序 ""
     private String LSTVOR;//末工序（"X"）
     private String CHARG;//""
-    private String BGUUID;//机加报工uuid
+    private String BGUUID;//报工uuid
 
     public String getBGUUID() {
         return BGUUID;
@@ -295,5 +303,67 @@ public class DTBAOGONGParameters
         this.LSTVOR = LSTVOR;
     }
 
+    public String getATTR8() {
+        return ATTR8;
+    }
 
+    public void setATTR8(String ATTR8) {
+        this.ATTR8 = ATTR8;
+    }
+
+    public String getATTR9() {
+        return ATTR9;
+    }
+
+    public void setATTR9(String ATTR9) {
+        this.ATTR9 = ATTR9;
+    }
+
+    public String getATTR10() {
+        return ATTR10;
+    }
+
+    public void setATTR10(String ATTR10) {
+        this.ATTR10 = ATTR10;
+    }
+
+    public String getATTR11() {
+        return ATTR11;
+    }
+
+    public void setATTR11(String ATTR11) {
+        this.ATTR11 = ATTR11;
+    }
+
+    public String getATTR12() {
+        return ATTR12;
+    }
+
+    public void setATTR12(String ATTR12) {
+        this.ATTR12 = ATTR12;
+    }
+
+    public String getATTR13() {
+        return ATTR13;
+    }
+
+    public void setATTR13(String ATTR13) {
+        this.ATTR13 = ATTR13;
+    }
+
+    public String getATTR14() {
+        return ATTR14;
+    }
+
+    public void setATTR14(String ATTR14) {
+        this.ATTR14 = ATTR14;
+    }
+
+    public String getATTR15() {
+        return ATTR15;
+    }
+
+    public void setATTR15(String ATTR15) {
+        this.ATTR15 = ATTR15;
+    }
 }
