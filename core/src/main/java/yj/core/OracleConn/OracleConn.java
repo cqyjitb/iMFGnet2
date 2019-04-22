@@ -37,20 +37,23 @@ public class OracleConn {
 //            e.printStackTrace();
 //        }
 
-        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
-        SimpleDateFormat sd2 = new SimpleDateFormat("yyyyMMdd");
+//        SimpleDateFormat sd = new SimpleDateFormat("yyyy-MM-dd");
+//        SimpleDateFormat sd2 = new SimpleDateFormat("yyyyMMdd");
+//
+//        SimpleDateFormat sd3 = new SimpleDateFormat("HHmmSS");
+//        SimpleDateFormat sd4 = new SimpleDateFormat("HH:mm:SS");
+//        Date date = null;
+//        try {
+//            date = sd3.parse("135922");
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
+//        String s = sd4.format(date);
+//
+//            System.out.println(s);
 
-        SimpleDateFormat sd3 = new SimpleDateFormat("HHmmSS");
-        SimpleDateFormat sd4 = new SimpleDateFormat("HH:mm:SS");
-        Date date = null;
-        try {
-            date = sd3.parse("135922");
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
-        String s = sd4.format(date);
-
-            System.out.println(s);
+        UUID uuid = java.util.UUID.randomUUID();
+        System.out.println(uuid);
 
 
     }

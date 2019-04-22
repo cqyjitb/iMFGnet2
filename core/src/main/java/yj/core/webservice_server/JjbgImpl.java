@@ -1,6 +1,8 @@
 package yj.core.webservice_server;
 
 import org.springframework.web.context.ContextLoaderListener;
+import yj.core.afko.dto.Afko;
+import yj.core.afko.mapper.AfkoMapper;
 import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.mapper.CardhMapper;
 import yj.core.dispatch.dto.InputLog;
@@ -33,6 +35,7 @@ public class JjbgImpl implements IJjbg {
         InputLogMapper inputLogMapper = ContextLoaderListener.getCurrentWebApplicationContext().getBean(InputLogMapper.class);
         ResultMapper resultMapper = ContextLoaderListener.getCurrentWebApplicationContext().getBean(ResultMapper.class);
         LogMapper logMapper = ContextLoaderListener.getCurrentWebApplicationContext().getBean(LogMapper.class);
+        AfkoMapper afkoMapper = ContextLoaderListener.getCurrentWebApplicationContext().getBean(AfkoMapper.class);
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String curdate = df.format(new Date()).substring(0,10).replaceAll("-","");
         String curtim  = df.format(new Date()).substring(11,19).replaceAll(":","");
@@ -46,7 +49,9 @@ public class JjbgImpl implements IJjbg {
             params.setATTR14("");
             params.setATTR15("");
             rs = confirmationWebserviceUtilNew.receiveConfirmation(params,list);
+            Date indate = new Date();
             if (rs.getMSGTY().equals("S")){
+
                 Cardh cardh = new Cardh();
                 cardh = cardhMapper.selectByBarcode(params.getZPGDBAR());
                 cardh.setLastUpdatedDate(new Date());
@@ -77,11 +82,14 @@ public class JjbgImpl implements IJjbg {
                 inputLog2.setCxuuid(params.getBGUUID());
                 inputLogMapper.updateCxuuid(inputLog2);
 
+                log.setCreationDate(indate);
+                log.setLastUpdateDate(new Date());
                 log.setMsgtx(rs.getMESSAGE());
                 log.setMsgty(rs.getMSGTY());
                 log.setTranType("1");
                 log.setRefId(inputLog2.getId());
-                log.setCreated_by(inputLog2.getCreated_by());
+                log.setCreated_by("10001");
+
                 logMapper.insertLog(log);
                 if ("S".equals(rs.getMSGTY())) {
                     resultMapper.updateReveseByInputId(inputLog2.getId());
@@ -113,7 +121,8 @@ public class JjbgImpl implements IJjbg {
                 inputLog.setUserName(params.getUSERNAME());
                 inputLog.setMaterial(rs.getMATNR());
                 inputLog.setMatDesc(rs.getMAKTX());
-                inputLog.setAttr15(params.getBGUUID());//保存机加报工的UUID
+                inputLog.setAttr15(params.getATTR15());//保存机加报工的UUID
+                inputLog.setBguuid(params.getBGUUID());
                 inputLogMapper.insertInputLog(inputLog);
                 Long id = inputLogMapper.selectNextId();
                 result.setPlant(inputLog.getPlant());
@@ -137,12 +146,15 @@ public class JjbgImpl implements IJjbg {
                 }
                 log.setRefId(id);
                 log.setCreated_by(inputLog.getCreated_by());
+                log.setCreationDate(indate);
+                log.setLastUpdateDate(new Date());
                 resultMapper.insertResult(result);
                 logMapper.insertLog(log);
                 return  rs;
             }
 
         }catch (Exception e){
+            Date indate = new Date();
             Log log = new Log();
             Result result = new Result();
             InputLog inputLog = new InputLog();
@@ -170,8 +182,12 @@ public class JjbgImpl implements IJjbg {
             inputLog.setUserName(params.getUSERNAME());
             inputLog.setMaterial("");
             inputLog.setMatDesc("");
-            inputLog.setAttr15(params.getBGUUID());//保存机加报工的UUID
-
+            inputLog.setAttr15(params.getATTR15());//保存机加报工的UUID
+            if (params.getREVERSE().equals("X")){
+               inputLog.setCxuuid(params.getBGUUID());
+            }else{
+                inputLog.setBguuid(params.getBGUUID());
+             }
             inputLogMapper.insertInputLog(inputLog);
 
             Long id = inputLogMapper.selectNextId();
@@ -182,8 +198,15 @@ public class JjbgImpl implements IJjbg {
             }else{
                 result.setIsReversed("0");//报工
             }
-            result.setMaterial(inputLog.getMaterial());
-            result.setMatDesc(inputLog.getMatDesc());
+            Afko afko = new Afko();
+            afko = afkoMapper.selectByAufnr(params.getAUFNR());
+            if (afko != null){
+                result.setMaterial(afko.getPlnbez());
+                result.setMatDesc(afko.getMaktx());
+            }else{
+                result.setMaterial("");
+                result.setMatDesc("");
+            }
             result.setCreated_by(inputLog.getCreated_by());
             result.setConfirmationNo(params.getRSNUM());
             result.setConfirmationPos(params.getRSPOS());
@@ -191,7 +214,7 @@ public class JjbgImpl implements IJjbg {
             result.setFevorTxt("");
             result.setOperationDesc("");
             log.setMsgty("E");
-            log.setMsgtx(e.getStackTrace().toString());
+            log.setMsgtx(e.getMessage().toString());
             if (params.getREVERSE().equals("X")){
                 log.setTranType("1");
             }else{
@@ -201,6 +224,8 @@ public class JjbgImpl implements IJjbg {
             log.setRefId(id);
             log.setCreated_by(inputLog.getCreated_by());
             resultMapper.insertResult(result);
+            log.setCreationDate(indate);
+            log.setLastUpdateDate(new Date());
             logMapper.insertLog(log);
             return  rs;
         }

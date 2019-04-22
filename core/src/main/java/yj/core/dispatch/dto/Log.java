@@ -9,6 +9,8 @@ import com.hand.hap.system.dto.BaseDTO;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.Date;
 
 @ExtensionAttribute(disable=true)
 @Table(name = "confirmation_log")
@@ -26,6 +28,11 @@ public class Log extends BaseDTO {
       private String msgtx; //消息内容
 
       private String created_by;
+
+      @Transient
+      private Date creationDate;
+
+      private Date lastUpdateDate;
 
     public String getCreated_by() {
         return created_by;
@@ -75,6 +82,23 @@ public class Log extends BaseDTO {
          return msgtx;
      }
 
+    @Override
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
+    }
 
+    @Override
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
 
-     }
+    @Override
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    @Override
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+}

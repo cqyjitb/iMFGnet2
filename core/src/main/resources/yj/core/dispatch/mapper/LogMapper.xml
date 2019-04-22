@@ -8,6 +8,8 @@
         <result column="ref_id" property="refId" jdbcType="DECIMAL" />
         <result column="msgty" property="msgty" jdbcType="VARCHAR" />
         <result column="msgtx" property="msgtx" jdbcType="VARCHAR" />
+        <result column="CREATION_DATE" property="creationDate" jdbcType="VARCHAR"/>
+        <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="VARCHAR"/>
 
     </resultMap>
 
@@ -19,10 +21,10 @@
 
     <insert id="insertLog" parameterType="yj.core.dispatch.dto.Log">
         INSERT INTO confirmation_log(
-        tran_type,ref_id,msgty,msgtx,CREATED_BY
+        tran_type,ref_id,msgty,msgtx,CREATED_BY,CREATION_DATE,LAST_UPDATE_DATE
         )
         VALUES (
-        #{tranType}, #{refId},#{msgty},#{msgtx},#{created_by}
+        #{tranType}, #{refId},#{msgty},#{msgtx},#{created_by},#{creationDate},#{lastUpdateDate}
       )
     </insert>
 

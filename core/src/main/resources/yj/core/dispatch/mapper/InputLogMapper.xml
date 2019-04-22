@@ -205,6 +205,7 @@
             il.id= r.input_id
             AND il.CREATED_BY = u.user_id
             AND l.ref_id = il.id
+            AND l.tran_type = '0'
             And il.BGUUID = #{bguuid}
         </where>
 
@@ -258,6 +259,7 @@
             il.id= r.input_id
             AND il.CREATED_BY = u.user_id
             AND l.ref_id = il.id
+            AND l.tran_type = '1'
             And il.CXUUID = #{bguuid}
         </where>
 
@@ -694,7 +696,7 @@
         inner join confirmation_result r on i.id = r.input_id
         inner join confirmation_log l on i.id = l.ref_id
         <where>
-            i.dispatch = #{dispatch} and i.operation > #{operation} and r.is_reversed = '0' and l.msgty = 'S' and l.tran_type = '0'
+            i.dispatch = #{dispatch} and i.operation = #{operation} and r.is_reversed = '0' and l.msgty = 'S' and l.tran_type = '0'
             and r.confirmation_no = #{confirmationNo} and r.confirmation_pos = #{confirmationPos}
         </where>
     </select>

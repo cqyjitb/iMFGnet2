@@ -493,7 +493,7 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         DTPP001ReturnResult returnResult = new DTPP001ReturnResult();*/
 
         DTBAOGONGReturnResult returnResult = webserviceUtilNew.receiveConfirmation(param, list);
-
+        Date indate = new Date();
         if (returnResult.getMSGTY().equals("S")) {//报工成功
             //获取报工流转卡的信息，然后更新 班标，和模号
             Cardh cardh = new Cardh();
@@ -527,6 +527,8 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         log.setTranType("0");
         log.setRefId(id);
         log.setCreated_by(inputLog.getCreated_by());
+        log.setCreationDate(indate);
+        log.setLastUpdateDate(new Date());
         resultMapper.insertResult(result);
         logMapper.insertLog(log);
         return returnResult;
@@ -610,6 +612,7 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         param.setZTPBAR("");
 
         DTBAOGONGReturnResult returnResult = webserviceUtilNew.receiveConfirmation(param, list);
+        Date inDate = new Date();
         inputLog.setCxuuid(uuidstr);
         inputLogMapper.updateCxuuid(inputLog);
         Log log = new Log();
@@ -618,6 +621,8 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         log.setTranType("1");
         log.setRefId(inputLog.getId());
         log.setCreated_by(inputLog.getCreated_by());
+        log.setCreationDate(inDate);
+        log.setLastUpdateDate(new Date());
         logMapper.insertLog(log);
         if ("S".equals(returnResult.getMSGTY())) {
             resultMapper.updateReveseByInputId(inputLog.getId());

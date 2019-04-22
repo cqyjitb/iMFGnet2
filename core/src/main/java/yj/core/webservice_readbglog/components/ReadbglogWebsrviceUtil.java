@@ -32,14 +32,16 @@ public class ReadbglogWebsrviceUtil {
         reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, password);
 
         DTREADBGLOGReq dtreadbglogReq = new DTREADBGLOGReq();
+        DTREADBGLOGReq.IDATA idata = new DTREADBGLOGReq.IDATA();
+        idata.setZBZ1("");
+        idata.setZBZ2("");
+        idata.setOPTION("");
+        idata.setHIGH("");
+        idata.setFILED("UUID");
+        idata.setSIGN("");
+        idata.setLOW(param.getUuid());
         dtreadbglogReq.setREVERSE(param.getReverse());
-        dtreadbglogReq.getIDATA().get(0).setFILED("UUID");
-        dtreadbglogReq.getIDATA().get(0).setLOW(param.getUuid());
-        dtreadbglogReq.getIDATA().get(0).setHIGH("");
-        dtreadbglogReq.getIDATA().get(0).setOPTION("");
-        dtreadbglogReq.getIDATA().get(0).setSIGN("");
-        dtreadbglogReq.getIDATA().get(0).setZBZ1("");
-        dtreadbglogReq.getIDATA().get(0).setZBZ2("");
+        dtreadbglogReq.getIDATA().add(idata);
 
         DTREADBGLOGRes res = port.siREADBGLOGSenderSyn(dtreadbglogReq);
         if (res.getRETURN().getMSGTY().equals("E")){

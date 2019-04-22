@@ -25,7 +25,7 @@ package yj.core.webservice_readbglog.sender;
  * </p>
  *
  */
-@WebServiceClient(name = "SI_READBGLOG_Sender_SynService", targetNamespace = "http://www.cq-yj.com/HAP/READBGLOG/Sender", wsdlLocation = "http://pidev1:50000/dir/wsdl?p=ic/983815e93c7033bab1117641bf7ebc57")
+@WebServiceClient(name = "SI_READBGLOG_Sender_SynService", targetNamespace = "http://www.cq-yj.com/HAP/READBGLOG/Sender", wsdlLocation = "resources/readbglog.xml")
 public class SIREADBGLOGSenderSynService extends Service {
 
     public final static URL WSDL_LOCATION;
@@ -33,7 +33,7 @@ public class SIREADBGLOGSenderSynService extends Service {
 
     static {
         URL url = null;
-        url = SIREADBGLOGSenderSynService.class.getClassLoader().getResource("queryXhcard.xml");
+        url = SIREADBGLOGSenderSynService.class.getClassLoader().getResource("readbglog.xml");
         System.out.println(url);
         WSDL_LOCATION = url;
     }
