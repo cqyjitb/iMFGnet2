@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.wmsxhcard.mapper.XhcardMapper">
+    <resultMap id="BaseResultMap" type="yj.core.wmsxhcard.dto.Xhcard">
+        <result column="WERKS" property="werks" jdbcType="VARCHAR" />
+        <result column="ZXHBAR" property="zxhbar" jdbcType="VARCHAR" />
+        <result column="MATNR" property="matnr" jdbcType="VARCHAR" />
+        <result column="LIFNR" property="lifnr" jdbcType="VARCHAR" />
+        <result column="SORTL" property="sortl" jdbcType="VARCHAR" />
+        <result column="LIFNR_DATE" property="lifnrDate" jdbcType="DATE" />
+        <result column="LIFNR_LOTN" property="lifnrLotn" jdbcType="VARCHAR" />
+        <result column="ZXHZT" property="zxhzt" jdbcType="VARCHAR" />
+        <result column="LGORT" property="lgort" jdbcType="VARCHAR" />
+        <result column="MENGE" property="menge" jdbcType="DECIMAL" />
+        <result column="MEINS" property="meins" jdbcType="VARCHAR" />
+        <result column="ZXHWZ" property="zxhwz" jdbcType="VARCHAR" />
+        <result column="ZTXT" property="ztxt" jdbcType="VARCHAR" />
+        <result column="ZBQBD" property="zbqbd" jdbcType="VARCHAR" />
+        <result column="CHARGKC" property="chargkc" jdbcType="VARCHAR" />
+        <result column="ZSXWC" property="zsxwc" jdbcType="VARCHAR" />
+        <result column="LINE_ID" property="lineId" jdbcType="VARCHAR" />
+    </resultMap>
+
+
+</mapper>
