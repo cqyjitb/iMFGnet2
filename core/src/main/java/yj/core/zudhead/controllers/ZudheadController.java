@@ -349,14 +349,24 @@ public class ZudheadController extends BaseController {
                         parameters.setATTR5("");
                         parameters.setATTR6("");
                         parameters.setATTR7("");
+                        parameters.setATTR8("");
+                        parameters.setATTR9("");
+                        parameters.setATTR10("");
+                        parameters.setATTR11("");
+                        parameters.setATTR12("");
+                        parameters.setATTR13("");
+                        parameters.setATTR14("");
+                        parameters.setATTR15("");
                         parameters.setUSERNAME(createdBy);
                         parameters.setZTPBAR("");
                         parameters.setLSTVOR("X");
                         parameters.setFSTVOR("");
                         parameters.setZPRTP("4");
-                        parameters.setAUART("");
+                        parameters.setAUART(cardhjj.getAuart());
                         parameters.setARBPL(cardt.getArbpl());
                         parameters.setCHARG("");
+                        UUID uuid2 = java.util.UUID.randomUUID();
+                        parameters.setBGUUID(uuid2.toString());
                         listparam.add(parameters);
                         ParamAndQjjlh paramAndQjjlh = new ParamAndQjjlh();
                         //
@@ -369,6 +379,8 @@ public class ZudheadController extends BaseController {
                         paramAndQjjlh.setQjjlh(zudlist.getZqjjlh());
                         listparamQjjlh.add(paramAndQjjlh);
                     }
+
+
                 }else{
                     DTBAOGONGParameters parameters = new DTBAOGONGParameters();
                     parameters.setPWERK("1001");

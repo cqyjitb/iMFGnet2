@@ -45,8 +45,9 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
-    @Controller
+@Controller
     public class QcauditprocessheaderController extends BaseController{
 
     @Autowired
@@ -304,7 +305,16 @@ import java.util.List;
             parameters.setATTR4("");//报工类别
             parameters.setATTR5("");
             parameters.setATTR6("");
-            parameters.setATTR7("");
+            parameters.setATTR8("");
+            parameters.setATTR9("");
+            parameters.setATTR10("");
+            parameters.setATTR11("");
+            parameters.setATTR12("");
+            parameters.setATTR13("");
+            parameters.setATTR14("");
+            parameters.setATTR15("");
+            UUID uuid2 = java.util.UUID.randomUUID();
+            parameters.setBGUUID(uuid2.toString());
             parameters.setUSERNAME(createdBy);
             parameters.setZTPBAR("");
             parameters.setLSTVOR("X");
@@ -358,6 +368,7 @@ import java.util.List;
             ConfirmationWebserviceUtilNew confirmationWebserviceUtilNew = new ConfirmationWebserviceUtilNew();
             DTBAOGONGReturnResult returnResult = new DTBAOGONGReturnResult();
             returnResult = confirmationWebserviceUtilNew.receiveConfirmation(parameters, parametersitems);
+            Date inDate = new Date();
             Log log = new Log();
             Result result = new Result();
             InputLog inputLog = new InputLog();
@@ -382,6 +393,7 @@ import java.util.List;
             inputLog.setAttr5(parameters.getATTR5());
             inputLog.setAttr6(parameters.getATTR6());
             inputLog.setAttr7(parameters.getATTR7());
+            inputLog.setBguuid(parameters.getBGUUID());
             inputLog.setUserName(parameters.getUSERNAME());
             inputLog.setMaterial(returnResult.getMATNR());
             inputLog.setMatDesc(returnResult.getMAKTX());
@@ -398,6 +410,8 @@ import java.util.List;
             result.setFevor(returnResult.getFEVOR());
             result.setFevorTxt(returnResult.getTXT());
             result.setOperationDesc(returnResult.getLTXA1());
+            log.setCreationDate(inDate);
+            log.setLastUpdateDate(new Date());
             log.setMsgty(returnResult.getMSGTY());
             log.setMsgtx(returnResult.getMESSAGE());
             log.setTranType("0");
