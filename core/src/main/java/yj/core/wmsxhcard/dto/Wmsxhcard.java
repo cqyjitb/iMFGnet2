@@ -9,8 +9,8 @@ import com.hand.hap.system.dto.BaseDTO;
 import java.util.Date;
 import org.hibernate.validator.constraints.NotEmpty;
 @ExtensionAttribute(disable=true)
-@Table(name = "wms_xhcard")
-public class Xhcard extends BaseDTO {
+@Table(name = "wip_wmsxhcard")
+public class Wmsxhcard extends BaseDTO {
      @NotEmpty
       private String werks; //工厂
 
