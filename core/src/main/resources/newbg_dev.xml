@@ -15,7 +15,7 @@
             <xsd:complexType name="DT_BAOGONG_Send_Req">
                 <xsd:annotation>
                     <xsd:documentation xml:lang="EN">报工接收数据结构</xsd:documentation>
-                    <xsd:appinfo source="http://sap.com/xi/VersionID">e2df9d8da9d111e884ce0000002ad1ea</xsd:appinfo>
+                    <xsd:appinfo source="http://sap.com/xi/VersionID">ca843342630511e9cc870000002ad1ea</xsd:appinfo>
                 </xsd:annotation>
                 <xsd:sequence>
                     <xsd:element name="ITEM" maxOccurs="unbounded">
@@ -217,6 +217,15 @@
                                         <xsd:documentation>班标</xsd:documentation>
                                     </xsd:annotation>
                                 </xsd:element>
+                                <xsd:element name="ATTR8" type="xsd:string"/>
+                                <xsd:element name="ATTR9" type="xsd:string"/>
+                                <xsd:element name="ATTR10" type="xsd:string"/>
+                                <xsd:element name="ATTR11" type="xsd:string"/>
+                                <xsd:element name="ATTR12" type="xsd:string"/>
+                                <xsd:element name="ATTR13" type="xsd:string"/>
+                                <xsd:element name="ATTR14" type="xsd:string"/>
+                                <xsd:element name="ATTR15" type="xsd:string"/>
+                                <xsd:element name="UUID" type="xsd:string"/>
                                 <xsd:element name="ZPRTP" type="xsd:string">
                                     <xsd:annotation>
                                         <xsd:appinfo source="http://sap.com/xi/TextID">
@@ -661,12 +670,12 @@
     <wsdl:service name="SI_BAOGONG_Sender_SyncService">
         <wsdl:port name="HTTP_Port" binding="p1:SI_BAOGONG_Sender_SyncBinding">
             <soap:address
-                    location="http://piprd1:52000/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_HAP_PRD&amp;receiverParty=&amp;receiverService=&amp;interface=SI_BAOGONG_Sender_Sync&amp;interfaceNamespace=http%3A%2F%2Fwww.cq-yj.com%2FHAP%2FBAOGONG%2FSender"
+                    location="http://pidev1:50000/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_HAP_DEV&amp;receiverParty=&amp;receiverService=&amp;interface=SI_BAOGONG_Sender_Sync&amp;interfaceNamespace=http%3A%2F%2Fwww.cq-yj.com%2FHAP%2FBAOGONG%2FSender"
                     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
         </wsdl:port>
         <wsdl:port name="HTTPS_Port" binding="p1:SI_BAOGONG_Sender_SyncBinding">
             <soap:address
-                    location="https://piprd1:52001/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_HAP_PRD&amp;receiverParty=&amp;receiverService=&amp;interface=SI_BAOGONG_Sender_Sync&amp;interfaceNamespace=http%3A%2F%2Fwww.cq-yj.com%2FHAP%2FBAOGONG%2FSender"
+                    location="https://pidev1:50001/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_HAP_DEV&amp;receiverParty=&amp;receiverService=&amp;interface=SI_BAOGONG_Sender_Sync&amp;interfaceNamespace=http%3A%2F%2Fwww.cq-yj.com%2FHAP%2FBAOGONG%2FSender"
                     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
         </wsdl:port>
     </wsdl:service>
