@@ -404,6 +404,14 @@ public class ZudheadController extends BaseController {
                     parameters.setATTR5("");
                     parameters.setATTR6("");
                     parameters.setATTR7("");
+                    parameters.setATTR8("");
+                    parameters.setATTR9("");
+                    parameters.setATTR10("");
+                    parameters.setATTR11("");
+                    parameters.setATTR12("");
+                    parameters.setATTR13("");
+                    parameters.setATTR14("");
+                    parameters.setATTR15("");
                     parameters.setUSERNAME(createdBy);
                     parameters.setZTPBAR("");
                     parameters.setLSTVOR("X");
@@ -412,6 +420,8 @@ public class ZudheadController extends BaseController {
                     parameters.setAUART(cardhjj.getAuart());
                     parameters.setARBPL(cardt.getArbpl());
                     parameters.setCHARG("");
+                    UUID uuid2 = java.util.UUID.randomUUID();
+                    parameters.setBGUUID(uuid2.toString());
                     listparam.add(parameters);
                     ParamAndQjjlh paramAndQjjlh = new ParamAndQjjlh();
                     paramAndQjjlh.setNum(0);
@@ -472,8 +482,11 @@ public class ZudheadController extends BaseController {
                         }
                     }
                 }
+
+
                 DTBAOGONGReturnResult returnResult = new DTBAOGONGReturnResult();
                 returnResult = confirmationWebserviceUtilNew.receiveConfirmation(listparam.get(i), parametersitems);
+                Date inDate = new Date();
                 Log log = new Log();
                 Result result = new Result();
                 InputLog inputLog = new InputLog();
@@ -501,6 +514,7 @@ public class ZudheadController extends BaseController {
                 inputLog.setUserName(listparam.get(i).getUSERNAME());
                 inputLog.setMaterial(returnResult.getMATNR());
                 inputLog.setMatDesc(returnResult.getMAKTX());
+                inputLog.setBguuid(listparam.get(i).getBGUUID());
                 inputLogService.insertInputLog(inputLog);
                 Long id = inputLogService.selectNextId();
                 result.setPlant(inputLog.getPlant());
@@ -518,6 +532,8 @@ public class ZudheadController extends BaseController {
                 log.setMsgtx(returnResult.getMESSAGE());
                 log.setTranType("0");
                 log.setRefId(id);
+                log.setCreationDate(inDate);
+                log.setLastUpdateDate(new Date());
                 log.setCreated_by(inputLog.getCreated_by());
                 resultService.insertResult(result);
                 logService.insertLog(log);
