@@ -32,6 +32,8 @@ import yj.core.dispatch.dto.InputLog;
 import yj.core.dispatch.service.IInputLogService;
 import yj.core.marc.dto.Marc;
 import yj.core.marc.service.IMarcService;
+import yj.core.resb.dto.Resb;
+import yj.core.resb.service.IResbService;
 import yj.core.sccl.dto.Sccl;
 import yj.core.sccl.service.IScclService;
 import yj.core.wiparea.dto.Area;
@@ -69,6 +71,8 @@ public class CardhController
     private ITrasferService trasferService;
     @Autowired
     private IZwipqService zwipqService;
+    @Autowired
+    private IResbService resbService;
 
 
     @RequestMapping({"/sap/cardh/query"})
@@ -234,6 +238,32 @@ public class CardhController
             rs.setMessage("订单状态为结算不允许创建流转卡!");
             return rs;
         }
+
+        //检查机加生产订单BOM比例
+        List<Resb> listresb = new ArrayList<>();
+        if (afkotmp.getAuart().equals("QP01") || afkotmp.getAuart().equals("QP04")){
+            listresb = resbService.selectByRsnum(afkotmp.getRsnum());
+            if (listresb.size() > 0){
+                ResponseData rs = new ResponseData();
+                rs.setSuccess(false);
+                rs.setMessage("没有获取到生产订单对应的产品BOM信息，请联系管理员。");
+            }else{
+                String l_error = "";
+                for (int i=0;i<listresb.size();i++){
+                    if (afkotmp.getGamng() % listresb.get(i).getBdmng() != 0){
+                        l_error = "X";
+                        break;
+                    }
+                }
+                if (l_error.equals("X")){
+                    ResponseData rs = new ResponseData();
+                    rs.setSuccess(false);
+                    rs.setMessage("没有获取到生产订单对应的产品BOM信息，请联系管理员。");
+                }
+
+            }
+        }
+
 
 
         Marc marc = new Marc();

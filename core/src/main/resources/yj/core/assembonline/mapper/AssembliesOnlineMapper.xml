@@ -23,7 +23,30 @@
         <result column="ZQJQTY" property="zqjqty" jdbcType="DECIMAL" />
         <result column="ZDFTQTY" property="zdftqty" jdbcType="DECIMAL" />
         <result column="UNITQTY" property="unitqty" jdbcType="DECIMAL" />
+        <result column="CREATION_DATE" property="creationDate" jdbcType="VARCHAR" />
+        <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
+        <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="VARCHAR" />
+        <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
     </resultMap>
 
+    <insert id="insertNewData" parameterType="yj.core.assembonline.dto.AssembliesOnline">
+        insert into wip_assemblies_online(ASSY_ID,OPERATION_CODE,VORNR,MATNR,LINE_ID,MATNR2,CHARG,LGORT,LIFNR,SORTL,
+        LIFNR_DATE,LIFNR_LOTN,CARTON_TYP,ZXHBAR,ZSXNUM,GMEIN,ZZXQTY,ZQJQTY,ZDFTQTY,UNITQTY,CREATION_DATE,CREATED_BY)
+        VALUES (#{assyId},#{operationCode},#{vornr},#{matnr},#{lineId},#{matnr2},#{charg},#{lgort},#{lifnr},#{sortl},#{lifnrDate}
+        ,#{lifnrLotn},#{cartonTyp},#{zxhbar},#{zsxnum},#{gmein},#{zzxqty},#{zqjqty},#{zdftqty},#{unitqty},#{creationDate},#{createdBy})
+    </insert>
 
+    <select id="selectByZxhbar" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_assemblies_online
+        <where>
+            ZXHBAR = #{zxhbar}
+        </where>
+    </select>
+
+    <delete id="deleteData" parameterType="java.lang.String">
+        delete FROM  wip_assemblies_online
+        <where>
+            ASSY_ID = #{assid}
+        </where>
+    </delete>
 </mapper>

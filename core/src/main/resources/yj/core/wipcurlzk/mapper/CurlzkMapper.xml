@@ -49,4 +49,11 @@
             <!--LINE_ID != #{lineId}-->
         <!--</where>-->
     </select>
+
+    <select id="selectById2" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select * from wip_curlzk
+        <where>
+            LINE_ID = #{line_id}
+        </where>
+    </select>
 </mapper>

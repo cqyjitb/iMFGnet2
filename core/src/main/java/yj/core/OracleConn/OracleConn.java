@@ -52,8 +52,7 @@ public class OracleConn {
 //
 //            System.out.println(s);
 
-        UUID uuid = java.util.UUID.randomUUID();
-        System.out.println(uuid);
+        System.out.println(100 % 2);
 
 
     }

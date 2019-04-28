@@ -24,4 +24,9 @@ public class LineioCfgServiceImpl extends BaseServiceImpl<LineioCfg> implements 
     public LineioCfg selectBYLineVornr(String line_id, String werks, String vornr) {
         return lineioCfgMapper.selectBYLineVornr(line_id,werks,vornr);
     }
+
+    @Override
+    public List<LineioCfg> selectinoutcfgforzbjsx(String line_id, String werks) {
+        return lineioCfgMapper.selectinoutcfgforzbjsx(line_id,werks);
+    }
 }

@@ -6,4 +6,7 @@ import yj.core.assembonline.dto.AssembliesOnline;
 
 public interface IAssembliesOnlineService extends IBaseService<AssembliesOnline>, ProxySelf<IAssembliesOnlineService>{
 
+    int insertNewData(AssembliesOnline assembliesOnline);
+    AssembliesOnline selectByZxhbar(String zxhbar);
+    int deleteData(String assid);
 }

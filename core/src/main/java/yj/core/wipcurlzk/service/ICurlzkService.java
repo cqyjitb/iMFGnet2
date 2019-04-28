@@ -10,6 +10,6 @@ import java.util.List;
 public interface ICurlzkService extends IBaseService<Curlzk>, ProxySelf<ICurlzkService>{
     Curlzk selectById(Long line_id,String classgrp);
     int updateZxhbar(Curlzk dto);
-
+    Curlzk selectById2(Long line_id);
     List<Curlzk> selectAllLinesforZxhbar(Long line_id);
 }

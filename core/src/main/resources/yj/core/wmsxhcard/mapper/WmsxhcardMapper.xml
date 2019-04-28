@@ -6,6 +6,7 @@
         <result column="WERKS" property="werks" jdbcType="VARCHAR" />
         <result column="ZXHBAR" property="zxhbar" jdbcType="VARCHAR" />
         <result column="MATNR" property="matnr" jdbcType="VARCHAR" />
+        <result column="MAKTX" property="maktx" jdbcType="VARCHAR" />
         <result column="LIFNR" property="lifnr" jdbcType="VARCHAR" />
         <result column="SORTL" property="sortl" jdbcType="VARCHAR" />
         <result column="LIFNR_DATE" property="lifnrDate" jdbcType="DATE" />
@@ -22,5 +23,21 @@
         <result column="LINE_ID" property="lineId" jdbcType="VARCHAR" />
     </resultMap>
 
+    <select id="selectByBarcode" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_wmsxhcard
+        <where>
+            ZXHBAR = #{zxhbar}
+            <if test="werks != null">
+                AND WERKS = #{werks}
+            </if>
+        </where>
+    </select>
 
+    <update id="updateZsxwc" parameterType="yj.core.wmsxhcard.dto.Wmsxhcard">
+        update wip_wmsxhcard  set ZSXWC = #{zsxwc}
+        <where>
+            WERKS = #{werks}
+            and ZXHBAR = #{zxhbar}
+        </where>
+    </update>
 </mapper>

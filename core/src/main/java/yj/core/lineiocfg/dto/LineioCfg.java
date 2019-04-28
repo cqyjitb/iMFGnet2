@@ -31,6 +31,8 @@ public class LineioCfg extends BaseDTO {
 
       private Date creationDate; //创建时间
 
+      private String vornr;
+
      @NotNull
       private Long createdBy; //创建人
 
@@ -117,5 +119,13 @@ public class LineioCfg extends BaseDTO {
 
     public void setStartopoint(String startopoint) {
         this.startopoint = startopoint;
+    }
+
+    public String getVornr() {
+        return vornr;
+    }
+
+    public void setVornr(String vornr) {
+        this.vornr = vornr;
     }
 }

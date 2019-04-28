@@ -52,6 +52,15 @@ public class AssembliesOnline extends BaseDTO {
 
       private Double unitqty; //BOM标准用量
 
+        private Date creationDate; //创建时间
+
+
+        private Long createdBy; //创建人
+
+        private Date lastUpdateDate;
+
+        private Long lastUpdatedBy; //更新人
+
 
      public void setAssyId(String assyId){
          this.assyId = assyId;
@@ -213,4 +222,43 @@ public class AssembliesOnline extends BaseDTO {
          return unitqty;
      }
 
-     }
+    @Override
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    @Override
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    @Override
+    public Long getCreatedBy() {
+        return createdBy;
+    }
+
+    @Override
+    public void setCreatedBy(Long createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    @Override
+    public Long getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+
+    @Override
+    public void setLastUpdatedBy(Long lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+    @Override
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
+    }
+
+    @Override
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
+}

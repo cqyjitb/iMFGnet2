@@ -10,6 +10,6 @@ import java.util.List;
 public interface CurlzkMapper extends Mapper<Curlzk>{
     Curlzk selectById(@Param("line_id") Long line_id,@Param("classgrp") String classgrp);
     int updateZxhbar(Curlzk dto);
-
+    Curlzk selectById2(Long line_id);
     List<Curlzk> selectAllLinesforZxhbar(Long line_id);
 }

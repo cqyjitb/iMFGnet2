@@ -8,5 +8,6 @@ import java.util.List;
 
 public interface LineioCfgMapper extends Mapper<LineioCfg>{
     List<LineioCfg> selectinoutcfg(@Param("line_id") String line_id,@Param("werks") String werks);
+    List<LineioCfg> selectinoutcfgforzbjsx(@Param("line_id") String line_id,@Param("werks") String werks);
     LineioCfg selectBYLineVornr(@Param("line_id") String line_id,@Param("werks") String werks,@Param("vornr") String vornr);
 }

@@ -30,4 +30,9 @@ public class CurlzkServiceImpl extends BaseServiceImpl<Curlzk> implements ICurlz
     public List<Curlzk> selectAllLinesforZxhbar(Long line_id) {
         return curlzkMapper.selectAllLinesforZxhbar(line_id);
     }
+
+    @Override
+    public Curlzk selectById2(Long line_id) {
+        return curlzkMapper.selectById2(line_id);
+    }
 }

@@ -11,7 +11,7 @@ public interface IResbService extends IBaseService<Resb>, ProxySelf<IResbService
     int updateByRsnum(Resb resb);
     int insertByRsnum(Resb resb);
     List<Resb> selectByRsnum(String rsnum);
-
+    List<Resb> selectByRsnumForzpjsx(String rsnum);
     /**
      *  根据 aufpl 删除预留记录 917110140
      * @param aufpl

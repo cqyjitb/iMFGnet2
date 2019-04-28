@@ -8,6 +8,7 @@
         <result column="ITEM" property="item" jdbcType="VARCHAR" />
         <result column="POINT_NUM" property="pointNum" jdbcType="VARCHAR" />
         <result column="INTVLQTY" property="intvlqty" jdbcType="VARCHAR" />
+        <result column="VORNR" property="vornr" jdbcType="VARCHAR" />
         <result column="STARTOPOINT" property="intvlqty" jdbcType="VARCHAR" />
         <result column="CREATION_DATE" property="creationDate" jdbcType="DATE" />
         <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
@@ -21,6 +22,17 @@
               WERKS = #{werks}
               and LINE_ID = #{line_id}
           </where>
+        order by POINT_NUM ASC;
+    </select>
+
+    <select id="selectinoutcfgforzbjsx" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_lineio_cfg
+        <where>
+            WERKS = #{werks}
+            and LINE_ID = #{line_id}
+            and VORNR != ''
+            and VORNR IS NOT NULL
+        </where>
         order by POINT_NUM ASC;
     </select>
 

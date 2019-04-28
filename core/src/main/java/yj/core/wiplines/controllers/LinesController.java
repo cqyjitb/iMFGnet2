@@ -10,6 +10,8 @@ import yj.core.afko.dto.Afko;
 import yj.core.afko.service.IAfkoService;
 import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.service.ICardhService;
+import yj.core.lineiocfg.dto.LineioCfg;
+import yj.core.lineiocfg.service.ILineioCfgService;
 import yj.core.marc.dto.Marc;
 import yj.core.marc.service.IMarcService;
 import yj.core.resb.dto.Resb;
@@ -41,6 +43,8 @@ public class LinesController extends BaseController {
     private ICardhService cardhService;
     @Autowired
     private IMarcService marcService;
+    @Autowired
+    private ILineioCfgService lineioCfgService;
 
     @RequestMapping(value = "/wip/lines/query")
     @ResponseBody
@@ -335,6 +339,45 @@ public class LinesController extends BaseController {
         }else{
             rs.setSuccess(false);
         }
+        return rs;
+    }
+
+    /**
+     *  装配件上线产线扫描ID
+     * @param request
+     * @param lineId
+     * @return
+     */
+    @RequestMapping(value = {"/wip/lines/selectByLineIdzpjsx"}, method = {RequestMethod.GET})
+    @ResponseBody
+    public ResponseData selectByLineIdzpjsx(HttpServletRequest request,String lineId){
+        ResponseData rs = new ResponseData();
+        List list = new ArrayList();
+        String lineIdtmp = "";
+        if (!lineId.equals("")){
+            lineIdtmp = lineId.replaceAll("L","");
+            lineIdtmp.trim();
+            lineId = lineIdtmp;
+        }
+        Lines lines = service.selectById(Long.valueOf(lineId));
+        if (lines != null){
+            list.add(lines);
+            List<LineioCfg> listlineiocfg = new ArrayList<>();
+            listlineiocfg = lineioCfgService.selectinoutcfgforzbjsx(lineIdtmp,lines.getWerks());
+            if (listlineiocfg.size() == 0){
+                rs.setSuccess(false);
+                rs.setMessage("未能获取到产线配置数据，请联系管理员！");
+                return rs;
+            }else{
+                list.add(listlineiocfg);
+                rs.setRows(list);
+            }
+        }else{
+            rs.setSuccess(false);
+            rs.setMessage("产线不存在，请确认产线二维码！");
+        }
+
+
         return rs;
     }
 }

@@ -48,8 +48,17 @@ public class Wmsxhcard extends BaseDTO {
 
       private String lineId; //机加上线生产线ID
 
+      private String maktx;
 
-     public void setWerks(String werks){
+    public String getMaktx() {
+        return maktx;
+    }
+
+    public void setMaktx(String maktx) {
+        this.maktx = maktx;
+    }
+
+    public void setWerks(String werks){
          this.werks = werks;
      }
 
