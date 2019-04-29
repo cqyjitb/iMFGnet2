@@ -51,8 +51,8 @@ public class OracleConn {
 //        String s = sd4.format(date);
 //
 //            System.out.println(s);
-
-        System.out.println(100 % 2);
+        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+        System.out.println(sdf.format(new Date()));
 
 
     }

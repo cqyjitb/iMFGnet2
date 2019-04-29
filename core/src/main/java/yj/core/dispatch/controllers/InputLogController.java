@@ -1,5 +1,6 @@
 package yj.core.dispatch.controllers;
 
+import com.hand.hap.account.dto.User;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.system.dto.ResponseData;
@@ -246,7 +247,7 @@ public class InputLogController extends BaseController {
         inputLog.setCreated_by(createdBy1);
 
         String barcode = request.getParameter("a");
-        String postingDate = request.getParameter("b");
+//        String postingDate = request.getParameter("b");
         String orderno = request.getParameter("c");
         String operation = request.getParameter("d");
         String yeild = request.getParameter("e");
@@ -297,7 +298,8 @@ public class InputLogController extends BaseController {
         inputLog.setLine(line);
         inputLog.setModelNo(modelNo);
         inputLog.setPlant(plant);
-        inputLog.setPostingDate(postingDate);
+        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+        inputLog.setPostingDate(sdf.format(new Date()));
         inputLog.setDispatchLogicID(dispatchLogicID);
         inputLog.setCreated_by(createdBy);
 
@@ -397,7 +399,7 @@ public class InputLogController extends BaseController {
         inputLog.setPostingDate(curdate);
         inputLog.setDispatchLogicID(barcode.substring(14, 18));
         inputLog.setCreated_by(createdBy);
-        inputLog.setAttr1(createdBy);
+        inputLog.setAttr1(userName);
         inputLog.setAttr2("");
         inputLog.setAttr3("");
         inputLog.setAttr4("");
@@ -629,7 +631,7 @@ public class InputLogController extends BaseController {
         inputLog.setAttr3(attr3);
         inputLog.setAttr4(attr4);
         inputLog.setAttr5(attr5);
-        inputLog.setAttr6(attr6);
+        inputLog.setAttr6(postingDate);
         inputLog.setAttr7(attr7);
         inputLog.setAttr8(attr8);
         inputLog.setAttr9(attr9);
@@ -639,6 +641,7 @@ public class InputLogController extends BaseController {
         inputLog.setAttr13(attr13);
         inputLog.setAttr14(attr14);
         inputLog.setAttr15(attr15);
+        User user = new User();
         inputLog.setUserName(userName);
 
         //获取流转卡数据

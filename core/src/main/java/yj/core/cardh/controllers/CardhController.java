@@ -9,13 +9,18 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
+import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.bcel.generic.IF_ACMPEQ;
 import org.apache.http.protocol.HTTP;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.TransactionDefinition;
+import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.support.DefaultTransactionDefinition;
 import org.springframework.web.bind.annotation.*;
 import yj.core.afko.dto.Afko;
 import yj.core.afko.service.IAfkoService;
@@ -38,6 +43,8 @@ import yj.core.sccl.dto.Sccl;
 import yj.core.sccl.service.IScclService;
 import yj.core.wiparea.dto.Area;
 import yj.core.wiparea.service.IAreaService;
+import yj.core.wipcurlzk.dto.Curlzk;
+import yj.core.wipcurlzk.service.ICurlzkService;
 import yj.core.wiptrasfer.dto.Trasfer;
 import yj.core.wiptrasfer.service.ITrasferService;
 import yj.core.xhcard.dto.Xhcard;
@@ -73,6 +80,10 @@ public class CardhController
     private IZwipqService zwipqService;
     @Autowired
     private IResbService resbService;
+    @Resource(name = "transactionManager")
+    private DataSourceTransactionManager transactionManager;
+    @Autowired
+    private ICurlzkService curlzkService;
 
 
     @RequestMapping({"/sap/cardh/query"})
@@ -242,11 +253,12 @@ public class CardhController
         //检查机加生产订单BOM比例
         List<Resb> listresb = new ArrayList<>();
         if (afkotmp.getAuart().equals("QP01") || afkotmp.getAuart().equals("QP04")){
-            listresb = resbService.selectByRsnum(afkotmp.getRsnum());
-            if (listresb.size() > 0){
+            listresb = resbService.selectByRsnumForzpjsx(afkotmp.getRsnum());
+            if (listresb.size() == 0){
                 ResponseData rs = new ResponseData();
                 rs.setSuccess(false);
                 rs.setMessage("没有获取到生产订单对应的产品BOM信息，请联系管理员。");
+                return rs;
             }else{
                 String l_error = "";
                 for (int i=0;i<listresb.size();i++){
@@ -258,7 +270,8 @@ public class CardhController
                 if (l_error.equals("X")){
                     ResponseData rs = new ResponseData();
                     rs.setSuccess(false);
-                    rs.setMessage("没有获取到生产订单对应的产品BOM信息，请联系管理员。");
+                    rs.setMessage("生产订单BOM比例异常，不允许创建流转卡，请联系管理员。");
+                    return rs;
                 }
 
             }
@@ -646,23 +659,52 @@ public class CardhController
         int resultcardt = 0;
         int resultcardh = 0;
         int resultxh = 0;
+        int resultCardhst = 0;
         ResponseData result = new ResponseData();
         List<Xhcard> xhcards = new ArrayList<>();
         List<Cardt> cardts = new ArrayList<>();
         List<Cardhst> listcardhst = new ArrayList<>();
+        String l_error = "";
         if (dto.size() > 0) {
             for (int i = 0; i < dto.size(); i++) {
+                List<Curlzk> listcur = new ArrayList<>();
+                listcur = curlzkService.selectByZpgdbar(dto.get(i).getZpgdbar());
+                if (listcur.size() > 0){
+
+                    result.setSuccess(false);
+                    result.setCode("E");
+                    result.setMessage("流转卡:"+dto.get(i).getZpgdbar()+"已绑定为机加当前流转卡，不允许删除！");
+                    l_error = "X";
+                    break;
+                }
+
+
 
                 Cardhst cardhst = new Cardhst();
                 String auart = dto.get(i).getAuart().substring(0, 1);
                 if (auart.equals("Q")){
                     int m = zwipqService.selectByJjzpgdbar(dto.get(i).getZpgdbar());
                     if (m > 0){
-                        continue;//该机加流转卡不能删除
+                        result.setSuccess(false);
+                        result.setCode("E");
+                        result.setMessage("流转卡:"+dto.get(i).getZpgdbar()+"该流转卡已上线使用，不允许删除！");
+                        l_error = "X";
+                        break;
+                    }
+                }else{
+                    Cardh cardh = new Cardh();
+                    cardh = service.selectByBarcode(dto.get(i).getZpgdbar());
+                    if (!cardh.getStatus().equals("CRTD") && !cardh.getStatus().equals("PRNT")){
+                        result.setSuccess(false);
+                        result.setCode("E");
+                        result.setMessage("流转卡:"+dto.get(i).getZpgdbar()+"该流转卡已经使用，不允许删除！");
+                        l_error = "X";
+                        break;
                     }
                 }
+
                 cardhst.setZpgdbar(dto.get(i).getZpgdbar());
-                listcardhst.add(cardhst);
+                listcardhst = cardhstService.selectByBarcode(dto.get(i).getZpgdbar());
 
                 if (auart.equals("Y")) {
                     Xhcard xhcard = new Xhcard();
@@ -693,31 +735,104 @@ public class CardhController
                 cardt.setZpgdbar(dto.get(i).getZpgdbar());
                 cardts.add(cardt);
             }
-            if (xhcards.size() > 0) {
-                resultxh = xhcardService.deleteXhcard(xhcards);
-                if (resultxh == dto.size()) {
-                    resultcardt = cardtService.deleteCardt(cardts);
-                    resultcardh = service.deleteCardh(dto);
-                    cardhstService.deleteAll(listcardhst);
 
-                    result.setSuccess(true);
-                    result.setCode("S");
-                    result.setMessage("共删除流转卡" + resultcardh + "条，工序条码" + resultcardt + "条，箱号" + resultxh + "条");
+            if (l_error.equals("")){
+                DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+                def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+                TransactionStatus status = transactionManager.getTransaction(def); // 获得事务状态
+                try{
+                    if (xhcards.size() > 0 && l_error.equals("")) {
+                        resultxh = xhcardService.deleteXhcard(xhcards);
+                        resultcardt = cardtService.deleteCardt(cardts);
+                        resultcardh = service.deleteCardh(dto);
+                        resultCardhst = cardhstService.deleteAll(listcardhst);
+
+                        if (resultxh == xhcards.size() && resultcardt == cardts.size() && resultcardh == dto.size() && resultCardhst == listcardhst.size()){
+                            transactionManager.commit(status);
+                            result.setSuccess(true);
+                            result.setCode("S");
+                            result.setMessage("共删除流转卡" + resultcardh + "条，工序条码" + resultcardt + "条，箱号" + resultxh + "条");
+                            return result;
+                        }else{
+                            if (resultxh != xhcards.size()){
+                                transactionManager.rollback(status);
+                                result.setSuccess(false);
+                                result.setCode("E");
+                                result.setMessage("删除箱号，数据库操作失败！请联系管理员！");
+                                return result;
+                            }
+
+                            if (resultcardt != cardts.size()){
+                                transactionManager.rollback(status);
+                                result.setSuccess(false);
+                                result.setCode("E");
+                                result.setMessage("删除工序明细记录，数据库操作失败！请联系管理员！");
+                                return result;
+                            }
+
+                            if (resultcardh != dto.size()){
+                                transactionManager.rollback(status);
+                                result.setSuccess(false);
+                                result.setCode("E");
+                                result.setMessage("删除流转卡主记录，数据库操作失败！请联系管理员！");
+                                return result;
+                            }
+
+                            if (resultCardhst != listcardhst.size()){
+                                transactionManager.rollback(status);
+                                result.setSuccess(false);
+                                result.setCode("E");
+                                result.setMessage("删除流转卡状态记录，数据库操作失败！请联系管理员！");
+                                return result;
+                            }
+                        }
+                    }else{
+                        resultcardt = cardtService.deleteCardt(cardts);
+                        resultcardh = service.deleteCardh(dto);
+                        resultCardhst = cardhstService.deleteAll(listcardhst);
+                        if (resultcardt == cardts.size() && resultcardh == dto.size() && resultCardhst == listcardhst.size()){
+                            transactionManager.commit(status);
+                            result.setSuccess(true);
+                            result.setCode("S");
+                            result.setMessage("共删除流转卡" + resultcardh + "条，工序条码" + resultcardt);
+                            return result;
+                        }else{
+
+                            if (resultcardt != cardts.size()){
+                                transactionManager.rollback(status);
+                                result.setSuccess(false);
+                                result.setCode("E");
+                                result.setMessage("删除工序明细记录，数据库操作失败！请联系管理员！");
+                                return result;
+                            }
+
+                            if (resultcardh != dto.size()){
+                                transactionManager.rollback(status);
+                                result.setSuccess(false);
+                                result.setCode("E");
+                                result.setMessage("删除流转卡主记录，数据库操作失败！请联系管理员！");
+                                return result;
+                            }
+
+                            if (resultCardhst != listcardhst.size()){
+                                transactionManager.rollback(status);
+                                result.setSuccess(false);
+                                result.setCode("E");
+                                result.setMessage("删除流转卡状态记录，数据库操作失败！请联系管理员！");
+                                return result;
+                            }
+
+                        }
+                    }
+
+                }catch (Exception e){
+                    transactionManager.rollback(status);
+                    result.setSuccess(false);
+                    result.setCode("E");
+                    result.setMessage("错误："+e.getMessage().toString());
                     return result;
                 }
-                result.setSuccess(false);
-                result.setCode("E");
-                result.setMessage("接口删除SAP箱号失败！请联系管理员检查数据！");
-            }else{
-                resultcardt = cardtService.deleteCardt(cardts);
-                resultcardh = service.deleteCardh(dto);
-                cardhstService.deleteAll(listcardhst);
-                result.setSuccess(true);
-                result.setCode("S");
-                result.setMessage("共删除流转卡" + resultcardh + "条，工序条码" + resultcardt + "条，箱号" + resultxh + "条");
-                return result;
             }
-
         }
         return result;
     }
@@ -863,6 +978,7 @@ public class CardhController
         int resultCardh = 0;
         int resultCardt = 0;
         int resultXhcard = 0;
+        int resultCardhst = 0;
         String msg1 = "";
         if (dto.size() > 0) {
             for (int i = 0; i < dto.size(); i++) {
@@ -985,26 +1101,99 @@ public class CardhController
                 }
                 listCardh.add(cardh);
             }
-            if (listXhcard.size() > 0) {
-                resultXhcard = xhcardService.insertXhcard(listXhcard);
-                if (resultXhcard == 0) {
-                    msg1 = "SAP同步生成箱号失败,请检查接口状态！";
-                    listmsg.add(msg1);
-                    result.setRows(listmsg);
-                } else {
+            DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+            def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+            TransactionStatus status = transactionManager.getTransaction(def); // 获得事务状态
+            try{
+                if (listXhcard.size() > 0){
+                    resultXhcard = xhcardService.insertXhcard(listXhcard);
                     resultCardh = service.insertCardh(listCardh);
-                    cardhstService.insertStatus(listCardhst);
+                    resultCardhst = cardhstService.insertStatus(listCardhst);
                     resultCardt = cardtService.insertCardt(listCardt);
-                    msg1 = "生成流转卡主记录" + resultCardh + "条";
-                    listmsg.add(msg1);
-                    result.setRows(listmsg);
+
+                    if (resultXhcard == listXhcard.size() && resultCardh == listCardh.size() && resultCardhst == listCardhst.size() && resultCardt == listCardt.size()){
+                        msg1 = "生成流转卡主记录" + resultCardh + "条";
+                        listmsg.add(msg1);
+                        result.setRows(listmsg);
+                        transactionManager.commit(status);
+                    }else{
+                        if (resultXhcard != listXhcard.size()){
+                            transactionManager.rollback(status);
+                            msg1 = "SAP同步生成箱号失败,请检查接口状态！";
+                            listmsg.add(msg1);
+                            result.setRows(listmsg);
+                            return  result;
+
+                        }
+
+                        if (resultCardh != listCardh.size()){
+                            transactionManager.rollback(status);
+                            msg1 = "创建流转卡主记录，数据库操作失败，请联系管理员";
+                            listmsg.add(msg1);
+                            result.setRows(listmsg);
+                            return  result;
+                        }
+
+                        if (resultCardhst != listCardhst.size()){
+                            transactionManager.rollback(status);
+                            msg1 = "创建流转卡状态记录，数据库操作失败，请联系管理员";
+                            listmsg.add(msg1);
+                            result.setRows(listmsg);
+                            return  result;
+                        }
+
+                        if (resultCardt != listCardt.size()){
+                            transactionManager.rollback(status);
+                            msg1 = "创建流转卡工序明细记录，数据库操作失败，请联系管理员";
+                            listmsg.add(msg1);
+                            result.setRows(listmsg);
+                            return  result;
+                        }
+                    }
+                }else{
+                    resultCardh = service.insertCardh(listCardh);
+                    resultCardhst = cardhstService.insertStatus(listCardhst);
+                    resultCardt = cardtService.insertCardt(listCardt);
+
+                    if (resultCardh == listCardh.size() && resultCardhst == listCardhst.size() && resultCardt == listCardt.size()){
+                        msg1 = "生成流转卡主记录" + resultCardh + "条";
+                        listmsg.add(msg1);
+                        result.setRows(listmsg);
+                        transactionManager.commit(status);
+                    }else{
+                        if (resultCardh != listCardh.size()){
+                            transactionManager.rollback(status);
+                            msg1 = "创建流转卡主记录，数据库操作失败，请联系管理员";
+                            listmsg.add(msg1);
+                            result.setRows(listmsg);
+                            return  result;
+                        }
+
+                        if (resultCardhst != listCardhst.size()){
+                            transactionManager.rollback(status);
+                            msg1 = "创建流转卡状态记录，数据库操作失败，请联系管理员";
+                            listmsg.add(msg1);
+                            result.setRows(listmsg);
+                            return  result;
+                        }
+
+                        if (resultCardt != listCardt.size()){
+                            transactionManager.rollback(status);
+                            msg1 = "创建流转卡工序明细记录，数据库操作失败，请联系管理员";
+                            listmsg.add(msg1);
+                            result.setRows(listmsg);
+                            return  result;
+                        }
+                    }
+
                 }
-            } else {
-                resultCardh = service.insertCardh(listCardh);
-                resultCardt = cardtService.insertCardt(listCardt);
-                msg1 = "生成流转卡主记录" + resultCardh + "条";
+
+            }catch(Exception e){
+                transactionManager.rollback(status);
+                msg1 = "错误:"+ e.getMessage().toString();
                 listmsg.add(msg1);
                 result.setRows(listmsg);
+                return  result;
             }
         }
         return result;
@@ -1023,6 +1212,7 @@ public class CardhController
         int resultCardh = 0;
         int resultCardt = 0;
         int resultXhcard = 0;
+        int resultCardhst = 0;
         String msg1 = "";
         if (dto.size() > 0) {
             for (int i = 0; i < dto.size(); i++) {
@@ -1104,13 +1294,52 @@ public class CardhController
                 }
                 listCardh.add(cardh);
             }
+            DefaultTransactionDefinition def = new DefaultTransactionDefinition();
+            def.setPropagationBehavior(TransactionDefinition.PROPAGATION_REQUIRES_NEW);
+            TransactionStatus status = transactionManager.getTransaction(def); // 获得事务状态
 
-            resultCardh = service.insertCardh(listCardh);
-            cardhstService.insertStatus(listCardhst);
-            resultCardt = cardtService.insertCardt(listCardt);
-            msg1 = "生成流转卡主记录" + resultCardh + "条";
-            listmsg.add(msg1);
-            result.setRows(listmsg);
+            try{
+                resultCardh = service.insertCardh(listCardh);
+                resultCardhst = cardhstService.insertStatus(listCardhst);
+                resultCardt = cardtService.insertCardt(listCardt);
+
+                if (resultCardh == listCardh.size() && resultCardhst == listCardhst.size() && resultCardt == listCardt.size()){
+                    msg1 = "生成流转卡主记录" + resultCardh + "条";
+                    listmsg.add(msg1);
+                    result.setRows(listmsg);
+                    transactionManager.commit(status);
+                }else{
+                    if (resultCardh != listCardh.size()){
+                        transactionManager.rollback(status);
+                        msg1 = "创建流转卡主记录，数据库操作失败，请联系管理员";
+                        listmsg.add(msg1);
+                        result.setRows(listmsg);
+                        return  result;
+                    }
+
+                    if (resultCardhst != listCardhst.size()){
+                        transactionManager.rollback(status);
+                        msg1 = "创建流转卡状态记录，数据库操作失败，请联系管理员";
+                        listmsg.add(msg1);
+                        result.setRows(listmsg);
+                        return  result;
+                    }
+
+                    if (resultCardt != listCardt.size()){
+                        transactionManager.rollback(status);
+                        msg1 = "创建流转卡工序明细记录，数据库操作失败，请联系管理员";
+                        listmsg.add(msg1);
+                        result.setRows(listmsg);
+                        return  result;
+                    }
+                }
+            }catch (Exception e){
+                transactionManager.rollback(status);
+                msg1 = "错误:"+ e.getMessage().toString();
+                listmsg.add(msg1);
+                result.setRows(listmsg);
+                return  result;
+            }
         }
 
         return result;

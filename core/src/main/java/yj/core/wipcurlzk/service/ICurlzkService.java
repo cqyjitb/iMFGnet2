@@ -12,4 +12,5 @@ public interface ICurlzkService extends IBaseService<Curlzk>, ProxySelf<ICurlzkS
     int updateZxhbar(Curlzk dto);
     Curlzk selectById2(Long line_id);
     List<Curlzk> selectAllLinesforZxhbar(Long line_id);
+    List<Curlzk> selectByZpgdbar(String zpgdbar);
 }

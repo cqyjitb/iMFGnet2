@@ -65,13 +65,13 @@ function getDispatchValues() {
     var bg = getTodayDate() + " 23:59:59" ;
     var ed = getDateAdd(1) + " 07:20:00";
     barcode = document.getElementById("barcode").value;
-    if(document.getElementById("postingDate").selectedIndex == "")
-    {
-
-        postingDate = document.getElementById("postingDate").options[0].value;
-    }else{
-        postingDate = document.getElementById("postingDate").options[document.getElementById("postingDate").selectedIndex].value;
-    }
+    // if(document.getElementById("postingDate").selectedIndex == "")
+    // {
+    //
+    //     postingDate = document.getElementById("postingDate").options[0].value;
+    // }else{
+    //     postingDate = document.getElementById("postingDate").options[document.getElementById("postingDate").selectedIndex].value;
+    // }
 
     orderno = document.getElementById("orderno").value;
     operation = document.getElementById("operation").value;

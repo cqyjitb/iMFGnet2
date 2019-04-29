@@ -35,4 +35,9 @@ public class CurlzkServiceImpl extends BaseServiceImpl<Curlzk> implements ICurlz
     public Curlzk selectById2(Long line_id) {
         return curlzkMapper.selectById2(line_id);
     }
+
+    @Override
+    public List<Curlzk> selectByZpgdbar(String zpgdbar) {
+        return curlzkMapper.selectByZpgdbar(zpgdbar);
+    }
 }

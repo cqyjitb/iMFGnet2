@@ -56,4 +56,11 @@
             LINE_ID = #{line_id}
         </where>
     </select>
+
+    <select id="selectByZpgdbar" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_curlzk
+        <where>
+            ZPGDBAR = #{zpgdbar}
+        </where>
+    </select>
 </mapper>
