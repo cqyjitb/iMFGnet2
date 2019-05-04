@@ -56,4 +56,22 @@ public class ZudlistServiceImpl extends BaseServiceImpl<Zudlist> implements IZud
     public Zudlist selectByIdAndItem(String zudnum, String item) {
         return zudlistMapper.selectByIdAndItem(zudnum,item);
     }
+
+    public ZudlistMapper getZudlistMapper() {
+        return zudlistMapper;
+    }
+
+    public void setZudlistMapper(ZudlistMapper zudlistMapper) {
+        this.zudlistMapper = zudlistMapper;
+    }
+
+    @Override
+    public List<Zudlist> selectForPassrateReportgf(String lineId, String matnr, String datestart, String dateend) {
+        return zudlistMapper.selectForPassrateReportgf(lineId,matnr,datestart,dateend);
+    }
+
+    @Override
+    public List<Zudlist> selectForPassrateReportlf(String lineId, String matnr, String datestart, String dateend) {
+        return zudlistMapper.selectForPassrateReportlf(lineId,matnr,datestart,dateend);
+    }
 }

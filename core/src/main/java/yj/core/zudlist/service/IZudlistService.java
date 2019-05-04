@@ -33,4 +33,8 @@ public interface IZudlistService extends IBaseService<Zudlist>, ProxySelf<IZudli
      * @return
      */
     Zudlist selectByIdAndItem(String zudnum,String item);
+
+    List<Zudlist> selectForPassrateReportgf(String lineId,String matnr,String datestart,String dateend);
+
+    List<Zudlist> selectForPassrateReportlf(String lineId,String matnr,String datestart,String dateend);
 }

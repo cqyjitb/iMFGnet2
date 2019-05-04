@@ -165,4 +165,17 @@
             and MATNR = #{matnr}
         </where>
     </select>
+
+    <select id="selectByLineIdForLov" parameterType="java.lang.String" resultMap="BaseResultMap1">
+        select a.LINE_ID,
+               a.PMATNR,
+               b.MAKTX
+               FROM wip_products_cfg a
+               INNER JOIN sap_marc b on b.MATNR = a.PMATNR and b.WERKS = a.WERKS
+               <where>
+                   a.LINE_ID = #{lineId}
+               </where>
+    </select>
+
+
 </mapper>

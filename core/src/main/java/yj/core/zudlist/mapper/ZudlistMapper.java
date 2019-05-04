@@ -52,4 +52,8 @@ public interface ZudlistMapper extends Mapper<Zudlist>{
      * @return
      */
     List<Zudlist> selectByLineId(@Param("lineId")String lineId,@Param("zudnum") String zudnum);
+
+    List<Zudlist> selectForPassrateReportgf(@Param("lineId") String lineId, @Param("matnr") String matnr, @Param("datestart") String datestart,@Param("dateend") String dateend);
+
+    List<Zudlist> selectForPassrateReportlf(@Param("lineId") String lineId, @Param("matnr") String matnr, @Param("datestart") String datestart,@Param("dateend") String dateend);
 }

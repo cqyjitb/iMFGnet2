@@ -1,59 +1,4 @@
-<!--
-    不合格品审理单2创建
--->
-
 <#include "../include/header.html">
-
-    <style>
-        span[class='k-window-title'] {
-            user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            -webkit-user-select: none;
-            -webkit-touch-callout: none;
-        }
-
-        .action_ok {
-            color: #5fb760;
-        }
-
-        .action_dangerous {
-            color: #eeac5f;
-        }
-
-        #label {
-            color: red;
-        }
-
-        #label2 {
-            color: red;
-        }
-
-        #label3 {
-            color: red;
-        }
-
-        #label4 {
-            color: red;
-        }
-
-        #label5 {
-            color: red;
-        }
-
-        #label6 {
-            color: red;
-        }
-
-        #label7 {
-            color: red;
-        }
-
-        #label8 {
-            color: red;
-        }
-
-    </style>
     <div id="content-container">
         <div id="page-content">
             <div class="panel" style="padding: 0px;border:none;box-shadow: none;">
@@ -86,6 +31,7 @@
                                         </div>
                                     </div>
                                 </div>
+
                                 <div class="col-sm-4">
                                     <div class="form-group">
                                         <label class="col-sm-4 control-label">生产线&nbsp;<label
@@ -108,18 +54,47 @@
                             <div class="row">
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label class="col-sm-4 control-label">生产日期&nbsp;<label id="label8">*</label></label>
+                                        <label class="col-sm-4 control-label">产品名称&nbsp;<label
+                                                id="label5">*</label></label>
                                         <div class="col-sm-8">
-                                            <input id="gstrp" style="width: 100%" data-role="datepicker"
-                                                   data-bind="value:model.gstrp" class="k-datepicker">
+                                            <input type="text" id="pmatnr" style="width: 100%" class="k-textbox" readonly="readonly" data-bind="value:model.pmatnr">
+
+                                            <script>
+                                                $("#pmatnr").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_PRODUCT")}, {
+                                                    query: function (e) {
+                                                        e.param['lineId'] = document.getElementById("line_id").value;
+                                                        e.param['enabledFlag'] = 'Y';
+                                                    }
+                                                }))
+                                            </script>
+
                                         </div>
                                     </div>
                                 </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">开始日期&nbsp;<label id="label8">*</label></label>
+                                        <div class="col-sm-8">
+                                            <input id="datestart" style="width: 100%" data-role="datepicker"
+                                                   data-bind="value:model.gstrps" class="k-datepicker">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-4">
+                                    <div class="form-group">
+                                        <label class="col-sm-4 control-label">结束日期&nbsp;<label id="label9">*</label></label>
+                                        <div class="col-sm-8">
+                                            <input id="dateend" style="width: 100%" data-role="datepicker"
+                                                   data-bind="value:model.gstrpe" class="k-datepicker">
+                                        </div>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
                     </div>
-
-
                 </form>
                 <div class="row" style="margin-right: -8px;">
                     <div class="pull-right" style="margin-right:15px">
@@ -139,20 +114,12 @@
                            <@spring.message "hap.panel_show"/></span>
                     </div>
                 </div>
-                <!--新窗口占位符-->
-                <div id="newWin" style="display: none"></div>
-                <div style="clear:both">
-                    <div id="chart"></div>
-                </div>
-
+                <div id="main" style="width:1600px;height:580px;"></div>
+                <div id="div1"></div>
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        window.onload=function(){
-            document.getElementById("werks").value = '1001';
-        }
-    </script>
+
     <script type="text/javascript">
         var viewModel = kendo.observable({
             model: {
@@ -163,12 +130,117 @@
                 for (var k in formData) {
                     viewModel.model.set(k, null);
                 }
-                //$('#Grid').data('kendoGrid').dataSource.read();
+                $('#Grid').data('kendoGrid').dataSource.read();
+            },
+            queryGrid: function (e) {
+                var werks = document.getElementById("werks").value;
+                var deptId = document.getElementById("deptId").value;
+                var line_id = document.getElementById("line_id").value;
+                var datestart = document.getElementById("datestart").value;
+                var dateend = document.getElementById("dateend").value;
+                var pmatnr = document.getElementById("pmatnr").value;
+                console.log(pmatnr);
+                $.ajax({
+                    url: "${base.contextPath}/wip/zudlist/passrateReport",
+                    type: "get",
+                    data:{
+                        "werks":werks,
+                        "deptId":deptId,
+                        "line_id":line_id,
+                        "datestart":datestart,
+                        "dateend":dateend,
+                        "pmatnr":pmatnr
+                    },
+                    async: false,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (res) {
+                        if (res.success == true){
+                            var date = res.rows[0];
+                            var jjrate = res.rows[1];
+                            var yzrate = res.rows[2];
+                            var rate = res.rows[3];
+                            myChart.setOption({
+                                xAxis: {
+                                    data: date
+                                },
+                                series: [
+                                    {
+                                    // 根据名字对应到相应的系列
+                                    name: '机加合格率',
+                                    data: jjrate
+                                    },
+                                    {
+                                        // 根据名字对应到相应的系列
+                                        name: '毛坯合格率',
+                                        data: yzrate
+                                    },
+                                    {
+                                        // 根据名字对应到相应的系列
+                                        name: '合格率',
+                                        data: rate
+                                    }
+                                ]
+                            });
+
+                            var rows = 4;
+                            var col = date.length + 1;
+                            var div1 = document.getElementById("div1")
+                            var tab= '<table border=1 width=1000">'
+                            for(var i=0;i<rows;i++){
+                                             tab+='<tr>';
+
+                                    for(var j=0;j<col;j++){
+
+                                                        if (i == 0 && j == 0){
+                                                            tab+="<td style='background:white' width='20px'>"+"</td>"
+                                                        }else if (i == 0 && j > 0){
+                                                            tab+="<td style='background:white'>"+date[j-1]+"</td>"
+                                                        }
+
+                                                        if (i == 1 && j == 0){
+                                                            tab+="<td style='background:white' width='20px'>"+"机加合格率"+"</td>"
+                                                        }else if (i == 1 && j > 0){
+                                                            tab+="<td style='background:white' width='20px'>"+jjrate[j-1]+"</td>"
+                                                        }
+
+                                                        if (i == 2 && j == 0){
+                                                            tab+="<td style='background:white' width='20px'>"+"毛坯合格率"+"</td>"
+                                                        }else if (i == 2 && j > 0){
+                                                            tab+="<td style='background:white' width='20px'>"+yzrate[j-1]+"</td>"
+                                                        }
+
+                                                        if (i == 3 && j == 0){
+                                                            tab+="<td style='background:white' width='20px'>"+"合格率"+"</td>"
+                                                        }else if (i == 3 && j > 0){
+                                                            tab+="<td style='background:white' width='20px'>"+rate[j-1]+"</td>"
+                                                        }
+
+                                                    }
+
+                                              tab+='</tr>';
+                            }
+                            tab+='</table>';
+                            div1.innerHTML=tab
+                        }else{
+                            kendo.ui.showErrorDialog({
+                                title: '错误',
+                                message: res.message
+                            });
+                        }
+                    },
+                    error:function (res) {
+                        kendo.ui.showErrorDialog({
+                            title: '错误',
+                            message: "未能获取到合格率数据！"
+                        });
+                    }
+
+                });
             }
+
         });
 
         kendo.bind($('#page-content'), viewModel);
-
 
         function test() {
             var apply = $("#test");
@@ -183,22 +255,74 @@
                 button_show.show();
                 apply.hide();     //如果元素为显现,则将其隐藏
             }
-            Hap.autoResizeGrid("#Grid");
-
         }
 
-        $(document).ready(function () {
-        });
+        // 基于准备好的dom，初始化echarts实例
+        var myChart = echarts.init(document.getElementById('main'));
+
+        // 指定图表的配置项和数据
+        option = {
+            color:['#FF4500','#CDCD00','#27408B'],
+            title: {
+                text: '产品合格率折线图'
+            },
+            tooltip: {
+                trigger: 'axis'
+            },
+            legend: {
+                data:['机加合格率','毛坯合格率','合格率']
+            },
+            grid: {
+                left: '3%',
+                right: '4%',
+                bottom: '3%',
+                containLabel: true
+            },
+            toolbox: {
+                feature: {
+                    saveAsImage: {}
+                }
+            },
+            xAxis: {
+                axisLabel:{
+                    rotate:'30'
+                },
+                name:'生产日期',
+                nameLocation:'end',
+                type: 'category',
+                boundaryGap: false
+                //data: ['2019-01-01','2019-01-02','2019-01-03','2019-01-04','2019-01-05','2019-01-06','2019-01-07','2019-01-08','2019-01-09','2019-01-10']
+            },
+            yAxis: {
+                type: 'value',
+                name:'合格率',
+                min: 0,
+                max: 100
+            },
+            series: [
+                {
+                    name:'机加合格率',
+                    type:'line',
+                    //stack: '总量',
+                    //data:[120, 132, 101, 134, 90, 230, 210]
+                },
+                {
+                    name:'毛坯合格率',
+                    type:'line',
+                    //stack: '总量',
+                    //data:[220, 182, 191, 234, 290, 330, 310]
+                },
+                {
+                    name:'合格率',
+                    type:'line',
+                    //stack: '总量',
+                    //data:[150, 232, 201, 154, 190, 330, 410]
+                }
+
+            ]
+        };
+        // 使用刚指定的配置项和数据显示图表。
+        myChart.setOption(option);
     </script>
-    <style type="text/css">
-
-        .priority-median {
-            background-color: yellowgreen;
-        }
-
-        .priority-high {
-            background-color: orangered;
-        }
-    </style>
     </body>
     </html>
