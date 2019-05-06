@@ -74,4 +74,9 @@ public class ZudlistServiceImpl extends BaseServiceImpl<Zudlist> implements IZud
     public List<Zudlist> selectForPassrateReportlf(String lineId, String matnr, String datestart, String dateend) {
         return zudlistMapper.selectForPassrateReportlf(lineId,matnr,datestart,dateend);
     }
+
+    @Override
+    public List<Zudlist> selectForBaltuChart(String lineId, String matnr, String datastart, String dateend) {
+        return zudlistMapper.selectForBaltuChart(lineId,matnr,datastart,dateend);
+    }
 }

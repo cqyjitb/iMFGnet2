@@ -120,4 +120,12 @@
     <select id="selectforQcaudit2" parameterType="java.lang.String" resultMap="BaseResultMap">
 
     </select>
+
+    <select id="selectbyWerksAndMatnr" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from sap_dftdtl
+        <where>
+            WERKS = #{werks}
+            and MATNR= #{matnr}
+        </where>
+    </select>
 </mapper>

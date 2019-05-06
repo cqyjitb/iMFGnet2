@@ -117,10 +117,10 @@
 
                                 <div class="col-sm-4">
                                     <div class="form-group">
-                                        <label class="col-sm-4 control-label">结束日期&nbsp;<label id="label6">*</label></label>
+                                        <label class="col-sm-4 control-label">统计范围&nbsp;<label id="label6">*</label></label>
                                         <div class="col-sm-8">
-                                            <input id="dateend" style="width: 100%" data-role="datepicker"
-                                                   data-bind="value:model.gstrpe" class="k-datepicker">
+                                            <input id="combobox" name="combobox" required placeholder="请选择统计范围" data-role="combobox" data-value-primitive="true" data-text-field="text" data-value-field="value"
+                                                   data-bind="enabled: isEnabled, source: comboboxSource, value:model.classgrp" style="width: 100%;"/>
                                         </div>
                                     </div>
                                 </div>
@@ -158,6 +158,16 @@
             model: {
                 werks:"1001"
             },
+            comboboxSource: [{
+                text: "按日统计",
+                value: "D"
+            }, {
+                text: "按周统计",
+                value: "W"
+            }, {
+                text: "按月统计",
+                value: "M"
+            }],
             resetForm: function () {
                 var formData = viewModel.model.toJSON();
                 for (var k in formData) {
@@ -170,108 +180,113 @@
                 var deptId = document.getElementById("deptId").value;
                 var line_id = document.getElementById("line_id").value;
                 var datestart = document.getElementById("datestart").value;
-                var dateend = document.getElementById("dateend").value;
+                var classgrp = document.getElementById("combobox").value;
                 var pmatnr = document.getElementById("pmatnr").value;
-                console.log(pmatnr);
-                $.ajax({
-                    url: "${base.contextPath}/wip/zudlist/passrateReport",
-                    type: "get",
-                    data:{
-                        "werks":werks,
-                        "deptId":deptId,
-                        "line_id":line_id,
-                        "datestart":datestart,
-                        "dateend":dateend,
-                        "pmatnr":pmatnr
-                    },
-                    async: false,
-                    contentType: "application/json; charset=utf-8",
-                    success: function (res) {
-                        if (res.success == true){
-                            var date = res.rows[0];
-                            var jjrate = res.rows[1];
-                            var yzrate = res.rows[2];
-                            var rate = res.rows[3];
-                            myChart.setOption({
-                                xAxis: {
-                                    data: date
-                                },
-                                series: [
-                                    {
-                                    // 根据名字对应到相应的系列
-                                    name: '机加合格率',
-                                    data: jjrate
+                var l_error = "";
+                if (werks == ""){
+                    l_error = "E";
+                    kendo.ui.showErrorDialog({
+                        title: '错误',
+                        message: "工厂为比输条件！"
+                    });
+                }
 
+                if (deptId == ""){
+                    l_error = "E";
+                    kendo.ui.showErrorDialog({
+                        title: '错误',
+                        message: "生产车间为比输条件！"
+                    });
+                }
+
+                if (line_id == ""){
+                    l_error = "E";
+                    kendo.ui.showErrorDialog({
+                        title: '错误',
+                        message: "生产线为比输条件！"
+                    });
+                }
+
+                if (classgrp == ""){
+                    l_error = "E";
+                    kendo.ui.showErrorDialog({
+                        title: '错误',
+                        message: "统计范围为必输条件！"
+                    });
+                }
+
+                if (pmatnr == ""){
+                    l_error = "E";
+                    kendo.ui.showErrorDialog({
+                        title: '错误',
+                        message: "产品名称为必输条件！"
+                    });
+                }
+
+                if(l_error == ""){
+                    $.ajax({
+                        url: "${base.contextPath}/wip/zudlist/balutChartReport",
+                        type: "get",
+                        data:{
+                            "werks":werks,
+                            "deptId":deptId,
+                            "line_id":line_id,
+                            "datestart":datestart,
+                            "classgrp":classgrp,
+                            "pmatnr":pmatnr
+                        },
+                        async: false,
+                        contentType: "application/json; charset=utf-8",
+                        success: function (res) {
+                            if (res.success == true){
+                                var xiangmu = res.rows[0];
+                                var num = res.rows[1];
+                                var rateall = res.rows[2];
+                                var rate = res.rows[3];
+                                var sum = res.rows[4];
+                                myChart.setOption({
+                                    xAxis: {
+                                        data: xiangmu
                                     },
-                                    {
-                                        // 根据名字对应到相应的系列
-                                        name: '毛坯合格率',
-                                        data: yzrate
+                                    yAxis:[
+                                        {
+                                            name:"不良数",
+                                            yAxisIndex:0,
+                                            min:0,
+                                            max:sum,
+                                            data:[0,sum]
+                                        }
+                                    ],
+                                    series: [
+                                        {
+                                            // 根据名字对应到相应的系列
+                                            name: '不良数',
+                                            data: num
+                                        },
+                                        {
+                                            // 根据名字对应到相应的系列
+                                            name: '累计不良比',
+                                            data: rateall
+                                        }
+                                    ]
+                                });
 
-                                    },
-                                    {
-                                        // 根据名字对应到相应的系列
-                                        name: '合格率',
-                                        data: rate
-
-                                    }
-                                ]
-                            });
-
-                            var rows = 4;
-                            var col = date.length + 1;
-                            var div1 = document.getElementById("div1")
-                            var tab= '<table border=1 width=1440">'
-                            for(var i=0;i<rows;i++){
-                                             tab+='<tr>';
-
-                                    for(var j=0;j<col;j++){
-
-                                                        if (i == 0 && j == 0){
-                                                            tab+="<td style='background:white'>"+"</td>"
-                                                        }else if (i == 0 && j > 0){
-                                                            tab+="<td style='background:white'>"+date[j-1]+"</td>"
-                                                        }
-
-                                                        if (i == 1 && j == 0){
-                                                            tab+="<td style='background:white' width='20px'>"+"机加合格率"+"</td>"
-                                                        }else if (i == 1 && j > 0){
-                                                            tab+="<td style='background:white' width='20px'>"+jjrate[j-1]+"</td>"
-                                                        }
-
-                                                        if (i == 2 && j == 0){
-                                                            tab+="<td style='background:white' width='20px'>"+"毛坯合格率"+"</td>"
-                                                        }else if (i == 2 && j > 0){
-                                                            tab+="<td style='background:white' width='20px'>"+yzrate[j-1]+"</td>"
-                                                        }
-
-                                                        if (i == 3 && j == 0){
-                                                            tab+="<td style='background:white' width='20px'>"+"合格率"+"</td>"
-                                                        }else if (i == 3 && j > 0){
-                                                            tab+="<td style='background:white' width='20px'>"+rate[j-1]+"</td>"
-                                                        }
-
-                                                    }
-
-                                              tab+='</tr>';
+                            }else{
+                                kendo.ui.showErrorDialog({
+                                    title: '错误',
+                                    message: res.message
+                                });
                             }
-                            tab+='</table>';
-                            div1.innerHTML=tab
-                        }else{
+                        },
+                        error:function (res) {
                             kendo.ui.showErrorDialog({
                                 title: '错误',
-                                message: res.message
+                                message: "未能获取到数据！"
                             });
                         }
-                    },
-                    error:function (res) {
-                        kendo.ui.showErrorDialog({
-                            title: '错误',
-                            message: "未能获取到合格率数据！"
-                        });
-                    }
 
-                });
+                    });
+                }
             }
 
         });
@@ -298,21 +313,21 @@
 
         // 指定图表的配置项和数据
         option = {
-            color:['#FF4500','#CDCD00','#27408B'],
+            color:['#FF4500','#0000EE'],
             title: {
-                text: '产品合格率折线图'
+                text: '产品不良柏拉图'
             },
             tooltip: {
                 trigger: 'axis'
             },
             legend: {
-                data:['机加合格率','毛坯合格率','合格率']
+                data:['不良数','累计不良比']
             },
             grid: {
                 left: '3%',
                 right: '4%',
-                bottom: '3%',
-                containLabel: true
+                bottom: '15%'
+                //containLabel: true
             },
             toolbox: {
                 feature: {
@@ -320,44 +335,51 @@
                 }
             },
             xAxis: {
+                name:'不良项目',
+                nameLocation:'end',
+                type: 'category',
                 axisLabel:{
                     rotate:'30'
                 },
-                name:'生产日期',
-                nameLocation:'end',
-                type: 'category',
-                boundaryGap: false
+                axisTick: {
+                    alignWithLabel: true
+                }
                 //data: ['2019-01-01','2019-01-02','2019-01-03','2019-01-04','2019-01-05','2019-01-06','2019-01-07','2019-01-08','2019-01-09','2019-01-10']
             },
-            yAxis: {
+            yAxis: [
+                {
                 type: 'value',
-                name:'合格率',
-                min: 0,
-                max: 100,
-                axisLabel: {
-                    formatter: '{value} %'
+                name:'不良数',
+                position: 'left'
+                },
+                {
+                    type: 'value',
+                    name:'累计不良比',
+                    min: 0,
+                    max: 100,
+                    splitNumber:1,
+                    position: 'right',
+                    axisLabel: {
+                        formatter: '{value} %'
+                    },
+                    data:[0,100]
+
                 }
-            },
+            ],
             series: [
                 {
-                    name:'机加合格率',
-                    type:'line',
-                    //stack: '总量',
+                    name:'不良数',
+                    type:'bar'
+
                     //data:[120, 132, 101, 134, 90, 230, 210]
                 },
                 {
-                    name:'毛坯合格率',
+                    name:'累计不良比',
                     type:'line',
-                    //stack: '总量',
-                    //data:[220, 182, 191, 234, 290, 330, 310]
-                },
-                {
-                    name:'合格率',
-                    type:'line',
-                    //stack: '总量',
-                    //data:[150, 232, 201, 154, 190, 330, 410]
-                }
+                    yAxisIndex:1
 
+                    //data:[220, 182, 191, 234, 290, 330, 310]
+                }
             ]
         };
         // 使用刚指定的配置项和数据显示图表。

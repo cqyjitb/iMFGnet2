@@ -18,4 +18,5 @@ public interface IDftdtlService extends IBaseService<Dftdtl>, ProxySelf<IDftdtlS
     List<Dftdtl> selectFromPage(IRequest requestContext, int page, int pageSize, String werks, String matnr, String code);
     String updateOrInsert(IRequest requestCtx,List<Dftdtl> dto,String userId);
     String deleteDftdtl(List<Dftdtl> dto);
+    List<Dftdtl> selectbyWerksAndMatnr(String werks,String matnr);
 }

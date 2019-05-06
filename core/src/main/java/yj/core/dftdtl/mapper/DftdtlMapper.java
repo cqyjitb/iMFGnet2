@@ -52,4 +52,12 @@ public interface DftdtlMapper extends Mapper<Dftdtl>{
      */
     void deleteDftdtl(Dftdtl dftdtl);
 
+    /**
+     *  根据物料编码工厂取产品缺陷分类数据
+     * @param werks
+     * @param matnr
+     * @return
+     */
+    List<Dftdtl> selectbyWerksAndMatnr(@Param("werks") String werks,@Param("matnr") String matnr);
+
 }

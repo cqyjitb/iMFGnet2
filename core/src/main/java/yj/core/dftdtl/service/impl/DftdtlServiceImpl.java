@@ -92,4 +92,9 @@ public class DftdtlServiceImpl extends BaseServiceImpl<Dftdtl> implements IDftdt
         }
         return null;
     }
+
+    @Override
+    public List<Dftdtl> selectbyWerksAndMatnr(String werks, String matnr) {
+        return dftdlMapper.selectbyWerksAndMatnr(werks,matnr);
+    }
 }

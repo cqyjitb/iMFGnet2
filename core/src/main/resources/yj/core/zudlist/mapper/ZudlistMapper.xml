@@ -203,4 +203,18 @@
             AND ZISSUETXT NOT like 'M%'
         </where>
     </select>
+
+    <select id="selectForBaltuChart" parameterType="java.lang.String" resultMap="BaseResultMap2">
+        select
+        zissuetxt,
+        count(ZDNUM) as ZDNUM
+        from wip_zudlist
+        <where>
+        LINE_ID LIKE #{lineId}
+        and GSTRP >= #{datestart}
+        and #{dateend} >= GSTRP
+        and MATNR2 = #{matnr}
+        </where>
+        GROUP BY ZISSUETXT order by zdnum desc
+    </select>
 </mapper>
