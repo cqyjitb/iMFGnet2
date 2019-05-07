@@ -67,7 +67,8 @@ public class ZudlistController extends BaseController {
      * @param request
      * @return
      */
-    @RequestMapping(value = {"/wip/zudlist/selectZudlist"}, method = {RequestMethod.GET})
+
+    @RequestMapping(value = "/wip/zudlist/selectZudlist")
     @ResponseBody
     public ResponseData selectZudlist(Zudlist dto, HttpServletRequest request) {
         IRequest requestContext = createRequestContext(request);
