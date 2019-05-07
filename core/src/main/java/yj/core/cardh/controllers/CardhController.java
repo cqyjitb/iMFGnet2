@@ -704,36 +704,46 @@ public class CardhController
                 }
 
                 cardhst.setZpgdbar(dto.get(i).getZpgdbar());
-                listcardhst = cardhstService.selectByBarcode(dto.get(i).getZpgdbar());
+                List<Cardhst> cardhsttmplist = new ArrayList<>();
+                cardhsttmplist= cardhstService.selectByBarcode(dto.get(i).getZpgdbar());
+                for (int j=0;j<cardhsttmplist.size();j++){
+                    listcardhst.add(cardhsttmplist.get(j));
+                }
 
                 if (auart.equals("Y")) {
                     Xhcard xhcard = new Xhcard();
-                    xhcard.setWerks(dto.get(i).getWerks());
-                    xhcard.setMatnr(dto.get(i).getMatnr());
-                    xhcard.setZxhnum(dto.get(i).getZxhnum());
-                    xhcard.setAufnr(dto.get(i).getAufnr());
-                    xhcard.setCharg(dto.get(i).getCharg());
-                    xhcard.setZxhzt("");
-                    xhcard.setZxhzt2("");
-                    xhcard.setChargkc("");
-                    xhcard.setZjyy("");
-                    xhcard.setLgort("");
-                    xhcard.setMenge("");
-                    xhcard.setMeins("");
-                    xhcard.setZxhwz("");
-                    xhcard.setZxhbar("");
-                    xhcard.setZscx("");
-                    xhcard.setZmnum("");
-                    xhcard.setZscbc("");
-                    xhcard.setZsctptm("");
-                    xhcard.setZtxt("");
+                    xhcard = xhcardService.selectForZxhbar(dto.get(i).getWerks(),dto.get(i).getAufnr(),dto.get(i).getZxhnum());
+//                    xhcard.setWerks(dto.get(i).getWerks());
+//                    xhcard.setMatnr(dto.get(i).getMatnr());
+//                    xhcard.setZxhnum(dto.get(i).getZxhnum());
+//                    xhcard.setAufnr(dto.get(i).getAufnr());
+//                    xhcard.setCharg(dto.get(i).getCharg());
+//                    xhcard.setZxhzt("");
+//                    xhcard.setZxhzt2("");
+//                    xhcard.setChargkc("");
+//                    xhcard.setZjyy("");
+//                    xhcard.setLgort("");
+//                    xhcard.setMenge("");
+//                    xhcard.setMeins("");
+//                    xhcard.setZxhwz("");
+//                    xhcard.setZxhbar("");
+//                    xhcard.setZscx("");
+//                    xhcard.setZmnum("");
+//                    xhcard.setZscbc("");
+//                    xhcard.setZsctptm("");
+//                    xhcard.setZtxt("");
+//                    xhcard.setZbqbd("D");
                     xhcard.setZbqbd("D");
                     xhcards.add(xhcard);
                 }
-                Cardt cardt = new Cardt();
-                cardt.setWerks(dto.get(i).getWerks());
-                cardt.setZpgdbar(dto.get(i).getZpgdbar());
-                cardts.add(cardt);
+                List<Cardt> cardttmp = new ArrayList<>();
+//                cardt.setWerks(dto.get(i).getWerks());
+//                cardt.setZpgdbar(dto.get(i).getZpgdbar());
+                cardttmp = cardtService.selectByZpgdbar(dto.get(i).getZpgdbar());
+                for (int j=0;j<cardttmp.size();j++){
+                    cardts.add(cardttmp.get(j));
+                }
+
             }
 
             if (l_error.equals("")){

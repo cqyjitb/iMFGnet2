@@ -52,7 +52,7 @@ public class CardtServiceImpl
     {
         int result = 0;
         for (int i = 0; i < list.size(); i++) {
-            result += cardtMapper.deleteCardt(list.get(i));
+            result = result + cardtMapper.deleteCardt(list.get(i));
         }
         return result;
     }

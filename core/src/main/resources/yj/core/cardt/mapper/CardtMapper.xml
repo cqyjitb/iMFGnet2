@@ -95,7 +95,8 @@
         th.ZPGDBAR,
         th.ZXHNUM,
         xh.ZXHBAR,
-        ak.MAKTX
+        ak.MAKTX,
+        tt.WERKS
         from sap_cardt tt,sap_cardh th,sap_xhcard xh,sap_afko ak
         <where>
           tt.ZPGDBAR = th.ZPGDBAR
