@@ -43,7 +43,7 @@
             AND a.MATNR = #{matnr}
             AND a.LIFNR = #{lifnr}
             AND a.STATUS != '1'
-            AND b.STATUS = '0'
+--             AND b.STATUS = '0'
         </where>
     </select>
 
