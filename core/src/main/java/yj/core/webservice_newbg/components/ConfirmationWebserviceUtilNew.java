@@ -1,5 +1,8 @@
 package yj.core.webservice_newbg.components;
 
+import org.apache.cxf.bus.CXFBusFactory;
+import org.apache.cxf.wsdl.WSDLManager;
+import org.apache.cxf.wsdl11.WSDLManagerImpl;
 import org.springframework.stereotype.Component;
 import yj.core.util.WebServerHelp;
 import yj.core.webservice_newbg.dto.DTBAOGONGParameters;
@@ -25,6 +28,8 @@ public class ConfirmationWebserviceUtilNew {
     }
     public DTBAOGONGReturnResult receiveConfirmation(DTBAOGONGParameters params, List<DTBAOGONGParametersitem> list){
         URL wsdlURL = SIBAOGONGSenderSyncService.WSDL_LOCATION;
+        WSDLManager wsdlManager =  CXFBusFactory.getThreadDefaultBus().getExtension(WSDLManager.class);
+        ((WSDLManagerImpl)wsdlManager).setDisableSchemaCache(true);
         SIBAOGONGSenderSyncService ss = new SIBAOGONGSenderSyncService(wsdlURL,SERVICE_NAME);
         SIBAOGONGSenderSync port = ss.getHTTPPort();
         Map<String, Object> reqCtxt = ((javax.xml.ws.BindingProvider) port).getRequestContext();
