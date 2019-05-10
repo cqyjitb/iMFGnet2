@@ -41,4 +41,12 @@ public interface IProductsCfgService extends IBaseService<ProductsCfg>, ProxySel
      * @return
      */
     List<ProductsCfg> selectByMatnr(Long lineId);
+
+    /**
+     * 按照压铸毛坯物料 生产线ID 查询
+     * @param line_id
+     * @param matnr
+     * @return
+     */
+    List<ProductsCfg> selectByLineidAndMatnr2(String line_id,String matnr);
 }

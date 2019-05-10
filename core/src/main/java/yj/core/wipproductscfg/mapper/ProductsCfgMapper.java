@@ -66,4 +66,6 @@ public interface ProductsCfgMapper extends Mapper<ProductsCfg>{
 
 
     List<ProductsCfg> selectByLineIdForLov(@Param("lineId")Long lineId);
+
+    List<ProductsCfg> selectByLineidAndMatnr2(@Param("line_id") String line_id,@Param("matnr") String matnr);
 }

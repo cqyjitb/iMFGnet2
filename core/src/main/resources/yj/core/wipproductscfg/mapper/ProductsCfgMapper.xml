@@ -166,6 +166,14 @@
         </where>
     </select>
 
+    <select id="selectByLineidAndMatnr2" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_products_cfg
+        <where>
+            LINE_ID = #{line_id}
+            and MATNR = #{matnr}
+        </where>
+    </select>
+
     <select id="selectByLineIdForLov" parameterType="java.lang.String" resultMap="BaseResultMap1">
         select a.LINE_ID,
                a.PMATNR,

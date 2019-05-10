@@ -880,8 +880,10 @@ public class XhcardController
         }
 
         //获取产线配置 检查物料是否可以在产线加工
-        ProductsCfg productsCfg = productsCfgService.selectByLineidAndMatnr(line_id, xhcard.getMatnr());
-        if (productsCfg == null) {
+        //ProductsCfg productsCfg = productsCfgService.selectByLineidAndMatnr(line_id, xhcard.getMatnr());
+        List<ProductsCfg> listpro = new ArrayList<>();
+        listpro = productsCfgService.selectByLineidAndMatnr2(line_id,xhcard.getMatnr());
+        if (listpro.size() == 0) {
             rs.setSuccess(false);
             rs.setMessage("该毛坯不属于该产线加工！");
             return rs;
