@@ -160,15 +160,15 @@ public class DftrghlistController extends BaseController {
         } else {
             werks = lines.getWerks();
         }
-        //获取机加产线产品配置信息
-        ProductsCfg pcfg = productsCfgService.selectByLineidAndMatnr(line_id.toString(), matnr2);
-        if (pcfg != null) {
-            matnr = pcfg.getPmatnr();
-        } else {
+        List<ProductsCfg> listpro = productsCfgService.selectByLineidAndMatnr2(line_id.toString(),matnr2);
+        if (listpro.size() == 0){
             rs.setSuccess(false);
             rs.setMessage("未能读取生产线产品配置信息，请检查产线产品配置！");
             return rs;
+        }else {
+            matnr = listpro.get(0).getPmatnr();
         }
+
         //查询是否已经包含记录
         DateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
         Date datetmp = null;
