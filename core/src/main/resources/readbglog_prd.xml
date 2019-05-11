@@ -1,25 +1,93 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<wsdl:definitions name="SI_OUTSRGISSUE_Sender_Sync" targetNamespace="http://www.cq-yj.com/HAP/OUTSRGISSUE/Sender"
-                  xmlns:p1="http://www.cq-yj.com/HAP/OUTSRGISSUE/Sender"
+<wsdl:definitions name="SI_READBGLOG_Sender_Syn" targetNamespace="http://www.cq-yj.com/HAP/READBGLOG/Sender"
+                  xmlns:p1="http://www.cq-yj.com/HAP/READBGLOG/Sender"
                   xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
                   xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
                   xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
     <wsdl:documentation/>
     <wsp:UsingPolicy wsdl:required="true"/>
-    <wsp:Policy wsu:Id="OP_SI_OUTSRGISSUE_Sender_Sync"/>
+    <wsp:Policy wsu:Id="OP_SI_READBGLOG_Sender_Syn"/>
     <wsdl:types>
-        <xsd:schema targetNamespace="http://www.cq-yj.com/HAP/OUTSRGISSUE/Sender"
-                    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.cq-yj.com/HAP/OUTSRGISSUE/Sender">
-            <xsd:element name="MT_OUTSRGISSUE_Req" type="DT_OUTSRGISSUE_Req"/>
-            <xsd:element name="MT_OUTSRGISSUE_Res" type="DT_OUTSRGISSUE_Res"/>
-            <xsd:complexType name="DT_OUTSRGISSUE_Res">
+        <xsd:schema targetNamespace="http://www.cq-yj.com/HAP/READBGLOG/Sender"
+                    xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns="http://www.cq-yj.com/HAP/READBGLOG/Sender">
+            <xsd:element name="MT_READBGLOG_Res" type="DT_READBGLOG_Res"/>
+            <xsd:element name="MT_READBGLOG_Req" type="DT_READBGLOG_Req"/>
+            <xsd:complexType name="DT_READBGLOG_Req">
                 <xsd:annotation>
-                    <xsd:appinfo source="http://sap.com/xi/VersionID">b1a60423e7a411e897c60000002ad1ea</xsd:appinfo>
+                    <xsd:appinfo source="http://sap.com/xi/VersionID">b476bc09630f11e9b4280000002ad1ea</xsd:appinfo>
+                </xsd:annotation>
+                <xsd:sequence>
+                    <xsd:element name="REVERSE" type="xsd:string"/>
+                    <xsd:element name="I_DATA" maxOccurs="unbounded">
+                        <xsd:annotation>
+                            <xsd:appinfo source="http://sap.com/xi/TextID">c1a1e0452a2611e7b2cf00ff7864be41
+                            </xsd:appinfo>
+                        </xsd:annotation>
+                        <xsd:complexType>
+                            <xsd:sequence>
+                                <xsd:element name="FILED" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            74d682242a3211e7c64700ff7864be41
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="SIGN" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            74d682252a3211e7bca800ff7864be41
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="OPTION" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            74d682262a3211e7915f00ff7864be41
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="LOW" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            74d682272a3211e7a38d00ff7864be41
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="HIGH" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            74d69dc82a3211e7b64c00ff7864be41
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="ZBZ1" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            74d69dc92a3211e7813f00ff7864be41
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="ZBZ2" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            74d69dca2a3211e782f100ff7864be41
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                            </xsd:sequence>
+                        </xsd:complexType>
+                    </xsd:element>
+                </xsd:sequence>
+            </xsd:complexType>
+            <xsd:complexType name="DT_READBGLOG_Res">
+                <xsd:annotation>
+                    <xsd:documentation xml:lang="EN">生产订单报工返回</xsd:documentation>
+                    <xsd:appinfo source="http://sap.com/xi/VersionID">dc67092f630711e9a2ed0000002ad1ea</xsd:appinfo>
                 </xsd:annotation>
                 <xsd:sequence>
                     <xsd:element name="RETURN">
                         <xsd:annotation>
-                            <xsd:appinfo source="http://sap.com/xi/TextID">5794b917e7a411e88a6a002324a6066a
+                            <xsd:appinfo source="http://sap.com/xi/TextID">a4ffb55e4fe811e79d9128b2bd47f62c
                             </xsd:appinfo>
                         </xsd:annotation>
                         <xsd:complexType>
@@ -27,288 +95,256 @@
                                 <xsd:element name="MSGTY" type="xsd:string">
                                     <xsd:annotation>
                                         <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            57947d96e7a411e8b3b9002324a6066a
-                                        </xsd:appinfo>
-                                    </xsd:annotation>
-                                </xsd:element>
-                                <xsd:element name="MSGID" type="xsd:string">
-                                    <xsd:annotation>
-                                        <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            57947d97e7a411e8ca8a002324a6066a
+                                            a4ff85ae4fe811e7ae1728b2bd47f62c
                                         </xsd:appinfo>
                                     </xsd:annotation>
                                 </xsd:element>
                                 <xsd:element name="MSGNO" type="xsd:string">
                                     <xsd:annotation>
                                         <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            5794b911e7a411e8a31c002324a6066a
+                                            a4ff85af4fe811e782d828b2bd47f62c
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="MSDID" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            a4ff85b04fe811e7c69d28b2bd47f62c
                                         </xsd:appinfo>
                                     </xsd:annotation>
                                 </xsd:element>
                                 <xsd:element name="MSGV1" type="xsd:string">
                                     <xsd:annotation>
                                         <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            5794b912e7a411e8c834002324a6066a
+                                            a4ff85b14fe811e781e928b2bd47f62c
                                         </xsd:appinfo>
                                     </xsd:annotation>
                                 </xsd:element>
                                 <xsd:element name="MSGV2" type="xsd:string">
                                     <xsd:annotation>
                                         <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            5794b913e7a411e89d5d002324a6066a
+                                            a4ff85b24fe811e7aee128b2bd47f62c
                                         </xsd:appinfo>
                                     </xsd:annotation>
                                 </xsd:element>
                                 <xsd:element name="MSGV3" type="xsd:string">
                                     <xsd:annotation>
                                         <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            5794b914e7a411e89708002324a6066a
+                                            a4ff85b34fe811e78dbc28b2bd47f62c
                                         </xsd:appinfo>
                                     </xsd:annotation>
                                 </xsd:element>
                                 <xsd:element name="MSGV4" type="xsd:string">
                                     <xsd:annotation>
                                         <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            5794b915e7a411e8a08d002324a6066a
+                                            a4ff85b44fe811e784c628b2bd47f62c
                                         </xsd:appinfo>
                                     </xsd:annotation>
                                 </xsd:element>
                                 <xsd:element name="MESSAGE" type="xsd:string">
                                     <xsd:annotation>
                                         <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            5794b916e7a411e8c8af002324a6066a
+                                            6471a02a500111e7b4bd28b2bd47f62c
                                         </xsd:appinfo>
                                     </xsd:annotation>
                                 </xsd:element>
                             </xsd:sequence>
                         </xsd:complexType>
                     </xsd:element>
-                </xsd:sequence>
-            </xsd:complexType>
-            <xsd:complexType name="DT_OUTSRGISSUE_Req">
-                <xsd:annotation>
-                    <xsd:appinfo source="http://sap.com/xi/VersionID">10f6d666f2b311e8af850000002ad1ea</xsd:appinfo>
-                </xsd:annotation>
-                <xsd:sequence>
-                    <xsd:element name="HEAD" minOccurs="0">
+                    <xsd:element name="DETAIL" minOccurs="0" maxOccurs="unbounded">
                         <xsd:annotation>
-                            <xsd:appinfo source="http://sap.com/xi/TextID">4b1fcd44e7bb11e8c1bc002324a6066a
+                            <xsd:appinfo source="http://sap.com/xi/TextID">a4ffb55f4fe811e7b21528b2bd47f62c
                             </xsd:appinfo>
                         </xsd:annotation>
                         <xsd:complexType>
                             <xsd:sequence>
-                                <xsd:element name="ISSUENM" type="xsd:string">
+                                <xsd:element name="AUFNR" type="xsd:string">
                                     <xsd:annotation>
                                         <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd3de7bb11e8c69e002324a6066a
-                                        </xsd:appinfo>
-                                    </xsd:annotation>
-                                </xsd:element>
-                                <xsd:element name="WERKS" type="xsd:string">
-                                    <xsd:annotation>
-                                        <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd3ee7bb11e8cebd002324a6066a
-                                        </xsd:appinfo>
-                                    </xsd:annotation>
-                                </xsd:element>
-                                <xsd:element name="LIFNR" type="xsd:string">
-                                    <xsd:annotation>
-                                        <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd3fe7bb11e8a711002324a6066a
+                                            6471a02b500111e7934528b2bd47f62c
                                         </xsd:appinfo>
                                     </xsd:annotation>
                                 </xsd:element>
                                 <xsd:element name="MATNR" type="xsd:string">
                                     <xsd:annotation>
                                         <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd40e7bb11e8bb7a002324a6066a
+                                            346ac2eb581511e79dba28b2bd47f62c
                                         </xsd:appinfo>
                                     </xsd:annotation>
                                 </xsd:element>
-                                <xsd:element name="STATUS" type="xsd:string">
+                                <xsd:element name="RSNUM" type="xsd:string">
                                     <xsd:annotation>
                                         <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd41e7bb11e89d3a002324a6066a
+                                            346ac2ec581511e7b6a228b2bd47f62c
                                         </xsd:appinfo>
+                                        <xsd:documentation>操作完成的确认编号</xsd:documentation>
                                     </xsd:annotation>
                                 </xsd:element>
-                                <xsd:element name="PRTFLAG" type="xsd:string">
+                                <xsd:element name="RSPOS" type="xsd:string">
                                     <xsd:annotation>
                                         <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd42e7bb11e8c0fd002324a6066a
+                                            346ac2ed581511e78e5a28b2bd47f62c
                                         </xsd:appinfo>
+                                        <xsd:documentation>确认计数器</xsd:documentation>
                                     </xsd:annotation>
                                 </xsd:element>
-                                <xsd:element name="TXZ01" type="xsd:string">
+                                <xsd:element name="FEVOR" type="xsd:string">
                                     <xsd:annotation>
                                         <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd43e7bb11e8bd1f002324a6066a
+                                            488ab8285bdd11e786ae28b2bd47f62c
                                         </xsd:appinfo>
+                                        <xsd:documentation>生产管理员</xsd:documentation>
                                     </xsd:annotation>
                                 </xsd:element>
-                                <xsd:element name="ZIPDAT" type="xsd:string"/>
-                                <xsd:element name="ZIPTIM" type="xsd:string"/>
-                                <xsd:element name="ZIPUSER" type="xsd:string"/>
-                            </xsd:sequence>
-                        </xsd:complexType>
-                    </xsd:element>
-                    <xsd:element name="ITEM" maxOccurs="unbounded">
-                        <xsd:annotation>
-                            <xsd:appinfo source="http://sap.com/xi/TextID">4b1ffda6e7bb11e8acc6002324a6066a
-                            </xsd:appinfo>
-                        </xsd:annotation>
-                        <xsd:complexType>
-                            <xsd:sequence>
-                                <xsd:element name="ISSUENM" type="xsd:string">
+                                <xsd:element name="TXT" type="xsd:string">
                                     <xsd:annotation>
                                         <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd45e7bb11e8cd0e002324a6066a
+                                            b76b3cea5bdd11e7cb7028b2bd47f62c
                                         </xsd:appinfo>
+                                        <xsd:documentation>生产管理员名称</xsd:documentation>
                                     </xsd:annotation>
                                 </xsd:element>
-                                <xsd:element name="ITEM" type="xsd:string">
+                                <xsd:element name="ZTPBAR" type="xsd:string">
                                     <xsd:annotation>
                                         <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd46e7bb11e8bdbc002324a6066a
+                                            5994fb3c9cfd11e8c86b4ccc6a9ffd24
                                         </xsd:appinfo>
-                                    </xsd:annotation>
-                                </xsd:element>
-                                <xsd:element name="WERKS" type="xsd:string">
-                                    <xsd:annotation>
-                                        <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd47e7bb11e8c9ac002324a6066a
-                                        </xsd:appinfo>
-                                    </xsd:annotation>
-                                </xsd:element>
-                                <xsd:element name="ZPGDBAR" type="xsd:string">
-                                    <xsd:annotation>
-                                        <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd48e7bb11e894a4002324a6066a
-                                        </xsd:appinfo>
-                                    </xsd:annotation>
-                                </xsd:element>
-                                <xsd:element name="VORNR" type="xsd:string">
-                                    <xsd:annotation>
-                                        <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd49e7bb11e8c429002324a6066a
-                                        </xsd:appinfo>
-                                    </xsd:annotation>
-                                </xsd:element>
-                                <xsd:element name="VSNDA" type="xsd:string">
-                                    <xsd:annotation>
-                                        <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd4ae7bb11e89afe002324a6066a
-                                        </xsd:appinfo>
-                                    </xsd:annotation>
-                                </xsd:element>
-                                <xsd:element name="EBELN" type="xsd:string">
-                                    <xsd:annotation>
-                                        <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd4be7bb11e8a72c002324a6066a
-                                        </xsd:appinfo>
-                                    </xsd:annotation>
-                                </xsd:element>
-                                <xsd:element name="EBELP" type="xsd:string">
-                                    <xsd:annotation>
-                                        <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd4ce7bb11e8cb46002324a6066a
-                                        </xsd:appinfo>
-                                    </xsd:annotation>
-                                </xsd:element>
-                                <xsd:element name="KTSCH" type="xsd:string">
-                                    <xsd:annotation>
-                                        <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd4de7bb11e8beb2002324a6066a
-                                        </xsd:appinfo>
-                                    </xsd:annotation>
-                                </xsd:element>
-                                <xsd:element name="TXZ01" type="xsd:string">
-                                    <xsd:annotation>
-                                        <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd4ee7bb11e88d77002324a6066a
-                                        </xsd:appinfo>
-                                    </xsd:annotation>
-                                </xsd:element>
-                                <xsd:element name="ETENR" type="xsd:string">
-                                    <xsd:annotation>
-                                        <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd4fe7bb11e8a52a002324a6066a
-                                        </xsd:appinfo>
-                                    </xsd:annotation>
-                                </xsd:element>
-                                <xsd:element name="LIFNR" type="xsd:string">
-                                    <xsd:annotation>
-                                        <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd50e7bb11e8cd55002324a6066a
-                                        </xsd:appinfo>
-                                    </xsd:annotation>
-                                </xsd:element>
-                                <xsd:element name="MATNR" type="xsd:string">
-                                    <xsd:annotation>
-                                        <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd51e7bb11e8c6f0002324a6066a
-                                        </xsd:appinfo>
-                                    </xsd:annotation>
-                                </xsd:element>
-                                <xsd:element name="DIECD" type="xsd:string">
-                                    <xsd:annotation>
-                                        <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd52e7bb11e8810a002324a6066a
-                                        </xsd:appinfo>
-                                    </xsd:annotation>
-                                </xsd:element>
-                                <xsd:element name="SFFLG" type="xsd:string">
-                                    <xsd:annotation>
-                                        <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd53e7bb11e8b432002324a6066a
-                                        </xsd:appinfo>
-                                    </xsd:annotation>
-                                </xsd:element>
-                                <xsd:element name="MENGE" type="xsd:double">
-                                    <xsd:annotation>
-                                        <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd54e7bb11e8a823002324a6066a
-                                        </xsd:appinfo>
-                                    </xsd:annotation>
-                                </xsd:element>
-                                <xsd:element name="MATKL" type="xsd:string">
-                                    <xsd:annotation>
-                                        <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd55e7bb11e89a9a002324a6066a
-                                        </xsd:appinfo>
-                                    </xsd:annotation>
-                                </xsd:element>
-                                <xsd:element name="ZISNUM" type="xsd:double">
-                                    <xsd:annotation>
-                                        <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd56e7bb11e89076002324a6066a
-                                        </xsd:appinfo>
-                                    </xsd:annotation>
-                                </xsd:element>
-                                <xsd:element name="GMEIN" type="xsd:string">
-                                    <xsd:annotation>
-                                        <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            4b1fcd57e7bb11e89b24002324a6066a
-                                        </xsd:appinfo>
+                                        <xsd:documentation>托盘条码</xsd:documentation>
                                     </xsd:annotation>
                                 </xsd:element>
                                 <xsd:element name="CHARG" type="xsd:string">
                                     <xsd:annotation>
                                         <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            b666f2c1f2b211e8b3e3002324a6066a
+                                            5994fb3d9cfd11e8ce824ccc6a9ffd24
                                         </xsd:appinfo>
+                                        <xsd:documentation>批次</xsd:documentation>
                                     </xsd:annotation>
                                 </xsd:element>
-                                <xsd:element name="STATUS" type="xsd:string">
+                                <xsd:element name="MBLNR" type="xsd:string">
                                     <xsd:annotation>
                                         <xsd:appinfo source="http://sap.com/xi/TextID">
-                                            b666f2c2f2b211e89d6f002324a6066a
+                                            b99a941fed3111e899f34ccc6a9ffd24
+                                        </xsd:appinfo>
+                                        <xsd:documentation>物料凭证</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="MJAHR" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            b99a9420ed3111e89ad84ccc6a9ffd24
+                                        </xsd:appinfo>
+                                        <xsd:documentation>物料凭证年度</xsd:documentation>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="MAKT" minOccurs="0" maxOccurs="unbounded">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            346ac2f0581511e7ba8328b2bd47f62c
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="SPRAS" type="xsd:string">
+                                                <xsd:annotation>
+                                                    <xsd:appinfo source="http://sap.com/xi/TextID">
+                                                        346ac2ee581511e78d3628b2bd47f62c
+                                                    </xsd:appinfo>
+                                                </xsd:annotation>
+                                            </xsd:element>
+                                            <xsd:element name="MAKTX" type="xsd:string">
+                                                <xsd:annotation>
+                                                    <xsd:appinfo source="http://sap.com/xi/TextID">
+                                                        346ac2ef581511e7c62128b2bd47f62c
+                                                    </xsd:appinfo>
+                                                </xsd:annotation>
+                                            </xsd:element>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="AFVC" minOccurs="0" maxOccurs="unbounded">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            915c2e925bdd11e7a42128b2bd47f62c
+                                        </xsd:appinfo>
+                                        <xsd:documentation>工序信息</xsd:documentation>
+                                    </xsd:annotation>
+                                    <xsd:complexType>
+                                        <xsd:sequence>
+                                            <xsd:element name="VORNR" type="xsd:string">
+                                                <xsd:annotation>
+                                                    <xsd:appinfo source="http://sap.com/xi/TextID">
+                                                        915c2e905bdd11e7b36c28b2bd47f62c
+                                                    </xsd:appinfo>
+                                                    <xsd:documentation>工序号</xsd:documentation>
+                                                </xsd:annotation>
+                                            </xsd:element>
+                                            <xsd:element name="LTXA1" type="xsd:string">
+                                                <xsd:annotation>
+                                                    <xsd:appinfo source="http://sap.com/xi/TextID">
+                                                        915c2e915bdd11e7968b28b2bd47f62c
+                                                    </xsd:appinfo>
+                                                    <xsd:documentation>工序短文本</xsd:documentation>
+                                                </xsd:annotation>
+                                            </xsd:element>
+                                        </xsd:sequence>
+                                    </xsd:complexType>
+                                </xsd:element>
+                                <xsd:element name="MSGTY" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            6471a02c500111e7acf728b2bd47f62c
                                         </xsd:appinfo>
                                     </xsd:annotation>
                                 </xsd:element>
-                                <xsd:element name="ZISDAT" type="xsd:string"/>
-                                <xsd:element name="ZISTIM" type="xsd:string"/>
-                                <xsd:element name="ZISUSER" type="xsd:string"/>
+                                <xsd:element name="MSGNO" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            6471a02d500111e7c7f928b2bd47f62c
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="MSGID" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            6471a02e500111e79dbb28b2bd47f62c
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="MSGV1" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            6471a02f500111e7af9528b2bd47f62c
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="MSGV2" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            6471a030500111e7893628b2bd47f62c
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="MSGV3" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            6471a031500111e7982028b2bd47f62c
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="MSGV4" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            6471a032500111e7940228b2bd47f62c
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
+                                <xsd:element name="MESSAGE" type="xsd:string">
+                                    <xsd:annotation>
+                                        <xsd:appinfo source="http://sap.com/xi/TextID">
+                                            6471c258500111e78de828b2bd47f62c
+                                        </xsd:appinfo>
+                                    </xsd:annotation>
+                                </xsd:element>
                             </xsd:sequence>
                         </xsd:complexType>
                     </xsd:element>
@@ -316,29 +352,29 @@
             </xsd:complexType>
         </xsd:schema>
     </wsdl:types>
-    <wsdl:message name="MT_OUTSRGISSUE_Req">
+    <wsdl:message name="MT_READBGLOG_Req">
         <wsdl:documentation/>
-        <wsdl:part name="MT_OUTSRGISSUE_Req" element="p1:MT_OUTSRGISSUE_Req"/>
+        <wsdl:part name="MT_READBGLOG_Req" element="p1:MT_READBGLOG_Req"/>
     </wsdl:message>
-    <wsdl:message name="MT_OUTSRGISSUE_Res">
+    <wsdl:message name="MT_READBGLOG_Res">
         <wsdl:documentation/>
-        <wsdl:part name="MT_OUTSRGISSUE_Res" element="p1:MT_OUTSRGISSUE_Res"/>
+        <wsdl:part name="MT_READBGLOG_Res" element="p1:MT_READBGLOG_Res"/>
     </wsdl:message>
-    <wsdl:portType name="SI_OUTSRGISSUE_Sender_Sync">
+    <wsdl:portType name="SI_READBGLOG_Sender_Syn">
         <wsdl:documentation/>
-        <wsdl:operation name="SI_OUTSRGISSUE_Sender_Sync">
+        <wsdl:operation name="SI_READBGLOG_Sender_Syn">
             <wsdl:documentation/>
             <wsp:Policy>
-                <wsp:PolicyReference URI="#OP_SI_OUTSRGISSUE_Sender_Sync"/>
+                <wsp:PolicyReference URI="#OP_SI_READBGLOG_Sender_Syn"/>
             </wsp:Policy>
-            <wsdl:input message="p1:MT_OUTSRGISSUE_Req"/>
-            <wsdl:output message="p1:MT_OUTSRGISSUE_Res"/>
+            <wsdl:input message="p1:MT_READBGLOG_Req"/>
+            <wsdl:output message="p1:MT_READBGLOG_Res"/>
         </wsdl:operation>
     </wsdl:portType>
-    <wsdl:binding name="SI_OUTSRGISSUE_Sender_SyncBinding" type="p1:SI_OUTSRGISSUE_Sender_Sync">
+    <wsdl:binding name="SI_READBGLOG_Sender_SynBinding" type="p1:SI_READBGLOG_Sender_Syn">
         <soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"
                       xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
-        <wsdl:operation name="SI_OUTSRGISSUE_Sender_Sync">
+        <wsdl:operation name="SI_READBGLOG_Sender_Syn">
             <soap:operation soapAction="http://sap.com/xi/WebService/soap1.1"
                             xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
             <wsdl:input>
@@ -349,15 +385,15 @@
             </wsdl:output>
         </wsdl:operation>
     </wsdl:binding>
-    <wsdl:service name="SI_OUTSRGISSUE_Sender_SyncService">
-        <wsdl:port name="HTTP_Port" binding="p1:SI_OUTSRGISSUE_Sender_SyncBinding">
+    <wsdl:service name="SI_READBGLOG_Sender_SynService">
+        <wsdl:port name="HTTP_Port" binding="p1:SI_READBGLOG_Sender_SynBinding">
             <soap:address
-                    location="http://pidev1:50000/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_HAP_DEV&amp;receiverParty=&amp;receiverService=&amp;interface=SI_OUTSRGISSUE_Sender_Sync&amp;interfaceNamespace=http%3A%2F%2Fwww.cq-yj.com%2FHAP%2FOUTSRGISSUE%2FSender"
+                    location="http://piprd1:52000/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_HAP_PRD&amp;receiverParty=&amp;receiverService=&amp;interface=SI_READBGLOG_Sender_Syn&amp;interfaceNamespace=http%3A%2F%2Fwww.cq-yj.com%2FHAP%2FREADBGLOG%2FSender"
                     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
         </wsdl:port>
-        <wsdl:port name="HTTPS_Port" binding="p1:SI_OUTSRGISSUE_Sender_SyncBinding">
+        <wsdl:port name="HTTPS_Port" binding="p1:SI_READBGLOG_Sender_SynBinding">
             <soap:address
-                    location="https://pidev1:50001/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_HAP_DEV&amp;receiverParty=&amp;receiverService=&amp;interface=SI_OUTSRGISSUE_Sender_Sync&amp;interfaceNamespace=http%3A%2F%2Fwww.cq-yj.com%2FHAP%2FOUTSRGISSUE%2FSender"
+                    location="https://piprd1:52001/XISOAPAdapter/MessageServlet?senderParty=&amp;senderService=BS_HAP_PRD&amp;receiverParty=&amp;receiverService=&amp;interface=SI_READBGLOG_Sender_Syn&amp;interfaceNamespace=http%3A%2F%2Fwww.cq-yj.com%2FHAP%2FREADBGLOG%2FSender"
                     xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"/>
         </wsdl:port>
     </wsdl:service>
