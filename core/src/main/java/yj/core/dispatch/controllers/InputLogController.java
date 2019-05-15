@@ -631,7 +631,7 @@ public class InputLogController extends BaseController {
         inputLog.setAttr3(attr3);
         inputLog.setAttr4(attr4);
         inputLog.setAttr5(attr5);
-        inputLog.setAttr6(postingDate);
+        inputLog.setAttr6(attr6);
         inputLog.setAttr7(attr7);
         inputLog.setAttr8(attr8);
         inputLog.setAttr9(attr9);
