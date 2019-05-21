@@ -130,7 +130,18 @@ public class Zwipq extends BaseDTO {
     private String maktx2;
     @Transient
     private String plineId;
-/*    private Date maxCreateDate;//最大创建时间
+    @Transient
+    private String ztpbat;//托盘条码
+
+    public String getZtpbat() {
+        return ztpbat;
+    }
+
+    public void setZtpbat(String ztpbat) {
+        this.ztpbat = ztpbat;
+    }
+
+    /*    private Date maxCreateDate;//最大创建时间
     private Date minCreateDate;//最小创建时间
 
     public Date getMaxCreateDate() {

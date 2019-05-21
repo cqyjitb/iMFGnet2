@@ -33,7 +33,7 @@ import java.util.*;
 
 @Service
 @Transactional
-public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqService{
+public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqService {
     @Autowired
     private ZwipqMapper zwipqMapper;
     @Autowired
@@ -55,20 +55,20 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
 
     @Override
     public List<Zwipq> selectByLineIdAndZxhbar(String line_id, String zxhbar) {
-        return zwipqMapper.selectByLineIdAndZxhbar(line_id,zxhbar);
+        return zwipqMapper.selectByLineIdAndZxhbar(line_id, zxhbar);
     }
 
     @Override
     public Map selectMaxQsenq(Map m) {
 
-                zwipqMapper.selectMaxQsenq(m);
-                return  m;
+        zwipqMapper.selectMaxQsenq(m);
+        return m;
     }
 
     @Override
     public int InsertIntoZwipq(List<Zwipq> list) {
         int num = 0;
-        for (int i = 0;i<list.size();i++){
+        for (int i = 0; i < list.size(); i++) {
             num = num + 1;
             zwipqMapper.InsertIntoZwipq(list.get(i));
         }
@@ -76,12 +76,12 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
     }
 
     @Override
-    public DTMIGOReturn callMigo(String zxhbar, int cynum, String line_id, String bwart,int createBy,String zpgdbar) {
+    public DTMIGOReturn callMigo(String zxhbar, int cynum, String line_id, String bwart, int createBy, String zpgdbar) {
         DTMIGOParam param = new DTMIGOParam();
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String newPostingdate = df.format(new Date()).substring(0,10).replaceAll("-","");
+        String newPostingdate = df.format(new Date()).substring(0, 10).replaceAll("-", "");
         Xhcard xhcard = xhcardMapper.selectByBacode(zxhbar);
-        Cardh cardh = cardhMapper.selectByZxhbar(xhcard.getAufnr(),xhcard.getZxhnum());
+        Cardh cardh = cardhMapper.selectByZxhbar(xhcard.getAufnr(), xhcard.getZxhnum());
         Marc marc = marcMapper.selectByMatnr(xhcard.getMatnr());
         List<Dftrghlist> listdf = new ArrayList<>();
         listdf = dftrghlistService.selectByZxhbar(zxhbar);
@@ -113,24 +113,24 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
         //将调账记录保存到表sap_ztbc0018中
         Ztbc0018 ztbc0018 = new Ztbc0018();
         UUID uuid = java.util.UUID.randomUUID();
-        String uuidstr = uuid.toString().replaceAll("-","");
+        String uuidstr = uuid.toString().replaceAll("-", "");
         ztbc0018.setId(uuidstr);
         ztbc0018.setMblnr(rs.getMBLNR());
         ztbc0018.setLineId(line_id);
         ztbc0018.setMjahr(rs.getMJAHR());
-        Long bmenge = Long.parseLong(xhcard.getMenge().substring(0,xhcard.getMenge().length() -2));
+        Long bmenge = Long.parseLong(xhcard.getMenge().substring(0, xhcard.getMenge().length() - 2));
         ztbc0018.setBmenge(bmenge);
         Long dfnum = 0L;
-        if (listdf.size() > 0){
-            for (int i = 0;i<listdf.size();i++){
+        if (listdf.size() > 0) {
+            for (int i = 0; i < listdf.size(); i++) {
                 dfnum = dfnum + listdf.get(i).getDfectQty();
             }
         }
-        if (bwart.equals("702")){
-            Long smenge = Long.parseLong(xhcard.getMenge().substring(0,xhcard.getMenge().length() -2)) - cynum - dfnum;
+        if (bwart.equals("702")) {
+            Long smenge = Long.parseLong(xhcard.getMenge().substring(0, xhcard.getMenge().length() - 2)) - cynum - dfnum;
             ztbc0018.setSmenge(smenge);
-        }else{
-            Long smenge =  Long.parseLong(xhcard.getMenge().substring(0,xhcard.getMenge().length() -2)) + cynum - dfnum;
+        } else {
+            Long smenge = Long.parseLong(xhcard.getMenge().substring(0, xhcard.getMenge().length() - 2)) + cynum - dfnum;
             ztbc0018.setSmenge(smenge);
         }
         ztbc0018.setLgort(xhcard.getLgort());
@@ -148,7 +148,7 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
 
     @Override
     public List<Zwipq> selectBylineidAndZxhbarAndZpgdbar(String line_id, String zxhbar, String zpgdbar) {
-        return zwipqMapper.selectBylineidAndZxhbarAndZpgdbar(line_id,zxhbar,zpgdbar);
+        return zwipqMapper.selectBylineidAndZxhbarAndZpgdbar(line_id, zxhbar, zpgdbar);
     }
 
     @Override
@@ -158,13 +158,13 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
 
     @Override
     public List<Zwipq> selectForqj(String line_id, String sfflg) {
-        return zwipqMapper.selectForqj(line_id,sfflg);
+        return zwipqMapper.selectForqj(line_id, sfflg);
     }
 
     @Override
     public int updateForQj(List<Zwipq> zwipqs) {
         int sum = 0;
-        for (int i =0;i<zwipqs.size();i++){
+        for (int i = 0; i < zwipqs.size(); i++) {
             sum = sum + zwipqMapper.updateForQj(zwipqs.get(i));
         }
         return sum;
@@ -188,8 +188,8 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
     @Override
     public int updateQsenqBatch(List<Zwipq> list) {
         int sum = 0;
-        for (int i= 0;i<list.size();i++){
-            if(zwipqMapper.updateQsenq(list.get(i)) == 1){
+        for (int i = 0; i < list.size(); i++) {
+            if (zwipqMapper.updateQsenq(list.get(i)) == 1) {
                 sum = sum + 1;
             }
         }
@@ -198,14 +198,14 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
 
     @Override
     public List<Zwipq> selectForJjxx(String line_id, String classgrp) {
-        return zwipqMapper.selectForJjxx(line_id,classgrp);
+        return zwipqMapper.selectForJjxx(line_id, classgrp);
     }
 
     @Override
     public int updateZoffl(List<Zwipq> list) {
         int sum = 0;
-        for (int i = 0;i<list.size();i++){
-            if (zwipqMapper.updateZoffl(list.get(i)) == 1){
+        for (int i = 0; i < list.size(); i++) {
+            if (zwipqMapper.updateZoffl(list.get(i)) == 1) {
                 sum = sum + 1;
             }
         }
@@ -213,17 +213,17 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
     }
 
     @Override
-    public List<Zwipq> selectZwipq(IRequest request, String deptId, String lineId,String plineId, Integer zremade, String attr1After, String attr1Before,
+    public List<Zwipq> selectZwipq(IRequest request, String deptId, String lineId, String plineId, Integer zremade, String attr1After, String attr1Before,
                                    String shift, String sfflg, String diecd, String zxhbar, String zgjbar, Integer online, Integer zzxkl, Integer zqjkl, Integer zoffl, Integer status) {
-        List<Zwipq> zwipq = zwipqMapper.selectZwipq(deptId, lineId,plineId, zremade, attr1After, attr1Before, shift, sfflg, diecd,zxhbar, zgjbar, online, zzxkl, zqjkl, zoffl, status);
-        for(int i=0;i<zwipq.size();i++ ){
+        List<Zwipq> zwipq = zwipqMapper.selectZwipq(deptId, lineId, plineId, zremade, attr1After, attr1Before, shift, sfflg, diecd, zxhbar, zgjbar, online, zzxkl, zqjkl, zoffl, status);
+        for (int i = 0; i < zwipq.size(); i++) {
             Zwipq zwipq1 = zwipq.get(i);
             Employee list = new Employee();
             list.setEmployeeId(zwipq1.getCreatedBy());
             Employee employee = employeeMapper.selectOne(list);
-            if(employee == null){
+            if (employee == null) {
                 zwipq1.setCreateBy("");
-            }else{
+            } else {
                 zwipq1.setCreateBy(employee.getEmployeeCode());
             }
         }
@@ -235,20 +235,20 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
         List<Zwipq> list = zwipqMapper.selectIORZwipq(deptId, lineId, pmatnr, attr1After, attr1Before, shift);
         List<Zwipq> list1 = new ArrayList<Zwipq>();
         DecimalFormat df = new DecimalFormat("0.00");
-        for (int i=0;i<list.size();i++){
+        for (int i = 0; i < list.size(); i++) {
             Zwipq zwipq = list.get(i);
             String lineId1 = zwipq.getLineId();
             String pmatnr1 = zwipq.getPmatnr();
             String zpgdbar = zwipq.getZpgdbar();
-            double zsxnum =  zwipqMapper.selectZsxnum1(lineId1,pmatnr1,zpgdbar,null,null,null,null);
-            if(zsxnum != 0){
-                long zzxkl = zwipqMapper.selectZsxnum1(lineId1,pmatnr1,zpgdbar,1,0,0,0);
+            double zsxnum = zwipqMapper.selectZsxnum1(lineId1, pmatnr1, zpgdbar, null, null, null, null);
+            if (zsxnum != 0) {
+                long zzxkl = zwipqMapper.selectZsxnum1(lineId1, pmatnr1, zpgdbar, 1, 0, 0, 0);
                 zwipq.setZsxnum(zsxnum);
                 zwipq.setZzxkl(zzxkl);
-                zwipq.setProcessed(zwipqMapper.selectZsxnum1(lineId1,pmatnr1,zpgdbar,0,0,0,0));
-                zwipq.setZoutnum(inOutRecordMapper.selectZoutnum1(lineId1,pmatnr1,zpgdbar,3));
-                zwipq.setScrap(inOutRecordMapper.selectZoutnum1(lineId1,pmatnr1,zpgdbar,2));
-                String rate = df.format(zzxkl/zsxnum*100) + "%";
+                zwipq.setProcessed(zwipqMapper.selectZsxnum1(lineId1, pmatnr1, zpgdbar, 0, 0, 0, 0));
+                zwipq.setZoutnum(inOutRecordMapper.selectZoutnum1(lineId1, pmatnr1, zpgdbar, 3));
+                zwipq.setScrap(inOutRecordMapper.selectZoutnum1(lineId1, pmatnr1, zpgdbar, 2));
+                String rate = df.format(zzxkl / zsxnum * 100) + "%";
                 zwipq.setRate(rate);
                 list1.add(zwipq);
             }
@@ -263,7 +263,7 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
 
     @Override
     public List<Zwipq> selectByLineIdAndZxhbarAndZOFFL(String line_id, String zxhbar, String zoffl) {
-        return zwipqMapper.selectByLineIdAndZxhbarAndZOFFL(line_id,zxhbar,zoffl);
+        return zwipqMapper.selectByLineIdAndZxhbarAndZOFFL(line_id, zxhbar, zoffl);
     }
 
     @Override
@@ -273,7 +273,7 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
 
     @Override
     public List<Zwipq> getlastsumbit(String line_id, String zxhbar) {
-        return zwipqMapper.getlastsumbit(line_id,zxhbar);
+        return zwipqMapper.getlastsumbit(line_id, zxhbar);
     }
 
     @Override
@@ -281,4 +281,33 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
         return zwipqMapper.selectSumzsxnum(zxhbar);
     }
 
+    @Override
+    public List<Zwipq> selectcharg(String pkgLineId, String matnr) {
+        return zwipqMapper.selectcharg(pkgLineId, matnr);
+    }
+
+    @Override
+    public List<Zwipq> selectcharg2(String pkgLineId, String matnr) {
+        return zwipqMapper.selectcharg2(pkgLineId, matnr);
+    }
+
+    @Override
+    public Zwipq selectcharg3(String zsxjlh, String pkgLineId, String matnr) {
+        return zwipqMapper.selectcharg3(zsxjlh,pkgLineId,matnr);
+    }
+
+    @Override
+    public Integer selectByzsxnum(String pkgLineId, String matnr,String charg) {
+        return zwipqMapper.selectByzsxnum(pkgLineId, matnr,charg);
+    }
+
+    @Override
+    public Integer selectByzsxnum1(String pkgLineId, String matnr,String charg) {
+        return zwipqMapper.selectByzsxnum1(pkgLineId, matnr,charg);
+    }
+
+    @Override
+    public Integer selectByzsxnum2(String pkgLineId, String matnr,String charg) {
+        return zwipqMapper.selectByzsxnum2(pkgLineId, matnr,charg);
+    }
 }
