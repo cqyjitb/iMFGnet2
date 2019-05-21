@@ -189,7 +189,7 @@ public class ShounumController extends BaseController {
         list = service.isExit(werks,arbpl,prd_date,shifts);
         if (list.size()>0){
             rs.setRows(list);
-            rs.setMessage("已于创建时间"+list.get(0).getCrdat()+"填报当前班次数据，是否重新填报？");
+            rs.setMessage("已于创建时间"+list.get(0).getCrdat()+"填报当前班次数据，请确认是否多次填报？");
             rs.setSuccess(true);
             rs.setCode("X");
 
