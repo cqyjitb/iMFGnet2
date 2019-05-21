@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface IKbtestService extends IBaseService<Kbtest>, ProxySelf<IKbtestService> {
 
-    List<Kbtest> selectAll();
+    List<Kbtest> selectAllData();
 }
