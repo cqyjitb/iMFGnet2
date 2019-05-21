@@ -1,13 +1,15 @@
 package yj.core.webservice.sender;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import yj.core.webservice.receiver.DTPP001SendRes;
+import yj.kanb.kbtest.service.IKbtestService;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Map;
+import java.util.UUID;
 
 public class Test {
-
 	/**
 	 * @param args
 	 */
@@ -55,10 +57,14 @@ public class Test {
 //
 //        DTPP001SendRes returnResult = port.siPP001SenderSync(_siPP001SenderSync_mtPP001SendReq);
 //        System.out.println(returnResult.getDETAIL().get(0).getMESSAGE());
-            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-            String str = df.format(new Date()).substring(0,10);
-            String str2 = df.format(new Date()).substring(11,19);
-            System.out.println(str2);
+//            SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//            String str = df.format(new Date()).substring(0,10);
+//            String str2 = df.format(new Date()).substring(11,19);
+//            System.out.println(str2);
+
+//		UUID uuid = UUID.randomUUID();
+//		String uuidstr = uuid.toString();
+//		int rs = kbtestService.insertNewData(uuidstr);
 	}
 
 }

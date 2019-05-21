@@ -13,7 +13,7 @@
         <csrf request-matcher-ref="csrfSecurityRequestMatcher" />
         <!--<csrf disabled="true"/>-->
 
-
+        <intercept-url pattern="/kanb/kanbtest.html" access="permitAll"/>
         <intercept-url pattern="/yjlogin.html" access="permitAll"/>
         <intercept-url pattern="/yjloginpd.html" access="permitAll"/>
         <intercept-url pattern="/yujiang/login" access="permitAll"/>
@@ -40,6 +40,7 @@
         <intercept-url pattern="/confirmation/input/log/pandian" access="permitAll"/>
         <intercept-url pattern="/confirmation/input/log/queryBeforeResult" access="permitAll"/>
         <intercept-url pattern="/wip/**" access="permitAll"/>
+        <intercept-url pattern="/Kbtest/**" access="permitAll"/>
         <intercept-url pattern="/zwipq/**" access="permitAll"/>
         <intercept-url pattern="/qjcode/**" access="permitAll"/>
         <intercept-url pattern="/lineiocfg/**" access="permitAll"/>
