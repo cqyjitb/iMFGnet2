@@ -66,4 +66,54 @@ public interface IZwipqService extends IBaseService<Zwipq>, ProxySelf<IZwipqServ
      * @return
      */
     List<Zwipq> selectSumzsxnum(String zxhbar);
+
+    /**
+     * 根据生产线和物料号查询取件毛坯批次 918100064
+     * @param pkgLineId
+     * @param matnr
+     * @return
+     */
+    List<Zwipq> selectcharg(String pkgLineId,String matnr);
+
+    /**
+     * 根据生产线和物料号查询在线毛坯批次 918100064
+     * @param pkgLineId
+     * @param matnr
+     * @return
+     */
+    List<Zwipq> selectcharg2(String pkgLineId,String matnr);
+
+    /**
+     * 根据生产线和物料号查询装箱未报工毛坯批次 918100064
+     * @param zsxjlh
+     * @param pkgLineId
+     * @param matnr
+     * @return
+     */
+    Zwipq selectcharg3(String zsxjlh,String pkgLineId,String matnr);
+
+    /**
+     * 根据生产线和物料号查询取件数量 918100064
+     * @param pkgLineId
+     * @param matnr
+     * @param charg
+     * @return
+     */
+    Integer selectByzsxnum(String pkgLineId,String matnr,String charg);
+    /**
+     * 根据生产线和物料号查询取件数量 918100064
+     * @param pkgLineId
+     * @param matnr
+     * @param charg
+     * @return
+     */
+    Integer selectByzsxnum1(String pkgLineId,String matnr,String charg);
+    /**
+     * 根据生产线和物料号查询在线数量 918100064
+     * @param pkgLineId
+     * @param matnr
+     * @param charg
+     * @return
+     */
+    Integer selectByzsxnum2(String pkgLineId,String matnr,String charg);
 }

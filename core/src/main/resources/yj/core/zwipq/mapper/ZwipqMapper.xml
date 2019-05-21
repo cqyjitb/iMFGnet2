@@ -136,6 +136,127 @@
         <result column="PMATNR" property="pmatnr" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <select id="selectByzsxnum2" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select COALESCE(sum(zsxnum),0) from zwipq
+        <where>
+            zzxkl = 0
+            and zqjkl = 1
+            and charg != ''
+            <if test="pkgLineId != null">
+                AND pkg_line_id = #{pkgLineId}
+            </if>
+            <if test="matnr != null">
+                AND matnr = #{matnr}
+            </if>
+            <if test="charg != null">
+                AND charg = #{charg}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByzsxnum1" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select COALESCE(sum(q.zsxnum),0) from zwipq q,wip_in_out_record re,wip_zudlist zu
+        <where>
+            q.ZSXJLH = re.ZWIPQID
+            and q.charg != ''
+            AND q.zqjkl = 1
+            AND re.reflag in("2","4")
+            and re.zqjjlh = zu.zqjjlh
+            and zu.status = 0
+            <if test="pkgLineId != null">
+                AND q.pkg_line_id = #{pkgLineId}
+            </if>
+            <if test="matnr != null">
+                AND q.matnr = #{matnr}
+            </if>
+            <if test="charg != null">
+                AND q.charg = #{charg}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByzsxnum" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select COALESCE(sum(q.zsxnum),0) from zwipq q,wip_in_out_record re
+        <where>
+            q.ZSXJLH = re.ZWIPQID
+            and q.charg != ''
+            AND q.zqjkl = 1
+            AND re.reflag in("0","3")
+            <if test="pkgLineId != null">
+                AND q.pkg_line_id = #{pkgLineId}
+            </if>
+            <if test="matnr != null">
+                AND q.matnr = #{matnr}
+            </if>
+            <if test="charg != null">
+                AND q.charg = #{charg}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectcharg3" parameterType="java.lang.String" resultType="yj.core.zwipq.dto.Zwipq">
+        select * from zwipq
+        <where>
+            zzxkl = 1
+            and charg != ''
+            <if test="zsxjlh != null">
+                AND zsxjlh = #{zsxjlh}
+            </if>
+            <if test="pkgLineId != null">
+                AND pkg_line_id = #{pkgLineId}
+            </if>
+            <if test="matnr != null">
+                AND matnr = #{matnr}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectcharg2" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select DISTINCT charg from zwipq
+        <where>
+            zzxkl = 0
+            and zqjkl = 1
+            and charg != ''
+            <if test="pkgLineId != null">
+                AND pkg_line_id = #{pkgLineId}
+            </if>
+            <if test="matnr != null">
+                AND matnr = #{matnr}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectcharg" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select DISTINCT q.charg from zwipq q,wip_in_out_record re
+        <where>
+            q.ZSXJLH = re.ZWIPQID
+            and q.ZQJKL = 1
+            and q.charg != ''
+            and re.reflag in("0","3")
+            <if test="pkgLineId != null">
+                AND q.pkg_line_id = #{pkgLineId}
+            </if>
+            <if test="matnr != null">
+                AND q.matnr = #{matnr}
+            </if>
+        </where>
+        union select DISTINCT q.charg from zwipq q,wip_in_out_record re,wip_zudlist zu
+        <where>
+            q.ZSXJLH = re.ZWIPQID
+            and q.ZQJKL = 1
+            and re.reflag in("2","4")
+            and re.zqjjlh = zu.zqjjlh
+            and zu.status = 0
+            and q.charg != ''
+            <if test="pkgLineId != null">
+                AND q.pkg_line_id = #{pkgLineId}
+            </if>
+            <if test="matnr != null">
+                AND q.matnr = #{matnr}
+            </if>
+        </where>
+    </select>
+
     <select id="selectSumZxhbar" parameterType="java.lang.String" resultType="java.lang.Integer">
         select COALESCE(sum(zsxnum),0) from zwipq
         <where>
