@@ -1,14 +1,5 @@
 package yj.core.webservice.sender;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import yj.core.webservice.receiver.DTPP001SendRes;
-import yj.kanb.kbtest.service.IKbtestService;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
-import java.util.Map;
-import java.util.UUID;
-
 public class Test {
 	/**
 	 * @param args

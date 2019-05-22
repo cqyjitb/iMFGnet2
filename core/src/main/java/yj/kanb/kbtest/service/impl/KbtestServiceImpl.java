@@ -1,6 +1,6 @@
 package yj.kanb.kbtest.service.impl;
 
-import com.hand.hap.comm.DbcontextHolder;
+
 import com.hand.hap.system.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,7 +16,7 @@ public class KbtestServiceImpl extends BaseServiceImpl<Kbtest> implements IKbtes
     private KbtestMapper kbtestMapper;
     @Override
     public int insertNewData(String id) {
-        DbcontextHolder.setDbType("sqlServerDataSource");//设置后 就OK
+
         return kbtestMapper.insertNewData(id);
     }
 }

@@ -1,5 +1,7 @@
 package yj.kanb.kbtest.controllers;
 
+import com.hand.hap.comm.DataSourceEnum;
+import com.hand.hap.comm.DataSourceHolder;
 import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.system.dto.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +24,7 @@ public class KbtestController extends BaseController {
         ResponseData rs = new ResponseData();
         UUID uuid = UUID.randomUUID();
         String id = uuid.toString();
+        DataSourceHolder.setDataSources(DataSourceEnum.mySqlDataSource.getKey());
         int i = kbtestService.insertNewData(id);
         if (i == 0){
             rs.setSuccess(true);

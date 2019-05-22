@@ -106,9 +106,9 @@
 </head>
 <script>
      var oSumbit = document.getElementById("sumbit");
-     oSumbit.onclick = function () {
+      function clickBtn() {
          $.ajax({
-             url:"${base.contextPath}/kanb/insertKbtest",
+             url:"${base.contextPath}/Kbtest/insertKbtest",
              type:"get",
              contentType :"application/json; charset=utf-8",
              success:function (res){
@@ -123,7 +123,7 @@
 <body>
 <!--报工主界面-->
 <div id="dispatch-area">
-    <button id="sumbit"></button>
+    <button id="sumbit" value="测试" onclick="clickBtn()"></button>
 </div>
 </body>
 </html>
