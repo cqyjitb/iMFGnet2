@@ -31,11 +31,11 @@
     <!--</bean>-->
 
     <bean id="mainDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName" value="${db.jndiName}"/>
+        <property name="jndiName" value="${db.a}"/>
     </bean>
 
     <bean id="mySqlDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName" value="${db.jndiNameEX}"/>
+        <property name="jndiName" value="${db.b}"/>
         <!--<property name="driverClassName" value="com.mysql.jdbc.Driver"/>-->
         <!--<property name="url" value="jdbc:mysql://127.0.0.1:3306/kb_dev"/>-->
         <!--<property name="username" value="hap_dev"/>-->
