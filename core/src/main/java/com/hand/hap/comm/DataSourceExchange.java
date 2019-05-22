@@ -11,7 +11,7 @@ public class DataSourceExchange {
         String c = aClass.getName();
         String[] ss = c.split("\\.");
         //获取包名用于区分不同数据源
-        String packageName = ss[2];
+        String packageName = ss[1];
 
         if ("kanb".equals(packageName)) {
             DataSourceHolder.setDataSources(DataSourceEnum.mySqlDataSource.getKey());
