@@ -31,11 +31,11 @@
     <!--</bean>-->
 
     <bean id="mainDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName" value="${db.a}"/>
+        <property name="jndiName" value="java:comp/env/jdbc/hap_dev"/>
     </bean>
 
     <bean id="mySqlDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
-        <property name="jndiName" value="${db.b}"/>
+        <property name="jndiName" value="java:comp/env/jdbc/kb_dev"/>
         <!--<property name="driverClassName" value="com.mysql.jdbc.Driver"/>-->
         <!--<property name="url" value="jdbc:mysql://127.0.0.1:3306/kb_dev"/>-->
         <!--<property name="username" value="hap_dev"/>-->
@@ -116,10 +116,15 @@
 
     <bean id="requestAD" class="com.hand.hap.core.impl.ServiceExecutionAdvice"/>
 
-
+    <bean id="dataSourceExchange" class="com.hand.hap.comm.DataSourceExchange"/>
     <aop:config expose-proxy="true">
         <aop:pointcut id="servicePointcut" expression="execution(* *..*ServiceImpl.*(..))"/>
         <aop:advisor advice-ref="requestAD" pointcut-ref="servicePointcut"/>
+        <aop:aspect ref="dataSourceExchange">
+            <aop:pointcut id="dataSourcePointcut" expression="execution(* *..*ServiceImpl.*(..))"/>
+            <aop:before pointcut-ref="dataSourcePointcut" method="before"/>
+            <aop:after pointcut-ref="dataSourcePointcut" method="after"/>
+        </aop:aspect>
     </aop:config>
 
 
