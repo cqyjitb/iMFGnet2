@@ -159,10 +159,10 @@ public class ShounumController extends BaseController {
             if (sum > shotnum){
                 Double tmp = sum - shotnum;
 
-                rs.setMessage("提交保存成功！(报工数量超出压模次数"+ tmp.intValue() +")");
+                rs.setMessage("提交保存成功！(报工数量超出压模次数："+ tmp.intValue() +")");
             }else if(sum < shotnum){
                 Double tmp = shotnum - sum;
-                rs.setMessage("提交保存成功！(压模次数超出报工数量"+ tmp.intValue() +")");
+                rs.setMessage("提交保存成功！(压模次数超出报工数量："+ tmp.intValue() +")");
             }else{
                 rs.setMessage("提交保存成功！");
             }
