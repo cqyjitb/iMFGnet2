@@ -163,4 +163,51 @@ public interface ZwipqMapper extends Mapper<Zwipq> {
      */
     Integer selectSumZxhbar(@Param("zxhbar") String zxhbar,@Param("attr1After") String attr1After,
                             @Param("attr1Before") String attr1Before);
+
+    /**
+     * 根据生产线和物料号查询取件毛坯批次 918100064
+     * @param pkgLineId
+     * @param matnr
+     * @return
+     */
+    List<Zwipq> selectcharg(@Param("pkgLineId")String pkgLineId,@Param("matnr")String matnr);
+    /**
+     * 根据生产线和物料号查询在线毛坯批次 918100064
+     * @param pkgLineId
+     * @param matnr
+     * @return
+     */
+    List<Zwipq> selectcharg2(@Param("pkgLineId")String pkgLineId,@Param("matnr")String matnr);
+    /**
+     * 根据生产线和物料号查询装箱报工毛坯批次 918100064
+     * @param zsxjlh
+     * @param pkgLineId
+     * @param matnr
+     * @return
+     */
+    Zwipq selectcharg3(@Param("zsxjlh")String zsxjlh,@Param("pkgLineId")String pkgLineId,@Param("matnr")String matnr);
+    /**
+     * 根据生产线和物料号查询取件数量 918100064
+     * @param pkgLineId
+     * @param matnr
+     * @param charg
+     * @return
+     */
+    Integer selectByzsxnum(@Param("pkgLineId")String pkgLineId,@Param("matnr")String matnr,@Param("charg") String charg);
+    /**
+     * 根据生产线和物料号查询取件数量 918100064
+     * @param pkgLineId
+     * @param matnr
+     * @param charg
+     * @return
+     */
+    Integer selectByzsxnum1(@Param("pkgLineId")String pkgLineId,@Param("matnr")String matnr,@Param("charg") String charg);
+    /**
+     * 根据生产线和物料号查询在线数量 918100064
+     * @param pkgLineId
+     * @param matnr
+     * @param charg
+     * @return
+     */
+    Integer selectByzsxnum2(@Param("pkgLineId")String pkgLineId,@Param("matnr")String matnr,@Param("charg") String charg);
 }
