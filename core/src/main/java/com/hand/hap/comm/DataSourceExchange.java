@@ -15,10 +15,10 @@ public class DataSourceExchange {
 
         if ("kanb".equals(packageName)) {
             DataSourceHolder.setDataSources(DataSourceEnum.mySqlDataSource.getKey());
-            System.out.println("数据源："+DataSourceEnum.mySqlDataSource.getKey());
+            //System.out.println("数据源："+DataSourceEnum.mySqlDataSource.getKey());
         } else {
             DataSourceHolder.setDataSources(DataSourceEnum.mainDataSource.getKey());
-            System.out.println("数据源："+DataSourceEnum.mainDataSource.getKey());
+            //System.out.println("数据源："+DataSourceEnum.mainDataSource.getKey());
         }
     }
 
