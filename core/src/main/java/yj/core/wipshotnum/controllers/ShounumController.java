@@ -13,6 +13,7 @@ import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.service.ICardhService;
 import yj.core.dispatch.dto.InputLog;
 import yj.core.dispatch.service.IInputLogService;
+import yj.core.fevor.service.IFevorService;
 import yj.core.marc.dto.Marc;
 import yj.core.marc.service.IMarcService;
 import yj.core.webservice_queryoldzpgdbar.components.QueryOldZpgdbarUtil;
@@ -187,6 +188,8 @@ public class ShounumController extends BaseController {
         String shifts = request.getParameter("banc");
         String zpgdbar = request.getParameter("zpgdbar");
         String type = request.getParameter("type");
+        String shot_start = request.getParameter("shot_start");
+        String shot_end = request.getParameter("shot_end");
 
         if (type.equals("old")){
             DtqueryParm parm = new DtqueryParm();
@@ -206,14 +209,27 @@ public class ShounumController extends BaseController {
 
             werks = cardh.getWerks();
         }
-
         List<Shotnum> list = new ArrayList<>();
         list = service.isExit(werks,arbpl,prd_date,shifts);
+        String l_error = "";
         if (list.size()>0){
-            rs.setRows(list);
-            rs.setMessage("已于创建时间"+list.get(0).getCrdat()+"填报当前班次数据，请确认是否多次填报？");
-            rs.setSuccess(true);
-            rs.setCode("X");
+            for (int i =0;i<list.size();i++){
+                if (list.get(i).getShotStart() == Long.parseLong(shot_start) && list.get(i).getShotEnd() == Long.parseLong(shot_end)){
+                    rs.setMessage("已存在相同的压射号填报记录，不需再填报！");
+                    l_error = "X";
+                    break;
+                }
+            }
+            if (l_error.equals("X")){
+                rs.setRows(list);
+                rs.setSuccess(true);
+                rs.setCode("E");
+            }else{
+                rs.setRows(list);
+                rs.setMessage("已于创建时间"+list.get(0).getCrdat()+"填报当前班次数据，请确认是否多次填报？");
+                rs.setSuccess(true);
+                rs.setCode("X");
+            }
 
         }else{
             rs.setSuccess(true);
