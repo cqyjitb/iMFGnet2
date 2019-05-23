@@ -701,4 +701,8 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         return inputLogMapper.queryByDispatchAndOperation(inputLog);
     }
 
+    @Override
+    public InputLog querySumInputlogForShotnum(String werks, String matnr, String arbpl, String attr6, String attr4) {
+        return inputLogMapper.querySumInputlogForShotnum(werks,matnr,arbpl,attr6,attr4);
+    }
 }

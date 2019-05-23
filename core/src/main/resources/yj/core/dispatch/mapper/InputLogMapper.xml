@@ -828,4 +828,37 @@
                    id = #{id}
                </where>
     </update>
+
+    <select id="querySumInputlogForShotnum" parameterType="java.lang.String" resultMap="BaseResultMap">
+        SELECT
+        sum(il.yeild) as yeild,
+        sum(il.work_scrap) as work_scrap,
+        sum(il.row_scrap) as row_scrap
+        FROM confirmation_input_log il,confirmation_result r,sys_user u,confirmation_log l,sap_afko af,sap_afvc afvc
+        <where>
+            il.id= r.input_id
+            and il.orderno = af.aufnr
+            and af.aufpl = afvc.aufpl and il.operation = afvc.vornr
+            AND il.CREATED_BY = u.user_id
+            AND l.ref_id = il.id
+            AND l.ref_id = il.id
+            AND r.is_reversed ='0'
+            AND l.tran_type = '0'
+            AND l.msgty = 'S'
+            and il.plant = '1001'
+            and il.operation = '0010'
+            <if test="matnr != null">
+                and r.material = #{matnr}
+            </if>
+            <if test="arbpl != null">
+                and afvc.arbpl = #{arbpl}
+            </if>
+            <if test="attr6 != null">
+                and il.attr6 = #{attr6}
+            </if>
+            <if test="attr4 != null">
+                and il.attr4 = #{attr4}
+            </if>
+        </where>
+    </select>
 </mapper>

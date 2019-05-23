@@ -3,6 +3,7 @@ package yj.core.wipshotnum.controllers;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.system.dto.ResponseData;
+import com.sun.corba.se.spi.ior.IdentifiableFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,8 @@ import yj.core.afvc.dto.Afvc;
 import yj.core.afvc.service.IAfvcService;
 import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.service.ICardhService;
+import yj.core.dispatch.dto.InputLog;
+import yj.core.dispatch.service.IInputLogService;
 import yj.core.marc.dto.Marc;
 import yj.core.marc.service.IMarcService;
 import yj.core.webservice_queryoldzpgdbar.components.QueryOldZpgdbarUtil;
@@ -41,6 +44,8 @@ public class ShounumController extends BaseController {
     private QueryOldZpgdbarUtil queryOldZpgdbarUtil;
     @Autowired
     private IMarcService marcService;
+    @Autowired
+    private IInputLogService inputLogService;
 
     /**
      * 压射号及压铸报工查询  918100064
@@ -83,8 +88,9 @@ public class ShounumController extends BaseController {
         String werks = "";
         String mode = request.getParameter("mode");
         String smdnum = request.getParameter("mdnum");
+        Integer mdnum = 1;
         if (smdnum != null && smdnum != ""){
-            Integer mdnum = Integer.valueOf(smdnum);
+             mdnum = Integer.valueOf(smdnum);
         }
 
         String matnr = request.getParameter("matnr");
@@ -140,9 +146,22 @@ public class ShounumController extends BaseController {
         //shot.setMdnum(mdnum);
         shot.setCrdat(sdf.format(new Date()));
         int i = service.insertRow(shot);
+
+        Double sum = 0D;
+        Long shotnum = ( shot.getShotEnd() - shot.getShotStart() ) * mdnum;
+        InputLog inputLog = inputLogService.querySumInputlogForShotnum(werks,matnr,arbpl,crdate.substring(0,10),banc);
+        if (inputLog != null){
+            sum = inputLog.getYeild() + inputLog.getWorkScrap() + inputLog.getRowScrap();
+        }
         if (i  == 1){
             rs.setSuccess(true);
-            rs.setMessage("提交保存成功！");
+            if (sum > shotnum){
+                rs.setMessage("提交保存成功！(报工数量超出压模次数"+ (sum - shotnum) +",请核查!)");
+            }else if(sum < shotnum){
+                rs.setMessage("提交保存成功！(压模次数超出报工数量"+ (shotnum - sum) +",请核查!)");
+            }else{
+                rs.setMessage("提交保存成功！");
+            }
         }else{
             rs.setMessage("提交保存失败");
             rs.setSuccess(false);

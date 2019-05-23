@@ -48,4 +48,6 @@ public interface IInputLogService extends IBaseService<InputLog>, ProxySelf<IInp
 
     InputLog queryByDispatchAndOperation(InputLog inputLog);
 
+    InputLog querySumInputlogForShotnum(String werks,String matnr,String arbpl, String attr6,String attr4);
+
 }

@@ -99,5 +99,7 @@ public interface InputLogMapper extends Mapper<InputLog>{
 
     InputLog queryAllGTOperationJj(InputLog inputLog);
 
+    InputLog querySumInputlogForShotnum(@Param("werks") String werks,@Param("matnr") String matnr,@Param("arbpl") String arbpl,@Param("attr6") String attr6,@Param("attr4") String attr4);
+
 
 }
