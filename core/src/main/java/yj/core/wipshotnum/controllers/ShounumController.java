@@ -243,4 +243,20 @@ public class ShounumController extends BaseController {
         service.deleteShotnum(dto);
         return new ResponseData();
     }
+
+    /**
+     * 压射号及报工统计表  918100064
+     * @param dto
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = "/wip/shotnum/queryShotnum2")
+    @ResponseBody
+    public ResponseData queryShotnum2(Shotnum dto, HttpServletRequest request) {
+        IRequest requestContext = createRequestContext(request);
+        dto.setPrdDateAfter(dto.getPrdDateAfter().substring(0,10));
+        dto.setPrdDateBefore(dto.getPrdDateBefore().substring(0,10));
+        List<Shotnum> shotnum = service.selectShotnum2(dto,requestContext);
+        return new ResponseData(shotnum);
+    }
 }

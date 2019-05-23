@@ -253,6 +253,7 @@
             refresh: true,
             buttonCount: 10
         },
+        toolbar: ["excel"],
         columns: [
             {
                 field: "werks",
@@ -279,7 +280,7 @@
             {
                 field: "arbpl",
                 title: '工作中心',
-                width: 80,
+                width: 100,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -290,7 +291,7 @@
             {
                 field: "ktext",
                 title: '机台名称',
-                width: 200,
+                width: 300,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -346,7 +347,7 @@
             {
                 field: "zpgdbar",
                 title: '机台派工号',
-                width: 160,
+                width: 180,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -357,7 +358,7 @@
             {
                 field: "matnr",
                 title: '物料号',
-                width: 80,
+                width: 100,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -368,7 +369,7 @@
             {
                 field: "maktx",
                 title: '物料描述',
-                width: 320,
+                width: 380,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -437,7 +438,7 @@
             {
                 field: "userName",
                 title: '创建者',
-                width: 80,
+                width: 100,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -461,6 +462,9 @@
     });
 
     var grid = $("#Grid").data("kendoGrid");
+    grid.bind("excelExport", function(e) {
+        e.workbook.fileName = "压射号维护表.xlsx";
+    });
     function deleteData() {
         var data = grid.selectedDataItems();
         if(data.length >= 1){

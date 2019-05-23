@@ -78,15 +78,6 @@ public interface InputLogMapper extends Mapper<InputLog>{
                              @Param("postingDateBefore")String postingDateBefore);
 
     /**
-     *
-     * @param orderno
-     * @param plant
-     * @param fevor
-     * @return
-     */
-    List<InputLog> queryCreationDate(@Param("orderno")String orderno,@Param("plant")String plant,@Param("fevor")String fevor);
-
-    /**
      *  根据机加 bguuid 查询报工日志 917110140
      * @param bguuid
      * @return
@@ -99,5 +90,13 @@ public interface InputLogMapper extends Mapper<InputLog>{
 
     InputLog queryAllGTOperationJj(InputLog inputLog);
 
-
+    /**
+     * 根据条件查询报工合格数量、工废数量、料废数量汇总 918100064
+     * @param  plant 工厂
+     * @param arbpl 工作中心
+     * @param attr4 班次
+     * @param attr6 日期
+     * @return
+     */
+    InputLog selectByOrderno2(@Param("plant")String plant,@Param("arbpl")String arbpl, @Param("attr4")String attr4,@Param("attr6")String attr6);
 }
