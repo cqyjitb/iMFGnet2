@@ -11,8 +11,7 @@
                            http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.2.xsd">
 
 
-    <context:property-placeholder location="classpath*:config.properties" ignore-unresolvable="true"/>
-
+    <!--<context:property-placeholder location="classpath*:config.properties" ignore-unresolvable="true"/>-->
     <bean id="coreApplicationListener" class="com.hand.hap.core.ApplicationListenerBean"/>
 
     <!-- middleware datasource  com.hand.hap.core.JndiObjectFactoryBean-->

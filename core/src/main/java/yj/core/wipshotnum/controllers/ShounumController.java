@@ -149,16 +149,19 @@ public class ShounumController extends BaseController {
 
         Double sum = 0D;
         Long shotnum = ( shot.getShotEnd() - shot.getShotStart() ) * mdnum;
-        InputLog inputLog = inputLogService.querySumInputlogForShotnum(werks,matnr,arbpl,crdate.substring(0,10),banc);
+        InputLog inputLog = inputLogService.querySumInputlogForShotnum(werks,matnr,arbpl,erp_date,banc);
         if (inputLog != null){
             sum = inputLog.getYeild() + inputLog.getWorkScrap() + inputLog.getRowScrap();
         }
         if (i  == 1){
             rs.setSuccess(true);
             if (sum > shotnum){
-                rs.setMessage("提交保存成功！(报工数量超出压模次数"+ (sum - shotnum) +",请核查!)");
+                Double tmp = sum - shotnum;
+
+                rs.setMessage("提交保存成功！(报工数量超出压模次数"+ tmp.intValue() +")");
             }else if(sum < shotnum){
-                rs.setMessage("提交保存成功！(压模次数超出报工数量"+ (shotnum - sum) +",请核查!)");
+                Double tmp = shotnum - sum;
+                rs.setMessage("提交保存成功！(压模次数超出报工数量"+ tmp.intValue() +")");
             }else{
                 rs.setMessage("提交保存成功！");
             }

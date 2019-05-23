@@ -847,6 +847,7 @@
             AND l.msgty = 'S'
             and il.plant = '1001'
             and il.operation = '0010'
+            and af.auart in ('YZ01','YZ03','YZ04')
             <if test="matnr != null">
                 and r.material = #{matnr}
             </if>
