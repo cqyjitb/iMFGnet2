@@ -72,6 +72,15 @@ public class Shotnum extends BaseDTO {
     private String userName;//创建人
     @Transient
     private String shiftSeq;//班次轮换类型
+    private Integer differentNum;//差异数
+
+    public Integer getDifferentNum() {
+        return differentNum;
+    }
+
+    public void setDifferentNum(Integer differentNum) {
+        this.differentNum = differentNum;
+    }
 
     public String getShiftSeq() {
         return shiftSeq;
