@@ -6,6 +6,7 @@ import yj.core.webservice_newbg.dto.DTBAOGONGParametersitem;
 import yj.core.webservice_newbg.dto.DTBAOGONGReturnResult;
 
 import javax.jws.WebService;
+import java.text.ParseException;
 import java.util.List;
 
 /**

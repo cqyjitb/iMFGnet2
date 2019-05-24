@@ -29,7 +29,7 @@ import java.util.List;
 public class JjbgImpl implements IJjbg {
 
     @Override
-    public DTBAOGONGReturnResult callbg(DTBAOGONGParameters params, List<DTBAOGONGParametersitem> list) throws ParseException {
+    public DTBAOGONGReturnResult callbg(DTBAOGONGParameters params, List<DTBAOGONGParametersitem> list)  {
         DTBAOGONGReturnResult rs = new DTBAOGONGReturnResult();
         ConfirmationWebserviceUtilNew confirmationWebserviceUtilNew = new ConfirmationWebserviceUtilNew();
         CardhMapper cardhMapper = ContextLoaderListener.getCurrentWebApplicationContext().getBean(CardhMapper.class);
@@ -42,6 +42,13 @@ public class JjbgImpl implements IJjbg {
         String curtim  = df.format(new Date()).substring(11,19).replaceAll(":","");
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
         SimpleDateFormat sdf1 = new SimpleDateFormat("yyyyMMdd");
+        Date date = null;
+        try {
+            date = sdf1.parse(params.getATTR6());
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
         try{
             params.setATTR8("");
             params.setATTR9("");
@@ -119,7 +126,6 @@ public class JjbgImpl implements IJjbg {
                 inputLog.setAttr3(params.getATTR3());
                 inputLog.setAttr4(params.getATTR4());
                 inputLog.setAttr5(params.getATTR5());
-                Date date = sdf1.parse(params.getATTR6());
                 String attr6 = sdf2.format(date);
                 inputLog.setAttr6(attr6);
                 inputLog.setAttr7(params.getATTR7());
@@ -182,7 +188,6 @@ public class JjbgImpl implements IJjbg {
             inputLog.setAttr3(params.getATTR3());
             inputLog.setAttr4(params.getATTR4());
             inputLog.setAttr5(params.getATTR5());
-            Date date = sdf1.parse(params.getATTR6());
             String attr6 = sdf2.format(date);
             inputLog.setAttr6(attr6);
             inputLog.setAttr7(params.getATTR7());

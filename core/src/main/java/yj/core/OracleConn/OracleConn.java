@@ -20,7 +20,7 @@ public class OracleConn {
         this.dbPassword = dbPassword;
         this.jdbcName = jdbcName;
     }
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         //        this.mesOraDriver = "oracle.jdbc.OracleDriver";
         //        this.mesOraUrl = "jdbc:oracle:thin:@192.168.4.37:1521:orclyj";
         //        this.mesOraPass = "mes_query_usr";
@@ -51,8 +51,17 @@ public class OracleConn {
 //        String s = sd4.format(date);
 //
 //            System.out.println(s);
-        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
-        System.out.println(sdf.format(new Date()));
+        int[] weekDays = { 7, 1, 2, 3, 4, 5, 6 };
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = sdf.parse("2019-05-06");
+        Calendar cal = Calendar.getInstance();
+        cal.setTime(date);
+
+        int w = cal.get(Calendar.DAY_OF_WEEK) - 1;
+
+        Integer week = cal.get(Calendar.WEEK_OF_YEAR) % 2;
+        System.out.println(week);
 
 
     }
