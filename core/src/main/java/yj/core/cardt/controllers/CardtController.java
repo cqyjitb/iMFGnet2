@@ -117,7 +117,7 @@ public class CardtController
         }
         //eg. 2019-05-24 08:00:00 ----------2019-05-25 07:59:59
         if (w.toString().equals(fevor.getShiftDay())){
-            String strbg = sdf.format(new Date()).substring(0,10) + " 08:00:00";
+            String strbg = sdf.format(new Date()).substring(0,10) + " 08:30:00";
             Date bg = sdf.parse(strbg);
             Calendar calbg = Calendar.getInstance();
             calbg.setTime(bg);
@@ -146,7 +146,7 @@ public class CardtController
         }
 
         if (w1.toString().equals(fevor.getShiftDay())){
-           String stred = sdf.format(new Date()).substring(0,10) + " 07:59:59";
+           String stred = sdf.format(new Date()).substring(0,10) + " 08:29:59";
            Date ed = sdf.parse(stred);
            Calendar caled = Calendar.getInstance();
            caled.setTime(ed);
