@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.kanb.kbtest.mapper.KbtestMapper">
+    <resultMap id="BaseResultMap" type="yj.kanb.equipment.dto.Equipment">
+        <result column="bukrs" property="bukrs" jdbcType="VARCHAR"/>
+        <result column="works" property="works" jdbcType="VARCHAR"/>
+        <result column="eqId" property="eqId" jdbcType="VARCHAR"/>
+        <result column="mac" property="mac" jdbcType="VARCHAR"/>
+        <result column="address" property="address" jdbcType="VARCHAR"/>
+        <result column="workshopId" property="workshopId" jdbcType="VARCHAR"/>
+    </resultMap>
+
+</mapper>
