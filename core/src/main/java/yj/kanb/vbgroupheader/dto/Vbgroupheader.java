@@ -16,8 +16,11 @@ public class Vbgroupheader {
     private String bukrs;
     private String works;
     @NotEmpty
-    private String groupId;
-    private String groupType;
+    private String eqId;
+    private String mac;
+    private String vbgroupName;
+    private Integer switchfreg;
+    private String status;
 
     public String getVbgroupId() {
         return vbgroupId;
@@ -43,19 +46,43 @@ public class Vbgroupheader {
         this.works = works;
     }
 
-    public String getGroupId() {
-        return groupId;
+    public String getEqId() {
+        return eqId;
     }
 
-    public void setGroupId(String groupId) {
-        this.groupId = groupId;
+    public void setEqId(String eqId) {
+        this.eqId = eqId;
     }
 
-    public String getGroupType() {
-        return groupType;
+    public String getMac() {
+        return mac;
     }
 
-    public void setGroupType(String groupType) {
-        this.groupType = groupType;
+    public void setMac(String mac) {
+        this.mac = mac;
+    }
+
+    public String getVbgroupName() {
+        return vbgroupName;
+    }
+
+    public void setVbgroupName(String vbgroupName) {
+        this.vbgroupName = vbgroupName;
+    }
+
+    public Integer getSwitchfreg() {
+        return switchfreg;
+    }
+
+    public void setSwitchfreg(Integer switchfreg) {
+        this.switchfreg = switchfreg;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
     }
 }
