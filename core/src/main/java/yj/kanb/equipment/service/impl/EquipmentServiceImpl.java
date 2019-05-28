@@ -1,13 +1,9 @@
 package yj.kanb.equipment.service.impl;
 
-import com.hand.hap.comm.DataSourceEnum;
-import com.hand.hap.comm.DataSourceHolder;
 import com.hand.hap.system.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import yj.core.afko.dto.Afko;
-import yj.core.afko.mapper.AfkoMapper;
 import yj.kanb.equipment.dto.Equipment;
 import yj.kanb.equipment.mapper.EquipmentMapper;
 import yj.kanb.equipment.service.IEquipmentService;
@@ -23,5 +19,9 @@ public class EquipmentServiceImpl extends BaseServiceImpl<Equipment> implements 
     @Override
     public List<Equipment> selectAllData() {
         return equipmentMapper.selectAllData();
+    }
+    @Override
+    public List<Equipment> queryEquipment(Equipment dto) {
+        return equipmentMapper.selectEquipment(dto);
     }
 }
