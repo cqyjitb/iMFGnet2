@@ -1,6 +1,7 @@
 package yj.kanb.vbgroupheader.dto;
 
 import com.hand.hap.mybatis.annotation.ExtensionAttribute;
+import com.hand.hap.system.dto.BaseDTO;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.GeneratedValue;
@@ -8,7 +9,7 @@ import javax.persistence.Table;
 
 @ExtensionAttribute(disable=true)
 @Table(name = "vb_group_h")
-public class Vbgroupheader {
+public class Vbgroupheader extends BaseDTO {
 
     @NotEmpty
     @GeneratedValue

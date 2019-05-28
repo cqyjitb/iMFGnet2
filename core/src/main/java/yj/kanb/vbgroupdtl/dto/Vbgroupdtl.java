@@ -1,6 +1,7 @@
 package yj.kanb.vbgroupdtl.dto;
 
 import com.hand.hap.mybatis.annotation.ExtensionAttribute;
+import com.hand.hap.system.dto.BaseDTO;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.GeneratedValue;
@@ -8,8 +9,8 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @ExtensionAttribute(disable=true)
-@Table(name = "vb_group_h")
-public class Vbgroupdtl {
+@Table(name = "vb_group_dtl")
+public class Vbgroupdtl extends BaseDTO {
     @Id
     @GeneratedValue
     private String vbgroupId;

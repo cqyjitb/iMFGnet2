@@ -1,8 +1,8 @@
-package yj.kanb.vbgroupdtl.controllers;
+package yj.kanb.vbline.controllers;
 
 import com.hand.hap.system.controllers.BaseController;
 import org.springframework.stereotype.Controller;
 
 @Controller
-public class VbgroupdtlController extends BaseController {
+public class VblineController extends BaseController{
 }

@@ -2,7 +2,7 @@ package com.hand.hap.comm;
 
 public enum  DataSourceEnum {
 
-    mainDataSource("dmainDataSources1"), mySqlDataSource("mySqlDataSource");
+    mainDataSource("mainDataSource"), mySqlDataSource("mySqlDataSource");
 
     private String key;
 

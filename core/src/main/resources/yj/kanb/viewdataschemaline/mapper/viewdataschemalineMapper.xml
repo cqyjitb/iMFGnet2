@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.kanb.viewdataschemaline.mapper.ViewdataschemalineMapper">
+<resultMap id="BaseResultMap" type="yj.kanb.viewdataschemaline.dto.Viewdataschemaline">
+    <result column="bukrs" property="bukrs" jdbcType="VARCHAR"/>
+    <result column="works" property="works" jdbcType="VARCHAR"/>
+    <result column="groupId" property="groupId" jdbcType="VARCHAR"/>
+    <result column="product" property="product" jdbcType="VARCHAR"/>
+    <result column="workshopId" property="workshopId" jdbcType="VARCHAR"/>
+    <result column="matnr" property="matnr" jdbcType="VARCHAR"/>
+    <result column="maktx" property="maktx" jdbcType="VARCHAR"/>
+    <result column="shift" property="shift" jdbcType="VARCHAR"/>
+    <result column="shifttimebegin" property="shifttimebegin" jdbcType="VARCHAR"/>
+    <result column="shifttimeend" property="shifttimeend" jdbcType="VARCHAR"/>
+    <result column="lineLeader" property="lineLeader" jdbcType="VARCHAR"/>
+    <result column="leaderPhone" property="leaderPhone" jdbcType="VARCHAR"/>
+    <result column="cycletime" property="cycletime" jdbcType="DECIMAL"/>
+    <result column="workshopName" property="workshopName" jdbcType="VARCHAR"/>
+    <result column="planqty" property="planqty" jdbcType="DECIMAL"/>
+    <result column="actqty" property="actqty" jdbcType="DECIMAL"/>
+    <result column="insufqty" property="insufqty" jdbcType="DECIMAL"/>
+    <result column="qcRate" property="qcRate" jdbcType="DECIMAL"/>
+    <result column="oeeRate" property="insufqty" jdbcType="DECIMAL"/>
+</resultMap>
+
+</mapper>

@@ -114,16 +114,9 @@
     <context:component-scan base-package="**.*.components"/>
 
     <bean id="requestAD" class="com.hand.hap.core.impl.ServiceExecutionAdvice"/>
-
-    <bean id="dataSourceExchange" class="com.hand.hap.comm.DataSourceExchange"/>
     <aop:config expose-proxy="true">
         <aop:pointcut id="servicePointcut" expression="execution(* *..*ServiceImpl.*(..))"/>
         <aop:advisor advice-ref="requestAD" pointcut-ref="servicePointcut"/>
-        <aop:aspect ref="dataSourceExchange">
-            <aop:pointcut id="dataSourcePointcut" expression="execution(* *..*ServiceImpl.*(..))"/>
-            <aop:before pointcut-ref="dataSourcePointcut" method="before"/>
-            <aop:after pointcut-ref="dataSourcePointcut" method="after"/>
-        </aop:aspect>
     </aop:config>
 
 

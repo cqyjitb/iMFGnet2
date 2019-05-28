@@ -1,6 +1,7 @@
 package yj.kanb.equipment.dto;
 
 import com.hand.hap.mybatis.annotation.ExtensionAttribute;
+import com.hand.hap.system.dto.BaseDTO;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.GeneratedValue;
@@ -9,7 +10,7 @@ import javax.persistence.Table;
 
 @ExtensionAttribute(disable=true)
 @Table(name = "vb_equipment")
-public class Equipment {
+public class Equipment extends BaseDTO {
     @NotEmpty
     private String bukrs;
     private String works;

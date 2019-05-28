@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.kanb.vblinegroupheader.mapper.VblinegroupheaderMapper">
+<resultMap id="BaseResultMap" type="yj.kanb.vblinegroupheader.dto.Vblinegroupheader">
+    <result column="bukrs" property="bukrs" jdbcType="VARCHAR"/>
+    <result column="works" property="works" jdbcType="VARCHAR"/>
+    <result column="groupId" property="groupId" jdbcType="VARCHAR"/>
+    <result column="product" property="product" jdbcType="VARCHAR"/>
+    <result column="workshopId" property="workshopId" jdbcType="VARCHAR"/>
+    <result column="groupName" property="groupName" jdbcType="DECIMAL"/>
+    <result column="groupType" property="groupType" jdbcType="VARCHAR"/>
+</resultMap>
+
+</mapper>

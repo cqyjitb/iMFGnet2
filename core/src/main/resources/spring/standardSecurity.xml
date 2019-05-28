@@ -41,6 +41,7 @@
         <intercept-url pattern="/confirmation/input/log/queryBeforeResult" access="permitAll"/>
         <intercept-url pattern="/wip/**" access="permitAll"/>
         <intercept-url pattern="/Kbtest/**" access="permitAll"/>
+        <intercept-url pattern="/kanb/**" access="permitAll"/>
         <intercept-url pattern="/zwipq/**" access="permitAll"/>
         <intercept-url pattern="/qjcode/**" access="permitAll"/>
         <intercept-url pattern="/lineiocfg/**" access="permitAll"/>

@@ -11,4 +11,7 @@
         <result column="workshopId" property="workshopId" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <select id="selectAllData" resultMap="BaseResultMap">
+        select * from vb_equipment;
+    </select>
 </mapper>

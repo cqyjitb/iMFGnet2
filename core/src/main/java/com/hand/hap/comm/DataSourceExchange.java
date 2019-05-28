@@ -14,11 +14,12 @@ public class DataSourceExchange {
         String packageName = ss[1];
 
         if ("kanb".equals(packageName)) {
+            System.out.println(DataSourceEnum.mySqlDataSource.getKey());
             DataSourceHolder.setDataSources(DataSourceEnum.mySqlDataSource.getKey());
-            //System.out.println("数据源："+DataSourceEnum.mySqlDataSource.getKey());
+           // System.out.println("数据源："+DataSourceEnum.mySqlDataSource.getKey());
         } else {
             DataSourceHolder.setDataSources(DataSourceEnum.mainDataSource.getKey());
-            //System.out.println("数据源："+DataSourceEnum.mainDataSource.getKey());
+           // System.out.println("数据源："+DataSourceEnum.mainDataSource.getKey());
         }
     }
 
@@ -26,7 +27,7 @@ public class DataSourceExchange {
      * 执行后将数据源置为空
      */
     public void after() {
-        DataSourceHolder.setDataSources(null);
+        //DataSourceHolder.setDataSources(null);
     }
 
 }
