@@ -29,4 +29,39 @@
             </if>
         </where>
     </select>
+
+    <delete id="deleteEquipment" parameterType="yj.kanb.equipment.dto.Equipment">
+        delete from vb_equipment
+        <where>
+            bukrs = #{bukrs}
+            AND works = #{works}
+            AND mac = #{mac}
+            AND eqId = #{eqId}
+        </where>
+    </delete>
+
+    <select id="selectByMac" parameterType="java.lang.String" resultType="yj.kanb.equipment.dto.Equipment">
+        select * from vb_equipment
+        <where>
+            <if test="mac != null">
+                mac = #{mac}
+            </if>
+        </where>
+    </select>
+
+    <insert id="insertEquipment" parameterType="yj.kanb.equipment.dto.Equipment">
+        insert into vb_equipment(bukrs,works,eqId,mac,workshopId,address,created_by,creation_date)
+        values(#{bukrs},#{works},#{eqId},#{mac},#{workshopId},#{address},#{createdBy},#{creationDate})
+    </insert>
+
+    <update id="updateEquipment" parameterType="yj.kanb.equipment.dto.Equipment">
+        update vb_equipment set bukrs = #{bukrs},works = #{works},mac = #{mac},eqId = #{eqId},workshopId = #{workshopId},
+                            address = #{address},last_updated_by = #{lastUpdatedBy},last_update_date = #{lastUpdateDate}
+        <where>
+            bukrs = #{bukrs}
+            AND works = #{works}
+            AND mac = #{mac}
+            AND eqId = #{eqId}
+        </where>
+    </update>
 </mapper>
