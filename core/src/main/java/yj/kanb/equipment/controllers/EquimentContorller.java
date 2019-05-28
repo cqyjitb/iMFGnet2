@@ -29,10 +29,10 @@ public class EquimentContorller  extends BaseController {
     @RequestMapping(value = {"/kanb/equipment/selectAfko"}, method = {RequestMethod.GET})
     @ResponseBody
     public ResponseData selectAfko(HttpServletRequest request){
-        DataSourceHolder.setDataSources(DataSourceEnum.mySqlDataSource.getKey());
+        //DataSourceHolder.setDataSources(DataSourceEnum.mySqlDataSource.getKey());
         List<Equipment> list = service.selectAllData();
 
-        DataSourceHolder.setDataSources(DataSourceEnum.mainDataSource.getKey());
+        //DataSourceHolder.setDataSources(DataSourceEnum.mainDataSource.getKey());
         Afko afko = afkoService.selectByAufnr("1000000411");
 
         ResponseData rs = new ResponseData();

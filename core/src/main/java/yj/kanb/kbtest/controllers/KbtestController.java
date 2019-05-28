@@ -24,7 +24,7 @@ public class KbtestController extends BaseController {
         ResponseData rs = new ResponseData();
         UUID uuid = UUID.randomUUID();
         String id = uuid.toString();
-        DataSourceHolder.setDataSources(DataSourceEnum.mySqlDataSource.getKey());
+        //DataSourceHolder.setDataSources(DataSourceEnum.mySqlDataSource.getKey());
         int i = kbtestService.insertNewData(id);
         if (i == 0){
             rs.setSuccess(true);

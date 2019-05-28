@@ -27,7 +27,7 @@ public class DataSourceExchange {
      * 执行后将数据源置为空
      */
     public void after() {
-        //DataSourceHolder.setDataSources(null);
+        DataSourceHolder.setDataSources(null);
     }
 
 }

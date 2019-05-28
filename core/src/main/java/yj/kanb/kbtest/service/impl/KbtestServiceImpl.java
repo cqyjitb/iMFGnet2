@@ -18,7 +18,7 @@ public class KbtestServiceImpl extends BaseServiceImpl<Kbtest> implements IKbtes
     private KbtestMapper kbtestMapper;
     @Override
     public int insertNewData(String id) {
-        DataSourceHolder.setDataSources(DataSourceEnum.mySqlDataSource.getKey());
+        //DataSourceHolder.setDataSources(DataSourceEnum.mySqlDataSource.getKey());
         return kbtestMapper.insertNewData(id);
     }
 }

@@ -72,7 +72,21 @@
         <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <tx:annotation-driven transaction-manager="transactionManager"/>
+    <!--<tx:annotation-driven transaction-manager="transactionManager"/>-->
+    <!-- 拦截器方式配置事物 -->
+    <tx:advice id="transactionAdvice" transaction-manager="transactionManager">
+        <tx:attributes>
+            <tx:method name="add*" propagation="REQUIRED" />
+            <tx:method name="insert*" propagation="REQUIRED" />
+            <tx:method name="update*" propagation="REQUIRED" />
+            <tx:method name="delete*" propagation="REQUIRED" />
+
+            <tx:method name="get*" propagation="SUPPORTS" read-only="true" />
+            <tx:method name="find*" propagation="SUPPORTS" read-only="true" />
+            <tx:method name="select*" propagation="SUPPORTS" read-only="true" />
+            <tx:method name="seach*" propagation="SUPPORTS" read-only="true" />
+        </tx:attributes>
+    </tx:advice>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
@@ -117,6 +131,19 @@
     <aop:config expose-proxy="true">
         <aop:pointcut id="servicePointcut" expression="execution(* *..*ServiceImpl.*(..))"/>
         <aop:advisor advice-ref="requestAD" pointcut-ref="servicePointcut"/>
+    </aop:config>
+
+    <bean id="DataSourceExchange" class="com.hand.hap.comm.DataSourceExchange" />
+    <aop:config>
+        <aop:pointcut id="transactionPointcut" expression="execution(* *..*ServiceImpl.*(..))"/>
+        <aop:advisor pointcut-ref="transactionPointcut" advice-ref="transactionAdvice" order="2"/>
+
+        <aop:aspect id="dataSourceAspect" ref="DataSourceExchange" order="1">
+            <aop:pointcut id="dataSourcePointcut"
+                          expression="execution(* *..*ServiceImpl.*(..))"/>
+            <aop:before pointcut-ref="dataSourcePointcut" method="before" />
+            <aop:after pointcut-ref="dataSourcePointcut" method="after" />
+        </aop:aspect>
     </aop:config>
 
 
