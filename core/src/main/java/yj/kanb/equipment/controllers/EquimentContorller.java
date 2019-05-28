@@ -3,6 +3,7 @@ package yj.kanb.equipment.controllers;
 
 import com.hand.hap.comm.DataSourceEnum;
 import com.hand.hap.comm.DataSourceHolder;
+import com.hand.hap.core.IRequest;
 import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.system.dto.ResponseData;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,6 +41,20 @@ public class EquimentContorller  extends BaseController {
         rs.setSuccess(true);
         return rs;
 
+    }
+    /**
+     * 看板设备维护页面查询请求 918100064
+     * @param request
+     * @param dto
+     * @return
+     */
+    @RequestMapping(value = {"/equipment/queryEquipment"})
+    @ResponseBody
+    public ResponseData queryEquipment(HttpServletRequest request,Equipment dto){
+        DataSourceHolder.setDataSources(DataSourceEnum.mySqlDataSource.getKey());
+        IRequest requestContext = createRequestContext(request);
+        List<Equipment> list =  service.queryEquipment(dto);
+        return new ResponseData(list);
     }
 
 }

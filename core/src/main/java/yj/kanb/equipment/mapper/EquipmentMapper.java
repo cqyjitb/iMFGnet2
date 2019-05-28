@@ -7,4 +7,10 @@ import java.util.List;
 
 public interface EquipmentMapper extends Mapper<Equipment> {
     List<Equipment> selectAllData();
+    /**
+     * 看板设备表查询 918100064
+     * @param dto
+     * @return
+     */
+    List<Equipment> selectEquipment(Equipment dto);
 }

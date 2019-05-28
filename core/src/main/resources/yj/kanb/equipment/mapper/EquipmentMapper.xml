@@ -14,4 +14,19 @@
     <select id="selectAllData" resultMap="BaseResultMap">
         select * from vb_equipment;
     </select>
+    <select id="selectEquipment" parameterType="yj.kanb.equipment.dto.Equipment" resultMap="BaseResultMap">
+        select * from vb_equipment
+        <where>
+            1 = 1
+            <if test="bukrs != null">
+                AND bukrs = #{bukrs}
+            </if>
+            <if test="works != null">
+                AND works = #{works}
+            </if>
+            <if test="workshopId != null">
+                AND workshopId = #{workshopId}
+            </if>
+        </where>
+    </select>
 </mapper>
