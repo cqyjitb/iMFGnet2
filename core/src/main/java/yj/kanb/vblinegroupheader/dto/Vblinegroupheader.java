@@ -12,14 +12,15 @@ import javax.persistence.Table;
 public class Vblinegroupheader  extends BaseDTO {
     @Id
     @GeneratedValue
-    private String groupId;
-    private String bukrs;
-    private String works;
-    private String workshopId;
-    private String product;
+    private String groupId;//产线组ID
+    private String bukrs;//公司
+    private String works;//工厂
+    private String workshopId;//车间ID
+    private String product;//产品物料编码
+    private String areaId;//车间区域ID
 
-    private String groupName;
-    private String groupType;
+    private String groupName;//产线组名称
+    private String groupType;//资源类别：LINEDATA
 
     public String getGroupId() {
         return groupId;
@@ -75,5 +76,13 @@ public class Vblinegroupheader  extends BaseDTO {
 
     public void setGroupType(String groupType) {
         this.groupType = groupType;
+    }
+
+    public String getAreaId() {
+        return areaId;
+    }
+
+    public void setAreaId(String areaId) {
+        this.areaId = areaId;
     }
 }

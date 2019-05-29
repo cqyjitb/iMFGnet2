@@ -7,6 +7,7 @@
     <result column="works" property="works" jdbcType="VARCHAR"/>
     <result column="groupId" property="groupId" jdbcType="VARCHAR"/>
     <result column="product" property="product" jdbcType="VARCHAR"/>
+    <result column="areaId" property="areaId" jdbcType="VARCHAR"/>
     <result column="workshopId" property="workshopId" jdbcType="VARCHAR"/>
     <result column="groupName" property="groupName" jdbcType="DECIMAL"/>
     <result column="groupType" property="groupType" jdbcType="VARCHAR"/>
