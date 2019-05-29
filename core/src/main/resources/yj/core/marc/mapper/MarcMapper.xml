@@ -45,6 +45,16 @@
         <result column="YZCBARF" property="yzcbarf" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <select id="queryByMarc" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from sap_marc
+        <where>
+            mtart = 'YQRT'
+            <if test="matnr != null">
+                AND matnr = #{matnr}
+            </if>
+        </where>
+    </select>
+
     <select id="selectMatnr" parameterType="java.lang.String" resultMap="BaseResultMap">
         select * from sap_marc
         <where>
