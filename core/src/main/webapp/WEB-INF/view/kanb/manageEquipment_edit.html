@@ -33,6 +33,7 @@
                                 kendo.ui.showErrorDialog({
                                     message:data.message
                                 });
+                                newViewModel.model.set("mac","");
                             }
                             else{
                                 window.parent.$("#newWin").data("kendoWindow").close();

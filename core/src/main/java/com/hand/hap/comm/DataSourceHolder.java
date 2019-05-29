@@ -7,9 +7,7 @@ public class DataSourceHolder {
     private static final ThreadLocal<String> dataSources = new ThreadLocal<String>();
 
     public static void setDataSources(String dataSource) {
-
         dataSources.set(dataSource);
-        System.out.println("切换了数据源:"+dataSource);
     }
 
     public static String getDataSources() {
