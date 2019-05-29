@@ -39,7 +39,7 @@ public class SendEmailMessageJob extends AbstractJob {
             PageHelper.startPage(1, 20);
             //List<Message> userEmailToSend = messageMapper.selectEmailSendByJob();
             //if(CollectionUtils.isNotEmpty(userEmailToSend)){
-               // mailService.sendEmailMessage(userEmailToSend,param);
+                //mailService.sendEmailMessage(userEmailToSend,param);
                 setExecutionSummary((String) param.get(SUMMARY));
             //}
         } catch (Exception e) {

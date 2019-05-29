@@ -220,6 +220,26 @@
                 title: '<@spring.message "jobrunninginfodto.previousfiretime"/>',
                 width: 160,
                 format: "{0:yyyy-MM-dd HH:mm:ss}",
+                template:function (item) {
+                    var offset = 8 * 60 * 60 * 1000;
+                    var source = new Date(item.previousFireTime);
+                    var date = new Date( source.getTime() + offset);
+
+                    var target = new Date(date);
+                    var y = target.getFullYear();
+                    var m = target.getMonth() + 1;
+                    m = m < 10 ? ('0' + m) : m;
+                    var d = target.getDate();
+                    d = d < 10 ? ('0' + d) : d;
+                    var h = target.getHours();
+                    h = h < 10 ? ('0' + h) : h;
+                    var minute = target.getMinutes();
+                    var second = target.getSeconds();
+                    minute = minute < 10 ? ('0' + minute) : minute;
+                    second = second < 10 ? ('0' + second) : second;
+                    return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
+
+                },
                 headerAttributes: {
                     "class": "table-header-cell",
                     style  : "text-align: center"
@@ -231,6 +251,26 @@
                 field: "nextFireTime",
                 title: '<@spring.message "jobrunninginfodto.nextfiretime"/>',
                 width: 160,
+                template:function (item) {
+                    var offset = 8 * 60 * 60 * 1000;
+                    var source = new Date(item.nextFireTime);
+                    var date = new Date( source.getTime() + offset);
+
+                    var target = new Date(date);
+                    var y = target.getFullYear();
+                    var m = target.getMonth() + 1;
+                    m = m < 10 ? ('0' + m) : m;
+                    var d = target.getDate();
+                    d = d < 10 ? ('0' + d) : d;
+                    var h = target.getHours();
+                    h = h < 10 ? ('0' + h) : h;
+                    var minute = target.getMinutes();
+                    var second = target.getSeconds();
+                    minute = minute < 10 ? ('0' + minute) : minute;
+                    second = second < 10 ? ('0' + second) : second;
+                    return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
+
+                },
                 headerAttributes: {
                     style  : "text-align: center"
                 },

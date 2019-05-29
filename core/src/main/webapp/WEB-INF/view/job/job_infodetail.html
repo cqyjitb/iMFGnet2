@@ -84,6 +84,8 @@
                     </label>
                     <div class="col-xs-4 col-sm-4">
                         <input style="width:100%" id="startTime" readonly="readonly" data-bind="value:model.startTime" class="k-textbox">
+
+
                     </div>
                     <label class="col-xs-2 col-sm-2 control-label">
                     <@spring.message "triggerdto.endtime"/>
@@ -242,6 +244,26 @@
 
             var response = e.response;
             var datas = [];
+            var startTime = response.rows[0].startTime;
+            var endTime = response.rows[0].endTime;
+            var previousFireTime = response.rows[0].previousFireTime;
+            var nextfiretime = response.rows[0].nextFireTime;
+
+            if (startTime != null){
+                response.rows[0].startTime = changeTime(startTime)
+            }
+
+            if (endTime != null){
+                response.rows[0].endTime = changeTime(endTime)
+            }
+
+            if (previousFireTime != null){
+                response.rows[0].previousFireTime = changeTime(previousFireTime)
+            }
+
+            if (nextfiretime != null){
+                response.rows[0].nextFireTime = changeTime(nextfiretime)
+            }
             $.each(response.rows[0], function (k, v) {
                 if (k == 'jobDatas') {
                     $.each(v, function (i, r) {
@@ -314,6 +336,25 @@
         });
     });
 
+    function changeTime(timestring) {
+        var offset = 8 * 60 * 60 * 1000;
+        var source = new Date(timestring);
+        var date = new Date( source.getTime() + offset);
+
+        var target = new Date(date);
+        var y = target.getFullYear();
+        var m = target.getMonth() + 1;
+        m = m < 10 ? ('0' + m) : m;
+        var d = target.getDate();
+        d = d < 10 ? ('0' + d) : d;
+        var h = target.getHours();
+        h = h < 10 ? ('0' + h) : h;
+        var minute = target.getMinutes();
+        var second = target.getSeconds();
+        minute = minute < 10 ? ('0' + minute) : minute;
+        second = second < 10 ? ('0' + second) : second;
+        return y + '-' + m + '-' + d+' '+h+':'+minute+':'+second;
+    }
 </script>
 
 </body>

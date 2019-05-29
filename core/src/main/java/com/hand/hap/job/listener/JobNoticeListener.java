@@ -138,7 +138,7 @@ public class JobNoticeListener extends DefaultJobListener {
                 if(StringUtils.isNotEmpty(accountCode)){
                     messageService.addEmailMessage(null,accountCode,this.mailTemplate, templateData, null, receivers);
                 }else{
-                   // messageService.sendMessage(null,this.mailTemplate,templateData,receivers,null);
+                    //messageService.sendMessage(null,this.mailTemplate,templateData,receivers,null);
                 }
             } catch (Exception e) {
                 if (getLog().isErrorEnabled()) {
