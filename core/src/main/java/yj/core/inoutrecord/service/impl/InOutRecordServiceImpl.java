@@ -176,4 +176,9 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
     public List<InOutRecord> selectforQcaudit3(String werks, String line_id, String matnr, String matnr2, String deptId, String gstrp,String zqxdm, String zissuetxt, String zbanz) {
         return inOutRecordMapper.selectforQcaudit3(werks,line_id,matnr,matnr2,deptId,gstrp,zqxdm,zissuetxt,zbanz);
     }
+
+    @Override
+    public List<InOutRecord> selectforKanb(String werks, String line_id, String matnr) {
+        return inOutRecordMapper.selectforKanb(werks,line_id,matnr);
+    }
 }

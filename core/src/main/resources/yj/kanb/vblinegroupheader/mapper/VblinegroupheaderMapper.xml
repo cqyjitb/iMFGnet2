@@ -13,4 +13,7 @@
     <result column="groupType" property="groupType" jdbcType="VARCHAR"/>
 </resultMap>
 
+    <select id="selectAllGroup" resultMap="BaseResultMap">
+        select * from vb_line_group_h ;
+    </select>
 </mapper>

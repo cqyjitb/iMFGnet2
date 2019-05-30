@@ -447,4 +447,14 @@
         </where>
         order BY c.CREATION_DATE,i.ZBANZ,i.ZQXDM,i.ZISSUETXT;
     </select>
+
+    <select id="selectforKanb" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_in_out_record
+        <where>
+            MATNR = #{matnr}
+            and LINE_ID = #{line_id}
+            and MATNR = #{matnr}
+            and   reflag != '1'
+        </where>
+    </select>
 </mapper>

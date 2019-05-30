@@ -40,4 +40,9 @@ public class CurlzkServiceImpl extends BaseServiceImpl<Curlzk> implements ICurlz
     public List<Curlzk> selectByZpgdbar(String zpgdbar) {
         return curlzkMapper.selectByZpgdbar(zpgdbar);
     }
+
+    @Override
+    public List<Curlzk> selectAllLinesForKanbByErdat(String erdat) {
+        return curlzkMapper.selectAllLinesForKanbByErdat(erdat);
+    }
 }

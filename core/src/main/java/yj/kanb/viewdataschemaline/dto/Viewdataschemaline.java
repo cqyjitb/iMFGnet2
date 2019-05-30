@@ -24,7 +24,9 @@ public class Viewdataschemaline extends BaseDTO {
     private String matnr;
     private String maktx;
 
-    private String shift;
+    private String classgrp;//班组
+    private String shift;//班次
+    private String shiftdes;//班次文本
     private String shifttimebegin;
     private String shifttimeend;
     private String lineLeader;
@@ -34,6 +36,7 @@ public class Viewdataschemaline extends BaseDTO {
     private Double planqty;
     private Double actqty;
     private Double insufqty;
+    private Double jdcqqty;//进度差缺
     private Double qcRate;
     private Double oeeRate;
 
@@ -187,5 +190,29 @@ public class Viewdataschemaline extends BaseDTO {
 
     public void setOeeRate(Double oeeRate) {
         this.oeeRate = oeeRate;
+    }
+
+    public String getClassgrp() {
+        return classgrp;
+    }
+
+    public void setClassgrp(String classgrp) {
+        this.classgrp = classgrp;
+    }
+
+    public String getShiftdes() {
+        return shiftdes;
+    }
+
+    public void setShiftdes(String shiftdes) {
+        this.shiftdes = shiftdes;
+    }
+
+    public Double getJdcqqty() {
+        return jdcqqty;
+    }
+
+    public void setJdcqqty(Double jdcqqty) {
+        this.jdcqqty = jdcqqty;
     }
 }

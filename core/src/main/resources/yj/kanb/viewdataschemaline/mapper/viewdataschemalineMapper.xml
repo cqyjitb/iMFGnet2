@@ -23,4 +23,22 @@
     <result column="oeeRate" property="insufqty" jdbcType="DECIMAL"/>
 </resultMap>
 
+    <select id="selectforKanb" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from view_data_schema_line
+        <where>
+            works = #{werks}
+            and bukrs = #{bukrs}
+            and groupId = #{groupId}
+            and product = #{matnr}
+            and workshopId = #{deptId}
+        </where>
+    </select>
+
+    <insert id="insertforKanb" parameterType="yj.kanb.viewdataschemaline.dto.Viewdataschemaline">
+
+    </insert>
+
+    <update id="updateforKanb" parameterType="yj.kanb.viewdataschemaline.dto.Viewdataschemaline">
+
+    </update>
 </mapper>

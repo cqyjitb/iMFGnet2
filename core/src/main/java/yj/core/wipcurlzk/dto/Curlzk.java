@@ -7,6 +7,7 @@ import com.hand.hap.mybatis.annotation.ExtensionAttribute;
 import javax.persistence.Table;
 import com.hand.hap.system.dto.BaseDTO;
 import java.util.Date;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotEmpty;
 @ExtensionAttribute(disable=true)
@@ -40,6 +41,21 @@ public class Curlzk extends BaseDTO {
 
       private Long lastUpdatedBy; //更新人
 
+    //车间看板相关
+    @Transient
+      private String matnrjj;//机加物料编码
+    @Transient
+      private String maktxjj;
+    @Transient
+      private String maktxyz;
+    @Transient
+      private String matnryz;//压铸物料编码
+    @Transient
+      private String deptId;//车间组织编码
+    @Transient
+      private String arbpl;//工作中心
+    @Transient
+      private Double menge;//流转卡数量
 
      public void setLineId(String lineId){
          this.lineId = lineId;
@@ -131,5 +147,61 @@ public class Curlzk extends BaseDTO {
 
     public void setZxhbar(String zxhbar) {
         this.zxhbar = zxhbar;
+    }
+
+    public String getMatnrjj() {
+        return matnrjj;
+    }
+
+    public void setMatnrjj(String matnrjj) {
+        this.matnrjj = matnrjj;
+    }
+
+    public String getMaktxjj() {
+        return maktxjj;
+    }
+
+    public void setMaktxjj(String maktxjj) {
+        this.maktxjj = maktxjj;
+    }
+
+    public String getMaktxyz() {
+        return maktxyz;
+    }
+
+    public void setMaktxyz(String maktxyz) {
+        this.maktxyz = maktxyz;
+    }
+
+    public String getMatnryz() {
+        return matnryz;
+    }
+
+    public void setMatnryz(String matnryz) {
+        this.matnryz = matnryz;
+    }
+
+    public String getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(String deptId) {
+        this.deptId = deptId;
+    }
+
+    public String getArbpl() {
+        return arbpl;
+    }
+
+    public void setArbpl(String arbpl) {
+        this.arbpl = arbpl;
+    }
+
+    public Double getMenge() {
+        return menge;
+    }
+
+    public void setMenge(Double menge) {
+        this.menge = menge;
     }
 }

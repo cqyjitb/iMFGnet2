@@ -108,5 +108,9 @@ public interface InOutRecordMapper extends Mapper<InOutRecord>{
                                             @Param("zissuetxt") String zissuetxt,
                                             @Param("zbanz") String zbanz);
 
-
+        /**
+         * 查询取件记录 for 车间看板
+         *
+         */
+        List<InOutRecord> selectforKanb(@Param("werks") String werks,@Param("line_id") String line_id,@Param("matnr") String matnr);
 }

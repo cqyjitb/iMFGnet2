@@ -13,4 +13,5 @@ public interface CurlzkMapper extends Mapper<Curlzk>{
     Curlzk selectById2(Long line_id);
     List<Curlzk> selectAllLinesforZxhbar(Long line_id);
     List<Curlzk> selectByZpgdbar(@Param("zpgdbar") String zpgdbar);
+    List<Curlzk> selectAllLinesForKanbByErdat(@Param("erdat") String erdat);
 }
