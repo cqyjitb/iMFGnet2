@@ -21,12 +21,13 @@ public class HelloWorldServerImp implements IHelloWorldServer {
         param.setLgort(lgort);
         param.setMatnr(matnr);
         param.setQtype(qtype);
-        QueryXhcardWebserviceUtil queryXhcardWebserviceUtil = new QueryXhcardWebserviceUtil();
-        rs = queryXhcardWebserviceUtil.receiveConfirmation(param);
-        if (rs.getMSGTY().equals("S")){
-            return "S";
-        }else{
-            return "E";
-        }
+//        QueryXhcardWebserviceUtil queryXhcardWebserviceUtil = new QueryXhcardWebserviceUtil();
+//        rs = queryXhcardWebserviceUtil.receiveConfirmation(param);
+//        if (rs.getMSGTY().equals("S")){
+//            return "S";
+//        }else{
+//            return "E";
+//        }
+        return "S";
     }
 }

@@ -1,4 +1,4 @@
-package yj.kanb.vbgroupheader.contorllers;
+package yj.kanb.vbgroupheader.controllers;
 
 import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.system.dto.ResponseData;

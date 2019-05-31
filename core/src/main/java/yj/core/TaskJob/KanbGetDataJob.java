@@ -60,12 +60,12 @@ public class KanbGetDataJob extends AbstractJob {
         Date curdate = new Date();
         String erdat = sdf.format(curdate).substring(0,10);
         List<Curlzk> listcurlzk = new ArrayList<>();
-        listcurlzk = curlzkService.selectAllLinesForKanbByErdat("2019-01-30 ");
+        listcurlzk = curlzkService.selectAllLinesForKanbByErdat(erdat);
 
         List<Vblinegroupheader> listvbgh = new ArrayList<>();
         listvbgh = vblinegroupheaderService.selectAllGroup();
 
-        if (listvbgh != null && listcurlzk != null){
+        if (listvbgh.size() > 0 && listcurlzk.size() > 0){
             for (int i=0;i<listvbgh.size();i++){
 
                 GetDataThread getDataThread = new GetDataThread("getDataThread"+i,listvbgh.get(i).getProduct(),
@@ -110,7 +110,13 @@ public class KanbGetDataJob extends AbstractJob {
             this.list = list;
             this.groupId = groupId;
         }
-        @Override
+
+//        @Override
+//        public void run() {
+//            System.out.println("线程已经创建完成");
+//        }
+
+                @Override
         public void run() {
             SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
             Viewdataschemaline viewdata = new Viewdataschemaline();
@@ -118,13 +124,17 @@ public class KanbGetDataJob extends AbstractJob {
             Double actnum = 0D;
             Double plqty = 0D;
             Double takt_time = 0D;
+            String l_error= "E";
             for (int i=0;i<list.size();i++){
                 if (list.get(i).getDeptId().equals(deptId) && list.get(i).getMatnrjj().equals(matnr)){
+                    System.out.println("进入循环**********************************");
                     viewdata.setClassgrp(list.get(i).getShift());//班组
                     //1:根据生产线当前流转卡号 获取流转卡数据
                     Cardh cardh = new Cardh();
                     cardh = cardhService.selectByBarcode(list.get(i).getZpgdbar());
+
                     if (cardh == null){
+                        System.out.println("没有获取到当前流转卡信息 跳出循环**********************************");
                         continue;//如果没有获取到当前流转卡信息 跳出循环
                     }else{
                         plqty = plqty + cardh.getPlqty();
@@ -134,9 +144,10 @@ public class KanbGetDataJob extends AbstractJob {
                     marc = marcService.selectByMatnr(cardh.getMatnr());
                     viewdata.setMatnr(marc.getMatnr());
                     viewdata.setMaktx(marc.getMaktx());
-
+                    System.out.println("获取物料信息**********************************");
 
                     //2.1 计算班次时间    白班 08:00:00-15:59:59   中班 16:00-23:59:59 夜班 00:00:00-07:59:59
+                    System.out.println("计算班次 及班次开始日期**********************************");
                     Date lastupdate = list.get(i).getLastUpdateDate();//当前流转卡切换的时间
                     String ds1 = sdf.format(lastupdate).substring(0,10) + "08:00:00";
                     Date d1 = null;
@@ -250,40 +261,44 @@ public class KanbGetDataJob extends AbstractJob {
                     //6:差缺数量
 
 
+                    l_error = "";
                 }
             }
-            takt_time = takt_time / list.size();//平均生产节拍
-            viewdata.setPlanqty(plqty);//计划产量
-            viewdata.setActqty(actnum);//实际产量
-            viewdata.setCycletime(takt_time);//平均节拍
-            viewdata.setGroupId(groupId);//产线组ID
-            try {
-                Date startDate = sdf.parse(viewdata.getShifttimebegin());
-                Long times = new Double(viewdata.getPlanqty() * viewdata.getCycletime()).longValue();
-                times = startDate.getTime() + times;
-                viewdata.setShifttimeend(sdf.format(new Date(times)));
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            //viewdata.setShifttimeend();
-            viewdata.setInsufqty(viewdata.getActqty() - viewdata.getPlanqty());//差缺数量
-            Double qcrate = ( viewdata.getActqty() / viewdata.getActqty() + outnum ) * 100;
-            Double oeerate = ( viewdata.getActqty() / viewdata.getActqty() + outnum ) * 100;
-            viewdata.setOeeRate(0D);//oee
-            viewdata.setQcRate(qcrate);//合格率
+            if (l_error == ""){
+                takt_time = takt_time / list.size();//平均生产节拍
+                viewdata.setPlanqty(plqty);//计划产量
+                viewdata.setActqty(actnum);//实际产量
+                viewdata.setCycletime(takt_time);//平均节拍
+                viewdata.setGroupId(groupId);//产线组ID
+                try {
+                    Date startDate = sdf.parse(viewdata.getShifttimebegin());
+                    Long times = new Double(viewdata.getPlanqty() * viewdata.getCycletime()).longValue();
+                    times = startDate.getTime() + times;
+                    viewdata.setShifttimeend(sdf.format(new Date(times)));
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                //viewdata.setShifttimeend();
+                viewdata.setInsufqty(viewdata.getActqty() - viewdata.getPlanqty());//差缺数量
+                Double qcrate = ( viewdata.getActqty() / viewdata.getActqty() + outnum ) * 100;
+                Double oeerate = ( viewdata.getActqty() / viewdata.getActqty() + outnum ) * 100;
+                viewdata.setOeeRate(0D);//oee
+                viewdata.setQcRate(qcrate);//合格率
 
-            try {
-            viewdata.setJdcqqty(viewdata.getActqty() - (new Date().getTime() - sdf.parse(viewdata.getShifttimebegin()).getTime()) / viewdata.getCycletime());//进度差缺
-            } catch (ParseException e) {
-                e.printStackTrace();
+                try {
+                    viewdata.setJdcqqty(viewdata.getActqty() - (new Date().getTime() - sdf.parse(viewdata.getShifttimebegin()).getTime()) / viewdata.getCycletime());//进度差缺
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+
+                Viewdataschemaline viewdatatmp = viewdataschemalineService.selectforKanb(groupId,matnr,deptId,bukrs,werks);
+                if (viewdatatmp != null){
+                    viewdataschemalineService.updateforKanb(viewdata);
+                }else{
+                    viewdataschemalineService.insertforKanb(viewdata);
+                }
             }
 
-            Viewdataschemaline viewdatatmp = viewdataschemalineService.selectforKanb(groupId,matnr,deptId,bukrs,werks);
-            if (viewdatatmp != null){
-                viewdataschemalineService.updateforKanb(viewdata);
-            }else{
-                viewdataschemalineService.insertforKanb(viewdata);
-            }
         }
 
         public void start(){
