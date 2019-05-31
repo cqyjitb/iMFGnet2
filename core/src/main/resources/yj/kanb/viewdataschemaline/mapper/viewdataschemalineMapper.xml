@@ -19,6 +19,7 @@
     <result column="planqty" property="planqty" jdbcType="DECIMAL"/>
     <result column="actqty" property="actqty" jdbcType="DECIMAL"/>
     <result column="insufqty" property="insufqty" jdbcType="DECIMAL"/>
+    <result column="jdcqqty" property="jdcqqty" jdbcType="DECIMAL"/>
     <result column="qcRate" property="qcRate" jdbcType="DECIMAL"/>
     <result column="oeeRate" property="insufqty" jdbcType="DECIMAL"/>
 </resultMap>
@@ -35,10 +36,16 @@
     </select>
 
     <insert id="insertforKanb" parameterType="yj.kanb.viewdataschemaline.dto.Viewdataschemaline">
-
+        INSERT IN  view_data_schema_line(bukrs,works,groupId,product,workshopId,matnr,maktx,shift,shifttimebegin,shifttimeend,lineLeader,leaderPhone,cycletime,workshopName,planqty,actqty,insufqty,jdcqqty,qcRate,oeeRate)
+        VALUES (#{bukrs},#{works},#{groupId},#{product},#{workshopId},#{matnr},#{maktx},#{shift},#{shifttimebegin},#{shifttimeend},#{lineLeader},#{leaderPhone},#{cycletime},#{workshopName},
+        #{planqty},#{actqty},#{insufqty},#{jdcqqty},#{qcRate},#{oeeRate})
     </insert>
 
     <update id="updateforKanb" parameterType="yj.kanb.viewdataschemaline.dto.Viewdataschemaline">
+        update view_data_schema_line set(shift,shifttimebegin,shifttimeend,lineLeader,leaderPhone,cycletime,planqty,actqty,insufqty,jdcqqty,qcRate,oeeRate)
+        VALUES (#{shift},#{shifttimebegin},#{shifttimeend},#{lineLeader},#{leaderPhone},#{cycletime},#{planqty},#{actqty},#{insufqty},#{jdcqqty},#{qcRate},#{},#{oeeRate})
+        <where>
 
+        </where>
     </update>
 </mapper>

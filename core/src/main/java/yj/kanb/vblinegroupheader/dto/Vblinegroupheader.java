@@ -17,11 +17,11 @@ public class Vblinegroupheader  extends BaseDTO {
     private String works;//工厂
     private String workshopId;//车间ID
     private String product;//产品物料编码
-    private String areaId;//车间区域ID
+
 
     private String groupName;//产线组名称
     private String groupType;//资源类别：LINEDATA
-
+    private String templeteUrl;//模板URL
     public String getGroupId() {
         return groupId;
     }
@@ -78,11 +78,11 @@ public class Vblinegroupheader  extends BaseDTO {
         this.groupType = groupType;
     }
 
-    public String getAreaId() {
-        return areaId;
+    public String getTempleteUrl() {
+        return templeteUrl;
     }
 
-    public void setAreaId(String areaId) {
-        this.areaId = areaId;
+    public void setTempleteUrl(String templeteUrl) {
+        this.templeteUrl = templeteUrl;
     }
 }

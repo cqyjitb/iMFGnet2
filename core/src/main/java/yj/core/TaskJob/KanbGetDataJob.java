@@ -65,7 +65,7 @@ public class KanbGetDataJob extends AbstractJob {
         List<Vblinegroupheader> listvbgh = new ArrayList<>();
         listvbgh = vblinegroupheaderService.selectAllGroup();
 
-        if (listvbgh != null){
+        if (listvbgh != null && listcurlzk != null){
             for (int i=0;i<listvbgh.size();i++){
 
                 GetDataThread getDataThread = new GetDataThread("getDataThread"+i,listvbgh.get(i).getProduct(),
