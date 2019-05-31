@@ -1,0 +1,213 @@
+<!--
+    看板设备产线配置维护 918100064
+-->
+<#include "../include/header.html" />
+<body>
+<style>
+    span[class='k-window-title'] {
+        user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+    }
+    .action_ok {
+        color: #5fb760;
+    }
+
+    .action_dangerous {
+        color: #eeac5f;
+    }
+    #label{
+        color: red;
+    }
+
+</style>
+<script src="${base.contextPath}/lib/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+<script type="text/javascript">
+    var selections =  window.parent.$('#Grid').data('kendoGrid').selectedDataItems();
+    var newViewModel = kendo.observable({
+        model: {
+            /*werks: selections["0"].werks,
+            lineId: selections["0"].lineId,
+            description: selections["0"].descriptions*/
+        },
+        save2Function:function () {
+            var data = grid.selectedDataItems();
+            if(data.length > 0){
+
+
+
+                var tabstrip = window.parent.$("#tabstrip").kendoTabStrip({
+                    height: '100%',
+                    animation: false
+                }).data("kendoTabStrip");
+                var tabselect = tabstrip.select();
+                var prevtab = tabselect.prev();
+                tabstrip.remove(tabselect);
+                tabstrip.select(prevtab);
+            }else{
+                kendo.ui.showInfoDialog({
+                    message: '请至少选择一行数据'
+                })
+            }
+        }
+    });
+</script>
+<div id="page-content2">
+    <div class="pull-left" id="toolbar-btn2" style="padding-bottom:10px;">
+        <span class="btn btn-primary k-grid-add" style="float:left;margin-right:5px;" data-bind="click:save2Function">设备产线创建</span>
+    </div>
+    <script>kendo.bind($('#toolbar-btn2'), newViewModel);</script>
+    <div style="clear:both">
+        <div id="Grid2"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    var BaseUrl = _basePath;
+    var dataSource2 = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: BaseUrl + "/Vblinegroupheader/queryVblinegroupheader",
+                type: "POST",
+                dataType: "json"
+            },
+            parameterMap: function (options, type) {
+                if (type !== "read" && options.models) {
+                    var datas = Hap.prepareSubmitParameter(options, type);
+                    return kendo.stringify(datas);
+                } else if (type === "read") {
+                    return Hap.prepareQueryParameter(newViewModel.model.toJSON(), options);
+                }
+            }
+        },
+        batch: true,
+        serverPaging: true,
+        pageSize: 10,
+        schema: {
+            data: 'rows',
+            total: 'total',
+            model: {
+                id: "works",
+                parentId: "bukrs",
+                fields: {
+                    bukrs: {type: "string",editable:false},
+                    works: {type: "string",editable:false},
+                    groupId: {type: "string"},
+                    groupName: {type: "string"},
+                    areaId: {type: "string"},
+                    workshopId: {type:"string"}
+                }
+            }
+        }
+    });
+    $("#Grid2").kendoGrid({
+        dataSource:dataSource2,
+        height:'100%',
+        resizable:true,
+        scrollable:true,
+        navigatable:false,
+        editable: false,
+        selectable:'multiple,rowbox',
+        pageable:{
+            pageSizes:[5,10,20,50,"all"],
+            refresh:true,
+            buttonCount:5
+        },
+        columns:[
+            {
+                field:"bukrs",
+                title:"公司",
+                width:120,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"works",
+                title:"工厂",
+                width:80,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"groupId",
+                title:"产线组ID",
+                width:80,
+                hidden:true,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"workshopId",
+                title:"车间ID",
+                width:100,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"product",
+                title:"产品物料编码",
+                width:120,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"groupName",
+                title:"产线组名称",
+                width:120,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"groupType",
+                title:"资源类别",
+                width:120,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"templeteUrl",
+                title:"模报URL",
+                width:240,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            }
+        ]
+    });
+    var grid = $('#Grid2').data("kendoGrid");
+    Hap.autoResizeGrid("#Grid2");
+</script>
+</body>
+</html>

@@ -1,0 +1,360 @@
+<!--
+    看板车间产线组头维护 918100064
+-->
+<#include "../include/header.html" >
+<style>
+    span[class='k-window-title'] {
+        user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+    }
+    .label{
+        color: red;
+    }
+</style>
+<script type="text/javascript">
+    var viewModel = kendo.observable({
+        model: {},
+        createFunction: function () {
+            var bukrs = document.getElementById("bukrs").value;
+            var works = document.getElementById("works").value;
+            if(bukrs == null || bukrs == "" || bukrs == ''){
+                kendo.ui.showInfoDialog({
+                    message:'公司不能为空'
+                })
+            }else if(works == null || works == "" || works == ''){
+                kendo.ui.showInfoDialog({
+                    message:'工厂不能为空'
+                })
+            }else{
+                $('#Grid').data('kendoGrid').addRow();
+            }
+        },
+        saveFunction: function () {
+            var selections = grid.selectedDataItems();
+            if(selections.length > 0){
+                $('#Grid').data('kendoGrid').saveChanges();
+            }else{
+                kendo.ui.showInfoDialog({
+                    message: '请先选择一行数据'
+                })
+            }
+        },
+        queryResource: function (e) {
+            var bukrs = document.getElementById("bukrs").value;
+            var works = document.getElementById("works").value;
+            if(bukrs == null || bukrs == "" || bukrs == ''){
+                kendo.ui.showInfoDialog({
+                    message:'公司不能为空'
+                })
+            }else if(works == null || works == "" || works == ''){
+                kendo.ui.showInfoDialog({
+                    message:'工厂不能为空'
+                })
+            }else{
+                $('#Grid').data('kendoGrid').dataSource.page(1);
+            }
+        }
+    });
+    function newData(url) {
+        var dialog = $("#newWin").kendoWindow({
+            actions: ["Close"],
+            width: 900,
+            height: 600,
+            title: '<@spring.message "hap.edit"/>',
+            content: url,
+            iframe: true,
+            visible: false,
+            resizable: false,
+            modal: true,
+            close: function () {
+                //window 关闭  刷新 本页面的  Grid
+                $('#Grid').data('kendoGrid').dataSource.page(1);
+            }
+        }).data("kendoWindow");
+        dialog.center().open();
+    }
+</script>
+<body>
+<div id="newWin" style="display: none"></div>
+<div id="page-content">
+    <div class="panel" style="padding: 0px;border:none;box-shadow: none;">
+        <form class="form-horizontal" id="myForm">
+            <div class="panel-body">
+                <div id="condition">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">公司<label class="label">*</label></label>
+                                <div class="col-sm-8">
+                                    <input id="bukrs" type="text" style="width: 100%" data-bind="value:model.bukrs" class="k-textbox">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">工厂<label class="label">*</label></label>
+                                <div class="col-sm-8">
+                                    <input id="works" type="text" style="width: 100%" data-bind="value:model.works" class="k-textbox">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">生产车间</label>
+                                <div class="col-sm-8">
+                                    <input id="unit_code" class="k-textbox" data-bind="value:model.workshopId" style="width: 100%">
+                                    <script>
+                                        $("#unit_code").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_UNIT_NEW2")}, {
+                                            query: function (e) {
+                                                e.param['enabledFlag'] = 'Y';
+                                            }
+                                        }));
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <script>
+            kendo.bind($('#myForm'), viewModel);
+        </script>
+    </div>
+    <div class="pull-left" id="toolbar-btn" style="padding-bottom:10px;">
+        <span class="btn btn-primary k-grid-add" style="float:left;margin-right:5px;" data-bind="click:createFunction"><@spring.message "hap.new"/></span>
+        <span onclick="deleteData()" class="btn btn-danger" style="float:left;margin-right:5px;"><@spring.message "hap.delete"/></span>
+        <span class="btn btn-success k-grid-save-changes" data-bind="click:saveFunction" type="submit" style="float:left;margin-right:5px;">保存</span>
+    </div>
+    <script>kendo.bind($('#toolbar-btn'), viewModel);</script>
+    <div class="pull-right" id="query-form" style="padding-bottom:10px;">
+        <span class="btn btn-primary" style="float:left;width:70px" data-bind="click:queryResource" type="submit"><@spring.message "hap.query"/></span>
+        <div style="clear:both"></div>
+    </div>
+    <script>kendo.bind($('#query-form'), viewModel);</script>
+    <div style="clear:both">
+        <div id="Grid"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    var BaseUrl = _basePath;
+    dataSource = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: BaseUrl + "/Vblinegroupheader/queryVblinegroupheader",
+                type: "POST",
+                dataType: "json"
+            },
+            destroy: {
+                url: BaseUrl + "/Vblinegroupheader/removeVblinegroupheader",
+                type: "POST",
+                contentType: "application/json"
+            },
+            create: {
+                url: BaseUrl + "/Vblinegroupheader/submitVblinegroupheader",
+                type: "POST",
+                contentType: "application/json"
+            },
+            update: {
+                url: BaseUrl + "/Vblinegroupheader/submitVblinegroupheader",
+                type: "POST",
+                contentType: "application/json"
+            },
+            parameterMap: function (options, type) {
+                if (type !== "read" && options.models) {
+                    var datas = Hap.prepareSubmitParameter(options, type);
+                    return kendo.stringify(datas);
+                } else if (type === "read") {
+                    return Hap.prepareQueryParameter(viewModel.model.toJSON(), options);
+                }
+            }
+        },
+        batch: true,
+        serverPaging: true,
+        pageSize: 10,
+        schema: {
+            data: 'rows',
+            total: 'total',
+            model: {
+                id: "works",
+                parentId: "bukrs",
+                fields: {
+                    bukrs: {type: "string",editable:false},
+                    works: {type: "string",editable:false},
+                    groupId: {type: "string"},
+                    groupName: {type: "string"},
+                    templeteUrl: {type: "string"},
+                    workshopId: {type:"string"}
+                }
+            }
+        }
+    });
+    $("#Grid").kendoGrid({
+        dataSource:dataSource,
+        autoBind:false,
+        height:'100%',
+        resizable:true,
+        scrollable:true,
+        navigatable:false,
+        editable: true,
+        selectable:'multiple,rowbox',
+        pageable:{
+            pageSizes:[5,10,20,50,"all"],
+            refresh:true,
+            buttonCount:5
+        },
+        columns:[
+            {
+                field:"bukrs",
+                title:"公司",
+                width:120,
+                template:function (e) {
+                    var bukrs = document.getElementById("bukrs").value;
+                    e.bukrs = bukrs;
+                    return bukrs;
+                },
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"works",
+                title:"工厂",
+                width:80,
+                template:function (e) {
+                    var works = document.getElementById("works").value;
+                    e.works = works;
+                    return works;
+                },
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"groupId",
+                title:"产线组ID",
+                width:80,
+                hidden:true,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"workshopId",
+                title:"车间ID",
+                width:100,
+                template: function (dataItem) {
+                    return dataItem['workshopId'] || ''
+                },
+                editor : function (container, options) {
+                    $('<input name="'+options.field+'"/>').appendTo(container).kendoLov($.extend(<@lov "LOV_UNIT_NEW2"/>,
+                        {
+                            textField: 'name',
+                            model: options.model
+                        }));
+                },
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"product",
+                title:"产品物料编码",
+                width:120,
+                template: function (dataItem) {
+                    return dataItem['product'] || ''
+                },
+                editor : function (container, options) {
+                    $('<input name="'+options.field+'"/>').appendTo(container).kendoLov($.extend(<@lov "LOV_PRODUCT"/>,
+                        {
+                            textField: 'matnr',
+                            model: options.model
+                        }));
+                },
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"groupName",
+                title:"产线组名称",
+                width:120,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"groupType",
+                title:"资源类别",
+                width:120,
+                editor: function (container,options) {
+                    $('<input name="'+options.field+'"/>').appendTo(container).kendoDropDownList({
+                        dataTextField: "value",
+                        dataValueField: "value",
+                        valuePrimitive: true,
+                        dataSource: [
+                            {value: "LINEDATE"},
+                            {value: "REPORTDATA"},
+                            {value: "IMPORTDATA"}
+                        ]
+                    })
+                },
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"templeteUrl",
+                title:"模板URL",
+                width:240,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            }
+        ]
+    });
+    var grid = $('#Grid').data("kendoGrid");
+    function deleteData() {
+        var data = grid.selectedDataItems();
+        if(data.length >= 1){
+            Hap.deleteGridSelection({
+                grid: $('#Grid')
+            });
+        }else{
+            kendo.ui.showInfoDialog({
+                message: '请至少选择一行数据'
+            })
+        }
+    }
+    Hap.autoResizeGrid("#Grid");
+</script>
+
+</body>
+</html>

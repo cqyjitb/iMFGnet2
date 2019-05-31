@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import yj.kanb.equipment.dto.Equipment;
 import yj.kanb.equipment.mapper.EquipmentMapper;
 import yj.kanb.equipment.service.IEquipmentService;
+import yj.kanb.vbgroupheader.dto.Vbgroupheader;
+import yj.kanb.vbgroupheader.mapper.VbgroupheaderMapper;
 
 import java.util.Date;
 import java.util.List;
@@ -17,6 +19,8 @@ import java.util.UUID;
 public class EquipmentServiceImpl extends BaseServiceImpl<Equipment> implements IEquipmentService {
     @Autowired
     private EquipmentMapper equipmentMapper;
+    @Autowired
+    private VbgroupheaderMapper vbgroupheaderMapper;
 
     @Override
     public List<Equipment> selectAllData() {
@@ -47,6 +51,17 @@ public class EquipmentServiceImpl extends BaseServiceImpl<Equipment> implements 
                 equipment.setCreatedBy(Long.valueOf(userId));
                 equipment.setCreationDate(new Date());
                 equipmentMapper.insertEquipment(equipment);
+                Vbgroupheader vbgrouph = new Vbgroupheader();
+                String vbgroupId = UUID.randomUUID().toString();
+                vbgrouph.setVbgroupId(vbgroupId);
+                vbgrouph.setBukrs(equipment.getBukrs());
+                vbgrouph.setWorks(equipment.getWorks());
+                vbgrouph.setEqId(eqId);
+                vbgrouph.setMac(equipment.getMac());
+                vbgrouph.setVbgroupName(equipment.getVbgroupName());
+                vbgrouph.setCreatedBy(Long.valueOf(userId));
+                vbgrouph.setCreationDate(new Date());
+                vbgroupheaderMapper.insertVbGroupH(vbgrouph);
             }else{
                 return "该MAC地址已存在，请重新输入！";
             }

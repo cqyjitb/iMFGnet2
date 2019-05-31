@@ -13,4 +13,9 @@
     <result column="status" property="status" jdbcType="VARCHAR"/>
 </resultMap>
 
+    <insert id="insertVbGroupH" parameterType="yj.kanb.vbgroupheader.dto.Vbgroupheader">
+        insert into vb_group_h(vbgroupId,bukrs,works,eqId,mac,vbgroupName,switchfreg,status,created_by,creation_date)
+        values(#{vbgroupId},#{bukrs},#{works},#{eqId},#{mac},#{vbgroupName},#{switchfreg},#{status},#{createdBy},#{creationDate})
+    </insert>
+
 </mapper>
