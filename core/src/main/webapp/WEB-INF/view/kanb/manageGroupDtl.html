@@ -1,0 +1,263 @@
+<!--
+    看板设备产线维护 918100064
+-->
+<#include "../include/header.html" >
+<body>
+<div class="col-xs-12">
+    <div id="tabstrip">
+        <ul>
+            <li class="k-state-active">
+                看板显示组管理
+            </li>
+        </ul>
+        <div id="div1">
+            <div id="content-container">
+                <div id="page-content">
+                    <div class="panel" style="padding: 0px;border:none;box-shadow: none;">
+                        <form class="form-horizontal" id="myForm">
+                            <div class="panel-body">
+                                <div id="condition">
+                                    <div class="row">
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">公司<label class="label">*</label></label>
+                                                <div class="col-sm-8">
+                                                    <input id="bukrs" type="text" style="width: 100%" data-bind="value:model.bukrs" class="k-textbox">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">工厂<label class="label">*</label></label>
+                                                <div class="col-sm-8">
+                                                    <input id="works" type="text" style="width: 100%" data-bind="value:model.works" class="k-textbox">
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-sm-4">
+                                            <div class="form-group">
+                                                <label class="col-sm-4 control-label">生产车间</label>
+                                                <div class="col-sm-8">
+                                                    <input id="unit_code" class="k-textbox" data-bind="value:model.workshopId" style="width: 100%">
+                                                    <script>
+                                                        $("#unit_code").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_UNIT_NEW2")}, {
+                                                            query: function (e) {
+                                                                e.param['enabledFlag'] = 'Y';
+                                                            }
+                                                        }));
+                                                    </script>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="pull-left" id="toolbar-btn" style="padding-bottom:10px;">
+                        <span id="selectPoints" class="btn btn-success" style="float:left;">设备产线配置</span>
+                    </div>
+                    <div class="pull-right" id="query-form" style="padding-bottom:10px;">
+                        <span class="btn btn-primary" style="float:left;width:70px" data-bind="click:queryResource" type="submit"><@spring.message "hap.query"/></span>
+                        <div style="clear:both"></div>
+                    </div>
+                    <div style="clear:both">
+                        <div id="Grid"></div>
+                    </div>
+                </div>
+            </div>
+            <script>
+                var tabCounter = 0;
+                var viewModel = kendo.observable({
+                    model: {},
+                    queryResource: function (e) {
+                        var bukrs = document.getElementById("bukrs").value;
+                        var works = document.getElementById("works").value;
+                        if(bukrs == null || bukrs == "" || bukrs == ''){
+                            kendo.ui.showInfoDialog({
+                                message:'公司不能为空'
+                            })
+                        }else if(works == null || works == "" || works == ''){
+                            kendo.ui.showInfoDialog({
+                                message:'工厂不能为空'
+                            })
+                        }else{
+                            $('#Grid').data('kendoGrid').dataSource.page(1);
+                        }
+                    }
+                });
+                kendo.bind($('#page-content'), viewModel);
+                $(document).ready(function () {
+                    var BaseUrl = _basePath;
+                    dataSource = new kendo.data.DataSource({
+                        transport: {
+                            read: {
+                                url: BaseUrl + "/groupH/queryGroupH",
+                                type: "POST",
+                                dataType: "json"
+                            },
+                            parameterMap: function (options, type) {
+                                if (type !== "read" && options.models) {
+                                    var datas = Hap.prepareSubmitParameter(options, type);
+                                    return kendo.stringify(datas);
+                                } else if (type === "read") {
+                                    return Hap.prepareQueryParameter(viewModel.model.toJSON(), options);
+                                }
+                            }
+                        },
+                        batch: true,
+                        serverPaging: true,
+                        pageSize: 10,
+                        schema: {
+                            data: 'rows',
+                            total: 'total',
+                            model: {
+                                id: "works",
+                                parentId: "bukrs",
+                                fields: {
+                                    bukrs: {type: "string"},
+                                    works: {type: "string"},
+                                    vbgroupId:{type:"string"},
+                                    eqId: {type: "string"},
+                                    mac: {type: "string"},
+                                    address: {type: "string"},
+                                    workshopId: {type:"string"}
+                                }
+                            }
+                        }
+                    });
+                    $("#Grid").kendoGrid({
+                        dataSource:dataSource,
+                        autoBind:false,
+                        height:'100%',
+                        resizable:true,
+                        scrollable:true,
+                        navigatable:false,
+                        editable: false,
+                        selectable:'multiple,rowbox',
+                        pageable:{
+                            pageSizes:[5,10,20,50,"all"],
+                            refresh:true,
+                            buttonCount:5
+                        },
+                        columns:[
+                            {
+                                field:"bukrs",
+                                title:"公司",
+                                width:120,
+                                headerAttributes: {
+                                    style: "text-align: center;"
+                                },
+                                attributes: {
+                                    style: "text-align: center;"
+                                }
+                            },
+                            {
+                                field:"works",
+                                title:"工厂",
+                                width:80,
+                                headerAttributes: {
+                                    style: "text-align: center;"
+                                },
+                                attributes: {
+                                    style: "text-align: center;"
+                                }
+                            },
+                            {
+                                field:"vbgroupId",
+                                title:"显示组ID",
+                                width:80,
+                                hidden:true,
+                                headerAttributes: {
+                                    style: "text-align: center;"
+                                },
+                                attributes: {
+                                    style: "text-align: center;"
+                                }
+                            },
+                            {
+                                field:"eqId",
+                                title:"设备ID",
+                                width:80,
+                                hidden:true,
+                                headerAttributes: {
+                                    style: "text-align: center;"
+                                },
+                                attributes: {
+                                    style: "text-align: center;"
+                                }
+                            },
+                            {
+                                field:"workshopId",
+                                title:"生产车间",
+                                width:100,
+                                headerAttributes: {
+                                    style: "text-align: center;"
+                                },
+                                attributes: {
+                                    style: "text-align: center;"
+                                }
+                            },
+                            {
+                                field:"mac",
+                                title:"MAC地址",
+                                width:120,
+                                headerAttributes: {
+                                    style: "text-align: center;"
+                                },
+                                attributes: {
+                                    style: "text-align: center;"
+                                }
+                            }
+                        ]
+                    });
+                    Hap.autoResizeGrid("#Grid");
+
+                    $('#selectPoints').on('click', function () {
+                        var grid = $("#Grid").data("kendoGrid"),
+                            selections = grid.selectedDataItems();
+                        if (selections.length ==1) {
+                            var tab = $('#tabstrip').data('kendoTabStrip');
+                            var index = tab.tabGroup["0"].children.length;
+                            if (index == 2) {
+                                kendo.ui.showErrorDialog({
+                                    title: '错误',
+                                    message: "请先新增设备产线配置维护表！"
+                                });
+                            } else {
+                                tab.append({
+                                    tabid: 'Item-' + (++tabCounter),
+                                    text: '设备产线配置维护' + ' <span class="k-icon k-i-close"></span>',
+                                    encoded: false,
+                                    content: '<iframe src="manageGroupDtl_edit.html" width="100%" height="700" frameborder="0" allowtransparency="yes"></iframe>'
+                                });
+                            }
+                            tab.select(tab.tabGroup.children().length - 1);
+                        } else {
+                            kendo.ui.showErrorDialog({
+                                message: '请选择一条记录进行操作！'
+                            });
+                        }
+                    });
+                });
+            </script>
+        </div>
+    </div>
+    <script>
+        var tabstrip = $("#tabstrip").kendoTabStrip({
+            height: '100%',
+            animation: false
+        }).data("kendoTabStrip");
+        tabstrip.tabGroup.on("click", ".k-i-close", function (e) {
+            e.preventDefault();
+            e.stopPropagation();
+            var item = $(e.target).closest(".k-item");
+            var index = item.index(),
+                prev = item.next().length == 1 ? item.next() : item.prev();
+            tabstrip.remove(item.index());
+            tabstrip.select(prev)
+        });
+    </script>
+</div>
+</body>
+</html>

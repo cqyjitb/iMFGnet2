@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="yj.kanb.vblinegroupheader.mapper.VblinegroupheaderMapper">
 <resultMap id="BaseResultMap" type="yj.kanb.vblinegroupheader.dto.Vblinegroupheader">
     <result column="bukrs" property="bukrs" jdbcType="VARCHAR"/>
@@ -13,4 +13,47 @@
     <result column="groupType" property="groupType" jdbcType="VARCHAR"/>
 </resultMap>
 
+    <select id="selectLineGroupH" parameterType="yj.kanb.vblinegroupheader.dto.Vblinegroupheader" resultMap="BaseResultMap">
+        select * from vb_line_group_h
+        <where>
+            1 = 1
+            <if test="bukrs != null">
+                AND bukrs = #{bukrs}
+            </if>
+            <if test="works != null">
+                AND works = #{works}
+            </if>
+            <if test="workshopId != null">
+                AND workshopId = #{workshopId}
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteLineGroupH" parameterType="yj.kanb.vblinegroupheader.dto.Vblinegroupheader">
+        delete from vb_line_group_h
+        <where>
+            groupId = #{groupId}
+            AND bukrs = #{bukrs}
+            AND works = #{works}
+            AND workshopId = #{workshopId}
+            AND product = #{product}
+        </where>
+    </delete>
+
+    <update id="updateLineGroupH" parameterType="yj.kanb.vblinegroupheader.dto.Vblinegroupheader">
+        update vb_line_group_h set product = #{product},groupName = #{groupName},groupType = #{groupType},
+        templeteUrl = #{templeteUrl},last_updated_by = #{lastUpdatedBy},last_update_date = #{lastUpdateDate}
+        <where>
+            groupId = #{groupId}
+            AND bukrs = #{bukrs}
+            AND works = #{works}
+            AND workshopId = #{workshopId}
+            AND product = #{product}
+        </where>
+    </update>
+
+    <insert id="insertLineGroupH" parameterType="yj.kanb.vblinegroupheader.dto.Vblinegroupheader">
+        insert into vb_line_group_h(groupId,bukrs,works,workshopId,templeteUrl,product,groupName,groupType,created_by,creation_date)
+        values(#{groupId},#{bukrs},#{works},#{workshopId},#{templeteUrl},#{product},#{groupName},#{groupType},#{createdBy},#{creationDate})
+    </insert>
 </mapper>
