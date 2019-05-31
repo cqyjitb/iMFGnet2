@@ -99,6 +99,16 @@ public class Xhcard
     private String attr7;
     private Integer dfectQty;//未投不良记录数
 
+    private String lastUpdateDate2;//移库日期
+
+    public String getLastUpdateDate2() {
+        return lastUpdateDate2;
+    }
+
+    public void setLastUpdateDate2(String lastUpdateDate2) {
+        this.lastUpdateDate2 = lastUpdateDate2;
+    }
+
     public Integer getDfectQty() {
         return dfectQty;
     }

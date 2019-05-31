@@ -1,8 +1,5 @@
 package yj.kanb.equipment.controllers;
 
-
-import com.hand.hap.comm.DataSourceEnum;
-import com.hand.hap.comm.DataSourceHolder;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.system.dto.ResponseData;
@@ -33,12 +30,8 @@ public class EquimentContorller  extends BaseController {
     public ResponseData selectAfko(HttpServletRequest request){
         //DataSourceHolder.setDataSources(DataSourceEnum.mySqlDataSource.getKey());
         List<Equipment> list = service.selectAllData();
-
-        //DataSourceHolder.setDataSources(DataSourceEnum.mainDataSource.getKey());
         Afko afko = afkoService.selectByAufnr("1000000411");
-
         ResponseData rs = new ResponseData();
-
         rs.setSuccess(true);
         return rs;
 
@@ -52,7 +45,6 @@ public class EquimentContorller  extends BaseController {
     @RequestMapping(value = {"/equipment/queryEquipment"})
     @ResponseBody
     public ResponseData queryEquipment(HttpServletRequest request,Equipment dto){
-        DataSourceHolder.setDataSources(DataSourceEnum.mySqlDataSource.getKey());
         IRequest requestContext = createRequestContext(request);
         List<Equipment> list =  service.queryEquipment(dto);
         return new ResponseData(list);

@@ -48,11 +48,12 @@
         <result column="MAKTX" property="maktx" jdbcType="VARCHAR" />
         <result column="DLSUM" property="dlsum" jdbcType="VARCHAR" />
         <result column="DESCRIPTIONS" property="descriptions" jdbcType="VARCHAR" />
+        <result column="LAST_UPDATE_DATE" property="lastUpdatedDate" jdbcType="DATE" />
     </resultMap>
 
     <select id="queryXhcard" parameterType="yj.core.xhcard.dto.Xhcard" resultMap="BaseResultMap1">
         select xh.werks,xh.matnr,ma.maktx,xh.lgort,st.lgobe,xh.zxhbar,xh.chargkc,xh.zmnum,
-        xh.menge,xh.zsxwc,xh.zscbc
+        xh.menge,xh.zsxwc,xh.zscbc,xh.LAST_UPDATE_DATE as lastUpdateDate2
         from sap_xhcard xh,sap_marc ma,sap_t001l st/*,sap_cardh ch,confirmation_input_log l*/
         <where>
             xh.matnr = ma.matnr
