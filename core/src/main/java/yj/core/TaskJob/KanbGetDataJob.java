@@ -247,6 +247,7 @@ public class KanbGetDataJob extends AbstractJob {
                     viewdata.setBukrs(listvbgh.get(i).getBukrs());
                     viewdata.setProduct(listvbgh.get(i).getProduct());
                     viewdata.setWorkshopId(listvbgh.get(i).getWorkshopId());
+                    viewdata.setErdat(curdate);
                     try {
                         Date startDate = sdf2.parse(viewdata.getShifttimebegin());
                         Long times = new Double(viewdata.getPlanqty() * viewdata.getCycletime() * 1000).longValue();

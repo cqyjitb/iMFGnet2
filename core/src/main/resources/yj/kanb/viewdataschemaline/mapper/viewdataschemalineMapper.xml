@@ -13,6 +13,7 @@
     <result column="name1" property="name1" jdbcType="VARCHAR"/>
     <result column="sortl" property="sortl" jdbcType="VARCHAR"/>
     <result column="shift" property="shift" jdbcType="VARCHAR"/>
+    <result column="erdat" property="erdat" jdbcType="VARCHAR"/>
     <result column="shifttimebegin" property="shifttimebegin" jdbcType="VARCHAR"/>
     <result column="shifttimeend" property="shifttimeend" jdbcType="VARCHAR"/>
     <result column="lineLeader" property="lineLeader" jdbcType="VARCHAR"/>
@@ -42,9 +43,9 @@
     </select>
 
     <insert id="insertforKanb" parameterType="yj.kanb.viewdataschemaline.dto.Viewdataschemaline">
-        INSERT INTO  view_data_schema_line(bukrs,works,groupId,product,workshopId,matnr,maktx,kunnr,name1,sortl,shift,shifttimebegin,shifttimeend,lineLeader,leaderPhone
+        INSERT INTO  view_data_schema_line(bukrs,works,groupId,product,workshopId,matnr,maktx,kunnr,name1,sortl,shift,erdat,shifttimebegin,shifttimeend,lineLeader,leaderPhone
         ,cycletime,workshopName,planqty,actqty,insufqty,jdcqqty,qcRate,oeeRate,creation_date,created_by)
-        VALUES (#{bukrs},#{works},#{groupId},#{product},#{workshopId},#{matnr},#{maktx},#{shift},#{shifttimebegin},#{shifttimeend},#{lineLeader},#{leaderPhone},#{cycletime},#{workshopName},
+        VALUES (#{bukrs},#{works},#{groupId},#{product},#{workshopId},#{matnr},#{maktx},#{shift},#{erdat},#{shifttimebegin},#{shifttimeend},#{lineLeader},#{leaderPhone},#{cycletime},#{workshopName},
         #{planqty},#{actqty},#{insufqty},#{jdcqqty},#{qcRate},#{oeeRate},#{creationDate},#{createdBy})
     </insert>
 
@@ -53,6 +54,7 @@
                                          name1 = #{name1},
                                          sortl = #{sortl},
                                          shift = #{shift},
+                                         erdat = #{erdat},
                                          shifttimebegin = #{shifttimebegin},
                                          shifttimeend = #{shifttimeend},
                                          lineLeader = #{lineLeader},

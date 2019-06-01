@@ -44,7 +44,7 @@ public class Viewdataschemaline extends BaseDTO {
     private Double jdcqqty;//进度差缺
     private Double qcRate;
     private Double oeeRate;
-
+    private Date erdat;
     private Date creationDate; //创建时间
 
     private Long createdBy; //创建人
@@ -291,5 +291,13 @@ public class Viewdataschemaline extends BaseDTO {
     @Override
     public void setLastUpdatedBy(Long lastUpdatedBy) {
         this.lastUpdatedBy = lastUpdatedBy;
+    }
+
+    public Date getErdat() {
+        return erdat;
+    }
+
+    public void setErdat(Date erdat) {
+        this.erdat = erdat;
     }
 }
