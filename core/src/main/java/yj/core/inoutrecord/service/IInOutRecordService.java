@@ -63,5 +63,5 @@ public interface IInOutRecordService extends IBaseService<InOutRecord>, ProxySel
     List<InOutRecord> selectforQcaudit3(String werks,String line_id,String matnr,String matnr2,String deptId,String gstrp,
                                         String zqxdm,String zissuetxt,String zbanz);
 
-    List<InOutRecord> selectforKanb(String werks,String line_id,String matnr);
+    List<InOutRecord> selectforKanb(String werks,String line_id,String matnr,String start,String end);
 }

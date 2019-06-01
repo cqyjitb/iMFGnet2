@@ -178,7 +178,7 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
     }
 
     @Override
-    public List<InOutRecord> selectforKanb(String werks, String line_id, String matnr) {
-        return inOutRecordMapper.selectforKanb(werks,line_id,matnr);
+    public List<InOutRecord> selectforKanb(String werks, String line_id, String matnr,String start,String end) {
+        return inOutRecordMapper.selectforKanb(werks,line_id,matnr,start,end);
     }
 }

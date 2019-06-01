@@ -451,10 +451,11 @@
     <select id="selectforKanb" parameterType="java.lang.String" resultMap="BaseResultMap">
         select * from wip_in_out_record
         <where>
-            MATNR = #{matnr}
-            and LINE_ID = #{line_id}
-            and MATNR = #{matnr}
+             LINE_ID = #{line_id}
+            and MATNR2 = #{matnr}
             and   reflag != '1'
+            and OUTDAT >= #{start}
+            and #{end} >= OUTDAT
         </where>
     </select>
 </mapper>

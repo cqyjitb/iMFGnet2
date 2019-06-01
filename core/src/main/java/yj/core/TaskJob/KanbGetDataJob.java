@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import yj.core.OracleConn.OracleConn;
 import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.service.ICardhService;
+import yj.core.cust.dto.Cust;
+import yj.core.cust.service.ICustService;
 import yj.core.inoutrecord.dto.InOutRecord;
 import yj.core.inoutrecord.service.IInOutRecordService;
 import yj.core.marc.dto.Marc;
@@ -22,6 +24,8 @@ import yj.core.wipcurlzk.dto.Curlzk;
 import yj.core.wipcurlzk.service.ICurlzkService;
 import yj.core.wiplines.dto.Lines;
 import yj.core.wiplines.service.ILinesService;
+import yj.core.wipproductscfg.dto.ProductsCfg;
+import yj.core.wipproductscfg.service.IProductsCfgService;
 import yj.kanb.kbtest.service.IKbtestService;
 import yj.kanb.vblinegroupheader.dto.Vblinegroupheader;
 import yj.kanb.vblinegroupheader.service.IVblinegroupheaderService;
@@ -55,6 +59,10 @@ public class KanbGetDataJob extends AbstractJob {
     private ILinesService linesService;
     @Autowired
     private IViewdataschemalineService viewdataschemalineService;
+    @Autowired
+    private IProductsCfgService productsCfgService;
+    @Autowired
+    private ICustService custService;
     @Override
     protected boolean isRefireImmediatelyWhenException() {
         return false;
@@ -91,6 +99,16 @@ public class KanbGetDataJob extends AbstractJob {
                 for (int j=0;j<listcurlzk.size();j++){
 
                     if (listcurlzk.get(j).getDeptId().equals(listvbgh.get(i).getWorkshopId()) && listcurlzk.get(j).getMatnrjj().equals(listvbgh.get(i).getProduct())){
+                        //根据产品 取客户信息
+                        ProductsCfg productsCfg = productsCfgService.selectByLineidAndPMatnr(listcurlzk.get(j).getLineId(),listcurlzk.get(j).getMatnrjj());
+
+                        //根据客户编码取客户描述 名称
+                        Cust cust = custService.selectByKunnr(productsCfg.getKunnr());
+
+                        viewdata.setKunnr(cust.getKunnr());
+                        viewdata.setName1(cust.getName1());
+                        viewdata.setSortl(cust.getSortl());
+
                         viewdata.setClassgrp(listcurlzk.get(j).getShift());//班组
                         //1:根据生产线当前流转卡号 获取流转卡数据
                         Cardh cardh = new Cardh();
@@ -193,12 +211,10 @@ public class KanbGetDataJob extends AbstractJob {
                         serverSetting = serverSettingService.selectByLineId(listvbgh.get(i).getWorks(),lineId.toString());
                         WebServerHelp webServerHelp = new WebServerHelp();
                         OracleConn oracleConn = new OracleConn(webServerHelp.getMesOraUrl(),webServerHelp.getMesOraUserName(),webServerHelp.getMesOraPass(),webServerHelp.getMesOraDriver());
-                        String sqlzx = "select a.main_id,a.item_code,a.barcode,c.carton_code,b.zpgdbar,b.zxhbar,b.rsnum,b.rspos,b.zsxjlh,b.line_id,b.created_by from "+serverSetting.getDbUsername()+".wip_main_data  a"
-                                +" inner join  "+serverSetting.getDbUsername()+".wip_pallet_sn_rel  b on a.main_id = b.main_id"
-                                +" inner join  "+serverSetting.getDbUsername()+".mtl_barcode c on b.barcode_id = c.barcode_id";
-                        String where = " where b.line_id = " + "'" + listcurlzk.get(j).getLineId() + "' and c.status = 0 and b.status = 0 and a.ENABLE_FLAG = '1' ";
-
-                        where = where + "and a.item_code = " + "'" + listvbgh.get(i).getProduct() + "' " ;
+                        String sqlzx = "select a.main_id from "+serverSetting.getDbUsername()+".wip_pallet_sn_rel  a"
+                                +" inner join  "+serverSetting.getDbUsername()+".wip_main_data b on a.main_id = b.main_id";
+                        String where = " where a.line_id = " + "'" + listcurlzk.get(j).getLineId() + "' and  a.status = '0' and b.ENABLE_FLAG = '1' ";
+                        where = where + "and b.item_code = " + "'" + listvbgh.get(i).getProduct() + "' " ;
 
 
                         if (viewdata.getShift().equals("1")){
@@ -229,7 +245,24 @@ public class KanbGetDataJob extends AbstractJob {
 
                         //3.1 取件数量
                         InOutRecord inOutRecord = new InOutRecord();
-                        List<InOutRecord> listio = inOutRecordService.selectforKanb(listvbgh.get(i).getWorks(),listcurlzk.get(j).getLineId(),listvbgh.get(i).getProduct());
+                        String start = "";
+                        String end = "";
+                        if (viewdata.getShift().equals("1")){
+                            start = ds1;
+                            end = ds2;
+                        }
+
+                        if (viewdata.getShift().equals("2")){
+                            start = ds3;
+                            end = ds4;
+                        }
+
+                        if (viewdata.getShift().equals("3")){
+                            start = ds5;
+                            end = ds6;
+                        }
+
+                        List<InOutRecord> listio = inOutRecordService.selectforKanb(listvbgh.get(i).getWorks(),listcurlzk.get(j).getLineId(),listvbgh.get(i).getProduct(),start,end);
                         outnum = outnum + listio.size();
 
                         l_error = "";
@@ -262,15 +295,15 @@ public class KanbGetDataJob extends AbstractJob {
                     Double oeerate = 0D;
                     if (viewdata.getActqty() > 0D){
 
-                        qcrate = ( viewdata.getActqty() / viewdata.getActqty() + outnum ) * 100;
-                        oeerate = ( viewdata.getActqty() / viewdata.getActqty() + outnum ) * 100;
+                        qcrate = ( viewdata.getActqty() / ( viewdata.getActqty() + outnum ) ) * 100;
+                        oeerate = ( viewdata.getActqty() / ( viewdata.getActqty() + outnum ) ) * 100;
                     }
 
                     viewdata.setOeeRate(oeerate);//oee
                     viewdata.setQcRate(qcrate);//合格率
 
                     try {
-                        viewdata.setJdcqqty(viewdata.getActqty() - (new Date().getTime() - sdf.parse(viewdata.getShifttimebegin()).getTime()) / viewdata.getCycletime());//进度差缺
+                        viewdata.setJdcqqty(viewdata.getActqty() - (new Date().getTime() - sdf2.parse(viewdata.getShifttimebegin()).getTime()) / ( viewdata.getCycletime() * 1000 ));//进度差缺
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }

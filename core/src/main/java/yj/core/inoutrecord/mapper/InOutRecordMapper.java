@@ -112,5 +112,5 @@ public interface InOutRecordMapper extends Mapper<InOutRecord>{
          * 查询取件记录 for 车间看板
          *
          */
-        List<InOutRecord> selectforKanb(@Param("werks") String werks,@Param("line_id") String line_id,@Param("matnr") String matnr);
+        List<InOutRecord> selectforKanb(@Param("werks") String werks,@Param("line_id") String line_id,@Param("matnr") String matnr,@Param("start") String start,@Param("end") String end);
 }
