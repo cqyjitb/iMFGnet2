@@ -2,6 +2,18 @@
     看板设备产线维护 918100064
 -->
 <#include "../include/header.html" >
+<style>
+    span[class='k-window-title'] {
+        user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+    }
+    .label{
+        color: red;
+    }
+</style>
 <body>
 <div class="col-xs-12">
     <div id="tabstrip">
@@ -11,6 +23,29 @@
             </li>
         </ul>
         <div id="div1">
+            <script type="text/javascript">
+                var viewModel = kendo.observable({
+                    model: {
+                        bukrs:"1000",
+                        works:"1001"
+                    },
+                    queryResource: function (e) {
+                        var bukrs = document.getElementById("bukrs").value;
+                        var works = document.getElementById("works").value;
+                        if(bukrs == null || bukrs == "" || bukrs == ''){
+                            kendo.ui.showInfoDialog({
+                                message:'公司不能为空'
+                            })
+                        }else if(works == null || works == "" || works == ''){
+                            kendo.ui.showInfoDialog({
+                                message:'工厂不能为空'
+                            })
+                        }else{
+                            $('#Grid').data('kendoGrid').dataSource.page(1);
+                        }
+                    }
+                });
+            </script>
             <div id="content-container">
                 <div id="page-content">
                     <div class="panel" style="padding: 0px;border:none;box-shadow: none;">
@@ -34,21 +69,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-sm-4">
-                                            <div class="form-group">
-                                                <label class="col-sm-4 control-label">生产车间</label>
-                                                <div class="col-sm-8">
-                                                    <input id="unit_code" class="k-textbox" data-bind="value:model.workshopId" style="width: 100%">
-                                                    <script>
-                                                        $("#unit_code").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_UNIT_NEW2")}, {
-                                                            query: function (e) {
-                                                                e.param['enabledFlag'] = 'Y';
-                                                            }
-                                                        }));
-                                                    </script>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -68,24 +88,6 @@
             </div>
             <script>
                 var tabCounter = 0;
-                var viewModel = kendo.observable({
-                    model: {},
-                    queryResource: function (e) {
-                        var bukrs = document.getElementById("bukrs").value;
-                        var works = document.getElementById("works").value;
-                        if(bukrs == null || bukrs == "" || bukrs == ''){
-                            kendo.ui.showInfoDialog({
-                                message:'公司不能为空'
-                            })
-                        }else if(works == null || works == "" || works == ''){
-                            kendo.ui.showInfoDialog({
-                                message:'工厂不能为空'
-                            })
-                        }else{
-                            $('#Grid').data('kendoGrid').dataSource.page(1);
-                        }
-                    }
-                });
                 kendo.bind($('#page-content'), viewModel);
                 $(document).ready(function () {
                     var BaseUrl = _basePath;
@@ -134,7 +136,7 @@
                         scrollable:true,
                         navigatable:false,
                         editable: false,
-                        selectable:'multiple,rowbox',
+                        selectable:'rowbox',
                         pageable:{
                             pageSizes:[5,10,20,50,"all"],
                             refresh:true,
@@ -188,9 +190,9 @@
                                 }
                             },
                             {
-                                field:"workshopId",
-                                title:"生产车间",
-                                width:100,
+                                field:"vbgroupName",
+                                title:"资源组名称",
+                                width:120,
                                 headerAttributes: {
                                     style: "text-align: center;"
                                 },
@@ -208,14 +210,36 @@
                                 attributes: {
                                     style: "text-align: center;"
                                 }
+                            },
+                            {
+                                field:"switchfreg",
+                                title:"",
+                                width:120,
+                                headerAttributes: {
+                                    style: "text-align: center;"
+                                },
+                                attributes: {
+                                    style: "text-align: center;"
+                                }
+                            },
+                            {
+                                field:"status",
+                                title:"状态",
+                                width:120,
+                                headerAttributes: {
+                                    style: "text-align: center;"
+                                },
+                                attributes: {
+                                    style: "text-align: center;"
+                                }
                             }
                         ]
                     });
+                    var grid = $("#Grid").data("kendoGrid");
                     Hap.autoResizeGrid("#Grid");
 
                     $('#selectPoints').on('click', function () {
-                        var grid = $("#Grid").data("kendoGrid"),
-                            selections = grid.selectedDataItems();
+                        var selections = grid.selectedDataItems();
                         if (selections.length ==1) {
                             var tab = $('#tabstrip').data('kendoTabStrip');
                             var index = tab.tabGroup["0"].children.length;

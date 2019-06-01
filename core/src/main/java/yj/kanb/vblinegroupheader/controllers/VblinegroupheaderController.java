@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import yj.kanb.equipment.dto.Equipment;
+import yj.kanb.vbgroupdtl.dto.Vbgroupdtl;
 import yj.kanb.vblinegroupheader.dto.Vblinegroupheader;
 import yj.kanb.vblinegroupheader.service.IVblinegroupheaderService;
 
@@ -66,5 +67,19 @@ public class VblinegroupheaderController extends BaseController {
             service.insertOrUpdate(requestCtx,dto,userId);
         }
         return rs;
+    }
+
+    /**
+     * 看板车间产线组头维护查询请求 918100064
+     * @param request
+     * @return
+     */
+    @RequestMapping(value = {"/Vblinegroupheader/selectVblinegroupheader"})
+    @ResponseBody
+    public ResponseData selectLineGroupH(HttpServletRequest request){
+        String vbgroupId = request.getParameter("vbgroupId");
+        IRequest requestCtx = createRequestContext(request);
+        List<Vblinegroupheader> list =  service.selectLineGroupH(requestCtx,vbgroupId);
+        return new ResponseData(list);
     }
 }
