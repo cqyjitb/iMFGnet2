@@ -68,4 +68,12 @@ public interface ProductsCfgMapper extends Mapper<ProductsCfg>{
     List<ProductsCfg> selectByLineIdForLov(@Param("lineId")Long lineId);
 
     List<ProductsCfg> selectByLineidAndMatnr2(@Param("line_id") String line_id,@Param("matnr") String matnr);
+
+    /**
+     * 产品物料及客户编码查询 918100064
+     * @param pmatnr
+     * @param kunnr
+     * @return
+     */
+    List<ProductsCfg> queryByMatnrKunnr(@Param("pmatnr") String pmatnr,@Param("kunnr") String kunnr);
 }

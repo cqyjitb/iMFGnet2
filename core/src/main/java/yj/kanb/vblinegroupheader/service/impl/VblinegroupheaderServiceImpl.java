@@ -9,6 +9,9 @@ import yj.kanb.vblinegroupheader.dto.Vblinegroupheader;
 import yj.kanb.vblinegroupheader.mapper.VblinegroupheaderMapper;
 import yj.kanb.vblinegroupheader.service.IVblinegroupheaderService;
 
+import java.io.IOException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.*;
 
 @Service
@@ -68,6 +71,14 @@ public class VblinegroupheaderServiceImpl extends BaseServiceImpl<Vblinegrouphea
                     return "车间ID不能为空！";
                 }else if(dto.get(i).getProduct() == null || "".equals(dto.get(i).getProduct())){
                     return "产品物料编码不能为空！";
+                }else if(!("".equals(dto.get(i).getTempleteUrl()))){
+                    try {
+                        URL url = new URL(dto.get(i).getTempleteUrl());
+                        URLConnection conn = url.openConnection();
+                        conn.connect();
+                    } catch (IOException e) {
+                        return "模报URL格式不正确！";
+                    }
                 }
             }
         }

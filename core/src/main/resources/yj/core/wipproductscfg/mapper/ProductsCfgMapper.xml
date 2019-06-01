@@ -45,6 +45,21 @@
         <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
     </resultMap>
 
+    <select id="queryByMatnrKunnr" parameterType="java.lang.String" resultMap="BaseResultMap1">
+        select DISTINCT pc.pmatnr,ma.maktx,pc.kunnr,cu.name1 from wip_products_cfg pc
+        left join sap_marc ma on pc.pmatnr = ma.matnr
+        left join sap_cust cu on pc.kunnr = cu.kunnr
+        <where>
+            1 = 1
+            <if test="pmatnr != null">
+                AND pc.pmatnr = #{pmatnr}
+            </if>
+            <if test="kunnr != null">
+                AND pc.kunnr = #{kunnr}
+            </if>
+        </where>
+    </select>
+
     <select id="selectByMatnr" parameterType="java.lang.Long" resultMap="BaseResultMap">
         select matnr as matnr2, (select maktx FROM sap_marc where matnr = matnr2) as maktx FROM wip_products_cfg
         <where>
