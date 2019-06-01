@@ -18,13 +18,21 @@ public class Vblinegroupheader  extends BaseDTO {
     private String works;//工厂
     private String workshopId;//车间ID
     private String product;//产品物料编码
-
+    private String kunnr;//客户编码
 
     private String groupName;//产线组名称
     private String groupType;//资源类别：LINEDATA
     private String templeteUrl;//模板URL
     @Transient
     private String vbgroupId;//显示组ID
+
+    public String getKunnr() {
+        return kunnr;
+    }
+
+    public void setKunnr(String kunnr) {
+        this.kunnr = kunnr;
+    }
 
     public String getVbgroupId() {
         return vbgroupId;

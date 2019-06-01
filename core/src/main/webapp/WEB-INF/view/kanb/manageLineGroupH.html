@@ -285,10 +285,21 @@
                 editor : function (container, options) {
                     $('<input name="'+options.field+'"/>').appendTo(container).kendoLov($.extend(<@lov "LOV_PRODUCT"/>,
                         {
-                            textField: 'matnr',
+                            textField: 'kunnr',
                             model: options.model
                         }));
                 },
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"kunnr",
+                title:"客户编码",
+                width:120,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
