@@ -11,6 +11,7 @@
     <result column="vbgroupName" property="vbgroupName" jdbcType="VARCHAR"/>
     <result column="switchfreg" property="switchfreg" jdbcType="DECIMAL"/>
     <result column="status" property="status" jdbcType="VARCHAR"/>
+    <result column="kunnr" property="kunnr" jdbcType="VARCHAR"/>
 </resultMap>
 
     <insert id="insertVbGroupH" parameterType="yj.kanb.vbgroupheader.dto.Vbgroupheader">

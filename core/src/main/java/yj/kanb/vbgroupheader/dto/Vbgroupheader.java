@@ -22,6 +22,7 @@ public class Vbgroupheader extends BaseDTO {
     private String vbgroupName;
     private Integer switchfreg;
     private String status;
+    private String kunnr;
 
     public String getVbgroupId() {
         return vbgroupId;
@@ -85,5 +86,13 @@ public class Vbgroupheader extends BaseDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public String getKunnr() {
+        return kunnr;
+    }
+
+    public void setKunnr(String kunnr) {
+        this.kunnr = kunnr;
     }
 }

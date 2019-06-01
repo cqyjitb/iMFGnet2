@@ -68,6 +68,7 @@ public class KanbGetDataJob extends AbstractJob {
         String msg = "KanbGetDataJob Test<insertNewData>! - . jobKey:" + key + ", triggerKey:" + triggerKey + ", execTime:" + new Date();
         log.info(msg);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date curdate = new Date();
         String erdat = sdf.format(curdate).substring(0,10);
         List<Curlzk> listcurlzk = new ArrayList<>();
@@ -77,14 +78,15 @@ public class KanbGetDataJob extends AbstractJob {
         listvbgh = vblinegroupheaderService.selectAllGroup();
 
         if (listvbgh.size() > 0 && listcurlzk.size() > 0){
-            Viewdataschemaline viewdata = new Viewdataschemaline();
-            Double outnum = 0D;
-            Double actnum = 0D;
-            Double plqty = 0D;
-            Double takt_time = 0D;
-            String l_error= "E";
+
 
             for (int i=0;i<listvbgh.size();i++){
+                Viewdataschemaline viewdata = new Viewdataschemaline();
+                Double outnum = 0D;
+                Double actnum = 0D;
+                Double plqty = 0D;
+                Double takt_time = 0D;
+                String l_error= "E";
 
                 for (int j=0;j<listcurlzk.size();j++){
 
@@ -110,49 +112,51 @@ public class KanbGetDataJob extends AbstractJob {
 
                         //2.1 计算班次时间    白班 08:00:00-15:59:59   中班 16:00-23:59:59 夜班 00:00:00-07:59:59
                         System.out.println("计算班次 及班次开始日期**********************************");
-                        Date lastupdate = listcurlzk.get(j).getLastUpdateDate();//当前流转卡切换的时间
-                        String ds1 = sdf.format(lastupdate).substring(0,10) + "08:00:00";
+                        String lastupdatestr = listcurlzk.get(j).getLastUpdateDateStr().substring(0,19);//当前流转卡切换的时间
+                        String ds1 = lastupdatestr.substring(0,10) + " 08:00:00";
                         Date d1 = null;
                         try {
-                            d1 = sdf.parse(ds1);
+                            d1 = sdf2.parse(ds1);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        String ds2 = sdf.format(lastupdate).substring(0,10) + "15:59:59";
+                        String ds2 = lastupdatestr.substring(0,10) + " 15:59:59";
                         Date d2 = null;
                         try {
-                            d2 = sdf.parse(ds2);
+                            d2 = sdf2.parse(ds2);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        String ds3 = sdf.format(lastupdate).substring(0,10) + "16:00:00";
+                        String ds3 = lastupdatestr.substring(0,10) + " 16:00:00";
                         Date d3 = null;
                         try {
-                            d3 = sdf.parse(ds3);
+                            d3 = sdf2.parse(ds3);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        String ds4 = sdf.format(lastupdate).substring(0,10) + "23:59:59";
+                        String ds4 = lastupdatestr.substring(0,10) + " 23:59:59";
                         Date d4 = null;
                         try {
-                            d4 = sdf.parse(ds4);
+                            d4 = sdf2.parse(ds4);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        String ds5 = sdf.format(lastupdate).substring(0,10) + "00:00:00";
+                        String ds5 = lastupdatestr.substring(0,10) + " 00:00:00";
                         Date d5 = null;
                         try {
-                            d5 = sdf.parse(ds5);
+                            d5 = sdf2.parse(ds5);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        String ds6 = sdf.format(lastupdate).substring(0,10) + "07:59:59";
+                        String ds6 = lastupdatestr.substring(0,10) + " 07:59:59";
                         Date d6 = null;
                         try {
-                            d6 = sdf.parse(ds6);
+                            d6 = sdf2.parse(ds6);
                         } catch (ParseException e){
                             e.printStackTrace();
                         }
+
+                        Date lastupdate = sdf2.parse(lastupdatestr);
 
                         if (lastupdate.getTime() >= d1.getTime() && lastupdate.getTime() <= d2.getTime()){
                             viewdata.setShift("1");
@@ -172,9 +176,21 @@ public class KanbGetDataJob extends AbstractJob {
                             viewdata.setShifttimebegin(ds1);
                         }
 
+                        //4:取产线配置数据
+                        Lines lines = new Lines();
+                        lines = linesService.selectById(Long.parseLong(listcurlzk.get(j).getLineId()));
+                        takt_time = takt_time + lines.getTaktTime();
+
+                        Long lineId = 0L;
+                        if (lines.getPlineId() != null){
+                            lineId = lines.getPlineId();
+                        }else{
+                            lineId = Long.parseLong(listcurlzk.get(j).getLineId());
+                        }
+
                         //3：去装箱数据
                         ServerSetting serverSetting = new ServerSetting();
-                        serverSetting = serverSettingService.selectByLineId(listvbgh.get(i).getWorks(),listcurlzk.get(j).getLineId());
+                        serverSetting = serverSettingService.selectByLineId(listvbgh.get(i).getWorks(),lineId.toString());
                         WebServerHelp webServerHelp = new WebServerHelp();
                         OracleConn oracleConn = new OracleConn(webServerHelp.getMesOraUrl(),webServerHelp.getMesOraUserName(),webServerHelp.getMesOraPass(),webServerHelp.getMesOraDriver());
                         String sqlzx = "select a.main_id,a.item_code,a.barcode,c.carton_code,b.zpgdbar,b.zxhbar,b.rsnum,b.rspos,b.zsxjlh,b.line_id,b.created_by from "+serverSetting.getDbUsername()+".wip_main_data  a"
@@ -216,12 +232,8 @@ public class KanbGetDataJob extends AbstractJob {
                         List<InOutRecord> listio = inOutRecordService.selectforKanb(listvbgh.get(i).getWorks(),listcurlzk.get(j).getLineId(),listvbgh.get(i).getProduct());
                         outnum = outnum + listio.size();
 
-                        //4:取产线配置数据
-                        Lines lines = new Lines();
-                        lines = linesService.selectById(Long.parseLong(listcurlzk.get(j).getLineId()));
-                        takt_time = takt_time + lines.getTaktTime();
-
                         l_error = "";
+
                     }
                 }
 
@@ -231,19 +243,29 @@ public class KanbGetDataJob extends AbstractJob {
                     viewdata.setActqty(actnum);//实际产量
                     viewdata.setCycletime(takt_time);//平均节拍
                     viewdata.setGroupId(listvbgh.get(i).getGroupId());//产线组ID
+                    viewdata.setWorks(listvbgh.get(i).getWorks());
+                    viewdata.setBukrs(listvbgh.get(i).getBukrs());
+                    viewdata.setProduct(listvbgh.get(i).getProduct());
+                    viewdata.setWorkshopId(listvbgh.get(i).getWorkshopId());
                     try {
-                        Date startDate = sdf.parse(viewdata.getShifttimebegin());
-                        Long times = new Double(viewdata.getPlanqty() * viewdata.getCycletime()).longValue();
+                        Date startDate = sdf2.parse(viewdata.getShifttimebegin());
+                        Long times = new Double(viewdata.getPlanqty() * viewdata.getCycletime() * 1000).longValue();
                         times = startDate.getTime() + times;
-                        viewdata.setShifttimeend(sdf.format(new Date(times)));
+                        viewdata.setShifttimeend(sdf2.format(new Date(times)));
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
                     //viewdata.setShifttimeend();
                     viewdata.setInsufqty(viewdata.getActqty() - viewdata.getPlanqty());//差缺数量
-                    Double qcrate = ( viewdata.getActqty() / viewdata.getActqty() + outnum ) * 100;
-                    Double oeerate = ( viewdata.getActqty() / viewdata.getActqty() + outnum ) * 100;
-                    viewdata.setOeeRate(0D);//oee
+                    Double qcrate = 0D;
+                    Double oeerate = 0D;
+                    if (viewdata.getActqty() > 0D){
+
+                        qcrate = ( viewdata.getActqty() / viewdata.getActqty() + outnum ) * 100;
+                        oeerate = ( viewdata.getActqty() / viewdata.getActqty() + outnum ) * 100;
+                    }
+
+                    viewdata.setOeeRate(oeerate);//oee
                     viewdata.setQcRate(qcrate);//合格率
 
                     try {
@@ -255,8 +277,12 @@ public class KanbGetDataJob extends AbstractJob {
                     Viewdataschemaline viewdatatmp = viewdataschemalineService.selectforKanb(listvbgh.get(i).getGroupId(),
                             listvbgh.get(i).getProduct(),listvbgh.get(i).getWorkshopId(),listvbgh.get(i).getBukrs(),listvbgh.get(i).getWorks());
                     if (viewdatatmp != null){
+                        viewdata.setLastUpdateDate(new Date());
+                        viewdata.setLastUpdatedBy(10001L);
                         viewdataschemalineService.updateforKanb(viewdata);
                     }else{
+                        viewdata.setCreatedBy(10001L);
+                        viewdata.setCreationDate(new Date());
                         viewdataschemalineService.insertforKanb(viewdata);
                     }
                 }

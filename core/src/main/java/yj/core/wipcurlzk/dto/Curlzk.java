@@ -56,6 +56,8 @@ public class Curlzk extends BaseDTO {
       private String arbpl;//工作中心
     @Transient
       private Double menge;//流转卡数量
+    @Transient
+      private String lastUpdateDateStr;
 
      public void setLineId(String lineId){
          this.lineId = lineId;
@@ -203,5 +205,13 @@ public class Curlzk extends BaseDTO {
 
     public void setMenge(Double menge) {
         this.menge = menge;
+    }
+
+    public String getLastUpdateDateStr() {
+        return lastUpdateDateStr;
+    }
+
+    public void setLastUpdateDateStr(String lastUpdateDateStr) {
+        this.lastUpdateDateStr = lastUpdateDateStr;
     }
 }

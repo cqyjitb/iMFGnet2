@@ -12,13 +12,14 @@
         <result column="ERDAT" property="erdat" jdbcType="DATE" />
         <result column="DEPT_ID" property="deptId"  jdbcType="DATE" />
         <result column="MATNRJJ" property="matnrjj" jdbcType="VARCHAR" />
-        <result column="MAKTXJJ" property="MAKTXJJ" jdbcType="VARCHAR" />
+        <result column="MAKTXJJ" property="maktxjj" jdbcType="VARCHAR" />
         <result column="ERDAT" property="erdat" jdbcType="DATE" />
         <result column="ERDAT" property="erdat" jdbcType="DATE" />
         <result column="CREATION_DATE" property="creationDate" jdbcType="DATE" />
         <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
         <result column="LAST_UPDATED_DATE" property="lastUpdateDate" jdbcType="DATE" />
         <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
+        <result column="LAST_UPDATED_DATE" property="lastUpdateDateStr" jdbcType="VARCHAR" />
     </resultMap>
 
     <select id="selectById" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -80,7 +81,7 @@
                 cur.ZXHBAR,
                 cur.SHIFT,
                 cur.ERDAT,
-                cur.LAST_UPDATED_DATE,
+                cur.LAST_UPDATED_DATE as lastUpdateDateStr,
                 li.dept_id,
                 marc.maktx as matktxjj,
                 cardh.menge

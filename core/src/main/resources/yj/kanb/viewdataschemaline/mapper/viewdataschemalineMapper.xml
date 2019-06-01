@@ -9,6 +9,9 @@
     <result column="workshopId" property="workshopId" jdbcType="VARCHAR"/>
     <result column="matnr" property="matnr" jdbcType="VARCHAR"/>
     <result column="maktx" property="maktx" jdbcType="VARCHAR"/>
+    <result column="kunnr" property="kunnr" jdbcType="VARCHAR"/>
+    <result column="name1" property="name1" jdbcType="VARCHAR"/>
+    <result column="sortl" property="sortl" jdbcType="VARCHAR"/>
     <result column="shift" property="shift" jdbcType="VARCHAR"/>
     <result column="shifttimebegin" property="shifttimebegin" jdbcType="VARCHAR"/>
     <result column="shifttimeend" property="shifttimeend" jdbcType="VARCHAR"/>
@@ -21,7 +24,10 @@
     <result column="insufqty" property="insufqty" jdbcType="DECIMAL"/>
     <result column="jdcqqty" property="jdcqqty" jdbcType="DECIMAL"/>
     <result column="qcRate" property="qcRate" jdbcType="DECIMAL"/>
-    <result column="oeeRate" property="insufqty" jdbcType="DECIMAL"/>
+    <result column="creation_date" property="creationDate" jdbcType="VARCHAR"/>
+    <result column="created_by" property="createdBy" jdbcType="DECIMAL"/>
+    <result column="last_updated_by" property="lastUpdatedBy" jdbcType="DECIMAL"/>
+    <result column="last_update_date" property="lastUpdateDate" jdbcType="VARCHAR"/>
 </resultMap>
 
     <select id="selectforKanb" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -36,16 +42,38 @@
     </select>
 
     <insert id="insertforKanb" parameterType="yj.kanb.viewdataschemaline.dto.Viewdataschemaline">
-        INSERT IN  view_data_schema_line(bukrs,works,groupId,product,workshopId,matnr,maktx,shift,shifttimebegin,shifttimeend,lineLeader,leaderPhone,cycletime,workshopName,planqty,actqty,insufqty,jdcqqty,qcRate,oeeRate)
+        INSERT INTO  view_data_schema_line(bukrs,works,groupId,product,workshopId,matnr,maktx,kunnr,name1,sortl,shift,shifttimebegin,shifttimeend,lineLeader,leaderPhone
+        ,cycletime,workshopName,planqty,actqty,insufqty,jdcqqty,qcRate,oeeRate,creation_date,created_by)
         VALUES (#{bukrs},#{works},#{groupId},#{product},#{workshopId},#{matnr},#{maktx},#{shift},#{shifttimebegin},#{shifttimeend},#{lineLeader},#{leaderPhone},#{cycletime},#{workshopName},
-        #{planqty},#{actqty},#{insufqty},#{jdcqqty},#{qcRate},#{oeeRate})
+        #{planqty},#{actqty},#{insufqty},#{jdcqqty},#{qcRate},#{oeeRate},#{creationDate},#{createdBy})
     </insert>
 
     <update id="updateforKanb" parameterType="yj.kanb.viewdataschemaline.dto.Viewdataschemaline">
-        update view_data_schema_line set(shift,shifttimebegin,shifttimeend,lineLeader,leaderPhone,cycletime,planqty,actqty,insufqty,jdcqqty,qcRate,oeeRate)
-        VALUES (#{shift},#{shifttimebegin},#{shifttimeend},#{lineLeader},#{leaderPhone},#{cycletime},#{planqty},#{actqty},#{insufqty},#{jdcqqty},#{qcRate},#{},#{oeeRate})
-        <where>
+        update view_data_schema_line set kunnr = #{kunnr},
+                                         name1 = #{name1},
+                                         sortl = #{sortl},
+                                         shift = #{shift},
+                                         shifttimebegin = #{shifttimebegin},
+                                         shifttimeend = #{shifttimeend},
+                                         lineLeader = #{lineLeader},
+                                         leaderPhone = #{leaderPhone},
+                                         cycletime = #{cycletime},
+                                         planqty = #{planqty},
+                                         actqty = #{actqty},
+                                         insufqty = #{insufqty},
+                                         jdcqqty = #{jdcqqty},
+                                         qcRate = #{qcRate},
+                                         oeeRate = #{oeeRate},
+                                         last_updated_by = #{lastUpdatedBy},
+                                         last_update_date = #{lastUpdateDate}
 
+
+        <where>
+            groupId = #{groupId}
+            and works = #{works}
+            and bukrs = #{bukrs}
+            and product = #{product}
+            and workshopId = #{workshopId}
         </where>
     </update>
 </mapper>

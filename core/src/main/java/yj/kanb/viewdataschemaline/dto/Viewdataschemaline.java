@@ -7,6 +7,8 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @ExtensionAttribute(disable=true)
 @Table(name = "vb_line_group_h")
@@ -24,6 +26,9 @@ public class Viewdataschemaline extends BaseDTO {
     private String matnr;
     private String maktx;
 
+    private String kunnr;//客户编码
+    private String name1;//客户名称
+    private String sortl;//客户简称
     private String classgrp;//班组
     private String shift;//班次
     private String shiftdes;//班次文本
@@ -39,6 +44,14 @@ public class Viewdataschemaline extends BaseDTO {
     private Double jdcqqty;//进度差缺
     private Double qcRate;
     private Double oeeRate;
+
+    private Date creationDate; //创建时间
+
+    private Long createdBy; //创建人
+
+    private Date lastUpdateDate; //更新时间
+
+    private Long lastUpdatedBy; //更新人
 
     public String getGroupId() {
         return groupId;
@@ -214,5 +227,69 @@ public class Viewdataschemaline extends BaseDTO {
 
     public void setJdcqqty(Double jdcqqty) {
         this.jdcqqty = jdcqqty;
+    }
+
+    public String getKunnr() {
+        return kunnr;
+    }
+
+    public void setKunnr(String kunnr) {
+        this.kunnr = kunnr;
+    }
+
+    public String getName1() {
+        return name1;
+    }
+
+    public void setName1(String name1) {
+        this.name1 = name1;
+    }
+
+    public String getSortl() {
+        return sortl;
+    }
+
+    public void setSortl(String sortl) {
+        this.sortl = sortl;
+    }
+
+    @Override
+    public Date getCreationDate() {
+        return creationDate;
+    }
+
+    @Override
+    public void setCreationDate(Date creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    @Override
+    public Long getCreatedBy() {
+        return createdBy;
+    }
+
+    @Override
+    public void setCreatedBy(Long createdBy) {
+        this.createdBy = createdBy;
+    }
+
+    @Override
+    public Date getLastUpdateDate() {
+        return lastUpdateDate;
+    }
+
+    @Override
+    public void setLastUpdateDate(Date lastUpdateDate) {
+        this.lastUpdateDate = lastUpdateDate;
+    }
+
+    @Override
+    public Long getLastUpdatedBy() {
+        return lastUpdatedBy;
+    }
+
+    @Override
+    public void setLastUpdatedBy(Long lastUpdatedBy) {
+        this.lastUpdatedBy = lastUpdatedBy;
     }
 }
