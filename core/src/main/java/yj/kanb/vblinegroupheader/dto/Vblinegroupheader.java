@@ -6,6 +6,7 @@ import com.hand.hap.system.dto.BaseDTO;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @ExtensionAttribute(disable=true)
 @Table(name = "vb_line_group_h")
@@ -22,6 +23,17 @@ public class Vblinegroupheader  extends BaseDTO {
     private String groupName;//产线组名称
     private String groupType;//资源类别：LINEDATA
     private String templeteUrl;//模板URL
+    @Transient
+    private String vbgroupId;//显示组ID
+
+    public String getVbgroupId() {
+        return vbgroupId;
+    }
+
+    public void setVbgroupId(String vbgroupId) {
+        this.vbgroupId = vbgroupId;
+    }
+
     public String getGroupId() {
         return groupId;
     }

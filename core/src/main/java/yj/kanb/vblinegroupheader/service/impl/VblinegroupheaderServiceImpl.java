@@ -9,10 +9,7 @@ import yj.kanb.vblinegroupheader.dto.Vblinegroupheader;
 import yj.kanb.vblinegroupheader.mapper.VblinegroupheaderMapper;
 import yj.kanb.vblinegroupheader.service.IVblinegroupheaderService;
 
-import java.util.List;
-
-import java.util.Date;
-import java.util.UUID;
+import java.util.*;
 
 @Service
 @Transactional
@@ -75,5 +72,10 @@ public class VblinegroupheaderServiceImpl extends BaseServiceImpl<Vblinegrouphea
             }
         }
         return null;
+    }
+
+    @Override
+    public List<Vblinegroupheader> selectLineGroupH(IRequest requestCtx, String vbgroupId) {
+        return vblinegroupheaderMapper.selectLineGroupH2(vbgroupId);
     }
 }

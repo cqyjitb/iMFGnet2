@@ -13,6 +13,15 @@
     <result column="groupType" property="groupType" jdbcType="VARCHAR"/>
 </resultMap>
 
+    <select id="selectLineGroupH2" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from vb_line_group_h
+        <where>
+            <if test="vbgroupId != null">
+                 groupId not in (select groupId from vb_group_dtl where vbgroupId = #{vbgroupId})
+            </if>
+        </where>
+    </select>
+
     <select id="selectLineGroupH" parameterType="yj.kanb.vblinegroupheader.dto.Vblinegroupheader" resultMap="BaseResultMap">
         select * from vb_line_group_h
         <where>

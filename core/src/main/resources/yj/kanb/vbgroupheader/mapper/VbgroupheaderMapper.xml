@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
-        <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
 <mapper namespace="yj.kanb.vbgroupheader.mapper.VbgroupheaderMapper">
 <resultMap id="BaseResultMap" type="yj.kanb.vbgroupheader.dto.Vbgroupheader">
     <result column="bukrs" property="bukrs" jdbcType="VARCHAR"/>
@@ -12,6 +12,19 @@
     <result column="switchfreg" property="switchfreg" jdbcType="DECIMAL"/>
     <result column="status" property="status" jdbcType="VARCHAR"/>
 </resultMap>
+
+    <select id="queryGroupH" parameterType="yj.kanb.vbgroupheader.dto.Vbgroupheader" resultMap="BaseResultMap">
+        select * from vb_group_h
+        <where>
+            1 = 1
+            <if test="bukrs != null">
+                AND bukrs = #{bukrs}
+            </if>
+            <if test="works != null">
+                AND works = #{works}
+            </if>
+        </where>
+    </select>
 
     <insert id="insertVbGroupH" parameterType="yj.kanb.vbgroupheader.dto.Vbgroupheader">
         insert into vb_group_h(vbgroupId,bukrs,works,eqId,mac,vbgroupName,switchfreg,status,created_by,creation_date)

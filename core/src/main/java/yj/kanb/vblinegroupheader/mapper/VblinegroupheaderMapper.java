@@ -1,6 +1,7 @@
 package yj.kanb.vblinegroupheader.mapper;
 
 import com.hand.hap.mybatis.common.Mapper;
+import org.apache.ibatis.annotations.Param;
 import yj.kanb.vblinegroupheader.dto.Vblinegroupheader;
 
 import java.util.List;
@@ -31,4 +32,11 @@ public interface VblinegroupheaderMapper extends Mapper<Vblinegroupheader> {
      * @param dto
      */
     void insertLineGroupH(Vblinegroupheader dto);
+
+    /**
+     * 根据显示组ID查询  918100064
+     * @param vbgroupId
+     * @return
+     */
+    List<Vblinegroupheader> selectLineGroupH2(@Param("vbgroupId") String vbgroupId);
 }

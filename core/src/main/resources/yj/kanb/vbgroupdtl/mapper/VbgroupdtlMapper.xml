@@ -10,4 +10,8 @@
         <result column="groupType" property="groupType" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <insert id="insertGroupDtl" parameterType="yj.kanb.vbgroupdtl.dto.Vbgroupdtl">
+        insert into vb_group_dtl(groupId,bukrs,works,groupType,vbgroupId,created_by,creation_date)
+        values(#{groupId},#{bukrs},#{works},#{groupType},#{vbgroupId},#{createdBy},#{creationDate})
+    </insert>
 </mapper>

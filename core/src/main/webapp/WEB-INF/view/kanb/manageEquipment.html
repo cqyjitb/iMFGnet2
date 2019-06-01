@@ -16,7 +16,10 @@
 </style>
 <script type="text/javascript">
     var viewModel = kendo.observable({
-        model: {},
+        model: {
+            bukrs:"1000",
+            works:"1001"
+        },
         createFunction: function () {
             var bukrs = document.getElementById("bukrs").value;
             var works = document.getElementById("works").value;

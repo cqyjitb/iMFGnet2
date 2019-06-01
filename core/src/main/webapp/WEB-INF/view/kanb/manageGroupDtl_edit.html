@@ -28,16 +28,39 @@
     var selections =  window.parent.$('#Grid').data('kendoGrid').selectedDataItems();
     var newViewModel = kendo.observable({
         model: {
-            /*werks: selections["0"].werks,
-            lineId: selections["0"].lineId,
-            description: selections["0"].descriptions*/
+            vbgroupId:selections[0].vbgroupId
         },
         save2Function:function () {
             var data = grid.selectedDataItems();
+            var tmparry= new Array();
             if(data.length > 0){
-
-
-
+                for (var i = 0;i<data.length;i++){
+                    var viewModel2 = kendo.observable({
+                        model: {
+                            vbgroupId:selections[0].vbgroupId,
+                            bukrs:data[i].bukrs,
+                            works:data[i].works,
+                            groupId:data[i].groupId,
+                            groupType:data[i].groupType
+                        }
+                    });
+                    tmparry[i] = viewModel2.model.toJSON();
+                }
+                var postdata = JSON.stringify(tmparry);
+                $.ajax({
+                    type   : 'POST',
+                    url    : _basePath + "/groupDtl/insertGroupDtl",
+                    dataType : "json",
+                    contentType : "application/json",
+                    data   : postdata,
+                    success: function (data) {
+                        if(data.success==false){
+                            kendo.ui.showErrorDialog({
+                                message:data.message
+                            });
+                        }
+                    }
+                });
                 var tabstrip = window.parent.$("#tabstrip").kendoTabStrip({
                     height: '100%',
                     animation: false
@@ -68,7 +91,7 @@
     var dataSource2 = new kendo.data.DataSource({
         transport: {
             read: {
-                url: BaseUrl + "/Vblinegroupheader/queryVblinegroupheader",
+                url: BaseUrl + "/Vblinegroupheader/selectVblinegroupheader",
                 type: "POST",
                 dataType: "json"
             },
@@ -95,7 +118,6 @@
                     works: {type: "string",editable:false},
                     groupId: {type: "string"},
                     groupName: {type: "string"},
-                    areaId: {type: "string"},
                     workshopId: {type:"string"}
                 }
             }
