@@ -108,8 +108,17 @@ public class Marc extends BaseDTO {
 
       private Long lastUpdatedBy; //更新人
 
+    private String bukrs;//公司
 
-     public void setMatnr(String matnr){
+    public String getBukrs() {
+        return bukrs;
+    }
+
+    public void setBukrs(String bukrs) {
+        this.bukrs = bukrs;
+    }
+
+    public void setMatnr(String matnr){
          this.matnr = matnr;
      }
 
