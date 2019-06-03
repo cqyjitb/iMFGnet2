@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.marcres.mapper.MarcResMapper">
+    <resultMap id="BaseResultMap" type="yj.core.marcres.dto.MarcRes">
+        <result column="werks" property="werks" jdbcType="VARCHAR" />
+        <result column="matnr" property="matnr" jdbcType="VARCHAR" />
+        <result column="fileId_a" property="fileidA" jdbcType="DECIMAL" />
+        <result column="fileId_b" property="fileidB" jdbcType="DECIMAL" />
+        <result column="ATTR1" property="attr1" jdbcType="VARCHAR" />
+        <result column="ATTR2" property="attr2" jdbcType="VARCHAR" />
+        <result column="ATTR3" property="attr3" jdbcType="VARCHAR" />
+        <result column="ATTR4" property="attr4" jdbcType="VARCHAR" />
+        <result column="ATTR5" property="attr5" jdbcType="VARCHAR" />
+        <result column="ATTR6" property="attr6" jdbcType="VARCHAR" />
+        <result column="ATTR7" property="attr7" jdbcType="VARCHAR" />
+    </resultMap>
+
+
+</mapper>
