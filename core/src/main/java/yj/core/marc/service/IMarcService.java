@@ -17,4 +17,12 @@ public interface IMarcService extends IBaseService<Marc>, ProxySelf<IMarcService
     Marc selectByMatnr(String matnr);
 
     int saveChange(List<Marc> list);
+
+    /**
+     * 产品物料查询  918100064
+     * @param werks
+     * @param matnr
+     * @return
+     */
+    List<Marc> queryByMarc(String werks,String matnr);
 }

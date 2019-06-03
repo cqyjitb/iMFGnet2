@@ -84,4 +84,18 @@ import java.util.List;
             }
             return rs;
         }
+
+        /**
+         * 根据物料查询 918100064
+         * @param request
+         * @param matnr
+         * @return
+         */
+        @RequestMapping(value = {"/sap/marc/queryByMarc"})
+        @ResponseBody
+        public ResponseData queryByMarc(HttpServletRequest request,String werks, String matnr){
+            IRequest requestCtx = createRequestContext(request);
+            String werks2 = request.getParameter("werks");
+            return new ResponseData(service.queryByMarc(werks,matnr));
+        }
     }

@@ -9,6 +9,7 @@ import yj.core.marc.service.IMarcService;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Map;
 
 @Service
 @Transactional
@@ -43,5 +44,17 @@ public class MarcServiceImpl extends BaseServiceImpl<Marc> implements IMarcServi
             sum = sum + marcMapper.saveChange(list.get(i));
         }
         return sum;
+    }
+
+    @Override
+    public List<Marc> queryByMarc(String werks, String matnr) {
+        List<Marc> list = marcMapper.queryByMarc(werks,matnr);
+        if (list.size() > 0){
+            for (int i=0;i<list.size();i++){
+                Marc marc = list.get(i);
+                marc.setBukrs("1000");
+            }
+        }
+        return list;
     }
 }

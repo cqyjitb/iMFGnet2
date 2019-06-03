@@ -26,9 +26,10 @@ public interface MarcMapper extends Mapper<Marc>{
 
     /**
      * 查询产品物料 918100064
+     * @param werks
      * @param matnr
      * @return
      */
-    List<Marc> queryByMarc(@Param("matnr") String matnr);
+    List<Marc> queryByMarc(@Param("werks") String werks,@Param("matnr") String matnr);
 
 }

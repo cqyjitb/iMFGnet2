@@ -2,6 +2,18 @@
 	图片上传    918100064
 -->
 <#include "../include/header.html">
+<style>
+	span[class='k-window-title'] {
+		user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
+		-webkit-user-select: none;
+		-webkit-touch-callout: none;
+	}
+	.label{
+		color: red;
+	}
+</style>
 <script>
 	//定义一个viewModel
 	var viewModel = kendo.observable({
@@ -9,6 +21,27 @@
         	sourceKey : 1 //测试id
         }
     });
+	var viewModel2 = kendo.observable({
+		model:{
+            bukrs:"1000",
+			werks:"1001"
+		},
+        queryResource:function (e) {
+            var bukrs = document.getElementById("bukrs").value;
+            var werks = document.getElementById("werks").value;
+            if(bukrs == null || bukrs == "" || bukrs == ''){
+                kendo.ui.showInfoDialog({
+                    message:'公司不能为空'
+                })
+            }else if(werks == null || werks == "" || werks == ''){
+                kendo.ui.showInfoDialog({
+                    message:'工厂不能为空'
+                })
+            }else{
+                $('#Grid').data('kendoGrid').dataSource.page(1);
+            }
+        }
+	})
 </script>
 <body style="padding: 10px;">
 <div id="page-content">
@@ -29,7 +62,7 @@
 							<div class="form-group">
 								<label class="col-sm-4 control-label">工厂<label class="label">*</label></label>
 								<div class="col-sm-8">
-									<input id="works" type="text" style="width: 100%" data-bind="value:model.works" class="k-textbox">
+									<input id="werks" type="text" style="width: 100%" data-bind="value:model.werks" class="k-textbox">
 								</div>
 							</div>
 						</div>
@@ -53,22 +86,146 @@
 			</div>
 		</form>
 		<script>
-            kendo.bind($('#myForm'), viewModel);
+            kendo.bind($('#myForm'), viewModel2);
 		</script>
 	</div>
 	<div class="pull-left" id="toolbar-btn" style="padding-bottom:10px;">
 		<span class="btn btn-success k-grid-save-changes" data-bind="click:saveFunction" type="submit" style="float:left;margin-right:5px;">保存</span>
 	</div>
-	<script>kendo.bind($('#toolbar-btn'), viewModel);</script>
+	<script>kendo.bind($('#toolbar-btn'), viewModel2);</script>
 	<div class="pull-right" id="query-form" style="padding-bottom:10px;">
 		<span class="btn btn-primary" style="float:left;width:70px" data-bind="click:queryResource" type="submit"><@spring.message "hap.query"/></span>
 		<div style="clear:both"></div>
 	</div>
-	<script>kendo.bind($('#query-form'), viewModel);</script>
+	<script>kendo.bind($('#query-form'), viewModel2);</script>
 	<div style="clear:both">
 		<div id="Grid"></div>
 	</div>
 </div>
+
+<script type="text/javascript">
+    var BaseUrl = _basePath;
+    dataSource = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: BaseUrl + "/sap/marc/queryByMarc",
+                type: "POST",
+                dataType: "json"
+            },
+            parameterMap: function (options, type) {
+                if (type !== "read" && options.models) {
+                    var datas = Hap.prepareSubmitParameter(options, type);
+                    return kendo.stringify(datas);
+                } else if (type === "read") {
+                    return Hap.prepareQueryParameter(viewModel.model.toJSON(), options);
+                }
+            }
+        },
+        batch: true,
+        serverPaging: true,
+        pageSize: 10,
+        schema: {
+            data: 'rows',
+            total: 'total',
+            model: {
+                id: "matnr",
+                fields: {
+                    werks: {type: "string",editable:false},
+                    matnr: {type: "string",editable:false},
+                    maktx: {type: "string",editable:false},
+                    bukrs: {type: "string",editable:false},
+                    fileIda: {type: "string"},
+                    fileIdb: {type:"string"}
+                }
+            }
+        }
+    });
+    $("#Grid").kendoGrid({
+        dataSource:dataSource,
+        autoBind:false,
+        height:'100%',
+        resizable:true,
+        scrollable:true,
+        navigatable:false,
+        editable: true,
+        selectable:'multiple,rowbox',
+        pageable:{
+            pageSizes:[5,10,20,50,"all"],
+            refresh:true,
+            buttonCount:5
+        },
+        columns:[
+            {
+                field:"bukrs",
+                title:"公司",
+                width:120,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"werks",
+                title:"工厂",
+                width:80,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"matnr",
+                title:"物料编码",
+                width:120,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"maktx",
+                title:"物料描述",
+                width:120,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"fileIda",
+                title:"图片A面",
+                width:120,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"fileIda",
+                title:"图片B面",
+                width:120,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            }
+        ]
+    });
+    var grid = $('#Grid').data("kendoGrid");
+    Hap.autoResizeGrid("#Grid");
+</script>
 	<form id="attForm" style="border: none">
 		<input type="text" data-bind="value:model.sourceType" id="sourceType">
 		<input style="border:none" type="file" name="files" id="files"/>
@@ -77,10 +234,6 @@
         	kendo.bind($('#sourceType'),viewModel);
         </script>
 	</form>
-	<div>
-		<h4 style="margin-top: 6px;margin-left: 6px">附件列表</h4>
-		<div id="file_view_list"></div>
-	</div>
 
 	<script type="text/javascript">
 
