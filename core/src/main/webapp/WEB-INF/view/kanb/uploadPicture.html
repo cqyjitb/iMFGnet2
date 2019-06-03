@@ -1,0 +1,179 @@
+<!--
+	图片上传    918100064
+-->
+<#include "../include/header.html">
+<script>
+	//定义一个viewModel
+	var viewModel = kendo.observable({
+        model:{
+        	sourceKey : 1 //测试id
+        }
+    });
+</script>
+<body style="padding: 10px;">
+<div id="page-content">
+	<div class="panel" style="padding: 0px;border:none;box-shadow: none;">
+		<form class="form-horizontal" id="myForm">
+			<div class="panel-body">
+				<div id="condition">
+					<div class="row">
+						<div class="col-sm-4">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">公司<label class="label">*</label></label>
+								<div class="col-sm-8">
+									<input id="bukrs" type="text" style="width: 100%" data-bind="value:model.bukrs" class="k-textbox">
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">工厂<label class="label">*</label></label>
+								<div class="col-sm-8">
+									<input id="works" type="text" style="width: 100%" data-bind="value:model.works" class="k-textbox">
+								</div>
+							</div>
+						</div>
+						<div class="col-sm-4">
+							<div class="form-group">
+								<label class="col-sm-4 control-label">物料编码</label>
+								<div class="col-sm-8">
+									<input id="matnr" class="k-textbox" data-bind="value:model.matnr" style="width: 100%">
+									<script>
+                                        $("#matnr").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_PRODUCT")}, {
+                                            query: function (e) {
+                                                e.param['enabledFlag'] = 'Y';
+                                            }
+                                        }));
+									</script>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</form>
+		<script>
+            kendo.bind($('#myForm'), viewModel);
+		</script>
+	</div>
+	<div class="pull-left" id="toolbar-btn" style="padding-bottom:10px;">
+		<span class="btn btn-success k-grid-save-changes" data-bind="click:saveFunction" type="submit" style="float:left;margin-right:5px;">保存</span>
+	</div>
+	<script>kendo.bind($('#toolbar-btn'), viewModel);</script>
+	<div class="pull-right" id="query-form" style="padding-bottom:10px;">
+		<span class="btn btn-primary" style="float:left;width:70px" data-bind="click:queryResource" type="submit"><@spring.message "hap.query"/></span>
+		<div style="clear:both"></div>
+	</div>
+	<script>kendo.bind($('#query-form'), viewModel);</script>
+	<div style="clear:both">
+		<div id="Grid"></div>
+	</div>
+</div>
+	<form id="attForm" style="border: none">
+		<input type="text" data-bind="value:model.sourceType" id="sourceType">
+		<input style="border:none" type="file" name="files" id="files"/>
+		<script>
+        	$("#sourceType").kendoLov(${lovProvider.getLov(base.contextPath, base.locale, "ATTACH_SOURCE_TYPE")})
+        	kendo.bind($('#sourceType'),viewModel);
+        </script>
+	</form>
+	<div>
+		<h4 style="margin-top: 6px;margin-left: 6px">附件列表</h4>
+		<div id="file_view_list"></div>
+	</div>
+
+	<script type="text/javascript">
+
+		//数据源
+		var dataSource = new kendo.data.DataSource({
+            batch       : true,
+            serverPaging: true,
+            pageSize    : 20,
+            schema      : {
+                data  : 'rows',
+                total : 'total',
+                model : {
+                    id    : "fileId"
+                }
+            }
+        });
+
+		//定义文件上传
+		$("#files").kendoUpload({
+	        async        : {
+	            saveUrl: "${base.contextPath}/sys/attach/upload?${_csrf.parameterName}=${_csrf.token}",
+	            removeUrl: "${base.contextPath}/sys/attach/remove"
+	        },
+	        showFileList : true,
+	        upload       : onUpload,
+	        success      : onSuccess,
+	        remove       : onRemove
+	    });
+
+		function onRemove(e){
+			var data = dataSource.data();
+			var files = e.files;
+			$.each(files,function(){
+				var fileName = this.name;
+				for(var i = 0;i < data.length; i ++){
+					if(data[i].fileName == fileName){
+						e.data = {
+							fileId : data[i].fileId,
+							token : data[i].token
+						}
+					}
+				} 
+			})		
+		}
+		var countNumber = 1;
+	    //回调函数
+	    function onSuccess(e) {
+	    	//状态为成功
+	    	if(e.response.success=== true){
+	    		//写数据源
+	    		dataSource.add({
+	    			token   : e.response.file._token,
+		        	fileId   : e.response.file.fileId,
+		        	fileName : e.response.file.fileName,
+		        	fileSize : e.response.file.fileSize,
+		        	fileType : e.response.file.fileType,
+		        	uploadDate : e.response.file.uploadDate
+		        });
+	    	}else if(e.response.message == "success"){
+	    		//删除成功
+	    		var data = dataSource.data();
+				var files = e.files;
+				$.each(files,function(){
+					var fileName = this.name;
+					for(var i = 0;i < data.length; i ++){
+						if(data[i].fileName == fileName){
+							e.data = {
+								fileId : data[i].fileId,
+								token : data[i].token
+							}
+							dataSource.remove(data[i]);
+						}
+					} 
+				})
+	    	}
+	        kendo.ui.showInfoDialog({
+                title    : '提示信息',
+                message  : e.response.message
+            })
+	    }
+
+	    //校验上传文件的格式是否正确
+	    function onUpload(e){
+	        e.data = {
+	    		sourceType : viewModel.model.sourceType,
+	    		sourceKey  : viewModel.model.sourceKey
+	    	}
+	    }
+
+	    $(".k-upload").css("margin-top","3px");
+	    $(".k-upload").css("border","none");
+	    $(".k-upload").css("background","none");
+
+	</script>
+
+</body>
