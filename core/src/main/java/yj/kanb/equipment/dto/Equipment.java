@@ -14,7 +14,7 @@ import javax.persistence.Transient;
 public class Equipment extends BaseDTO {
     @NotEmpty
     private String bukrs;
-    private String works;
+    private String werks;
     private String mac;
     @Id
     @GeneratedValue
@@ -41,12 +41,12 @@ public class Equipment extends BaseDTO {
         this.bukrs = bukrs;
     }
 
-    public String getWorks() {
-        return works;
+    public String getWerks() {
+        return werks;
     }
 
-    public void setWorks(String works) {
-        this.works = works;
+    public void setWerks(String werks) {
+        this.werks = werks;
     }
 
     public String getMac() {

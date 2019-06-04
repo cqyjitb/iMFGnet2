@@ -3,7 +3,7 @@
 <mapper namespace="yj.kanb.viewdataschemaline.mapper.ViewdataschemalineMapper">
 <resultMap id="BaseResultMap" type="yj.kanb.viewdataschemaline.dto.Viewdataschemaline">
     <result column="bukrs" property="bukrs" jdbcType="VARCHAR"/>
-    <result column="works" property="works" jdbcType="VARCHAR"/>
+    <result column="werks" property="werks" jdbcType="VARCHAR"/>
     <result column="groupId" property="groupId" jdbcType="VARCHAR"/>
     <result column="product" property="product" jdbcType="VARCHAR"/>
     <result column="workshopId" property="workshopId" jdbcType="VARCHAR"/>
@@ -34,7 +34,7 @@
     <select id="selectforKanb" parameterType="java.lang.String" resultMap="BaseResultMap">
         select * from view_data_schema_line
         <where>
-            works = #{werks}
+            werks = #{werks}
             and bukrs = #{bukrs}
             and groupId = #{groupId}
             and product = #{matnr}
@@ -43,9 +43,9 @@
     </select>
 
     <insert id="insertforKanb" parameterType="yj.kanb.viewdataschemaline.dto.Viewdataschemaline">
-        INSERT INTO  view_data_schema_line(bukrs,works,groupId,product,workshopId,matnr,maktx,kunnr,name1,sortl,shift,erdat,shifttimebegin,shifttimeend,lineLeader,leaderPhone
+        INSERT INTO  view_data_schema_line(bukrs,werks,groupId,product,workshopId,matnr,maktx,kunnr,name1,sortl,shift,erdat,shifttimebegin,shifttimeend,lineLeader,leaderPhone
         ,cycletime,workshopName,planqty,actqty,insufqty,jdcqqty,qcRate,oeeRate,creation_date,created_by)
-        VALUES (#{bukrs},#{works},#{groupId},#{product},#{workshopId},#{matnr},#{maktx},#{shift},#{erdat},#{shifttimebegin},#{shifttimeend},#{lineLeader},#{leaderPhone},#{cycletime},#{workshopName},
+        VALUES (#{bukrs},#{werks},#{groupId},#{product},#{workshopId},#{matnr},#{maktx},#{shift},#{erdat},#{shifttimebegin},#{shifttimeend},#{lineLeader},#{leaderPhone},#{cycletime},#{workshopName},
         #{planqty},#{actqty},#{insufqty},#{jdcqqty},#{qcRate},#{oeeRate},#{creationDate},#{createdBy})
     </insert>
 
@@ -72,7 +72,7 @@
 
         <where>
             groupId = #{groupId}
-            and works = #{works}
+            and werks = #{werks}
             and bukrs = #{bukrs}
             and product = #{product}
             and workshopId = #{workshopId}

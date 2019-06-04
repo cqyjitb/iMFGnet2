@@ -9,6 +9,8 @@ import yj.core.marc.dto.Marc;
 import yj.core.marc.service.IMarcService;
 import org.springframework.beans.factory.annotation.Autowired;
 import yj.core.wiplines.dto.Lines;
+import yj.kanb.marcres.dto.MarcRes;
+import yj.kanb.marcres.service.IMarcResService;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.ArrayList;
@@ -20,6 +22,8 @@ import java.util.List;
 
     @Autowired
     private IMarcService service;
+    @Autowired
+    private IMarcResService iMarcResService;
 
 
     @RequestMapping(value = "/sap/marc/query")
@@ -95,7 +99,22 @@ import java.util.List;
         @ResponseBody
         public ResponseData queryByMarc(HttpServletRequest request,String werks, String matnr){
             IRequest requestCtx = createRequestContext(request);
-            String werks2 = request.getParameter("werks");
-            return new ResponseData(service.queryByMarc(werks,matnr));
+            List<Marc> list = service.queryByMarc(werks,matnr);
+            if (list.size() > 0){
+                for (int i=0;i<list.size();i++){
+                    Marc marc = list.get(i);
+                    marc.setBukrs("1000");
+                    MarcRes marcRes = iMarcResService.selectByMatnr(marc.getBukrs(),marc.getWerks(),marc.getMatnr());
+                    if(marcRes != null){
+                        String fileidAName = service.queryByFileId(marcRes.getFileidA());
+                        String fileidBName = service.queryByFileId(marcRes.getFileidB());
+                        marc.setFileidA(marcRes.getFileidA());
+                        marc.setFileidB(marcRes.getFileidB());
+                        marc.setFileidAName(fileidAName);
+                        marc.setFileidBName(fileidBName);
+                    }
+                }
+            }
+            return new ResponseData(list);
         }
     }

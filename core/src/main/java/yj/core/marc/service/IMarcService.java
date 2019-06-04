@@ -25,4 +25,6 @@ public interface IMarcService extends IBaseService<Marc>, ProxySelf<IMarcService
      * @return
      */
     List<Marc> queryByMarc(String werks,String matnr);
+
+    String queryByFileId(Long fileId);
 }

@@ -4,7 +4,7 @@
 <mapper namespace="yj.kanb.vbgroupheader.mapper.VbgroupheaderMapper">
 <resultMap id="BaseResultMap" type="yj.kanb.vbgroupheader.dto.Vbgroupheader">
     <result column="bukrs" property="bukrs" jdbcType="VARCHAR"/>
-    <result column="works" property="works" jdbcType="VARCHAR"/>
+    <result column="werks" property="werks" jdbcType="VARCHAR"/>
     <result column="vbgroupId" property="vbgroupId" jdbcType="VARCHAR"/>
     <result column="eqId" property="eqId" jdbcType="VARCHAR"/>
     <result column="mac" property="mac" jdbcType="VARCHAR"/>
@@ -21,15 +21,15 @@
             <if test="bukrs != null">
                 AND bukrs = #{bukrs}
             </if>
-            <if test="works != null">
-                AND works = #{works}
+            <if test="werks != null">
+                AND werks = #{werks}
             </if>
         </where>
     </select>
 
     <insert id="insertVbGroupH" parameterType="yj.kanb.vbgroupheader.dto.Vbgroupheader">
-        insert into vb_group_h(vbgroupId,bukrs,works,eqId,mac,vbgroupName,switchfreg,status,created_by,creation_date)
-        values(#{vbgroupId},#{bukrs},#{works},#{eqId},#{mac},#{vbgroupName},#{switchfreg},#{status},#{createdBy},#{creationDate})
+        insert into vb_group_h(vbgroupId,bukrs,werks,eqId,mac,vbgroupName,switchfreg,status,created_by,creation_date)
+        values(#{vbgroupId},#{bukrs},#{werks},#{eqId},#{mac},#{vbgroupName},#{switchfreg},#{status},#{createdBy},#{creationDate})
     </insert>
 
 </mapper>

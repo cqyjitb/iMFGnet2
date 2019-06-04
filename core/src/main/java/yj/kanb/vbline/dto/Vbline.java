@@ -13,7 +13,7 @@ public class Vbline extends BaseDTO {
     @Id
     @GeneratedValue
     private String bukrs;
-    private String works;
+    private String werks;
     private Integer lineId;
     private String groupId;
     private String product;
@@ -34,12 +34,12 @@ public class Vbline extends BaseDTO {
         this.bukrs = bukrs;
     }
 
-    public String getWorks() {
-        return works;
+    public String getWerks() {
+        return werks;
     }
 
-    public void setWorks(String works) {
-        this.works = works;
+    public void setWerks(String werks) {
+        this.werks = werks;
     }
 
     public Integer getLineId() {

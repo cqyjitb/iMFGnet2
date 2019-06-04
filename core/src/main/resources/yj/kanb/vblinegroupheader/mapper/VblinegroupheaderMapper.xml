@@ -4,7 +4,7 @@
 <mapper namespace="yj.kanb.vblinegroupheader.mapper.VblinegroupheaderMapper">
 <resultMap id="BaseResultMap" type="yj.kanb.vblinegroupheader.dto.Vblinegroupheader">
     <result column="bukrs" property="bukrs" jdbcType="VARCHAR"/>
-    <result column="works" property="works" jdbcType="VARCHAR"/>
+    <result column="werks" property="werks" jdbcType="VARCHAR"/>
     <result column="groupId" property="groupId" jdbcType="VARCHAR"/>
     <result column="product" property="product" jdbcType="VARCHAR"/>
     <result column="kunnr" property="kunnr" jdbcType="VARCHAR"/>
@@ -30,8 +30,8 @@
             <if test="bukrs != null">
                 AND bukrs = #{bukrs}
             </if>
-            <if test="works != null">
-                AND works = #{works}
+            <if test="werks != null">
+                AND werks = #{werks}
             </if>
             <if test="workshopId != null">
                 AND workshopId = #{workshopId}
@@ -44,7 +44,7 @@
         <where>
             groupId = #{groupId}
             AND bukrs = #{bukrs}
-            AND works = #{works}
+            AND werks = #{werks}
             AND workshopId = #{workshopId}
             AND product = #{product}
         </where>
@@ -56,15 +56,15 @@
         <where>
             groupId = #{groupId}
             AND bukrs = #{bukrs}
-            AND works = #{works}
+            AND werks = #{werks}
             AND workshopId = #{workshopId}
             AND product = #{product}
         </where>
     </update>
 
     <insert id="insertLineGroupH" parameterType="yj.kanb.vblinegroupheader.dto.Vblinegroupheader">
-        insert into vb_line_group_h(groupId,bukrs,works,workshopId,templeteUrl,product,kunnr,groupName,groupType,created_by,creation_date)
-        values(#{groupId},#{bukrs},#{works},#{workshopId},#{templeteUrl},#{product},#{kunnr},#{groupName},#{groupType},#{createdBy},#{creationDate})
+        insert into vb_line_group_h(groupId,bukrs,werks,workshopId,templeteUrl,product,kunnr,groupName,groupType,created_by,creation_date)
+        values(#{groupId},#{bukrs},#{werks},#{workshopId},#{templeteUrl},#{product},#{kunnr},#{groupName},#{groupType},#{createdBy},#{creationDate})
     </insert>
     <select id="selectAllGroup" resultMap="BaseResultMap">
         select * from vb_line_group_h ;

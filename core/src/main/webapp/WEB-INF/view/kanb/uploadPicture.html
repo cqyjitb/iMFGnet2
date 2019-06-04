@@ -15,17 +15,51 @@
 	}
 </style>
 <script>
-	//定义一个viewModel
+	var isedit = 0;
 	var viewModel = kendo.observable({
-        model:{
-        	sourceKey : 1 //测试id
-        }
-    });
-	var viewModel2 = kendo.observable({
 		model:{
             bukrs:"1000",
 			werks:"1001"
 		},
+        saveFunction:function (e) {
+            var data = grid.selectedDataItems();
+            if(data.length > 0){
+                var tmparry = new Array();
+                for (var i = 0;i<data.length;i++) {
+                    var viewModel2 = kendo.observable({
+                        model: {
+                            bukrs: data[i].bukrs,
+                            werks: data[i].werks,
+                            matnr: data[i].matnr,
+                            fileidA: data[i].fileidA,
+                            fileidB: data[i].fileidB
+                        }
+                    });
+                    tmparry[i] = viewModel2.model.toJSON();
+                }
+                $.ajax({
+					type:"POST",
+					url:_basePath + "/sap/marc/res/submit",
+					dataType:"json",
+					contentType:"application/json",
+					data:JSON.stringify(tmparry),
+					success:function(data){
+					    if(data.success == false){
+					        kendo.ui.showErrorDialog({
+								message:data.message
+							})
+						}else{
+                            isedit = 0;
+                            $('#Grid').data('kendoGrid').dataSource.page(1);
+						}
+					}
+				})
+            }else{
+                kendo.ui.showInfoDialog({
+                    message: '请先选择一行数据'
+                })
+            }
+        },
         queryResource:function (e) {
             var bukrs = document.getElementById("bukrs").value;
             var werks = document.getElementById("werks").value;
@@ -38,6 +72,7 @@
                     message:'工厂不能为空'
                 })
             }else{
+                isedit = 0;
                 $('#Grid').data('kendoGrid').dataSource.page(1);
             }
         }
@@ -72,10 +107,11 @@
 								<div class="col-sm-8">
 									<input id="matnr" class="k-textbox" data-bind="value:model.matnr" style="width: 100%">
 									<script>
-                                        $("#matnr").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_PRODUCT")}, {
+                                        $("#matnr").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_MATNR2")}, {
                                             query: function (e) {
                                                 e.param['enabledFlag'] = 'Y';
-                                            }
+                                            },
+                                            dataTextField:'matnr'
                                         }));
 									</script>
 								</div>
@@ -86,18 +122,18 @@
 			</div>
 		</form>
 		<script>
-            kendo.bind($('#myForm'), viewModel2);
+            kendo.bind($('#myForm'), viewModel);
 		</script>
 	</div>
 	<div class="pull-left" id="toolbar-btn" style="padding-bottom:10px;">
 		<span class="btn btn-success k-grid-save-changes" data-bind="click:saveFunction" type="submit" style="float:left;margin-right:5px;">保存</span>
 	</div>
-	<script>kendo.bind($('#toolbar-btn'), viewModel2);</script>
+	<script>kendo.bind($('#toolbar-btn'), viewModel);</script>
 	<div class="pull-right" id="query-form" style="padding-bottom:10px;">
 		<span class="btn btn-primary" style="float:left;width:70px" data-bind="click:queryResource" type="submit"><@spring.message "hap.query"/></span>
 		<div style="clear:both"></div>
 	</div>
-	<script>kendo.bind($('#query-form'), viewModel2);</script>
+	<script>kendo.bind($('#query-form'), viewModel);</script>
 	<div style="clear:both">
 		<div id="Grid"></div>
 	</div>
@@ -105,7 +141,8 @@
 
 <script type="text/javascript">
     var BaseUrl = _basePath;
-    dataSource = new kendo.data.DataSource({
+    var fileIds = "",fileNames = "";
+    var dataSource = new kendo.data.DataSource({
         transport: {
             read: {
                 url: BaseUrl + "/sap/marc/queryByMarc",
@@ -123,7 +160,7 @@
         },
         batch: true,
         serverPaging: true,
-        pageSize: 10,
+        //pageSize: 10,
         schema: {
             data: 'rows',
             total: 'total',
@@ -134,8 +171,8 @@
                     matnr: {type: "string",editable:false},
                     maktx: {type: "string",editable:false},
                     bukrs: {type: "string",editable:false},
-                    fileIda: {type: "string"},
-                    fileIdb: {type:"string"}
+                    fileidA: {type: "long"},
+                    fileidB: {type:"long"}
                 }
             }
         }
@@ -150,7 +187,7 @@
         editable: true,
         selectable:'multiple,rowbox',
         pageable:{
-            pageSizes:[5,10,20,50,"all"],
+            pageSizes:["all"],
             refresh:true,
             buttonCount:5
         },
@@ -158,7 +195,7 @@
             {
                 field:"bukrs",
                 title:"公司",
-                width:120,
+                width:80,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -191,7 +228,7 @@
             {
                 field:"maktx",
                 title:"物料描述",
-                width:120,
+                width:240,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -200,9 +237,25 @@
                 }
             },
             {
-                field:"fileIda",
+                field:"fileidA",
                 title:"图片A面",
                 width:120,
+                editor: uploadPicture,
+                template:function (e) {
+                    if(isedit == 1){
+                        var fileidA = fileIds,fileidAName = fileNames;
+                        fileIds = "";
+                        fileNames = "";
+                        e.fileidA = fileidA;
+                        return fileidAName;
+					}else{
+                        if(e.fileidAName == null){
+                            return "";
+                        }else {
+                            return e.fileidAName;
+                        }
+					}
+                },
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -211,9 +264,25 @@
                 }
             },
             {
-                field:"fileIda",
+                field:"fileidB",
                 title:"图片B面",
                 width:120,
+                template:function (e) {
+                    if(isedit == 1){
+                        var fileidB = fileIds,fileidBName = fileNames;
+                        fileIds = "";
+                        fileNames = "";
+                        e.fileidB = fileidB;
+                        return fileidBName;
+                    }else {
+                        if(e.fileidBName == null){
+                            return "";
+						}else {
+                            return e.fileidBName;
+						}
+					}
+                },
+                editor: uploadPicture,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -225,108 +294,75 @@
     });
     var grid = $('#Grid').data("kendoGrid");
     Hap.autoResizeGrid("#Grid");
-</script>
-	<form id="attForm" style="border: none">
-		<input type="text" data-bind="value:model.sourceType" id="sourceType">
-		<input style="border:none" type="file" name="files" id="files"/>
-		<script>
-        	$("#sourceType").kendoLov(${lovProvider.getLov(base.contextPath, base.locale, "ATTACH_SOURCE_TYPE")})
-        	kendo.bind($('#sourceType'),viewModel);
-        </script>
-	</form>
-
-	<script type="text/javascript">
-
-		//数据源
-		var dataSource = new kendo.data.DataSource({
-            batch       : true,
-            serverPaging: true,
-            pageSize    : 20,
-            schema      : {
-                data  : 'rows',
-                total : 'total',
-                model : {
-                    id    : "fileId"
-                }
+	function uploadPicture(container,options) {
+        $('<input type="file" name="' + options.field + '" />').appendTo(container).kendoUpload({
+            multiple:false,
+            async: {
+                saveUrl: "${base.contextPath}/sys/attach/upload?${_csrf.parameterName}=${_csrf.token}",
+                removeUrl: "${base.contextPath}/sys/attach/remove"
+            },
+            upload: onUpload,
+            success: onSuccess,
+            remove: onRemove,
+            localization: {     //设置上传按钮名称
+                select: "上传图片"
             }
         });
-
-		//定义文件上传
-		$("#files").kendoUpload({
-	        async        : {
-	            saveUrl: "${base.contextPath}/sys/attach/upload?${_csrf.parameterName}=${_csrf.token}",
-	            removeUrl: "${base.contextPath}/sys/attach/remove"
-	        },
-	        showFileList : true,
-	        upload       : onUpload,
-	        success      : onSuccess,
-	        remove       : onRemove
-	    });
-
-		function onRemove(e){
-			var data = dataSource.data();
-			var files = e.files;
-			$.each(files,function(){
-				var fileName = this.name;
-				for(var i = 0;i < data.length; i ++){
-					if(data[i].fileName == fileName){
-						e.data = {
-							fileId : data[i].fileId,
-							token : data[i].token
-						}
-					}
-				} 
-			})		
-		}
-		var countNumber = 1;
-	    //回调函数
-	    function onSuccess(e) {
-	    	//状态为成功
-	    	if(e.response.success=== true){
-	    		//写数据源
-	    		dataSource.add({
-	    			token   : e.response.file._token,
-		        	fileId   : e.response.file.fileId,
-		        	fileName : e.response.file.fileName,
-		        	fileSize : e.response.file.fileSize,
-		        	fileType : e.response.file.fileType,
-		        	uploadDate : e.response.file.uploadDate
-		        });
-	    	}else if(e.response.message == "success"){
-	    		//删除成功
-	    		var data = dataSource.data();
-				var files = e.files;
-				$.each(files,function(){
-					var fileName = this.name;
-					for(var i = 0;i < data.length; i ++){
-						if(data[i].fileName == fileName){
-							e.data = {
-								fileId : data[i].fileId,
-								token : data[i].token
-							}
-							dataSource.remove(data[i]);
-						}
-					} 
-				})
-	    	}
-	        kendo.ui.showInfoDialog({
-                title    : '提示信息',
-                message  : e.response.message
-            })
-	    }
-
-	    //校验上传文件的格式是否正确
-	    function onUpload(e){
-	        e.data = {
-	    		sourceType : viewModel.model.sourceType,
-	    		sourceKey  : viewModel.model.sourceKey
-	    	}
-	    }
-
-	    $(".k-upload").css("margin-top","3px");
-	    $(".k-upload").css("border","none");
-	    $(".k-upload").css("background","none");
-
-	</script>
-
+    }
+    //数据源
+    var dataSource2 = new kendo.data.DataSource({
+        batch       : true,
+        serverPaging: true,
+        pageSize    : 20,
+        schema      : {
+            data  : 'rows',
+            total : 'total',
+            model : {
+                id    : "fileId"
+            }
+        }
+    });
+    //定义图片上传
+    function onRemove(e){
+        var data = dataSource2.data();
+        var files = e.files;
+        $.each(files,function(){
+            var fileName = this.name;
+            for(var i = 0;i < data.length; i ++){
+                if(data[i].fileName == fileName){
+                    e.data = {
+                        fileId : data[i].fileId,
+                        token : data[i].token
+                    }
+                }
+            }
+        })
+    }
+    var countNumber = 1;
+    //回调函数
+    function onSuccess(e) {
+        //状态为成功
+        if(e.response.success=== true){
+            //写数据源
+            dataSource2.add({
+                token   : e.response.file._token,
+                fileId   : e.response.file.fileId,
+                fileName : e.response.file.fileName,
+                fileSize : e.response.file.fileSize,
+                fileType : e.response.file.fileType,
+                uploadDate : e.response.file.uploadDate
+            });
+            fileIds = e.response.file.fileId;
+            fileNames = e.response.file.fileName;
+            isedit = 1;
+        }
+    }
+    //校验上传文件的格式是否正确
+    function onUpload(e){
+        e.data = {
+            sourceType : "PRO",
+            sourceKey  : "1"
+        }
+    }
+</script>
 </body>

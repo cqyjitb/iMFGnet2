@@ -55,7 +55,7 @@ public class EquipmentServiceImpl extends BaseServiceImpl<Equipment> implements 
                 String vbgroupId = UUID.randomUUID().toString();
                 vbgrouph.setVbgroupId(vbgroupId);
                 vbgrouph.setBukrs(equipment.getBukrs());
-                vbgrouph.setWorks(equipment.getWorks());
+                vbgrouph.setWerks(equipment.getWerks());
                 vbgrouph.setEqId(eqId);
                 vbgrouph.setMac(equipment.getMac());
                 vbgrouph.setVbgroupName(equipment.getVbgroupName());

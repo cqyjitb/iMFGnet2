@@ -34,7 +34,14 @@ import java.util.List;
     @ResponseBody
     public ResponseData update(HttpServletRequest request,@RequestBody List<MarcRes> dto){
         IRequest requestCtx = createRequestContext(request);
-        return new ResponseData(service.batchUpdate(requestCtx, dto));
+        ResponseData rs = new ResponseData();
+        String userId = request.getSession().getAttribute("userId") + "";
+        String result = service.submitMarcRes(requestCtx, dto,userId);
+        if (result != null){
+            rs.setSuccess(false);
+            rs.setMessage(result);
+        }
+        return rs;
     }
 
     @RequestMapping(value = "/sap/marc/res/remove")

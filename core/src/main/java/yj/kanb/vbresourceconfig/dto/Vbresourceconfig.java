@@ -13,7 +13,7 @@ public class Vbresourceconfig extends BaseDTO {
     @Id
     @GeneratedValue
     private String bukrs;
-    private String works;
+    private String werks;
     private String resId;
     private String resCode;
     private String resName;
@@ -27,12 +27,12 @@ public class Vbresourceconfig extends BaseDTO {
         this.bukrs = bukrs;
     }
 
-    public String getWorks() {
-        return works;
+    public String getWerks() {
+        return werks;
     }
 
-    public void setWorks(String works) {
-        this.works = works;
+    public void setWerks(String werks) {
+        this.werks = werks;
     }
 
     public String getResId() {

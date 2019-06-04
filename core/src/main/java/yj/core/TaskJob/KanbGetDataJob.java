@@ -208,7 +208,7 @@ public class KanbGetDataJob extends AbstractJob {
 
                         //3：去装箱数据
                         ServerSetting serverSetting = new ServerSetting();
-                        serverSetting = serverSettingService.selectByLineId(listvbgh.get(i).getWorks(),lineId.toString());
+                        serverSetting = serverSettingService.selectByLineId(listvbgh.get(i).getWerks(),lineId.toString());
                         WebServerHelp webServerHelp = new WebServerHelp();
                         OracleConn oracleConn = new OracleConn(webServerHelp.getMesOraUrl(),webServerHelp.getMesOraUserName(),webServerHelp.getMesOraPass(),webServerHelp.getMesOraDriver());
                         String sqlzx = "select a.main_id from "+serverSetting.getDbUsername()+".wip_pallet_sn_rel  a"
@@ -262,7 +262,7 @@ public class KanbGetDataJob extends AbstractJob {
                             end = ds6;
                         }
 
-                        List<InOutRecord> listio = inOutRecordService.selectforKanb(listvbgh.get(i).getWorks(),listcurlzk.get(j).getLineId(),listvbgh.get(i).getProduct(),start,end);
+                        List<InOutRecord> listio = inOutRecordService.selectforKanb(listvbgh.get(i).getWerks(),listcurlzk.get(j).getLineId(),listvbgh.get(i).getProduct(),start,end);
                         outnum = outnum + listio.size();
 
                         l_error = "";
@@ -276,7 +276,7 @@ public class KanbGetDataJob extends AbstractJob {
                     viewdata.setActqty(actnum);//实际产量
                     viewdata.setCycletime(takt_time);//平均节拍
                     viewdata.setGroupId(listvbgh.get(i).getGroupId());//产线组ID
-                    viewdata.setWorks(listvbgh.get(i).getWorks());
+                    viewdata.setWerks(listvbgh.get(i).getWerks());
                     viewdata.setBukrs(listvbgh.get(i).getBukrs());
                     viewdata.setProduct(listvbgh.get(i).getProduct());
                     viewdata.setWorkshopId(listvbgh.get(i).getWorkshopId());
@@ -309,7 +309,7 @@ public class KanbGetDataJob extends AbstractJob {
                     }
 
                     Viewdataschemaline viewdatatmp = viewdataschemalineService.selectforKanb(listvbgh.get(i).getGroupId(),
-                            listvbgh.get(i).getProduct(),listvbgh.get(i).getWorkshopId(),listvbgh.get(i).getBukrs(),listvbgh.get(i).getWorks());
+                            listvbgh.get(i).getProduct(),listvbgh.get(i).getWorkshopId(),listvbgh.get(i).getBukrs(),listvbgh.get(i).getWerks());
                     if (viewdatatmp != null){
                         viewdata.setLastUpdateDate(new Date());
                         viewdata.setLastUpdatedBy(10001L);

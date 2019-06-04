@@ -39,7 +39,7 @@
                         model: {
                             vbgroupId:selections[0].vbgroupId,
                             bukrs:data[i].bukrs,
-                            works:data[i].works,
+                            werks:data[i].werks,
                             groupId:data[i].groupId,
                             groupType:data[i].groupType
                         }
@@ -111,11 +111,11 @@
             data: 'rows',
             total: 'total',
             model: {
-                id: "works",
+                id: "werks",
                 parentId: "bukrs",
                 fields: {
                     bukrs: {type: "string",editable:false},
-                    works: {type: "string",editable:false},
+                    werks: {type: "string",editable:false},
                     groupId: {type: "string"},
                     groupName: {type: "string"},
                     workshopId: {type:"string"}
@@ -149,7 +149,7 @@
                 }
             },
             {
-                field:"works",
+                field:"werks",
                 title:"工厂",
                 width:80,
                 headerAttributes: {

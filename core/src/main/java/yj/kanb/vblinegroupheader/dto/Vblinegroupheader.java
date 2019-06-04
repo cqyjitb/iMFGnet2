@@ -15,7 +15,7 @@ public class Vblinegroupheader  extends BaseDTO {
     @GeneratedValue
     private String groupId;//产线组ID
     private String bukrs;//公司
-    private String works;//工厂
+    private String werks;//工厂
     private String workshopId;//车间ID
     private String product;//产品物料编码
     private String kunnr;//客户编码
@@ -58,12 +58,12 @@ public class Vblinegroupheader  extends BaseDTO {
         this.bukrs = bukrs;
     }
 
-    public String getWorks() {
-        return works;
+    public String getWerks() {
+        return werks;
     }
 
-    public void setWorks(String works) {
-        this.works = works;
+    public void setWerks(String werks) {
+        this.werks = werks;
     }
 
     public String getWorkshopId() {

@@ -65,7 +65,7 @@ public class VblinegroupheaderServiceImpl extends BaseServiceImpl<Vblinegrouphea
             for(int i=0;i<dto.size();i++){
                 if(dto.get(i).getBukrs() == null || "".equals(dto.get(i).getBukrs())){
                     return "公司不能为空！";
-                }else if(dto.get(i).getWorks() == null || "".equals(dto.get(i).getWorks())){
+                }else if(dto.get(i).getWerks() == null || "".equals(dto.get(i).getWerks())){
                     return "工厂不能为空！";
                 }else if(dto.get(i).getWorkshopId() == null || "".equals(dto.get(i).getWorkshopId())){
                     return "车间ID不能为空！";

@@ -4,14 +4,14 @@
 <mapper namespace="yj.kanb.vbgroupdtl.mapper.VbgroupdtlMapper">
     <resultMap id="BaseResultMap" type="yj.kanb.vbgroupdtl.dto.Vbgroupdtl">
         <result column="bukrs" property="bukrs" jdbcType="VARCHAR"/>
-        <result column="works" property="works" jdbcType="VARCHAR"/>
+        <result column="werks" property="werks" jdbcType="VARCHAR"/>
         <result column="vbgroupId" property="vbgroupId" jdbcType="VARCHAR"/>
         <result column="groupId" property="groupId" jdbcType="VARCHAR"/>
         <result column="groupType" property="groupType" jdbcType="VARCHAR"/>
     </resultMap>
 
     <insert id="insertGroupDtl" parameterType="yj.kanb.vbgroupdtl.dto.Vbgroupdtl">
-        insert into vb_group_dtl(groupId,bukrs,works,groupType,vbgroupId,created_by,creation_date)
-        values(#{groupId},#{bukrs},#{works},#{groupType},#{vbgroupId},#{createdBy},#{creationDate})
+        insert into vb_group_dtl(groupId,bukrs,werks,groupType,vbgroupId,created_by,creation_date)
+        values(#{groupId},#{bukrs},#{werks},#{groupType},#{vbgroupId},#{createdBy},#{creationDate})
     </insert>
 </mapper>

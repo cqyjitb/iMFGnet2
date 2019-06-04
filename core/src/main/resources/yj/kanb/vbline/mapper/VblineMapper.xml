@@ -4,7 +4,7 @@
 <mapper namespace="yj.kanb.vbline.mapper.VblineMapper">
 <resultMap id="BaseResultMap" type="yj.kanb.vbline.dto.Vbline">
     <result column="bukrs" property="bukrs" jdbcType="VARCHAR"/>
-    <result column="works" property="works" jdbcType="VARCHAR"/>
+    <result column="werks" property="werks" jdbcType="VARCHAR"/>
     <result column="lineId" property="lineId" jdbcType="DECIMAL"/>
     <result column="groupId" property="groupId" jdbcType="VARCHAR"/>
     <result column="product" property="product" jdbcType="VARCHAR"/>

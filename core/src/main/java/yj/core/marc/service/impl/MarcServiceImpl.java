@@ -7,6 +7,8 @@ import yj.core.marc.dto.Marc;
 import yj.core.marc.mapper.MarcMapper;
 import yj.core.marc.service.IMarcService;
 import org.springframework.transaction.annotation.Transactional;
+import yj.kanb.marcres.dto.MarcRes;
+import yj.kanb.marcres.mapper.MarcResMapper;
 
 import java.util.List;
 import java.util.Map;
@@ -48,13 +50,11 @@ public class MarcServiceImpl extends BaseServiceImpl<Marc> implements IMarcServi
 
     @Override
     public List<Marc> queryByMarc(String werks, String matnr) {
-        List<Marc> list = marcMapper.queryByMarc(werks,matnr);
-        if (list.size() > 0){
-            for (int i=0;i<list.size();i++){
-                Marc marc = list.get(i);
-                marc.setBukrs("1000");
-            }
-        }
-        return list;
+        return marcMapper.queryByMarc(werks,matnr);
+    }
+
+    @Override
+    public String queryByFileId(Long fileId) {
+        return marcMapper.queryByFileId(fileId);
     }
 }

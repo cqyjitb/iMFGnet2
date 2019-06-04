@@ -109,6 +109,42 @@ public class Marc extends BaseDTO {
       private Long lastUpdatedBy; //更新人
 
     private String bukrs;//公司
+    private Long fileidA;
+    private Long fileidB;
+    private String fileidAName;
+    private String fileidBName;
+
+    public Long getFileidA() {
+        return fileidA;
+    }
+
+    public void setFileidA(Long fileidA) {
+        this.fileidA = fileidA;
+    }
+
+    public Long getFileidB() {
+        return fileidB;
+    }
+
+    public void setFileidB(Long fileidB) {
+        this.fileidB = fileidB;
+    }
+
+    public String getFileidAName() {
+        return fileidAName;
+    }
+
+    public void setFileidAName(String fileidAName) {
+        this.fileidAName = fileidAName;
+    }
+
+    public String getFileidBName() {
+        return fileidBName;
+    }
+
+    public void setFileidBName(String fileidBName) {
+        this.fileidBName = fileidBName;
+    }
 
     public String getBukrs() {
         return bukrs;

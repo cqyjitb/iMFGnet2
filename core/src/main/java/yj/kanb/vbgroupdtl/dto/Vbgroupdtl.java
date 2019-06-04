@@ -15,7 +15,7 @@ public class Vbgroupdtl extends BaseDTO {
     @GeneratedValue
     private String vbgroupId;
     private String bukrs;
-    private String works;
+    private String werks;
 
     @NotEmpty
     private String groupId;
@@ -38,12 +38,12 @@ public class Vbgroupdtl extends BaseDTO {
         this.bukrs = bukrs;
     }
 
-    public String getWorks() {
-        return works;
+    public String getWerks() {
+        return werks;
     }
 
-    public void setWorks(String works) {
-        this.works = works;
+    public void setWerks(String werks) {
+        this.werks = werks;
     }
 
     public String getGroupId() {

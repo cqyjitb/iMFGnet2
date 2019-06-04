@@ -21,6 +21,8 @@ public class MarcRes extends BaseDTO {
 
       private Long fileidB; //B面图片ID
 
+    private String bukrs;//公司
+
       private String attr1;
 
       private String attr2;
@@ -35,8 +37,15 @@ public class MarcRes extends BaseDTO {
 
       private String attr7;
 
+    public String getBukrs() {
+        return bukrs;
+    }
 
-     public void setWerks(String werks){
+    public void setBukrs(String bukrs) {
+        this.bukrs = bukrs;
+    }
+
+    public void setWerks(String werks){
          this.werks = werks;
      }
 
