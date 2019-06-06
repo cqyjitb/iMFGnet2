@@ -32,4 +32,11 @@
         values(#{vbgroupId},#{bukrs},#{werks},#{eqId},#{mac},#{vbgroupName},#{switchfreg},#{status},#{createdBy},#{creationDate})
     </insert>
 
+    <delete id="deleteGroupH" parameterType="yj.kanb.vbgroupheader.dto.Vbgroupheader">
+        delete from vb_group_h
+        <where>
+            eqId = #{eqId}
+        </where>
+    </delete>
+
 </mapper>

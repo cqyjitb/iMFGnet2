@@ -36,6 +36,7 @@ public class EquipmentServiceImpl extends BaseServiceImpl<Equipment> implements 
         if(dto.size() > 0){
             for(int i=0;i<dto.size();i++){
                 equipmentMapper.deleteEquipment(dto.get(i));
+                vbgroupheaderMapper.deleteGroupH(dto.get(i).getEqId());
             }
         }
     }

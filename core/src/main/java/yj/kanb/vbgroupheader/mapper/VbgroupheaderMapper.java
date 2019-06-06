@@ -1,6 +1,7 @@
 package yj.kanb.vbgroupheader.mapper;
 
 import com.hand.hap.mybatis.common.Mapper;
+import org.apache.ibatis.annotations.Param;
 import yj.kanb.vbgroupheader.dto.Vbgroupheader;
 
 import java.util.List;
@@ -18,4 +19,10 @@ public interface VbgroupheaderMapper extends Mapper<Vbgroupheader> {
      * @return
      */
     List<Vbgroupheader> queryGroupH(Vbgroupheader dto);
+
+    /**
+     * 根据设备ID删除看板显示组 918100064
+     * @param eqId
+     */
+    void deleteGroupH(@Param("eqId")String eqId);
 }
