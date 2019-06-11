@@ -39,4 +39,10 @@
         </where>
     </delete>
 
+    <update id="updateVbGroupH" parameterType="yj.kanb.vbgroupheader.dto.Vbgroupheader">
+        update vb_group_h set vbgroupName = #{vbgroupName},last_updated_by = #{lastUpdatedBy},last_update_date = #{lastUpdateDate}
+        <where>
+            eqId = #{eqId}
+        </where>
+    </update>
 </mapper>

@@ -15,17 +15,17 @@
         select * from vb_equipment;
     </select>
     <select id="selectEquipment" parameterType="yj.kanb.equipment.dto.Equipment" resultMap="BaseResultMap">
-        select * from vb_equipment
+        select eq.*,gh.vbgroupName from vb_equipment eq left join vb_group_h gh on eq.eqId = gh.eqId
         <where>
             1 = 1
             <if test="bukrs != null">
-                AND bukrs = #{bukrs}
+                AND eq.bukrs = #{bukrs}
             </if>
             <if test="werks != null">
-                AND werks = #{werks}
+                AND eq.werks = #{werks}
             </if>
             <if test="workshopId != null">
-                AND workshopId = #{workshopId}
+                AND eq.workshopId = #{workshopId}
             </if>
         </where>
     </select>

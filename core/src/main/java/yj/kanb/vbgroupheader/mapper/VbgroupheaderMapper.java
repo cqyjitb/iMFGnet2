@@ -25,4 +25,9 @@ public interface VbgroupheaderMapper extends Mapper<Vbgroupheader> {
      * @param eqId
      */
     void deleteGroupH(@Param("eqId")String eqId);
+    /**
+     * 表vb_group_h数据修改 918100064
+     * @param dto
+     */
+    void updateVbGroupH(Vbgroupheader dto);
 }

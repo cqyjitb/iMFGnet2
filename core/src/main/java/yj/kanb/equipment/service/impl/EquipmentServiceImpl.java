@@ -77,6 +77,12 @@ public class EquipmentServiceImpl extends BaseServiceImpl<Equipment> implements 
             equipment.setLastUpdatedBy(Long.valueOf(userId));
             equipment.setLastUpdateDate(new Date());
             equipmentMapper.updateEquipment(equipment);
+            Vbgroupheader vbgrouph = new Vbgroupheader();
+            vbgrouph.setEqId(equipment.getEqId());
+            vbgrouph.setVbgroupName(equipment.getVbgroupName());
+            vbgrouph.setLastUpdatedBy(Long.valueOf(userId));
+            vbgrouph.setLastUpdateDate(new Date());
+            vbgroupheaderMapper.updateVbGroupH(vbgrouph);
         }
     }
 }
