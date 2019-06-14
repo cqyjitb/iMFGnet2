@@ -721,7 +721,8 @@ public class ZwipqController extends BaseController {
      */
     @RequestMapping(value = {"/zwipq/jjqj"}, method = {RequestMethod.GET})
     @ResponseBody
-    public ResponseData jjqj(HttpServletRequest request, String sfflg, String cursum, String line_id, String classgrp, String attr6, String qjcodeval, String lineiocfgval, String userId,String attr4) {
+    public ResponseData jjqj(HttpServletRequest request, String sfflg, String cursum, String line_id, String classgrp, String attr6, String qjcodeval, String lineiocfgval, String userId,String attr4,
+                             String qxdm,String zissuetxt) {
         ResponseData rs = new ResponseData();
         //1:获取当前产线机加流转卡号
         Curlzk curlzk = curlzkService.selectById(Long.valueOf(line_id), classgrp);
@@ -787,8 +788,8 @@ public class ZwipqController extends BaseController {
                 inOutRecord.setDiecd(xhcard.getZmnum());
                 inOutRecord.setSfflg(listall.get(i).getSfflg());
                 inOutRecord.setZotype(qjcodeval);
-                inOutRecord.setZqxdm("");
-                inOutRecord.setZissuetxt("");
+                inOutRecord.setZqxdm(qxdm);
+                inOutRecord.setZissuetxt(zissuetxt);
                 inOutRecord.setZbpjc("");
                 inOutRecord.setZjtgx("");
                 inOutRecord.setZoplo("");
@@ -797,6 +798,7 @@ public class ZwipqController extends BaseController {
                 inOutRecord.setCreatedBy(Long.valueOf(userId));
                 inOutRecord.setCreationDate(new Date());
                 inOutRecordList.add(inOutRecord);
+
             }
 
             iInOutRecordService.insertQjrecode(inOutRecordList);

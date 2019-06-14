@@ -16,6 +16,13 @@ public interface DftdtlMapper extends Mapper<Dftdtl>{
     List<Dftdtl> selectByQpcode(@Param("code") String code,@Param("matnr") String matnr);
 
     /**
+     * 根据一级质量原因代码 获取对应的二级原因代码 机加专用
+     * @param code
+     * @param matnr
+     * @return
+     */
+    List<Dftdtl> selectByQpcodeForJj(@Param("code") String code,@Param("matnr") String matnr);
+    /**
      *根据主键查询是否有这条数据 918100064
      * @param werks
      * @param tlevelcode

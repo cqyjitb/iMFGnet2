@@ -12,4 +12,6 @@ public interface IQpcdService extends IBaseService<Qpcd>, ProxySelf<IQpcdService
      * @return
      */
     public List<Qpcd> selectAllForBlcl();
+
+    public List<Qpcd> selectAllForJjqj();
 }

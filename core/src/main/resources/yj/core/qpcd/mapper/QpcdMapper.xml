@@ -32,4 +32,10 @@
                       CODE NOT LIKE 'J%'
                   </where>
     </select>
+
+    <select id="selectAllForJjqj" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select CODE,
+        KURZTEXT
+        from sap_qpcd
+    </select>
 </mapper>

@@ -19,4 +19,9 @@ public class QpcdServiceImpl extends BaseServiceImpl<Qpcd> implements IQpcdServi
     public List<Qpcd> selectAllForBlcl() {
         return qpcdMapper.selectAllForBlcl();
     }
+
+    @Override
+    public List<Qpcd> selectAllForJjqj() {
+        return qpcdMapper.selectAllForJjqj();
+    }
 }

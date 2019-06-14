@@ -97,4 +97,9 @@ public class DftdtlServiceImpl extends BaseServiceImpl<Dftdtl> implements IDftdt
     public List<Dftdtl> selectbyWerksAndMatnr(String werks, String matnr) {
         return dftdlMapper.selectbyWerksAndMatnr(werks,matnr);
     }
+
+    @Override
+    public List<Dftdtl> selectByQpcodeForJj(String code, String Matnr) {
+        return dftdlMapper.selectByQpcodeForJj(code,Matnr);
+    }
 }

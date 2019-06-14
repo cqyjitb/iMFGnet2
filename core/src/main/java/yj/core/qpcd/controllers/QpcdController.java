@@ -47,4 +47,11 @@ import java.util.List;
             List<Qpcd> list = service.selectAllForBlcl();
             return  new ResponseData(list);
         }
+
+        @RequestMapping(value = {"/sap/qpcd/selectAllForJjqj"}, method = {RequestMethod.GET})
+        @ResponseBody
+        public ResponseData selectAllForJjqj(HttpServletRequest request){
+            List<Qpcd> list = service.selectAllForJjqj();
+            return  new ResponseData(list);
+        }
     }

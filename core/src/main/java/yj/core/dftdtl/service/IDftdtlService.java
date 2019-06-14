@@ -19,4 +19,5 @@ public interface IDftdtlService extends IBaseService<Dftdtl>, ProxySelf<IDftdtlS
     String updateOrInsert(IRequest requestCtx,List<Dftdtl> dto,String userId);
     String deleteDftdtl(List<Dftdtl> dto);
     List<Dftdtl> selectbyWerksAndMatnr(String werks,String matnr);
+    List<Dftdtl> selectByQpcodeForJj(String code,String Matnr);
 }

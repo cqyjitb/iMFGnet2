@@ -10,4 +10,6 @@ public interface QpcdMapper extends Mapper<Qpcd>{
     Qpcd selectForLov(@Param("code") String code);
 
     public List<Qpcd> selectAllForBlcl();
+
+    public List<Qpcd> selectAllForJjqj();
 }

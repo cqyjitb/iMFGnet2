@@ -67,6 +67,30 @@ import java.util.List;
         }
 
         /**
+         * 根据已经质量原因代码，获取相应的二级原因代码
+         * @param request
+         * @param code
+         * @return
+         */
+        @RequestMapping(value = {"/sap/dftdtl/selectByQpcodeForJj"}, method = {RequestMethod.GET})
+        @ResponseBody
+        public ResponseData selectByQpcodeForJj(HttpServletRequest request,String code,String matnr){
+            ResponseData rs = new ResponseData();
+            List list = new ArrayList();
+            List<Dftdtl> dftdtlList = new ArrayList<>();
+            dftdtlList = service.selectByQpcodeForJj(code,matnr);
+            if (dftdtlList.size() > 0){
+                list.add(dftdtlList);
+                rs.setRows(list);
+                rs.setSuccess(true);
+            }else{
+                rs.setMessage("未获取到质量原因代码:" + code + " 对应的下层原因代码，请联系管理员！");
+                rs.setSuccess(false);
+            }
+            return rs;
+        }
+
+        /**
          * 处理质量缺陷明细代码维护查询页面请求 918100064
          * @param page
          * @param pageSize

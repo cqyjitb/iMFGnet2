@@ -117,6 +117,18 @@
 
     </select>
 
+    <select id="selectByQpcodeForJj" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select TLEVELCODE,
+        ZTEXT
+        FROM  sap_dftdtl
+        <where>
+            MATNR = #{matnr}
+            AND CODE = #{code}
+            AND MACHING_FLAG = '1'
+        </where>
+
+    </select>
+
     <select id="selectforQcaudit2" parameterType="java.lang.String" resultMap="BaseResultMap">
 
     </select>
