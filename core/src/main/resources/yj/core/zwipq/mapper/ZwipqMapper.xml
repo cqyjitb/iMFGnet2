@@ -502,6 +502,21 @@
         ORDER  BY Q_SENQ DESC ;
     </select>
 
+    <select id="selectByZpgdbar2" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from zwipq
+        <where>
+            LINE_ID = #{line_id}
+            and SFFLG = #{sfflg}
+            and ZZXKL = 0
+            AND ZQJKL = 0
+            AND ZOFFL = 0
+            AND STATUS = 0
+            and ZGJBAR is NULL
+            AND ZREMADE = 0
+            and ZPGDBAR2 = #{zpgdbar2}
+        </where>
+    </select>
+
     <update id="updateForQj" parameterType="yj.core.zwipq.dto.Zwipq">
         update zwipq set ZQJKL = #{zqjkl},
         LAST_UPDATED_BY = #{lastUpdatedBy},

@@ -210,4 +210,6 @@ public interface ZwipqMapper extends Mapper<Zwipq> {
      * @return
      */
     Integer selectByzsxnum2(@Param("pkgLineId")String pkgLineId,@Param("matnr")String matnr,@Param("charg") String charg);
+
+    List<Zwipq> selectByZpgdbar2(@Param("zpgdbar2") String zpgdbar2);
 }

@@ -310,4 +310,9 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
     public Integer selectByzsxnum2(String pkgLineId, String matnr,String charg) {
         return zwipqMapper.selectByzsxnum2(pkgLineId, matnr,charg);
     }
+
+    @Override
+    public List<Zwipq> selectByZpgdbar2(String zpgdbar2) {
+        return zwipqMapper.selectByZpgdbar2(zpgdbar2);
+    }
 }

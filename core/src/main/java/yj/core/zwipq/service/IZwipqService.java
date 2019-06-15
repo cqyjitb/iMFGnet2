@@ -116,4 +116,11 @@ public interface IZwipqService extends IBaseService<Zwipq>, ProxySelf<IZwipqServ
      * @return
      */
     Integer selectByzsxnum2(String pkgLineId,String matnr,String charg);
+
+    /**
+     *  根据压铸派工单查询在制队列记录
+     * @param zpgdbar2
+     * @return
+     */
+    List<Zwipq> selectByZpgdbar2(String zpgdbar2);
 }

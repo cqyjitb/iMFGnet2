@@ -49,6 +49,7 @@ import yj.core.wiptrasfer.dto.Trasfer;
 import yj.core.wiptrasfer.service.ITrasferService;
 import yj.core.xhcard.dto.Xhcard;
 import yj.core.xhcard.service.IXhcardService;
+import yj.core.zwipq.dto.Zwipq;
 import yj.core.zwipq.service.IZwipqService;
 
 @Controller
@@ -1600,11 +1601,21 @@ public class CardhController
                 rs.setCode("UNHOLD");
             }
         }
-        List list = new ArrayList();
-        list.add(cardh);
-        list.add(marc);
-        rs.setRows(list);
-        rs.setSuccess(true);
+        List<Zwipq> listzwipq = new ArrayList<>();
+        listzwipq = zwipqService.selectByZpgdbar2(cardh.getZpgdbar());
+        if (rs.getCode().equals("UNHOLD")){
+            if (listzwipq.size() > 0){
+                rs.setSuccess(false);
+                rs.setMessage("该流转卡已经上线，不允许进行冻结操作！");
+            }
+        }else{
+            List list = new ArrayList();
+            list.add(cardh);
+            list.add(marc);
+            rs.setRows(list);
+            rs.setSuccess(true);
+        }
+
         return rs;
     }
 
