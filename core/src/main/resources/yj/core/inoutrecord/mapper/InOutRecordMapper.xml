@@ -44,6 +44,7 @@
     <resultMap id="BaseResultMap2" type="yj.core.inoutrecord.dto.InOutRecord">
         <result column="LINE_ID" property="lineId" jdbcType="VARCHAR"/>
         <result column="MATNR" property="matnr" jdbcType="VARCHAR"/>
+        <result column="MATNR2" property="matnr2" jdbcType="VARCHAR"/>
         <result column="DIECD" property="diecd" jdbcType="VARCHAR"/>
         <result column="SFFLG" property="sfflg" jdbcType="VARCHAR"/>
         <result column="DESCRIPTIONS" property="descriptions" jdbcType="VARCHAR"/>
@@ -99,6 +100,63 @@
         <result column="ZTEXT" property="ztext" jdbcType="VARCHAR"/>
         <result column="OUTNAM" property="outnam" jdbcType="VARCHAR"/>
     </resultMap>
+
+    <select id="RmngaCount" parameterType="java.lang.String" resultMap="BaseResultMap3">
+        select re.* from wip_in_out_record re
+        LEFT JOIN wip_lines li ON re.line_id = li.line_id
+        <where>
+            re.reflag != 1
+            AND re.zqxdm LIKE 'M%'
+            <if test="lineId != null">
+                AND (re.line_id = #{lineId} OR li.pline_id = #{lineId})
+            </if>
+            <if test="matnr2 != null">
+                AND re.matnr2 = #{matnr2}
+            </if>
+            <if test="creationDateBefore != null">
+                AND re.creation_date >= #{creationDateBefore}
+            </if>
+            <if test="creationDateAfter != null">
+                AND #{creationDateAfter} > re.creation_date
+            </if>
+        </where>
+    </select>
+
+    <select id="XmngaCount" parameterType="java.lang.String" resultMap="BaseResultMap3">
+        select re.* from wip_in_out_record re
+        LEFT JOIN wip_lines li ON re.line_id = li.line_id
+        <where>
+            re.reflag != 1
+            AND re.zqxdm not LIKE 'M%'
+            AND re.zissuetxt != 'J099'
+            <if test="lineId != null">
+                AND (re.line_id = #{lineId} OR li.pline_id = #{lineId})
+            </if>
+            <if test="matnr2 != null">
+                AND re.matnr2 = #{matnr2}
+            </if>
+            <if test="creationDateBefore != null">
+                AND re.creation_date >= #{creationDateBefore}
+            </if>
+            <if test="creationDateAfter != null">
+                AND #{creationDateAfter} > re.creation_date
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByCreateDate" parameterType="java.lang.String" resultMap="BaseResultMap2">
+        select DISTINCT line_id,matnr2 as matnr2,(select maktx from sap_marc where matnr = matnr2) as maktx
+        from wip_in_out_record
+        <where>
+            1 = 1
+            <if test="creationDateBefore != null">
+                and creation_date >= #{creationDateBefore}
+            </if>
+            <if test="creationDateAfter != null">
+                and #{creationDateAfter} > creation_date
+            </if>
+        </where>
+    </select>
 
     <select id="selectDftdtl" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(*) from wip_in_out_record

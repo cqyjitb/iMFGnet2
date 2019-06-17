@@ -6,6 +6,7 @@ import yj.core.inoutrecord.dto.InOutRecord;
 import yj.core.wipqcparamlines.dto.itemPageData;
 import yj.core.zudlist.dto.Zudlist;
 
+import java.util.Date;
 import java.util.List;
 
 public interface InOutRecordMapper extends Mapper<InOutRecord>{
@@ -113,4 +114,31 @@ public interface InOutRecordMapper extends Mapper<InOutRecord>{
          *
          */
         List<InOutRecord> selectforKanb(@Param("werks") String werks,@Param("line_id") String line_id,@Param("matnr") String matnr,@Param("start") String start,@Param("end") String end);
+
+        /**
+         * 根据创建日期查询产线、物料汇总 918100064
+         * @param creationDateBefore
+         * @param creationDateAfter
+         * @return
+         */
+        List<InOutRecord> selectByCreateDate(@Param("creationDateBefore") String creationDateBefore,@Param("creationDateAfter") String creationDateAfter);
+        /**
+         * 根据产线、物料、创建日期查询工废数 918100064
+         * @param lineId
+         * @param matnr2
+         * @param creationDateBefore
+         * @param creationDateAfter
+         * @return
+         */
+        List<InOutRecord> XmngaCount(@Param("lineId")String lineId,@Param("matnr2")String matnr2,@Param("creationDateBefore") String creationDateBefore,@Param("creationDateAfter") String creationDateAfter);
+
+        /**
+         * 根据产线、物料、创建日期查询料废数 918100064
+         * @param lineId
+         * @param matnr2
+         * @param creationDateBefore
+         * @param creationDateAfter
+         * @return
+         */
+        List<InOutRecord> RmngaCount(@Param("lineId")String lineId,@Param("matnr2")String matnr2,@Param("creationDateBefore") String creationDateBefore,@Param("creationDateAfter") String creationDateAfter);
 }

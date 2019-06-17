@@ -24,6 +24,7 @@ import yj.core.zwipq.dto.Zwipq;
 import yj.core.zwipq.mapper.ZwipqMapper;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -180,5 +181,20 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
     @Override
     public List<InOutRecord> selectforKanb(String werks, String line_id, String matnr,String start,String end) {
         return inOutRecordMapper.selectforKanb(werks,line_id,matnr,start,end);
+    }
+
+    @Override
+    public List<InOutRecord> selectByCreateDate(String startDate, String endDate) {
+        return inOutRecordMapper.selectByCreateDate(startDate,endDate);
+    }
+
+    @Override
+    public List<InOutRecord> XmngaCount(String lineId, String matnr, String startDate, String endDate) {
+        return inOutRecordMapper.XmngaCount(lineId, matnr, startDate, endDate);
+    }
+
+    @Override
+    public List<InOutRecord> RmngaCount(String lineId, String matnr, String startDate, String endDate) {
+        return inOutRecordMapper.RmngaCount(lineId, matnr, startDate, endDate);
     }
 }
