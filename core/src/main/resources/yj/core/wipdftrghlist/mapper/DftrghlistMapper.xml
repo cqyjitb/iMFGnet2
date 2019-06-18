@@ -29,6 +29,8 @@
         <result column="RECORDID1" property="recordid1" jdbcType="VARCHAR" />
         <result column="RECORDID2" property="recordid2" jdbcType="VARCHAR" />
         <result column="AUFNR" property="aufnr" jdbcType="VARCHAR" />
+        <result column="ZPGDBARJJ" property="zpgdbarjj" jdbcType="VARCHAR" />
+        <result column="VORNRJJ" property="vornrjj" jdbcType="VARCHAR" />
         <result column="CANCEL_FLAG" property="cancelFlag" jdbcType="VARCHAR" />
         <result column="CANCEL_BY" property="cancelBy" jdbcType="DECIMAL" />
         <result column="CANCEL_DATE" property="cancelDate" jdbcType="DATE" />
@@ -119,9 +121,9 @@
 
     <insert id="insertDftrghlist" parameterType="yj.core.wipdftrghlist.dto.Dftrghlist">
         insert INTO wip_dftrghlist(RECORDID,ITEM,WERKS,MATNR,LINE_ID,ZBANC,SHIFT,GSTRP,ZMPBAR,ZPGDBAR,ZXHBAR,MATNR2,YCHARGE,YSHIFT,YZBANC,SFFLG,DIECD,YGSTRP,CODE,TLEVELCODE,
-        MENGE,DFECT_QTY,GMEIN,RECORDID1,RECORDID2,AUFNR,CANCEL_FLAG,CANCEL_BY,CANCEL_DATE,CREATION_DATE,CREATED_BY,LAST_UPDATED_BY,LAST_UPDATE_DATE)VALUES(
+        MENGE,DFECT_QTY,GMEIN,RECORDID1,RECORDID2,AUFNR,ZPGDBARJJ,VORNRJJ,CANCEL_FLAG,CANCEL_BY,CANCEL_DATE,CREATION_DATE,CREATED_BY,LAST_UPDATED_BY,LAST_UPDATE_DATE)VALUES(
         #{recordid},#{item},#{werks},#{matnr},#{lineId},#{zbanc},#{shift},#{gstrp},#{zmpbar},#{zpgdbar},#{zxhbar},#{matnr2},#{ycharge},#{yshift},#{yzbanc},#{sfflg},
-        #{diecd},#{ygstrp},#{code},#{tlevelcode},#{menge},#{dfectQty},#{gmein},#{recordid1},#{recordid2},#{aufnr},#{cancelFlag},#{cancelBy},#{cancelDate},#{creationDate},
+        #{diecd},#{ygstrp},#{code},#{tlevelcode},#{menge},#{dfectQty},#{gmein},#{recordid1},#{recordid2},#{aufnr},#{zpgdbarjj},#{vornrjj},#{cancelFlag},#{cancelBy},#{cancelDate},#{creationDate},
         #{createdBy},#{lastUpdatedBy},#{lastUpdateDate})
     </insert>
 
@@ -243,4 +245,43 @@
             and CANCEL_FLAG = '0'
         </where>
     </select>
+
+    <select id="selectForZudlist" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select a.*,
+               c.name1,
+               d.kunnr
+               from wip_dftrghlist a,wip_qjcode b,sap_cust c,wip_products_cfg d,wip_lines e
+        <where>
+            a.LINE_ID = e.LINE_ID
+            and ( a.LINE_ID = #{line_id} or e.PLINE_ID = #{pline_id} )
+            and ( a.LINE_ID = d.LINE_ID and a.MATNR = d.PMATNR )
+            AND c.KUNNR = d.KUNNR
+            and a.CANCEL_FLAG = '0'
+            <if test="classgrp != null">
+                and a.SHIFT = #{classgrp}
+            </if>
+
+            <if test="matnr != null">
+                and a.matnr = #{matnr}
+            </if>
+
+            <if test="creationDateBefore != null">
+                and a.creation_date >= #{creationDateBefore}
+            </if>
+            <if test="creationDateAfter != null">
+                and #{creationDateAfter} >= a.creation_date
+            </if>
+            ORDER BY a.LINE_ID ASC;
+        </where>
+    </select>
+
+    <update id="batchUpdateCancelflag" parameterType="yj.core.wipdftrghlist.dto.Dftrghlist">
+        UPDATE wip_dftrghlist set CANCEL_FLAG = #{cancelFlag},
+                                    LAST_UPDATED_BY = #{lastUpdatedBy},
+                                    LAST_UPDATE_DATE = #{lastUpdateDate}
+        <where>
+            RECORDID = #{recordid}
+            and ITEM = #{item}
+        </where>
+    </update>
 </mapper>

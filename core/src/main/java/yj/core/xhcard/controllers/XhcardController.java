@@ -25,6 +25,8 @@ import yj.core.cardh.service.ICardhService;
 import yj.core.dispatch.dto.InputLog;
 import yj.core.dispatch.service.IInputLogService;
 import yj.core.fevor.service.IFevorService;
+import yj.core.lineiocfg.dto.LineioCfg;
+import yj.core.lineiocfg.service.ILineioCfgService;
 import yj.core.marc.dto.Marc;
 import yj.core.marc.service.IMarcService;
 import yj.core.resb.dto.Resb;
@@ -72,6 +74,8 @@ public class XhcardController
     private IDftrghlistService dftrghlistService;
     @Autowired
     private IZwipqService zwipqService;
+    @Autowired
+    private ILineioCfgService lineioCfgService;
 
 
     @RequestMapping({"/sap/xhcard/query"})
@@ -894,9 +898,28 @@ public class XhcardController
         marc = marcService.selectByMatnr(xhcard.getMatnr());
         Cardh cardh = new Cardh();
         cardh = cardhService.selectByZxhbar(xhcard.getAufnr(), xhcard.getZxhnum());
+        Curlzk curlzk = new Curlzk();
+        curlzk = curlzkService.selectById2(Long.parseLong(line_id));
+        if (curlzk == null){
+            rs.setSuccess(false);
+            rs.setMessage("未能获取到当前产线机加流转卡信息！");
+            return rs;
+        }
+        List<LineioCfg> lineioCfgs = lineioCfgService.selectinoutcfg(line_id,marc.getWerks());
+        LineioCfg lineioCfg = null;
+        if (lineioCfgs != null){
+            lineioCfg = lineioCfgs.get(0);
+        }else{
+            rs.setSuccess(false);
+            rs.setMessage("未能获取到当前产线取还件工序配置数据！");
+            return rs;
+        }
+
         list.add(xhcard);
         list.add(marc);
         list.add(cardh);
+        list.add(curlzk);
+        list.add(lineioCfg);
         rs.setSuccess(true);
         rs.setRows(list);
         return rs;

@@ -90,7 +90,13 @@ public class Dftrghlist extends BaseDTO {
 
       private Date cancelDate; //撤销日期
 
+      private String zpgdbarjj;//机加流转卡
+
+      private String vornrjj;//机加首工序
+
     @Transient
+     private String name1;
+
      private Long createdBy;
 
      private Date creationDate;
@@ -580,5 +586,29 @@ public class Dftrghlist extends BaseDTO {
 
     public void setUserNameQC(String userNameQC) {
         this.userNameQC = userNameQC;
+    }
+
+    public String getZpgdbarjj() {
+        return zpgdbarjj;
+    }
+
+    public void setZpgdbarjj(String zpgdbarjj) {
+        this.zpgdbarjj = zpgdbarjj;
+    }
+
+    public String getVornrjj() {
+        return vornrjj;
+    }
+
+    public void setVornrjj(String vornrjj) {
+        this.vornrjj = vornrjj;
+    }
+
+    public String getName1() {
+        return name1;
+    }
+
+    public void setName1(String name1) {
+        this.name1 = name1;
     }
 }

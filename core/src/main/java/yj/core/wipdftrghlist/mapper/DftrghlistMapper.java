@@ -111,5 +111,8 @@ public interface DftrghlistMapper extends Mapper<Dftrghlist>{
      */
     Integer selectByZxhbar2(@Param("zxhbar")String zxhbar);
 
+    List<Dftrghlist> selectForZudlist(@Param("pline_id") String Pline_id, @Param("line_id") String line_id, @Param("classgrp") String classgrp,@Param("matnr") String matnr,
+                                      @Param("creationDateBefore") String creationDateBefore,@Param("creationDateAfter") String creationDateAfter);
 
+    int batchUpdateCancelflag(Dftrghlist dftrghlist);
 }

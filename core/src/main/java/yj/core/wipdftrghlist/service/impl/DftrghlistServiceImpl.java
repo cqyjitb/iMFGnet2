@@ -70,4 +70,13 @@ public class DftrghlistServiceImpl extends BaseServiceImpl<Dftrghlist> implement
     public List<Dftrghlist> selectSum(String zxhbar) {
         return dftrghlistMapper.selectSum(zxhbar);
     }
+
+    @Override
+    public int batchUpdateCancelflag(List<Dftrghlist> list) {
+        int sum = 0;
+        for (int i = 0;i<list.size();i++){
+            sum = sum + dftrghlistMapper.batchUpdateCancelflag(list.get(i));
+        }
+        return sum;
+    }
 }

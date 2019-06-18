@@ -104,4 +104,11 @@ public interface IDftrghlistService extends IBaseService<Dftrghlist>, ProxySelf<
      * @return
      */
     List<Dftrghlist> selectSum(String zxhbar );
+
+    /**
+     *  批量更新线边库 记录 cancle_flag 状态
+     * @param list
+     * @return
+     */
+    int batchUpdateCancelflag(List<Dftrghlist> list);
 }

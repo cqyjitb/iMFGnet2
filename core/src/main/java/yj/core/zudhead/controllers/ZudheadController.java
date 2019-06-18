@@ -15,6 +15,7 @@ import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.service.ICardhService;
 import yj.core.cardt.dto.Cardt;
 import yj.core.cardt.service.ICardtService;
+import yj.core.dftdtl.service.IDftdtlService;
 import yj.core.dispatch.dto.InputLog;
 import yj.core.dispatch.dto.Log;
 import yj.core.dispatch.dto.Result;
@@ -28,6 +29,8 @@ import yj.core.webservice_newbg.dto.DTBAOGONGParameters;
 import yj.core.webservice_newbg.dto.DTBAOGONGParametersitem;
 import yj.core.webservice_newbg.dto.DTBAOGONGReturnResult;
 import yj.core.webservice_queryXhcard.receiver.DTQUERYXHCARDRes;
+import yj.core.wipdftrghlist.dto.Dftrghlist;
+import yj.core.wipdftrghlist.service.IDftrghlistService;
 import yj.core.wiplines.dto.Lines;
 import yj.core.wiplines.service.ILinesService;
 import yj.core.xhcard.dto.Xhcard;
@@ -72,6 +75,8 @@ public class ZudheadController extends BaseController {
     private IZudlogService zudlogService;
     @Autowired
     private ILinesService linesService;
+    @Autowired
+    private IDftrghlistService dftrghlistService;
 
 
     @RequestMapping(value = "/wip/zudhead/query")
@@ -135,6 +140,7 @@ public class ZudheadController extends BaseController {
             zudhead.setCreationDate(new Date());
             List<ParamAndQjjlh> listparamQjjlh = new ArrayList<>();
             List<InOutRecord> listinout = new ArrayList<>();
+            List<Dftrghlist> listdf = new ArrayList<>();
             String l_error = "";
             //准备审理单行数据 和 报工数据
             for (int i = 0; i < a.size(); i++) {
@@ -186,18 +192,33 @@ public class ZudheadController extends BaseController {
                 }
 
                 listitem.add(zudlist);
-
-                InOutRecord inOutRecord = new InOutRecord();
-                inOutRecord = iInOutRecordService.selectById(zudlist.getZqjjlh());
-                if  (inOutRecord.getReflag() != 0){
-                    responseData.setMessage("选择的取件记录中存在状态已经变更的行，请重新查询后创建不合格品审理单！");
-                    l_error = "E";
-                    break;
+                if (zudlist.getZqjjlh().substring(0,3).equals("1001")){
+                    Dftrghlist dftrghlist = new Dftrghlist();
+                    String[] strs = zudlist.getZqjjlh().split("-");
+                    dftrghlist = dftrghlistService.selectByIdAndItem(strs[1],Long.parseLong(strs[2]));
+                    if (!dftrghlist.getCancelFlag().equals(0)){
+                        responseData.setMessage("选择的取件记录中存在状态已经变更的行，请重新查询后创建不合格品审理单！");
+                        l_error = "E";
+                        break;
+                    }
+                    dftrghlist.setCancelFlag("2");
+                    dftrghlist.setLastUpdatedBy(Long.valueOf(createdBy));
+                    dftrghlist.setLastUpdateDate(new Date());
+                    listdf.add(dftrghlist);
+                }else{
+                    InOutRecord inOutRecord = new InOutRecord();
+                    inOutRecord = iInOutRecordService.selectById(zudlist.getZqjjlh());
+                    if  (inOutRecord.getReflag() != 0){
+                        responseData.setMessage("选择的取件记录中存在状态已经变更的行，请重新查询后创建不合格品审理单！");
+                        l_error = "E";
+                        break;
+                    }
+                    inOutRecord.setReflag(2L);
+                    inOutRecord.setLastUpdatedBy(Long.valueOf(createdBy));
+                    inOutRecord.setLastUpdateDate(new Date());
+                    listinout.add(inOutRecord);
                 }
-                inOutRecord.setReflag(2L);
-                inOutRecord.setLastUpdatedBy(Long.valueOf(createdBy));
-                inOutRecord.setLastUpdateDate(new Date());
-                listinout.add(inOutRecord);
+
             }
 
             if (l_error.equals("E")){
@@ -214,6 +235,9 @@ public class ZudheadController extends BaseController {
                             responseData.setMessage("创建不合格品审理单1行失败！");
                         }else{
                             iInOutRecordService.batchUpdateReflag(listinout);
+
+                            dftrghlistService.batchUpdateCancelflag(listdf);
+
                             responseData.setCode("S");
                             responseData.setSuccess(true);
                             responseData.setMessage("创建不合格品审理单1成功！单号：" + zudhead.getZudnum());
@@ -272,11 +296,24 @@ public class ZudheadController extends BaseController {
                 zudlist.setLastUpdatedBy(Long.valueOf(createdBy));
                 zudlistService.updateItem(zudlist);
 
-                InOutRecord inOutRecord = iInOutRecordService.selectById(zudlist.getZqjjlh());
-                inOutRecord.setLastUpdateDate(new Date());
-                inOutRecord.setLastUpdatedBy(Long.valueOf(createdBy));
-                inOutRecord.setReflag(0L);
-                iInOutRecordService.updateReflag(inOutRecord);
+                if (zudlist.getZqjjlh().substring(0,3).equals("1001")){
+                    Dftrghlist dftrghlist = new Dftrghlist();
+                    String[] strs = zudlist.getZqjjlh().split("-");
+                    dftrghlist = dftrghlistService.selectByIdAndItem(strs[1],Long.parseLong(strs[2]));
+                    dftrghlist.setCancelFlag("0");
+                    dftrghlist.setLastUpdatedBy(Long.valueOf(createdBy));
+                    dftrghlist.setLastUpdateDate(new Date());
+                    List<Dftrghlist> listdf = new ArrayList<>();
+                    listdf.add(dftrghlist);
+                    dftrghlistService.batchUpdateCancelflag(listdf);
+                }else{
+                    InOutRecord inOutRecord = iInOutRecordService.selectById(zudlist.getZqjjlh());
+                    inOutRecord.setLastUpdateDate(new Date());
+                    inOutRecord.setLastUpdatedBy(Long.valueOf(createdBy));
+                    inOutRecord.setReflag(0L);
+                    iInOutRecordService.updateReflag(inOutRecord);
+                }
+
 
                 Zudlog zudlog = new Zudlog();
                 UUID uuid = java.util.UUID.randomUUID();

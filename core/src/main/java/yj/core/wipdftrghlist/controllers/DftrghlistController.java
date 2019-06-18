@@ -105,6 +105,8 @@ public class DftrghlistController extends BaseController {
         String recordid = "";
         String userId = request.getParameter("userId");
         String type = request.getParameter("otype");//操作类型
+        String zpgdbarjj = request.getParameter("zpgdbarjj");
+        String vornrjj = request.getParameter("vornrjj");
         int sum = 0;
         //获取箱号信息
         Xhcard xhcard = xhcardService.selectByBacode(zxhbar);
@@ -221,6 +223,8 @@ public class DftrghlistController extends BaseController {
             dftrghlist.setCancelFlag("0");
             dftrghlist.setItem(1L);
             dftrghlist.setRecordid(recordid);
+            dftrghlist.setZpgdbarjj(zpgdbarjj);
+            dftrghlist.setVornrjj(vornrjj);
             sum = service.insertDftrghlist(dftrghlist);
         } else {
             //1 获取最大行号
@@ -252,6 +256,8 @@ public class DftrghlistController extends BaseController {
             dftrghlist.setCancelFlag("0");
             dftrghlist.setItem(item);
             dftrghlist.setRecordid(recordid);
+            dftrghlist.setZpgdbarjj(zpgdbarjj);
+            dftrghlist.setVornrjj(vornrjj);
             sum = service.insertDftrghlist(dftrghlist);
         }
 

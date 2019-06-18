@@ -101,6 +101,7 @@ public class InOutRecordController extends BaseController {
         String matnr2 = request.getParameter("matnr2");
         String creationDateBefore = request.getParameter("creationDateBefore");
         String creationDateAfter = request.getParameter("creationDateAfter");
+        String isInclude = request.getParameter("isInclude");
         /*if(creationDateAfter != null){
             creationDateAfter = creationDateAfter.replace("00:00:00","23:59:59");
         }*/
