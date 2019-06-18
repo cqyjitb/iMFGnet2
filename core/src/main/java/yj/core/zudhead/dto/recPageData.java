@@ -35,7 +35,16 @@ public class recPageData {
     private String zqjjlh;
     private String zxhbar;
     private String matnr;
+    private String zctype;
 
+
+    public String getZctype() {
+        return zctype;
+    }
+
+    public void setZctype(String zctype) {
+        this.zctype = zctype;
+    }
 
     public String getPlineId() {
         return plineId;

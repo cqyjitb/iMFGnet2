@@ -90,6 +90,8 @@ public class Zudlist extends BaseDTO {
 
     private String status;
 
+    private String zctype;
+
     private String lineId;
     @Transient
     private String udtype; //不合格审理单类型
@@ -130,6 +132,14 @@ public class Zudlist extends BaseDTO {
 
     private String matnr3;
     private String zqxdm2;
+
+    public String getZctype() {
+        return zctype;
+    }
+
+    public void setZctype(String zctype) {
+        this.zctype = zctype;
+    }
 
     public String getZqxdm2() {
         return zqxdm2;

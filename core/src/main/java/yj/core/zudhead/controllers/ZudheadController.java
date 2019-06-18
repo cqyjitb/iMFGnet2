@@ -173,6 +173,7 @@ public class ZudheadController extends BaseController {
                 zudlist.setZbanz(a.get(i).getZbanz());
                 zudlist.setRspart(a.get(i).getRspart());
                 zudlist.setRsname(a.get(i).getRsname());
+                zudlist.setZctype(a.get(i).getZctype());
                 zudlist.setStatus("0");
                 zudlist.setReviewc("");
                 zudlist.setMark(a.get(i).getMark());
@@ -192,7 +193,7 @@ public class ZudheadController extends BaseController {
                 }
 
                 listitem.add(zudlist);
-                if (zudlist.getZqjjlh().substring(0,3).equals("1001")){
+                if (zudlist.getZctype().equals("1")){
                     Dftrghlist dftrghlist = new Dftrghlist();
                     String[] strs = zudlist.getZqjjlh().split("-");
                     dftrghlist = dftrghlistService.selectByIdAndItem(strs[1],Long.parseLong(strs[2]));
@@ -296,7 +297,7 @@ public class ZudheadController extends BaseController {
                 zudlist.setLastUpdatedBy(Long.valueOf(createdBy));
                 zudlistService.updateItem(zudlist);
 
-                if (zudlist.getZqjjlh().substring(0,3).equals("1001")){
+                if (zudlist.getZctype().equals("1")){
                     Dftrghlist dftrghlist = new Dftrghlist();
                     String[] strs = zudlist.getZqjjlh().split("-");
                     dftrghlist = dftrghlistService.selectByIdAndItem(strs[1],Long.parseLong(strs[2]));

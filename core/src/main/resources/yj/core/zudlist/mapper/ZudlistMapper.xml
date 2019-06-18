@@ -34,6 +34,7 @@
         <result column="MARK" property="mark" jdbcType="VARCHAR" />
         <result column="RUECK" property="rueck" jdbcType="VARCHAR" />
         <result column="RMZHL" property="rmzhl" jdbcType="VARCHAR" />
+        <result column="ZCTYPE" property="zctype" jdbcType="VARCHAR" />
         <result column="STATUS" property="status" jdbcType="VARCHAR" />
         <result column="RMZHL" property="rmzhl" jdbcType="VARCHAR" />
         <result column="CREATION_DATE" property="creationDate"/>
@@ -73,6 +74,7 @@
         <result column="MARK" property="mark" jdbcType="VARCHAR" />
         <result column="RUECK" property="rueck" jdbcType="VARCHAR" />
         <result column="RMZHL" property="rmzhl" jdbcType="VARCHAR" />
+        <result column="ZCTYPE" property="zctype" jdbcType="VARCHAR" />
         <result column="STATUS" property="status" jdbcType="VARCHAR" />
         <result column="CREATION_DATE" property="creationDate" jdbcType="DATE"/>
         <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL"/>
@@ -140,9 +142,9 @@
 
     <insert id="insertItem" parameterType="yj.core.zudlist.dto.Zudlist">
         insert INTO  wip_zudlist(ZUDNUM,ITEM,LINE_ID,ARBPR,ZQJJLH,ZPGDBAR,VORNR,ZXHBAR,ZPGDBAR2,MATNR,MATNR2,ZGJBAR,ZDNUM,GMEIN,CHARG2,CHARG,DIECD,SFFLG,ZQXDM,
-        ZISSUETXT,ZBPJC,ZOPLO,ZBANZ,ZBANC,RSPART,RSNAME,REVIEWC,GSTRP,MARK,RUECK,RMZHL,STATUS,CREATION_DATE,CREATED_BY)VALUES (#{zudnum},#{item},#{lineId},#{arbpr},#{zqjjlh},#{zpgdbar},#{vornr},#{zxhbar},#{zpgdbar2},#{matnr},
+        ZISSUETXT,ZBPJC,ZOPLO,ZBANZ,ZBANC,RSPART,RSNAME,REVIEWC,GSTRP,MARK,RUECK,RMZHL,ZCTYPE,STATUS,CREATION_DATE,CREATED_BY)VALUES (#{zudnum},#{item},#{lineId},#{arbpr},#{zqjjlh},#{zpgdbar},#{vornr},#{zxhbar},#{zpgdbar2},#{matnr},
         #{matnr2},#{zgjbar},#{zdnum},#{gmein},#{charg2},#{charg},#{diecd},
-        #{sfflg},#{zqxdm},#{zissuetxt},#{zbpjc},#{zoplo},#{zbanz},#{zbanc},#{rspart},#{rsname},#{reviewc},#{gstrp},#{mark},#{rueck},#{rmzhl},#{status},#{creationDate},#{createdBy})
+        #{sfflg},#{zqxdm},#{zissuetxt},#{zbpjc},#{zoplo},#{zbanz},#{zbanc},#{rspart},#{rsname},#{reviewc},#{gstrp},#{mark},#{rueck},#{rmzhl},#{zctype},#{status},#{creationDate},#{createdBy})
     </insert>
 
     <update id="updateItem" parameterType="yj.core.zudlist.dto.Zudlist">

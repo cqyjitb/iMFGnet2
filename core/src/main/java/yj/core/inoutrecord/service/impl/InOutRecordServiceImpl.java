@@ -81,6 +81,7 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
         if (list.size() > 0){
             for (int i = 0;i<list.size();i++){
                 Zudlist zudlist = new Zudlist();
+                zudlist.setZctype("0");
                 zudlist.setKunnr(list.get(i).getKunnr());
                 zudlist.setName1(list.get(i).getName1());
                 zudlist.setLineId(list.get(i).getLineId());
@@ -140,6 +141,7 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
         if (list2.size() > 0){
             for (int i =0;i<list2.size();i++){
                 Zudlist zudlist = new Zudlist();
+                zudlist.setZctype("1");
                 zudlist.setKunnr(list2.get(i).getKunnr());
                 zudlist.setName1(list2.get(i).getName1());
                 zudlist.setLineId(list2.get(i).getLineId());
