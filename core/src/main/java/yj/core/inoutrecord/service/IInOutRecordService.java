@@ -64,4 +64,10 @@ public interface IInOutRecordService extends IBaseService<InOutRecord>, ProxySel
                                         String zqxdm,String zissuetxt,String zbanz);
 
     List<InOutRecord> selectforKanb(String werks,String line_id,String matnr,String start,String end);
+
+    /**
+     *  根据取件机加流转卡 查询取件记录
+     */
+
+    List<InOutRecord> selectByZpgdbar(String zpgdbar);
 }

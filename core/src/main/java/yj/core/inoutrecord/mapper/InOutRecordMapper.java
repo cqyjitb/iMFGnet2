@@ -113,4 +113,6 @@ public interface InOutRecordMapper extends Mapper<InOutRecord>{
          *
          */
         List<InOutRecord> selectforKanb(@Param("werks") String werks,@Param("line_id") String line_id,@Param("matnr") String matnr,@Param("start") String start,@Param("end") String end);
+
+        List<InOutRecord> selectByZpgdbar(@Param("zpgdbar") String zpgdbar);
 }

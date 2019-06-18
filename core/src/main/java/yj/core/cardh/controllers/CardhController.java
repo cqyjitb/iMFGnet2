@@ -35,6 +35,8 @@ import yj.core.cardt.service.ICardtService;
 import yj.core.cardt.service.impl.CardtServiceImpl;
 import yj.core.dispatch.dto.InputLog;
 import yj.core.dispatch.service.IInputLogService;
+import yj.core.inoutrecord.dto.InOutRecord;
+import yj.core.inoutrecord.service.IInOutRecordService;
 import yj.core.marc.dto.Marc;
 import yj.core.marc.service.IMarcService;
 import yj.core.resb.dto.Resb;
@@ -85,6 +87,8 @@ public class CardhController
     private DataSourceTransactionManager transactionManager;
     @Autowired
     private ICurlzkService curlzkService;
+    @Autowired
+    private IInOutRecordService inOutRecordService;
 
 
     @RequestMapping({"/sap/cardh/query"})
@@ -668,6 +672,7 @@ public class CardhController
         String l_error = "";
         if (dto.size() > 0) {
             for (int i = 0; i < dto.size(); i++) {
+
                 List<Curlzk> listcur = new ArrayList<>();
                 listcur = curlzkService.selectByZpgdbar(dto.get(i).getZpgdbar());
                 if (listcur.size() > 0){
@@ -702,6 +707,16 @@ public class CardhController
                         l_error = "X";
                         break;
                     }
+                }
+
+                List<InOutRecord> listinout = new ArrayList<>();
+                listinout = inOutRecordService.selectByZpgdbar(dto.get(i).getZpgdbar());
+                if (listinout.size() > 0){
+                    result.setSuccess(false);
+                    result.setCode("E");
+                    result.setMessage("流转卡:"+dto.get(i).getZpgdbar()+"存在取件记录，不允许删除！");
+                    l_error = "X";
+                    break;
                 }
 
                 cardhst.setZpgdbar(dto.get(i).getZpgdbar());

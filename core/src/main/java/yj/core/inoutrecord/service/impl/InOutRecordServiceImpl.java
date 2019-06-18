@@ -242,4 +242,9 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
     public List<InOutRecord> selectforKanb(String werks, String line_id, String matnr,String start,String end) {
         return inOutRecordMapper.selectforKanb(werks,line_id,matnr,start,end);
     }
+
+    @Override
+    public List<InOutRecord> selectByZpgdbar(String zpgdbar) {
+        return inOutRecordMapper.selectByZpgdbar(zpgdbar);
+    }
 }
