@@ -9,6 +9,8 @@ import org.springframework.transaction.annotation.Transactional;
 import yj.core.appidconf.dto.Appidconf;
 import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.mapper.CardhMapper;
+import yj.core.cardhlock.dto.Cardhlock;
+import yj.core.cardhlock.mapper.CardhlockMapper;
 import yj.core.cardt.dto.Cardt;
 import yj.core.dispatch.dto.InputLog;
 import yj.core.dispatch.dto.Log;
@@ -59,6 +61,8 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
 
     @Autowired
     private OutsrgissueMapper outsrgissueMapper;
+    @Autowired
+    private CardhlockMapper cardhlockMapper;
 
     DateFormat df = new SimpleDateFormat("yyyyMMdd");
 
@@ -376,6 +380,27 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
             }
         }
 
+        if (cardh != null){
+
+            Cardhlock lock = cardhlockMapper.selectByZpgdbar(cardh.getZpgdbar());
+            if (lock != null){
+                returnResult.setMESSAGE("系统正在处理当前流转卡其他报工信息，请稍后提交！");
+                returnResult.setMSGTY("E");
+                return returnResult;
+            }else{
+                lock.setZpgdbar(cardh.getZpgdbar());
+                lock.setVornr(cardt.getVornr());
+                lock.setCreatedBy(inputLog.getCreatedBy());
+                lock.setCreationDate(new Date());
+                int num = cardhlockMapper.insertCardhlock(lock);
+                if (num != 1){
+                    returnResult.setMESSAGE("流转卡："+cardh.getZpgdbar()+"加锁失败，请联系管理员！");
+                    returnResult.setMSGTY("E");
+                    return returnResult;
+                }
+            }
+        }
+
         return returnResult;
     }
 
@@ -492,46 +517,54 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         /*//test furong.tang
         DTPP001ReturnResult returnResult = new DTPP001ReturnResult();*/
 
-        DTBAOGONGReturnResult returnResult = webserviceUtilNew.receiveConfirmation(param, list);
-        Date indate = new Date();
-        if (returnResult.getMSGTY().equals("S")) {//报工成功
-            //获取报工流转卡的信息，然后更新 班标，和模号
-            Cardh cardh = new Cardh();
-            cardh = cardhMapper.selectByBarcode(inputLog.getDispatch());
-            cardh.setShift(inputLog.getClassgrp());
-            cardh.setDiecd(inputLog.getModelNo());
-            cardh.setSfflg(inputLog.getAttr7());
-            cardh.setCharg2(returnResult.getCHARG());//反写批次
-            cardhMapper.updateCardhShiftAndSfflg(cardh);
-        }
-        Log log = new Log();
-        Result result = new Result();
-        inputLog.setMaterial(returnResult.getMATNR());
-        inputLog.setMatDesc(returnResult.getMAKTX());
-        inputLog.setBguuid(uuidstr);
-        inputLogMapper.insertInputLog(inputLog);
-        Long id = inputLogMapper.selectNextId();
-        result.setPlant(inputLog.getPlant());
-        result.setInputId(id);
-        result.setIsReversed("0");
-        result.setMaterial(inputLog.getMaterial());
-        result.setMatDesc(inputLog.getMatDesc());
-        result.setCreated_by(inputLog.getCreated_by());
-        result.setConfirmationNo(returnResult.getRSNUM());
-        result.setConfirmationPos(returnResult.getRSPOS());
-        result.setFevor(returnResult.getFEVOR());
-        result.setFevorTxt(returnResult.getTXT());
-        result.setOperationDesc(returnResult.getLTXA1());
-        log.setMsgty(returnResult.getMSGTY());
-        log.setMsgtx(returnResult.getMESSAGE());
-        log.setTranType("0");
-        log.setRefId(id);
-        log.setCreated_by(inputLog.getCreated_by());
-        log.setCreationDate(indate);
-        log.setLastUpdateDate(new Date());
-        resultMapper.insertResult(result);
-        logMapper.insertLog(log);
-        return returnResult;
+        // 写入流转卡锁
+        Cardhlock lock = new Cardhlock();
+        lock.setZpgdbar(inputLog.getDispatch());
+        lock.setAttr1(uuidstr);
+        lock.setCreatedBy(inputLog.getCreatedBy());
+        lock.setCreationDate(new Date());
+
+            DTBAOGONGReturnResult returnResult = webserviceUtilNew.receiveConfirmation(param, list);
+            Date indate = new Date();
+            if (returnResult.getMSGTY().equals("S")) {//报工成功
+                //获取报工流转卡的信息，然后更新 班标，和模号
+                Cardh cardh = new Cardh();
+                cardh = cardhMapper.selectByBarcode(inputLog.getDispatch());
+                cardh.setShift(inputLog.getClassgrp());
+                cardh.setDiecd(inputLog.getModelNo());
+                cardh.setSfflg(inputLog.getAttr7());
+                cardh.setCharg2(returnResult.getCHARG());//反写批次
+                cardhMapper.updateCardhShiftAndSfflg(cardh);
+            }
+            Log log = new Log();
+            Result result = new Result();
+            inputLog.setMaterial(returnResult.getMATNR());
+            inputLog.setMatDesc(returnResult.getMAKTX());
+            inputLog.setBguuid(uuidstr);
+            inputLogMapper.insertInputLog(inputLog);
+            Long id = inputLogMapper.selectNextId();
+            result.setPlant(inputLog.getPlant());
+            result.setInputId(id);
+            result.setIsReversed("0");
+            result.setMaterial(inputLog.getMaterial());
+            result.setMatDesc(inputLog.getMatDesc());
+            result.setCreated_by(inputLog.getCreated_by());
+            result.setConfirmationNo(returnResult.getRSNUM());
+            result.setConfirmationPos(returnResult.getRSPOS());
+            result.setFevor(returnResult.getFEVOR());
+            result.setFevorTxt(returnResult.getTXT());
+            result.setOperationDesc(returnResult.getLTXA1());
+            log.setMsgty(returnResult.getMSGTY());
+            log.setMsgtx(returnResult.getMESSAGE());
+            log.setTranType("0");
+            log.setRefId(id);
+            log.setCreated_by(inputLog.getCreated_by());
+            log.setCreationDate(indate);
+            log.setLastUpdateDate(new Date());
+            resultMapper.insertResult(result);
+            logMapper.insertLog(log);
+            cardhlockMapper.deleteCardhlock(inputLog.getDispatch());
+            return returnResult;
 
     }
 

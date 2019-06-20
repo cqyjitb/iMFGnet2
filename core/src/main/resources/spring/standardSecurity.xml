@@ -11,8 +11,6 @@
 
     <http access-decision-manager-ref="accessDecisionManager">
         <csrf request-matcher-ref="csrfSecurityRequestMatcher" />
-        <!--<csrf disabled="true"/>-->
-
         <intercept-url pattern="/kanb/kanbtest.html" access="permitAll"/>
         <intercept-url pattern="/yjlogin.html" access="permitAll"/>
         <intercept-url pattern="/yjloginpd.html" access="permitAll"/>
@@ -34,6 +32,7 @@
         <intercept-url pattern="/confirmation/input/log/writeOff" access="permitAll"/>
         <intercept-url pattern="/confirmation/input/log/insertInputLog" access="permitAll"/>
         <intercept-url pattern="/confirmation/input/log/insertInputLogN" access="permitAll"/>
+        <intercept-url pattern="/confirmation/input/log/test" access="permitAll"/>
         <intercept-url pattern="/confirmation/input/log/insertInputLogNWX" access="permitAll"/>
         <intercept-url pattern="/confirmation/input/log/inputFindHistory" access="permitAll"/>
         <intercept-url pattern="/confirmation/input/log/queryResultpd" access="permitAll"/>

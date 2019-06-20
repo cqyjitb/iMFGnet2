@@ -542,6 +542,8 @@ public class InputLogController extends BaseController {
             cardt.setConfirmed("X");
             cardtService.updateCardtConfirmed(cardt);
 
+            //
+
         } else {
             rs.setSuccess(false);
             rs.setMessage(returnResult.getMESSAGE());
@@ -552,11 +554,19 @@ public class InputLogController extends BaseController {
         rs.setSuccess(true);
         return rs;
     }
-
+    @RequestMapping(value = "/confirmation/input/log/test")
+    @ResponseBody
+    public ResponseData inputTest(HttpServletRequest request){
+        ResponseData rs = new ResponseData();
+        rs.setMessage("111");
+        rs.setSuccess(true);
+        return rs;
+    }
 
     @RequestMapping(value = {"/confirmation/input/log/insertInputLogN"}, method = {RequestMethod.GET})
     @ResponseBody
     public ResponseData inputDispatchN(HttpServletRequest request) {
+        System.out.println(request.getMethod()+"********************************");
         InputLog inputLog = new InputLog();
         System.out.println(request.getParameter("a"));
 
