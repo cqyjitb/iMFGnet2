@@ -31,6 +31,60 @@ public class PassRate extends BaseDTO{
     private Integer rmnga;//料废数
 
     private String gmein;//单位
+    private String dateStart;
+    private String dateEnd;
+    private String rate;//合格率
+    private String jjRate;//机加合格率
+    private String mpRate;//毛坯合格率
+    private Integer tmnga;//投料数
+
+    public Integer getTmnga() {
+        return tmnga;
+    }
+
+    public void setTmnga(Integer tmnga) {
+        this.tmnga = tmnga;
+    }
+
+    public String getRate() {
+        return rate;
+    }
+
+    public void setRate(String rate) {
+        this.rate = rate;
+    }
+
+    public String getJjRate() {
+        return jjRate;
+    }
+
+    public void setJjRate(String jjRate) {
+        this.jjRate = jjRate;
+    }
+
+    public String getMpRate() {
+        return mpRate;
+    }
+
+    public void setMpRate(String mpRate) {
+        this.mpRate = mpRate;
+    }
+
+    public String getDateStart() {
+        return dateStart;
+    }
+
+    public void setDateStart(String dateStart) {
+        this.dateStart = dateStart;
+    }
+
+    public String getDateEnd() {
+        return dateEnd;
+    }
+
+    public void setDateEnd(String dateEnd) {
+        this.dateEnd = dateEnd;
+    }
 
     public String getWerks() {
         return werks;

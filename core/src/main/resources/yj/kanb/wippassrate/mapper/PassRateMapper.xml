@@ -15,6 +15,58 @@
         <result column="GMEIN" property="gmein" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <select id="queryByMouth" parameterType="yj.kanb.wippassrate.dto.PassRate" resultMap="BaseResultMap">
+        select COALESCE(sum(GMNGA),0) as GMNGA,COALESCE(sum(xmnga),0) as xmnga,COALESCE(sum(rmnga),0) as rmnga
+        from wip_pass_rate
+        <where>
+            1 = 1
+            <if test="werks != ''">
+                AND werks = #{werks}
+            </if>
+            <if test="deptId != ''">
+                AND dept_id = #{deptId}
+            </if>
+            <if test="lineId != ''">
+                AND line_id = #{lineId}
+            </if>
+            <if test="matnr != ''">
+                AND matnr = #{matnr}
+            </if>
+            <if test="dateStart != ''">
+                AND erdat >= #{dateStart}
+            </if>
+            <if test="dateEnd != ''">
+                AND #{dateEnd} >= erdat
+            </if>
+        </where>
+    </select>
+
+    <select id="queryPassRate" parameterType="yj.kanb.wippassrate.dto.PassRate" resultMap="BaseResultMap">
+        select * from wip_pass_rate
+        <where>
+            1 = 1
+            <if test="werks != ''">
+                AND werks = #{werks}
+            </if>
+            <if test="deptId != ''">
+                AND dept_id = #{deptId}
+            </if>
+            <if test="lineId != ''">
+                AND line_id = #{lineId}
+            </if>
+            <if test="matnr != ''">
+                AND matnr = #{matnr}
+            </if>
+            <if test="dateStart != ''">
+                AND erdat >= #{dateStart}
+            </if>
+            <if test="dateEnd != ''">
+                AND #{dateEnd} >= erdat
+            </if>
+        </where>
+        ORDER by erdat asc
+    </select>
+
     <insert id="insertPassRate" parameterType="yj.kanb.wippassrate.dto.PassRate">
         insert into wip_pass_rate(werks,dept_id,line_id,matnr,maktx,erdat,gmnga,xmnga,rmnga,gmein,created_by,creation_date)
         values(#{werks},#{deptId},#{lineId},#{matnr},#{maktx},#{erdat},#{gmnga},#{xmnga},#{rmnga},#{gmein},#{createdBy},#{creationDate})

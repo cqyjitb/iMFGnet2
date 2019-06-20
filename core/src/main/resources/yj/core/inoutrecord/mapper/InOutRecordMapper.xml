@@ -145,15 +145,17 @@
     </select>
 
     <select id="selectByCreateDate" parameterType="java.lang.String" resultMap="BaseResultMap2">
-        select DISTINCT line_id,matnr2 as matnr2,(select maktx from sap_marc where matnr = matnr2) as maktx
-        from wip_in_out_record
+        select DISTINCT re.line_id,re.matnr2 as matnr2,(select maktx from sap_marc where matnr = matnr2) as maktx,
+        li.werks,li.dept_id
+        from wip_in_out_record re,wip_lines li
         <where>
-            1 = 1
+            re.line_id = li.line_id
+            AND li.pline_id is null
             <if test="creationDateBefore != null">
-                and creation_date >= #{creationDateBefore}
+                and re.creation_date >= #{creationDateBefore}
             </if>
             <if test="creationDateAfter != null">
-                and #{creationDateAfter} > creation_date
+                and #{creationDateAfter} > re.creation_date
             </if>
         </where>
     </select>

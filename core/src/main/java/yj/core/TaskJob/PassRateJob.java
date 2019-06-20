@@ -14,10 +14,7 @@ import yj.core.inoutrecord.service.IInOutRecordService;
 import yj.core.seversetting.dto.ServerSetting;
 import yj.core.seversetting.service.IServerSettingService;
 import yj.core.util.WebServerHelp;
-import yj.core.wiplines.dto.Lines;
-import yj.core.wiplines.service.ILinesService;
 import yj.kanb.wippassrate.dto.PassRate;
-import yj.kanb.wippassrate.mapper.PassRateMapper;
 import yj.kanb.wippassrate.service.IPassRateService;
 
 import java.text.SimpleDateFormat;
@@ -25,8 +22,6 @@ import java.util.*;
 
 public class PassRateJob extends AbstractJob {
     private static Logger log = LoggerFactory.getLogger(KanbGetDataJob.class);
-    @Autowired
-    private ILinesService linesService;
     @Autowired
     private IInOutRecordService inOutRecordService;
     @Autowired
@@ -57,28 +52,14 @@ public class PassRateJob extends AbstractJob {
         if (list1.size() > 0){
             List<PassRate> list = new ArrayList<PassRate>();
             for (int i=0;i<list1.size();i++){
-                Lines lines = linesService.selectById(Long.valueOf(list1.get(i).getLineId()));
                 PassRate passRate = new PassRate();
-                int j = 0;
-                for(j=0;j<list.size();j++){
-                    if((list.get(j).getLineId().equals(String.valueOf(lines.getPlineId()))) || (list.get(j).getLineId().equals(String.valueOf(lines.getLineId())))){
-                        break;
-                    }
-                }
-                if(j == list.size()){
-                    if(lines.getPlineId() == null){
-
-                    }else{
-                        lines = linesService.selectById(lines.getPlineId());
-                    }
-                    passRate.setWerks(lines.getWerks());
-                    passRate.setDeptId(lines.getDeptId());
-                    passRate.setLineId(String.valueOf(lines.getLineId()));
-                    passRate.setErdat(new Date());
-                    passRate.setMatnr(list1.get(i).getMatnr2());
-                    passRate.setMaktx(list1.get(i).getMaktx());
-                    list.add(passRate);
-                }
+                passRate.setWerks(list1.get(i).getWerks());
+                passRate.setDeptId(list1.get(i).getDeptId());
+                passRate.setLineId(String.valueOf(list1.get(i).getLineId()));
+                passRate.setErdat(new Date());
+                passRate.setMatnr(list1.get(i).getMatnr2());
+                passRate.setMaktx(list1.get(i).getMaktx());
+                list.add(passRate);
             }
             if (list.size() > 0){
                 for (int i=0;i<list.size();i++){
