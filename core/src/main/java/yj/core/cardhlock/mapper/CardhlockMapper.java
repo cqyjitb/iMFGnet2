@@ -11,7 +11,7 @@ public interface CardhlockMapper extends Mapper<Cardhlock>{
      * @param zpgdbar
      * @return
      */
-    Cardhlock selectByZpgdbar(@Param("zpgdbar") String zpgdbar);
+    Cardhlock selectByZpgdbar(@Param("zpgdbar") String zpgdbar,@Param("vornr") String vornr);
 
     /**
      *  新增流转卡锁记录
@@ -25,6 +25,6 @@ public interface CardhlockMapper extends Mapper<Cardhlock>{
      * @param zpgdbar
      * @return
      */
-    int deleteCardhlock(@Param("zpgdbar") String zpgdbar);
+    int deleteCardhlock(@Param("zpgdbar") String zpgdbar,@Param("vornr") String vornr);
 
 }

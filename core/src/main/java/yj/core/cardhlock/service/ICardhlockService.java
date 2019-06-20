@@ -11,7 +11,7 @@ public interface ICardhlockService extends IBaseService<Cardhlock>, ProxySelf<IC
      * @param zpgdbar
      * @return
      */
-    Cardhlock selectByZpgdbar(String zpgdbar);
+    Cardhlock selectByZpgdbar(String zpgdbar,String vornr);
 
     /**
      *  新增流转卡锁记录
@@ -25,6 +25,6 @@ public interface ICardhlockService extends IBaseService<Cardhlock>, ProxySelf<IC
      * @param zpgdbar
      * @return
      */
-    int deleteCardhlock(String zpgdbar);
+    int deleteCardhlock(String zpgdbar,String vornr);
 
 }

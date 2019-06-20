@@ -382,7 +382,7 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
 
         if (cardh != null){
 
-            Cardhlock lock = cardhlockMapper.selectByZpgdbar(cardh.getZpgdbar());
+            Cardhlock lock = cardhlockMapper.selectByZpgdbar(cardh.getZpgdbar(),cardt.getVornr());
             if (lock != null){
                 returnResult.setMESSAGE("系统正在处理当前流转卡其他报工信息，请稍后提交！");
                 returnResult.setMSGTY("E");
@@ -563,7 +563,7 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
             log.setLastUpdateDate(new Date());
             resultMapper.insertResult(result);
             logMapper.insertLog(log);
-            cardhlockMapper.deleteCardhlock(inputLog.getDispatch());
+            cardhlockMapper.deleteCardhlock(inputLog.getDispatch(),inputLog.getOperation());
             return returnResult;
 
     }

@@ -15,8 +15,8 @@ public class CardhlockServiceImpl extends BaseServiceImpl<Cardhlock> implements 
     private CardhlockMapper cardhlockMapper;
 
     @Override
-    public Cardhlock selectByZpgdbar(String zpgdbar) {
-        return cardhlockMapper.selectByZpgdbar(zpgdbar);
+    public Cardhlock selectByZpgdbar(String zpgdbar,String vornr) {
+        return cardhlockMapper.selectByZpgdbar(zpgdbar,vornr);
     }
 
     @Override
@@ -25,7 +25,7 @@ public class CardhlockServiceImpl extends BaseServiceImpl<Cardhlock> implements 
     }
 
     @Override
-    public int deleteCardhlock(String zpgdbar) {
-        return cardhlockMapper.deleteCardhlock(zpgdbar);
+    public int deleteCardhlock(String zpgdbar,String vornr) {
+        return cardhlockMapper.deleteCardhlock(zpgdbar,vornr);
     }
 }
