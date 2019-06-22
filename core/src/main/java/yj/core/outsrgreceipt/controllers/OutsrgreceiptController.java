@@ -90,384 +90,384 @@ public class OutsrgreceiptController extends BaseController {
         return new ResponseData();
     }
 
-    @RequestMapping(value = {"/wip/outsrgreceipt/syncwxsh"}, method = {RequestMethod.GET})
-    @ResponseBody
-    public ResponseData processWxsh(HttpServletRequest request) {
-        ResponseData rs = new ResponseData();
-        String barcode = request.getParameter("a");
-        String lifnr = request.getParameter("b");
-        String lfsum = request.getParameter("c");
-        String gfsum = request.getParameter("d");
-        String hgsum = request.getParameter("e");
-        String yssum = request.getParameter("f");
-        String thsum = request.getParameter("g");
-        String hjsum = request.getParameter("h");
-        String createdBy = request.getParameter("i");
-        String mblnr = request.getParameter("j");
-        String mjahr = request.getParameter("k");
-        String rsnum = request.getParameter("l");
-        String rspos = request.getParameter("m");
-        String vornr = request.getParameter("n");
-        String userName = request.getParameter("o");
-        String zeile = request.getParameter("p");
-
-        if (lfsum.equals("")){
-            lfsum = "0";
-        }
-
-        if (gfsum.equals("")){
-            gfsum = "0";
-        }
-
-        if (hgsum.equals("")){
-            hgsum = "0";
-        }
-
-        if (yssum.equals("")){
-            yssum = "0";
-        }
-
-        if (thsum.equals("")){
-            thsum = "0";
-        }
-
-        if (hjsum.equals("")){
-            hjsum = "0";
-        }
-
-        if (!thsum.equals("0")){
-            zeile = "";
-        }
-        Cardh cardh = new Cardh();
-        cardh = cardhService.selectByBarcode(barcode);
-
-        Outsrgissue outsrgissue = new Outsrgissue();
-        List<Outsrgissue> list2 = outsrgissueService.selectBybarcodes(barcode,null);
-        if (list2.size() > 0){
-            for (int i = 0;i<list2.size();i++){
-                if (list2.get(i).getStatus().equals("0")){
-                    outsrgissue = list2.get(i);
-                }
-            }
-        }
-
-
-        Outsrgrfe outsrgrfe = new Outsrgrfe();
-        outsrgrfe = outsrgrfeService.selectByCondition(cardh.getWerks(),cardh.getAufnr(),vornr,cardh.getMatnr(),lifnr,null,null);
-
-        Marc marc = new Marc();
-        marc = marcService.selectByMatnr(cardh.getMatnr());
-        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        String curdate = df.format(new Date()).substring(0,10).replaceAll("-","");
-        String curtim  = df.format(new Date()).substring(11,19).replaceAll(":","");
-        String curdate1 = df.format(new Date()).substring(0,10);
-        String curtim1 = df.format(new Date()).substring(11,19);
-        String l_update = "";
-        //准备表头数据
-
-        Outsrgreceipthead outsrgreceipthead = new Outsrgreceipthead();
-        List<Outsrgreceipthead> list = new ArrayList<>();
-        list = outsrgreceiptheadService.selectByMatnrAndLifnrDesc(cardh.getMatnr(),lifnr,"0");
-        if (list.size() == 0){
-            //产生新的单号 F+ 年 + 月 + 6位流水
-            //String
-            String no = outsrgreceiptheadService.getMaxNo();
-            if (no == null){
-                no = "S" + curdate.substring(2,6) + "000001";
-            }else{
-                String s1 = no.substring(1,5);
-                String s2 = curdate.substring(2,6);
-                if (!no.substring(1,5).equals(curdate.substring(2,6))){
-                    no = "S" + curdate.substring(2,6) + "000001";
-                }else{
-                    String mxnum = no.substring(5,11);
-                    int num = Integer.valueOf(mxnum) + 1;
-                    mxnum = String.format("%06d",num);
-                    no = "S" + curdate.substring(2,6) + mxnum;
-
-                }
-            }
-            outsrgreceipthead.setReceiptnm(no);
-            outsrgreceipthead.setZdpuser(createdBy);
-            outsrgreceipthead.setZdptim(curtim1);
-            outsrgreceipthead.setCreationDate(new Date());
-            outsrgreceipthead.setZipuser("");
-            outsrgreceipthead.setCreatedBy(Long.valueOf(createdBy));
-            outsrgreceipthead.setWerks(cardh.getWerks());
-            outsrgreceipthead.setStatus("0");
-            outsrgreceipthead.setPrtflag("0");
-            outsrgreceipthead.setMatnr(cardh.getMatnr());
-            outsrgreceipthead.setLifnr(lifnr);
-            outsrgreceipthead.setZdpdat(curdate1);
-            outsrgreceipthead.setZipdat("");
-            outsrgreceipthead.setZiptim("");
-
-        }else{
-            if (list.get(0).getStatus().equals("0")){
-                //使用以前的单号
-
-            }else{
-                List<Outsrgreceipthead> listouthead = new ArrayList<>();
-                listouthead = outsrgreceiptheadService.selectAllDesc();
-                outsrgreceipthead = listouthead.get(0);
-                if (!outsrgreceipthead.getReceiptnm().substring(1,5).equals(curdate.substring(2,6))){
-                    String no = "S" + curdate.substring(2,6) + "000001";
-                    outsrgreceipthead.setReceiptnm(no);
-                }else{
-                    String mxnum = outsrgreceipthead.getReceiptnm().substring(5,11);
-                    int num = Integer.valueOf(mxnum) + 1;
-                    mxnum = String.format("%06d",num);
-                    outsrgreceipthead.setReceiptnm("S" + curdate.substring(2,6) + mxnum);
-                    outsrgreceipthead.setZdpuser(userName);
-                    outsrgreceipthead.setZdptim(curtim1);
-                    outsrgreceipthead.setCreationDate(new Date());
-                    outsrgreceipthead.setZipuser("");
-                    outsrgreceipthead.setCreatedBy(Long.valueOf(createdBy));
-                    outsrgreceipthead.setWerks(cardh.getWerks());
-                    outsrgreceipthead.setStatus("0");
-                    outsrgreceipthead.setPrtflag("0");
-                    outsrgreceipthead.setMatnr(cardh.getMatnr());
-                    outsrgreceipthead.setLifnr(lifnr);
-                    outsrgreceipthead.setZdpdat(curdate1);
-                    outsrgreceipthead.setZipdat("");
-                    outsrgreceipthead.setZiptim("");
-                }
-            }
-        }
-
-        //准备行数据
-//        Outsrgreceipt outsrgreceipt = new Outsrgreceipt();
-//        outsrgreceipt = service.selectByZpgdbarAndStatus(barcode,"1");
-//        if (outsrgreceipt != null) {
-//            //使用以前的行项目
-//            l_update = "X";
-//            outsrgreceipt.setStatus("0");
-//            outsrgreceipt.setLastUpdatedBy(Long.valueOf(createdBy));
-//            outsrgreceipt.setLastUpdateDate(new Date());
-//            outsrgreceipt.setZthnum(Double.parseDouble(thsum));
-//            outsrgreceipt.setZshnum(Double.parseDouble(hgsum));
-//            outsrgreceipt.setZpgdbar(barcode);
-//            outsrgreceipt.setZlost(Double.parseDouble(yssum));
-//            outsrgreceipt.setZlfnum(Double.parseDouble(lfsum));
-//            outsrgreceipt.setZgfnum(Double.parseDouble(gfsum));
-//            outsrgreceipt.setZdsuser(userName);
-//            outsrgreceipt.setMjahr(mjahr);
-//            outsrgreceipt.setMblnr(mblnr);
-//            outsrgreceipt.setZeile(zeile);
-//            outsrgreceipt.setZthnum(Double.parseDouble(thsum));
-//            outsrgreceipt.setZdsdat(curdate1.replaceAll(":",""));
-//            outsrgreceipt.setZdstim(curtim1.replaceAll(":",""));
-//            outsrgreceipt.setZeile("");
-//            outsrgreceipt.setRueck(rsnum);
-//            outsrgreceipt.setRmzhl(rspos);
-//            outsrgreceipt.setTtreceipts(Double.parseDouble(hjsum));
+//    @RequestMapping(value = {"/wip/outsrgreceipt/syncwxsh"}, method = {RequestMethod.GET})
+//    @ResponseBody
+//    public ResponseData processWxsh(HttpServletRequest request) {
+//        ResponseData rs = new ResponseData();
+//        String barcode = request.getParameter("a");
+//        String lifnr = request.getParameter("b");
+//        String lfsum = request.getParameter("c");
+//        String gfsum = request.getParameter("d");
+//        String hgsum = request.getParameter("e");
+//        String yssum = request.getParameter("f");
+//        String thsum = request.getParameter("g");
+//        String hjsum = request.getParameter("h");
+//        String createdBy = request.getParameter("i");
+//        String mblnr = request.getParameter("j");
+//        String mjahr = request.getParameter("k");
+//        String rsnum = request.getParameter("l");
+//        String rspos = request.getParameter("m");
+//        String vornr = request.getParameter("n");
+//        String userName = request.getParameter("o");
+//        String zeile = request.getParameter("p");
+//
+//        if (lfsum.equals("")){
+//            lfsum = "0";
+//        }
+//
+//        if (gfsum.equals("")){
+//            gfsum = "0";
+//        }
+//
+//        if (hgsum.equals("")){
+//            hgsum = "0";
+//        }
+//
+//        if (yssum.equals("")){
+//            yssum = "0";
+//        }
+//
+//        if (thsum.equals("")){
+//            thsum = "0";
+//        }
+//
+//        if (hjsum.equals("")){
+//            hjsum = "0";
+//        }
+//
+//        if (!thsum.equals("0")){
+//            zeile = "";
+//        }
+//        Cardh cardh = new Cardh();
+//        cardh = cardhService.selectByBarcode(barcode);
+//
+//        Outsrgissue outsrgissue = new Outsrgissue();
+//        List<Outsrgissue> list2 = outsrgissueService.selectBybarcodes(barcode,null);
+//        if (list2.size() > 0){
+//            for (int i = 0;i<list2.size();i++){
+//                if (list2.get(i).getStatus().equals("0")){
+//                    outsrgissue = list2.get(i);
+//                }
+//            }
+//        }
+//
+//
+//        Outsrgrfe outsrgrfe = new Outsrgrfe();
+//        outsrgrfe = outsrgrfeService.selectByCondition(cardh.getWerks(),cardh.getAufnr(),vornr,cardh.getMatnr(),lifnr,null,null);
+//
+//        Marc marc = new Marc();
+//        marc = marcService.selectByMatnr(cardh.getMatnr());
+//        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        String curdate = df.format(new Date()).substring(0,10).replaceAll("-","");
+//        String curtim  = df.format(new Date()).substring(11,19).replaceAll(":","");
+//        String curdate1 = df.format(new Date()).substring(0,10);
+//        String curtim1 = df.format(new Date()).substring(11,19);
+//        String l_update = "";
+//        //准备表头数据
+//
+//        Outsrgreceipthead outsrgreceipthead = new Outsrgreceipthead();
+//        List<Outsrgreceipthead> list = new ArrayList<>();
+//        list = outsrgreceiptheadService.selectByMatnrAndLifnrDesc(cardh.getMatnr(),lifnr,"0");
+//        if (list.size() == 0){
+//            //产生新的单号 F+ 年 + 月 + 6位流水
+//            //String
+//            String no = outsrgreceiptheadService.getMaxNo();
+//            if (no == null){
+//                no = "S" + curdate.substring(2,6) + "000001";
+//            }else{
+//                String s1 = no.substring(1,5);
+//                String s2 = curdate.substring(2,6);
+//                if (!no.substring(1,5).equals(curdate.substring(2,6))){
+//                    no = "S" + curdate.substring(2,6) + "000001";
+//                }else{
+//                    String mxnum = no.substring(5,11);
+//                    int num = Integer.valueOf(mxnum) + 1;
+//                    mxnum = String.format("%06d",num);
+//                    no = "S" + curdate.substring(2,6) + mxnum;
+//
+//                }
+//            }
+//            outsrgreceipthead.setReceiptnm(no);
+//            outsrgreceipthead.setZdpuser(createdBy);
+//            outsrgreceipthead.setZdptim(curtim1);
+//            outsrgreceipthead.setCreationDate(new Date());
+//            outsrgreceipthead.setZipuser("");
+//            outsrgreceipthead.setCreatedBy(Long.valueOf(createdBy));
+//            outsrgreceipthead.setWerks(cardh.getWerks());
+//            outsrgreceipthead.setStatus("0");
+//            outsrgreceipthead.setPrtflag("0");
+//            outsrgreceipthead.setMatnr(cardh.getMatnr());
+//            outsrgreceipthead.setLifnr(lifnr);
+//            outsrgreceipthead.setZdpdat(curdate1);
+//            outsrgreceipthead.setZipdat("");
+//            outsrgreceipthead.setZiptim("");
+//
 //        }else{
-            Long itemnum = 0L;
-            Outsrgreceipt outsrgreceipt = new Outsrgreceipt();
-            if (outsrgreceipthead.getReceiptnm() == null){
-                List<Outsrgreceipt> listmx = service.selectByReceiptDesc(list.get(0).getReceiptnm());
-                itemnum = listmx.get(0).getItem() + 1;
-
-                outsrgreceipt.setRmzhl(rspos);
-                outsrgreceipt.setRueck(rsnum);
-                outsrgreceipt.setZeile("");
-                outsrgreceipt.setZdstim(curtim1);
-                outsrgreceipt.setZdsdat(curdate1);
-                outsrgreceipt.setZthnum(Double.parseDouble(thsum));
-                outsrgreceipt.setMblnr(mblnr);
-                outsrgreceipt.setMjahr(mjahr);
-                outsrgreceipt.setZeile(zeile);
-                outsrgreceipt.setZdsuser(userName);
-                outsrgreceipt.setZgfnum(Double.parseDouble(gfsum));
-                outsrgreceipt.setZlfnum(Double.parseDouble(lfsum));
-                outsrgreceipt.setZlost(Double.parseDouble(yssum));
-                outsrgreceipt.setZpgdbar(barcode);
-                outsrgreceipt.setZshnum(Double.parseDouble(hgsum));
-                outsrgreceipt.setStatus("0");
-                outsrgreceipt.setCreatedBy(Long.valueOf(createdBy));
-                outsrgreceipt.setCreationDate(new Date());
-                outsrgreceipt.setWerks(cardh.getWerks());
-                outsrgreceipt.setVsnda(outsrgissue.getVsnda());
-                outsrgreceipt.setVornr(vornr);
-                outsrgreceipt.setTxz01(outsrgissue.getTxz01());
-                outsrgreceipt.setTtreceipts(Double.parseDouble(hjsum));
-                outsrgreceipt.setSfflg(cardh.getSfflg());
-                outsrgreceipt.setReceiptnm(list.get(0).getReceiptnm());
-                outsrgreceipt.setMenge(outsrgrfe.getMenge());
-                outsrgreceipt.setMatnr(cardh.getMatnr());
-                outsrgreceipt.setMatkl(marc.getMatkl());
-                outsrgreceipt.setLifnr(lifnr);
-                outsrgreceipt.setKtsch(outsrgissue.getKtsch());
-                outsrgreceipt.setIssuenmitem(outsrgissue.getItem().toString());
-                outsrgreceipt.setIssuenm(outsrgissue.getIssuenm());
-                outsrgreceipt.setGmein(cardh.getGmein());
-                outsrgreceipt.setEbelp(outsrgissue.getEbelp());
-                outsrgreceipt.setEbeln(outsrgissue.getEbeln());
-                outsrgreceipt.setDiecd(cardh.getDiecd());
-                outsrgreceipt.setDeductntenm("");
-                outsrgreceipt.setCharg(cardh.getCharg2());
-                outsrgreceipt.setItem(itemnum);
-
-            }else{
-                itemnum = 1L;
-                outsrgreceipt.setRmzhl(rspos);
-                outsrgreceipt.setRueck(rsnum);
-                outsrgreceipt.setZeile("");
-                outsrgreceipt.setZdstim(curtim1);
-                outsrgreceipt.setZdsdat(curdate1);
-                outsrgreceipt.setZthnum(Double.parseDouble(thsum));
-                outsrgreceipt.setMblnr(mblnr);
-                outsrgreceipt.setZeile(zeile);
-                outsrgreceipt.setMjahr(mjahr);
-                outsrgreceipt.setZdsuser(userName);
-                outsrgreceipt.setZgfnum(Double.parseDouble(gfsum));
-                outsrgreceipt.setZlfnum(Double.parseDouble(lfsum));
-                outsrgreceipt.setZlost(Double.parseDouble(yssum));
-                outsrgreceipt.setZpgdbar(barcode);
-                outsrgreceipt.setZshnum(Double.parseDouble(hgsum));
-                outsrgreceipt.setStatus("0");
-                outsrgreceipt.setCreatedBy(Long.valueOf(createdBy));
-                outsrgreceipt.setCreationDate(new Date());
-                outsrgreceipt.setWerks(cardh.getWerks());
-                outsrgreceipt.setVsnda(outsrgissue.getVsnda());
-                outsrgreceipt.setVornr(vornr);
-                outsrgreceipt.setTxz01(outsrgissue.getTxz01());
-                outsrgreceipt.setTtreceipts(Double.parseDouble(hjsum));
-                outsrgreceipt.setSfflg(cardh.getSfflg());
-                outsrgreceipt.setReceiptnm(outsrgreceipthead.getReceiptnm());
-                outsrgreceipt.setMenge(outsrgrfe.getMenge());
-                outsrgreceipt.setMatnr(cardh.getMatnr());
-                outsrgreceipt.setMatkl(marc.getMatkl());
-                outsrgreceipt.setLifnr(lifnr);
-                outsrgreceipt.setKtsch(outsrgissue.getKtsch());
-                outsrgreceipt.setIssuenmitem(outsrgissue.getItem().toString());
-                outsrgreceipt.setIssuenm(outsrgissue.getIssuenm());
-                outsrgreceipt.setGmein(cardh.getGmein());
-                outsrgreceipt.setEbelp(outsrgissue.getEbelp());
-                outsrgreceipt.setEbeln(outsrgissue.getEbeln());
-                outsrgreceipt.setDiecd(cardh.getDiecd());
-                outsrgreceipt.setDeductntenm("");
-                outsrgreceipt.setCharg(cardh.getCharg2());
-                outsrgreceipt.setItem(itemnum);
-
-
-            }
-
-        int result = 0;
-        SyncOutsrgreceiptWebserviceUtil syncOutsrgreceiptWebserviceUtil = new SyncOutsrgreceiptWebserviceUtil();
-        DTOUTSRGRECEIPTHead head = new DTOUTSRGRECEIPTHead();
-        DTOUTSRGRECEIPTitem item = new DTOUTSRGRECEIPTitem();
-        if (outsrgreceipthead.getReceiptnm() != null){
-            head.setZdpdat(outsrgreceipthead.getZdpdat().replaceAll("-",""));
-            head.setReceiptnm(outsrgreceipthead.getReceiptnm());
-            head.setPrtflag(outsrgreceipthead.getPrtflag());
-            head.setLifnr(outsrgreceipthead.getLifnr());
-            head.setMatnr(outsrgreceipthead.getMatnr());
-            head.setZipuser(outsrgreceipthead.getZipuser());
-            head.setZipdat(outsrgreceipthead.getZipdat().replaceAll("-",""));
-            head.setZiptim(outsrgreceipthead.getZiptim().replaceAll(":",""));
-            head.setWerks(outsrgreceipthead.getWerks());
-            head.setStatus(outsrgreceipthead.getStatus());
-            head.setZdptim(outsrgreceipthead.getZdptim().replaceAll(":",""));
-            head.setZdpuser(outsrgreceipthead.getZdpuser());
-        }else{
-            head.setZdpdat("");
-            head.setReceiptnm("");
-            head.setPrtflag("");
-            head.setLifnr("");
-            head.setMatnr("");
-            head.setZipuser("");
-            head.setZipdat("");
-            head.setZiptim("");
-            head.setWerks("");
-            head.setStatus("");
-            head.setZdptim("");
-            head.setZdpuser("");
-        }
-
-        if (outsrgreceipt != null){
-            item.setZthnum(outsrgreceipt.getZthnum());
-            item.setZshnum(outsrgreceipt.getZshnum());
-            item.setZpgdbar(outsrgreceipt.getZpgdbar());
-            item.setZlost(outsrgreceipt.getZlost());
-            item.setZlfnum(outsrgreceipt.getZlfnum());
-            item.setZgfnum(outsrgreceipt.getZgfnum());
-            item.setZeile(outsrgreceipt.getZeile());
-            item.setZdsuser(outsrgreceipt.getZdsuser());
-            item.setZdstim(outsrgreceipt.getZdstim().replaceAll(":",""));
-            item.setZdsdat(outsrgreceipt.getZdsdat().replaceAll("-",""));
-            item.setWerks(outsrgreceipt.getWerks());
-            item.setVsnda(outsrgreceipt.getVsnda());
-            item.setVornr(outsrgreceipt.getVornr());
-            item.setTxz01(outsrgreceipt.getTxz01());
-            item.setTtreceipts(outsrgreceipt.getTtreceipts());
-            item.setStatus(outsrgreceipt.getStatus());
-            item.setSfflg(outsrgreceipt.getSfflg());
-            item.setRueck(outsrgreceipt.getRueck());
-            item.setRmzhl(outsrgreceipt.getRmzhl());
-            item.setReceiptnm(outsrgreceipt.getReceiptnm());
-            item.setMjahr(outsrgreceipt.getMjahr());
-            item.setMenge(outsrgreceipt.getMenge());
-            item.setMblnr(outsrgreceipt.getMblnr());
-            item.setZeile(outsrgreceipt.getZeile());
-            item.setMatnr(outsrgreceipt.getMatnr());
-            item.setMatkl(outsrgreceipt.getMatkl());
-            item.setLifnr(outsrgreceipt.getLifnr());
-            item.setKtsch(outsrgreceipt.getKtsch());
-            item.setItem(outsrgreceipt.getItem().toString());
-            item.setIssuenm(outsrgreceipt.getIssuenm());
-            item.setIssuenmitem(outsrgreceipt.getIssuenmitem());
-            item.setGmein(outsrgreceipt.getGmein());
-            item.setEbelp(outsrgreceipt.getEbelp());
-            item.setEbeln(outsrgreceipt.getEbeln());
-            item.setDiecd(outsrgreceipt.getDiecd());
-            item.setDeductntenm(outsrgreceipt.getDeductntenm());
-            item.setCharg(outsrgreceipt.getCharg());
-        }
-
-        DTOUTSRGRECEIPTReturn DTRE = new DTOUTSRGRECEIPTReturn();
-        DTRE = syncOutsrgreceiptWebserviceUtil.receiveConfirmation(head,item);
-        if (DTRE.getMSGTY().equals("S")){
-            if (outsrgreceipthead.getReceiptnm() != null){
-                result = outsrgreceiptheadService.insertNewRow(outsrgreceipthead);
-                if (result != 1){
-                    rs.setMessage("数据保存失败，请联系管理员！");
-                    rs.setSuccess(false);
-                    return rs;
-                }else{
-                    if (l_update.equals("X")){
-                        result = service.updateOutsrgreceipt(outsrgreceipt);
-                    }else{
-                        result = service.insertNewRow(outsrgreceipt);
-                    }
-
-                    if (result != 1){
-                        rs.setMessage("数据保存失败，请联系管理员！");
-                        rs.setSuccess(false);
-                        return rs;
-                    }
-                }
-            }else{
-                if (l_update.equals("X")){
-                    result = service.updateOutsrgreceipt(outsrgreceipt);
-                }else{
-                    result = service.insertNewRow(outsrgreceipt);
-                }
-
-                if (result != 1){
-                    rs.setMessage("数据保存失败，请联系管理员！");
-                    rs.setSuccess(false);
-                    return rs;
-                }
-            }
-        }else{
-            rs.setSuccess(false);
-            rs.setMessage(DTRE.getMESSAGE());
-            return rs;
-        }
-        rs.setSuccess(true);
-        return rs;
-    }
+//            if (list.get(0).getStatus().equals("0")){
+//                //使用以前的单号
+//
+//            }else{
+//                List<Outsrgreceipthead> listouthead = new ArrayList<>();
+//                listouthead = outsrgreceiptheadService.selectAllDesc();
+//                outsrgreceipthead = listouthead.get(0);
+//                if (!outsrgreceipthead.getReceiptnm().substring(1,5).equals(curdate.substring(2,6))){
+//                    String no = "S" + curdate.substring(2,6) + "000001";
+//                    outsrgreceipthead.setReceiptnm(no);
+//                }else{
+//                    String mxnum = outsrgreceipthead.getReceiptnm().substring(5,11);
+//                    int num = Integer.valueOf(mxnum) + 1;
+//                    mxnum = String.format("%06d",num);
+//                    outsrgreceipthead.setReceiptnm("S" + curdate.substring(2,6) + mxnum);
+//                    outsrgreceipthead.setZdpuser(userName);
+//                    outsrgreceipthead.setZdptim(curtim1);
+//                    outsrgreceipthead.setCreationDate(new Date());
+//                    outsrgreceipthead.setZipuser("");
+//                    outsrgreceipthead.setCreatedBy(Long.valueOf(createdBy));
+//                    outsrgreceipthead.setWerks(cardh.getWerks());
+//                    outsrgreceipthead.setStatus("0");
+//                    outsrgreceipthead.setPrtflag("0");
+//                    outsrgreceipthead.setMatnr(cardh.getMatnr());
+//                    outsrgreceipthead.setLifnr(lifnr);
+//                    outsrgreceipthead.setZdpdat(curdate1);
+//                    outsrgreceipthead.setZipdat("");
+//                    outsrgreceipthead.setZiptim("");
+//                }
+//            }
+//        }
+//
+//        //准备行数据
+////        Outsrgreceipt outsrgreceipt = new Outsrgreceipt();
+////        outsrgreceipt = service.selectByZpgdbarAndStatus(barcode,"1");
+////        if (outsrgreceipt != null) {
+////            //使用以前的行项目
+////            l_update = "X";
+////            outsrgreceipt.setStatus("0");
+////            outsrgreceipt.setLastUpdatedBy(Long.valueOf(createdBy));
+////            outsrgreceipt.setLastUpdateDate(new Date());
+////            outsrgreceipt.setZthnum(Double.parseDouble(thsum));
+////            outsrgreceipt.setZshnum(Double.parseDouble(hgsum));
+////            outsrgreceipt.setZpgdbar(barcode);
+////            outsrgreceipt.setZlost(Double.parseDouble(yssum));
+////            outsrgreceipt.setZlfnum(Double.parseDouble(lfsum));
+////            outsrgreceipt.setZgfnum(Double.parseDouble(gfsum));
+////            outsrgreceipt.setZdsuser(userName);
+////            outsrgreceipt.setMjahr(mjahr);
+////            outsrgreceipt.setMblnr(mblnr);
+////            outsrgreceipt.setZeile(zeile);
+////            outsrgreceipt.setZthnum(Double.parseDouble(thsum));
+////            outsrgreceipt.setZdsdat(curdate1.replaceAll(":",""));
+////            outsrgreceipt.setZdstim(curtim1.replaceAll(":",""));
+////            outsrgreceipt.setZeile("");
+////            outsrgreceipt.setRueck(rsnum);
+////            outsrgreceipt.setRmzhl(rspos);
+////            outsrgreceipt.setTtreceipts(Double.parseDouble(hjsum));
+////        }else{
+//            Long itemnum = 0L;
+//            Outsrgreceipt outsrgreceipt = new Outsrgreceipt();
+//            if (outsrgreceipthead.getReceiptnm() == null){
+//                List<Outsrgreceipt> listmx = service.selectByReceiptDesc(list.get(0).getReceiptnm());
+//                itemnum = listmx.get(0).getItem() + 1;
+//
+//                outsrgreceipt.setRmzhl(rspos);
+//                outsrgreceipt.setRueck(rsnum);
+//                outsrgreceipt.setZeile("");
+//                outsrgreceipt.setZdstim(curtim1);
+//                outsrgreceipt.setZdsdat(curdate1);
+//                outsrgreceipt.setZthnum(Double.parseDouble(thsum));
+//                outsrgreceipt.setMblnr(mblnr);
+//                outsrgreceipt.setMjahr(mjahr);
+//                outsrgreceipt.setZeile(zeile);
+//                outsrgreceipt.setZdsuser(userName);
+//                outsrgreceipt.setZgfnum(Double.parseDouble(gfsum));
+//                outsrgreceipt.setZlfnum(Double.parseDouble(lfsum));
+//                outsrgreceipt.setZlost(Double.parseDouble(yssum));
+//                outsrgreceipt.setZpgdbar(barcode);
+//                outsrgreceipt.setZshnum(Double.parseDouble(hgsum));
+//                outsrgreceipt.setStatus("0");
+//                outsrgreceipt.setCreatedBy(Long.valueOf(createdBy));
+//                outsrgreceipt.setCreationDate(new Date());
+//                outsrgreceipt.setWerks(cardh.getWerks());
+//                outsrgreceipt.setVsnda(outsrgissue.getVsnda());
+//                outsrgreceipt.setVornr(vornr);
+//                outsrgreceipt.setTxz01(outsrgissue.getTxz01());
+//                outsrgreceipt.setTtreceipts(Double.parseDouble(hjsum));
+//                outsrgreceipt.setSfflg(cardh.getSfflg());
+//                outsrgreceipt.setReceiptnm(list.get(0).getReceiptnm());
+//                outsrgreceipt.setMenge(outsrgrfe.getMenge());
+//                outsrgreceipt.setMatnr(cardh.getMatnr());
+//                outsrgreceipt.setMatkl(marc.getMatkl());
+//                outsrgreceipt.setLifnr(lifnr);
+//                outsrgreceipt.setKtsch(outsrgissue.getKtsch());
+//                outsrgreceipt.setIssuenmitem(outsrgissue.getItem().toString());
+//                outsrgreceipt.setIssuenm(outsrgissue.getIssuenm());
+//                outsrgreceipt.setGmein(cardh.getGmein());
+//                outsrgreceipt.setEbelp(outsrgissue.getEbelp());
+//                outsrgreceipt.setEbeln(outsrgissue.getEbeln());
+//                outsrgreceipt.setDiecd(cardh.getDiecd());
+//                outsrgreceipt.setDeductntenm("");
+//                outsrgreceipt.setCharg(cardh.getCharg2());
+//                outsrgreceipt.setItem(itemnum);
+//
+//            }else{
+//                itemnum = 1L;
+//                outsrgreceipt.setRmzhl(rspos);
+//                outsrgreceipt.setRueck(rsnum);
+//                outsrgreceipt.setZeile("");
+//                outsrgreceipt.setZdstim(curtim1);
+//                outsrgreceipt.setZdsdat(curdate1);
+//                outsrgreceipt.setZthnum(Double.parseDouble(thsum));
+//                outsrgreceipt.setMblnr(mblnr);
+//                outsrgreceipt.setZeile(zeile);
+//                outsrgreceipt.setMjahr(mjahr);
+//                outsrgreceipt.setZdsuser(userName);
+//                outsrgreceipt.setZgfnum(Double.parseDouble(gfsum));
+//                outsrgreceipt.setZlfnum(Double.parseDouble(lfsum));
+//                outsrgreceipt.setZlost(Double.parseDouble(yssum));
+//                outsrgreceipt.setZpgdbar(barcode);
+//                outsrgreceipt.setZshnum(Double.parseDouble(hgsum));
+//                outsrgreceipt.setStatus("0");
+//                outsrgreceipt.setCreatedBy(Long.valueOf(createdBy));
+//                outsrgreceipt.setCreationDate(new Date());
+//                outsrgreceipt.setWerks(cardh.getWerks());
+//                outsrgreceipt.setVsnda(outsrgissue.getVsnda());
+//                outsrgreceipt.setVornr(vornr);
+//                outsrgreceipt.setTxz01(outsrgissue.getTxz01());
+//                outsrgreceipt.setTtreceipts(Double.parseDouble(hjsum));
+//                outsrgreceipt.setSfflg(cardh.getSfflg());
+//                outsrgreceipt.setReceiptnm(outsrgreceipthead.getReceiptnm());
+//                outsrgreceipt.setMenge(outsrgrfe.getMenge());
+//                outsrgreceipt.setMatnr(cardh.getMatnr());
+//                outsrgreceipt.setMatkl(marc.getMatkl());
+//                outsrgreceipt.setLifnr(lifnr);
+//                outsrgreceipt.setKtsch(outsrgissue.getKtsch());
+//                outsrgreceipt.setIssuenmitem(outsrgissue.getItem().toString());
+//                outsrgreceipt.setIssuenm(outsrgissue.getIssuenm());
+//                outsrgreceipt.setGmein(cardh.getGmein());
+//                outsrgreceipt.setEbelp(outsrgissue.getEbelp());
+//                outsrgreceipt.setEbeln(outsrgissue.getEbeln());
+//                outsrgreceipt.setDiecd(cardh.getDiecd());
+//                outsrgreceipt.setDeductntenm("");
+//                outsrgreceipt.setCharg(cardh.getCharg2());
+//                outsrgreceipt.setItem(itemnum);
+//
+//
+//            }
+//
+//        int result = 0;
+//        SyncOutsrgreceiptWebserviceUtil syncOutsrgreceiptWebserviceUtil = new SyncOutsrgreceiptWebserviceUtil();
+//        DTOUTSRGRECEIPTHead head = new DTOUTSRGRECEIPTHead();
+//        DTOUTSRGRECEIPTitem item = new DTOUTSRGRECEIPTitem();
+//        if (outsrgreceipthead.getReceiptnm() != null){
+//            head.setZdpdat(outsrgreceipthead.getZdpdat().replaceAll("-",""));
+//            head.setReceiptnm(outsrgreceipthead.getReceiptnm());
+//            head.setPrtflag(outsrgreceipthead.getPrtflag());
+//            head.setLifnr(outsrgreceipthead.getLifnr());
+//            head.setMatnr(outsrgreceipthead.getMatnr());
+//            head.setZipuser(outsrgreceipthead.getZipuser());
+//            head.setZipdat(outsrgreceipthead.getZipdat().replaceAll("-",""));
+//            head.setZiptim(outsrgreceipthead.getZiptim().replaceAll(":",""));
+//            head.setWerks(outsrgreceipthead.getWerks());
+//            head.setStatus(outsrgreceipthead.getStatus());
+//            head.setZdptim(outsrgreceipthead.getZdptim().replaceAll(":",""));
+//            head.setZdpuser(outsrgreceipthead.getZdpuser());
+//        }else{
+//            head.setZdpdat("");
+//            head.setReceiptnm("");
+//            head.setPrtflag("");
+//            head.setLifnr("");
+//            head.setMatnr("");
+//            head.setZipuser("");
+//            head.setZipdat("");
+//            head.setZiptim("");
+//            head.setWerks("");
+//            head.setStatus("");
+//            head.setZdptim("");
+//            head.setZdpuser("");
+//        }
+//
+//        if (outsrgreceipt != null){
+//            item.setZthnum(outsrgreceipt.getZthnum());
+//            item.setZshnum(outsrgreceipt.getZshnum());
+//            item.setZpgdbar(outsrgreceipt.getZpgdbar());
+//            item.setZlost(outsrgreceipt.getZlost());
+//            item.setZlfnum(outsrgreceipt.getZlfnum());
+//            item.setZgfnum(outsrgreceipt.getZgfnum());
+//            item.setZeile(outsrgreceipt.getZeile());
+//            item.setZdsuser(outsrgreceipt.getZdsuser());
+//            item.setZdstim(outsrgreceipt.getZdstim().replaceAll(":",""));
+//            item.setZdsdat(outsrgreceipt.getZdsdat().replaceAll("-",""));
+//            item.setWerks(outsrgreceipt.getWerks());
+//            item.setVsnda(outsrgreceipt.getVsnda());
+//            item.setVornr(outsrgreceipt.getVornr());
+//            item.setTxz01(outsrgreceipt.getTxz01());
+//            item.setTtreceipts(outsrgreceipt.getTtreceipts());
+//            item.setStatus(outsrgreceipt.getStatus());
+//            item.setSfflg(outsrgreceipt.getSfflg());
+//            item.setRueck(outsrgreceipt.getRueck());
+//            item.setRmzhl(outsrgreceipt.getRmzhl());
+//            item.setReceiptnm(outsrgreceipt.getReceiptnm());
+//            item.setMjahr(outsrgreceipt.getMjahr());
+//            item.setMenge(outsrgreceipt.getMenge());
+//            item.setMblnr(outsrgreceipt.getMblnr());
+//            item.setZeile(outsrgreceipt.getZeile());
+//            item.setMatnr(outsrgreceipt.getMatnr());
+//            item.setMatkl(outsrgreceipt.getMatkl());
+//            item.setLifnr(outsrgreceipt.getLifnr());
+//            item.setKtsch(outsrgreceipt.getKtsch());
+//            item.setItem(outsrgreceipt.getItem().toString());
+//            item.setIssuenm(outsrgreceipt.getIssuenm());
+//            item.setIssuenmitem(outsrgreceipt.getIssuenmitem());
+//            item.setGmein(outsrgreceipt.getGmein());
+//            item.setEbelp(outsrgreceipt.getEbelp());
+//            item.setEbeln(outsrgreceipt.getEbeln());
+//            item.setDiecd(outsrgreceipt.getDiecd());
+//            item.setDeductntenm(outsrgreceipt.getDeductntenm());
+//            item.setCharg(outsrgreceipt.getCharg());
+//        }
+//
+//        DTOUTSRGRECEIPTReturn DTRE = new DTOUTSRGRECEIPTReturn();
+//        DTRE = syncOutsrgreceiptWebserviceUtil.receiveConfirmation(head,item);
+//        if (DTRE.getMSGTY().equals("S")){
+//            if (outsrgreceipthead.getReceiptnm() != null){
+//                result = outsrgreceiptheadService.insertNewRow(outsrgreceipthead);
+//                if (result != 1){
+//                    rs.setMessage("数据保存失败，请联系管理员！");
+//                    rs.setSuccess(false);
+//                    return rs;
+//                }else{
+//                    if (l_update.equals("X")){
+//                        result = service.updateOutsrgreceipt(outsrgreceipt);
+//                    }else{
+//                        result = service.insertNewRow(outsrgreceipt);
+//                    }
+//
+//                    if (result != 1){
+//                        rs.setMessage("数据保存失败，请联系管理员！");
+//                        rs.setSuccess(false);
+//                        return rs;
+//                    }
+//                }
+//            }else{
+//                if (l_update.equals("X")){
+//                    result = service.updateOutsrgreceipt(outsrgreceipt);
+//                }else{
+//                    result = service.insertNewRow(outsrgreceipt);
+//                }
+//
+//                if (result != 1){
+//                    rs.setMessage("数据保存失败，请联系管理员！");
+//                    rs.setSuccess(false);
+//                    return rs;
+//                }
+//            }
+//        }else{
+//            rs.setSuccess(false);
+//            rs.setMessage(DTRE.getMESSAGE());
+//            return rs;
+//        }
+//        rs.setSuccess(true);
+//        return rs;
+//    }
 
     @RequestMapping(value = {"/wip/outsrgreceipt/selectForCxwxsh"}, method = {RequestMethod.GET})
     @ResponseBody

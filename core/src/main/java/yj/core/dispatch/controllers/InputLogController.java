@@ -25,12 +25,22 @@ import yj.core.cardt.service.ICardtService;
 import yj.core.cardt.service.impl.CardtServiceImpl;
 import yj.core.dispatch.dto.InputLog;
 import yj.core.dispatch.service.IInputLogService;
+import yj.core.marc.dto.Marc;
+import yj.core.marc.service.IMarcService;
 import yj.core.outsrgissue.dto.Outsrgissue;
 import yj.core.outsrgissue.service.IOutsrgissueService;
 import yj.core.outsrgreceipt.dto.Outsrgreceipt;
 import yj.core.outsrgreceipt.service.IOutsrgreceiptService;
+import yj.core.outsrgreceipthead.dto.Outsrgreceipthead;
+import yj.core.outsrgreceipthead.service.IOutsrgreceiptheadService;
+import yj.core.outsrgrfe.dto.Outsrgrfe;
+import yj.core.outsrgrfe.service.IOutsrgrfeService;
 import yj.core.pandian.dto.Pandian;
 import yj.core.pandian.service.IPandianService;
+import yj.core.webserver_outsrgreceipt.components.SyncOutsrgreceiptWebserviceUtil;
+import yj.core.webserver_outsrgreceipt.dto.DTOUTSRGRECEIPTHead;
+import yj.core.webserver_outsrgreceipt.dto.DTOUTSRGRECEIPTReturn;
+import yj.core.webserver_outsrgreceipt.dto.DTOUTSRGRECEIPTitem;
 import yj.core.webservice.dto.DTPP001ReturnResult;
 import yj.core.webservice_newbg.dto.DTBAOGONGReturnResult;
 import yj.core.xhcard.dto.Xhcard;
@@ -81,6 +91,14 @@ public class InputLogController extends BaseController {
     private IXhcardService xhcardService;
     @Autowired
     private IOutsrgreceiptService outsrgreceiptService;
+
+    @Autowired
+    private IOutsrgrfeService outsrgrfeService;
+
+    @Autowired
+    private IMarcService marcService;
+    @Autowired
+    private IOutsrgreceiptheadService outsrgreceiptheadService;
 
 
     /*
@@ -353,7 +371,11 @@ public class InputLogController extends BaseController {
         String vornr = request.getParameter("j");
         String userName = request.getParameter("k");
         String isfirst = "";
-
+        String l_type = request.getParameter("l");
+        String lifnr = request.getParameter("m");
+        if (l_type == null) {
+            l_type = "";
+        }
         if (lfsum.equals("")) {
             lfsum = "0";
         }
@@ -542,21 +564,319 @@ public class InputLogController extends BaseController {
             cardt.setConfirmed("X");
             cardtService.updateCardtConfirmed(cardt);
 
-            //
+
+            //同步外协收货信息到SAP系统
+            String mblnr = returnResult.getMBLNR();
+            String mjahr = returnResult.getMJAHR();
+            String rsnum = returnResult.getRSNUM();
+            String rspos = returnResult.getRSPOS();
+            String zeile = "0001";
+
+            Outsrgrfe outsrgrfe = new Outsrgrfe();
+            outsrgrfe = outsrgrfeService.selectByCondition(card.getWerks(), card.getAufnr(), vornr, card.getMatnr(), lifnr, null, null);
+
+            Marc marc = new Marc();
+            marc = marcService.selectByMatnr(card.getMatnr());
+            df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            curdate = df.format(new Date()).substring(0, 10).replaceAll("-", "");
+            curtim = df.format(new Date()).substring(11, 19).replaceAll(":", "");
+            String curdate1 = df.format(new Date()).substring(0, 10);
+            String curtim1 = df.format(new Date()).substring(11, 19);
+            String l_update = "";
+
+            //准备表头数据
+            Outsrgreceipthead outsrgreceipthead = new Outsrgreceipthead();
+            List<Outsrgreceipthead> listhead = new ArrayList<>();
+            listhead = outsrgreceiptheadService.selectByMatnrAndLifnrDesc(card.getMatnr(), lifnr, "0");
+            if (listhead.size() == 0) {
+                //产生新的单号 F+ 年 + 月 + 6位流水
+                //String
+                String no = outsrgreceiptheadService.getMaxNo();
+                if (no == null) {
+                    no = "S" + curdate.substring(2, 6) + "000001";
+                } else {
+                    String s1 = no.substring(1, 5);
+                    String s2 = curdate.substring(2, 6);
+                    if (!no.substring(1, 5).equals(curdate.substring(2, 6))) {
+                        no = "S" + curdate.substring(2, 6) + "000001";
+                    } else {
+                        String mxnum = no.substring(5, 11);
+                        int num = Integer.valueOf(mxnum) + 1;
+                        mxnum = String.format("%06d", num);
+                        no = "S" + curdate.substring(2, 6) + mxnum;
+
+                    }
+                }
+                outsrgreceipthead.setReceiptnm(no);
+                outsrgreceipthead.setZdpuser(createdBy);
+                outsrgreceipthead.setZdptim(curtim1);
+                outsrgreceipthead.setCreationDate(new Date());
+                outsrgreceipthead.setZipuser("");
+                outsrgreceipthead.setCreatedBy(Long.valueOf(createdBy));
+                outsrgreceipthead.setWerks(card.getWerks());
+                outsrgreceipthead.setStatus("0");
+                outsrgreceipthead.setPrtflag("0");
+                outsrgreceipthead.setMatnr(card.getMatnr());
+                outsrgreceipthead.setLifnr(lifnr);
+                outsrgreceipthead.setZdpdat(curdate1);
+                outsrgreceipthead.setZipdat("");
+                outsrgreceipthead.setZiptim("");
+
+            } else {
+                if (listhead.get(0).getStatus().equals("0")) {
+                    //使用以前的单号
+
+                } else {
+                    List<Outsrgreceipthead> listouthead = new ArrayList<>();
+                    listouthead = outsrgreceiptheadService.selectAllDesc();
+                    outsrgreceipthead = listouthead.get(0);
+                    if (!outsrgreceipthead.getReceiptnm().substring(1, 5).equals(curdate.substring(2, 6))) {
+                        String no = "S" + curdate.substring(2, 6) + "000001";
+                        outsrgreceipthead.setReceiptnm(no);
+                    } else {
+                        String mxnum = outsrgreceipthead.getReceiptnm().substring(5, 11);
+                        int num = Integer.valueOf(mxnum) + 1;
+                        mxnum = String.format("%06d", num);
+                        outsrgreceipthead.setReceiptnm("S" + curdate.substring(2, 6) + mxnum);
+                        outsrgreceipthead.setZdpuser(userName);
+                        outsrgreceipthead.setZdptim(curtim1);
+                        outsrgreceipthead.setCreationDate(new Date());
+                        outsrgreceipthead.setZipuser("");
+                        outsrgreceipthead.setCreatedBy(Long.valueOf(createdBy));
+                        outsrgreceipthead.setWerks(card.getWerks());
+                        outsrgreceipthead.setStatus("0");
+                        outsrgreceipthead.setPrtflag("0");
+                        outsrgreceipthead.setMatnr(card.getMatnr());
+                        outsrgreceipthead.setLifnr(lifnr);
+                        outsrgreceipthead.setZdpdat(curdate1);
+                        outsrgreceipthead.setZipdat("");
+                        outsrgreceipthead.setZiptim("");
+                    }
+                }
+            }
+
+            Long itemnum = 0L;
+            Outsrgreceipt outsrgreceipt = new Outsrgreceipt();
+            if (outsrgreceipthead.getReceiptnm() == null) {
+                List<Outsrgreceipt> listmx = outsrgreceiptService.selectByReceiptDesc(listhead.get(0).getReceiptnm());
+                itemnum = listmx.get(0).getItem() + 1;
+
+                outsrgreceipt.setRmzhl(rspos);
+                outsrgreceipt.setRueck(rsnum);
+                outsrgreceipt.setZeile("");
+                outsrgreceipt.setZdstim(curtim1);
+                outsrgreceipt.setZdsdat(curdate1);
+                outsrgreceipt.setZthnum(Double.parseDouble(thsum));
+                outsrgreceipt.setMblnr(mblnr);
+                outsrgreceipt.setMjahr(mjahr);
+                outsrgreceipt.setZeile(zeile);
+                outsrgreceipt.setZdsuser(userName);
+                outsrgreceipt.setZgfnum(Double.parseDouble(gfsum));
+                outsrgreceipt.setZlfnum(Double.parseDouble(lfsum));
+                outsrgreceipt.setZlost(Double.parseDouble(yssum));
+                outsrgreceipt.setZpgdbar(barcode);
+                outsrgreceipt.setZshnum(Double.parseDouble(hgsum));
+                outsrgreceipt.setStatus("0");
+                outsrgreceipt.setCreatedBy(Long.valueOf(createdBy));
+                outsrgreceipt.setCreationDate(new Date());
+                outsrgreceipt.setWerks(card.getWerks());
+                outsrgreceipt.setVsnda(outsrgissue.getVsnda());
+                outsrgreceipt.setVornr(vornr);
+                outsrgreceipt.setTxz01(outsrgissue.getTxz01());
+                outsrgreceipt.setTtreceipts(Double.parseDouble(hjsum));
+                outsrgreceipt.setSfflg(card.getSfflg());
+                outsrgreceipt.setReceiptnm(listhead.get(0).getReceiptnm());
+                outsrgreceipt.setMenge(outsrgrfe.getMenge());
+                outsrgreceipt.setMatnr(card.getMatnr());
+                outsrgreceipt.setMatkl(marc.getMatkl());
+                outsrgreceipt.setLifnr(lifnr);
+                outsrgreceipt.setKtsch(outsrgissue.getKtsch());
+                outsrgreceipt.setIssuenmitem(outsrgissue.getItem().toString());
+                outsrgreceipt.setIssuenm(outsrgissue.getIssuenm());
+                outsrgreceipt.setGmein(card.getGmein());
+                outsrgreceipt.setEbelp(outsrgissue.getEbelp());
+                outsrgreceipt.setEbeln(outsrgissue.getEbeln());
+                outsrgreceipt.setDiecd(card.getDiecd());
+                outsrgreceipt.setDeductntenm("");
+                outsrgreceipt.setCharg(card.getCharg2());
+                outsrgreceipt.setItem(itemnum);
+
+            } else {
+                itemnum = 1L;
+                outsrgreceipt.setRmzhl(rspos);
+                outsrgreceipt.setRueck(rsnum);
+                outsrgreceipt.setZeile("");
+                outsrgreceipt.setZdstim(curtim1);
+                outsrgreceipt.setZdsdat(curdate1);
+                outsrgreceipt.setZthnum(Double.parseDouble(thsum));
+                outsrgreceipt.setMblnr(mblnr);
+                outsrgreceipt.setZeile(zeile);
+                outsrgreceipt.setMjahr(mjahr);
+                outsrgreceipt.setZdsuser(userName);
+                outsrgreceipt.setZgfnum(Double.parseDouble(gfsum));
+                outsrgreceipt.setZlfnum(Double.parseDouble(lfsum));
+                outsrgreceipt.setZlost(Double.parseDouble(yssum));
+                outsrgreceipt.setZpgdbar(barcode);
+                outsrgreceipt.setZshnum(Double.parseDouble(hgsum));
+                outsrgreceipt.setStatus("0");
+                outsrgreceipt.setCreatedBy(Long.valueOf(createdBy));
+                outsrgreceipt.setCreationDate(new Date());
+                outsrgreceipt.setWerks(card.getWerks());
+                outsrgreceipt.setVsnda(outsrgissue.getVsnda());
+                outsrgreceipt.setVornr(vornr);
+                outsrgreceipt.setTxz01(outsrgissue.getTxz01());
+                outsrgreceipt.setTtreceipts(Double.parseDouble(hjsum));
+                outsrgreceipt.setSfflg(card.getSfflg());
+                outsrgreceipt.setReceiptnm(outsrgreceipthead.getReceiptnm());
+                outsrgreceipt.setMenge(outsrgrfe.getMenge());
+                outsrgreceipt.setMatnr(card.getMatnr());
+                outsrgreceipt.setMatkl(marc.getMatkl());
+                outsrgreceipt.setLifnr(lifnr);
+                outsrgreceipt.setKtsch(outsrgissue.getKtsch());
+                outsrgreceipt.setIssuenmitem(outsrgissue.getItem().toString());
+                outsrgreceipt.setIssuenm(outsrgissue.getIssuenm());
+                outsrgreceipt.setGmein(card.getGmein());
+                outsrgreceipt.setEbelp(outsrgissue.getEbelp());
+                outsrgreceipt.setEbeln(outsrgissue.getEbeln());
+                outsrgreceipt.setDiecd(card.getDiecd());
+                outsrgreceipt.setDeductntenm("");
+                outsrgreceipt.setCharg(card.getCharg2());
+                outsrgreceipt.setItem(itemnum);
+
+            }
+
+            int result = 0;
+            SyncOutsrgreceiptWebserviceUtil syncOutsrgreceiptWebserviceUtil = new SyncOutsrgreceiptWebserviceUtil();
+            DTOUTSRGRECEIPTHead head = new DTOUTSRGRECEIPTHead();
+            DTOUTSRGRECEIPTitem item = new DTOUTSRGRECEIPTitem();
+
+            if (outsrgreceipthead.getReceiptnm() != null) {
+                head.setZdpdat(outsrgreceipthead.getZdpdat().replaceAll("-", ""));
+                head.setReceiptnm(outsrgreceipthead.getReceiptnm());
+                head.setPrtflag(outsrgreceipthead.getPrtflag());
+                head.setLifnr(outsrgreceipthead.getLifnr());
+                head.setMatnr(outsrgreceipthead.getMatnr());
+                head.setZipuser(outsrgreceipthead.getZipuser());
+                head.setZipdat(outsrgreceipthead.getZipdat().replaceAll("-", ""));
+                head.setZiptim(outsrgreceipthead.getZiptim().replaceAll(":", ""));
+                head.setWerks(outsrgreceipthead.getWerks());
+                head.setStatus(outsrgreceipthead.getStatus());
+                head.setZdptim(outsrgreceipthead.getZdptim().replaceAll(":", ""));
+                head.setZdpuser(outsrgreceipthead.getZdpuser());
+            } else {
+                head.setZdpdat("");
+                head.setReceiptnm("");
+                head.setPrtflag("");
+                head.setLifnr("");
+                head.setMatnr("");
+                head.setZipuser("");
+                head.setZipdat("");
+                head.setZiptim("");
+                head.setWerks("");
+                head.setStatus("");
+                head.setZdptim("");
+                head.setZdpuser("");
+            }
+
+            if (outsrgreceipt != null) {
+                item.setZthnum(outsrgreceipt.getZthnum());
+                item.setZshnum(outsrgreceipt.getZshnum());
+                item.setZpgdbar(outsrgreceipt.getZpgdbar());
+                item.setZlost(outsrgreceipt.getZlost());
+                item.setZlfnum(outsrgreceipt.getZlfnum());
+                item.setZgfnum(outsrgreceipt.getZgfnum());
+                item.setZeile(outsrgreceipt.getZeile());
+                item.setZdsuser(outsrgreceipt.getZdsuser());
+                item.setZdstim(outsrgreceipt.getZdstim().replaceAll(":", ""));
+                item.setZdsdat(outsrgreceipt.getZdsdat().replaceAll("-", ""));
+                item.setWerks(outsrgreceipt.getWerks());
+                item.setVsnda(outsrgreceipt.getVsnda());
+                item.setVornr(outsrgreceipt.getVornr());
+                item.setTxz01(outsrgreceipt.getTxz01());
+                item.setTtreceipts(outsrgreceipt.getTtreceipts());
+                item.setStatus(outsrgreceipt.getStatus());
+                item.setSfflg(outsrgreceipt.getSfflg());
+                item.setRueck(outsrgreceipt.getRueck());
+                item.setRmzhl(outsrgreceipt.getRmzhl());
+                item.setReceiptnm(outsrgreceipt.getReceiptnm());
+                item.setMjahr(outsrgreceipt.getMjahr());
+                item.setMenge(outsrgreceipt.getMenge());
+                item.setMblnr(outsrgreceipt.getMblnr());
+                item.setZeile(outsrgreceipt.getZeile());
+                item.setMatnr(outsrgreceipt.getMatnr());
+                item.setMatkl(outsrgreceipt.getMatkl());
+                item.setLifnr(outsrgreceipt.getLifnr());
+                item.setKtsch(outsrgreceipt.getKtsch());
+                item.setItem(outsrgreceipt.getItem().toString());
+                item.setIssuenm(outsrgreceipt.getIssuenm());
+                item.setIssuenmitem(outsrgreceipt.getIssuenmitem());
+                item.setGmein(outsrgreceipt.getGmein());
+                item.setEbelp(outsrgreceipt.getEbelp());
+                item.setEbeln(outsrgreceipt.getEbeln());
+                item.setDiecd(outsrgreceipt.getDiecd());
+                item.setDeductntenm(outsrgreceipt.getDeductntenm());
+                item.setCharg(outsrgreceipt.getCharg());
+            }
+
+            DTOUTSRGRECEIPTReturn DTRE = new DTOUTSRGRECEIPTReturn();
+            DTRE = syncOutsrgreceiptWebserviceUtil.receiveConfirmation(head, item);
+            if (DTRE.getMSGTY().equals("S")) {
+                if (outsrgreceipthead.getReceiptnm() != null) {
+                    result = outsrgreceiptheadService.insertNewRow(outsrgreceipthead);
+                    if (result != 1) {
+                        rs.setMessage("数据保存失败，请联系管理员！");
+                        rs.setSuccess(false);
+                        return rs;
+                    } else {
+                        if (l_update.equals("X")) {
+                            result = outsrgreceiptService.updateOutsrgreceipt(outsrgreceipt);
+                        } else {
+                            result = outsrgreceiptService.insertNewRow(outsrgreceipt);
+                        }
+
+                        if (result != 1) {
+                            rs.setMessage("数据保存失败，请联系管理员！");
+                            rs.setSuccess(false);
+                            return rs;
+                        }
+                    }
+                } else {
+                    if (l_update.equals("X")) {
+                        result = outsrgreceiptService.updateOutsrgreceipt(outsrgreceipt);
+                    } else {
+                        result = outsrgreceiptService.insertNewRow(outsrgreceipt);
+                    }
+
+                    if (result != 1) {
+                        rs.setMessage("数据保存失败，请联系管理员！");
+                        rs.setSuccess(false);
+                        return rs;
+                    }
+                }
+
+            } else {
+                rs.setSuccess(false);
+                rs.setMessage(DTRE.getMESSAGE());
+                return rs;
+            }
+
+            rs.setSuccess(true);
+            return rs;
 
         } else {
             rs.setSuccess(false);
             rs.setMessage(returnResult.getMESSAGE());
             return rs;
         }
-        list.add(returnResult);
-        rs.setRows(list);
-        rs.setSuccess(true);
-        return rs;
+//        list.add(returnResult);
+//        rs.setRows(list);
+//        rs.setSuccess(true);
+//        return rs;
     }
+
     @RequestMapping(value = "/confirmation/input/log/test")
     @ResponseBody
-    public ResponseData inputTest(HttpServletRequest request){
+    public ResponseData inputTest(HttpServletRequest request) {
         ResponseData rs = new ResponseData();
         rs.setMessage("111");
         rs.setSuccess(true);
@@ -566,7 +886,7 @@ public class InputLogController extends BaseController {
     @RequestMapping(value = {"/confirmation/input/log/insertInputLogN"}, method = {RequestMethod.GET})
     @ResponseBody
     public ResponseData inputDispatchN(HttpServletRequest request) {
-        System.out.println(request.getMethod()+"********************************");
+        System.out.println(request.getMethod() + "********************************");
         InputLog inputLog = new InputLog();
         System.out.println(request.getParameter("a"));
 
@@ -916,13 +1236,13 @@ public class InputLogController extends BaseController {
 
             }
 
-            for (int i = 0;i<afvclist.size();i++){
-                if (afvclist.get(i).getVornr().equals(inputLog.getOperation())){
+            for (int i = 0; i < afvclist.size(); i++) {
+                if (afvclist.get(i).getVornr().equals(inputLog.getOperation())) {
                     //判断当前工序是否为外协工序，如果是，检查是否具有status = 0 的外协收货记录，如果有则不允许进行冲销
-                    if (afvclist.get(i).getSteus().equals("ZP02")){
+                    if (afvclist.get(i).getSteus().equals("ZP02")) {
                         Outsrgreceipt outsrgreceipt = new Outsrgreceipt();
-                        outsrgreceipt = outsrgreceiptService.selectByZpgdbarAndStatus(cardh.getZpgdbar(),"0");
-                        if (outsrgreceipt != null){
+                        outsrgreceipt = outsrgreceiptService.selectByZpgdbarAndStatus(cardh.getZpgdbar(), "0");
+                        if (outsrgreceipt != null) {
                             returnResult.setMSGTY("E");
                             returnResult.setMESSAGE("当前外协工序已收货，请使用APP进行外协工序冲销！");
                             list.add(returnResult);
@@ -933,14 +1253,14 @@ public class InputLogController extends BaseController {
                 }
             }
 
-            if (!lstvor.equals("X")){
+            if (!lstvor.equals("X")) {
                 //判断下工序是否为外协工序 ，如果是 检查是否具有status = 0 的外协发料记录，如果有则不允许进行冲销
-                for (int i=0;i<afvclist.size();i++){
-                    if (afvclist.get(i).getVornr().equals(inputLog.getOperation())){
-                        if (afvclist.get(i-1).getSteus().equals("ZP02")){
+                for (int i = 0; i < afvclist.size(); i++) {
+                    if (afvclist.get(i).getVornr().equals(inputLog.getOperation())) {
+                        if (afvclist.get(i - 1).getSteus().equals("ZP02")) {
                             Outsrgissue outsrgissue = new Outsrgissue();
-                            outsrgissue = outsrgissueService.selectByBarcode(cardh.getZpgdbar(),"0");
-                            if (outsrgissue != null){
+                            outsrgissue = outsrgissueService.selectByBarcode(cardh.getZpgdbar(), "0");
+                            if (outsrgissue != null) {
                                 returnResult.setMSGTY("E");
                                 returnResult.setMESSAGE("当前外协工序已发料，本次冲销操作无效！");
                                 list.add(returnResult);
