@@ -47,6 +47,8 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
     private QcparamLinesMapper qcparamLinesMapper;
     @Autowired
     private DftrghlistMapper dftrghlistMapper;
+    @Autowired
+    private LinesMapper linesMapper;
 
     @Override
     public int insertQjrecode(List<InOutRecord> list) {
@@ -74,10 +76,11 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
 
     @Override
 //    public List<Zudlist> selectforZud(String line_id, String classgrp, int page, int pagesize, IRequest iRequest) {
-    public List<Zudlist> selectforZud(String Pline_id,String line_id, String classgrp,String matnr2,String creationDateBefore,String creationDateAfter) {
+    public List<Zudlist> selectforZud(String Pline_id,String line_id, String classgrp,String matnr2,String creationDateBefore,String creationDateAfter,String isInclude) {
 //        PageHelper.startPage(page, pagesize);
         List<InOutRecord> list = inOutRecordMapper.selectforZud(Pline_id,line_id,classgrp,matnr2,creationDateBefore,creationDateAfter);
         List<Zudlist> listzuds = new ArrayList<>();
+
         if (list.size() > 0){
             for (int i = 0;i<list.size();i++){
                 Zudlist zudlist = new Zudlist();
@@ -135,61 +138,65 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
 
             }
         }
+        if (isInclude.equals("Y")){
+            List<Dftrghlist> list2 = new ArrayList<>();
+            list2 = dftrghlistMapper.selectForZudlist(Pline_id,line_id,classgrp,matnr2,creationDateBefore,creationDateAfter);
+            if (list2.size() > 0){
+                for (int i =0;i<list2.size();i++){
+                    Zudlist zudlist = new Zudlist();
+                    zudlist.setZctype("1");
+                    zudlist.setKunnr(list2.get(i).getKunnr());
+                    zudlist.setName1(list2.get(i).getName1());
+                    zudlist.setLineId(list2.get(i).getLineId());
+                    zudlist.setZbanz(list2.get(i).getShift());
+                    zudlist.setZbanc(list2.get(i).getZbanc());
+                    Lines lines = new Lines();
+                    lines = linesMapper.selectById(Long.parseLong(line_id));
+                    zudlist.setArbpr(lines.getArbpl());
+                    zudlist.setCharg(list2.get(i).getYcharge());
 
-        List<Dftrghlist> list2 = new ArrayList<>();
-        list2 = dftrghlistMapper.selectForZudlist(Pline_id,line_id,classgrp,matnr2,creationDateBefore,creationDateAfter);
-        if (list2.size() > 0){
-            for (int i =0;i<list2.size();i++){
-                Zudlist zudlist = new Zudlist();
-                zudlist.setZctype("1");
-                zudlist.setKunnr(list2.get(i).getKunnr());
-                zudlist.setName1(list2.get(i).getName1());
-                zudlist.setLineId(list2.get(i).getLineId());
-                zudlist.setZbanz(list2.get(i).getShift());
-                zudlist.setZbanc(list2.get(i).getZbanc());
-                zudlist.setArbpr("");
-                zudlist.setCharg("");
-                zudlist.setCharg2(list2.get(i).getYcharge());
-                zudlist.setDiecd(list2.get(i).getDiecd());
-                zudlist.setGmein(list2.get(i).getGmein());
-                zudlist.setMatnr(list2.get(i).getMatnr2());
-                zudlist.setMatnr2(list2.get(i).getMatnr());
-                zudlist.setZbpjc(list2.get(i).getKunnr());
-                Marc marc2 = new Marc();
-                marc2 = marcMapper.selectByMatnr(list.get(i).getMatnr());
-                zudlist.setMaktx(marc2.getMaktx());
-                zudlist.setSfflg(list2.get(i).getSfflg());
-                zudlist.setUdtype("1");
-                zudlist.setUdtype("1");
-                zudlist.setZdnum(1L);
-                zudlist.setZxhbar(list2.get(i).getZxhbar());
-                zudlist.setZpgdbar(list2.get(i).getZpgdbar2());
-                zudlist.setZpgdbar2(list2.get(i).getZpgdbar());
-                Cardh cardhjj = new Cardh();
-                cardhjj = cardhMapper.selectByBarcode(list2.get(i).getZpgdbar2());
-                zudlist.setGstrp(cardhjj.getGstrp());//机加的生产日期
-                String gstrp = cardhjj.getGstrp().replace("-","");
-                String charg2 = gstrp.substring(2,8) + "000" + list.get(i).getZbanc();
-                zudlist.setCharg2(charg2);//机加批次 根据机加生产订单来拼
-                zudlist.setVornr_old(list2.get(i).getVornrjj());
-                zudlist.setZgjbar("");
-                zudlist.setZqjjlh(list2.get(i).getWerks() + "_" +list2.get(i).getRecordid() + "_" + list2.get(i).getItem());
-                zudlist.setZqxdm(list2.get(i).getZqxdm());
-                zudlist.setZissuetxt(list2.get(i).getZissuetxt());
-                if (!zudlist.getZqxdm().equals("")){
-                    if (zudlist.getZqxdm().substring(0,1).equals("M")){
-                        QcparamLines qcparamLines = qcparamLinesMapper.selectForYz(Long.valueOf(list.get(i).getLineId()),"1001");
-                        zudlist.setRspart(qcparamLines.getDefaultCastdept());
-                        zudlist.setName(qcparamLines.getName());
-                    }else{
-                        QcparamLines qcparamLines = qcparamLinesMapper.selectForJj(Long.valueOf(list.get(i).getLineId()),"1001");
-                        zudlist.setRspart(qcparamLines.getDefaultLinedept());
-                        zudlist.setName(qcparamLines.getName());
+                    zudlist.setDiecd(list2.get(i).getDiecd());
+                    zudlist.setGmein(list2.get(i).getGmein());
+                    zudlist.setMatnr(list2.get(i).getMatnr2());
+                    zudlist.setMatnr2(list2.get(i).getMatnr());
+                    zudlist.setZbpjc(list2.get(i).getKunnr());
+                    Marc marc2 = new Marc();
+                    marc2 = marcMapper.selectByMatnr(list2.get(i).getMatnr());
+                    zudlist.setMaktx(marc2.getMaktx());
+                    zudlist.setSfflg(list2.get(i).getSfflg());
+                    zudlist.setUdtype("1");
+                    zudlist.setUdtype("1");
+                    zudlist.setZdnum(1L);
+                    zudlist.setZxhbar(list2.get(i).getZxhbar());
+                    zudlist.setZpgdbar(list2.get(i).getZpgdbarjj());
+                    zudlist.setZpgdbar2(list2.get(i).getZpgdbar());
+                    Cardh cardhjj = new Cardh();
+                    cardhjj = cardhMapper.selectByBarcode(list2.get(i).getZpgdbarjj());
+                    zudlist.setGstrp(cardhjj.getGstrp());//机加的生产日期
+                    String gstrp = cardhjj.getGstrp().replace("-","");
+                    String charg2 = gstrp.substring(2,8) + "0001";
+                    zudlist.setCharg2(charg2);//机加批次 根据机加生产订单来拼
+                    zudlist.setVornr_old(list2.get(i).getVornrjj());
+                    zudlist.setZgjbar("");
+                    zudlist.setZqjjlh(list2.get(i).getWerks() + "_" +list2.get(i).getRecordid() + "_" + list2.get(i).getItem());
+                    zudlist.setZqxdm(list2.get(i).getCode());
+                    zudlist.setZissuetxt(list2.get(i).getTlevelcode());
+                    if (!zudlist.getZqxdm().equals("")){
+                        if (zudlist.getZqxdm().substring(0,1).equals("M")){
+                            QcparamLines qcparamLines = qcparamLinesMapper.selectForYz(Long.valueOf(list2.get(i).getLineId()),"1001");
+                            zudlist.setRspart(qcparamLines.getDefaultCastdept());
+                            zudlist.setName(qcparamLines.getName());
+                        }else{
+                            QcparamLines qcparamLines = qcparamLinesMapper.selectForJj(Long.valueOf(list2.get(i).getLineId()),"1001");
+                            zudlist.setRspart(qcparamLines.getDefaultLinedept());
+                            zudlist.setName(qcparamLines.getName());
+                        }
                     }
+                    listzuds.add(zudlist);
                 }
-                listzuds.add(zudlist);
             }
         }
+
 
         return listzuds;
     }

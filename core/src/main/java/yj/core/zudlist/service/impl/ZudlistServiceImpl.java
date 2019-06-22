@@ -31,6 +31,11 @@ public class ZudlistServiceImpl extends BaseServiceImpl<Zudlist> implements IZud
     @Override
     public List<Zudlist> selectZudlist(IRequest requestContext, Zudlist dto) {
         List<Zudlist> list = zudlistMapper.selectZudlist(dto);
+        List<Zudlist> list2 = zudlistMapper.selectZudlistTypeBlpcl(dto);
+
+            for (int i=0;i<list2.size();i++){//类型为1 线边库不良品记录
+                list.add(list2.get(i));
+            }
         if(list.size() > 0){
             for(int i=0;i<list.size();i++){
                 if("".equals(list.get(i).getReviewc()) || list.get(i).getReviewc() == null){

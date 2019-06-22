@@ -1622,6 +1622,12 @@ public class CardhController
             if (listzwipq.size() > 0){
                 rs.setSuccess(false);
                 rs.setMessage("该流转卡已经上线，不允许进行冻结操作！");
+            }else{
+                List list = new ArrayList();
+                list.add(cardh);
+                list.add(marc);
+                rs.setRows(list);
+                rs.setSuccess(true);
             }
         }else{
             List list = new ArrayList();

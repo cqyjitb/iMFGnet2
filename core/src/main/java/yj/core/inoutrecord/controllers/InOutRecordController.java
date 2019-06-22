@@ -102,6 +102,9 @@ public class InOutRecordController extends BaseController {
         String creationDateBefore = request.getParameter("creationDateBefore");
         String creationDateAfter = request.getParameter("creationDateAfter");
         String isInclude = request.getParameter("isInclude");
+        if (isInclude == null){
+            isInclude = "";
+        }
         /*if(creationDateAfter != null){
             creationDateAfter = creationDateAfter.replace("00:00:00","23:59:59");
         }*/
@@ -116,7 +119,7 @@ public class InOutRecordController extends BaseController {
 //        }else{
 //            listzuds = service.selectforZud(null,line_id,classgrp);
 //        }
-         listzuds = service.selectforZud(line_id,line_id,classgrp,matnr2,creationDateBefore,creationDateAfter);
+         listzuds = service.selectforZud(line_id,line_id,classgrp,matnr2,creationDateBefore,creationDateAfter,isInclude);
 
         return new ResponseData(listzuds);
     }

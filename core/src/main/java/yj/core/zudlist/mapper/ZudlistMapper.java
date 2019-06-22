@@ -16,6 +16,8 @@ public interface ZudlistMapper extends Mapper<Zudlist>{
      */
     List<Zudlist> selectZudlist(Zudlist dto);
 
+    List<Zudlist> selectZudlistTypeBlpcl(Zudlist dto);
+
     /**
      * 根据物料编码、不良原因查询数据的条数 918100064
      * @param matnr2

@@ -23,7 +23,7 @@ public interface IInOutRecordService extends IBaseService<InOutRecord>, ProxySel
      * @param classgrp 班组
      * @return
      */
-    List<Zudlist> selectforZud(String pline_id,String line_id, String classgrp,String matnr2,String creationDateBefore,String creationDateAfter);
+    List<Zudlist> selectforZud(String pline_id,String line_id, String classgrp,String matnr2,String creationDateBefore,String creationDateAfter,String isInclude);
     InOutRecord selectById(String zqjjlh);
     int batchUpdateReflag(List<InOutRecord> list);
 

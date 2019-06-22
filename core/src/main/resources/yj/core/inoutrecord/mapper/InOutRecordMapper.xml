@@ -29,7 +29,7 @@
         <result column="ZBPJC" property="zbpjc" jdbcType="VARCHAR"/>
         <result column="ZJTGX" property="zjtgx" jdbcType="VARCHAR"/>
         <result column="ZOPLO" property="zoplo" jdbcType="VARCHAR"/>
-        <result column="OUTDAT" property="outdat" jdbcType="DATE"/>
+        <result column="OUTDAT" property="outdat" jdbcType="VARCHAR"/>
         <result column="OUTNAM" property="outnam" jdbcType="DECIMAL"/>
         <result column="REDAT" property="redat" jdbcType="DATE"/>
         <result column="RENAM" property="renam" jdbcType="DECIMAL"/>
@@ -201,12 +201,6 @@
     </select>
     <update id="updateReflag" parameterType="yj.core.inoutrecord.dto.InOutRecord">
         update wip_in_out_record set REFLAG = #{reflag}
-        <if test="outdat != null">
-            ,OUTDAT = #{outdat}
-        </if>
-        <if test="outnam != null">
-            ,OUTNAM = #{outnam}
-        </if>
         <if test="redat != null">
             ,REDAT = #{redat}
         </if>

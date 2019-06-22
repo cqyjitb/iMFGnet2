@@ -195,9 +195,9 @@ public class ZudheadController extends BaseController {
                 listitem.add(zudlist);
                 if (zudlist.getZctype().equals("1")){
                     Dftrghlist dftrghlist = new Dftrghlist();
-                    String[] strs = zudlist.getZqjjlh().split("-");
-                    dftrghlist = dftrghlistService.selectByIdAndItem(strs[1],Long.parseLong(strs[2]));
-                    if (!dftrghlist.getCancelFlag().equals(0)){
+                    String[] array = zudlist.getZqjjlh().split("_");
+                    dftrghlist = dftrghlistService.selectByIdAndItem(array[1],Long.parseLong(array[2]));
+                    if (!dftrghlist.getCancelFlag().equals("0")){
                         responseData.setMessage("选择的取件记录中存在状态已经变更的行，请重新查询后创建不合格品审理单！");
                         l_error = "E";
                         break;

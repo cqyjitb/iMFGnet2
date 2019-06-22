@@ -247,7 +247,7 @@
     </select>
 
     <select id="selectForZudlist" parameterType="java.lang.String" resultMap="BaseResultMap">
-        select a.*,
+        select distinct a.*,
                c.name1,
                d.kunnr
                from wip_dftrghlist a,wip_qjcode b,sap_cust c,wip_products_cfg d,wip_lines e

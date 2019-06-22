@@ -388,16 +388,29 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
                 returnResult.setMSGTY("E");
                 return returnResult;
             }else{
-                lock.setZpgdbar(cardh.getZpgdbar());
-                lock.setVornr(cardt.getVornr());
-                lock.setCreatedBy(inputLog.getCreatedBy());
-                lock.setCreationDate(new Date());
-                int num = cardhlockMapper.insertCardhlock(lock);
-                if (num != 1){
-                    returnResult.setMESSAGE("流转卡："+cardh.getZpgdbar()+"加锁失败，请联系管理员！");
+                Cardhlock cardhlock = new Cardhlock();
+                cardhlock.setZpgdbar(cardh.getZpgdbar());
+                cardhlock.setVornr(cardt.getVornr());
+                cardhlock.setCreatedBy(inputLog.getCreatedBy());
+                cardhlock.setCreationDate(new Date());
+                try{
+                    int num = cardhlockMapper.insertCardhlock(cardhlock);
+                    if (num != 1){
+                        returnResult.setMESSAGE("流转卡："+cardh.getZpgdbar()+"加锁失败，请联系管理员！");
+                        returnResult.setMSGTY("E");
+                        return returnResult;
+                    }
+                }catch (Exception e){
+                    if (e.getMessage().contains("Duplicate entry")){
+                        returnResult.setMESSAGE("系统正在处理当前流转卡其他报工信息，请稍后提交！");
+                    }else{
+                        returnResult.setMESSAGE("流转卡："+cardh.getZpgdbar()+"加锁失败，请联系管理员！");
+                    }
+
                     returnResult.setMSGTY("E");
                     return returnResult;
                 }
+
             }
         }
 
