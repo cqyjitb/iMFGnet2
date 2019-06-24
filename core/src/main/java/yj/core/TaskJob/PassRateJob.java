@@ -59,6 +59,7 @@ public class PassRateJob extends AbstractJob {
                 passRate.setErdat(new Date());
                 passRate.setMatnr(list1.get(i).getMatnr2());
                 passRate.setMaktx(list1.get(i).getMaktx());
+                passRate.setGmein(list1.get(i).getGmein());
                 list.add(passRate);
             }
             if (list.size() > 0){

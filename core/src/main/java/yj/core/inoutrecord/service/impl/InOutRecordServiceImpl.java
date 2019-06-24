@@ -197,4 +197,14 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
     public List<InOutRecord> RmngaCount(String lineId, String matnr, String startDate, String endDate) {
         return inOutRecordMapper.RmngaCount(lineId, matnr, startDate, endDate);
     }
+
+    @Override
+    public List<InOutRecord> selectByNgRecode(String startDate, String endDate) {
+        return inOutRecordMapper.selectByNgRecode(startDate, endDate);
+    }
+
+    @Override
+    public List<InOutRecord> zissuetxtCount(InOutRecord dto) {
+        return inOutRecordMapper.zissuetxtCount(dto);
+    }
 }

@@ -141,4 +141,19 @@ public interface InOutRecordMapper extends Mapper<InOutRecord>{
          * @return
          */
         List<InOutRecord> RmngaCount(@Param("lineId")String lineId,@Param("matnr2")String matnr2,@Param("creationDateBefore") String creationDateBefore,@Param("creationDateAfter") String creationDateAfter);
+
+        /**
+         * 根据创建日期查询不合格品记录 918100064
+         * @param creationDateBefore
+         * @param creationDateAfter
+         * @return
+         */
+        List<InOutRecord> selectByNgRecode(@Param("creationDateBefore") String creationDateBefore,@Param("creationDateAfter") String creationDateAfter);
+
+        /**
+         * 根据日期等查询，汇总 918100064
+         * @param dto
+         * @return
+         */
+        List<InOutRecord> zissuetxtCount(InOutRecord dto);
 }

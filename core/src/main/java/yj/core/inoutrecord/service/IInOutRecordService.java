@@ -93,4 +93,19 @@ public interface IInOutRecordService extends IBaseService<InOutRecord>, ProxySel
      * @return
      */
     List<InOutRecord> RmngaCount(String lineId,String matnr,String startDate,String endDate);
+
+    /**
+     * 根据创建日期查询不合格品记录 918100064
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    List<InOutRecord> selectByNgRecode(String startDate,String endDate);
+
+    /**
+     * 根据日期等查询，汇总 918100064
+     * @param dto
+     * @return
+     */
+    List<InOutRecord> zissuetxtCount(InOutRecord dto);
 }

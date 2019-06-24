@@ -52,6 +52,7 @@
         <result column="DEPT_ID" property="deptId" jdbcType="VARCHAR"/>
         <result column="NAME" property="name" jdbcType="VARCHAR"/>
         <result column="MAKTX" property="maktx" jdbcType="VARCHAR"/>
+        <result column="GMEIN" property="gmein" jdbcType="VARCHAR"/>
     </resultMap>
     <resultMap id="BaseResultMap3" type="yj.core.inoutrecord.dto.InOutRecord">
         <result column="ZQJJLH" property="zqjjlh" jdbcType="VARCHAR"/>
@@ -101,6 +102,57 @@
         <result column="OUTNAM" property="outnam" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <select id="zissuetxtCount" parameterType="yj.core.inoutrecord.dto.InOutRecord" resultMap="BaseResultMap3">
+        select  re.*
+        from wip_in_out_record re
+        LEFT join wip_lines li on li.LINE_ID = re.LINE_ID
+        <where>
+            re.reflag != 1
+            <if test="creationDateBefore != null">
+                and re.creation_date >= #{creationDateBefore}
+            </if>
+            <if test="creationDateAfter != null">
+                and #{creationDateAfter} > re.creation_date
+            </if>
+            <if test="werks != null">
+                AND li.werks = #{werks}
+            </if>
+            <if test="deptId != null">
+                AND li.dept_id = #{deptId}
+            </if>
+            <if test="lineId != null">
+                AND (re.line_id = #{lineId} OR li.pline_id = #{lineId})
+            </if>
+            <if test="matnr2 != null">
+                and re.matnr2 = #{matnr2}
+            </if>
+            <if test="zotype != null">
+                and re.zotype = #{zotype}
+            </if>
+            <if test="zissuetxt != null">
+                and re.zissuetxt = #{zissuetxt}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByNgRecode" parameterType="java.lang.String" resultMap="BaseResultMap3">
+        select distinct re.line_id,li.werks,li.dept_id,re.matnr2,ma.maktx,re.ZISSUETXT,df.ztext,re.gmein,re.zotype
+        from wip_in_out_record re
+        join wip_lines li on li.LINE_ID = re.LINE_ID and li.PLINE_ID is null
+        left join sap_dftdtl df on df.TLEVELCODE = re.ZISSUETXT and df.matnr = re.matnr2
+        left join sap_marc ma on ma.matnr = re.matnr2
+        <where>
+            re.zissuetxt != ''
+            AND re.reflag != 1
+            <if test="creationDateBefore != null">
+                and re.creation_date >= #{creationDateBefore}
+            </if>
+            <if test="creationDateAfter != null">
+                and #{creationDateAfter} > re.creation_date
+            </if>
+        </where>
+    </select>
+
     <select id="RmngaCount" parameterType="java.lang.String" resultMap="BaseResultMap3">
         select re.* from wip_in_out_record re
         LEFT JOIN wip_lines li ON re.line_id = li.line_id
@@ -146,7 +198,7 @@
 
     <select id="selectByCreateDate" parameterType="java.lang.String" resultMap="BaseResultMap2">
         select DISTINCT re.line_id,re.matnr2 as matnr2,(select maktx from sap_marc where matnr = matnr2) as maktx,
-        li.werks,li.dept_id
+        li.werks,li.dept_id,re.gmein
         from wip_in_out_record re,wip_lines li
         <where>
             re.line_id = li.line_id

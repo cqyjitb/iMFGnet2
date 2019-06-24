@@ -13,10 +13,6 @@ import javax.servlet.http.HttpServletRequest;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.time.temporal.TemporalAdjusters;
-import java.time.temporal.WeekFields;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -47,24 +43,52 @@ public class PassRateController extends BaseController {
             String dateEnd = dto.getDateEnd().replaceAll("/","-");
             dto.setDateStart(dateStart);
             dto.setDateEnd(dateEnd);
-            list = service.queryPassRate(dto);
-            if (list.size() > 0){
-                for (int i=0;i<list.size();i++){
-                    PassRate passRate = list.get(i);
-                    String erdat = sdf.format(passRate.getErdat());
-                    int gmnga = passRate.getGmnga();
-                    int xmnga = passRate.getXmnga();
-                    int rmnga = passRate.getRmnga();
-                    int tmnga = gmnga + xmnga + rmnga;
+            List<PassRate> list1 = service.queryPassRate(dto);
+            Calendar cal2 = Calendar.getInstance();
+            try {
+                Date startTime = sdf.parse(dateStart);
+                cal.setTime(startTime);
+                Date endTime = sdf.parse(dateEnd);
+                cal2.setTime(endTime);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            cal2.add(cal.DATE, 1);
+            while(cal.getTime().before(cal2.getTime())){
+                PassRate passRate = new PassRate();
+                int gmnga = 0,xmnga = 0,rmnga = 0;
+                int i;
+                for (i=0;i<list1.size();i++){
+                    if(list1.get(i).getErdat().compareTo(cal.getTime()) == 0){
+                        break;
+                    }
+                }
+                if(i < list1.size()){
+                    gmnga = list1.get(i).getGmnga();
+                    xmnga = list1.get(i).getXmnga();
+                    rmnga = list1.get(i).getRmnga();
+                }
+                int tmnga = gmnga + xmnga + rmnga;
+                String erdat = sdf.format(cal.getTime());
+                passRate.setGmnga(gmnga);
+                passRate.setXmnga(xmnga);
+                passRate.setRmnga(rmnga);
+                passRate.setTmnga(tmnga);
+                passRate.setDateStart(erdat);
+                if(tmnga == 0){
+                    passRate.setRate("0.00");
+                    passRate.setJjRate("0.00");
+                    passRate.setMpRate("0.00");
+                }else{
                     String rate = df.format((gmnga*100/(float)tmnga));
                     String jjRate = df.format(((gmnga+rmnga)*100/(float)tmnga));
                     String mpRate = df.format(((gmnga+xmnga)*100/(float)tmnga));
-                    passRate.setDateStart(erdat);
-                    passRate.setTmnga(tmnga);
                     passRate.setRate(rate);
                     passRate.setJjRate(jjRate);
                     passRate.setMpRate(mpRate);
                 }
+                list.add(passRate);
+                cal.add(cal.DATE, 1);
             }
         }
         if ("2".equals(btn)){
@@ -85,9 +109,9 @@ public class PassRateController extends BaseController {
                     PassRate passRate = new PassRate();
                     int gmnga = 0,xmnga = 0,rmnga = 0;
                     Integer start = cal.get(Calendar.DAY_OF_WEEK);
-                    if(start == 2){
-                        start = 1;
-                    }else if(i == 1){
+                    if(start == 1){
+                        start = 7;
+                    }else if(start > 1){
                         start--;
                     }
                     int j;

@@ -17,6 +17,7 @@
     <script type="text/javascript">
     </script>
     <body>
+    <button onclick="download()" >下载</button>
     <!-- 显示文件列表的div -->
     <div>
         <h4 style="margin-left: 6px;margin-top: 6px">历史操作文件列表</h4>
@@ -24,6 +25,26 @@
         <div id="file_view_list"></div>
     </div>
     <script>
+        function download() {
+            $.ajax({
+                url: "${base.contextPath}/kanb/picture/download",
+                type: "get",
+                data: {
+                    "fileId": '29'
+                },
+                async: false,
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+
+                },
+                error:function (data) {
+                    kendo.ui.showErrorDialog({
+                        title: '错误',
+                        message: "未能获取到合格率数据！"
+                    });
+                }
+            })
+        }
         $(document).ready(function(){
             //定义一个数据源
             var dataSource = new kendo.data.DataSource({
