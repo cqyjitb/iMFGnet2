@@ -7,6 +7,7 @@ import yj.core.inoutrecord.dto.InOutRecord;
 import yj.core.wipqcparamlines.dto.itemPageData;
 import yj.core.zudlist.dto.Zudlist;
 
+import java.util.Date;
 import java.util.List;
 
 public interface IInOutRecordService extends IBaseService<InOutRecord>, ProxySelf<IInOutRecordService>{
@@ -70,4 +71,47 @@ public interface IInOutRecordService extends IBaseService<InOutRecord>, ProxySel
      */
 
     List<InOutRecord> selectByZpgdbar(String zpgdbar);
+
+    /**
+     * 根据创建日期查询产线、物料汇总 918100064
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    List<InOutRecord> selectByCreateDate(String startDate,String endDate);
+
+    /**
+     * 根据产线、物料、创建日期查询工废数 918100064
+     * @param lineId
+     * @param matnr
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    List<InOutRecord> XmngaCount(String lineId,String matnr,String startDate,String endDate);
+
+    /**
+     * 根据产线、物料、创建日期查询料废数 918100064
+     * @param lineId
+     * @param matnr
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    List<InOutRecord> RmngaCount(String lineId,String matnr,String startDate,String endDate);
+
+    /**
+     * 根据创建日期查询不合格品记录 918100064
+     * @param startDate
+     * @param endDate
+     * @return
+     */
+    List<InOutRecord> selectByNgRecode(String startDate,String endDate);
+
+    /**
+     * 根据日期等查询，汇总 918100064
+     * @param dto
+     * @return
+     */
+    List<InOutRecord> zissuetxtCount(InOutRecord dto);
 }

@@ -52,7 +52,7 @@
                         url    : _basePath + "/equipment/updateEquipment",
                         dataType : "json",
                         contentType : "application/json",
-                        data   : kendo.stringify(data),
+                        data   : kendo.stringify([data]),
                         success: function (data) {
                             if(data.success==false){
                                 kendo.ui.showErrorDialog({
@@ -172,8 +172,9 @@
         newViewModel.model.set("mac",checked.mac);
         newViewModel.model.set("workshopId",checked.workshopId);
         newViewModel.model.set("address",checked.address);
+        newViewModel.model.set("vbgroupName",checked.vbgroupName);
         $("#mac").attr("readOnly",true);
-        $("#vbgroupName").attr("type","hidden");
+        //$("#vbgroupName").attr("type","hidden");
     }else{
         var bukrs = window.parent.document.getElementById("bukrs").value;
         var werks = window.parent.document.getElementById("werks").value;

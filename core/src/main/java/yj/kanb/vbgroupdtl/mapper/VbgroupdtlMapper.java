@@ -9,4 +9,10 @@ public interface VbgroupdtlMapper extends Mapper<Vbgroupdtl> {
      * @param dto
      */
     void insertGroupDtl(Vbgroupdtl dto);
+
+    /**
+     * 设备产线删除 918100064
+     * @param dto
+     */
+    void deleteGroupDtl(Vbgroupdtl dto);
 }

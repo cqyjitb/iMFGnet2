@@ -33,4 +33,21 @@ public class VbgroupdtlController extends BaseController {
         service.insertGroupDtl(dto,userId);
         return new ResponseData();
     }
+    /**
+     * 看板设备产线维护新增页面请求 918100064
+     * @param request
+     * @param dto
+     * @return
+     */
+    @RequestMapping(value = {"/groupDtl/deleteGroupDtl"})
+    @ResponseBody
+    public ResponseData deleteGroupDtl(HttpServletRequest request,@RequestBody List<Vbgroupdtl> dto){
+        IRequest requestCtx = createRequestContext(request);
+        ResponseData rs = new ResponseData();
+        String result = service.deleteGroupDtl(dto);
+        if(result == null){
+            rs.setMessage("设备产线删除成功！");
+        }
+        return rs;
+    }
 }

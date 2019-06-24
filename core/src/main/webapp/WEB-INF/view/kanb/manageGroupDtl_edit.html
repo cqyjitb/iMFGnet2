@@ -27,10 +27,8 @@
 <script type="text/javascript">
     var selections =  window.parent.$('#Grid').data('kendoGrid').selectedDataItems();
     var newViewModel = kendo.observable({
-        model: {
-            vbgroupId:selections[0].vbgroupId
-        },
-        save2Function:function () {
+        model: {},
+        saveFunction:function () {
             var data = grid.selectedDataItems();
             var tmparry= new Array();
             if(data.length > 0){
@@ -54,9 +52,10 @@
                     contentType : "application/json",
                     data   : postdata,
                     success: function (data) {
-                        if(data.success==false){
-                            kendo.ui.showErrorDialog({
-                                message:data.message
+                        if(data.success==true){
+                            kendo.ui.showConfirmDialog({
+                                title: '成功',
+                                message: data.message
                             });
                         }
                     }
@@ -79,7 +78,8 @@
 </script>
 <div id="page-content2">
     <div class="pull-left" id="toolbar-btn2" style="padding-bottom:10px;">
-        <span class="btn btn-primary k-grid-add" style="float:left;margin-right:5px;" data-bind="click:save2Function">设备产线创建</span>
+        <span class="btn btn-primary k-grid-add" style="float:left;margin-right:5px;" data-bind="click:saveFunction">设备产线创建</span>
+        <span onclick="deleteData()" class="btn btn-danger" style="float:left;margin-right:5px;"><@spring.message "hap.delete"/></span>
     </div>
     <script>kendo.bind($('#toolbar-btn2'), newViewModel);</script>
     <div style="clear:both">
@@ -91,7 +91,7 @@
     var dataSource2 = new kendo.data.DataSource({
         transport: {
             read: {
-                url: BaseUrl + "/Vblinegroupheader/selectVblinegroupheader",
+                url: BaseUrl + "/Vblinegroupheader/queryVblinegroupheader",
                 type: "POST",
                 dataType: "json"
             },
@@ -226,9 +226,73 @@
                     style: "text-align: center;"
                 }
             }
-        ]
+        ],
+        dataBound: onDataBound
     });
     var grid = $('#Grid2').data("kendoGrid");
+    function onDataBound() {
+        var items = grid._data;
+        $.ajax({
+            type   : 'get',
+            url    : _basePath + "/Vblinegroupheader/selectVblinegroupheader",
+            contentType: "application/json; charset=utf-8",
+            data: {
+                vbgroupId:selections[0].vbgroupId
+            },
+            async: false,
+            success: function (data) {
+                if(data.success==true){
+                    for(var i=0;i<items.length;i++){
+                        for (var k =0;k<data.total;k++){
+                            if(items[i].product == data.rows[k].product){
+                                grid.select("tr[data-uid='" + items[i].uid + "']");
+                            }
+                        }
+                    }
+                }
+            }
+        });
+    };
+    function deleteData() {
+        var data = grid.selectedDataItems();
+        if (data.length >= 1) {
+            var tmparry = new Array();
+            if (data.length > 0) {
+                for (var i = 0; i < data.length; i++) {
+                    var viewModel2 = kendo.observable({
+                        model: {
+                            vbgroupId: selections[0].vbgroupId,
+                            bukrs: data[i].bukrs,
+                            werks: data[i].werks,
+                            groupId: data[i].groupId
+                        }
+                    });
+                    tmparry[i] = viewModel2.model.toJSON();
+                }
+                var postdata = JSON.stringify(tmparry);
+                $.ajax({
+                    type: 'POST',
+                    url: _basePath + "/groupDtl/deleteGroupDtl",
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: postdata,
+                    success: function (data) {
+                        if (data.success == true) {
+                            kendo.ui.showConfirmDialog({
+                                title: '成功',
+                                message: data.message
+                            });
+                            $('#Grid2').data('kendoGrid').dataSource.page(1);
+                        }
+                    }
+                });
+            } else {
+                kendo.ui.showInfoDialog({
+                    message: '请至少选择一行数据'
+                })
+            }
+        }
+    };
     Hap.autoResizeGrid("#Grid2");
 </script>
 </body>

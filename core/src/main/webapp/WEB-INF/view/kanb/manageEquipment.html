@@ -182,14 +182,15 @@
                     eqId: {type: "string"},
                     mac: {type: "string"},
                     address: {type: "string"},
-                    workshopId: {type:"string"}
+                    workshopId: {type:"string"},
+                    vbgroupName:{type:"string"}
                 }
             }
         }
     });
     $("#Grid").kendoGrid({
         dataSource:dataSource,
-        autoBind:false,
+        //autoBind:false,
         height:'100%',
         resizable:true,
         scrollable:true,
@@ -261,6 +262,17 @@
             {
                 field:"address",
                 title:"位置描述",
+                width:240,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"vbgroupName",
+                title:"资源组描述",
                 width:240,
                 headerAttributes: {
                     style: "text-align: center;"

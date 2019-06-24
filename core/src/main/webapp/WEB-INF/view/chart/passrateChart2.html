@@ -1,0 +1,663 @@
+<!--合格率报表直线图 918100064-->
+<#include "../include/header.html">
+<style>
+    .label {
+        color: red;
+    }
+</style>
+<div id="content-container">
+    <div id="page-content">
+        <div class="panel" style="padding: 0px;border:none;box-shadow: none;">
+            <form class="form-horizontal" id="myForm">
+                <div class="panel-body">
+                    <div id="test">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">工厂<label class="label">*</label></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" id="werks" style="width: 100%" class="k-textbox" readonly="readonly" data-bind="value:model.werks">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">生产车间<label class="label">*</label></label>
+                                    <div class="col-sm-8">
+                                        <input id="deptId" class="k-textbox" data-bind="value:model.deptId" style="width: 100%">
+                                        <script>
+                                            $("#deptId").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_UNIT_NEW2")}, {
+                                                query: function (e) {
+                                                    e.param['enabledFlag'] = 'Y';
+                                                }
+                                            }));
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">生产线<label class="label">*</label></label>
+                                    <div class="col-sm-8">
+                                        <input id="lineId" class="k-textbox" data-bind="value:model.lineId"
+                                               style="width: 100%">
+                                        <script>
+                                            $("#lineId").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_LINE_NEW")}, {
+                                                query: function (e) {
+                                                    e.param['deptId'] = document.getElementById("deptId").value;
+                                                    e.param['enabledFlag'] = 'Y';
+                                                }
+                                            }))
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">产品名称<label class="label">*</label></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" id="matnr" style="width: 100%" class="k-textbox" readonly="readonly" data-bind="value:model.matnr">
+                                        <script>
+                                            $("#matnr").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_PRODUCTS")}, {
+                                                query: function (e) {
+                                                    e.param['lineId'] = document.getElementById("lineId").value;
+                                                    e.param['enabledFlag'] = 'Y';
+                                                }
+                                            }))
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 dateStart dateTime">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">开始日期<label class="label">*</label></label>
+                                    <div class="col-sm-8">
+                                        <input id="dateStart" style="width: 100%" data-role="datepicker" data-bind="value:model.gstrps" class="k-datepicker">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 dateStart2 dateTime" style="display: none">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">开始日期<label class="label">*</label></label>
+                                    <div class="col-sm-8">
+                                        <input id="dateStart2" style="width: 100%" data-role="datepicker" data-bind="value:model.gstrps" class="k-datepicker">
+                                    </div>
+                                    <script type="text/javascript">
+                                        $('#dateStart2').kendoDatePicker({
+                                            start: "year",
+                                            depth: "year",
+                                            format: "yyyy-MM",
+                                            dateInput: true
+                                        })
+                                    </script>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 dateEnd dateTime">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">结束日期<label class="label">*</label></label>
+                                    <div class="col-sm-8">
+                                        <input id="dateEnd" style="width: 100%" data-role="datepicker" data-bind="value:model.gstrpe" class="k-datepicker">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4 dateEnd2 dateTime" style="display: none">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">结束日期<label class="label">*</label></label>
+                                    <div class="col-sm-8">
+                                        <input id="dateEnd2" style="width: 100%" data-role="datepicker" data-bind="value:model.gstrpe" class="k-datepicker">
+                                    </div>
+                                    <script type="text/javascript">
+                                        $('#dateEnd2').kendoDatePicker({
+                                            start: "year",
+                                            depth: "year",
+                                            format: "yyyy-MM",
+                                            dateInput: true
+                                        })
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="row" style="margin-right: -8px;">
+                <div class="pull-left" id="toolbar-btn" style="padding-bottom:10px;">
+                    <button class="btn btn-primary btnChange" onclick="butOnclick(1)" type="button">日</button>
+                    <button class="btn btn-white btnChange" onclick="butOnclick(2)"  type="button">周</button>
+                    <button class="btn btn-white btnChange" onclick="butOnclick(3)"  type="button">月</button>
+                    <button class="btn btn-primary" style="margin-left: 20px;" type="submit"><strong>导出</strong></button>
+                </div>
+                <div class="pull-right" style="margin-right:15px">
+                    <span class="btn btn-primary" data-bind="click:queryGrid" type="submit">
+                        <i class="fa fa-search" style="margin-right:3px;"></i><@spring.message "hap.query"/></span>
+                    <span class="btn btn-default" type="button" data-bind="click:resetForm">
+                        <i class="fa fa-eraser" style="margin-right:3px;"></i><@spring.message "hap.reset"/></span>
+                    <span class="btn btn-info" type="button" id="panel_hidden" onclick="test()">
+                        <i class="fa fa-joomla" style="margin-right:3px;"></i><@spring.message "hap.panel_hidden"/></span>
+                    <span class="btn btn-info" type="button" id="panel_show" onclick="test()" style="display: none">
+                        <i class="fa fa-joomla" style="margin-right:3px;"></i><@spring.message "hap.panel_show"/></span>
+                </div>
+            </div>
+            <div id="Dialog" style="display: none">
+                <div>你想查看哪种类型的柏拉图?</div>
+                <div>
+                    <button class="btn btn-primary btnChange2" onclick="but2Onclick(1)" type="button">工废</button>
+                    <button class="btn btn-white btnChange2" onclick="but2Onclick(2)"  type="button">料废</button>
+                    <button class="btn btn-white btnChange2" onclick="but2Onclick(3)"  type="button">全部</button>
+                </div>
+            </div>
+            <div id="Dialog2" style="display: none">
+                <div>请选择你想看的数据?</div>
+                <div align="right">
+                    <button class="btn btn-primary btnChange3" onclick="but3Onclick(1)" type="button">曲线图</button>
+                    <button class="btn btn-white btnChange3" onclick="but3Onclick(2)"  type="button">详情</button>
+                </div>
+            </div>
+            <div id="Charts1" style="width:1600px;"></div>
+            <div id="div1">
+                <table class="table1" border="1" style="width: 1200px">
+                    <thead class="thead1">
+
+                    </thead>
+                    <tbody class="tbody1">
+
+                    </tbody>
+                </table>
+                <br/>
+                <table class="table2" border="1" style="width: 1200px">
+                    <thead class="thead2">
+
+                    </thead>
+                    <tbody class="tbody2">
+
+                    </tbody>
+                </table>
+            </div><br/>
+            <div id="Charts2" style="width:1600px;"></div>
+            <div id="div2">
+                <table class="table3" border="1" style="width: 1200px">
+                    <thead class="thead3">
+
+                    </thead>
+                    <tbody class="tbody3">
+
+                    </tbody>
+                </table>
+            </div><br/>
+            <div id="Charts3" style="width:1600px;"></div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var btn = 1;
+    //日周月控件方法
+    function butOnclick(id) {
+        $('.dateTime').hide();
+        btn = id;
+        if (id == 1){
+            $('.dateEnd').show();
+            $('.dateStart').show();
+        }
+        if (id == 2){
+            $('.dateStart2').show();
+        }
+        if (id == 3){
+            $('.dateEnd2').show();
+            $('.dateStart2').show();
+        }
+    }
+    //柏拉图类型弹出框方法
+    var btnDate = null;
+    function but2Onclick(id) {
+        $("#Dialog").data("kendoWindow").close();
+        if(btn == 2){
+            btnDate = document.getElementById("dateStart2").value + btnDate;
+        }
+        var werks = document.getElementById("werks").value;
+        var deptId = document.getElementById("deptId").value;
+        var lineId = document.getElementById("lineId").value;
+        var matnr = document.getElementById("matnr").value;
+        $.ajax({
+            url: "${base.contextPath}/wip/ng/record/queryNgRecord",
+            type: "get",
+            data: {
+                "werks": werks,
+                "deptId": deptId,
+                "lineId": lineId,
+                "matnr": matnr,
+                "btnDate": btnDate,
+                "btn" :btn,
+                "qty":id
+            },
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = data.rows;
+                var head = [],list = [];
+                var qty=[],scrapRate=[],scrapRateSum=[],zissuetxt = [];
+                var qtySum = 0;
+                for(var i=0;i<data.length;i++){
+                    head.push(data[i].ztext);
+                    zissuetxt.push(data[i].zissuetxt);
+                    qty.push(data[i].qty);
+                    scrapRate.push(data[i].scrapRate);
+                    scrapRateSum.push(data[i].scrapRateSum);
+                    qtySum = qtySum + data[i].qty;
+                }
+                list.push(qty,scrapRate,scrapRateSum,qtySum,head,zissuetxt);
+                showXy(head,list);
+            },
+            error:function (data) {
+                kendo.ui.showErrorDialog({
+                    title: '错误',
+                    message: "未能获取到合格率数据！"
+                });
+            }
+        })
+    }
+    //曲线图
+    var zissuetxt = 0;
+    function but3Onclick(id) {
+        $("#Dialog2").data("kendoWindow").close();
+        var werks = document.getElementById("werks").value;
+        var deptId = document.getElementById("deptId").value;
+        var lineId = document.getElementById("lineId").value;
+        var matnr = document.getElementById("matnr").value;
+        var dateStart = null,dateEnd = null;
+        if (btn == 1){
+            dateStart = document.getElementById("dateStart").value;
+            dateEnd = document.getElementById("dateEnd").value;
+        }
+        if (btn == 2){
+            dateStart = document.getElementById("dateStart2").value;
+            dateEnd = "123456";
+        }
+        if (btn == 3){
+            dateStart = document.getElementById("dateStart2").value;
+            dateEnd = document.getElementById("dateEnd2").value;
+        }
+        $.ajax({
+            url: "${base.contextPath}/wip/ng/record/queryByZotype",
+            type: "get",
+            data: {
+                "werks": werks,
+                "deptId": deptId,
+                "lineId": lineId,
+                "matnr": matnr,
+                "dateStart": dateStart,
+                "dateEnd": dateEnd,
+                "btn" :btn,
+                "zissuetxt":zissuetxt
+            },
+            async: false,
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+                data = data.rows;
+                var head = [],list = [];
+                for(var i=0;i<data.length;i++){
+                    head.push(data[i].ztext);
+                    list.push(data[i].scrapRate);
+                }
+                showWaste(head,list);
+            },
+            error:function (data) {
+                kendo.ui.showErrorDialog({
+                    title: '错误',
+                    message: "未能获取到合格率数据！"
+                });
+            }
+        })
+    }
+    $(function () {
+        $('.btnChange').click(function(){
+            $('.btnChange').addClass('btn-white');
+            $('.btnChange').removeClass('btn-primary');
+            $(this).addClass('btn-primary');
+            $(this).removeClass('btn-white');
+        });
+        $('.btnChange2').click(function(){
+            $('.btnChange2').addClass('btn-white');
+            $('.btnChange2').removeClass('btn-primary');
+            $(this).addClass('btn-primary');
+            $(this).removeClass('btn-white');
+        });
+        $('.btnChange3').click(function(){
+            $('.btnChange3').addClass('btn-white');
+            $('.btnChange3').removeClass('btn-primary');
+            $(this).addClass('btn-primary');
+            $(this).removeClass('btn-white');
+        })
+    });
+    var viewModel = kendo.observable({
+        model: {
+            werks:"1001"
+        },
+        resetForm: function () {
+            var formData = viewModel.model.toJSON();
+            for (var k in formData) {
+                if(k != "werks"){
+                    viewModel.model.set(k, null);
+                }
+            }
+        },
+        queryGrid: function (e) {
+            var werks = document.getElementById("werks").value;
+            var deptId = document.getElementById("deptId").value;
+            var lineId = document.getElementById("lineId").value;
+            var matnr = document.getElementById("matnr").value;
+            var dateStart = null,dateEnd = null;
+            if (btn == 1){
+                dateStart = document.getElementById("dateStart").value;
+                dateEnd = document.getElementById("dateEnd").value;
+            }
+            if (btn == 2){
+                dateStart = document.getElementById("dateStart2").value;
+                dateEnd = "123456";
+            }
+            if (btn == 3){
+                dateStart = document.getElementById("dateStart2").value;
+                dateEnd = document.getElementById("dateEnd2").value;
+            }
+            if(werks == null || werks=="" || werks ==''){
+                kendo.ui.showErrorDialog({
+                    title: '错误',
+                    message: "查询条件:工厂,必输！"
+                });
+            }else if(deptId == null || deptId=="" || deptId ==''){
+                kendo.ui.showErrorDialog({
+                    title: '错误',
+                    message: "查询条件:生产车间,必输！"
+                });
+            }else if(lineId == null || lineId=="" || lineId ==''){
+                kendo.ui.showErrorDialog({
+                    title: '错误',
+                    message: "查询条件:生产线,必输！"
+                });
+            }else if(matnr == null || matnr=="" || matnr ==''){
+                kendo.ui.showErrorDialog({
+                    title: '错误',
+                    message: "查询条件:产品名称,必输！"
+                });
+            }else  if(dateStart == null || dateStart=="" || dateStart ==''){
+                kendo.ui.showErrorDialog({
+                    title: '错误',
+                    message: "查询条件:开始日期,必输！"
+                });
+            }else if(dateEnd == null || dateEnd=="" || dateEnd ==''){
+                kendo.ui.showErrorDialog({
+                    title: '错误',
+                    message: "查询条件:结束日期,必输！"
+                });
+            }else{
+                $.ajax({
+                    url: "${base.contextPath}/wip/pass/rate/queryPassRate",
+                    type: "get",
+                    data: {
+                        "werks": werks,
+                        "deptId": deptId,
+                        "lineId": lineId,
+                        "dateStart": dateStart,
+                        "dateEnd": dateEnd,
+                        "matnr": matnr,
+                        "btn" :btn
+                    },
+                    async: false,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        data = data.rows;
+                        var head = [],list = [];
+                        var tmnga=[],xmnga=[],rmnga=[],jjRate=[],mpRate=[],rate=[];
+                        for(var i=0;i<data.length;i++){
+                            head.push(data[i].dateStart);
+                            tmnga.push(data[i].tmnga);
+                            xmnga.push(data[i].xmnga);
+                            rmnga.push(data[i].rmnga);
+                            jjRate.push(data[i].jjRate);
+                            mpRate.push(data[i].mpRate);
+                            rate.push(data[i].rate);
+                        }
+                        list.push(tmnga,xmnga,rmnga,jjRate,mpRate,rate);
+                        showLine(head,list)
+                    },
+                    error:function (data) {
+                        kendo.ui.showErrorDialog({
+                            title: '错误',
+                            message: "未能获取到合格率数据！"
+                        });
+                    }
+                })
+            }
+        }
+    });
+    kendo.bind($('#page-content'), viewModel);
+    function test() {
+        var apply = $("#test");
+        var button_hidden = $("#panel_hidden");
+        var button_show = $("#panel_show");
+        if (apply.is(":hidden")) {
+            button_hidden.show();
+            button_show.hide();
+            apply.show();    //如果元素为隐藏,则将它显现
+        } else {
+            button_hidden.hide();
+            button_show.show();
+            apply.hide();     //如果元素为显现,则将其隐藏
+        }
+    }
+    function showLine(head,list){
+        $(list).each(function(k,v){
+            $(v).each(function(k1,v1){
+                list[k][k1] = parseFloat(v1);
+
+            })
+        });
+        $('#Charts1').highcharts({
+            chart:{
+                type:"line"
+            },
+            title:{
+                text:"合格率报表"
+            },
+            xAxis:{
+                categories: head
+            },
+            yAxis:{
+                title:{
+                    text:"百分比 (%)"
+                }
+            },
+            plotOptions: {
+                line: {
+                    dataLabels: {
+                        enabled: true,
+                        format: "{point.y:.2f}%"
+                    }
+                },
+                series:{
+                    cursor:'pointer',
+                    point:{
+                        events:{
+                            click:function (e) {
+                                var dialog = $("#Dialog").kendoWindow({
+                                    title:"信息",
+                                    width:200,
+                                    height:70,
+                                    actions: ["Close"]
+                                }).data("kendoWindow");
+                                dialog.center().open();
+                                btnDate = e.point.category;
+                            }
+                        }
+                    }
+                }
+            },
+            series:[{
+                name:"机加合格率",
+                data:list[3]
+            },{
+                name:"毛坯合格率",
+                data:list[4]
+            },{
+                name:"合格率",
+                data:list[5]
+            }]
+        });
+
+        var head1 = '<tr><th>&nbsp;&nbsp;</th>';
+        $(head).each(function (k,v) {
+            head1 = head1 + '<th >'+'&nbsp;&nbsp;&nbsp;' + v + '</th>';
+        });
+        $('.thead1').html(head1 + '</tr>');
+        var  html1 = '';
+        var num1 = ['','','','机加合格率','毛坯合格率','合格率'];
+        for (var i=3;i<list.length;i++){
+            html1 = html1 + '<tr>' + '<td>'+num1[i] +'</td>';
+            $(list[i]).each(function(k1,v1){
+                html1 = html1 + '<td>'+'&nbsp;&nbsp;&nbsp;'+v1+'</td>';
+            });
+            html1 = html1 + '</tr>';
+        }
+        $('.tbody1').html(html1);
+
+        $('.thead2').html(head1 + '</tr>');
+        var  html2 = '';
+        var num2 = ['投料数','工废数','料废数','机加合格率','毛坯合格率','合格率'];
+        $(list).each(function (k1,v1) {
+            html2 = html2 + '<tr>' + '<td>'+num2[k1] +'</td>';
+            $(v1).each(function(k2,v2){
+                html2 = html2 + '<td>'+'&nbsp;&nbsp;&nbsp;'+v2+'</td>';
+            });
+            html2 = html2 + '</tr>';
+        });
+        $('.tbody2').html(html2);
+    }
+
+    function showXy(head,list) {
+        $(list[0]).each(function(k,v){
+            list[0][k] = parseFloat(v);
+        });
+        $(list[2]).each(function(k,v){
+            list[2][k] = parseFloat(v);
+        });
+        $('#Charts2').highcharts({
+            chart:{
+                zoomType:"xy"
+            },
+            title:{
+                text:"终检&过程&GP12&走样不良柏拉图"
+            },
+            xAxis:[{
+                categories:head,
+                crosshair:true
+            }],
+            yAxis:[{
+                min:0,
+                tickInterval:list[3],
+                labeles:{
+                    format:'{value}'
+                }
+            },{
+                min:0,
+                tickInterval:5,
+                labeles:{
+                    format:'{value}%'
+                },
+                opposite:true
+            }],
+            tooltip:{
+                shared:true
+            },
+            plotOptions:{
+                line:{
+                    dataLabels:{
+                        enabled:true,
+                        format:'point.y:.1f}%'
+                    }
+                },
+                series:{
+                    cursor:'pointer',
+                    events:{
+                        click:function (e) {
+                            var dialog = $("#Dialog2").kendoWindow({
+                                title:"信息",
+                                width:200,
+                                height:70,
+                                actions: ["Close"]
+                            }).data("kendoWindow");
+                            dialog.center().open();
+                            zissuetxt = list[5][e.point.x];
+                        }
+                    }
+                }
+            },
+            series:[{
+                name: '不良数',
+                type: 'column',
+                data: list[0],
+                tooltip: {
+                    valueSuffix: ' '
+                },
+                dataLabels: {
+                    enabled: true
+                }
+            }, {
+                name: '累积不良比',
+                type: 'line',
+                yAxis: 1,
+                data: list[2],
+                tooltip: {
+                    valueSuffix: '%'
+                },
+                dataLabels: {
+                    enabled: true,
+                    format: '{point.y:.2f}%'
+                }
+            }]
+        })
+        var head3 = '<tr>';
+        var num3 = ['序号','总废品数','问题项目','数量','不良比','累计不良比'];
+        $(num3).each(function (k,v) {
+            head3 = head3 + '<th >'+'&nbsp;&nbsp;&nbsp;' + v + '</th>';
+        });
+        $('.thead3').html(head3 + '</tr>');
+        var html3 = '';
+        for (var k1=0;k1<head.length;k1++){
+            html3 = html3 + '<tr>' +'<td>'+(k1+1)+'</td>' +
+                '<td>'+'&nbsp;&nbsp;&nbsp;'+list[3]+'</td>' +
+                '<td>'+'&nbsp;&nbsp;&nbsp;'+list[4][k1]+'</td>' +
+                '<td>'+'&nbsp;&nbsp;&nbsp;'+list[0][k1]+'</td>' +
+                '<td>'+'&nbsp;&nbsp;&nbsp;'+list[1][k1]+'% </td>' +
+                '<td>'+'&nbsp;&nbsp;&nbsp;'+list[2][k1]+'% </td>' + '</tr>'
+        }
+        $('.tbody3').html(html3);
+    }
+
+    function showWaste(head,list) {
+        $(list).each(function (k,v) {
+            list[k] = parseFloat(v);
+        });
+        $("#Charts3").highcharts({
+            chart:{
+                type:'line'
+            },
+            title:{
+                text:'终检&过程&GP12&走样不良趋势图'
+            },
+            xAxis:{
+                categories:head
+            },
+            yAxies:{
+                title:{
+                    text:'百分比（%）'
+                },
+                lables:{
+
+                }
+            }
+        })
+    }
+</script>
+</body>
+</html>

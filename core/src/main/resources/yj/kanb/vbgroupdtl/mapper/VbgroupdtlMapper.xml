@@ -14,4 +14,14 @@
         insert into vb_group_dtl(groupId,bukrs,werks,groupType,vbgroupId,created_by,creation_date)
         values(#{groupId},#{bukrs},#{werks},#{groupType},#{vbgroupId},#{createdBy},#{creationDate})
     </insert>
+
+    <delete id="deleteGroupDtl" parameterType="yj.kanb.vbgroupdtl.dto.Vbgroupdtl">
+        delete from vb_group_dtl
+        <where>
+            vbgroupId = #{vbgroupId}
+            AND bukrs = #{bukrs}
+            AND werks = #{werks}
+            AND groupId = #{groupId}
+        </where>
+    </delete>
 </mapper>

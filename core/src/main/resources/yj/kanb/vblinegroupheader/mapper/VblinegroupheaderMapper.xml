@@ -18,7 +18,7 @@
         select * from vb_line_group_h
         <where>
             <if test="vbgroupId != null">
-                 groupId not in (select groupId from vb_group_dtl where vbgroupId = #{vbgroupId})
+                 groupId in (select groupId from vb_group_dtl where vbgroupId = #{vbgroupId})
             </if>
         </where>
     </select>
