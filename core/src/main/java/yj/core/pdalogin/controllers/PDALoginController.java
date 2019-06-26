@@ -68,6 +68,9 @@ public class PDALoginController extends BaseController {
         String type = request.getParameter("type");
         String key = request.getParameter("key");
         String curversion = request.getParameter("version");
+        if  (curversion == null){
+            curversion = "0000";
+        }
         Attachment attachment = new Attachment();
         attachment = attachmentService.selectAttachByCodeAndKey(requestContext,type,key);
         if (attachment != null){

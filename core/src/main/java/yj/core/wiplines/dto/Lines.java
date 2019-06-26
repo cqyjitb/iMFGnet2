@@ -40,6 +40,10 @@ public class Lines extends BaseDTO {
 
       private Long taktTime; //生产节拍
 
+      private String lineHeader;
+
+      private String headerPhone;
+
       @NotNull
       private String onlinetype;//上线类型 0：批次 1：二维码
 
@@ -308,5 +312,21 @@ public class Lines extends BaseDTO {
 
     public void setPkgtype(String pkgtype) {
         this.pkgtype = pkgtype;
+    }
+
+    public String getLineHeader() {
+        return lineHeader;
+    }
+
+    public void setLineHeader(String lineHeader) {
+        this.lineHeader = lineHeader;
+    }
+
+    public String getHeaderPhone() {
+        return headerPhone;
+    }
+
+    public void setHeaderPhone(String headerPhone) {
+        this.headerPhone = headerPhone;
     }
 }

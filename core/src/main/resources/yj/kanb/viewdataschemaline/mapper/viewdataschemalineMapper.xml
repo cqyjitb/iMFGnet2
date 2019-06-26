@@ -43,10 +43,14 @@
     </select>
 
     <insert id="insertforKanb" parameterType="yj.kanb.viewdataschemaline.dto.Viewdataschemaline">
-        INSERT INTO  view_data_schema_line(bukrs,werks,groupId,product,workshopId,matnr,maktx,kunnr,name1,sortl,shift,erdat,shifttimebegin,shifttimeend,lineLeader,leaderPhone
-        ,cycletime,workshopName,planqty,actqty,insufqty,jdcqqty,qcRate,oeeRate,creation_date,created_by)
-        VALUES (#{bukrs},#{werks},#{groupId},#{product},#{workshopId},#{matnr},#{maktx},#{shift},#{erdat},#{shifttimebegin},#{shifttimeend},#{lineLeader},#{leaderPhone},#{cycletime},#{workshopName},
-        #{planqty},#{actqty},#{insufqty},#{jdcqqty},#{qcRate},#{oeeRate},#{creationDate},#{createdBy})
+        INSERT INTO  view_data_schema_line(bukrs,werks,groupId,product,workshopId,matnr,maktx,
+                        kunnr,name1,sortl,shift,erdat,shifttimebegin,shifttimeend,
+                        lineLeader,leaderPhone,cycletime,workshopName,planqty,actqty,insufqty,
+                        jdcqqty,qcRate,oeeRate,creation_date,created_by)
+        VALUES (#{bukrs},#{werks},#{groupId},#{product},#{workshopId},#{matnr},#{maktx},
+                #{kunnr},#{name1},#{sortl},#{shift},#{erdat},#{shifttimebegin},#{shifttimeend},
+                #{lineLeader},#{leaderPhone},#{cycletime},#{workshopName},#{planqty},#{actqty},#{insufqty},
+                #{jdcqqty},#{qcRate},#{oeeRate},#{creationDate},#{createdBy})
     </insert>
 
     <update id="updateforKanb" parameterType="yj.kanb.viewdataschemaline.dto.Viewdataschemaline">

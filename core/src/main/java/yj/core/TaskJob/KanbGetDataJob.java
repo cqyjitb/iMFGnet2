@@ -197,6 +197,8 @@ public class KanbGetDataJob extends AbstractJob {
                         //4:取产线配置数据
                         Lines lines = new Lines();
                         lines = linesService.selectById(Long.parseLong(listcurlzk.get(j).getLineId()));
+                        viewdata.setLeaderPhone(lines.getHeaderPhone());
+                        viewdata.setLineLeader(lines.getLineHeader());
                         takt_time = takt_time + lines.getTaktTime();
 
                         Long lineId = 0L;
