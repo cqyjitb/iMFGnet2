@@ -67,6 +67,8 @@ public class LinesServiceImpl extends BaseServiceImpl<Lines> implements ILinesSe
                     return "工序数量不能为空";
                 }else if(lines.getStartDate() == null){
                     return "生效日期不能为空";
+                }else if(lines.getHeaderphone() != null && lines.getHeaderphone().length() > 11){
+                    return "负责人电话长度不能大于11";
                 }
             }
         }

@@ -3,7 +3,10 @@ package yj.core.TaskJob;
 import com.hand.hap.job.AbstractJob;
 import com.hand.hap.job.dto.SimpleTriggerDto;
 import com.hand.hap.job.service.IQuartzService;
-import org.quartz.*;
+import org.quartz.JobDetail;
+import org.quartz.JobExecutionContext;
+import org.quartz.JobKey;
+import org.quartz.TriggerKey;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,14 +16,15 @@ import yj.core.inoutrecord.service.IInOutRecordService;
 import yj.core.seversetting.dto.ServerSetting;
 import yj.core.seversetting.service.IServerSettingService;
 import yj.core.util.WebServerHelp;
+import yj.kanb.wipdateclass.dto.DateClass;
+import yj.kanb.wipdateclass.service.IDateClassService;
 import yj.kanb.wippassrate.dto.PassRate;
 import yj.kanb.wippassrate.service.IPassRateService;
 
 import java.text.SimpleDateFormat;
 import java.util.*;
-import java.util.Calendar;
 
-public class PassRateJob extends AbstractJob {
+public class PassRateDateJob extends AbstractJob {
     private static Logger log = LoggerFactory.getLogger(KanbGetDataJob.class);
     @Autowired
     private IInOutRecordService inOutRecordService;
@@ -29,7 +33,7 @@ public class PassRateJob extends AbstractJob {
     @Autowired
     private IPassRateService passRateService;
     @Autowired
-    private IQuartzService quartzService;
+    private IDateClassService dateClassService;
 
     @Override
     protected boolean isRefireImmediatelyWhenException() {
@@ -42,22 +46,10 @@ public class PassRateJob extends AbstractJob {
         TriggerKey triggerKey = context.getTrigger().getKey();
         String msg = "KanbGetDataJob Test<insertNewData>! - . jobKey:" + key + ", triggerKey:" + triggerKey + ", execTime:" + new Date();
         log.info(msg);
-        SimpleTriggerDto simpleTriggerDto = quartzService.getSimpleTrigger(triggerKey.getName(),triggerKey.getGroup());
-        int minute = simpleTriggerDto.getRepeatInterval().intValue();
-        minute = minute/1000;
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date endDate = context.getFireTime();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(endDate);
-        if (minute == 20*60){
-            cal.add(Calendar.MINUTE,-20);
-        }else if (minute == 24*60*60){
-            cal.add(Calendar.DATE,-7);
-        }
-        Date startDate = cal.getTime();
-        String startDate2 = sdf.format(startDate);
-        String endDate2 = sdf.format(endDate);
-        List<InOutRecord> list = inOutRecordService.selectByCreateDate(startDate2,endDate2);
+        List<DateClass> list2 = dateClassService.selectFromPage("PassRateDateJob");
+        String startDate = list2.get(0).getStartDate();
+        String endDate = list2.get(0).getEndDate();
+        List<InOutRecord> list = inOutRecordService.selectByCreateDate(startDate,endDate);
         if (list.size() > 0){
             List<InOutRecord> list1 = new ArrayList<InOutRecord>();
             for (int i=0;i<list.size();i++){
@@ -70,11 +62,11 @@ public class PassRateJob extends AbstractJob {
                 passRate.setMaktx(list.get(i).getMaktx());
                 passRate.setGmein(list.get(i).getGmein());
                 Integer gmnga = 0,xmnga = 0,rmnga = 0;
-                list1 = inOutRecordService.XmngaCount(passRate.getLineId(),passRate.getMatnr(),startDate2,endDate2);
+                list1 = inOutRecordService.XmngaCount(passRate.getLineId(),passRate.getMatnr(),startDate,endDate);
                 if(list1.size() > 0){
                     xmnga = list1.size();
                 }
-                list1 = inOutRecordService.RmngaCount(passRate.getLineId(),passRate.getMatnr(),startDate2,endDate2);
+                list1 = inOutRecordService.RmngaCount(passRate.getLineId(),passRate.getMatnr(),startDate,endDate);
                 if(list1.size() > 0){
                     rmnga = list1.size();
                 }
@@ -84,7 +76,7 @@ public class PassRateJob extends AbstractJob {
                     OracleConn oracleConn = new OracleConn(webServerHelp.getMesOraUrl(),webServerHelp.getMesOraUserName(),webServerHelp.getMesOraPass(),webServerHelp.getMesOraDriver());
                     String sqlzx = "select ba.* from " + serverSetting.getDbUsername() + ".wip_pallet_sn_rel pa, " + serverSetting.getDbUsername() + ".mtl_barcode ba ";
                     String where = "where pa.line_id = "+ "'"+ passRate.getLineId() + "' and ba.item_code = '"+ passRate.getMatnr()+"' and ba.creation_date >= '"
-                            + startDate2 + "' and ba.creation_date < '" + endDate2 +"' and pa.jb_status = 0 and pa.barcode_id = ba.barcode_id ";
+                            + startDate + "' and ba.creation_date < '" + endDate +"' and pa.jb_status = 0 and pa.barcode_id = ba.barcode_id ";
                     String sql = sqlzx + where;
                     List<Map<String, Object>> listMap = new ArrayList<Map<String,Object>>();
                     try {

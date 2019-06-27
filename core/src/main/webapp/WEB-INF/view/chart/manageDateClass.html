@@ -1,0 +1,193 @@
+<!--
+    日期范围及类名维护 918100064
+-->
+<#include "../include/header.html" >
+<style>
+    span[class='k-window-title'] {
+        user-select: none;
+        -moz-user-select: none;
+        -ms-user-select: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+    }
+    .label{
+        color: red;
+    }
+</style>
+<script type="text/javascript">
+    var viewModel = kendo.observable({
+        model: {},
+        createFunction: function () {
+            $('#Grid').data('kendoGrid').addRow();
+        },
+        saveFunction: function () {
+            var data = grid.selectedDataItems();
+            if(data.length >= 1){
+                $('#Grid').data('kendoGrid').saveChanges();
+            }else{
+                kendo.ui.showInfoDialog({
+                    message: '请至少选择一行数据'
+                })
+            }
+        },
+        queryResource: function (e) {
+            $('#Grid').data('kendoGrid').dataSource.page(1);
+        }
+    });
+</script>
+<body>
+<div id="page-content">
+    <div class="panel" style="padding: 0px;border:none;box-shadow: none;">
+        <form class="form-horizontal" id="myForm">
+            <div class="panel-body">
+                <div id="condition">
+                    <div class="row">
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">类名</label>
+                                <div class="col-sm-8">
+                                    <input type="text" style="width: 100%" data-bind="value:model.className" class="k-textbox">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <script>
+            kendo.bind($('#myForm'), viewModel);
+        </script>
+    </div>
+    <div class="pull-left" id="toolbar-btn" style="padding-bottom:10px;">
+        <!--<span class="btn btn-primary k-grid-add" style="float:left;margin-right:5px;" data-bind="click:createFunction"><@spring.message "hap.new"/></span>
+        <span onclick="deleteData()" class="btn btn-danger" style="float:left;margin-right:5px;"><@spring.message "hap.delete"/></span>-->
+        <span class="btn btn-success k-grid-save-changes" data-bind="click:saveFunction" type="submit" style="float:left;margin-right:5px;">保存</span>
+    </div>
+    <script>kendo.bind($('#toolbar-btn'), viewModel);</script>
+    <div class="pull-right" id="query-form" style="padding-bottom:10px;">
+        <span class="btn btn-primary" style="float:left;width:70px" data-bind="click:queryResource" type="submit"><@spring.message "hap.query"/></span>
+        <div style="clear:both"></div>
+    </div>
+    <script>kendo.bind($('#query-form'), viewModel);</script>
+    <div style="clear:both">
+        <div id="Grid"></div>
+    </div>
+</div>
+<script type="text/javascript">
+    var BaseUrl = _basePath;
+    dataSource = new kendo.data.DataSource({
+        transport: {
+            read: {
+                url: BaseUrl + "/date/class/queryDateClass",
+                type: "POST",
+                dataType: "json"
+            },
+            /*destroy: {
+                url: BaseUrl + "/date/class/removeDateClass",
+                type: "POST",
+                contentType: "application/json"
+            },
+            create: {
+                url: BaseUrl + "/date/class/submitDateClass",
+                type: "POST",
+                contentType: "application/json"
+            },*/
+            update: {
+                url: BaseUrl + "/date/class/submitDateClass",
+                type: "POST",
+                contentType: "application/json"
+            },
+            parameterMap: function (options, type) {
+                if (type !== "read" && options.models) {
+                    var datas = Hap.prepareSubmitParameter(options, type);
+                    return kendo.stringify(datas);
+                } else if (type === "read") {
+                    return Hap.prepareQueryParameter(viewModel.model.toJSON(), options);
+                }
+            }
+        },
+        batch: true,
+        serverPaging: true,
+        pageSize: 10,
+        schema: {
+            data: 'rows',
+            total: 'total',
+            model: {
+                id: "className",
+                fields: {
+                    startDate: {type: "date",editable: true},
+                    endDate: {type: "date",editable: true},
+                    className:{type:"string",editable:false}
+                }
+            }
+        }
+    });
+    $("#Grid").kendoGrid({
+        dataSource:dataSource,
+        //autoBind:false,
+        height:'100%',
+        resizable:true,
+        scrollable:true,
+        navigatable:false,
+        editable: true,
+        selectable:'multiple,rowbox',
+        pageable:{
+            pageSizes:[5,10,20,50,"all"],
+            refresh:true,
+            buttonCount:5
+        },
+        columns:[
+            {
+                field:"startDate",
+                title:"开始日期",
+                width:100,
+                format: "{0: yyyy-MM-dd HH:mm:ss}",
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"endDate",
+                title:"结束日期",
+                width:100,
+                format: "{0: yyyy-MM-dd HH:mm:ss}",
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"className",
+                title:"类名",
+                width:120,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            }
+        ]
+    });
+    var grid = $('#Grid').data("kendoGrid");
+    /*function deleteData() {
+        var data = grid.selectedDataItems();
+        if(data.length >= 1){
+            Hap.deleteGridSelection({
+                grid: $('#Grid')
+            });
+        }else{
+            kendo.ui.showInfoDialog({
+                message: '请至少选择一行数据'
+            })
+        }
+    }*/
+    Hap.autoResizeGrid("#Grid");
+</script>
+</body>
+</html>
