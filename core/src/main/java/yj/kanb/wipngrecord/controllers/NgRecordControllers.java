@@ -202,12 +202,12 @@ public class NgRecordControllers extends BaseController {
                     dto.setDateStart(dateStart + "-01");
                     dto.setDateEnd(sdf.format(cal.getTime()));
                 }else if ((i >=2)&& (i <= 4)){
-                    cal.add(cal.DATE, i*7 - start);
-                    dto.setDateEnd(sdf.format(cal.getTime()));
-                    cal.add(cal.DATE, -6);
+                    cal.add(cal.DATE, 1);
                     dto.setDateStart(sdf.format(cal.getTime()));
+                    cal.add(cal.DATE, 6);
+                    dto.setDateEnd(sdf.format(cal.getTime()));
                 }else if (i == 5){
-                    cal.add(cal.DATE, 29 - start);
+                    cal.add(cal.DATE, 1);
                     dto.setDateStart(sdf.format(cal.getTime()));
                     cal.add(cal.DATE,6);
                     if (cal.getTime().after(cal2.getTime())){
@@ -216,7 +216,7 @@ public class NgRecordControllers extends BaseController {
                         dto.setDateEnd(sdf.format(cal.getTime()));
                     }
                 }else if (i == 6){
-                    cal.add(cal.DATE, 36 - start);
+                    cal.add(cal.DATE,1);
                     if(cal.getTime().after(cal2.getTime())){
                         break;
                     }else {

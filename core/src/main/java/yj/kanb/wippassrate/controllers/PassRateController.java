@@ -104,54 +104,52 @@ public class PassRateController extends BaseController {
             dto.setDateStart(dateStart + "-01");
             dto.setDateEnd(dateStart + "-" + day);
             List<PassRate> list2 = service.queryPassRate(dto);
-            if (list2.size() > 0){
-                for (int i=1;i<=6;i++){
-                    PassRate passRate = new PassRate();
-                    int gmnga = 0,xmnga = 0,rmnga = 0;
-                    Integer start = cal.get(Calendar.DAY_OF_WEEK);
-                    if(start == 1){
-                        start = 7;
-                    }else if(start > 1){
-                        start--;
-                    }
-                    int j;
-                    for(j=start;j<=7;j++){
-                        String date = sdf.format(cal.getTime());
-                        for(int k=0;k<list2.size();k++){
-                            if(date.equals(sdf.format(list2.get(k).getErdat()))){
-                                gmnga += list2.get(k).getGmnga();
-                                xmnga += list2.get(k).getXmnga();
-                                rmnga += list2.get(k).getRmnga();
-                                break;
-                            }
-                        }
-                        if ((dto.getDateEnd()).equals(date)){
+            for (int i=1;i<=6;i++){
+                PassRate passRate = new PassRate();
+                int gmnga = 0,xmnga = 0,rmnga = 0;
+                Integer start = cal.get(Calendar.DAY_OF_WEEK);
+                if(start == 1){
+                    start = 7;
+                }else if(start > 1){
+                    start--;
+                }
+                int j;
+                for(j=start;j<=7;j++){
+                    String date = sdf.format(cal.getTime());
+                    for(int k=0;k<list2.size();k++){
+                        if(date.equals(sdf.format(list2.get(k).getErdat()))){
+                            gmnga += list2.get(k).getGmnga();
+                            xmnga += list2.get(k).getXmnga();
+                            rmnga += list2.get(k).getRmnga();
                             break;
                         }
-                        cal.add(cal.DATE, 1);
                     }
-                    int tmnga = gmnga + xmnga + rmnga;
-                    passRate.setGmnga(gmnga);
-                    passRate.setXmnga(xmnga);
-                    passRate.setRmnga(rmnga);
-                    passRate.setDateStart("第" + i + "周");
-                    passRate.setTmnga(tmnga);
-                    if(tmnga == 0){
-                        passRate.setRate("0.00");
-                        passRate.setJjRate("0.00");
-                        passRate.setMpRate("0.00");
-                    }else{
-                        String rate = df.format((gmnga*100/(float)tmnga));
-                        String jjRate = df.format(((gmnga+rmnga)*100/(float)tmnga));
-                        String mpRate = df.format(((gmnga+xmnga)*100/(float)tmnga));
-                        passRate.setRate(rate);
-                        passRate.setJjRate(jjRate);
-                        passRate.setMpRate(mpRate);
-                    }
-                    list.add(passRate);
-                    if(j <= 7){
+                    if ((dto.getDateEnd()).equals(date)){
                         break;
                     }
+                    cal.add(cal.DATE, 1);
+                }
+                int tmnga = gmnga + xmnga + rmnga;
+                passRate.setGmnga(gmnga);
+                passRate.setXmnga(xmnga);
+                passRate.setRmnga(rmnga);
+                passRate.setDateStart("第" + i + "周");
+                passRate.setTmnga(tmnga);
+                if(tmnga == 0){
+                    passRate.setRate("0.00");
+                    passRate.setJjRate("0.00");
+                    passRate.setMpRate("0.00");
+                }else{
+                    String rate = df.format((gmnga*100/(float)tmnga));
+                    String jjRate = df.format(((gmnga+rmnga)*100/(float)tmnga));
+                    String mpRate = df.format(((gmnga+xmnga)*100/(float)tmnga));
+                    passRate.setRate(rate);
+                    passRate.setJjRate(jjRate);
+                    passRate.setMpRate(mpRate);
+                }
+                list.add(passRate);
+                if(j <= 7){
+                    break;
                 }
             }
         }

@@ -278,37 +278,39 @@
             dateStart = document.getElementById("dateStart2").value;
             dateEnd = document.getElementById("dateEnd2").value;
         }
-        $.ajax({
-            url: "${base.contextPath}/wip/ng/record/queryByZotype",
-            type: "get",
-            data: {
-                "werks": werks,
-                "deptId": deptId,
-                "lineId": lineId,
-                "matnr": matnr,
-                "dateStart": dateStart,
-                "dateEnd": dateEnd,
-                "btn" :btn,
-                "zissuetxt":zissuetxt
-            },
-            async: false,
-            contentType: "application/json; charset=utf-8",
-            success: function (data) {
-                data = data.rows;
-                var head = [],list = [];
-                for(var i=0;i<data.length;i++){
-                    head.push(data[i].ztext);
-                    list.push(data[i].scrapRate);
+        if(id == 1){
+            $.ajax({
+                url: "${base.contextPath}/wip/ng/record/queryByZotype",
+                type: "get",
+                data: {
+                    "werks": werks,
+                    "deptId": deptId,
+                    "lineId": lineId,
+                    "matnr": matnr,
+                    "dateStart": dateStart,
+                    "dateEnd": dateEnd,
+                    "btn" :btn,
+                    "zissuetxt":zissuetxt
+                },
+                async: false,
+                contentType: "application/json; charset=utf-8",
+                success: function (data) {
+                    data = data.rows;
+                    var head = [],list = [];
+                    for(var i=0;i<data.length;i++){
+                        head.push(data[i].dateStart);
+                        list.push(data[i].scrapRate);
+                    }
+                    showWaste(head,list);
+                },
+                error:function (data) {
+                    kendo.ui.showErrorDialog({
+                        title: '错误',
+                        message: "未能获取到合格率数据！"
+                    });
                 }
-                showWaste(head,list);
-            },
-            error:function (data) {
-                kendo.ui.showErrorDialog({
-                    title: '错误',
-                    message: "未能获取到合格率数据！"
-                });
-            }
-        })
+            })
+        }
     }
     $(function () {
         $('.btnChange').click(function(){
@@ -615,7 +617,7 @@
                     format: '{point.y:.2f}%'
                 }
             }]
-        })
+        });
         var head3 = '<tr>';
         var num3 = ['序号','总废品数','问题项目','数量','不良比','累计不良比'];
         $(num3).each(function (k,v) {
@@ -651,11 +653,26 @@
             yAxies:{
                 title:{
                     text:'百分比（%）'
-                },
-                lables:{
-
                 }
-            }
+            },
+            plotOptions:{
+                line:{
+                    dataLabels: {
+                        enabled: true,
+                        format: "{point.y:.2f}%"
+                    }
+                }
+            },
+            series:[{
+                name:zissuetxt,
+                data:list,
+                tooltip:{
+                    valueSuffix:'%'
+                },
+                dataLables:{
+                    enabled:true
+                }
+            }]
         })
     }
 </script>

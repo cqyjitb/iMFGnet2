@@ -154,7 +154,8 @@
                                     execoffFlag:{defaultValue: '0', type: 'boolean', checkedValue: '1', uncheckedValue: '0'},
                                     pkgBindFlag:{defaultValue: '0', type: 'boolean', checkedValue: '1', uncheckedValue: '0'},
                                     startDate: {type: "date",editable: true},
-                                    endDate: {type: "date",editable: true,defaultValue:null}
+                                    endDate: {type: "date",editable: true,defaultValue:null},
+                                    headerphone:{type:"number",editable:true}
                                 }
                             }
                         }
@@ -209,7 +210,7 @@
                             {
                                 field:"name",
                                 title:"车间名称",
-                                width:120,
+                                width:140,
                                 readonly: true,
                                 headerAttributes: {
                                     style: "text-align: center;"
@@ -243,7 +244,7 @@
                             {
                                 field:"descriptions",
                                 title:"产线描述",
-                                width:200,
+                                width:180,
                                 headerAttributes: {
                                     style: "text-align: center;"
                                 },
@@ -254,7 +255,7 @@
                             {
                                 field:"arbpl",
                                 title:"工作中心",
-                                width:80,
+                                width:100,
                                 headerAttributes: {
                                     style: "text-align: center;"
                                 },
@@ -492,6 +493,29 @@
                                 title:"失效日期",
                                 width:100,
                                 format: "{0: yyyy-MM-dd}",
+                                headerAttributes: {
+                                    style: "text-align: center;"
+                                },
+                                attributes: {
+                                    style: "text-align: center;"
+                                }
+                            },
+                            {
+                                field:"lineheader",
+                                title:"产线负责人",
+                                width:100,
+                                headerAttributes: {
+                                    style: "text-align: center;"
+                                },
+                                attributes: {
+                                    style: "text-align: center;"
+                                }
+                            },
+                            {
+                                field:"headerphone",
+                                title:"负责人电话",
+                                width:150,
+                                format: "{0:n0}",
                                 headerAttributes: {
                                     style: "text-align: center;"
                                 },
