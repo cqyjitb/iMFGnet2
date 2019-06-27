@@ -134,9 +134,9 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
                         QcparamLines qcparamLines = qcparamLinesMapper.selectForJj(Long.valueOf(list.get(i).getLineId()),"1001");
                         zudlist.setRspart(qcparamLines.getDefaultLinedept());
                         zudlist.setName(qcparamLines.getName());
-                    }listzuds.add(zudlist);
+                    }
                 }
-
+                listzuds.add(zudlist);
             }
         }
         if (isInclude.equals("Y")){
@@ -167,7 +167,7 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
                     zudlist.setSfflg(list2.get(i).getSfflg());
                     zudlist.setUdtype("1");
                     zudlist.setUdtype("1");
-                    zudlist.setZdnum(1L);
+                    zudlist.setZdnum(list2.get(i).getDfectQty());
                     zudlist.setZxhbar(list2.get(i).getZxhbar());
                     zudlist.setZpgdbar(list2.get(i).getZpgdbarjj());
                     zudlist.setZpgdbar2(list2.get(i).getZpgdbar());

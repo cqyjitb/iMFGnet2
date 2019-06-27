@@ -5,6 +5,8 @@ import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.dto.ResponseData;
 import org.springframework.web.bind.annotation.*;
+import yj.core.afko.dto.Afko;
+import yj.core.afko.service.IAfkoService;
 import yj.core.afvc.dto.Afvc;
 import yj.core.afvc.service.IAfvcService;
 import yj.core.cardh.dto.Cardh;
@@ -14,6 +16,10 @@ import yj.core.dispatch.dto.InputLog;
 import yj.core.dispatch.service.IInputLogService;
 import yj.core.marc.dto.Marc;
 import yj.core.marc.service.IMarcService;
+import yj.core.resb.dto.Resb;
+import yj.core.resb.service.IResbService;
+import yj.core.wipcurlzk.dto.Curlzk;
+import yj.core.wipcurlzk.service.ICurlzkService;
 import yj.core.wipdftrghlist.dto.Dftrghlist;
 import yj.core.wipdftrghlist.service.IDftrghlistService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -54,6 +60,12 @@ public class DftrghlistController extends BaseController {
     private IAfvcService afvcService;
     @Autowired
     private IZwipqService zwipqService;
+    @Autowired
+    private ICurlzkService curlzkService;
+    @Autowired
+    private IResbService resbService;
+    @Autowired
+    private IAfkoService afkoService;
 
     @RequestMapping(value = "/wip/dftrghlist/query")
     @ResponseBody
@@ -145,6 +157,49 @@ public class DftrghlistController extends BaseController {
             rs.setMessage("未能获取箱号对应的压铸流转卡，请检查箱号是否输入正确！");
             return rs;
         }
+
+        //检查箱号对应的物料是否是 当前流转卡订单BOM里面的物料
+        Curlzk curlzk = new Curlzk();
+        curlzk = curlzkService.selectById2(Long.parseLong(line_id));
+        if (curlzk == null){
+            rs.setMessage("未能获取到当产线当前流转卡数据！");
+            rs.setSuccess(false);
+            return rs;
+        }
+
+        Cardh cardhjj = new Cardh();
+        cardhjj = cardhService.selectByBarcode(curlzk.getZpgdbar());
+        if (cardhjj == null){
+            rs.setMessage("未能获取到当产线当前流转卡数据！");
+            rs.setSuccess(false);
+            return rs;
+        }
+
+        Afko afkojj = new Afko();
+        afkojj = afkoService.selectByAufnr(cardhjj.getAufnr());
+
+        Resb resb = new Resb();
+        List<Resb> listresb = new ArrayList<>();
+        listresb = resbService.selectByRsnum(afkojj.getRsnum());
+        String l_error = "X";
+        if (listresb.size() == 0){
+            rs.setMessage("未能获取到当前机加流转卡BOM信息！");
+            rs.setSuccess(false);
+            return rs;
+        }else{
+            for (int i=0;i<listresb.size();i++){
+                if (listresb.get(i).getMatnr().equals(cardh.getMatnr())){
+                    l_error = "";
+                    break;
+                }
+            }
+            if (l_error.equals("X")){
+                rs.setMessage("箱号物料不是当前机加订单BOM中对应的物料！");
+                rs.setSuccess(false);
+                return rs;
+            }
+        }
+
         //取首工序号
         List<Afvc> list = new ArrayList<>();
         list = afvcService.selectByAufnr(cardh.getAufnr());
