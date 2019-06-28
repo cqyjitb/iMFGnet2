@@ -340,10 +340,10 @@ public class ZudheadController extends BaseController {
                             //数量直接累计
                             flg = "X";
                             if (zudlist.getZqxdm().substring(0, 1).equals("M")) {
-                                Double num = Double.valueOf(listparam.get(j).getRMNGA()) + 1;
+                                Double num = Double.valueOf(listparam.get(j).getRMNGA()) + zudlist.getZdnum();
                                 listparam.get(j).setRMNGA(num.toString());
                             }else{
-                                Double num = Double.valueOf(listparam.get(j).getXMNGA()) + 1;
+                                Double num = Double.valueOf(listparam.get(j).getXMNGA()) + zudlist.getZdnum();
                                 listparam.get(j).setXMNGA(num.toString());
                             }
                             ParamAndQjjlh paramAndQjjlh = new ParamAndQjjlh();
@@ -368,9 +368,9 @@ public class ZudheadController extends BaseController {
                         parameters.setRMNGA("0");
                         parameters.setXMNGA("0");
                         if (zudlist.getZqxdm().substring(0, 1).equals("M")) {
-                            parameters.setRMNGA("1");
+                            parameters.setRMNGA(zudlist.getZdnum().toString());
                         } else {
-                            parameters.setXMNGA("1");
+                            parameters.setXMNGA(zudlist.getZdnum().toString());
                         }
                         parameters.setZSCBC("");
                         parameters.setZSCX(PlineId.toString());
@@ -435,9 +435,9 @@ public class ZudheadController extends BaseController {
                     parameters.setRMNGA("0");
                     parameters.setXMNGA("0");
                     if (zudlist.getZqxdm().substring(0, 1).equals("M")) {
-                        parameters.setRMNGA("1");
+                        parameters.setRMNGA(zudlist.getZdnum().toString());
                     } else {
-                        parameters.setXMNGA("1");
+                        parameters.setXMNGA(zudlist.getZdnum().toString());
                     }
                     parameters.setZSCBC("");
                     parameters.setZSCX(PlineId.toString());
@@ -511,7 +511,7 @@ public class ZudheadController extends BaseController {
                             if (flg.equals("")) {
                                 parametersitem.setSUBRSNUM("");
                                 parametersitem.setSUBRSPOS("");
-                                parametersitem.setBDMNG(list.get(j).getZudnum());
+                                parametersitem.setBDMNG(list.get(j).getZdnum().toString());
                                 parametersitem.setMATNR(xhcard.getMatnr());
                                 parametersitem.setCHARG(xhcard.getChargkc());
                                 parametersitem.setLGORT(xhcard.getLgort());
@@ -522,7 +522,7 @@ public class ZudheadController extends BaseController {
                         }else{
                             parametersitem.setSUBRSNUM("");
                             parametersitem.setSUBRSPOS("");
-                            parametersitem.setBDMNG(list.get(j).getZudnum());
+                            parametersitem.setBDMNG(list.get(j).getZdnum().toString());
                             parametersitem.setMATNR(xhcard.getMatnr());
                             parametersitem.setCHARG(xhcard.getChargkc());
                             parametersitem.setLGORT(xhcard.getLgort());
