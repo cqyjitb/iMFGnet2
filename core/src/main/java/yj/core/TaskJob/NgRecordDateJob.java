@@ -12,6 +12,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import yj.core.inoutrecord.dto.InOutRecord;
 import yj.core.inoutrecord.service.IInOutRecordService;
+import yj.kanb.wipdateclass.dto.DateClass;
+import yj.kanb.wipdateclass.service.IDateClassService;
 import yj.kanb.wipngrecord.dto.NgRecord;
 import yj.kanb.wipngrecord.service.INgRecordService;
 
@@ -20,14 +22,14 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class NgRecordJob extends AbstractJob {
+public class NgRecordDateJob extends AbstractJob {
     private static Logger log = LoggerFactory.getLogger(KanbGetDataJob.class);
     @Autowired
     private IInOutRecordService inOutRecordService;
     @Autowired
     private INgRecordService ngRecodeService;
     @Autowired
-    private IQuartzService quartzService;
+    private IDateClassService dateClassService;
     @Override
     protected boolean isRefireImmediatelyWhenException() {
         return false;
@@ -39,24 +41,15 @@ public class NgRecordJob extends AbstractJob {
         TriggerKey triggerKey = context.getTrigger().getKey();
         String msg = "KanbGetDataJob Test<insertNewData>! - . jobKey:" + key + ", triggerKey:" + triggerKey + ", execTime:" + new Date();
         log.info(msg);
-        SimpleTriggerDto simpleTriggerDto = quartzService.getSimpleTrigger(triggerKey.getName(),triggerKey.getGroup());
-        int minute = simpleTriggerDto.getRepeatInterval().intValue();
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-        Date endDate = context.getFireTime();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(endDate);
-        if (minute == 20*60){
-            cal.add(Calendar.MINUTE,-20);
-        }else if (minute == 24*60*60){
-            cal.add(Calendar.DATE,-7);
-        }
-        Date startDate = cal.getTime();
-        List<InOutRecord> list = inOutRecordService.selectByNgRecode(sdf.format(startDate),sdf.format(endDate));
+        List<DateClass> list2 = dateClassService.selectFromPage("NgRecordDateJob");
+        String startDate = list2.get(0).getStartDate();
+        String endDate = list2.get(0).getEndDate();
+        List<InOutRecord> list = inOutRecordService.selectByNgRecode(startDate,endDate);
         if(list.size() > 0){
             for (int i=0;i<list.size();i++){
                 InOutRecord inOutRecord = list.get(i);
-                inOutRecord.setCreationDateBefore(sdf.format(startDate));
-                inOutRecord.setCreationDateAfter(sdf.format(endDate));
+                inOutRecord.setCreationDateBefore(startDate);
+                inOutRecord.setCreationDateAfter(endDate);
                 NgRecord ngRecord = new NgRecord();
                 ngRecord.setWerks(inOutRecord.getWerks());
                 ngRecord.setDeptId(inOutRecord.getDeptId());

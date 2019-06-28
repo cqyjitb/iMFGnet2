@@ -1,11 +1,15 @@
 package yj.kanb.wipngrecord.dto;
 
+import com.hand.hap.mybatis.annotation.ExtensionAttribute;
 import com.hand.hap.system.dto.BaseDTO;
 import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Date;
 
+@ExtensionAttribute(disable=true)
+@Table(name = "wip_ng_record")
 public class NgRecord extends BaseDTO {
     @Id
     private String werks;//工厂

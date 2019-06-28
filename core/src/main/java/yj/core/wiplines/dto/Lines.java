@@ -84,6 +84,26 @@ public class Lines extends BaseDTO {
 
     private String pdescriptions; //产线描述
 
+    private String lineheader;//产线负责人
+
+    private String headerphone;//负责人电话
+
+    public String getLineheader() {
+        return lineheader;
+    }
+
+    public void setLineheader(String lineheader) {
+        this.lineheader = lineheader;
+    }
+
+    public String getHeaderphone() {
+        return headerphone;
+    }
+
+    public void setHeaderphone(String headerphone) {
+        this.headerphone = headerphone;
+    }
+
     public String getCgroup() {
         return cgroup;
     }
