@@ -20,6 +20,7 @@ public class Vbgroupheader extends BaseDTO {
     private String eqId;
     private String mac;
     private String vbgroupName;
+    private String vbgroupNameEn;
     private Integer switchfreg;
     private String status;
     private String kunnr;
@@ -94,5 +95,13 @@ public class Vbgroupheader extends BaseDTO {
 
     public void setKunnr(String kunnr) {
         this.kunnr = kunnr;
+    }
+
+    public String getVbgroupNameEn() {
+        return vbgroupNameEn;
+    }
+
+    public void setVbgroupNameEn(String vbgroupNameEn) {
+        this.vbgroupNameEn = vbgroupNameEn;
     }
 }

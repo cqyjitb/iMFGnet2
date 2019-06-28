@@ -183,7 +183,8 @@
                     mac: {type: "string"},
                     address: {type: "string"},
                     workshopId: {type:"string"},
-                    vbgroupName:{type:"string"}
+                    vbgroupName:{type:"string"},
+                    vbgroupNameEn:{type:"string"}
                 }
             }
         }
@@ -272,7 +273,18 @@
             },
             {
                 field:"vbgroupName",
-                title:"资源组描述",
+                title:"资源组名称",
+                width:240,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"vbgroupNameEn",
+                title:"资源组名称（英文）",
                 width:240,
                 headerAttributes: {
                     style: "text-align: center;"

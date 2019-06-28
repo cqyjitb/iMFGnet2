@@ -44,4 +44,11 @@ public interface CrhdMapper extends Mapper<Crhd>{
      * @return
      */
     List<Crhd> selecByWerksAndArbpl(@Param("werks") String werks,@Param("arbpl") String arbpl);
+
+    /**
+     * 根据工厂、车间以4开头的条件加载工作中心 918100064
+     * @param werks
+     * @return
+     */
+    List<Crhd> selectByVeran2(@Param("werks")String werks);
 }

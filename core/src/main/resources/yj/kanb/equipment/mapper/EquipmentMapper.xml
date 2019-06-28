@@ -15,7 +15,7 @@
         select * from vb_equipment;
     </select>
     <select id="selectEquipment" parameterType="yj.kanb.equipment.dto.Equipment" resultMap="BaseResultMap">
-        select eq.*,gh.vbgroupName from vb_equipment eq left join vb_group_h gh on eq.eqId = gh.eqId
+        select eq.*,gh.vbgroupName,gh.vbgroupNameEn from vb_equipment eq left join vb_group_h gh on eq.eqId = gh.eqId
         <where>
             1 = 1
             <if test="bukrs != null">

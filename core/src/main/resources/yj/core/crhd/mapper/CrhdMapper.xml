@@ -24,6 +24,19 @@
         <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
     </resultMap>
 
+    <select id="selectByVeran2" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select cr.*,fe.txt,fe.shift_seq as shiftSeq from sap_crhd cr,sap_fevor fe
+        <where>
+            cr.veran = fe.fevor
+            AND (cr.lvorm = '' or cr.lvorm is null)
+            AND cr.veran like '4%'
+            <if test="werks != null">
+                AND cr.werks = #{werks}
+            </if>
+            order by cr.arbpl asc
+        </where>
+    </select>
+
     <select id="selectnumByObjid" parameterType="java.lang.String" resultType="java.lang.Integer">
         select count(*) from sap_crhd
         <where>

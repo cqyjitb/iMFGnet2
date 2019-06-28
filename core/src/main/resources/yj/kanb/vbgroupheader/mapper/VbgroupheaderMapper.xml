@@ -9,6 +9,7 @@
     <result column="eqId" property="eqId" jdbcType="VARCHAR"/>
     <result column="mac" property="mac" jdbcType="VARCHAR"/>
     <result column="vbgroupName" property="vbgroupName" jdbcType="VARCHAR"/>
+    <result column="vbgroupNameEn" property="vbgroupNameEn" jdbcType="VARCHAR"/>
     <result column="switchfreg" property="switchfreg" jdbcType="DECIMAL"/>
     <result column="status" property="status" jdbcType="VARCHAR"/>
     <result column="kunnr" property="kunnr" jdbcType="VARCHAR"/>
@@ -28,8 +29,8 @@
     </select>
 
     <insert id="insertVbGroupH" parameterType="yj.kanb.vbgroupheader.dto.Vbgroupheader">
-        insert into vb_group_h(vbgroupId,bukrs,werks,eqId,mac,vbgroupName,switchfreg,status,created_by,creation_date)
-        values(#{vbgroupId},#{bukrs},#{werks},#{eqId},#{mac},#{vbgroupName},#{switchfreg},#{status},#{createdBy},#{creationDate})
+        insert into vb_group_h(vbgroupId,bukrs,werks,eqId,mac,vbgroupName,vbgroupNameEn,switchfreg,status,created_by,creation_date)
+        values(#{vbgroupId},#{bukrs},#{werks},#{eqId},#{mac},#{vbgroupName},#{vbgroupNameEn},#{switchfreg},#{status},#{createdBy},#{creationDate})
     </insert>
 
     <delete id="deleteGroupH" parameterType="yj.kanb.vbgroupheader.dto.Vbgroupheader">
@@ -40,7 +41,8 @@
     </delete>
 
     <update id="updateVbGroupH" parameterType="yj.kanb.vbgroupheader.dto.Vbgroupheader">
-        update vb_group_h set vbgroupName = #{vbgroupName},last_updated_by = #{lastUpdatedBy},last_update_date = #{lastUpdateDate}
+        update vb_group_h set vbgroupName = #{vbgroupName},vbgroupNameEn = #{vbgroupNameEn},
+        last_updated_by = #{lastUpdatedBy},last_update_date = #{lastUpdateDate}
         <where>
             eqId = #{eqId}
         </where>

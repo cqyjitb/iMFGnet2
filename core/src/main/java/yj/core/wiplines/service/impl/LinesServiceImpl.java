@@ -75,6 +75,11 @@ public class LinesServiceImpl extends BaseServiceImpl<Lines> implements ILinesSe
                 }else if(lines.getHeaderphone() != null && lines.getHeaderphone().length() > 11){
                     return "负责人电话长度不能大于11";
                 }
+                if(lines.getOeerate() != null){
+                    if(lines.getOeerate() <=0 || lines.getOeerate()>=1){
+                        return "设计OEE必须是大于0且小于1的小数";
+                    }
+                }
             }
         }
         return null;

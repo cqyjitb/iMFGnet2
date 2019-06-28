@@ -54,4 +54,13 @@ public interface ShotnumMapper extends Mapper<Shotnum> {
      * @param dto
      */
     void deleteShotnum(Shotnum dto);
+
+    /**
+     * 根据工厂、日期查询压射号 918100064
+     * @param werks
+     * @param prdDateAfter
+     * @param prdDateBefore
+     * @return
+     */
+    List<Shotnum> selectByPrdDate(@Param("werks")String werks,@Param("prdDateAfter")String prdDateAfter,@Param("prdDateBefore")String prdDateBefore);
 }
