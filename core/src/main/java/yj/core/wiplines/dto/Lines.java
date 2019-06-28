@@ -42,6 +42,8 @@ public class Lines extends BaseDTO {
 
       private String lineHeader;
 
+      private String lineHeaderEn;
+
       private String headerPhone;
 
       @NotNull
@@ -328,5 +330,13 @@ public class Lines extends BaseDTO {
 
     public void setHeaderPhone(String headerPhone) {
         this.headerPhone = headerPhone;
+    }
+
+    public String getLineHeaderEn() {
+        return lineHeaderEn;
+    }
+
+    public void setLineHeaderEn(String lineHeaderEn) {
+        this.lineHeaderEn = lineHeaderEn;
     }
 }

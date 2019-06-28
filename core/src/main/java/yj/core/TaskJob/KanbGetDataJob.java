@@ -110,6 +110,7 @@ public class KanbGetDataJob extends AbstractJob {
                         viewdata.setSortl(cust.getSortl());
 
                         viewdata.setClassgrp(listcurlzk.get(j).getShift());//班组
+
                         //1:根据生产线当前流转卡号 获取流转卡数据
                         Cardh cardh = new Cardh();
                         String zpgdbar = listcurlzk.get(j).getZpgdbar();
@@ -189,7 +190,7 @@ public class KanbGetDataJob extends AbstractJob {
                         }
 
                         if (lastupdate.getTime() >= d5.getTime() && lastupdate.getTime() <= d6.getTime()){
-                            viewdata.setShift("2");
+                            viewdata.setShift("3");
                             viewdata.setShiftdes("夜班");
                             viewdata.setShifttimebegin(ds1);
                         }
@@ -199,6 +200,7 @@ public class KanbGetDataJob extends AbstractJob {
                         lines = linesService.selectById(Long.parseLong(listcurlzk.get(j).getLineId()));
                         viewdata.setLeaderPhone(lines.getHeaderPhone());
                         viewdata.setLineLeader(lines.getLineHeader());
+                        viewdata.setLineLeaderEn(lines.getLineHeaderEn());
                         takt_time = takt_time + lines.getTaktTime();
 
                         Long lineId = 0L;
@@ -292,7 +294,13 @@ public class KanbGetDataJob extends AbstractJob {
                         e.printStackTrace();
                     }
                     //viewdata.setShifttimeend();
-                    viewdata.setInsufqty(viewdata.getActqty() - viewdata.getPlanqty());//差缺数量
+                    double b = viewdata.getActqty() - viewdata.getPlanqty();
+                    if (b > 0){
+                        b = 0;
+                    }else{
+                        b = Math.abs(b);
+                    }
+                    viewdata.setInsufqty(b);//差缺数量
                     Double qcrate = 0D;
                     Double oeerate = 0D;
                     if (viewdata.getActqty() > 0D){
@@ -305,7 +313,11 @@ public class KanbGetDataJob extends AbstractJob {
                     viewdata.setQcRate(qcrate);//合格率
 
                     try {
-                        viewdata.setJdcqqty(viewdata.getActqty() - (new Date().getTime() - sdf2.parse(viewdata.getShifttimebegin()).getTime()) / ( viewdata.getCycletime() * 1000 ));//进度差缺
+                        double a = Math.rint((new Date().getTime() - sdf2.parse(viewdata.getShifttimebegin()).getTime()) / 1000 /  viewdata.getCycletime() );
+                        if ( a > viewdata.getPlanqty()){
+                            a = viewdata.getPlanqty();
+                        }
+                        viewdata.setJdcqqty(viewdata.getActqty() - a );//进度差缺
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }

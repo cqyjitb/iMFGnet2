@@ -18,6 +18,7 @@
         <result column="ONLINETYPE" property="onlinetype" jdbcType="VARCHAR" />
         <result column="SEG_OPR_NAME" property="segOprName" jdbcType="VARCHAR"/>
         <result column="LINEHEADER" property="lineHeader" jdbcType="VARCHAR"/>
+        <result column="LINEHEADER_EN" property="lineHeaderEn" jdbcType="VARCHAR"/>
         <result column="HEADERPHONE" property="headerPhone" jdbcType="VARCHAR"/>
         <result column="SEG_OPR_NAME" property="segOprName" jdbcType="VARCHAR"/>
         <result column="POINT_NUM" property="pointNum" jdbcType="DECIMAL" />

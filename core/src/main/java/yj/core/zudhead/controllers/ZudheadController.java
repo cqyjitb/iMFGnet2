@@ -504,14 +504,14 @@ public class ZudheadController extends BaseController {
                             for (int y = 0; y < parametersitems.size(); y++) {
                                 if (parametersitems.get(y).getCHARG().equals(xhcard.getChargkc())) {
                                     flg = "X";
-                                    Integer num = Integer.valueOf(parametersitems.get(y).getBDMNG()) + 1;
+                                    Integer num = Integer.valueOf(parametersitems.get(y).getBDMNG()) + list.get(j).getZdnum().intValue();
                                     parametersitems.get(y).setBDMNG(num.toString());
                                 }
                             }
                             if (flg.equals("")) {
                                 parametersitem.setSUBRSNUM("");
                                 parametersitem.setSUBRSPOS("");
-                                parametersitem.setBDMNG("1");
+                                parametersitem.setBDMNG(list.get(j).getZudnum());
                                 parametersitem.setMATNR(xhcard.getMatnr());
                                 parametersitem.setCHARG(xhcard.getChargkc());
                                 parametersitem.setLGORT(xhcard.getLgort());
@@ -522,7 +522,7 @@ public class ZudheadController extends BaseController {
                         }else{
                             parametersitem.setSUBRSNUM("");
                             parametersitem.setSUBRSPOS("");
-                            parametersitem.setBDMNG("1");
+                            parametersitem.setBDMNG(list.get(j).getZudnum());
                             parametersitem.setMATNR(xhcard.getMatnr());
                             parametersitem.setCHARG(xhcard.getChargkc());
                             parametersitem.setLGORT(xhcard.getLgort());
@@ -594,13 +594,15 @@ public class ZudheadController extends BaseController {
 
                     for (int x = 0; x < listparamQjjlh.size(); x++) {
                         if (listparamQjjlh.get(x).getNum() == i) {
+
                             InOutRecord inOutRecord = new InOutRecord();
                             inOutRecord = iInOutRecordService.selectById(listparamQjjlh.get(x).getQjjlh());
-                            inOutRecord.setReflag(2L);
-                            inOutRecord.setLastUpdatedBy(Long.valueOf(createdBy));
-                            inOutRecord.setLastUpdateDate(new Date());
-                            listinoutRecord.add(inOutRecord);
-
+                            if (inOutRecord != null){
+                                inOutRecord.setReflag(2L);
+                                inOutRecord.setLastUpdatedBy(Long.valueOf(createdBy));
+                                inOutRecord.setLastUpdateDate(new Date());
+                                listinoutRecord.add(inOutRecord);
+                            }
                             //写不合格审理单行项目
                             for (int y = 0; y < list.size(); y++) {
                                 if (list.get(y).getZqjjlh().equals(listparamQjjlh.get(x).getQjjlh())) {

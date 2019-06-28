@@ -13,10 +13,12 @@
     <result column="name1" property="name1" jdbcType="VARCHAR"/>
     <result column="sortl" property="sortl" jdbcType="VARCHAR"/>
     <result column="shift" property="shift" jdbcType="VARCHAR"/>
+    <result column="classgrp" property="classgrp" jdbcType="VARCHAR"/>
     <result column="erdat" property="erdat" jdbcType="VARCHAR"/>
     <result column="shifttimebegin" property="shifttimebegin" jdbcType="VARCHAR"/>
     <result column="shifttimeend" property="shifttimeend" jdbcType="VARCHAR"/>
     <result column="lineLeader" property="lineLeader" jdbcType="VARCHAR"/>
+    <result column="lineLeaderEn" property="lineLeaderEn" jdbcType="VARCHAR"/>
     <result column="leaderPhone" property="leaderPhone" jdbcType="VARCHAR"/>
     <result column="cycletime" property="cycletime" jdbcType="DECIMAL"/>
     <result column="workshopName" property="workshopName" jdbcType="VARCHAR"/>
@@ -46,11 +48,11 @@
         INSERT INTO  view_data_schema_line(bukrs,werks,groupId,product,workshopId,matnr,maktx,
                         kunnr,name1,sortl,shift,erdat,shifttimebegin,shifttimeend,
                         lineLeader,leaderPhone,cycletime,workshopName,planqty,actqty,insufqty,
-                        jdcqqty,qcRate,oeeRate,creation_date,created_by)
+                        jdcqqty,qcRate,oeeRate,creation_date,created_by,classgrp,lineLeaderEn)
         VALUES (#{bukrs},#{werks},#{groupId},#{product},#{workshopId},#{matnr},#{maktx},
                 #{kunnr},#{name1},#{sortl},#{shift},#{erdat},#{shifttimebegin},#{shifttimeend},
                 #{lineLeader},#{leaderPhone},#{cycletime},#{workshopName},#{planqty},#{actqty},#{insufqty},
-                #{jdcqqty},#{qcRate},#{oeeRate},#{creationDate},#{createdBy})
+                #{jdcqqty},#{qcRate},#{oeeRate},#{creationDate},#{createdBy},#{classgrp},#{lineLeaderEn})
     </insert>
 
     <update id="updateforKanb" parameterType="yj.kanb.viewdataschemaline.dto.Viewdataschemaline">
@@ -58,10 +60,12 @@
                                          name1 = #{name1},
                                          sortl = #{sortl},
                                          shift = #{shift},
+                                         classgrp = #{classgrp},
                                          erdat = #{erdat},
                                          shifttimebegin = #{shifttimebegin},
                                          shifttimeend = #{shifttimeend},
                                          lineLeader = #{lineLeader},
+                                         lineLeaderEn = #{lineLeaderEn},
                                          leaderPhone = #{leaderPhone},
                                          cycletime = #{cycletime},
                                          planqty = #{planqty},

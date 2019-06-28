@@ -21,6 +21,7 @@ public class Vblinegroupheader  extends BaseDTO {
     private String kunnr;//客户编码
 
     private String groupName;//产线组名称
+    private String groupNameEn;
     private String groupType;//资源类别：LINEDATA
     private String templeteUrl;//模板URL
     @Transient
@@ -104,5 +105,13 @@ public class Vblinegroupheader  extends BaseDTO {
 
     public void setTempleteUrl(String templeteUrl) {
         this.templeteUrl = templeteUrl;
+    }
+
+    public String getGroupNameEn() {
+        return groupNameEn;
+    }
+
+    public void setGroupNameEn(String groupNameEn) {
+        this.groupNameEn = groupNameEn;
     }
 }

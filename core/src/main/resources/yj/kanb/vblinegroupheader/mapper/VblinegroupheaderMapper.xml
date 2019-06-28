@@ -10,7 +10,8 @@
     <result column="kunnr" property="kunnr" jdbcType="VARCHAR"/>
     <result column="templeteUrl" property="templeteUrl" jdbcType="VARCHAR"/>
     <result column="workshopId" property="workshopId" jdbcType="VARCHAR"/>
-    <result column="groupName" property="groupName" jdbcType="DECIMAL"/>
+    <result column="groupName" property="groupName" jdbcType="VARCHAR"/>
+    <result column="groupNameEn" property="groupNameEn" jdbcType="VARCHAR"/>
     <result column="groupType" property="groupType" jdbcType="VARCHAR"/>
 </resultMap>
 

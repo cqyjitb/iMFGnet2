@@ -35,6 +35,7 @@ public class Viewdataschemaline extends BaseDTO {
     private String shifttimebegin;
     private String shifttimeend;
     private String lineLeader;
+    private String lineLeaderEn;
     private String leaderPhone;
     private Double cycletime;
     private String workshopName;
@@ -299,5 +300,13 @@ public class Viewdataschemaline extends BaseDTO {
 
     public void setErdat(Date erdat) {
         this.erdat = erdat;
+    }
+
+    public String getLineLeaderEn() {
+        return lineLeaderEn;
+    }
+
+    public void setLineLeaderEn(String lineLeaderEn) {
+        this.lineLeaderEn = lineLeaderEn;
     }
 }
