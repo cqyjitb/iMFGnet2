@@ -48,6 +48,11 @@
             <artifactId>ngdbc</artifactId>
             <version>2.3.48</version>
         </dependency>
+        <dependency>
+            <groupId>com.belerweb</groupId>
+            <artifactId>pinyin4j</artifactId>
+            <version>RELEASE</version>
+        </dependency>
     </dependencies>
     <build>
         <finalName>core</finalName>

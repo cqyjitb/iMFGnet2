@@ -3,6 +3,11 @@ package yj.core.wiplines.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.service.impl.BaseServiceImpl;
+import net.sourceforge.pinyin4j.PinyinHelper;
+import net.sourceforge.pinyin4j.format.HanyuPinyinCaseType;
+import net.sourceforge.pinyin4j.format.HanyuPinyinOutputFormat;
+import net.sourceforge.pinyin4j.format.HanyuPinyinToneType;
+import net.sourceforge.pinyin4j.format.exception.BadHanyuPinyinOutputFormatCombination;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import yj.core.wiplines.dto.Lines;
@@ -80,6 +85,29 @@ public class LinesServiceImpl extends BaseServiceImpl<Lines> implements ILinesSe
         if(dto.size() > 0){
             for(int i=0;i<dto.size();i++){
                 Lines lines = dto.get(i);
+                if(lines.getLineheader() == null || ("".equals(lines.getLineheader()))) {
+
+                }else{
+                    String chinese = lines.getLineheader();
+                    StringBuffer pybf = new StringBuffer();
+                    char[] arr = chinese.toCharArray();
+                    HanyuPinyinOutputFormat defaultFormat = new HanyuPinyinOutputFormat();
+                    defaultFormat.setCaseType(HanyuPinyinCaseType.LOWERCASE);
+                    defaultFormat.setToneType(HanyuPinyinToneType.WITHOUT_TONE);
+                    for (int j = 0; j < arr.length; j++) {
+                        if (arr[j] > 128) {
+                            try {
+                                pybf.append(PinyinHelper.toHanyuPinyinStringArray(arr[j], defaultFormat)[0]);
+                            } catch (BadHanyuPinyinOutputFormatCombination e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            pybf.append(arr[j]);
+                        }
+                    }
+                    String english = pybf.toString().substring(0,1).toUpperCase() + pybf.toString().substring(1);
+                    lines.setLineheaderEn(english);
+                }
                 int num = linesMapper.isExit(lines.getLineId());
                 if (num == 1){
                     if(lines.getCreationDate() == null){
