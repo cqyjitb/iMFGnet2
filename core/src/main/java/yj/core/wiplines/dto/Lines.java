@@ -82,6 +82,16 @@ public class Lines extends BaseDTO {
 
     private String headerphone;//负责人电话
 
+    private String lineheaderEn;//负责人英文
+
+    public String getLineheaderEn() {
+        return lineheaderEn;
+    }
+
+    public void setLineheaderEn(String lineheaderEn) {
+        this.lineheaderEn = lineheaderEn;
+    }
+
     public String getLineheader() {
         return lineheader;
     }
