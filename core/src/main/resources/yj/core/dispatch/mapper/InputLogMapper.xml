@@ -869,4 +869,18 @@
             </if>
         </where>
     </select>
+
+    <select id="selectByBgUuid" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from confirmation_input_log
+        <where>
+            BGUUID = #{bguuid}
+        </where>
+    </select>
+
+    <select id="selectByCxUuid" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from confirmation_input_log
+        <where>
+            CXUUID = #{cxuuid}
+        </where>
+    </select>
 </mapper>

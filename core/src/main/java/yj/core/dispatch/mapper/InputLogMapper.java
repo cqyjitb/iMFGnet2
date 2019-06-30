@@ -102,4 +102,8 @@ public interface InputLogMapper extends Mapper<InputLog>{
      * @return
      */
     InputLog selectByOrderno2(@Param("plant")String plant,@Param("arbpl")String arbpl, @Param("attr4")String attr4,@Param("attr6")String attr6);
+
+    InputLog selectByBgUuid(@Param("bguuid") String bguuid);
+
+    InputLog selectByCxUuid(@Param("cxuuid") String cxuuid);
 }

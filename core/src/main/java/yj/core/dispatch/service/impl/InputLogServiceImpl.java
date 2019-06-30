@@ -531,11 +531,11 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         DTPP001ReturnResult returnResult = new DTPP001ReturnResult();*/
 
         // 写入流转卡锁
-        Cardhlock lock = new Cardhlock();
-        lock.setZpgdbar(inputLog.getDispatch());
-        lock.setAttr1(uuidstr);
-        lock.setCreatedBy(inputLog.getCreatedBy());
-        lock.setCreationDate(new Date());
+//        Cardhlock lock = new Cardhlock();
+//        lock.setZpgdbar(inputLog.getDispatch());
+//        lock.setAttr1(uuidstr);
+//        lock.setCreatedBy(inputLog.getCreatedBy());
+//        lock.setCreationDate(new Date());
 
             DTBAOGONGReturnResult returnResult = webserviceUtilNew.receiveConfirmation(param, list);
             Date indate = new Date();
@@ -555,7 +555,10 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
             inputLog.setMatDesc(returnResult.getMAKTX());
             inputLog.setBguuid(uuidstr);
             inputLogMapper.insertInputLog(inputLog);
-            Long id = inputLogMapper.selectNextId();
+            //根据UUID 查询日志记录 获取ID
+            InputLog inputLogSaved = new InputLog();
+            inputLogSaved = inputLogMapper.selectByBgUuid(inputLog.getBguuid());
+            Long id = inputLogSaved.getId();
             result.setPlant(inputLog.getPlant());
             result.setInputId(id);
             result.setIsReversed("0");
@@ -661,17 +664,19 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         Date inDate = new Date();
         inputLog.setCxuuid(uuidstr);
         inputLogMapper.updateCxuuid(inputLog);
+        InputLog inputLogSaved = new InputLog();
+        inputLogSaved = inputLogMapper.selectByCxUuid(inputLog.getCxuuid());
         Log log = new Log();
         log.setMsgtx(returnResult.getMESSAGE());
         log.setMsgty(returnResult.getMSGTY());
         log.setTranType("1");
-        log.setRefId(inputLog.getId());
+        log.setRefId(inputLogSaved.getId());
         log.setCreated_by(inputLog.getCreated_by());
         log.setCreationDate(inDate);
         log.setLastUpdateDate(new Date());
         logMapper.insertLog(log);
         if ("S".equals(returnResult.getMSGTY())) {
-            resultMapper.updateReveseByInputId(inputLog.getId());
+            resultMapper.updateReveseByInputId(inputLogSaved.getId());
         }
 
         return returnResult;

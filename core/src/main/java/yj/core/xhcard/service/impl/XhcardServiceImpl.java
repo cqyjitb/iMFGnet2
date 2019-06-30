@@ -54,36 +54,10 @@ public class XhcardServiceImpl
     public int insertXhcard(List<Xhcard> list)
     {
         int result = 0;
-        List<Xhcard> insertDonelist = new ArrayList<>();
         if (list.size() > 0)
         {
-            XhcardReturnResult rs = null;
-            XhcardReturnResult rollback = null;
-            for (int i = 0; i < list.size(); i++)
-            {
-                rs = returnSyncXhcard(list.get(i));
-                if (rs.getMSGTY().equals("E")) {
-                    break;
-                }else{
-                    Xhcard insertXhcard = new Xhcard();
-                    insertXhcard = list.get(i);
-                    insertXhcard.setZbqbd("D");
-                    insertDonelist.add(insertXhcard);//记录已经删除的行
-                }
-            }
-            if (rs.getMSGTY().equals("S")) {
-                for (int i = 0; i < list.size(); i++) {
-                    if (xhcardMapper.insertXhcard(list.get(i)) == 1) {
-                        result += 1;
-                    }
-                }
-            } else {
-                if (insertDonelist.size() > 0){
-                    for (int i=0;i<insertDonelist.size();i++){
-                        rollback = returnSyncXhcard(insertDonelist.get(i));
-                    }
-                }
-                result = 0;
+            for (int i=0;i<list.size();i++){
+                result = result + xhcardMapper.insertXhcard(list.get(i));
             }
         }
         return result;
@@ -99,36 +73,12 @@ public class XhcardServiceImpl
     public int deleteXhcard(List<Xhcard> list)
     {
         int result = 0;
-        List<Xhcard> deletedonelist = new ArrayList<>();
+
         if (list.size() > 0)
         {
-            XhcardReturnResult rs = null;
-            XhcardReturnResult rollback = null;
             for (int i = 0; i < list.size(); i++)
             {
-                (list.get(i)).setZbqbd("D");
-                rs = returnSyncXhcard(list.get(i));
-                if (rs.getMSGTY().equals("E")) {
-                    break;
-                }else{
-                    Xhcard deleteXhcard = new Xhcard();
-                    deleteXhcard = list.get(i);
-                    deleteXhcard.setZbqbd("");
-                    deletedonelist.add(deleteXhcard);//记录已经删除的行
-                }
-            }
-            if (rs.getMSGTY().equals("S")) {
-                for (int i = 0; i < list.size(); i++) {
-                    if (xhcardMapper.deleteXhcard(list.get(i)) == 1) {
-                        result += 1;
-                    }
-                }
-            }else{
-                if (deletedonelist.size() > 0){
-                    for (int i=0;i<deletedonelist.size();i++){
-                        rollback = returnSyncXhcard(deletedonelist.get(i));
-                    }
-                }
+                result = result + xhcardMapper.deleteXhcard(list.get(i));
             }
         }
         return result;
@@ -158,12 +108,15 @@ public class XhcardServiceImpl
         params.setZtxt(xhcard.getZtxt());
         params.setChargkc(xhcard.getChargkc());
 
+        XhcardReturnResult result = new XhcardReturnResult();
         try {
-            XhcardReturnResult result = xhcardSyncWebserviceUtil.receiveConfirmation(params);
+            result = xhcardSyncWebserviceUtil.receiveConfirmation(params);
             return result;
         }catch (Exception e){
+            result.setMSGTY("E");
+            result.setMESSAGE("箱号同步接口错误！");
             e.printStackTrace();
-            return null;
+            return result;
         }
 
     }

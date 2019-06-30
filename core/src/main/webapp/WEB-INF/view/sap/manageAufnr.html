@@ -989,15 +989,11 @@
                                                                 async: false,
                                                                 contentType: "application/json; charset=utf-8",
                                                                 success: function (res) {
-                                                                    var rows = res.rows;
-                                                                    if (rows.length > 0) {
-                                                                        var message = '';
-                                                                        for (var i = 0; i < rows.length; i++) {
-                                                                            message = message + rows[i];
-                                                                        }
+                                                                    var code = res.code;
+                                                                    if (code == "S") {
                                                                         kendo.ui.showConfirmDialog({
                                                                             title: '提示',
-                                                                            message: message
+                                                                            message: res.message
                                                                         }).done(function (e) {
                                                                             if (e.button == "OK") {
                                                                                 $('#grid').data('kendoGrid').dataSource.page(1);
@@ -1010,6 +1006,11 @@
                                                                                 tabstrip.remove(tabselect);
                                                                                 tabstrip.select(prevtab);
                                                                             }
+                                                                        });
+                                                                    }else if (code == "E"){
+                                                                        kendo.ui.showErrorDialog({
+                                                                            title: '错误',
+                                                                            message:res.message
                                                                         });
                                                                     }
                                                                 },

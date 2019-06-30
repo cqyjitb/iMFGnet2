@@ -299,7 +299,7 @@ public class ZudheadController extends BaseController {
 
                 if (zudlist.getZctype().equals("1")){
                     Dftrghlist dftrghlist = new Dftrghlist();
-                    String[] strs = zudlist.getZqjjlh().split("-");
+                    String[] strs = zudlist.getZqjjlh().split("_");
                     dftrghlist = dftrghlistService.selectByIdAndItem(strs[1],Long.parseLong(strs[2]));
                     dftrghlist.setCancelFlag("0");
                     dftrghlist.setLastUpdatedBy(Long.valueOf(createdBy));
