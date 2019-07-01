@@ -53,6 +53,12 @@
             <if test="werks != null">
                 AND sh.werks = #{werks}
             </if>
+            <if test="fevor != null">
+                AND fe.fevor = #{fevor}
+            </if>
+            <if test="arbpl != null">
+                AND sh.arbpl = #{arbpl}
+            </if>
             <if test="prdDateAfter != null">
                 AND  sh.prd_date >= #{prdDateAfter}
             </if>

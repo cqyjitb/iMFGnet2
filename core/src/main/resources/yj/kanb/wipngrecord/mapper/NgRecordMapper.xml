@@ -23,14 +23,23 @@
             <if test="werks != ''">
                 AND werks = #{werks}
             </if>
-            <if test="deptId != ''">
-                AND dept_id = #{deptId}
-            </if>
             <if test="lineId != ''">
                 AND line_id = #{lineId}
             </if>
             <if test="matnr != ''">
                 AND matnr = #{matnr}
+            </if>
+            <if test="qty == 0">
+                AND zotype = '8'
+            </if>
+            <if test="qty == 1">
+                AND zotype not in ('8','14','4')
+            </if>
+            <if test="qty == 2">
+                AND zotype = '14'
+            </if>
+            <if test="qty == 3">
+                AND zotype = '4'
             </if>
             <if test="zissuetxt != ''">
                 AND zissuetxt = #{zissuetxt}
@@ -50,9 +59,6 @@
             1 = 1
             <if test="werks != ''">
                 AND werks = #{werks}
-            </if>
-            <if test="deptId != ''">
-                AND dept_id = #{deptId}
             </if>
             <if test="lineId != ''">
                 AND line_id = #{lineId}
@@ -81,9 +87,6 @@
             1 = 1
             <if test="werks != ''">
                 AND werks = #{werks}
-            </if>
-            <if test="deptId != ''">
-                AND dept_id = #{deptId}
             </if>
             <if test="lineId != ''">
                 AND line_id = #{lineId}

@@ -1,0 +1,305 @@
+<!--GP12统计PPM报表 918100064-->
+<#include "../include/header.html">
+<style>
+    .label {
+        color: red;
+    }
+</style>
+<div id="content-container">
+    <div id="page-content">
+        <div class="panel" style="padding: 0px;border:none;box-shadow: none;">
+            <form class="form-horizontal" id="myForm">
+                <div class="panel-body">
+                    <div id="test">
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">工厂<label class="label">*</label></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" id="werks" style="width: 100%" class="k-textbox" readonly="readonly" data-bind="value:model.werks">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">生产车间<label class="label">*</label></label>
+                                    <div class="col-sm-8">
+                                        <input id="deptId" class="k-textbox" data-bind="value:model.deptId" style="width: 100%">
+                                        <script>
+                                            $("#deptId").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_UNIT_NEW2")}, {
+                                                query: function (e) {
+                                                    e.param['enabledFlag'] = 'Y';
+                                                }
+                                            }));
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">生产线<label class="label">*</label></label>
+                                    <div class="col-sm-8">
+                                        <input id="lineId" class="k-textbox" data-bind="value:model.lineId"
+                                               style="width: 100%">
+                                        <script>
+                                            $("#lineId").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_LINE_NEW")}, {
+                                                query: function (e) {
+                                                    e.param['deptId'] = document.getElementById("deptId").value;
+                                                    e.param['enabledFlag'] = 'Y';
+                                                }
+                                            }))
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">产品名称<label class="label">*</label></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" id="matnr" style="width: 100%" class="k-textbox" readonly="readonly" data-bind="value:model.matnr">
+                                        <script>
+                                            $("#matnr").kendoLov($.extend(${lovProvider.getLov(base.contextPath, base.locale, "LOV_PRODUCTS")}, {
+                                                query: function (e) {
+                                                    e.param['lineId'] = document.getElementById("lineId").value;
+                                                    e.param['enabledFlag'] = 'Y';
+                                                }
+                                            }))
+                                        </script>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">不良类型<label class="label">*</label></label>
+                                    <div class="col-sm-8">
+                                        <input id="zissuetxt" name="zissuetxt" required placeholder="不良类型" data-role="combobox" data-value-primitive="true" data-text-field="text" data-value-field="value"
+                                               data-bind="enabled: isEnabled, source: zissuetxtSource, value:model.zissuetxt" style="width: 100%;"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-sm-4">
+                                <div class="form-group">
+                                    <label class="col-sm-4 control-label">选择日期<label class="label">*</label></label>
+                                    <div class="col-sm-8">
+                                        <input id="dateStart" style="width: 100%" data-role="datepicker" data-bind="value:model.gstrps" class="k-datepicker">
+                                    </div>
+                                    <script type="text/javascript">
+                                        $('#dateStart').kendoDatePicker({
+                                            start: "year",
+                                            depth: "year",
+                                            format: "yyyy-MM",
+                                            dateInput: true
+                                        })
+                                    </script>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            <div class="row" style="margin-right: -8px;">
+                <div class="pull-right" style="margin-right:15px">
+                    <span class="btn btn-primary" data-bind="click:queryGrid" type="submit">
+                    <i class="fa fa-search" style="margin-right:3px;"></i><@spring.message "hap.query"/></span>
+                    <span class="btn btn-default" type="button" data-bind="click:resetForm">
+                    <i class="fa fa-eraser" style="margin-right:3px;"></i><@spring.message "hap.reset"/></span>
+                    <span class="btn btn-info" type="button" id="panel_hidden" onclick="test()">
+                    <i class="fa fa-joomla" style="margin-right:3px;"></i><@spring.message "hap.panel_hidden"/></span>
+                    <span class="btn btn-info" type="button" id="panel_show" onclick="test()" style="display: none">
+                    <i class="fa fa-joomla" style="margin-right:3px;"></i><@spring.message "hap.panel_show"/></span>
+                </div>
+            </div>
+            <div id="Charts" style="width:1600px;"></div>
+            <div id="div1">
+                <table class="table1" border="1" style="width: 1200px">
+                    <thead class="thead1">
+
+                    </thead>
+                    <tbody class="tbody1">
+
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+<script type="text/javascript">
+    var viewModel = kendo.observable({
+        model: {
+            werks:"1001"
+        },
+        zissuetxtSource:[{
+            text: "全部",
+            value: "0"
+        },{
+            text: "M",
+            value: "2"
+        },{
+            text: "J",
+            value: "1"
+        }],
+        resetForm: function () {
+            var formData = viewModel.model.toJSON();
+            for (var k in formData) {
+                if(k != "werks"){
+                    viewModel.model.set(k, null);
+                }
+            }
+        },
+        queryGrid: function (e) {
+            var werks = document.getElementById("werks").value;
+            var deptId = document.getElementById("deptId").value;
+            var lineId = document.getElementById("lineId").value;
+            var matnr = document.getElementById("matnr").value;
+            var zissuetxt = document.getElementById("zissuetxt").value;
+            var dateStart = document.getElementById("dateStart").value;
+            if(werks == null || werks=="" || werks ==''){
+                kendo.ui.showErrorDialog({
+                    title: '错误',
+                    message: "查询条件:工厂,必输！"
+                });
+            }else if(deptId == null || deptId=="" || deptId ==''){
+                kendo.ui.showErrorDialog({
+                    title: '错误',
+                    message: "查询条件:生产车间,必输！"
+                });
+            }else if(lineId == null || lineId=="" || lineId ==''){
+                kendo.ui.showErrorDialog({
+                    title: '错误',
+                    message: "查询条件:生产线,必输！"
+                });
+            }else if(matnr == null || matnr=="" || matnr ==''){
+                kendo.ui.showErrorDialog({
+                    title: '错误',
+                    message: "查询条件:产品名称,必输！"
+                });
+            }else if(zissuetxt == null || zissuetxt=="" || zissuetxt ==''){
+                kendo.ui.showErrorDialog({
+                    title: '错误',
+                    message: "查询条件:缺陷代码,必输！"
+                });
+            }else  if(dateStart == null || dateStart=="" || dateStart ==''){
+                kendo.ui.showErrorDialog({
+                    title: '错误',
+                    message: "查询条件:开始日期,必输！"
+                });
+            }else {
+                $.ajax({
+                    url: "${base.contextPath}/wip/ng/record/queryByZissuetxt",
+                    type: "get",
+                    data: {
+                        "werks": werks,
+                        "deptId": deptId,
+                        "lineId": lineId,
+                        "matnr": matnr,
+                        "dateStart": dateStart,
+                        "qty":zissuetxt
+                    },
+                    async: false,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (data) {
+                        data = data.rows;
+                        var head = [],list = [];
+                        var qty = [],gmnga = [],ppm = [],qtySum=0,gmngaSum=0,ppmSum=0.00;
+                        for(var i=0;i<data.length;i++){
+                            head.push(data[i].dateStart);
+                            qty.push(data[i].qty);
+                            qtySum = qtySum + data[i].qty;
+                            gmnga.push(data[i].gmnga);
+                            gmngaSum = gmngaSum + data[i].gmnga;
+                            ppm.push(data[i].ppm);
+                            ppmSum = ppmSum + data[i].ppm;
+                        }
+                        qty.push(qtySum,ppmSum);
+                        gmnga.push(gmngaSum);
+                        list.push(qty,gmnga,ppm);
+                        showLine(head,list);
+                    },
+                    error:function (data) {
+                        kendo.ui.showErrorDialog({
+                            title: '错误',
+                            message: "未能获取到合格率数据！"
+                        });
+                    }
+                })
+            }
+        }
+    });
+    kendo.bind($('#page-content'), viewModel);
+    function test() {
+        var apply = $("#test");
+        var button_hidden = $("#panel_hidden");
+        var button_show = $("#panel_show");
+        if (apply.is(":hidden")) {
+            button_hidden.show();
+            button_show.hide();
+            apply.show();    //如果元素为隐藏,则将它显现
+        } else {
+            button_hidden.hide();
+            button_show.show();
+            apply.hide();     //如果元素为显现,则将其隐藏
+        }
+    }
+    function showLine(head,list) {
+        $(list).each(function(k,v){
+            $(v).each(function(k1,v1){
+                list[k][k1] = parseFloat(v1);
+
+            })
+        });
+        $("#Charts").highcharts({
+            chart:{
+                type:'line'
+            },
+            title:{
+                text:'PPM图'
+            },
+            xAxis:{
+                categories:head
+            },
+            yAxies:{
+                title:{
+                    text:'ppm'
+                }
+            },
+            plotOptions:{
+                line:{
+                    dataLabels: {
+                        enabled: true,
+                        format: "{point.y:.2f}"
+                    }
+                }
+            },
+            series:[{
+                name:"ppm",
+                data:list[2],
+                tooltip:{
+                    valueSuffix:''
+                },
+                dataLables:{
+                    enabled:true
+                }
+            }]
+        });
+        head.push("Total总计（Pcs）","累计PPM");
+        var head1 = '<tr><th>问题描述</th>';
+        $(head).each(function (k,v) {
+            head1 = head1 + '<th >'+'&nbsp;&nbsp;&nbsp;' + v + '</th>';
+        });
+        $('.thead1').html(head1 + '</tr>');
+        var  html1 = '';
+        var num1 = ['不合格品数','总检查项数','当月PPM'];
+        for (var i=0;i<list.length;i++){
+            html1 = html1 + '<tr>' + '<td>'+num1[i] +'</td>';
+            $(list[i]).each(function(k1,v1){
+                html1 = html1 + '<td>'+'&nbsp;&nbsp;&nbsp;'+v1+'</td>';
+            });
+            html1 = html1 + '</tr>';
+        }
+        $('.tbody1').html(html1);
+    }
+</script>
+</body>
+</html>

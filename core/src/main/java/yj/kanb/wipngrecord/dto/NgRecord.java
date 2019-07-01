@@ -6,6 +6,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.util.Date;
 
 @ExtensionAttribute(disable=true)
@@ -38,6 +39,26 @@ public class NgRecord extends BaseDTO {
     private String dateEnd;
     private String scrapRate;//不良比
     private String scrapRateSum;//累计不良比
+
+    @Transient
+    private Integer gmnga;//装箱数
+    private Double ppm;//当月PPM
+
+    public Double getPpm() {
+        return ppm;
+    }
+
+    public void setPpm(Double ppm) {
+        this.ppm = ppm;
+    }
+
+    public Integer getGmnga() {
+        return gmnga;
+    }
+
+    public void setGmnga(Integer gmnga) {
+        this.gmnga = gmnga;
+    }
 
     public String getScrapRate() {
         return scrapRate;

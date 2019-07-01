@@ -644,7 +644,7 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
 
     @Override
     public List<Shotnum> selectShotnum3(Shotnum dto, IRequest requestContext) {
-        List<Shotnum> list1 = shotnumMapper.selectByPrdDate(dto.getWerks(),dto.getPrdDateAfter(),dto.getPrdDateBefore());
+        List<Shotnum> list1 = shotnumMapper.selectByPrdDate(dto.getWerks(),null,null,dto.getPrdDateAfter(),dto.getPrdDateBefore());
         List<Shotnum> list = new ArrayList<Shotnum>();
         List<Shotnum> list2 = new ArrayList<Shotnum>();
         Shotnum shotnum = new Shotnum();
@@ -660,7 +660,7 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                 for (int i = 0; i < list1.size(); i++) {
                     list.add(list1.get(i));
                     for (int j = i + 1; j < list1.size(); j++) {
-                        if (list1.get(i).getArbpl().equals(list1.get(j).getArbpl())) {
+                        if (list1.get(i).getArbpl().equals(list1.get(j).getArbpl()) && list1.get(i).getFevor().equals(list1.get(j).getFevor())) {
                             list1.remove(j);
                             j--;
                         }
@@ -670,7 +670,7 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                     Integer mdnum = 1, shotNum = 0, yeild = 0,wasteNum = 0;
                     Double grgew = 0.00;
                     shotnum = list.get(i);
-                    list2 = shotnumMapper.selectByPrdDate(shotnum.getWerks(), dto.getPrdDateAfter(), dto.getPrdDateBefore());
+                    list2 = shotnumMapper.selectByPrdDate(shotnum.getWerks(),shotnum.getFevor(),shotnum.getArbpl(),dto.getPrdDateAfter(),dto.getPrdDateBefore());
                     String minTime = list2.get(0).getPrdDate();
                     String maxTime = list2.get(0).getPrdDate();
                     Long startMin = list2.get(0).getShotStart();
@@ -726,8 +726,8 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                     sTime.setTime(startDate);
                     while(sTime.getTime().before(endDate)){
                         InputLog inputLog1 = inputLogMapper.selectByOrderno2(shotnum.getWerks(),shotnum.getArbpl(),null, sf.format(sTime.getTime()));
-                        yeild = yeild + inputLog1.getYeild().intValue();
                         wasteNum = wasteNum + inputLog1.getWorkScrap().intValue()+inputLog1.getRowScrap().intValue();
+                        yeild = yeild + inputLog1.getYeild().intValue();
                         sTime.add(sTime.DATE, 1);
                     }
                     shotnum.setYeild(yeild);
@@ -739,7 +739,7 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                     list.add(list1.get(i));
                     for (int j = i + 1; j < list1.size(); j++) {
                         if((list1.get(i).getArbpl().equals(list1.get(j).getArbpl()))&&(list1.get(i).getShifts().equals(list1.get(j).getShifts()))
-                                && (list1.get(i).getPrdDate().equals(list1.get(j).getPrdDate()))) {
+                                && (list1.get(i).getPrdDate().equals(list1.get(j).getPrdDate())) &&(list1.get(i).getFevor().equals(list1.get(j).getFevor()))) {
                             list1.remove(j);
                             j--;
                         }
@@ -761,24 +761,24 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                         }
                         Integer shotNum1 = ((int) (list2.get(a).getShotEnd() - list2.get(a).getShotStart()) * mdnum);
                         shotNum = shotNum + shotNum1;
+                        if (a > 0) {
+                            if (startMin > list2.get(a).getShotStart()) {
+                                startMin = list2.get(a).getShotStart();
+                            }
+                            if (endMax < list2.get(a).getShotEnd()) {
+                                endMax = list2.get(a).getShotEnd();
+                            }
+                        }
                         if (marc != null) {
                             if (marc.getBrgew() == null) {
                                 marc.setBrgew(0.0);
                             }
                             grgew = grgew + (shotNum1 * marc.getBrgew());
                         }
-                        if (a > 0) {
-                            if (list2.get(a).getShotStart() < startMin) {
-                                startMin = list2.get(a).getShotStart();
-                            }
-                            if (list2.get(a).getShotEnd() > endMax) {
-                                endMax = list2.get(a).getShotEnd();
-                            }
-                        }
                     }
                     shotnum.setPrdDateAfter(shotnum.getPrdDate());
-                    shotnum.setShotStart(startMin);
                     shotnum.setShotEnd(endMax);
+                    shotnum.setShotStart(startMin);
                     shotnum.setShotNum(shotNum);
                     shotnum.setBrgew(df.format(grgew));
                     InputLog inputLog1 = inputLogMapper.selectByOrderno2(shotnum.getWerks(),shotnum.getArbpl(),shotnum.getShifts(), shotnum.getPrdDate());
@@ -810,12 +810,12 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                     for (int a = 0; a < shift; a++) {
                         List<Crhd> crhd = new ArrayList<Crhd>();
                         String shifts = null;
-                        if (a == 0) {
-                            shifts = "1";
-                        } else if (a == 2) {
+                        if (a == 2) {
                             shifts = "2";
                         } else if (a == 1) {
                             shifts = "3";
+                        } else if (a == 0) {
+                            shifts = "1";
                         }
                         if (num > 0) {
                             for (int i = 0; i < crhds.size(); i++) {
@@ -836,27 +836,35 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
                         if (crhd.size() > 0) {
                             for (int i = 0; i < crhd.size(); i++) {
                                 InputLog inputLog1 = new InputLog();
-                                Shotnum shotnum1 = new Shotnum();
-                                shotnum1.setWerks(crhd.get(i).getWerks());
-                                shotnum1.setFevor(crhd.get(i).getVeran());
-                                shotnum1.setTxt(crhd.get(i).getTxt());
-                                shotnum1.setArbpl(crhd.get(i).getArbpl());
-                                shotnum1.setKtext(crhd.get(i).getKetxt());
-                                shotnum1.setPrdDateAfter(sf.format(cal2.getTime()));
-                                shotnum1.setShifts(shifts);
-                                shotnum1.setShotStart(0L);
-                                shotnum1.setShotEnd(0L);
-                                shotnum1.setShotNum(0);
-                                shotnum1.setBrgew("0.00");
                                 inputLog1 = inputLogMapper.selectByOrderno2(crhd.get(i).getWerks(), crhd.get(i).getArbpl(), shifts, sf.format(cal2.getTime()));
-                                shotnum1.setYeild(inputLog1.getYeild().intValue());
-                                shotnum1.setWasteNum(inputLog1.getWorkScrap().intValue() + inputLog1.getRowScrap().intValue());
-                                shotnum1.setDifferentNum(shotnum1.getYeild() + shotnum1.getWasteNum());
-                                list.add(shotnum1);
+                                if((inputLog1.getYeild().intValue() + inputLog1.getWorkScrap().intValue() + inputLog1.getRowScrap().intValue()) != 0){
+                                    Shotnum shotnum1 = new Shotnum();
+                                    shotnum1.setWerks(crhd.get(i).getWerks());
+                                    shotnum1.setFevor(crhd.get(i).getVeran());
+                                    shotnum1.setTxt(crhd.get(i).getTxt());
+                                    shotnum1.setArbpl(crhd.get(i).getArbpl());
+                                    shotnum1.setKtext(crhd.get(i).getKetxt());
+                                    shotnum1.setPrdDateAfter(sf.format(cal2.getTime()));
+                                    shotnum1.setShifts(shifts);
+                                    shotnum1.setShotStart(0L);
+                                    shotnum1.setShotEnd(0L);
+                                    shotnum1.setShotNum(0);
+                                    shotnum1.setBrgew("0.00");
+                                    shotnum1.setYeild(inputLog1.getYeild().intValue());
+                                    shotnum1.setWasteNum(inputLog1.getWorkScrap().intValue() + inputLog1.getRowScrap().intValue());
+                                    shotnum1.setDifferentNum(shotnum1.getYeild() + shotnum1.getWasteNum());
+                                    list.add(shotnum1);
+                                }
                             }
                         }
                     }
                     cal2.add(cal2.DATE, 1);
+                }
+            }
+            for (int i=0;i<list.size();i++){
+                if (list.get(i).getDifferentNum() == 0){
+                    list.remove(i);
+                    i--;
                 }
             }
         }

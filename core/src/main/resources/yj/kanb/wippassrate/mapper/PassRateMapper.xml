@@ -16,15 +16,12 @@
     </resultMap>
 
     <select id="queryByMouth" parameterType="yj.kanb.wippassrate.dto.PassRate" resultMap="BaseResultMap">
-        select COALESCE(sum(GMNGA),0) as GMNGA,COALESCE(sum(xmnga),0) as xmnga,COALESCE(sum(rmnga),0) as rmnga
+        select COALESCE(sum(GMNGA),0) as gmnga,COALESCE(sum(xmnga),0) as xmnga,COALESCE(sum(rmnga),0) as rmnga
         from wip_pass_rate
         <where>
             1 = 1
             <if test="werks != ''">
                 AND werks = #{werks}
-            </if>
-            <if test="deptId != ''">
-                AND dept_id = #{deptId}
             </if>
             <if test="lineId != ''">
                 AND line_id = #{lineId}
@@ -47,9 +44,6 @@
             1 = 1
             <if test="werks != ''">
                 AND werks = #{werks}
-            </if>
-            <if test="deptId != ''">
-                AND dept_id = #{deptId}
             </if>
             <if test="lineId != ''">
                 AND line_id = #{lineId}
