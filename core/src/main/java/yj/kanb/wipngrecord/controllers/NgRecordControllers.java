@@ -102,6 +102,7 @@ public class NgRecordControllers extends BaseController {
         List<NgRecord> list = service.queryNgRecord(dto);
         if(list.size() > 0){
             Integer sum = service.queryNgRecordByQty(dto);
+            dto.setQty(null);
             DecimalFormat df = new DecimalFormat("#0.00");
             Integer qtySum = 0;
             for (int i=0;i<list.size();i++){
@@ -285,6 +286,56 @@ public class NgRecordControllers extends BaseController {
                 list.add(ngRecord);
                 cal.add(cal.DATE,day);
             }
+        }
+        return new ResponseData(list);
+    }
+
+    /**
+     * GP12统计PPM报表数据查询页面请求 918100064
+     * @param request
+     * @param dto
+     * @return
+     */
+    @RequestMapping(value = "wip/ng/record/queryByZissuetxt")
+    @ResponseBody
+    public ResponseData queryByZissuetxt(HttpServletRequest request,NgRecord dto){
+        Calendar cal = Calendar.getInstance();
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM");
+        DecimalFormat df = new DecimalFormat("#0.00");
+        List<NgRecord> list = new ArrayList<NgRecord>();
+        List<PassRate> list1 = new ArrayList<PassRate>();
+        String dateStart = dto.getDateStart();
+        Integer year = Integer.parseInt(dateStart.substring(0,4));
+        try {
+            Date dateStart2 = sdf.parse(year + "-01-01");
+            cal.setTime(dateStart2);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        PassRate passRate = new PassRate();
+        passRate.setWerks(dto.getWerks());
+        passRate.setLineId(dto.getLineId());
+        passRate.setMatnr(dto.getMatnr());
+        for (int i=1;i<=12;i++){
+            NgRecord ngRecord = new NgRecord();
+            Integer day = cal.getActualMaximum(Calendar.DAY_OF_MONTH);
+            dto.setDateStart(sdf2.format(cal.getTime()) + "-01");
+            dto.setDateEnd(sdf2.format(cal.getTime()) + "-" + day);
+            passRate.setDateStart(sdf2.format(cal.getTime()) + "-01");
+            passRate.setDateEnd(sdf2.format(cal.getTime()) + "-" + day);
+            Integer qty = service.queryNgRecordByQty(dto);
+            list1 = passRateService.queryByMouth(passRate);
+            Double ppm = 0.00;
+            if(qty > 0 && (list1.get(0).getGmnga()) > 0){
+                ppm = Double.parseDouble(df.format(((float)qty/1000000/(list1.get(0).getGmnga()))));
+            }
+            ngRecord.setDateStart(i + "月");
+            ngRecord.setQty(qty);
+            ngRecord.setGmnga(list1.get(0).getGmnga());
+            ngRecord.setPpm(ppm);
+            list.add(ngRecord);
+            cal.add(cal.DATE,day);
         }
         return new ResponseData(list);
     }

@@ -64,4 +64,12 @@ public interface IShotnumService extends IBaseService<Shotnum>, ProxySelf<IShotn
      * @return
      */
     List<Shotnum> selectShotnum2(Shotnum dto, IRequest requestContext);
+
+    /**
+     * 压射号异常明细表  918100064
+     * @param dto
+     * @param requestContext
+     * @return
+     */
+    List<Shotnum> selectShotnum3(Shotnum dto, IRequest requestContext);
 }

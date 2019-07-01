@@ -61,27 +61,8 @@
             }
         }
     });
-    function newData(url) {
-        var dialog = $("#newWin").kendoWindow({
-            actions: ["Close"],
-            width: 900,
-            height: 600,
-            title: '<@spring.message "hap.edit"/>',
-            content: url,
-            iframe: true,
-            visible: false,
-            resizable: false,
-            modal: true,
-            close: function () {
-                //window 关闭  刷新 本页面的  Grid
-                $('#Grid').data('kendoGrid').dataSource.page(1);
-            }
-        }).data("kendoWindow");
-        dialog.center().open();
-    }
 </script>
 <body>
-<div id="newWin" style="display: none"></div>
 <div id="page-content">
     <div class="panel" style="padding: 0px;border:none;box-shadow: none;">
         <form class="form-horizontal" id="myForm">
@@ -311,6 +292,17 @@
                 field:"groupName",
                 title:"产线组名称",
                 width:120,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"groupNameEn",
+                title:"产线组名称(英文)",
+                width:240,
                 headerAttributes: {
                     style: "text-align: center;"
                 },

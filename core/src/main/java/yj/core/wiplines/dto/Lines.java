@@ -88,6 +88,26 @@ public class Lines extends BaseDTO {
 
     private String headerphone;//负责人电话
 
+    private String lineheaderEn;//负责人英文
+
+    private Float oeerate;//设计OEE
+
+    public Float getOeerate() {
+        return oeerate;
+    }
+
+    public void setOeerate(Float oeerate) {
+        this.oeerate = oeerate;
+    }
+
+    public String getLineheaderEn() {
+        return lineheaderEn;
+    }
+
+    public void setLineheaderEn(String lineheaderEn) {
+        this.lineheaderEn = lineheaderEn;
+    }
+
     public String getLineheader() {
         return lineheader;
     }

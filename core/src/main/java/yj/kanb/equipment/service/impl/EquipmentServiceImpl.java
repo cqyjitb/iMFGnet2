@@ -62,6 +62,7 @@ public class EquipmentServiceImpl extends BaseServiceImpl<Equipment> implements 
                 vbgrouph.setVbgroupName(equipment.getVbgroupName());
                 vbgrouph.setCreatedBy(Long.valueOf(userId));
                 vbgrouph.setCreationDate(new Date());
+                vbgrouph.setVbgroupNameEn(equipment.getVbgroupNameEn());
                 vbgroupheaderMapper.insertVbGroupH(vbgrouph);
             }else{
                 return "该MAC地址已存在，请重新输入！";
@@ -80,6 +81,7 @@ public class EquipmentServiceImpl extends BaseServiceImpl<Equipment> implements 
             Vbgroupheader vbgrouph = new Vbgroupheader();
             vbgrouph.setEqId(equipment.getEqId());
             vbgrouph.setVbgroupName(equipment.getVbgroupName());
+            vbgrouph.setVbgroupNameEn(equipment.getVbgroupNameEn());
             vbgrouph.setLastUpdatedBy(Long.valueOf(userId));
             vbgrouph.setLastUpdateDate(new Date());
             vbgroupheaderMapper.updateVbGroupH(vbgrouph);

@@ -43,6 +43,32 @@
         <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
     </resultMap>
 
+    <select id="selectByPrdDate" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select sh.*,fe.fevor,fe.txt,sh.class as sClass,fe.shift_seq as shiftSeq
+        from wip_shotnum sh,sap_fevor fe,sap_crhd cr
+        <where>
+            sh.arbpl = cr.arbpl
+            AND cr.veran = fe.fevor
+            AND fe.fevor like '4%'
+            <if test="werks != null">
+                AND sh.werks = #{werks}
+            </if>
+            <if test="fevor != null">
+                AND fe.fevor = #{fevor}
+            </if>
+            <if test="arbpl != null">
+                AND sh.arbpl = #{arbpl}
+            </if>
+            <if test="prdDateAfter != null">
+                AND  sh.prd_date >= #{prdDateAfter}
+            </if>
+            <if test="prdDateBefore != null">
+                AND #{prdDateBefore} >= sh.prd_date
+            </if>
+        </where>
+        order by fe.fevor asc,sh.prd_date asc,sh.shifts asc,sh.arbpl asc
+    </select>
+
     <select id="queryShotnum" parameterType="yj.core.wipshotnum.dto.Shotnum" resultMap="BaseResultMap2">
         select DISTINCT sh.*,cr.veran,u.user_name from wip_shotnum sh
         left join  sap_crhd cr on sh.arbpl = cr.arbpl

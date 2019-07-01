@@ -20,6 +20,7 @@
         <result column="LINEHEADER" property="lineHeader" jdbcType="VARCHAR"/>
         <result column="LINEHEADER_EN" property="lineHeaderEn" jdbcType="VARCHAR"/>
         <result column="HEADERPHONE" property="headerPhone" jdbcType="VARCHAR"/>
+        <result column="OEERATE" property="oeerate" jdbcType="DECIMAL"/>
         <result column="SEG_OPR_NAME" property="segOprName" jdbcType="VARCHAR"/>
         <result column="POINT_NUM" property="pointNum" jdbcType="DECIMAL" />
         <result column="CREATION_DATE" property="creationDate" jdbcType="DATE" />
@@ -92,7 +93,7 @@
     </select>
 
     <select id="selectFromPage" parameterType="yj.core.wiplines.dto.Lines" resultMap="BaseResultMap2">
-        select distinct li.LINE_ID,li.dept_id,li.lineheader,li.headerphone,
+        select distinct li.LINE_ID,li.dept_id,li.lineheader,li.headerphone,li.oeerate,
         li.WERKS,
         li.LINE_CODE,
         li.DESCRIPTIONS,
@@ -154,8 +155,8 @@
         DESCRIPTIONS=#{descriptions},PLINE_ID=#{plineId},ARBPL=#{arbpl},TAKT_TIME=#{taktTime},
         ENABLE_FLAG=#{enableFlag},START_DATE=#{startDate},PKG_BIND_FLAG=#{pkgBindFlag},CGROUP=#{cgroup},
         END_DATE=#{endDate},ONLINETYPE=#{onlinetype},PKGTYPE=#{pkgtype},EXECOFF_FLAG=#{execoffFlag},
-        LINEHEADER = #{lineheader},HEADERPHONE = #{headerphone},
-        SEG_OPR_NAME=#{segOprName},POINT_NUM=#{pointNum},CREATION_DATE=#{creationDate},
+        LINEHEADER = #{lineheader},HEADERPHONE = #{headerphone},LINEHEADER_EN = #{lineheaderEn},
+        OEERATE = #{oeerate},SEG_OPR_NAME=#{segOprName},POINT_NUM=#{pointNum},CREATION_DATE=#{creationDate},
         CREATED_BY=#{createdBy},LAST_UPDATED_DATE=#{lastUpdatedDate},LAST_UPDATED_BY=#{lastUpdatedBy}
         <where>
             WERKS=#{werks}
@@ -168,11 +169,11 @@
 
     <insert id="insertLines" parameterType="yj.core.wiplines.dto.Lines">
         insert into wip_lines(WERKS,DEPT_ID,LINE_CODE,LINE_ID,DESCRIPTIONS,PLINE_ID,ARBPL,TAKT_TIME,
-        ENABLE_FLAG,START_DATE,END_DATE,ONLINETYPE,PKGTYPE,EXECOFF_FLAG,PKG_BIND_FLAG,CGROUP,
-        LINEHEADER,HEADERPHONE,SEG_OPR_NAME,POINT_NUM,CREATION_DATE,CREATED_BY)
+        ENABLE_FLAG,START_DATE,END_DATE,ONLINETYPE,PKGTYPE,EXECOFF_FLAG,PKG_BIND_FLAG,CGROUP,OEERATE,
+        LINEHEADER,HEADERPHONE,LINEHEADER_EN,SEG_OPR_NAME,POINT_NUM,CREATION_DATE,CREATED_BY)
         VALUES(#{werks},#{deptId},#{lineCode},#{lineId},#{descriptions},#{plineId},#{arbpl},#{taktTime},
-        #{enableFlag},#{startDate},#{endDate},#{onlinetype},#{pkgtype},#{execoffFlag},#{pkgBindFlag},#{cgroup},
-        #{lineheader},#{headerphone},#{segOprName},#{pointNum},#{creationDate},#{createdBy})
+        #{enableFlag},#{startDate},#{endDate},#{onlinetype},#{pkgtype},#{execoffFlag},#{pkgBindFlag},#{cgroup},#{oeerate},
+        #{lineheader},#{headerphone},#{lineheaderEn},#{segOprName},#{pointNum},#{creationDate},#{createdBy})
     </insert>
 
 

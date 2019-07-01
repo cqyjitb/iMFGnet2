@@ -24,6 +24,16 @@ public class Equipment extends BaseDTO {
     private String address;
     @Transient
     private String vbgroupName;
+    @Transient
+    private String vbgroupNameEn;
+
+    public String getVbgroupNameEn() {
+        return vbgroupNameEn;
+    }
+
+    public void setVbgroupNameEn(String vbgroupNameEn) {
+        this.vbgroupNameEn = vbgroupNameEn;
+    }
 
     public String getVbgroupName() {
         return vbgroupName;

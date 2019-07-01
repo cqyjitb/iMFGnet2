@@ -155,7 +155,8 @@
                                     pkgBindFlag:{defaultValue: '0', type: 'boolean', checkedValue: '1', uncheckedValue: '0'},
                                     startDate: {type: "date",editable: true},
                                     endDate: {type: "date",editable: true,defaultValue:null},
-                                    headerphone:{type:"number",editable:true}
+                                    headerphone:{type:"number",editable:true},
+                                    oeerate:{type:"number",editable:true}
                                 }
                             }
                         }
@@ -446,6 +447,17 @@
                             {
                                 field:"taktTime",
                                 title:"生产节拍MIN",
+                                width:80,
+                                headerAttributes: {
+                                    style: "text-align: center;"
+                                },
+                                attributes: {
+                                    style: "text-align: center;"
+                                }
+                            },
+                            {
+                                field:"oeerate",
+                                title:"设计OEE",
                                 width:80,
                                 headerAttributes: {
                                     style: "text-align: center;"
