@@ -23,7 +23,7 @@ import java.util.Date;
 import java.util.List;
 
 public class NgRecordDateJob extends AbstractJob {
-    private static Logger log = LoggerFactory.getLogger(KanbGetDataJob.class);
+    private static Logger log = LoggerFactory.getLogger(NgRecordDateJob.class);
     @Autowired
     private IInOutRecordService inOutRecordService;
     @Autowired

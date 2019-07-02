@@ -1,6 +1,7 @@
 package yj.core.TaskJob;
 
 import com.hand.hap.job.AbstractJob;
+import com.hand.hap.job.KanbGetDataJob;
 import com.hand.hap.job.dto.SimpleTriggerDto;
 import com.hand.hap.job.service.IQuartzService;
 import org.quartz.JobDetail;

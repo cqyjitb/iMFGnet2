@@ -21,7 +21,7 @@ import java.util.*;
 import java.util.Calendar;
 
 public class PassRateJob extends AbstractJob {
-    private static Logger log = LoggerFactory.getLogger(KanbGetDataJob.class);
+    private static Logger log = LoggerFactory.getLogger(PassRateJob.class);
     @Autowired
     private IInOutRecordService inOutRecordService;
     @Autowired
