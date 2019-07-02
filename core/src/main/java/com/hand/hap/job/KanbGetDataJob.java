@@ -1,6 +1,5 @@
-package yj.core.TaskJob;
+package com.hand.hap.job;
 
-import com.hand.hap.job.AbstractJob;
 import org.quartz.JobDetail;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobKey;
@@ -34,15 +33,16 @@ import yj.kanb.viewdataschemaline.service.IViewdataschemalineService;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
 
 /**
  *  看板后台取数任务
  */
 public class KanbGetDataJob extends AbstractJob {
     private static Logger log = LoggerFactory.getLogger(KanbGetDataJob.class);
-    @Autowired
-    private IKbtestService kbtestService;
     @Autowired
     private ICurlzkService curlzkService;
     @Autowired
@@ -65,7 +65,7 @@ public class KanbGetDataJob extends AbstractJob {
     private ICustService custService;
     @Override
     protected boolean isRefireImmediatelyWhenException() {
-        return false;
+        return true;
     }
 
     @Override
