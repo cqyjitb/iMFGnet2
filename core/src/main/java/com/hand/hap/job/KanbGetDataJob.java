@@ -63,6 +63,9 @@ public class KanbGetDataJob extends AbstractJob {
     private IProductsCfgService productsCfgService;
     @Autowired
     private ICustService custService;
+    public KanbGetDataJob(){
+
+    }
     @Override
     protected boolean isRefireImmediatelyWhenException() {
         return true;
