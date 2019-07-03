@@ -32,6 +32,7 @@ public abstract class AbstractJob implements Job, JobListener {
     @Override
     public final void execute(JobExecutionContext context) throws JobExecutionException {
         try {
+            System.out.println("begin");
             safeExecute(context);
         } catch (Exception e) {
             if (StringUtils.isEmpty(getExecutionSummary())) {
