@@ -41,6 +41,7 @@ public class NgRecordJob extends AbstractJob {
         log.info(msg);
         SimpleTriggerDto simpleTriggerDto = quartzService.getSimpleTrigger(triggerKey.getName(),triggerKey.getGroup());
         int minute = simpleTriggerDto.getRepeatInterval().intValue();
+        minute = minute / 1000;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date endDate = context.getFireTime();
         Calendar cal = Calendar.getInstance();
