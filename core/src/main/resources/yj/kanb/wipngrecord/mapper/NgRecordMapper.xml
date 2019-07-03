@@ -16,6 +16,19 @@
         <result column="ZTEXT" property="ztext" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <select id="selectNgRecord" parameterType="yj.kanb.wipngrecord.dto.NgRecord" resultMap="BaseResultMap">
+        select * from wip_ng_record
+        <where>
+            werks = #{werks}
+            AND dept_id = #{deptId}
+            AND line_id = #{lineId}
+            AND matnr = #{matnr}
+            AND erdat = #{erdat}
+            AND zotype = #{zotype}
+            AND zissuetxt = #{zissuetxt}
+        </where>
+    </select>
+
     <select id="queryByQty" parameterType="yj.kanb.wipngrecord.dto.NgRecord" resultType="java.lang.Integer">
         select COALESCE(sum(qty),0) from wip_ng_record
         <where>
@@ -113,4 +126,17 @@
         insert into wip_ng_record(werks,dept_id,line_id,matnr,maktx,erdat,qty,zotype,zissuetxt,ztext,gmein,created_by,creation_date)
         values(#{werks},#{deptId},#{lineId},#{matnr},#{maktx},#{erdat},#{qty},#{zotype},#{zissuetxt},#{ztext},#{gmein},#{createdBy},#{creationDate})
     </insert>
+
+    <update id="updateNgRecord" parameterType="yj.kanb.wipngrecord.dto.NgRecord">
+        update wip_ng_record set qty = #{qty},,last_updated_by = #{lastUpdatedBy},last_update_date = #{lastUpdateDate}
+        <where>
+            werks = #{werks}
+            AND dept_id = #{deptId}
+            AND line_id = #{lineId}
+            AND matnr = #{matnr}
+            AND erdat = #{erdat}
+            AND zotype = #{zotype}
+            AND zissuetxt = #{zissuetxt}
+        </where>
+    </update>
 </mapper>

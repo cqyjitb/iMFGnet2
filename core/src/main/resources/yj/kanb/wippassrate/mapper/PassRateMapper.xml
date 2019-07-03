@@ -65,4 +65,15 @@
         insert into wip_pass_rate(werks,dept_id,line_id,matnr,maktx,erdat,gmnga,xmnga,rmnga,gmein,created_by,creation_date)
         values(#{werks},#{deptId},#{lineId},#{matnr},#{maktx},#{erdat},#{gmnga},#{xmnga},#{rmnga},#{gmein},#{createdBy},#{creationDate})
     </insert>
+
+    <update id="updatePassRate" parameterType="yj.kanb.wippassrate.dto.PassRate">
+        update wip_pass_rate set gmnga = #{gmnga},xmnga = #{xmnga},rmnga = #{rmnga},last_updated_by = #{lastUpdatedBy},last_update_date = #{lastUpdateDate}
+        <where>
+            werks = #{werks}
+            AND dept_id = #{deptId}
+            AND line_id = #{lineId}
+            AND matnr = #{matnr}
+            AND erdat = #{erdat}
+        </where>
+    </update>
 </mapper>

@@ -144,6 +144,7 @@
         <where>
             re.zissuetxt != ''
             AND re.reflag != 1
+            AND re.zissuetxt != 'J099'
             <if test="creationDateBefore != null">
                 and re.creation_date >= #{creationDateBefore}
             </if>
@@ -207,7 +208,7 @@
                 and re.creation_date >= #{creationDateBefore}
             </if>
             <if test="creationDateAfter != null">
-                and #{creationDateAfter} > re.creation_date
+                and #{creationDateAfter} >= re.creation_date
             </if>
         </where>
     </select>

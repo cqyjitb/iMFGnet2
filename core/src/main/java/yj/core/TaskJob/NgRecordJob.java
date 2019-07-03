@@ -43,37 +43,81 @@ public class NgRecordJob extends AbstractJob {
         int minute = simpleTriggerDto.getRepeatInterval().intValue();
         minute = minute / 1000;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
         Date endDate = context.getFireTime();
         Calendar cal = Calendar.getInstance();
         cal.setTime(endDate);
         if (minute == 20*60){
-            cal.add(Calendar.MINUTE,-20);
+            String startDate2 = sdf2.format(endDate) + " 00:00:00";
+            String endDate2 = sdf.format(endDate);
+            List<InOutRecord> list = inOutRecordService.selectByNgRecode(startDate2,endDate2);
+            if(list.size() > 0){
+                for (int i=0;i<list.size();i++){
+                    InOutRecord inOutRecord = list.get(i);
+                    inOutRecord.setCreationDateBefore(startDate2);
+                    inOutRecord.setCreationDateAfter(endDate2);
+                    NgRecord ngRecord = new NgRecord();
+                    ngRecord.setWerks(inOutRecord.getWerks());
+                    ngRecord.setLineId(inOutRecord.getLineId());
+                    ngRecord.setDeptId(inOutRecord.getDeptId());
+                    ngRecord.setMatnr(inOutRecord.getMatnr2());
+                    ngRecord.setMaktx(inOutRecord.getMaktx());
+                    ngRecord.setGmein(inOutRecord.getGmein());
+                    ngRecord.setZissuetxt(inOutRecord.getZissuetxt());
+                    ngRecord.setZotype(inOutRecord.getZotype());
+                    ngRecord.setZtext(inOutRecord.getZtext());
+                    ngRecord.setErdat(new Date());
+                    List<NgRecord> list2 = ngRecodeService.selectNgRecord(ngRecord);
+                    List<InOutRecord> list1 = inOutRecordService.zissuetxtCount(inOutRecord);
+                    ngRecord.setQty(list1.size());
+                    if (list2.size() > 0){
+                        ngRecord.setLastUpdatedBy(10001L);
+                        ngRecord.setLastUpdateDate(new Date());
+                        ngRecodeService.updateNgRecord(ngRecord);
+                    }else{
+                        ngRecord.setCreatedBy(10001L);
+                        ngRecord.setCreationDate(new Date());
+                        ngRecodeService.insertNgRecord(ngRecord);
+                    }
+                }
+            }
         }else if (minute == 24*60*60){
             cal.add(Calendar.DATE,-7);
-        }
-        Date startDate = cal.getTime();
-        List<InOutRecord> list = inOutRecordService.selectByNgRecode(sdf.format(startDate),sdf.format(endDate));
-        if(list.size() > 0){
-            for (int i=0;i<list.size();i++){
-                InOutRecord inOutRecord = list.get(i);
-                inOutRecord.setCreationDateBefore(sdf.format(startDate));
-                inOutRecord.setCreationDateAfter(sdf.format(endDate));
-                NgRecord ngRecord = new NgRecord();
-                ngRecord.setWerks(inOutRecord.getWerks());
-                ngRecord.setDeptId(inOutRecord.getDeptId());
-                ngRecord.setLineId(inOutRecord.getLineId());
-                ngRecord.setMatnr(inOutRecord.getMatnr2());
-                ngRecord.setMaktx(inOutRecord.getMaktx());
-                ngRecord.setErdat(new Date());
-                List<InOutRecord> list1 = inOutRecordService.zissuetxtCount(inOutRecord);
-                ngRecord.setQty(list1.size());
-                ngRecord.setGmein(inOutRecord.getGmein());
-                ngRecord.setZissuetxt(inOutRecord.getZissuetxt());
-                ngRecord.setZotype(inOutRecord.getZotype());
-                ngRecord.setZtext(inOutRecord.getZtext());
-                ngRecord.setCreatedBy(10001L);
-                ngRecord.setCreationDate(new Date());
-                ngRecodeService.insertNgRecord(ngRecord);
+            while(cal.getTime().before(endDate)) {
+                String startDate2 = sdf2.format(cal.getTime()) + " 00:00:00";
+                String endDate2 = sdf2.format(cal.getTime()) + " 23:59:59";
+                List<InOutRecord> list = inOutRecordService.selectByNgRecode(startDate2,endDate2);
+                if(list.size() > 0){
+                    for (int i=0;i<list.size();i++){
+                        InOutRecord inOutRecord = list.get(i);
+                        inOutRecord.setCreationDateBefore(startDate2);
+                        inOutRecord.setCreationDateAfter(endDate2);
+                        NgRecord ngRecord = new NgRecord();
+                        ngRecord.setWerks(inOutRecord.getWerks());
+                        ngRecord.setLineId(inOutRecord.getLineId());
+                        ngRecord.setDeptId(inOutRecord.getDeptId());
+                        ngRecord.setMatnr(inOutRecord.getMatnr2());
+                        ngRecord.setMaktx(inOutRecord.getMaktx());
+                        ngRecord.setGmein(inOutRecord.getGmein());
+                        ngRecord.setZissuetxt(inOutRecord.getZissuetxt());
+                        ngRecord.setZotype(inOutRecord.getZotype());
+                        ngRecord.setZtext(inOutRecord.getZtext());
+                        ngRecord.setErdat(cal.getTime());
+                        List<NgRecord> list2 = ngRecodeService.selectNgRecord(ngRecord);
+                        List<InOutRecord> list1 = inOutRecordService.zissuetxtCount(inOutRecord);
+                        ngRecord.setQty(list1.size());
+                        if (list2.size() > 0){
+                            ngRecord.setLastUpdateDate(new Date());
+                            ngRecord.setLastUpdatedBy(10001L);
+                            ngRecodeService.updateNgRecord(ngRecord);
+                        }else{
+                            ngRecord.setCreatedBy(10001L);
+                            ngRecord.setCreationDate(new Date());
+                            ngRecodeService.insertNgRecord(ngRecord);
+                        }
+                    }
+                }
+                cal.add(Calendar.DATE,1);
             }
         }
     }
