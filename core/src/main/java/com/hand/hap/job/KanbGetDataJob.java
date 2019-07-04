@@ -204,7 +204,7 @@ public class KanbGetDataJob extends AbstractJob {
                         viewdata.setLeaderPhone(lines.getHeaderPhone());
                         viewdata.setLineLeader(lines.getLineHeader());
                         viewdata.setLineLeaderEn(lines.getLineHeaderEn());
-                        takt_time = takt_time + lines.getTaktTime();
+                        takt_time = takt_time + lines.getTaktTime().doubleValue();
 
                         Long lineId = 0L;
                         if (lines.getPlineId() != null){
@@ -279,6 +279,7 @@ public class KanbGetDataJob extends AbstractJob {
 
                 if (l_error == ""){
                     takt_time = takt_time / listcurlzk.size();//平均生产节拍
+                    takt_time = Math.rint(takt_time);
                     viewdata.setPlanqty(plqty);//计划产量
                     viewdata.setActqty(actnum);//实际产量
                     viewdata.setCycletime(takt_time);//平均节拍
