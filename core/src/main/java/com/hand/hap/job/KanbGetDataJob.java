@@ -220,7 +220,7 @@ public class KanbGetDataJob extends AbstractJob {
                         OracleConn oracleConn = new OracleConn(webServerHelp.getMesOraUrl(),webServerHelp.getMesOraUserName(),webServerHelp.getMesOraPass(),webServerHelp.getMesOraDriver());
                         String sqlzx = "select a.main_id from "+serverSetting.getDbUsername()+".wip_pallet_sn_rel  a"
                                 +" inner join  "+serverSetting.getDbUsername()+".wip_main_data b on a.main_id = b.main_id";
-                        String where = " where a.line_id = " + "'" + listcurlzk.get(j).getLineId() + "' and  a.status = '0' and b.ENABLE_FLAG = '1' ";
+                        String where = " where a.zremade != '1' and a.line_id = " + "'" + listcurlzk.get(j).getLineId() + "' and  a.status = '0' and b.ENABLE_FLAG = '1' ";
                         where = where + "and b.item_code = " + "'" + listvbgh.get(i).getProduct() + "' " ;
 
 

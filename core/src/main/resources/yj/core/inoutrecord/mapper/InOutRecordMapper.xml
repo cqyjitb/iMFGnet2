@@ -563,6 +563,7 @@
             and   reflag != '1'
             and OUTDAT >= #{start}
             and #{end} >= OUTDAT
+            and ZREMADE != '1'
         </where>
     </select>
 
