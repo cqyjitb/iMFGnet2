@@ -14,6 +14,12 @@ public interface IPassRateService extends IBaseService<PassRate>,ProxySelf<IPass
     void insertPassRate(PassRate dto);
 
     /**
+     * 合格率报表数据任务处理修改 918100064
+     * @param dto
+     */
+    void updatePassRate(PassRate dto);
+
+    /**
      * 合格率报表查询请求 918100064
      * @param dto
      * @return

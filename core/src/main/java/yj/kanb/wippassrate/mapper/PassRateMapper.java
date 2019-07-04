@@ -13,6 +13,12 @@ public interface PassRateMapper extends Mapper<PassRate> {
     void insertPassRate(PassRate dto);
 
     /**
+     * 合格率报表的修改 918100064
+     * @param dto
+     */
+    void updatePassRate(PassRate dto);
+
+    /**
      * 合格率报表数据查询 918100064
      * @param dto
      * @return

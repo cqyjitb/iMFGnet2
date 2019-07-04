@@ -22,6 +22,16 @@ public class NgRecordServiceImpl extends BaseServiceImpl<NgRecord> implements IN
     }
 
     @Override
+    public void updateNgRecord(NgRecord dto) {
+        ngRecordMapper.updateNgRecord(dto);
+    }
+
+    @Override
+    public List<NgRecord> selectNgRecord(NgRecord dto) {
+        return ngRecordMapper.selectNgRecord(dto);
+    }
+
+    @Override
     public List<NgRecord> queryNgRecord(NgRecord dto) {
         return ngRecordMapper.queryNgRecord(dto);
     }

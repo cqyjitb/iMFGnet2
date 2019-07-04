@@ -22,6 +22,11 @@ public class PassRateServiceImpl extends BaseServiceImpl<PassRate> implements IP
     }
 
     @Override
+    public void updatePassRate(PassRate dto) {
+        passRateMapper.updatePassRate(dto);
+    }
+
+    @Override
     public List<PassRate> queryPassRate(PassRate dto) {
         return passRateMapper.queryPassRate(dto);
     }
