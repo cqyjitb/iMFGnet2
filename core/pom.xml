@@ -117,6 +117,12 @@
                         <artifactId>groovy-xml</artifactId>
                         <version>2.4.6</version>
                     </dependency>
+                    <!-- websocket -->
+                    <dependency>
+                        <groupId>org.springframework</groupId>
+                        <artifactId>spring-websocket</artifactId>
+                    </dependency>
+
                     <dependency>
                         <groupId>com.hand</groupId>
                         <artifactId>hap-db</artifactId>

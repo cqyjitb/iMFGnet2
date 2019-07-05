@@ -183,13 +183,13 @@
 
     <bean id="freeMarkerBeanProvider" class="com.hand.hap.core.web.FreeMarkerBeanProvider"/>
 
-    <bean id="plsqlBean" class="com.hand.hap.intergration.service.impl.HapPLSQLApiServiceImpl"></bean>
-    <bean id="restBean" class="com.hand.hap.intergration.service.impl.HapRestApiServiceImpl"></bean>
-    <bean id="soapBean" class="com.hand.hap.intergration.service.impl.HapSoapApiServiceImpl"></bean>
+    <!--<bean id="plsqlBean" class="com.hand.hap.intergration.service.impl.HapPLSQLApiServiceImpl"></bean>-->
+    <!--<bean id="restBean" class="com.hand.hap.intergration.service.impl.HapRestApiServiceImpl"></bean>-->
+    <!--<bean id="soapBean" class="com.hand.hap.intergration.service.impl.HapSoapApiServiceImpl"></bean>-->
 
-    <bean class="com.hand.hap.intergration.beans.HapJDBCSqlSessionFactory">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
+    <!--<bean class="com.hand.hap.intergration.beans.HapJDBCSqlSessionFactory">-->
+        <!--<property name="dataSource" ref="dataSource"/>-->
+    <!--</bean>-->
 
     <bean id="distributeLockTemplate" class="com.hand.hap.lock.impl.DistributedLockFactoryBean">
         <property name="mode" value="MULTIPLE"/>

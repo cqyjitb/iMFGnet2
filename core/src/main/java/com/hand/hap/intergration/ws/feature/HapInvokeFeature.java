@@ -1,7 +1,5 @@
 package com.hand.hap.intergration.ws.feature;
 
-import com.hand.hap.intergration.ws.interceptor.HapInvokeInInterceptor;
-import com.hand.hap.intergration.ws.interceptor.HapInvokeOutInterceptor;
 import org.apache.cxf.Bus;
 import org.apache.cxf.annotations.Provider;
 import org.apache.cxf.common.injection.NoJSR250Annotations;
@@ -10,6 +8,9 @@ import org.apache.cxf.interceptor.InterceptorProvider;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+
+import com.hand.hap.intergration.ws.interceptor.HapInvokeInInterceptor;
+import com.hand.hap.intergration.ws.interceptor.HapInvokeOutInterceptor;
 
 /**
  * Created by Qixiangyu on 2016/12/2. 对cxf客户端和服务端的监控

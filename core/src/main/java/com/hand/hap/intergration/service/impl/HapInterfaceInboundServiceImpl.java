@@ -54,6 +54,12 @@ public class HapInterfaceInboundServiceImpl extends BaseServiceImpl<HapInterface
 
     @Override
     public int inboundInvoke(HapInterfaceInbound inbound) {
+        System.out.println("**********************************************************************************************************");
+        System.out.println("**********************************************************************************************************");
+        System.out.println("**********************************************************************************************************");
+        System.out.println("**********************************************************************************************************");
+        System.out.println("**********************************************************************************************************");
+        System.out.println("**********************************************************************************************************");
         inbound.setReferer(StringUtils.abbreviate(inbound.getReferer(),240));
         return inboundMapper.insertSelective(inbound);
     }

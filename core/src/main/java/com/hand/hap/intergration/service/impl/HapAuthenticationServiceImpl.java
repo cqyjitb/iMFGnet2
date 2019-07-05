@@ -50,7 +50,7 @@ public class HapAuthenticationServiceImpl implements IHapAuthenticationService,B
 
     private final Integer DEFAULT_REFESH_TOKEN_EXPIRE_TIME = 30 * 24 * 60 * 60;
 
-    private final String redisCatalog = HAP_CACHE+"interface:auth:";
+    private final String redisCatalog = "hap:cache:"+"interface:auth:";
 
     private static ObjectMapper objectMapper = new ObjectMapper();
 
