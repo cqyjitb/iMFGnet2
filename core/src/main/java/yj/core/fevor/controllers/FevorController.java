@@ -133,37 +133,23 @@ public class FevorController extends BaseController {
                             list.add(zwipqhz);
                         }
                     }
-                    if(serverSetting != null){
-                        WebServerHelp webServerHelp = new WebServerHelp();
-                        HanaCon hanaCon = new HanaCon(webServerHelp.getHanaUrl(),webServerHelp.getHanaUserName(),webServerHelp.getHanaPass(),webServerHelp.getHanaDRIVER());
-                        zwipq4 = zwipqService.selectcharg4(pkgLineId,matnr);
-                        if (zwipq4.size() > 0){
-                            for (int j=0;j<zwipq4.size();j++){
-                                List<Map<String, Object>> listztbc0002 = new ArrayList<Map<String, Object>>();
-                                String ztbc0002sql = "SELECT * FROM SAPABAP1.ZTBC0002 where ZTPZT =" + 1 + " AND ZTPBAR =" + "'" + zwipq4.get(j).getTpCode() + "'" +
-                                        " AND MANDT = '" + webServerHelp.getMandt() + "' AND WERKS = '" + list1.get(i).getWerks() + "'";
-                                try {
-                                    listztbc0002 = hanaCon.select(ztbc0002sql);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                if (listztbc0002.size() > 0) {
-                                    Zwipqhz zwipqhz = new Zwipqhz();
-                                    zwipqhz.setWerks(werks);
-                                    zwipqhz.setUnitCode(list1.get(i).getUnitCode());
-                                    zwipqhz.setTxt(list1.get(i).getTxt());
-                                    zwipqhz.setLineId(pkgLineId);
-                                    zwipqhz.setDescriptions(list1.get(i).getDescriptions());
-                                    zwipqhz.setMatnr2(matnr);
-                                    zwipqhz.setMaktx(list1.get(i).getMaktx());
-                                    zwipqhz.setPmatnr(list1.get(i).getPmatnr());
-                                    zwipqhz.setPmaktx(list1.get(i).getPmaktx());
-                                    zwipqhz.setCharg4(zwipq4.get(j).getCharg());
-                                    zwipqhz.setCartonCode2(zwipq4.get(j).getTpCode());
-                                    zwipqhz.setZsxnum4(zwipqService.selectByzsxnum3(pkgLineId,matnr,zwipqhz.getCharg4(),zwipqhz.getCartonCode2()) + "");
-                                    list.add(zwipqhz);
-                                }
-                            }
+                    zwipq4 = zwipqService.selectcharg4(pkgLineId,matnr);
+                    if (zwipq4.size() > 0){
+                        for (int j=0;j<zwipq4.size();j++){
+                            Zwipqhz zwipqhz = new Zwipqhz();
+                            zwipqhz.setWerks(werks);
+                            zwipqhz.setUnitCode(list1.get(i).getUnitCode());
+                            zwipqhz.setTxt(list1.get(i).getTxt());
+                            zwipqhz.setLineId(pkgLineId);
+                            zwipqhz.setDescriptions(list1.get(i).getDescriptions());
+                            zwipqhz.setMatnr2(matnr);
+                            zwipqhz.setMaktx(list1.get(i).getMaktx());
+                            zwipqhz.setPmatnr(list1.get(i).getPmatnr());
+                            zwipqhz.setPmaktx(list1.get(i).getPmaktx());
+                            zwipqhz.setCharg4(zwipq4.get(j).getCharg());
+                            zwipqhz.setCartonCode2(zwipq4.get(j).getTpCode());
+                            zwipqhz.setZsxnum4(zwipqService.selectByzsxnum3(pkgLineId,matnr,zwipqhz.getCharg4(),zwipqhz.getCartonCode2()) + "");
+                            list.add(zwipqhz);
                         }
                     }
                 }else {
@@ -171,27 +157,7 @@ public class FevorController extends BaseController {
                     Integer zsxnum = zwipqService.selectByzsxnum(pkgLineId,matnr,null) + zwipqService.selectByzsxnum1(pkgLineId,matnr,null);
                     Integer zsxnum2 = zwipqService.selectByzsxnum2(pkgLineId,matnr,null);
                     Integer zsxnum3 = zwipqService.selectByzsxnum3(pkgLineId,matnr,null,null);
-                    Integer zsxnum4 = 0;
-                    if(serverSetting != null){
-                        WebServerHelp webServerHelp = new WebServerHelp();
-                        HanaCon hanaCon = new HanaCon(webServerHelp.getHanaUrl(),webServerHelp.getHanaUserName(),webServerHelp.getHanaPass(),webServerHelp.getHanaDRIVER());
-                        zwipq4 = zwipqService.selectcharg4(pkgLineId,matnr);
-                        if (zwipq4.size() > 0){
-                            for (int j=0;j<zwipq4.size();j++){
-                                List<Map<String, Object>> listztbc0002 = new ArrayList<Map<String, Object>>();
-                                String ztbc0002sql = "SELECT * FROM SAPABAP1.ZTBC0002 where ZTPZT =" + 1 + " AND ZTPBAR =" + "'" + zwipq4.get(j).getTpCode() + "'" +
-                                        " AND MANDT = '" + webServerHelp.getMandt() + "' AND WERKS = '" + list1.get(i).getWerks() + "'";
-                                try {
-                                    listztbc0002 = hanaCon.select(ztbc0002sql);
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                                if (listztbc0002.size() > 0) {
-                                    zsxnum4 = zsxnum4 + zwipqService.selectByzsxnum3(pkgLineId,matnr,zwipq4.get(j).getCharg(),zwipq4.get(j).getTpCode());
-                                }
-                            }
-                        }
-                    }
+                    Integer zsxnum4 = zwipqService.selectByzsxnum4(pkgLineId,matnr,null,null);
                     if((zsxnum !=0) || (zsxnum2 !=0) || (zsxnum3 !=0) || (zsxnum4 !=0)){
                         zwipqhz.setWerks(werks);
                         zwipqhz.setUnitCode(list1.get(i).getUnitCode());

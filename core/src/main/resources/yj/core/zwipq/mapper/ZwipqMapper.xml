@@ -148,6 +148,7 @@
             and zbgkl = 1
             and tp_code != ''
             AND tp_code is not null
+            AND attr1 = '1'
             <if test="pkgLineId != null">
                 AND pkg_line_id = #{pkgLineId}
             </if>
@@ -252,6 +253,7 @@
             and zbgkl = 1
             and tp_code != ''
             AND tp_code is not null
+            AND attr1 = '1'
             <if test="pkgLineId != null">
                 AND pkg_line_id = #{pkgLineId}
             </if>
