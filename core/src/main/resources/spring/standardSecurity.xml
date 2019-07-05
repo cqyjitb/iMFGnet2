@@ -60,6 +60,7 @@
         <intercept-url pattern="/job/**" access="permitAll" />
         <intercept-url pattern="/common/**" access="permitAll" />
         <intercept-url pattern="/sys/**" access="permitAll" />
+        <intercept-url pattern="/intergration/**" access="permitAll" />
         <intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
 
 

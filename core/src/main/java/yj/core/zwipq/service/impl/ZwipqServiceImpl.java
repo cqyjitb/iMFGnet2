@@ -292,8 +292,13 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
     }
 
     @Override
-    public Zwipq selectcharg3(String zsxjlh, String pkgLineId, String matnr) {
-        return zwipqMapper.selectcharg3(zsxjlh,pkgLineId,matnr);
+    public List<Zwipq> selectcharg3(String pkgLineId, String matnr) {
+        return zwipqMapper.selectcharg3(pkgLineId, matnr);
+    }
+
+    @Override
+    public List<Zwipq> selectcharg4(String pkgLineId, String matnr) {
+        return zwipqMapper.selectcharg4(pkgLineId, matnr);
     }
 
     @Override
@@ -309,6 +314,16 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
     @Override
     public Integer selectByzsxnum2(String pkgLineId, String matnr,String charg) {
         return zwipqMapper.selectByzsxnum2(pkgLineId, matnr,charg);
+    }
+
+    @Override
+    public Integer selectByzsxnum3(String pkgLineId, String matnr, String charg, String tpCode) {
+        return zwipqMapper.selectByzsxnum3(pkgLineId, matnr, charg, tpCode);
+    }
+
+    @Override
+    public Integer selectByzsxnum4(String pkgLineId, String matnr, String charg, String tpCode) {
+        return zwipqMapper.selectByzsxnum4(pkgLineId, matnr, charg, tpCode);
     }
 
     @Override

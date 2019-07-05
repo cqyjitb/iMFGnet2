@@ -7,6 +7,7 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @ExtensionAttribute(disable=true)
 @Table(name = "vb_group_dtl")
@@ -20,7 +21,16 @@ public class Vbgroupdtl extends BaseDTO {
     @NotEmpty
     private String groupId;
     private String groupType;
+    @Transient
+    private String eqId;
 
+    public String getEqId() {
+        return eqId;
+    }
+
+    public void setEqId(String eqId) {
+        this.eqId = eqId;
+    }
 
     public String getVbgroupId() {
         return vbgroupId;

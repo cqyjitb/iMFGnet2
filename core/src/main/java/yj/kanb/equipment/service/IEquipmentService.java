@@ -20,7 +20,7 @@ public interface IEquipmentService  extends IBaseService<Equipment> ,ProxySelf<I
      * 看板设备维护删除 918100064
      * @param dto
      */
-    void deleteEquipment(List<Equipment> dto);
+    String deleteEquipment(List<Equipment> dto);
 
     /**
      * 看板设备维护添加 918100064

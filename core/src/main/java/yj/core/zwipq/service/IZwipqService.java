@@ -85,12 +85,19 @@ public interface IZwipqService extends IBaseService<Zwipq>, ProxySelf<IZwipqServ
 
     /**
      * 根据生产线和物料号查询装箱未报工毛坯批次 918100064
-     * @param zsxjlh
      * @param pkgLineId
      * @param matnr
      * @return
      */
-    Zwipq selectcharg3(String zsxjlh,String pkgLineId,String matnr);
+    List<Zwipq> selectcharg3(String pkgLineId,String matnr);
+
+    /**
+     * 根据生产线和物料号查询装箱已报工毛坯批次 918100064
+     * @param pkgLineId
+     * @param matnr
+     * @return
+     */
+    List<Zwipq> selectcharg4(String pkgLineId,String matnr);
 
     /**
      * 根据生产线和物料号查询取件数量 918100064
@@ -116,6 +123,26 @@ public interface IZwipqService extends IBaseService<Zwipq>, ProxySelf<IZwipqServ
      * @return
      */
     Integer selectByzsxnum2(String pkgLineId,String matnr,String charg);
+
+    /**
+     * 根据生产线和物料号查询装箱未报工数量 918100064
+     * @param pkgLineId
+     * @param matnr
+     * @param charg
+     * @param tpCode
+     * @return
+     */
+    Integer selectByzsxnum3(String pkgLineId,String matnr,String charg,String tpCode);
+
+    /**
+     * 根据生产线和物料号查询装箱报工未入库数量 918100064
+     * @param pkgLineId
+     * @param matnr
+     * @param charg
+     * @param tpCode
+     * @return
+     */
+    Integer selectByzsxnum4(String pkgLineId,String matnr,String charg,String tpCode);
 
     /**
      *  根据压铸派工单查询在制队列记录

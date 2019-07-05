@@ -43,8 +43,14 @@ public class VblinegroupheaderController extends BaseController {
     @RequestMapping(value = {"/Vblinegroupheader/removeVblinegroupheader"})
     @ResponseBody
     public ResponseData removeLineGroupH(HttpServletRequest request,@RequestBody List<Vblinegroupheader> dto){
+        ResponseData rs = new ResponseData();
         IRequest requestCtx = createRequestContext(request);
-        service.deleteLineGroupH(requestCtx,dto);
+        String result = service.deleteLineGroupH(requestCtx,dto);
+        if(result != null) {
+            rs.setSuccess(false);
+            rs.setMessage(result);
+            return rs;
+        }
         return new ResponseData();
     }
     /**
