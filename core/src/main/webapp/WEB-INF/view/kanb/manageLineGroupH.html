@@ -257,6 +257,30 @@
                 }
             },
             {
+                field:"lineId",
+                title:"产线ID",
+                width:100,
+                template: function (dataItem) {
+                    return dataItem['lineId'] || ''
+                },
+                editor : function (container, options) {
+                    $('<input name="'+options.field+'"/>').appendTo(container).kendoLov($.extend(<@lov "LOV_LINE_NEW"/>,
+                        {
+                            query: function(e) {
+                                e.param['deptId'] = options.model.workshopId;
+                            },
+                            textField: 'descriptions',
+                            model: options.model
+                        }));
+                },
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
                 field:"product",
                 title:"产品物料编码",
                 width:120,
@@ -266,6 +290,9 @@
                 editor : function (container, options) {
                     $('<input name="'+options.field+'"/>').appendTo(container).kendoLov($.extend(<@lov "LOV_PRODUCT2"/>,
                         {
+                            query: function(e) {
+                                e.param['lineId'] = options.model.lineId;
+                            },
                             textField: 'kunnr',
                             model: options.model
                         }));

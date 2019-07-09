@@ -51,6 +51,9 @@
         left join sap_cust cu on pc.kunnr = cu.kunnr
         <where>
             1 = 1
+            <if test="lineId != null">
+                AND pc.line_id = #{lineId}
+            </if>
             <if test="pmatnr != null">
                 AND pc.pmatnr = #{pmatnr}
             </if>

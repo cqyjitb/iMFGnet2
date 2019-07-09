@@ -81,8 +81,10 @@ public class VblinegroupheaderServiceImpl extends BaseServiceImpl<Vblinegrouphea
                     return "公司不能为空！";
                 }else if(dto.get(i).getWerks() == null || "".equals(dto.get(i).getWerks())){
                     return "工厂不能为空！";
-                }else if(dto.get(i).getWorkshopId() == null || "".equals(dto.get(i).getWorkshopId())){
+                }else if(dto.get(i).getWorkshopId() == null || "".equals(dto.get(i).getWorkshopId())) {
                     return "车间ID不能为空！";
+                }else if(dto.get(i).getLineId() == null){
+                    return "产线ID不能为空！";
                 }else if(dto.get(i).getProduct() == null || "".equals(dto.get(i).getProduct())){
                     return "产品物料编码不能为空！";
                 }else if(!("".equals(dto.get(i).getTempleteUrl()))){

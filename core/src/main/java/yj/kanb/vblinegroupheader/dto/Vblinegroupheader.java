@@ -17,6 +17,7 @@ public class Vblinegroupheader  extends BaseDTO {
     private String bukrs;//公司
     private String werks;//工厂
     private String workshopId;//车间ID
+    private Long lineId;//产线ID
     private String product;//产品物料编码
     private String kunnr;//客户编码
 
@@ -26,6 +27,14 @@ public class Vblinegroupheader  extends BaseDTO {
     private String templeteUrl;//模板URL
     @Transient
     private String vbgroupId;//显示组ID
+
+    public Long getLineId() {
+        return lineId;
+    }
+
+    public void setLineId(Long lineId) {
+        this.lineId = lineId;
+    }
 
     public String getKunnr() {
         return kunnr;

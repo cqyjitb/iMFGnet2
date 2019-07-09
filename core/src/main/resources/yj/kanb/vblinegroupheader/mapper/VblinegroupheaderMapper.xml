@@ -6,6 +6,7 @@
     <result column="bukrs" property="bukrs" jdbcType="VARCHAR"/>
     <result column="werks" property="werks" jdbcType="VARCHAR"/>
     <result column="groupId" property="groupId" jdbcType="VARCHAR"/>
+    <result column="lineId" property="lineId" jdbcType="DECIMAL"/>
     <result column="product" property="product" jdbcType="VARCHAR"/>
     <result column="kunnr" property="kunnr" jdbcType="VARCHAR"/>
     <result column="templeteUrl" property="templeteUrl" jdbcType="VARCHAR"/>
@@ -52,7 +53,7 @@
     </delete>
 
     <update id="updateLineGroupH" parameterType="yj.kanb.vblinegroupheader.dto.Vblinegroupheader">
-        update vb_line_group_h set product = #{product},groupName = #{groupName},groupType = #{groupType},kunnr = #{kunnr},
+        update vb_line_group_h set product = #{product},groupName = #{groupName},groupType = #{groupType},kunnr = #{kunnr},lineId = #{lineId},
         groupNameEn = #{groupNameEn},templeteUrl = #{templeteUrl},last_updated_by = #{lastUpdatedBy},last_update_date = #{lastUpdateDate}
         <where>
             groupId = #{groupId}
@@ -64,8 +65,8 @@
     </update>
 
     <insert id="insertLineGroupH" parameterType="yj.kanb.vblinegroupheader.dto.Vblinegroupheader">
-        insert into vb_line_group_h(groupId,bukrs,werks,workshopId,templeteUrl,product,kunnr,groupName,groupType,groupNameEn,created_by,creation_date)
-        values(#{groupId},#{bukrs},#{werks},#{workshopId},#{templeteUrl},#{product},#{kunnr},#{groupName},#{groupType},#{groupNameEn},#{createdBy},#{creationDate})
+        insert into vb_line_group_h(groupId,bukrs,werks,workshopId,lineId,templeteUrl,product,kunnr,groupName,groupType,groupNameEn,created_by,creation_date)
+        values(#{groupId},#{bukrs},#{werks},#{workshopId},#{lineId},#{templeteUrl},#{product},#{kunnr},#{groupName},#{groupType},#{groupNameEn},#{createdBy},#{creationDate})
     </insert>
     <select id="selectAllGroup" resultMap="BaseResultMap">
         select * from vb_line_group_h ;
