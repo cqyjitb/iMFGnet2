@@ -86,4 +86,11 @@
             and workshopId = #{workshopId}
         </where>
     </update>
+
+    <delete id="deleteViewdataschemaline" parameterType="java.lang.String">
+        delete from view_data_schema_line
+        <where>
+            groupId = #{groupId}
+        </where>
+    </delete>
 </mapper>

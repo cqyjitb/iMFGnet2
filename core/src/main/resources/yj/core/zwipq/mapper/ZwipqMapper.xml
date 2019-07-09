@@ -29,6 +29,10 @@
         <result column="SFFLG" property="sfflg" jdbcType="VARCHAR" />
         <result column="DIECD" property="diecd" jdbcType="VARCHAR" />
         <result column="Q_SENQ" property="qsenq" jdbcType="DECIMAL"/>
+        <result column="ZBGKL" property="zbgkl" jdbcType="DECIMAL" />
+        <result column="TP_CODE" property="tpCode" jdbcType="VARCHAR" />
+        <result column="RSNUM" property="rsnum" jdbcType="VARCHAR" />
+        <result column="RSPOS" property="rspos" jdbcType="VARCHAR" />
         <result column="CREATION_DATE" property="creationDate" jdbcType="VARCHAR" />
         <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
         <result column="LAST_UPDATED_DATE" property="lastUpdatedDate" jdbcType="DATE" />
@@ -136,11 +140,58 @@
         <result column="PMATNR" property="pmatnr" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <select id="selectByzsxnum4" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select COALESCE(sum(zsxnum),0) from zwipq
+        <where>
+            zzxkl = 1
+            and charg != ''
+            and zbgkl = 1
+            and tp_code != ''
+            AND tp_code is not null
+            AND attr1 = '1'
+            <if test="pkgLineId != null">
+                AND pkg_line_id = #{pkgLineId}
+            </if>
+            <if test="matnr != null">
+                AND matnr = #{matnr}
+            </if>
+            <if test="charg != null">
+                AND charg = #{charg}
+            </if>
+            <if test="tpCode != null">
+                AND tp_code = #{tpCode}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectByzsxnum3" parameterType="java.lang.String" resultType="java.lang.Integer">
+        select COALESCE(sum(zsxnum),0) from zwipq
+        <where>
+            zzxkl = 1
+            and charg != ''
+            and (zbgkl = 0 OR ZBGKL IS NULL )
+            and tp_code != ''
+            AND tp_code is not null
+            <if test="pkgLineId != null">
+                AND pkg_line_id = #{pkgLineId}
+            </if>
+            <if test="matnr != null">
+                AND matnr = #{matnr}
+            </if>
+            <if test="charg != null">
+                AND charg = #{charg}
+            </if>
+            <if test="tpCode != null">
+                AND tp_code = #{tpCode}
+            </if>
+        </where>
+    </select>
+
     <select id="selectByzsxnum2" parameterType="java.lang.String" resultType="java.lang.Integer">
         select COALESCE(sum(zsxnum),0) from zwipq
         <where>
             zzxkl = 0
-            and zqjkl = 1
+            and zqjkl = 0
             and charg != ''
             <if test="pkgLineId != null">
                 AND pkg_line_id = #{pkgLineId}
@@ -194,14 +245,32 @@
         </where>
     </select>
 
-    <select id="selectcharg3" parameterType="java.lang.String" resultType="yj.core.zwipq.dto.Zwipq">
-        select * from zwipq
+    <select id="selectcharg4" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select DISTINCT charg,tp_code from zwipq
         <where>
             zzxkl = 1
             and charg != ''
-            <if test="zsxjlh != null">
-                AND zsxjlh = #{zsxjlh}
+            and zbgkl = 1
+            and tp_code != ''
+            AND tp_code is not null
+            AND attr1 = '1'
+            <if test="pkgLineId != null">
+                AND pkg_line_id = #{pkgLineId}
             </if>
+            <if test="matnr != null">
+                AND matnr = #{matnr}
+            </if>
+        </where>
+    </select>
+
+    <select id="selectcharg3" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select DISTINCT charg,tp_code from zwipq
+        <where>
+            zzxkl = 1
+            and charg != ''
+            and (zbgkl = 0 OR ZBGKL IS NULL )
+            and tp_code != ''
+            AND tp_code is not null
             <if test="pkgLineId != null">
                 AND pkg_line_id = #{pkgLineId}
             </if>
@@ -215,7 +284,7 @@
         select DISTINCT charg from zwipq
         <where>
             zzxkl = 0
-            and zqjkl = 1
+            and zqjkl = 0
             and charg != ''
             <if test="pkgLineId != null">
                 AND pkg_line_id = #{pkgLineId}

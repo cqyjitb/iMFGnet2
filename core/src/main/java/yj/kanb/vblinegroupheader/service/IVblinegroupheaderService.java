@@ -27,7 +27,7 @@ public interface IVblinegroupheaderService extends IBaseService<Vblinegroupheade
      * @param requestCtx
      * @param dto
      */
-    void deleteLineGroupH(IRequest requestCtx,List<Vblinegroupheader> dto);
+    String deleteLineGroupH(IRequest requestCtx,List<Vblinegroupheader> dto);
 
     /**
      * 看板车间产线组头维护添加和修改 918100064

@@ -7,6 +7,8 @@ import org.springframework.transaction.annotation.Transactional;
 import yj.kanb.equipment.dto.Equipment;
 import yj.kanb.equipment.mapper.EquipmentMapper;
 import yj.kanb.equipment.service.IEquipmentService;
+import yj.kanb.vbgroupdtl.dto.Vbgroupdtl;
+import yj.kanb.vbgroupdtl.mapper.VbgroupdtlMapper;
 import yj.kanb.vbgroupheader.dto.Vbgroupheader;
 import yj.kanb.vbgroupheader.mapper.VbgroupheaderMapper;
 
@@ -21,6 +23,8 @@ public class EquipmentServiceImpl extends BaseServiceImpl<Equipment> implements 
     private EquipmentMapper equipmentMapper;
     @Autowired
     private VbgroupheaderMapper vbgroupheaderMapper;
+    @Autowired
+    private VbgroupdtlMapper vbgroupdtlMapper;
 
     @Override
     public List<Equipment> selectAllData() {
@@ -32,13 +36,19 @@ public class EquipmentServiceImpl extends BaseServiceImpl<Equipment> implements 
     }
 
     @Override
-    public void deleteEquipment(List<Equipment> dto) {
+    public String deleteEquipment(List<Equipment> dto) {
         if(dto.size() > 0){
             for(int i=0;i<dto.size();i++){
-                equipmentMapper.deleteEquipment(dto.get(i));
-                vbgroupheaderMapper.deleteGroupH(dto.get(i).getEqId());
+                List<Vbgroupdtl> list = vbgroupdtlMapper.queryByEqId(dto.get(i).getEqId());
+                if (list.size() > 0){
+                    return "该设备已配置产线，不能删除!";
+                }else {
+                    equipmentMapper.deleteEquipment(dto.get(i));
+                    vbgroupheaderMapper.deleteGroupH(dto.get(i).getEqId());
+                }
             }
         }
+        return null;
     }
 
     @Override

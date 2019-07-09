@@ -58,7 +58,13 @@ public class EquimentContorller  extends BaseController {
     @RequestMapping(value = {"/equipment/removeEquipment"})
     @ResponseBody
     public ResponseData removeEquipment(HttpServletRequest request,@RequestBody List<Equipment> dto){
-        service.deleteEquipment(dto);
+        ResponseData rs = new ResponseData();
+        String result = service.deleteEquipment(dto);
+        if(result != null){
+            rs.setSuccess(false);
+            rs.setMessage(result);
+            return rs;
+        }
         return new ResponseData();
     }
     /**

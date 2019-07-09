@@ -133,6 +133,16 @@ public class Zwipq extends BaseDTO {
     @Transient
     private String ztpbat;//托盘条码
 
+    private String tpCode;//托盘号
+
+    public String getTpCode() {
+        return tpCode;
+    }
+
+    public void setTpCode(String tpCode) {
+        this.tpCode = tpCode;
+    }
+
     public String getZtpbat() {
         return ztpbat;
     }

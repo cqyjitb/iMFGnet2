@@ -10,6 +10,25 @@
         <result column="groupType" property="groupType" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <select id="queryByGroupId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from vb_group_dtl
+        <where>
+            <if test="groupId != null">
+                groupId = #{groupId}
+            </if>
+        </where>
+    </select>
+
+    <select id="queryByEqId" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select vgd.* from vb_group_dtl vgd,vb_group_h vgh
+        <where>
+            vgd.vbgroupId = vgh.vbgroupId
+            <if test="eqId != null">
+                AND vgh.eqId = #{eqId}
+            </if>
+        </where>
+    </select>
+
     <insert id="insertGroupDtl" parameterType="yj.kanb.vbgroupdtl.dto.Vbgroupdtl">
         insert into vb_group_dtl(groupId,bukrs,werks,groupType,vbgroupId,created_by,creation_date)
         values(#{groupId},#{bukrs},#{werks},#{groupType},#{vbgroupId},#{createdBy},#{creationDate})

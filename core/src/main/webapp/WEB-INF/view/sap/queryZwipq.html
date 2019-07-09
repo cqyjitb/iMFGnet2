@@ -36,11 +36,11 @@
                     title: '错误',
                     message: "查询条件:车间,必输！"
                 });
-            /*}else if(lineId == null || lineId == "" || lineId == ''){
+            }else if(lineId == null || lineId == "" || lineId == ''){
                 kendo.ui.showErrorDialog({
                     title: '错误',
                     message: "查询条件:生产线,必输！"
-                });*/
+                });
             }else{
                 grid.dataSource.data([]);
                 if(total == 'Y'){
@@ -89,7 +89,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label">生产线<!--<label class="label">*</label>--></label>
+                                    <label class="col-sm-4 control-label">生产线<label class="label">*</label></label>
                                     <div class="col-sm-8">
                                         <input id="lineId" class="k-textbox" data-bind="value:model.lineId" style="width: 100%">
                                         <script>
@@ -426,7 +426,7 @@
 
     var grid = $("#Grid").data("kendoGrid");
     grid.bind("excelExport", function(e) {
-        e.workbook.fileName = "压射号报表.xlsx";
+        e.workbook.fileName = "产线在制队列汇总查询报表.xlsx";
     });
     Hap.autoResizeGrid("#Grid");
 </script>
