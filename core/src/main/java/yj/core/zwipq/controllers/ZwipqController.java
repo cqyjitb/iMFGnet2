@@ -1,19 +1,15 @@
 package yj.core.zwipq.controllers;
 
-import org.apache.bcel.generic.IF_ACMPEQ;
-import org.apache.fop.render.rtf.FOPRtfAttributes;
-import org.apache.http.HttpRequest;
-import org.apache.http.protocol.HTTP;
-import org.springframework.stereotype.Controller;
-import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.core.IRequest;
+import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.system.dto.ResponseData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import yj.core.afko.dto.Afko;
 import yj.core.afko.service.IAfkoService;
 import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.service.ICardhService;
-import yj.core.dftdtl.service.IDftdtlService;
 import yj.core.inoutrecord.dto.InOutRecord;
 import yj.core.inoutrecord.service.IInOutRecordService;
 import yj.core.lineiocfg.dto.LineioCfg;
@@ -27,7 +23,6 @@ import yj.core.resb.service.IResbService;
 import yj.core.webservice_migo.dto.DTMIGOReturn;
 import yj.core.wipcurlzk.dto.Curlzk;
 import yj.core.wipcurlzk.service.ICurlzkService;
-import yj.core.wipdftrghlist.dto.Dftrghlist;
 import yj.core.wipdftrghlist.service.IDftrghlistService;
 import yj.core.wiplines.dto.Lines;
 import yj.core.wiplines.service.ILinesService;
@@ -38,17 +33,11 @@ import yj.core.ztbc0018.service.IZtbc0018Service;
 import yj.core.zwipq.dto.Zwipq;
 import yj.core.zwipq.dto.Zwipqqj;
 import yj.core.zwipq.service.IZwipqService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
-import java.sql.Time;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
-
-import static java.lang.Math.abs;
-import static java.lang.Math.log;
-import static javafx.scene.input.KeyCode.L;
 
 @Controller
 public class ZwipqController extends BaseController {
@@ -678,7 +667,13 @@ public class ZwipqController extends BaseController {
     @ResponseBody
     public ResponseData selectforjjsx(HttpServletRequest request, String line_id) {
         ResponseData rs = new ResponseData();
-        List<Zwipq> list = service.selectBylineforjjqj(line_id);
+        //根据产线ID 获取当前流转卡数据
+        Curlzk curlzk = new Curlzk();
+        curlzk = curlzkService.selectById2(Long.parseLong(line_id));
+        Cardh cardhcur = new Cardh();
+        cardhcur = cardhService.selectByBarcode(curlzk.getZpgdbar());
+
+        List<Zwipq> list = service.selectBylineforjjqj(line_id,cardhcur.getMatnr());
         if (list.size() > 0) {
             List<Zwipqqj> listqj = new ArrayList<>();
             List listtmp = new ArrayList();//存放班标

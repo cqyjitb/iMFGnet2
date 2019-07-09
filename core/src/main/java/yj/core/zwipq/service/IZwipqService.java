@@ -15,7 +15,7 @@ public interface IZwipqService extends IBaseService<Zwipq>, ProxySelf<IZwipqServ
     int InsertIntoZwipq(List<Zwipq> list);
     DTMIGOReturn callMigo(String zxhbar,int cynum,String line_id,String bwart,int createBy,String zpgdbar);
     List<Zwipq> selectBylineidAndZxhbarAndZpgdbar(String line_id,String zxhbar,String zpgdbar);
-    List<Zwipq> selectBylineforjjqj(String line_id);
+    List<Zwipq> selectBylineforjjqj(String line_id,String matnr);
     List<Zwipq> selectForqj(String line_id,String attr6);
     int updateForQj(List<Zwipq> zwipqs);
     Zwipq selectById(String zwipqid);

@@ -477,6 +477,7 @@
         SELECT * FROM zwipq
         <where>
             LINE_ID = #{lineId}
+            and MATNR2 = #{matnr}
             and ZZXKL = 0
             and ZQJKL = 0
             and ZOFFL = 0

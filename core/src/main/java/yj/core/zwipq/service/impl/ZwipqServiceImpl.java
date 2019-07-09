@@ -6,6 +6,7 @@ import com.hand.hap.hr.mapper.EmployeeMapper;
 import com.hand.hap.system.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.mapper.CardhMapper;
 import yj.core.inoutrecord.mapper.InOutRecordMapper;
@@ -16,8 +17,6 @@ import yj.core.webservice_migo.dto.DTMIGOParam;
 import yj.core.webservice_migo.dto.DTMIGOReturn;
 import yj.core.wipdftrghlist.dto.Dftrghlist;
 import yj.core.wipdftrghlist.service.IDftrghlistService;
-import yj.core.wiplines.dto.Lines;
-import yj.core.wiplines.mapper.LinesMapper;
 import yj.core.xhcard.dto.Xhcard;
 import yj.core.xhcard.mapper.XhcardMapper;
 import yj.core.ztbc0018.dto.Ztbc0018;
@@ -25,7 +24,6 @@ import yj.core.ztbc0018.mapper.Ztbc0018Mapper;
 import yj.core.zwipq.dto.Zwipq;
 import yj.core.zwipq.mapper.ZwipqMapper;
 import yj.core.zwipq.service.IZwipqService;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
@@ -152,8 +150,8 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
     }
 
     @Override
-    public List<Zwipq> selectBylineforjjqj(String line_id) {
-        return zwipqMapper.selectBylineforjjqj(line_id);
+    public List<Zwipq> selectBylineforjjqj(String line_id,String matnr) {
+        return zwipqMapper.selectBylineforjjqj(line_id,matnr);
     }
 
     @Override
