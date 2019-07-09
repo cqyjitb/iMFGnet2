@@ -244,7 +244,7 @@
                 if(data.success==true){
                     for(var i=0;i<items.length;i++){
                         for (var k =0;k<data.total;k++){
-                            if(items[i].product == data.rows[k].product){
+                            if(items[i].groupId == data.rows[k].groupId){
                                 grid.select("tr[data-uid='" + items[i].uid + "']");
                             }
                         }
