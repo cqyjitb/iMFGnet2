@@ -3,18 +3,6 @@ package yj.core.cardh.controllers;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.system.dto.ResponseData;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-import java.util.UUID;
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.bcel.generic.IF_ACMPEQ;
-import org.apache.http.protocol.HTTP;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.jdbc.datasource.DataSourceTransactionManager;
 import org.springframework.stereotype.Controller;
@@ -32,7 +20,6 @@ import yj.core.cardhst.dto.Cardhst;
 import yj.core.cardhst.service.ICardhstService;
 import yj.core.cardt.dto.Cardt;
 import yj.core.cardt.service.ICardtService;
-import yj.core.cardt.service.impl.CardtServiceImpl;
 import yj.core.dispatch.dto.InputLog;
 import yj.core.dispatch.service.IInputLogService;
 import yj.core.inoutrecord.dto.InOutRecord;
@@ -54,6 +41,14 @@ import yj.core.xhcard.dto.Xhcard;
 import yj.core.xhcard.service.IXhcardService;
 import yj.core.zwipq.dto.Zwipq;
 import yj.core.zwipq.service.IZwipqService;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.UUID;
 
 @Controller
 public class CardhController
@@ -171,6 +166,13 @@ public class CardhController
             ResponseData rs = new ResponseData();
             rs.setSuccess(false);
             rs.setMessage("订单状态为结算不允许创建流转卡!");
+            return rs;
+        }
+
+        if (afko.getUmrez() == null || afko.getUmrez() == 0){
+            ResponseData rs = new ResponseData();
+            rs.setSuccess(false);
+            rs.setMessage("生产订单标准装框数量为0，不允许创建流转卡!");
             return rs;
         }
 

@@ -32,7 +32,12 @@
         <result column="ZBGKL" property="zbgkl" jdbcType="DECIMAL" />
         <result column="TP_CODE" property="tpCode" jdbcType="VARCHAR" />
         <result column="RSNUM" property="rsnum" jdbcType="VARCHAR" />
-        <result column="RSPOS" property="rspos" jdbcType="VARCHAR" />
+        <result column="attr1" property="attr1" jdbcType="VARCHAR" />
+        <result column="attr2" property="attr2" jdbcType="VARCHAR" />
+        <result column="attr3" property="rspos" jdbcType="VARCHAR" />
+        <result column="attr4" property="rspos" jdbcType="VARCHAR" />
+        <result column="attr5" property="rspos" jdbcType="VARCHAR" />
+        <result column="attr6" property="rspos" jdbcType="VARCHAR" />
         <result column="CREATION_DATE" property="creationDate" jdbcType="VARCHAR" />
         <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
         <result column="LAST_UPDATED_DATE" property="lastUpdatedDate" jdbcType="DATE" />
@@ -140,6 +145,12 @@
         <result column="PMATNR" property="pmatnr" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <update id="updateByTpcode" parameterType="java.lang.String">
+        update zwipq set attr1 = 'X'
+                    <where>
+                        TP_CODE = #{tp_code}
+                    </where>
+    </update>
     <select id="selectByzsxnum4" parameterType="java.lang.String" resultType="java.lang.Integer">
         select COALESCE(sum(zsxnum),0) from zwipq
         <where>

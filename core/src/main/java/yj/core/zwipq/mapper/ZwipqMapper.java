@@ -241,4 +241,6 @@ public interface ZwipqMapper extends Mapper<Zwipq> {
                             @Param("charg") String charg,@Param("tpCode")String tpCode);
 
     List<Zwipq> selectByZpgdbar2(@Param("zpgdbar2") String zpgdbar2);
+
+    Integer updateByTpcode(@Param("tp_code") String tp_code);
 }

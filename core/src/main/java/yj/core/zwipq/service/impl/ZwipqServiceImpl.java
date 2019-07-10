@@ -15,6 +15,7 @@ import yj.core.marc.mapper.MarcMapper;
 import yj.core.webservice_migo.components.MigoWebserviceUtil;
 import yj.core.webservice_migo.dto.DTMIGOParam;
 import yj.core.webservice_migo.dto.DTMIGOReturn;
+import yj.core.webservice_server.dto.Rec_ModifyZwipq;
 import yj.core.wipdftrghlist.dto.Dftrghlist;
 import yj.core.wipdftrghlist.service.IDftrghlistService;
 import yj.core.xhcard.dto.Xhcard;
@@ -327,5 +328,14 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
     @Override
     public List<Zwipq> selectByZpgdbar2(String zpgdbar2) {
         return zwipqMapper.selectByZpgdbar2(zpgdbar2);
+    }
+
+    @Override
+    public Integer updateByTpcode(List<Rec_ModifyZwipq> list) {
+       int num = 0;
+       for (int i=0;i<list.size();i++){
+           num = num + zwipqMapper.updateByTpcode(list.get(i).getTp_code());
+       }
+       return num;
     }
 }

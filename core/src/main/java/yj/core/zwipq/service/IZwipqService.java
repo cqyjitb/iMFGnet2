@@ -4,6 +4,7 @@ import com.hand.hap.core.IRequest;
 import com.hand.hap.core.ProxySelf;
 import com.hand.hap.system.service.IBaseService;
 import yj.core.webservice_migo.dto.DTMIGOReturn;
+import yj.core.webservice_server.dto.Rec_ModifyZwipq;
 import yj.core.zwipq.dto.Zwipq;
 
 import java.util.List;
@@ -150,4 +151,6 @@ public interface IZwipqService extends IBaseService<Zwipq>, ProxySelf<IZwipqServ
      * @return
      */
     List<Zwipq> selectByZpgdbar2(String zpgdbar2);
+
+    Integer updateByTpcode(List<Rec_ModifyZwipq> list);
 }

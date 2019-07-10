@@ -25,7 +25,6 @@ import yj.core.wiplines.dto.Lines;
 import yj.core.wiplines.service.ILinesService;
 import yj.core.wipproductscfg.dto.ProductsCfg;
 import yj.core.wipproductscfg.service.IProductsCfgService;
-import yj.kanb.kbtest.service.IKbtestService;
 import yj.kanb.vblinegroupheader.dto.Vblinegroupheader;
 import yj.kanb.vblinegroupheader.service.IVblinegroupheaderService;
 import yj.kanb.viewdataschemaline.dto.Viewdataschemaline;
@@ -97,6 +96,7 @@ public class KanbGetDataJob extends AbstractJob {
                 Double actnum = 0D;
                 Double plqty = 0D;
                 Double takt_time = 0D;
+                float oee = 0f;
                 String l_error= "E";
 
                 for (int j=0;j<listcurlzk.size();j++){
@@ -205,7 +205,11 @@ public class KanbGetDataJob extends AbstractJob {
                         viewdata.setLineLeader(lines.getLineHeader());
                         viewdata.setLineLeaderEn(lines.getLineHeaderEn());
                         takt_time = takt_time + lines.getTaktTime().doubleValue();
-
+                        if (lines.getOeerate() != null){
+                            oee = oee + lines.getOeerate();
+                        }else{
+                            oee = oee + 1;
+                        }
                         Long lineId = 0L;
                         if (lines.getPlineId() != null){
                             lineId = lines.getPlineId();
@@ -240,12 +244,13 @@ public class KanbGetDataJob extends AbstractJob {
                         }
 
                         String sql = sqlzx + where;
+                        System.out.println("查询装箱数据sql:"+sql);
                         List<Map<String, Object>> listresult = new ArrayList<Map<String,Object>>();
 
                         try {
                             listresult = oracleConn.select(sql);
                             actnum = actnum + listresult.size();
-
+                            System.out.println("获取到产线："+listcurlzk.get(i).getLineId()+"装箱数据:"+actnum+"条");
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -279,6 +284,7 @@ public class KanbGetDataJob extends AbstractJob {
 
                 if (l_error == ""){
                     takt_time = takt_time / listcurlzk.size();//平均生产节拍
+                    oee = oee / listcurlzk.size();
                     takt_time = Math.rint(takt_time);
                     viewdata.setPlanqty(plqty);//计划产量
                     viewdata.setActqty(actnum);//实际产量
@@ -291,7 +297,7 @@ public class KanbGetDataJob extends AbstractJob {
                     viewdata.setErdat(curdate);
                     try {
                         Date startDate = sdf2.parse(viewdata.getShifttimebegin());
-                        Long times = new Double(viewdata.getPlanqty() * viewdata.getCycletime() * 1000).longValue();
+                        Long times = new Double(viewdata.getPlanqty() * viewdata.getCycletime()  / oee * 1000).longValue();
                         times = startDate.getTime() + times;
                         viewdata.setShifttimeend(sdf2.format(new Date(times)));
                     } catch (ParseException e) {
@@ -309,15 +315,15 @@ public class KanbGetDataJob extends AbstractJob {
                     Double oeerate = 0D;
                     if (viewdata.getActqty() > 0D){
 
-                        qcrate = ( viewdata.getActqty() / ( viewdata.getActqty() + outnum ) ) * 100;
-                        oeerate = ( viewdata.getActqty() / ( viewdata.getActqty() + outnum ) ) * 100;
+                        qcrate = Math.rint(( viewdata.getActqty() / ( viewdata.getActqty() + outnum ) )) * 100;
+                        oeerate = Math.rint(( viewdata.getActqty() / (new Date().getTime() - sdf2.parse(viewdata.getShifttimebegin()).getTime() / 1000 /  viewdata.getCycletime()) )) * 100;
                     }
 
                     viewdata.setOeeRate(oeerate);//oee
                     viewdata.setQcRate(qcrate);//合格率
 
                     try {
-                        double a = Math.rint((new Date().getTime() - sdf2.parse(viewdata.getShifttimebegin()).getTime()) / 1000 /  viewdata.getCycletime() );
+                        double a = Math.rint((new Date().getTime() - sdf2.parse(viewdata.getShifttimebegin()).getTime()) / 1000 /  viewdata.getCycletime() * oee);
                         if ( a > viewdata.getPlanqty()){
                             a = viewdata.getPlanqty();
                         }
