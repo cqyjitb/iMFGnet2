@@ -109,6 +109,8 @@ public class Zwipq extends BaseDTO {
     private String werks; //工厂
 //    @Transient
 //    private String attr1; //生产日期
+
+    private String erdat; //生产日期
     @Transient
     private String kunnr; //客户编码
     @Transient
@@ -244,6 +246,14 @@ public class Zwipq extends BaseDTO {
     public void setMinCreateDate(Date minCreateDate) {
         this.minCreateDate = minCreateDate;
     }*/
+
+    public String getErdat() {
+        return erdat;
+    }
+
+    public void setErdat(String erdat) {
+        this.erdat = erdat;
+    }
 
     public String getPlineId() {
         return plineId;
