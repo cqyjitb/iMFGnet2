@@ -30,7 +30,7 @@
     </jaxws:endpoint>
 
     <bean id="service7" class="yj.core.webservice_server.ModifyZwipqImpl"/>
-    <jaxws:endpoint id="ModifyZwipq" implementor="#service6" address="/ModifyZwipq" >
+    <jaxws:endpoint id="ModifyZwipq" implementor="#service7" address="/ModifyZwipq" >
     </jaxws:endpoint>
     <!--<bean id="service5" class="yj.core.webservice_server.QueryXhcardImp" />-->
     <!--<jaxws:endpoint id="queryxhcard" implementor="#service5" address="/QueryXhcard">-->
