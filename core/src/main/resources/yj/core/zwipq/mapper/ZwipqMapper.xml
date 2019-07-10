@@ -423,7 +423,7 @@
     </select>
 
     <select id="selectZwipq" parameterType="java.lang.String" resultMap="BaseResultMap3">
-        select distinct q.zsxjlh,q.line_id,q.creation_date as attr1,q.zxhbar,q.sfflg,q.diecd,q.zgjbar,q.matnr,q.matnr2 as matnr2,
+        select distinct q.zsxjlh,q.line_id,q.creation_date as erdat,q.zxhbar,q.sfflg,q.diecd,q.zgjbar,q.matnr,q.matnr2 as matnr2,
         q.arbpr,q.charg,q.zzxkl,q.zqjkl,q.zoffl,q.status,q.zremade,q.zpgdbar,q.lgort,q.q_senq,q.SOURCE_LINE_ID,q.CREATED_BY,
         li.dept_id,b.name,li.descriptions,ma.maktx,(select maktx from sap_marc where matnr = matnr2) as maktx2
         from zwipq q,wip_lines li,hr_org_unit_b b,sap_marc ma
