@@ -148,7 +148,7 @@ public class FevorController extends BaseController {
                             zwipqhz.setPmaktx(list1.get(i).getPmaktx());
                             zwipqhz.setCharg4(zwipq4.get(j).getCharg());
                             zwipqhz.setCartonCode2(zwipq4.get(j).getTpCode());
-                            zwipqhz.setZsxnum4(zwipqService.selectByzsxnum3(pkgLineId,matnr,zwipqhz.getCharg4(),zwipqhz.getCartonCode2()) + "");
+                            zwipqhz.setZsxnum4(zwipqService.selectByzsxnum4(pkgLineId,matnr,zwipqhz.getCharg4(),zwipqhz.getCartonCode2()) + "");
                             list.add(zwipqhz);
                         }
                     }
