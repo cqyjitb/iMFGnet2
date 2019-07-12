@@ -556,7 +556,7 @@
     <select id="selectBylineforjjqj" parameterType="yj.core.zwipq.dto.Zwipq" resultMap="BaseResultMap2">
         SELECT * FROM zwipq
         <where>
-            LINE_ID = #{lineId}
+            LINE_ID = #{line_id}
             and MATNR2 = #{matnr}
             and ZZXKL = 0
             and ZQJKL = 0
