@@ -316,7 +316,7 @@ public class KanbGetDataJob extends AbstractJob {
                     if (viewdata.getActqty() > 0D){
 
                         qcrate = Math.rint(( viewdata.getActqty() / ( viewdata.getActqty() + outnum ) )) * 100;
-                        oeerate = Math.rint(( viewdata.getActqty() / (new Date().getTime() - sdf2.parse(viewdata.getShifttimebegin()).getTime() / 1000 /  viewdata.getCycletime()) )) * 100;
+                        oeerate = Math.rint(( viewdata.getActqty() / (new Date().getTime() - sdf2.parse(viewdata.getShifttimebegin()).getTime() / 1000 /  viewdata.getCycletime()) ) * 100);
                     }
 
                     viewdata.setOeeRate(oeerate);//oee
