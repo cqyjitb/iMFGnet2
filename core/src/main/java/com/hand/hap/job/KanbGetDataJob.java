@@ -30,6 +30,7 @@ import yj.kanb.vblinegroupheader.service.IVblinegroupheaderService;
 import yj.kanb.viewdataschemaline.dto.Viewdataschemaline;
 import yj.kanb.viewdataschemaline.service.IViewdataschemalineService;
 
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -313,17 +314,31 @@ public class KanbGetDataJob extends AbstractJob {
                     viewdata.setInsufqty(b);//差缺数量
                     Double qcrate = 0D;
                     Double oeerate = 0D;
+                    NumberFormat ddf1 = NumberFormat.getNumberInstance() ;
+                    ddf1.setMaximumFractionDigits(2);
                     if (viewdata.getActqty() > 0D){
 
-                        qcrate = Math.rint(( viewdata.getActqty() / ( viewdata.getActqty() + outnum ) )) * 100;
-                        oeerate = Math.rint(( viewdata.getActqty() / (new Date().getTime() - sdf2.parse(viewdata.getShifttimebegin()).getTime() / 1000 /  viewdata.getCycletime()) ) * 100);
+                        double qcratetmp =  viewdata.getActqty() / ( viewdata.getActqty() + outnum )  * 100;
+                        Long time1 = new Date().getTime() ;
+                        Long time2 = sdf2.parse(viewdata.getShifttimebegin()).getTime();
+                        Long timecy = time1 - time2;
+                        double oeetmp =  viewdata.getActqty() / ( timecy / 1000 /  viewdata.getCycletime())  * 100;
+                        String s = ddf1.format(oeetmp) ;
+                        oeerate = Double.parseDouble(s);
+
+                        String qc = ddf1.format(qcratetmp);
+                        qcrate = Double.parseDouble(qc);
+
                     }
 
                     viewdata.setOeeRate(oeerate);//oee
                     viewdata.setQcRate(qcrate);//合格率
 
                     try {
-                        double a = Math.rint((new Date().getTime() - sdf2.parse(viewdata.getShifttimebegin()).getTime()) / 1000 /  viewdata.getCycletime() * oee);
+                        Long time1 = new Date().getTime() ;
+                        Long time2 = sdf2.parse(viewdata.getShifttimebegin()).getTime();
+                        Long timecy = time1 - time2;
+                        double a = Math.rint( timecy / 1000 /  viewdata.getCycletime() * oee);
                         if ( a > viewdata.getPlanqty()){
                             a = viewdata.getPlanqty();
                         }
