@@ -87,7 +87,7 @@ public class KanbGetDataJob extends AbstractJob {
 
         List<Vblinegroupheader> listvbgh = new ArrayList<>();
         listvbgh = vblinegroupheaderService.selectAllGroup();
-
+        Date now = new Date();
         if (listvbgh.size() > 0 && listcurlzk.size() > 0){
 
 
@@ -131,6 +131,7 @@ public class KanbGetDataJob extends AbstractJob {
                         marc = marcService.selectByMatnr(cardh.getMatnr());
                         viewdata.setMatnr(marc.getMatnr());
                         viewdata.setMaktx(marc.getMaktx());
+                        viewdata.setShifttimebegin(listcurlzk.get(j).getLastUpdateDateStr());
                         System.out.println("获取物料信息**********************************");
 
                         //2.1 计算班次时间    白班 08:00:00-15:59:59   中班 16:00-23:59:59 夜班 00:00:00-07:59:59
@@ -181,22 +182,23 @@ public class KanbGetDataJob extends AbstractJob {
 
                         Date lastupdate = sdf2.parse(lastupdatestr);
 
-                        if (lastupdate.getTime() >= d1.getTime() && lastupdate.getTime() <= d2.getTime()){
+
+                        if (now.getTime() >= d1.getTime() && now.getTime() <= d2.getTime()){
                             viewdata.setShift("1");
                             viewdata.setShiftdes("白班");
-                            viewdata.setShifttimebegin(ds1);
+                            //viewdata.setShifttimebegin(ds1);
                         }
 
-                        if (lastupdate.getTime() >= d3.getTime() && lastupdate.getTime() <= d4.getTime()){
+                        if (now.getTime() >= d3.getTime() && now.getTime() <= d4.getTime()){
                             viewdata.setShift("2");
                             viewdata.setShiftdes("中班");
-                            viewdata.setShifttimebegin(ds1);
+                            //viewdata.setShifttimebegin(ds1);
                         }
 
-                        if (lastupdate.getTime() >= d5.getTime() && lastupdate.getTime() <= d6.getTime()){
+                        if (now.getTime() >= d5.getTime() && now.getTime() <= d6.getTime()){
                             viewdata.setShift("3");
                             viewdata.setShiftdes("夜班");
-                            viewdata.setShifttimebegin(ds1);
+                            //viewdata.setShifttimebegin(ds1);
                         }
 
                         //4:取产线配置数据
@@ -218,6 +220,8 @@ public class KanbGetDataJob extends AbstractJob {
                             lineId = Long.parseLong(listcurlzk.get(j).getLineId());
                         }
 
+                        String beginstr = listcurlzk.get(j).getLastUpdateDateStr();
+                        String nowstr = sdf2.format(now);
                         //3：去装箱数据
                         ServerSetting serverSetting = new ServerSetting();
                         serverSetting = serverSettingService.selectByLineId(listvbgh.get(i).getWerks(),lineId.toString());
@@ -228,21 +232,8 @@ public class KanbGetDataJob extends AbstractJob {
                         String where = " where a.zremade != '1' and a.line_id = " + "'" + listcurlzk.get(j).getLineId() + "' and  a.status = '0' and b.ENABLE_FLAG = '1' ";
                         where = where + "and b.item_code = " + "'" + listvbgh.get(i).getProduct() + "' " ;
 
-
-                        if (viewdata.getShift().equals("1")){
-                            where = where + " and a.creation_date >= to_date('"+ds1+"','yyyy-mm-dd hh24:mi:ss')";
-                            where = where + " and a.creation_date <= to_date('"+ds2+"','yyyy-mm-dd hh24:mi:ss')";
-                        }
-
-                        if (viewdata.getShift().equals("2")){
-                            where = where + " and a.creation_date >= to_date('"+ds3+"','yyyy-mm-dd hh24:mi:ss')";
-                            where = where + " and a.creation_date <= to_date('"+ds4+"','yyyy-mm-dd hh24:mi:ss')";
-                        }
-
-                        if (viewdata.getShift().equals("3")){
-                            where = where + " and a.creation_date >= to_date('"+ds5+"','yyyy-mm-dd hh24:mi:ss')";
-                            where = where + " and a.creation_date <= to_date('"+ds6+"','yyyy-mm-dd hh24:mi:ss')";
-                        }
+                        where = where + " and a.creation_date >= to_date('"+beginstr+"','yyyy-mm-dd hh24:mi:ss')";
+                        where = where + " and a.creation_date <= to_date('"+nowstr+"','yyyy-mm-dd hh24:mi:ss')";
 
                         String sql = sqlzx + where;
                         System.out.println("查询装箱数据sql:"+sql);
@@ -258,24 +249,7 @@ public class KanbGetDataJob extends AbstractJob {
 
                         //3.1 取件数量
                         InOutRecord inOutRecord = new InOutRecord();
-                        String start = "";
-                        String end = "";
-                        if (viewdata.getShift().equals("1")){
-                            start = ds1;
-                            end = ds2;
-                        }
-
-                        if (viewdata.getShift().equals("2")){
-                            start = ds3;
-                            end = ds4;
-                        }
-
-                        if (viewdata.getShift().equals("3")){
-                            start = ds5;
-                            end = ds6;
-                        }
-
-                        List<InOutRecord> listio = inOutRecordService.selectforKanb(listvbgh.get(i).getWerks(),listcurlzk.get(j).getLineId(),listvbgh.get(i).getProduct(),start,end);
+                        List<InOutRecord> listio = inOutRecordService.selectforKanb(listvbgh.get(i).getWerks(),listcurlzk.get(j).getLineId(),listvbgh.get(i).getProduct(),beginstr,nowstr);
                         outnum = outnum + listio.size();
 
                         l_error = "";
@@ -319,7 +293,7 @@ public class KanbGetDataJob extends AbstractJob {
                     if (viewdata.getActqty() > 0D){
 
                         double qcratetmp =  viewdata.getActqty() / ( viewdata.getActqty() + outnum )  * 100;
-                        Long time1 = new Date().getTime() ;
+                        Long time1 = now.getTime() ;
                         Long time2 = sdf2.parse(viewdata.getShifttimebegin()).getTime();
                         Long timecy = time1 - time2;
                         double oeetmp =  viewdata.getActqty() / ( timecy / 1000 /  viewdata.getCycletime())  * 100;
@@ -335,7 +309,7 @@ public class KanbGetDataJob extends AbstractJob {
                     viewdata.setQcRate(qcrate);//合格率
 
                     try {
-                        Long time1 = new Date().getTime() ;
+                        Long time1 = now.getTime() ;
                         Long time2 = sdf2.parse(viewdata.getShifttimebegin()).getTime();
                         Long timecy = time1 - time2;
                         double a = Math.rint( timecy / 1000 /  viewdata.getCycletime() * oee);

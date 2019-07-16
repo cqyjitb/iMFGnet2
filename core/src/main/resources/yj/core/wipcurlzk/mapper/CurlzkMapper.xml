@@ -33,12 +33,6 @@
     </select>
     <update id="updateZxhbar" parameterType="yj.core.wipcurlzk.dto.Curlzk">
         UPDATE wip_curlzk set ZXHBAR = #{zxhbar}
-        <if test="lastUpdateDate != null">
-            ,LAST_UPDATED_DATE = #{lastUpdateDate}
-        </if>
-        <if test="lastUpdatedBy != null">
-            ,LAST_UPDATED_BY = #{lastUpdatedBy}
-        </if>
         <where>
             LINE_ID = #{lineId}
             and SHIFT = #{shift}
