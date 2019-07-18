@@ -102,7 +102,7 @@ public class KanbGetDataJob extends AbstractJob {
 
                 for (int j=0;j<listcurlzk.size();j++){
 
-                    if (listcurlzk.get(j).getDeptId().equals(listvbgh.get(i).getWorkshopId()) && listcurlzk.get(j).getMatnrjj().equals(listvbgh.get(i).getProduct())){
+                    if (listcurlzk.get(j).getDeptId().equals(listvbgh.get(i).getWorkshopId()) && listcurlzk.get(j).getLineId().equals(listvbgh.get(i).getLineId().toString())){
                         //根据产品 取客户信息
                         ProductsCfg productsCfg = productsCfgService.selectByLineidAndPMatnr(listcurlzk.get(j).getLineId(),listcurlzk.get(j).getMatnrjj());
 
@@ -232,7 +232,7 @@ public class KanbGetDataJob extends AbstractJob {
                         String where = " where a.zremade != '1' and a.line_id = " + "'" + listcurlzk.get(j).getLineId() + "' and  a.status = '0' and b.ENABLE_FLAG = '1' ";
                         where = where + "and b.item_code = " + "'" + listvbgh.get(i).getProduct() + "' " ;
 
-                        where = where + " and a.creation_date >= to_date('"+beginstr+"','yyyy-mm-dd hh24:mi:ss')";
+                        where = where + " and a.creation_date >= to_date('"+beginstr.substring(0,19)+"','yyyy-mm-dd hh24:mi:ss')";
                         where = where + " and a.creation_date <= to_date('"+nowstr+"','yyyy-mm-dd hh24:mi:ss')";
 
                         String sql = sqlzx + where;
@@ -242,7 +242,7 @@ public class KanbGetDataJob extends AbstractJob {
                         try {
                             listresult = oracleConn.select(sql);
                             actnum = actnum + listresult.size();
-                            System.out.println("获取到产线："+listcurlzk.get(i).getLineId()+"装箱数据:"+actnum+"条");
+                            System.out.println("获取到产线："+listcurlzk.get(j).getLineId()+"装箱数据:"+actnum+"条");
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
