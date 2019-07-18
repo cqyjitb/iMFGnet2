@@ -11,18 +11,14 @@ public class test {
         NumberFormat ddf1 = NumberFormat.getNumberInstance() ;
         ddf1.setMaximumFractionDigits(2);
         try {
-            Date date1 = sdf.parse("2019-07-18 10:30:31");
-            Date date2 = sdf.parse("2019-07-18 12:00:00");
+            Date date1 = sdf.parse("2019-07-18 08:07:00");
+            Date date2 = sdf.parse("2019-07-18 13:35:00");
 
-            Long timecy = ( date2.getTime() - date1.getTime() ) / 1000;
+            double timecy = ( date2.getTime() - date1.getTime() ) / 1000;
             System.out.println(timecy);
-            System.out.println(timecy / 120 );
-            double oeetmp =  85/44*100;
-            System.out.println(oeetmp);
-            String s = ddf1.format(oeetmp) ;
-            double oeerate = Double.parseDouble(s);
+            System.out.println(17/ ( timecy / 4) );
 
-            System.out.println(oeerate);
+
 
         } catch (ParseException e) {
             e.printStackTrace();
