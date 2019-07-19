@@ -98,12 +98,14 @@ public class KanbGetDataJob extends AbstractJob {
                 Double actnum = 0D;
                 Double plqty = 0D;
                 Double lunqty = 0D;//理论产出
+                Double jdcq = 0D;
                 Double takt_time = 0D;
                 float oee = 0f;
                 String l_error= "E";
 
                 for (int j=0;j<listcurlzk.size();j++){
-
+                    double actnumtmp = 0D;
+                    double outnumtmp = 0D;
                     if (listcurlzk.get(j).getDeptId().equals(listvbgh.get(i).getWorkshopId()) && listcurlzk.get(j).getCgroup().equals(listvbgh.get(i).getLineId().toString())){
 
                         num = num + 1;
@@ -129,6 +131,9 @@ public class KanbGetDataJob extends AbstractJob {
                             System.out.println("没有获取到当前流转卡信息 跳出循环**********************************");
                             continue;//如果没有获取到当前流转卡信息 跳出循环
                         }else{
+                            listvbgh.get(i).setProduct(cardh.getMatnr());
+                            //反写物料编码到产线组配置。
+                            vblinegroupheaderService.updateMatnr(listvbgh.get(i));
                             plqty = plqty + cardh.getPlqty();
                         }
                         //2：获取产品信息
@@ -214,7 +219,7 @@ public class KanbGetDataJob extends AbstractJob {
                         viewdata.setLineLeaderEn(lines.getLineHeaderEn());
                         takt_time =  lines.getTaktTime().doubleValue();
                         if (lines.getOeerate() != null){
-                            oee = oee + lines.getOeerate();
+                            oee = lines.getOeerate();
                         }else{
                             oee = oee + 1;
                         }
@@ -246,6 +251,7 @@ public class KanbGetDataJob extends AbstractJob {
 
                         try {
                             listresult = oracleConn.select(sql);
+                            actnumtmp = listresult.size();
                             actnum = actnum + listresult.size();
                             System.out.println("获取到产线："+listcurlzk.get(j).getLineId()+"装箱数据:"+actnum+"条");
                         } catch (Exception e) {
@@ -265,16 +271,31 @@ public class KanbGetDataJob extends AbstractJob {
                         lunqty = lunqty + ( end - begin ) / takt_time;//理论产出汇总
 
                         //取最小节拍
-                        if (viewdata.getCycletime() > takt_time){
-                            viewdata.setCycletime(takt_time);
+                        if (viewdata.getCycletime() != null){
+                            if (viewdata.getCycletime() > takt_time){
+                                viewdata.setCycletime(takt_time);
+                                Long yongshi = new Double(cardh.getPlqty() * takt_time * 1000).longValue() + ( begin * 1000 );
+                                viewdata.setShifttimeend(sdf2.format(new Date(yongshi)));
 
+                            }
+                        }else{
+                            viewdata.setCycletime(takt_time);
+                            Long yongshi = new Double(cardh.getPlqty() * takt_time * 1000).longValue() + ( begin * 1000 );
+                            viewdata.setShifttimeend(sdf2.format(new Date(yongshi)));
                         }
+
+
+
+
+                        //单线进度差缺
+                        double a = ( new Date().getTime() - sdf2.parse(listcurlzk.get(j).getLastUpdateDateStr().substring(0,19)).getTime() ) / 1000 / takt_time * oee;
+                        jdcq = jdcq + a;
 
                     }
                 }
 
                 if (l_error == ""){
-                    oee = oee / listcurlzk.size();
+
                     viewdata.setPlanqty(plqty);//计划产量
                     viewdata.setActqty(actnum);//实际产量
                     viewdata.setGroupId(listvbgh.get(i).getGroupId());//产线组ID
@@ -283,8 +304,6 @@ public class KanbGetDataJob extends AbstractJob {
                     viewdata.setProduct(listvbgh.get(i).getProduct());
                     viewdata.setWorkshopId(listvbgh.get(i).getWorkshopId());
                     viewdata.setErdat(curdate);
-
-                    //viewdata.setShifttimeend();
                     double b = viewdata.getActqty() - viewdata.getPlanqty();
                     if (b > 0){
                         b = 0;
@@ -293,12 +312,11 @@ public class KanbGetDataJob extends AbstractJob {
                     }
                     viewdata.setInsufqty(b);//差缺数量
 
-                    double a = viewdata.getActqty() - viewdata.getPlanqty();
-                    if ( a > viewdata.getPlanqty()){
-                        a = viewdata.getPlanqty();
+                    if (Math.abs(Math.rint(viewdata.getActqty() - jdcq)) >= viewdata.getPlanqty()){
+                        viewdata.setJdcqqty( 0 - viewdata.getPlanqty());//进度差缺
+                    }else{
+                        viewdata.setJdcqqty(Math.rint(viewdata.getActqty() - jdcq ));//进度差缺
                     }
-                    viewdata.setJdcqqty(viewdata.getActqty() - a );//进度差缺
-
                     Double qcrate = 0D;
                     Double oeerate = 0D;
                     NumberFormat ddf1 = NumberFormat.getNumberInstance() ;
@@ -306,9 +324,7 @@ public class KanbGetDataJob extends AbstractJob {
                     if (viewdata.getActqty() > 0D){
 
                         double qcratetmp =  viewdata.getActqty() / ( viewdata.getActqty() + outnum )  * 100;
-                        Long time1 = now.getTime() ;
-                        Long time2 = sdf2.parse(viewdata.getShifttimebegin()).getTime();
-                        Long timecy = time1 - time2;
+
                         double oeetmp =  viewdata.getActqty() / lunqty  * 100;
                         String s = ddf1.format(oeetmp) ;
                         oeerate = Double.parseDouble(s);

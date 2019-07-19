@@ -3,7 +3,6 @@ package yj.kanb.vblinegroupheader.service;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.core.ProxySelf;
 import com.hand.hap.system.service.IBaseService;
-import yj.kanb.vbgroupdtl.dto.Vbgroupdtl;
 import yj.kanb.vblinegroupheader.dto.Vblinegroupheader;
 
 import java.util.List;
@@ -52,4 +51,6 @@ public interface IVblinegroupheaderService extends IBaseService<Vblinegroupheade
      * @return
      */
     List<Vblinegroupheader> selectLineGroupH(IRequest requestCtx, String vbgroupId);
+
+    int updateMatnr(Vblinegroupheader dto);
 }

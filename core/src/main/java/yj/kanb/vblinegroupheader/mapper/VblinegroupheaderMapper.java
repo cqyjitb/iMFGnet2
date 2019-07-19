@@ -39,4 +39,6 @@ public interface VblinegroupheaderMapper extends Mapper<Vblinegroupheader> {
      * @return
      */
     List<Vblinegroupheader> selectLineGroupH2(@Param("vbgroupId") String vbgroupId);
+
+    int updateMatnr(Vblinegroupheader dto);
 }

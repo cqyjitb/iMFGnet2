@@ -103,4 +103,9 @@ public class VblinegroupheaderServiceImpl extends BaseServiceImpl<Vblinegrouphea
     public List<Vblinegroupheader> selectLineGroupH(IRequest requestCtx, String vbgroupId) {
         return vblinegroupheaderMapper.selectLineGroupH2(vbgroupId);
     }
+
+    @Override
+    public int updateMatnr(Vblinegroupheader dto) {
+        return vblinegroupheaderMapper.updateMatnr(dto);
+    }
 }
