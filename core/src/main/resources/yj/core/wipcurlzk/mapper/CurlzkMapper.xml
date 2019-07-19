@@ -15,6 +15,7 @@
         <result column="MAKTXJJ" property="maktxjj" jdbcType="VARCHAR" />
         <result column="ERDAT" property="erdat" jdbcType="DATE" />
         <result column="ERDAT" property="erdat" jdbcType="DATE" />
+        <result column="CGROUP" property="cgroup" jdbcType="VARCHAR" />
         <result column="CREATION_DATE" property="creationDate" jdbcType="DATE" />
         <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
         <result column="LAST_UPDATED_DATE" property="lastUpdateDate" jdbcType="DATE" />
@@ -77,6 +78,7 @@
                 cur.ERDAT,
                 cur.LAST_UPDATED_DATE as lastUpdateDateStr,
                 li.dept_id,
+                li.cgroup,
                 marc.maktx as matktxjj,
                 cardh.menge
         from wip_curlzk cur,wip_lines li,sap_cardh cardh,sap_marc marc,hr_org_unit_b hr
@@ -86,7 +88,7 @@
             and cur.zpgdbar = cardh.zpgdbar
             and cardh.matnr = marc.matnr
             and ERDAT = #{erdat}
-            ORDER  BY UNIT_CODE,matnrjj asc
+            ORDER  BY UNIT_CODE,lastUpdateDateStr asc
         </where>
     </select>
 </mapper>

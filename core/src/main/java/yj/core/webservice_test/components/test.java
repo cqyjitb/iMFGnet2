@@ -16,7 +16,7 @@ public class test {
 
             double timecy = ( date2.getTime() - date1.getTime() ) / 1000;
             System.out.println(timecy);
-            System.out.println(17/ ( timecy / 4) );
+            System.out.println(30/ ( timecy / 85) );
 
 
 

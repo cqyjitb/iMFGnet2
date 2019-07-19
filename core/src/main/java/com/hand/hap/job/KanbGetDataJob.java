@@ -93,26 +93,31 @@ public class KanbGetDataJob extends AbstractJob {
 
             for (int i=0;i<listvbgh.size();i++){
                 Viewdataschemaline viewdata = new Viewdataschemaline();
+                int num = 0;//计数器
                 Double outnum = 0D;
                 Double actnum = 0D;
                 Double plqty = 0D;
+                Double lunqty = 0D;//理论产出
                 Double takt_time = 0D;
                 float oee = 0f;
                 String l_error= "E";
 
                 for (int j=0;j<listcurlzk.size();j++){
 
-                    if (listcurlzk.get(j).getDeptId().equals(listvbgh.get(i).getWorkshopId()) && listcurlzk.get(j).getLineId().equals(listvbgh.get(i).getLineId().toString())){
+                    if (listcurlzk.get(j).getDeptId().equals(listvbgh.get(i).getWorkshopId()) && listcurlzk.get(j).getCgroup().equals(listvbgh.get(i).getLineId().toString())){
+
+                        num = num + 1;
+                        if (num == 1){
+                            //该产线的流转卡切换时间最小
+                            viewdata.setShifttimebegin(listcurlzk.get(j).getLastUpdateDateStr());
+                        }
                         //根据产品 取客户信息
                         ProductsCfg productsCfg = productsCfgService.selectByLineidAndPMatnr(listcurlzk.get(j).getLineId(),listcurlzk.get(j).getMatnrjj());
-
                         //根据客户编码取客户描述 名称
                         Cust cust = custService.selectByKunnr(productsCfg.getKunnr());
-
                         viewdata.setKunnr(cust.getKunnr());
                         viewdata.setName1(cust.getName1());
                         viewdata.setSortl(cust.getSortl());
-
                         viewdata.setClassgrp(listcurlzk.get(j).getShift());//班组
 
                         //1:根据生产线当前流转卡号 获取流转卡数据
@@ -131,7 +136,7 @@ public class KanbGetDataJob extends AbstractJob {
                         marc = marcService.selectByMatnr(cardh.getMatnr());
                         viewdata.setMatnr(marc.getMatnr());
                         viewdata.setMaktx(marc.getMaktx());
-                        viewdata.setShifttimebegin(listcurlzk.get(j).getLastUpdateDateStr());
+
                         System.out.println("获取物料信息**********************************");
 
                         //2.1 计算班次时间    白班 08:00:00-15:59:59   中班 16:00-23:59:59 夜班 00:00:00-07:59:59
@@ -254,6 +259,17 @@ public class KanbGetDataJob extends AbstractJob {
 
                         l_error = "";
 
+                        //计算该班次的实际生产用时
+                        Long begin = sdf.parse(listcurlzk.get(j).getLastUpdateDateStr().substring(0,19)).getTime() / 1000;
+                        Long end = now.getTime() /1000;
+                        lunqty = lunqty + ( end - begin ) / takt_time;//理论产出汇总
+
+                        //取最小节拍
+                        if (viewdata.getCycletime() > takt_time){
+                            viewdata.setCycletime(takt_time);
+
+                        }
+
                     }
                 }
 
@@ -261,21 +277,13 @@ public class KanbGetDataJob extends AbstractJob {
                     oee = oee / listcurlzk.size();
                     viewdata.setPlanqty(plqty);//计划产量
                     viewdata.setActqty(actnum);//实际产量
-                    viewdata.setCycletime(takt_time);//平均节拍
                     viewdata.setGroupId(listvbgh.get(i).getGroupId());//产线组ID
                     viewdata.setWerks(listvbgh.get(i).getWerks());
                     viewdata.setBukrs(listvbgh.get(i).getBukrs());
                     viewdata.setProduct(listvbgh.get(i).getProduct());
                     viewdata.setWorkshopId(listvbgh.get(i).getWorkshopId());
                     viewdata.setErdat(curdate);
-                    try {
-                        Date startDate = sdf2.parse(viewdata.getShifttimebegin());
-                        Long times = new Double(viewdata.getPlanqty() * viewdata.getCycletime()  / oee * 1000).longValue();
-                        times = startDate.getTime() + times;
-                        viewdata.setShifttimeend(sdf2.format(new Date(times)));
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
+
                     //viewdata.setShifttimeend();
                     double b = viewdata.getActqty() - viewdata.getPlanqty();
                     if (b > 0){
@@ -284,6 +292,13 @@ public class KanbGetDataJob extends AbstractJob {
                         b = Math.abs(b);
                     }
                     viewdata.setInsufqty(b);//差缺数量
+
+                    double a = viewdata.getActqty() - viewdata.getPlanqty();
+                    if ( a > viewdata.getPlanqty()){
+                        a = viewdata.getPlanqty();
+                    }
+                    viewdata.setJdcqqty(viewdata.getActqty() - a );//进度差缺
+
                     Double qcrate = 0D;
                     Double oeerate = 0D;
                     NumberFormat ddf1 = NumberFormat.getNumberInstance() ;
@@ -294,7 +309,7 @@ public class KanbGetDataJob extends AbstractJob {
                         Long time1 = now.getTime() ;
                         Long time2 = sdf2.parse(viewdata.getShifttimebegin()).getTime();
                         Long timecy = time1 - time2;
-                        double oeetmp =  viewdata.getActqty() / ( timecy / 1000 /  viewdata.getCycletime())  * 100;
+                        double oeetmp =  viewdata.getActqty() / lunqty  * 100;
                         String s = ddf1.format(oeetmp) ;
                         oeerate = Double.parseDouble(s);
 
@@ -305,19 +320,6 @@ public class KanbGetDataJob extends AbstractJob {
 
                     viewdata.setOeeRate(oeerate);//oee
                     viewdata.setQcRate(qcrate);//合格率
-
-                    try {
-                        Long time1 = now.getTime() ;
-                        Long time2 = sdf2.parse(viewdata.getShifttimebegin()).getTime();
-                        Long timecy = time1 - time2;
-                        double a = Math.rint( timecy / 1000 /  viewdata.getCycletime() * oee);
-                        if ( a > viewdata.getPlanqty()){
-                            a = viewdata.getPlanqty();
-                        }
-                        viewdata.setJdcqqty(viewdata.getActqty() - a );//进度差缺
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
 
                     Viewdataschemaline viewdatatmp = viewdataschemalineService.selectforKanb(listvbgh.get(i).getGroupId(),
                             listvbgh.get(i).getProduct(),listvbgh.get(i).getWorkshopId(),listvbgh.get(i).getBukrs(),listvbgh.get(i).getWerks());
