@@ -81,4 +81,12 @@ public interface LinesMapper extends Mapper<Lines>{
      * @return
      */
     List<Lines> selectByWerksAndDeptid(@Param("werks") String werks,@Param("deptId") String deptId);
+
+    /**
+     * 根据工厂及车间查询产线组LOV_CGROUP 918100064
+     * @param werks
+     * @param deptId
+     * @return
+     */
+    List<Lines> selectByCgroup(@Param("werks") String werks,@Param("deptId") String deptId);
 }

@@ -258,18 +258,19 @@
             },
             {
                 field:"lineId",
-                title:"产线ID",
+                title:"产线组",
                 width:100,
                 template: function (dataItem) {
                     return dataItem['lineId'] || ''
                 },
                 editor : function (container, options) {
-                    $('<input name="'+options.field+'"/>').appendTo(container).kendoLov($.extend(<@lov "LOV_LINE_NEW"/>,
+                    $('<input name="'+options.field+'"/>').appendTo(container).kendoLov($.extend(<@lov "LOV_CGROUP"/>,
                         {
                             query: function(e) {
+                                e.param['werks'] = options.model.werks;
                                 e.param['deptId'] = options.model.workshopId;
                             },
-                            textField: 'descriptions',
+                            textField: 'groupName',
                             model: options.model
                         }));
                 },
@@ -284,6 +285,7 @@
                 field:"product",
                 title:"产品物料编码",
                 width:120,
+                hidden:true,
                 template: function (dataItem) {
                     return dataItem['product'] || ''
                 },
@@ -308,6 +310,7 @@
                 field:"kunnr",
                 title:"客户编码",
                 width:120,
+                hidden:true,
                 headerAttributes: {
                     style: "text-align: center;"
                 },

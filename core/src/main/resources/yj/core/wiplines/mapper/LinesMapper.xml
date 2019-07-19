@@ -56,7 +56,23 @@
         <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
         <result column="LAST_UPDATED_DATE" property="lastUpdatedDate" jdbcType="DATE" />
         <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
+        <result column="cggroupname" property="cggroupname" jdbcType="VARCHAR" />
     </resultMap>
+
+    <select id="selectByCgroup" parameterType="java.lang.String" resultMap="BaseResultMap2">
+        select DISTINCT li.WERKS,li.DEPT_ID,li.CGROUP,cd.cggroupname
+        from wip_lines li
+        LEFT JOIN wip_cggroup_des cd on li.CGROUP = cd.cggroup
+        <where>
+            li.CGROUP is not null
+            <if test="werks != null">
+                AND li.werks = #{werks}
+            </if>
+            <if test="deptId != null">
+                AND li.dept_id = #{deptId}
+            </if>
+        </where>
+    </select>
 
     <select id="selectByUnitCode" parameterType="java.lang.String" resultType="java.lang.String">
         select name from hr_org_unit_b

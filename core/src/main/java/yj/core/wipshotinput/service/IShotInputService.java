@@ -14,4 +14,11 @@ public interface IShotInputService extends IBaseService<ShotInput>,ProxySelf<ISh
      * @return
      */
     String insertShotInput(List<ShotInput> dto);
+
+    /**
+     * 压射号及报工统计表查询 918100064
+     * @param dto
+     * @return
+     */
+    List<ShotInput> selectShotInput(ShotInput dto);
 }

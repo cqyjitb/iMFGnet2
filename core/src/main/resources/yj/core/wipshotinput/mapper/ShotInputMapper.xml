@@ -16,15 +16,34 @@
         <result column="SHOT_NUM" property="shotNum" jdbcType="DECIMAL"/>
         <result column="YEILD" property="yeild" jdbcType="DECIMAL"/>
         <result column="WASTE_NUM" property="wasteNum" jdbcType="DECIMAL"/>
-        <result column="DIFFERENT_NUM" property="differentNum" jdbcType=" DECIMAL"/>
+        <result column="DIFFERENT_NUM" property="differentNum" jdbcType="DECIMAL"/>
         <result column="BRGEW" property="brgew" jdbcType="VARCHAR"/>
     </resultMap>
 
-    <insert id="insertRow" parameterType="yj.core.wipshotinput.dto.ShotInput" >
+    <select id="selectShotInput" parameterType="yj.core.wipshotinput.dto.ShotInput" resultMap="BaseResultMap">
+        select * from wip_shot_input
+        <where>
+            1 = 1
+            <if test="werks != null">
+                AND werks = #{werks}
+            </if>
+            <if test="fevor != null">
+                AND fevor = #{fevor}
+            </if>
+            <if test="prdDateAfter != null">
+                AND  prd_date >= #{prdDateAfter}
+            </if>
+            <if test="prdDateBefore != null">
+                AND #{prdDateBefore} >= prd_date
+            </if>
+        </where>
+        order by prd_date asc,fevor asc,shifts asc,arbpl asc
+    </select>
+
+    <insert id="insertShotInput" parameterType="yj.core.wipshotinput.dto.ShotInput" >
         insert INTO wip_shot_input(WERKS,FEVOR,TXT,ARBPL,KTEXT,PRD_DATE,SHIFTS,S_CLASS,SHOT_START,SHOT_END,
                                     SHOT_NUM,YEILD,WASTE_NUM,DIFFERENT_NUM,BRGEW,CREATED_BY,CREATION_DATE)
         VALUES (#{werks},#{fevor},#{txt},#{arbpl},#{ktext},#{prdDate},#{shifts},#{sClass},#{shotStart},#{shotEnd},
                 #{shotNum},#{yeild},#{wasteNum},#{differentNum},#{brgew},#{createdBy},#{creationDate})
     </insert>
-
 </mapper>

@@ -42,6 +42,25 @@ public class ShotInput extends BaseDTO {
 
     private String brgew;//浇注重量-KG
 
+    private String prdDateAfter;//开始日期
+    private String prdDateBefore;//结束日期
+
+    public String getPrdDateAfter() {
+        return prdDateAfter;
+    }
+
+    public void setPrdDateAfter(String prdDateAfter) {
+        this.prdDateAfter = prdDateAfter;
+    }
+
+    public String getPrdDateBefore() {
+        return prdDateBefore;
+    }
+
+    public void setPrdDateBefore(String prdDateBefore) {
+        this.prdDateBefore = prdDateBefore;
+    }
+
     public String getWerks() {
         return werks;
     }

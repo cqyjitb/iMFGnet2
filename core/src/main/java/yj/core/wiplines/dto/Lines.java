@@ -92,6 +92,16 @@ public class Lines extends BaseDTO {
 
     private Float oeerate;//设计OEE
 
+    private String cggroupname;//产线组名称
+
+    public String getCggroupname() {
+        return cggroupname;
+    }
+
+    public void setCggroupname(String cggroupname) {
+        this.cggroupname = cggroupname;
+    }
+
     public Float getOeerate() {
         return oeerate;
     }

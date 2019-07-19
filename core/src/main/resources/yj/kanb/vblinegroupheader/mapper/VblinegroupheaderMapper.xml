@@ -6,7 +6,7 @@
     <result column="bukrs" property="bukrs" jdbcType="VARCHAR"/>
     <result column="werks" property="werks" jdbcType="VARCHAR"/>
     <result column="groupId" property="groupId" jdbcType="VARCHAR"/>
-    <result column="lineId" property="lineId" jdbcType="DECIMAL"/>
+    <result column="lineId" property="lineId" jdbcType="VARCHAR"/>
     <result column="product" property="product" jdbcType="VARCHAR"/>
     <result column="kunnr" property="kunnr" jdbcType="VARCHAR"/>
     <result column="templeteUrl" property="templeteUrl" jdbcType="VARCHAR"/>
@@ -48,7 +48,7 @@
             AND bukrs = #{bukrs}
             AND werks = #{werks}
             AND workshopId = #{workshopId}
-            AND product = #{product}
+            AND lineId = #{lineId}
         </where>
     </delete>
 
@@ -60,7 +60,7 @@
             AND bukrs = #{bukrs}
             AND werks = #{werks}
             AND workshopId = #{workshopId}
-            AND product = #{product}
+            AND lineId = #{lineId}
         </where>
     </update>
 

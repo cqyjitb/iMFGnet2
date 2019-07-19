@@ -11,13 +11,6 @@
         -webkit-user-select: none;
         -webkit-touch-callout: none;
     }
-    .action_ok {
-        color: #5fb760;
-    }
-
-    .action_dangerous {
-        color: #eeac5f;
-    }
     .label{
         color: red;
     }
@@ -33,16 +26,10 @@
             prdDateBefore: date
         },
         queryGrid: function () {
-            var fevor = document.getElementById("fevor").value;
             var prdDateAfter = document.getElementById('prdDateAfter').value;
             var prdDateBefore = document.getElementById('prdDateBefore').value;
-            var total = document.getElementById('total').value;
-            if (fevor == null || fevor == "" || fevor == '') {
-                kendo.ui.showErrorDialog({
-                    title: '错误',
-                    message: "查询条件:生产车间,必输！"
-                });
-            }else if(prdDateAfter == null || prdDateAfter == "" || prdDateAfter == ''){
+            //var total = document.getElementById('total').value;
+            if(prdDateAfter == null || prdDateAfter == "" || prdDateAfter == ''){
                 kendo.ui.showErrorDialog({
                     title: '错误',
                     message: "查询条件:开始日期,必输！"
@@ -53,7 +40,7 @@
                     message: "查询条件:结束日期,必输！"
                 });
             }else{
-                grid.dataSource.data([]);
+                /*grid.dataSource.data([]);
                 if(total == 'Y'){
                     grid.hideColumn("shifts");
                     grid.hideColumn("sClass");
@@ -64,7 +51,7 @@
                     grid.showColumn("sClass");
                     grid.hideColumn("prdDateBefore");
                     grid.thead[0].lastChild.cells[5].innerText = "日期";
-                }
+                }*/
                 $('#Grid').data('kendoGrid').dataSource.page(1);
             }
         }
@@ -87,7 +74,7 @@
                             </div>
                             <div class="col-sm-4">
                                 <div class="form-group">
-                                    <label class="col-sm-4 control-label">生产车间<label class="label">*</label></label>
+                                    <label class="col-sm-4 control-label">生产车间</label>
                                     <div class="col-sm-8">
                                         <input id="fevor" class="k-textbox" data-bind="value:model.fevor" style="width: 100%">
                                         <script>
@@ -119,7 +106,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-sm-4">
+                            <!--<div class="col-sm-4">
                                 <div class="form-group">
                                     <label class="col-sm-4 control-label">汇总查询</label>
                                     <div class="col-sm-8">
@@ -127,7 +114,7 @@
                                                 data-role="checkbox" data-value-primitive="true" data-checked-field="checked" data-value-field="value">
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                         </div>
                     </div>
                     <div class="row" style="margin-right: -8px;">
@@ -172,7 +159,7 @@
     dataSource = new kendo.data.DataSource({
         transport: {
             read: {
-                url: BaseUrl + "/wip/shotnum/queryShotnum2",
+                url: BaseUrl + "/wip/shot/input/queryShotInput",
                 type: "POST",
                 dataType: "json"
             },
@@ -274,23 +261,10 @@
                 }
             },
             {
-                field: "prdDateAfter",
+                field: "prdDate",
                 title: '日期',
                 width: 100,
                 format:"{0:yyyy-MM-dd}",
-                headerAttributes: {
-                    style: "text-align: center;"
-                },
-                attributes: {
-                    style: "text-align: center;"
-                }
-            },
-            {
-                field: "prdDateBefore",
-                title: '结束日期',
-                width: 100,
-                format:"{0:yyyy-MM-dd}",
-                hidden:true,
                 headerAttributes: {
                     style: "text-align: center;"
                 },

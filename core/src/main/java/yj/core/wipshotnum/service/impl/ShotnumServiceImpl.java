@@ -7,8 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import yj.core.afko.dto.Afko;
-import yj.core.afko.mapper.AfkoMapper;
 import yj.core.crhd.dto.Crhd;
 import yj.core.crhd.mapper.CrhdMapper;
 import yj.core.dispatch.dto.InputLog;
@@ -427,8 +425,6 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
     @Override
     public List<ShotInput> selectShotnum2(String prdDate) {
         List<ShotInput> list = new ArrayList<ShotInput>();
-        List<Shotnum> list2 = new ArrayList<Shotnum>();
-        ShotInput shotInput = new ShotInput();
         Marc marc = new Marc();
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = new GregorianCalendar();
@@ -436,122 +432,122 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
         DecimalFormat df = new DecimalFormat("#0.00");
         List<Fevor> fevor = fevorMapper.selectFevor(null);
         for (int k=0;k<fevor.size();k++){
+            List<Shotnum> list1 = shotnumMapper.selectShotnum("1001",fevor.get(k).getFevor(),null,null,prdDate,prdDate);
             List<Shotnum> list3 = new ArrayList<Shotnum>();
             List<ShotInput> list4 = new ArrayList<ShotInput>();
-            List<Shotnum> list1 = shotnumMapper.selectShotnum("1001",fevor.get(k).getFevor(),null,null,prdDate,prdDate);
-            if(list1.size() > 0) {
-                for (int i = 0; i < list1.size(); i++) {
-                    list3.add(list1.get(i));
-                    for (int j = i + 1; j < list1.size(); j++) {
-                        if ((list1.get(i).getArbpl().equals(list1.get(j).getArbpl()))
-                                && (list1.get(i).getShifts().equals(list1.get(j).getShifts()))) {
-                            list1.remove(j);
-                            j--;
+            for (int i = 0; i < list1.size(); i++) {
+                list3.add(list1.get(i));
+                for (int j = i + 1; j < list1.size(); j++) {
+                    if ((list1.get(i).getArbpl().equals(list1.get(j).getArbpl()))
+                            && (list1.get(i).getShifts().equals(list1.get(j).getShifts()))) {
+                        list1.remove(j);
+                        j--;
+                    }
+                }
+            }
+            List<Shotnum> list2 = new ArrayList<Shotnum>();
+            for (int i = 0; i < list3.size(); i++) {
+                Integer mdnum = 1, shotNum = 0, yeild = 0;
+                Double grgew = 0.00;
+                ShotInput shotInput = new ShotInput();
+                shotInput.setWerks("1001");
+                shotInput.setFevor(list3.get(i).getFevor());
+                shotInput.setTxt(list3.get(i).getTxt());
+                shotInput.setArbpl(list3.get(i).getArbpl());
+                shotInput.setKtext(list3.get(i).getKtext());
+                shotInput.setPrdDate(list3.get(i).getPrdDate());
+                shotInput.setsClass(list3.get(i).getsClass());
+                shotInput.setShifts(list3.get(i).getShifts());
+                list2 = shotnumMapper.selectShotnum(shotInput.getWerks(), shotInput.getFevor(), shotInput.getShifts(),
+                        shotInput.getArbpl(), shotInput.getPrdDate(), shotInput.getPrdDate());
+                Long startMin = list2.get(0).getShotStart();
+                Long endMax = list2.get(0).getShotEnd();
+                for (int a = 0; a < list2.size(); a++) {
+                    mdnum = mouldcavityMapper.selectByMatnr(list2.get(a).getMatnr(), list2.get(a).getMdno());
+                    marc = marcMapper.selectByMatnr(list2.get(a).getMatnr());
+                    if (mdnum == null) {
+                        mdnum = 1;
+                    }
+                    Integer shotNum1 = ((int) (list2.get(a).getShotEnd() - list2.get(a).getShotStart()) * mdnum);
+                    shotNum = shotNum + shotNum1;
+                    if (marc != null) {
+                        if (marc.getBrgew() == null) {
+                            marc.setBrgew(0.0);
+                        }
+                        grgew = grgew + (shotNum1 * marc.getBrgew());
+                    }
+                    if (a > 0) {
+                        if (list2.get(a).getShotStart() < startMin) {
+                            startMin = list2.get(a).getShotStart();
+                        }
+                        if (list2.get(a).getShotEnd() > endMax) {
+                            endMax = list2.get(a).getShotEnd();
                         }
                     }
                 }
-                for (int i = 0; i < list3.size(); i++) {
-                    Integer mdnum = 1, shotNum = 0, yeild = 0;
-                    Double grgew = 0.00;
-                    shotInput.setWerks("1001");
-                    shotInput.setFevor(list3.get(i).getFevor());
-                    shotInput.setTxt(list3.get(i).getTxt());
-                    shotInput.setArbpl(list3.get(i).getArbpl());
-                    shotInput.setKtext(list3.get(i).getKtext());
-                    shotInput.setPrdDate(list3.get(i).getPrdDate());
-                    shotInput.setsClass(list3.get(i).getsClass());
-                    shotInput.setShifts(list3.get(i).getShifts());
-                    list2 = shotnumMapper.selectShotnum(shotInput.getWerks(), shotInput.getFevor(), shotInput.getShifts(),
-                            shotInput.getArbpl(), shotInput.getPrdDate(), shotInput.getPrdDate());
-                    Long startMin = list2.get(0).getShotStart();
-                    Long endMax = list2.get(0).getShotEnd();
-                    for (int a = 0; a < list2.size(); a++) {
-                        mdnum = mouldcavityMapper.selectByMatnr(list2.get(a).getMatnr(), list2.get(a).getMdno());
-                        marc = marcMapper.selectByMatnr(list2.get(a).getMatnr());
-                        if (mdnum == null) {
-                            mdnum = 1;
-                        }
-                        Integer shotNum1 = ((int) (list2.get(a).getShotEnd() - list2.get(a).getShotStart()) * mdnum);
-                        shotNum = shotNum + shotNum1;
-                        if (marc != null) {
-                            if (marc.getBrgew() == null) {
-                                marc.setBrgew(0.0);
-                            }
-                            grgew = grgew + (shotNum1 * marc.getBrgew());
-                        }
-                        if (a > 0) {
-                            if (list2.get(a).getShotStart() < startMin) {
-                                startMin = list2.get(a).getShotStart();
-                            }
-                            if (list2.get(a).getShotEnd() > endMax) {
-                                endMax = list2.get(a).getShotEnd();
-                            }
-                        }
-                    }
-                    shotInput.setShotStart(startMin);
-                    shotInput.setShotEnd(endMax);
-                    shotInput.setShotNum(shotNum);
-                    shotInput.setBrgew(df.format(grgew));
-                    InputLog inputLog1 = inputLogMapper.selectByOrderno2(shotInput.getWerks(), shotInput.getArbpl(), shotInput.getShifts(), shotInput.getPrdDate());
-                    shotInput.setYeild(inputLog1.getYeild().intValue());
-                    shotInput.setWasteNum(inputLog1.getWorkScrap().intValue() + inputLog1.getRowScrap().intValue());
-                    shotInput.setDifferentNum(shotInput.getYeild() + shotInput.getWasteNum() - shotInput.getShotNum());
-                    list4.add(shotInput);
+                shotInput.setShotStart(startMin);
+                shotInput.setShotEnd(endMax);
+                shotInput.setShotNum(shotNum);
+                shotInput.setBrgew(df.format(grgew));
+                InputLog inputLog1 = inputLogMapper.selectByOrderno2(shotInput.getWerks(), shotInput.getArbpl(), shotInput.getShifts(), shotInput.getPrdDate());
+                shotInput.setYeild(inputLog1.getYeild().intValue());
+                shotInput.setWasteNum(inputLog1.getWorkScrap().intValue() + inputLog1.getRowScrap().intValue());
+                shotInput.setDifferentNum(shotInput.getYeild() + shotInput.getWasteNum() - shotInput.getShotNum());
+                list4.add(shotInput);
+            }
+            List<Crhd> crhds = crhdMapper.selectByVeran("1001", fevor.get(k).getFevor(), null);
+            Integer num = list3.size();
+            Integer shift = 2;
+            Integer week = cal2.get(Calendar.WEEK_OF_YEAR) % 2;
+            if ((cal2.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) && ((crhds.get(0).getShiftSeq().equals("0"))
+                    || ((crhds.get(0).getShiftSeq().equals("1")) && (week == 1)) || ((crhds.get(0).getShiftSeq().equals("2")) && (week == 0)))) {
+                shift = 3;
+            }
+            for (int a = 0; a < shift; a++) {
+                List<Crhd> crhd = new ArrayList<Crhd>();
+                String shifts = null;
+                if (a == 0) {
+                    shifts = "1";
+                } else if (a == 2) {
+                    shifts = "2";
+                } else if (a == 1) {
+                    shifts = "3";
                 }
-                List<Crhd> crhds = crhdMapper.selectByVeran("1001", fevor.get(k).getFevor(), null);
-                Integer num = list4.size();
-                Integer shift = 2;
-                Integer week = cal2.get(Calendar.WEEK_OF_YEAR) % 2;
-                if ((cal2.get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY) && ((crhds.get(0).getShiftSeq().equals("0"))
-                        || ((crhds.get(0).getShiftSeq().equals("1")) && (week == 1)) || ((crhds.get(0).getShiftSeq().equals("2")) && (week == 0)))) {
-                    shift = 3;
+                if (num > 0) {
+                    for (int i = 0; i < crhds.size(); i++) {
+                        int j;
+                        for (j = 0; j < num; j++) {
+                            if ((shifts.equals(list3.get(j).getShifts())) && (crhds.get(i).getArbpl().equals(list3.get(j).getArbpl()))) {
+                                break;
+                            }
+                        }
+                        if (j == num) {
+                            crhd.add(crhds.get(i));
+                        }
+                    }
+                } else {
+                    crhd.addAll(crhds);
                 }
-                for (int a = 0; a < shift; a++) {
-                    List<Crhd> crhd = new ArrayList<Crhd>();
-                    String shifts = null;
-                    if (a == 0) {
-                        shifts = "1";
-                    } else if (a == 2) {
-                        shifts = "2";
-                    } else if (a == 1) {
-                        shifts = "3";
-                    }
-                    if (num > 0) {
-                        for (int i = 0; i < crhds.size(); i++) {
-                            int j;
-                            for (j = 0; j < num; j++) {
-                                if ((shifts.equals(list4.get(j).getShifts())) && (crhds.get(i).getArbpl().equals(list4.get(j).getArbpl()))) {
-                                    break;
-                                }
-                            }
-                            if (j == num) {
-                                crhd.add(crhds.get(i));
-                            }
-                        }
-                    } else {
-                        crhd.addAll(crhds);
-                    }
-                    if (crhd.size() > 0) {
-                        for (int i = 0; i < crhd.size(); i++) {
-                            InputLog inputLog1 = new InputLog();
-                            ShotInput shotInput1 = new ShotInput();
-                            shotInput1.setWerks("1001");
-                            shotInput1.setFevor(fevor.get(k).getFevor());
-                            shotInput1.setTxt(crhd.get(i).getTxt());
-                            shotInput1.setArbpl(crhd.get(i).getArbpl());
-                            shotInput1.setKtext(crhd.get(i).getKetxt());
-                            shotInput1.setPrdDate(prdDate);
-                            shotInput1.setShifts(shifts);
-                            shotInput1.setShotStart(0L);
-                            shotInput1.setShotEnd(0L);
-                            shotInput1.setShotNum(0);
-                            shotInput1.setBrgew("0.00");
-                            inputLog1 = inputLogMapper.selectByOrderno2(shotInput1.getWerks(), crhd.get(i).getArbpl(), shifts, prdDate);
-                            shotInput1.setYeild(inputLog1.getYeild().intValue());
-                            shotInput1.setWasteNum(inputLog1.getWorkScrap().intValue() + inputLog1.getRowScrap().intValue());
-                            shotInput1.setDifferentNum(shotInput1.getYeild() + shotInput1.getWasteNum());
-                            list4.add(shotInput1);
-                        }
+                if (crhd.size() > 0) {
+                    for (int i = 0; i < crhd.size(); i++) {
+                        InputLog inputLog1 = new InputLog();
+                        ShotInput shotInput1 = new ShotInput();
+                        shotInput1.setWerks("1001");
+                        shotInput1.setFevor(fevor.get(k).getFevor());
+                        shotInput1.setTxt(crhd.get(i).getTxt());
+                        shotInput1.setArbpl(crhd.get(i).getArbpl());
+                        shotInput1.setKtext(crhd.get(i).getKetxt());
+                        shotInput1.setPrdDate(prdDate);
+                        shotInput1.setShifts(shifts);
+                        shotInput1.setShotStart(0L);
+                        shotInput1.setShotEnd(0L);
+                        shotInput1.setShotNum(0);
+                        shotInput1.setBrgew("0.00");
+                        inputLog1 = inputLogMapper.selectByOrderno2(shotInput1.getWerks(), crhd.get(i).getArbpl(), shifts, prdDate);
+                        shotInput1.setYeild(inputLog1.getYeild().intValue());
+                        shotInput1.setWasteNum(inputLog1.getWorkScrap().intValue() + inputLog1.getRowScrap().intValue());
+                        shotInput1.setDifferentNum(shotInput1.getYeild() + shotInput1.getWasteNum());
+                        list4.add(shotInput1);
                     }
                 }
             }
