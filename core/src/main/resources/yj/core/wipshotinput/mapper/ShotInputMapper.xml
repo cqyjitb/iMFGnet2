@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.wipshotinput.mapper.ShotInputMapper">
+    <resultMap id="BaseResultMap" type="yj.core.wipshotinput.dto.ShotInput">
+        <result column="WERKS" property="werks" jdbcType="VARCHAR"/>
+        <result column="FEVOR" property="fevor" jdbcType="VARCHAR"/>
+        <result column="TXT" property="txt" jdbcType="VARCHAR"/>
+        <result column="ARBPL" property="arbpl" jdbcType="VARCHAR"/>
+        <result column="KTEXT" property="ktext" jdbcType="VARCHAR"/>
+        <result column="PRD_DATE" property="prdDate" jdbcType="DATE"/>
+        <result column="SHIFTS" property="shifts" jdbcType="VARCHAR"/>
+        <result column="S_CLASS" property="sClass" jdbcType="VARCHAR"/>
+        <result column="SHOT_START" property="shotStart" jdbcType="DECIMAL"/>
+        <result column="SHOT_END" property="shotEnd" jdbcType="DECIMAL"/>
+        <result column="SHOT_NUM" property="shotNum" jdbcType="DECIMAL"/>
+        <result column="YEILD" property="yeild" jdbcType="DECIMAL"/>
+        <result column="WASTE_NUM" property="wasteNum" jdbcType="DECIMAL"/>
+        <result column="DIFFERENT_NUM" property="differentNum" jdbcType=" DECIMAL"/>
+        <result column="BRGEW" property="brgew" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <insert id="insertRow" parameterType="yj.core.wipshotinput.dto.ShotInput" >
+        insert INTO wip_shot_input(WERKS,FEVOR,TXT,ARBPL,KTEXT,PRD_DATE,SHIFTS,S_CLASS,SHOT_START,SHOT_END,
+                                    SHOT_NUM,YEILD,WASTE_NUM,DIFFERENT_NUM,BRGEW,CREATED_BY,CREATION_DATE)
+        VALUES (#{werks},#{fevor},#{txt},#{arbpl},#{ktext},#{prdDate},#{shifts},#{sClass},#{shotStart},#{shotEnd},
+                #{shotNum},#{yeild},#{wasteNum},#{differentNum},#{brgew},#{createdBy},#{creationDate})
+    </insert>
+
+</mapper>

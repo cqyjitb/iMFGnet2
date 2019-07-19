@@ -40,7 +40,7 @@ public class NgRecordDateJob extends AbstractJob {
         JobDetail detail = context.getJobDetail();
         JobKey key = detail.getKey();
         TriggerKey triggerKey = context.getTrigger().getKey();
-        String msg = "KanbGetDataJob Test<insertNewData>! - . jobKey:" + key + ", triggerKey:" + triggerKey + ", execTime:" + new Date();
+        String msg = "NgRecordDataJob Test<insertNewData>! - . jobKey:" + key + ", triggerKey:" + triggerKey + ", execTime:" + new Date();
         log.info(msg);
         List<DateClass> list2 = dateClassService.selectFromPage("NgRecordDateJob");
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");

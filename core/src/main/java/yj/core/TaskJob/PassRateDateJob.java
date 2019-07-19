@@ -46,7 +46,7 @@ public class PassRateDateJob extends AbstractJob {
         JobDetail detail = context.getJobDetail();
         JobKey key = detail.getKey();
         TriggerKey triggerKey = context.getTrigger().getKey();
-        String msg = "KanbGetDataJob Test<insertNewData>! - . jobKey:" + key + ", triggerKey:" + triggerKey + ", execTime:" + new Date();
+        String msg = "PassRateDataJob Test<insertNewData>! - . jobKey:" + key + ", triggerKey:" + triggerKey + ", execTime:" + new Date();
         log.info(msg);
         List<DateClass> list2 = dateClassService.selectFromPage("PassRateDateJob");
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");

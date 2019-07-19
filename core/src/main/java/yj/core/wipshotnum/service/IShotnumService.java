@@ -3,6 +3,7 @@ package yj.core.wipshotnum.service;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.core.ProxySelf;
 import com.hand.hap.system.service.IBaseService;
+import yj.core.wipshotinput.dto.ShotInput;
 import yj.core.wipshotnum.dto.Shotnum;
 
 import java.util.List;
@@ -59,11 +60,10 @@ public interface IShotnumService extends IBaseService<Shotnum>, ProxySelf<IShotn
 
     /**
      * 压射号及报工统计表  918100064
-     * @param dto
-     * @param requestContext
+     * @param prdDate
      * @return
      */
-    List<Shotnum> selectShotnum2(Shotnum dto, IRequest requestContext);
+    List<ShotInput> selectShotnum2(String prdDate);
 
     /**
      * 压射号异常明细表  918100064
