@@ -40,7 +40,7 @@ public class PassRateJob extends AbstractJob {
         JobDetail detail = context.getJobDetail();
         JobKey key = detail.getKey();
         TriggerKey triggerKey = context.getTrigger().getKey();
-        String msg = "KanbGetDataJob Test<insertNewData>! - . jobKey:" + key + ", triggerKey:" + triggerKey + ", execTime:" + new Date();
+        String msg = "PassRateJob Test<insertNewData>! - . jobKey:" + key + ", triggerKey:" + triggerKey + ", execTime:" + new Date();
         log.info(msg);
         SimpleTriggerDto simpleTriggerDto = quartzService.getSimpleTrigger(triggerKey.getName(),triggerKey.getGroup());
         int minute = simpleTriggerDto.getRepeatInterval().intValue();
