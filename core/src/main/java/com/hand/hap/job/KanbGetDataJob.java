@@ -90,7 +90,7 @@ public class KanbGetDataJob extends AbstractJob {
         Date now = new Date();
         if (listvbgh.size() > 0 && listcurlzk.size() > 0){
 
-
+            List cardhlist = new ArrayList();
             for (int i=0;i<listvbgh.size();i++){
                 Viewdataschemaline viewdata = new Viewdataschemaline();
                 int num = 0;//计数器
@@ -127,6 +127,7 @@ public class KanbGetDataJob extends AbstractJob {
                         String zpgdbar = listcurlzk.get(j).getZpgdbar();
                         cardh = cardhService.selectByBarcode(zpgdbar);
 
+
                         if (cardh == null){
                             System.out.println("没有获取到当前流转卡信息 跳出循环**********************************");
                             continue;//如果没有获取到当前流转卡信息 跳出循环
@@ -134,7 +135,10 @@ public class KanbGetDataJob extends AbstractJob {
                             listvbgh.get(i).setProduct(cardh.getMatnr());
                             //反写物料编码到产线组配置。
                             vblinegroupheaderService.updateMatnr(listvbgh.get(i));
-                            plqty = plqty + cardh.getPlqty();
+                            if (!cardhlist.contains(cardh.getZpgdbar())){
+                                cardhlist.add(cardh.getZpgdbar());
+                                plqty = plqty + cardh.getPlqty();
+                            }
                         }
                         //2：获取产品信息
                         Marc marc= new Marc();
@@ -324,7 +328,9 @@ public class KanbGetDataJob extends AbstractJob {
                     if (viewdata.getActqty() > 0D){
 
                         double qcratetmp =  viewdata.getActqty() / ( viewdata.getActqty() + outnum )  * 100;
-
+                        System.out.println("*******************************理论产出************************");
+                        System.out.println(lunqty);
+                        System.out.println("*******************************理论产出************************");
                         double oeetmp =  viewdata.getActqty() / lunqty  * 100;
                         String s = ddf1.format(oeetmp) ;
                         oeerate = Double.parseDouble(s);
