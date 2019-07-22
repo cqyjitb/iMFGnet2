@@ -13,5 +13,24 @@
         <result column="planqty" property="planqty" jdbcType="DECIMAL" />
     </resultMap>
 
+    <select id="selectCgroupPlan" parameterType="yj.core.wipcgroupplan.dto.CgroupPlan" resultMap="BaseResultMap">
+        select * from wip_cgroup_plan
+        <where>
+            1 = 1
+            <if test="werks != null">
+                AND werks = #{werks}
+            </if>
+            <if test="deptId != null">
+                AND DEPT_ID = #{deptId}
+            </if>
+            <if test="werks != null">
+                AND cgroup = #{cgroup}
+            </if>
+            <if test="werks != null">
+                AND plandate = #{plandate}
+            </if>
+        </where>
+        order by planpos desc
+    </select>
 
 </mapper>

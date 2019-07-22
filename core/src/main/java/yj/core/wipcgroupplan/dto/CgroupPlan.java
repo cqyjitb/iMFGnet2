@@ -8,7 +8,9 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
+import java.sql.Time;
 import java.util.Date;
+
 @ExtensionAttribute(disable=true)
 @Table(name = "wip_cgroup_plan")
 public class CgroupPlan extends BaseDTO {
@@ -25,14 +27,23 @@ public class CgroupPlan extends BaseDTO {
 
       private Long planpos; //生产计划行
 
-      private Date plantimestart; //计划开始时间
+      private Time plantimestart; //计划开始时间
 
-      private Date plantimeend; //计划结束时间
+      private Time plantimeend; //计划结束时间
 
       private Double planqty; //计划产量
 
+    private String remarks;//备注
 
-     public void setWerks(String werks){
+    public String getRemarks() {
+        return remarks;
+    }
+
+    public void setRemarks(String remarks) {
+        this.remarks = remarks;
+    }
+
+    public void setWerks(String werks){
          this.werks = werks;
      }
 
@@ -72,23 +83,23 @@ public class CgroupPlan extends BaseDTO {
          return planpos;
      }
 
-     public void setPlantimestart(Date plantimestart){
-         this.plantimestart = plantimestart;
-     }
+    public Time getPlantimestart() {
+        return plantimestart;
+    }
 
-     public Date getPlantimestart(){
-         return plantimestart;
-     }
+    public void setPlantimestart(Time plantimestart) {
+        this.plantimestart = plantimestart;
+    }
 
-     public void setPlantimeend(Date plantimeend){
-         this.plantimeend = plantimeend;
-     }
+    public Time getPlantimeend() {
+        return plantimeend;
+    }
 
-     public Date getPlantimeend(){
-         return plantimeend;
-     }
+    public void setPlantimeend(Time plantimeend) {
+        this.plantimeend = plantimeend;
+    }
 
-     public void setPlanqty(Double planqty){
+    public void setPlanqty(Double planqty){
          this.planqty = planqty;
      }
 

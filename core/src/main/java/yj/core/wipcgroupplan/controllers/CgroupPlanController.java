@@ -20,26 +20,65 @@ import java.util.List;
     @Autowired
     private ICgroupPlanService service;
 
-
-    @RequestMapping(value = "/wip/cgroup/plan/query")
+        /**
+         * 产线组生产计划维护页面查询请求 918100064
+         * @param dto
+         * @param page
+         * @param pageSize
+         * @param request
+         * @return
+         */
+    @RequestMapping(value = "/wip/cgroup/plan/queryCgroupPlan")
     @ResponseBody
-    public ResponseData query(CgroupPlan dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
+    public ResponseData queryCgroupPlan(CgroupPlan dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
         @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize, HttpServletRequest request) {
         IRequest requestContext = createRequestContext(request);
-        return new ResponseData(service.select(requestContext,dto,page,pageSize));
+        return new ResponseData(service.selectCgroupPlan(dto,requestContext));
     }
 
-    @RequestMapping(value = "/wip/cgroup/plan/submit")
+        /**
+         * 产线组生产计划维护页面添加及修改请求 918100064
+         * @param request
+         * @param dto
+         * @return
+         */
+    @RequestMapping(value = "/wip/cgroup/plan/submitCgroupPlan")
     @ResponseBody
-    public ResponseData update(HttpServletRequest request,@RequestBody List<CgroupPlan> dto){
+    public ResponseData updateCgroupPlan(HttpServletRequest request,@RequestBody List<CgroupPlan> dto){
         IRequest requestCtx = createRequestContext(request);
-        return new ResponseData(service.batchUpdate(requestCtx, dto));
+        ResponseData rs = new ResponseData();
+        String userId ="" + request.getSession().getAttribute("userId");
+        if (dto.size() > 0){
+            for (int i=0;i<dto.size();i++){
+                CgroupPlan cgroupPlan = dto.get(i);
+                String result = service.insertOrUpdate(cgroupPlan,userId,requestCtx);
+                if (result == null){
+                    cgroupPlan.setRemarks("保存成功！");
+                }else {
+                    cgroupPlan.setRemarks("保存失败！");
+                    rs.setSuccess(false);
+                    rs.setMessage(result);
+                }
+            }
+            rs.setRows(dto);
+        }
+        return rs;
     }
 
-    @RequestMapping(value = "/wip/cgroup/plan/remove")
+        /**
+         * 产线组生产计划维护页面删除请求 918100064
+         * @param request
+         * @param dto
+         * @return
+         */
+    @RequestMapping(value = "/wip/cgroup/plan/removeCgroupPlan")
     @ResponseBody
-    public ResponseData delete(HttpServletRequest request,@RequestBody List<CgroupPlan> dto){
-        service.batchDelete(dto);
+    public ResponseData deleteCgroupPlan(HttpServletRequest request,@RequestBody List<CgroupPlan> dto){
+        if (dto.size() > 0){
+            for (int i=0;i<dto.size();i++){
+                service.deleteCgroupPlan(dto.get(i));
+            }
+        }
         return new ResponseData();
     }
     }
