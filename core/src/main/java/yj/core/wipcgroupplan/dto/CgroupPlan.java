@@ -8,7 +8,6 @@ import org.hibernate.validator.constraints.NotEmpty;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
-import java.util.Date;
 @ExtensionAttribute(disable=true)
 @Table(name = "wip_cgroup_plan")
 public class CgroupPlan extends BaseDTO {
@@ -21,13 +20,13 @@ public class CgroupPlan extends BaseDTO {
      @NotEmpty
       private String cgroup; //产线组
 
-      private Date plandate; //生产计划日期
+      private String plandate; //生产计划日期
 
       private Long planpos; //生产计划行
 
-      private Date plantimestart; //计划开始时间
+      private String plantimestart; //计划开始时间
 
-      private Date plantimeend; //计划结束时间
+      private String plantimeend; //计划结束时间
 
       private Double planqty; //计划产量
 
@@ -59,15 +58,31 @@ public class CgroupPlan extends BaseDTO {
          return cgroup;
      }
 
-     public void setPlandate(Date plandate){
-         this.plandate = plandate;
-     }
+    public String getPlandate() {
+        return plandate;
+    }
 
-     public Date getPlandate(){
-         return plandate;
-     }
+    public void setPlandate(String plandate) {
+        this.plandate = plandate;
+    }
 
-     public void setPlanpos(Long planpos){
+    public String getPlantimestart() {
+        return plantimestart;
+    }
+
+    public void setPlantimestart(String plantimestart) {
+        this.plantimestart = plantimestart;
+    }
+
+    public String getPlantimeend() {
+        return plantimeend;
+    }
+
+    public void setPlantimeend(String plantimeend) {
+        this.plantimeend = plantimeend;
+    }
+
+    public void setPlanpos(Long planpos){
          this.planpos = planpos;
      }
 
@@ -75,21 +90,6 @@ public class CgroupPlan extends BaseDTO {
          return planpos;
      }
 
-     public void setPlantimestart(Date plantimestart){
-         this.plantimestart = plantimestart;
-     }
-
-     public Date getPlantimestart(){
-         return plantimestart;
-     }
-
-     public void setPlantimeend(Date plantimeend){
-         this.plantimeend = plantimeend;
-     }
-
-     public Date getPlantimeend(){
-         return plantimeend;
-     }
 
      public void setPlanqty(Double planqty){
          this.planqty = planqty;
