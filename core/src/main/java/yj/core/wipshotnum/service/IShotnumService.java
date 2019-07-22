@@ -59,7 +59,7 @@ public interface IShotnumService extends IBaseService<Shotnum>, ProxySelf<IShotn
     String deleteShotnum(List<Shotnum> dto);
 
     /**
-     * 压射号及报工统计表  918100064
+     * 压射号及报工统计表（财务）  918100064
      * @param prdDate
      * @return
      */
@@ -72,4 +72,12 @@ public interface IShotnumService extends IBaseService<Shotnum>, ProxySelf<IShotn
      * @return
      */
     List<Shotnum> selectShotnum3(Shotnum dto, IRequest requestContext);
+
+    /**
+     * 压射号及报工统计表  918100064
+     * @param dto
+     * @param requestContext
+     * @return
+     */
+    List<Shotnum> selectShotnum4(Shotnum dto, IRequest requestContext);
 }
