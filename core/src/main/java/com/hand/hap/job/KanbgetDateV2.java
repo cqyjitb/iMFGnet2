@@ -67,11 +67,11 @@ public class KanbgetDateV2 extends AbstractJob {
                     //如果不存在产线组计划或者当前时间不在计划时间范围之类，则删除原有产线看板数据，不显示任何内容。
                     if (listplan.get(j).getCgroup().equals(listvbgh.get(i).getLineId())){
 
-                        String planstar = listplan.get(j).getPlandate() + " " + listplan.get(j).getPlantimestart();
-                        String planend = listplan.get(j).getPlandate() +  " " + listplan.get(j).getPlantimeend();
-                        if (curdate.getTime() >= sdf2.parse(planstar).getTime() && curdate.getTime() <= sdf2.parse(planend).getTime()){
-                            l_get = "X";
-                        }
+//                        String planstar = listplan.get(j).getPlandate() + " " + listplan.get(j).getPlantimestart();
+//                        String planend = listplan.get(j).getPlandate() +  " " + listplan.get(j).getPlantimeend();
+//                        if (curdate.getTime() >= sdf2.parse(planstar).getTime() && curdate.getTime() <= sdf2.parse(planend).getTime()){
+//                            l_get = "X";
+//                        }
                     }
                 }
             }
