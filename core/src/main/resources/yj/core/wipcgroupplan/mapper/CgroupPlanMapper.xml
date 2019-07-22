@@ -11,6 +11,9 @@
         <result column="plantimestart" property="plantimestart" jdbcType="DATE" />
         <result column="plantimeend" property="plantimeend" jdbcType="DATE" />
         <result column="planqty" property="planqty" jdbcType="DECIMAL" />
+        <result column="classgrp" property="classgrp" jdbcType="VARCHAR" />
+        <result column="shift" property="shift" jdbcType="VARCHAR" />
+
     </resultMap>
 
 

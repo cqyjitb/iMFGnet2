@@ -31,6 +31,9 @@ public class CgroupPlan extends BaseDTO {
 
       private Double planqty; //计划产量
 
+      private String classgrp; //班组
+
+      private String shift;//班次
 
      public void setWerks(String werks){
          this.werks = werks;
@@ -96,4 +99,19 @@ public class CgroupPlan extends BaseDTO {
          return planqty;
      }
 
-     }
+    public String getClassgrp() {
+        return classgrp;
+    }
+
+    public void setClassgrp(String classgrp) {
+        this.classgrp = classgrp;
+    }
+
+    public String getShift() {
+        return shift;
+    }
+
+    public void setShift(String shift) {
+        this.shift = shift;
+    }
+}
