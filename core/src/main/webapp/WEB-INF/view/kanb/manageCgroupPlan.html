@@ -143,36 +143,35 @@
             parameterMap: function (options, type) {
                 if (type !== "read" && options.models) {
                     for (var i=0;i<options.models.length;i++){
-                        /*if (options.models[i].deptId == null){
+                        if (options.models[i].deptId == null){
                             kendo.ui.showErrorDialog({
                                 title: '错误',
                                 message: "部门不能为空！"
                             });
-                        }else if (options.models[i].deptId == null){
+                        }else if (options.models[i].cgroup == null){
                             kendo.ui.showErrorDialog({
                                 title: '错误',
                                 message: "产线组不能为空！"
                             });
-                        }else if (options.models[i].deptId == null){
+                        }else if (options.models[i].plandate == null) {
                             kendo.ui.showErrorDialog({
                                 title: '错误',
                                 message: "生产计划日期不能为空！"
                             });
-                        }else if (options.models[i].deptId == null){
+                        }else if (options.models[i].plantimestart == null){
                             kendo.ui.showErrorDialog({
                                 title: '错误',
                                 message: "计划开始时间不能为空！"
                             });
-                        }else if (options.models[i].deptId == null){
+                        }else if (options.models[i].plantimeend == null){
                             kendo.ui.showErrorDialog({
                                 title: '错误',
                                 message: "计划产量不能为空！"
                             });
-                        }else{*/
-                            options.models[i].plandate = options.models[i].plandate.toString();
+                        }else {
                             options.models[i].plantimestart = options.models[i].plantimestart.getTime();
                             options.models[i].plantimeend = options.models[i].plantimeend.getTime();
-
+                        }
                     }
                     var datas = Hap.prepareSubmitParameter(options, type);
                     return kendo.stringify(datas);

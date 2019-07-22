@@ -26,24 +26,12 @@ public class CgroupPlanServiceImpl extends BaseServiceImpl<CgroupPlan> implement
 
     @Override
     public String insertOrUpdate(CgroupPlan cgroupPlan, String userId, IRequest requestContext) {
-        if (cgroupPlan.getDeptId() == null){
-            return "部门不能为空！";
-        }else if (cgroupPlan.getCgroup() == null){
-            return "产线组不能为空！";
-        }else if (cgroupPlan.getPlandate() == null){
-            return "生产计划日期不能为空！";
-        }else if (cgroupPlan.getPlandate().before(new Date())){
+        if (cgroupPlan.getPlandate().before(new Date())){
             return "生产计划日期不能小于当前日期！";
-        }else if (cgroupPlan.getPlantimestart() == null){
-            return "计划开始时间不能为空！";
-        }else if (cgroupPlan.getPlantimeend() == null) {
-            return "计划结束时间不能为空！";
         }else if (cgroupPlan.getPlantimestart().before(cgroupPlan.getPlantimeend())){
             return "计划开始时间必须小于计划结束时间！";
-        }else if (cgroupPlan.getPlanqty() == null){
-            return "计划产量不能为空！";
         }else if (cgroupPlan.getPlanqty() > 0.0){
-            return "计划产量必须大于！";
+            return "计划产量必须大于0！";
         }
         return null;
     }
