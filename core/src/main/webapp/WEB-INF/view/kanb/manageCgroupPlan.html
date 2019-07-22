@@ -85,7 +85,14 @@
                         </div>
                     </div>
                     <div class="row">
-
+                        <div class="col-sm-4">
+                            <div class="form-group">
+                                <label class="col-sm-4 control-label">生产计划日期<label class="label">*</label></label>
+                                <div class="col-sm-8">
+                                    <input id="plandate" style="width: 100%" data-role="datepicker" data-bind="value:model.plandate" class="k-datepicker">
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -114,27 +121,59 @@
     dataSource = new kendo.data.DataSource({
         transport: {
             read: {
-                url: BaseUrl + "/Vblinegroupheader/queryVblinegroupheader",
+                url: BaseUrl + "/wip/cgroup/plan/queryCgroupPlan",
                 type: "POST",
                 dataType: "json"
             },
             destroy: {
-                url: BaseUrl + "/Vblinegroupheader/removeVblinegroupheader",
+                url: BaseUrl + "/wip/cgroup/plan/removeCgroupPlan",
                 type: "POST",
                 contentType: "application/json"
             },
             create: {
-                url: BaseUrl + "/Vblinegroupheader/submitVblinegroupheader",
+                url: BaseUrl + "/wip/cgroup/plan/submitCgroupPlan",
                 type: "POST",
                 contentType: "application/json"
             },
             update: {
-                url: BaseUrl + "/Vblinegroupheader/submitVblinegroupheader",
+                url: BaseUrl + "/wip/cgroup/plan/submitCgroupPlan",
                 type: "POST",
                 contentType: "application/json"
             },
             parameterMap: function (options, type) {
                 if (type !== "read" && options.models) {
+                    for (var i=0;i<options.models.length;i++){
+                        /*if (options.models[i].deptId == null){
+                            kendo.ui.showErrorDialog({
+                                title: '错误',
+                                message: "部门不能为空！"
+                            });
+                        }else if (options.models[i].deptId == null){
+                            kendo.ui.showErrorDialog({
+                                title: '错误',
+                                message: "产线组不能为空！"
+                            });
+                        }else if (options.models[i].deptId == null){
+                            kendo.ui.showErrorDialog({
+                                title: '错误',
+                                message: "生产计划日期不能为空！"
+                            });
+                        }else if (options.models[i].deptId == null){
+                            kendo.ui.showErrorDialog({
+                                title: '错误',
+                                message: "计划开始时间不能为空！"
+                            });
+                        }else if (options.models[i].deptId == null){
+                            kendo.ui.showErrorDialog({
+                                title: '错误',
+                                message: "计划产量不能为空！"
+                            });
+                        }else{*/
+                            options.models[i].plandate = options.models[i].plandate.toString();
+                            options.models[i].plantimestart = options.models[i].plantimestart.getTime();
+                            options.models[i].plantimeend = options.models[i].plantimeend.getTime();
+
+                    }
                     var datas = Hap.prepareSubmitParameter(options, type);
                     return kendo.stringify(datas);
                 } else if (type === "read") {
@@ -144,20 +183,17 @@
         },
         batch: true,
         serverPaging: true,
-        pageSize: 10,
+        //pageSize: 10,
         schema: {
             data: 'rows',
             total: 'total',
             model: {
                 id: "werks",
-                parentId: "bukrs",
+                parentId: "plandate",
                 fields: {
-                    bukrs: {type: "string",editable:false},
-                    werks: {type: "string",editable:false},
-                    groupId: {type: "string"},
-                    groupName: {type: "string"},
-                    templeteUrl: {type: "string"},
-                    workshopId: {type:"string"}
+                    werks: {type: "string",defaultValue:"1001",editable:false},
+                    plandate: {type: "date"},
+                    planqty: {type: "number"}
                 }
             }
         }
@@ -172,7 +208,7 @@
         editable: true,
         selectable:'multiple,rowbox',
         pageable:{
-            pageSizes:[5,10,20,50,"all"],
+            pageSizes:["all"],
             refresh:true,
             buttonCount:5
         },
@@ -181,11 +217,6 @@
                 field:"werks",
                 title:"工厂",
                 width:80,
-                template:function (e) {
-                    var werks = document.getElementById("werks").value;
-                    e.werks = werks;
-                    return werks;
-                },
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -215,18 +246,18 @@
                 }
             },
             {
-                field:"lineId",
+                field:"cgroup",
                 title:"产线组",
                 width:100,
                 template: function (dataItem) {
-                    return dataItem['lineId'] || ''
+                    return dataItem['cgroup'] || ''
                 },
                 editor : function (container, options) {
                     $('<input name="'+options.field+'"/>').appendTo(container).kendoLov($.extend(<@lov "LOV_CGROUP"/>,
                         {
                             query: function(e) {
                                 e.param['werks'] = options.model.werks;
-                                e.param['deptId'] = options.model.workshopId;
+                                e.param['deptId'] = options.model.deptId;
                             },
                             textField: 'groupName',
                             model: options.model
@@ -240,23 +271,10 @@
                 }
             },
             {
-                field:"product",
-                title:"产品物料编码",
-                width:120,
-                hidden:true,
-                template: function (dataItem) {
-                    return dataItem['product'] || ''
-                },
-                editor : function (container, options) {
-                    $('<input name="'+options.field+'"/>').appendTo(container).kendoLov($.extend(<@lov "LOV_PRODUCT2"/>,
-                        {
-                            query: function(e) {
-                                e.param['lineId'] = options.model.lineId;
-                            },
-                            textField: 'kunnr',
-                            model: options.model
-                        }));
-                },
+                field:"plandate",
+                title:"生产计划日期",
+                width:100,
+                format: "{0: yyyy-MM-dd}",
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -265,53 +283,15 @@
                 }
             },
             {
-                field:"kunnr",
-                title:"客户编码",
-                width:120,
-                hidden:true,
-                headerAttributes: {
-                    style: "text-align: center;"
-                },
-                attributes: {
-                    style: "text-align: center;"
-                }
-            },
-            {
-                field:"groupName",
-                title:"产线组名称",
-                width:120,
-                headerAttributes: {
-                    style: "text-align: center;"
-                },
-                attributes: {
-                    style: "text-align: center;"
-                }
-            },
-            {
-                field:"groupNameEn",
-                title:"产线组名称(英文)",
-                width:240,
-                headerAttributes: {
-                    style: "text-align: center;"
-                },
-                attributes: {
-                    style: "text-align: center;"
-                }
-            },
-            {
-                field:"groupType",
-                title:"资源类别",
-                width:120,
-                editor: function (container,options) {
-                    $('<input name="'+options.field+'"/>').appendTo(container).kendoDropDownList({
-                        dataTextField: "value",
-                        dataValueField: "value",
-                        valuePrimitive: true,
-                        dataSource: [
-                            {value: "LINEDATE"},
-                            {value: "REPORTDATA"},
-                            {value: "IMPORTDATA"}
-                        ]
+                field:"plantimestart",
+                title:"计划开始时间",
+                width:100,
+                format: "{0: HH:mm:ss}",
+                editor:function (container,options) {
+                    $('<input name="'+options.field+'"/>').appendTo(container).kendoTimePicker({
+                        start: "hour",
+                        depth: "hour",
+                        format: "HH:mm:ss"
                     })
                 },
                 headerAttributes: {
@@ -322,9 +302,41 @@
                 }
             },
             {
-                field:"templeteUrl",
-                title:"模板URL",
-                width:240,
+                field:"plantimeend",
+                title:"计划结束时间",
+                width:100,
+                format: "{0: HH:mm:ss}",
+                editor:function (container,options) {
+                    $('<input name="'+options.field+'"/>').appendTo(container).kendoTimePicker({
+                        start: "hour",
+                        depth: "hour",
+                        format: "HH:mm:ss",
+                        dateInput: true
+                    })
+                },
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"planqty",
+                title:"计划产量",
+                width:100,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"remarks",
+                title:"备注",
+                width:100,
+                format:"{0:yyyy-MM-dd}",
                 headerAttributes: {
                     style: "text-align: center;"
                 },
