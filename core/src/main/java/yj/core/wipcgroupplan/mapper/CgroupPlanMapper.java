@@ -30,4 +30,6 @@ public interface CgroupPlanMapper extends Mapper<CgroupPlan>{
      * @param cgroupPlan
      */
     void deleteCgroupPlan(CgroupPlan cgroupPlan);
+    List<CgroupPlan> selectByErdat(String erdat);
+
 }

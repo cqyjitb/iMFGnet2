@@ -29,4 +29,6 @@ public interface ICgroupPlanService extends IBaseService<CgroupPlan>, ProxySelf<
      * @param cgroupPlan
      */
     String deleteCgroupPlan(CgroupPlan cgroupPlan);
+    List<CgroupPlan> selectByErdat(String erdat);
+
 }

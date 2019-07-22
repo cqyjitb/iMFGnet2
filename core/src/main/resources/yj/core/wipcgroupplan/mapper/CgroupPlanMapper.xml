@@ -6,10 +6,10 @@
         <result column="werks" property="werks" jdbcType="VARCHAR" />
         <result column="DEPT_ID" property="deptId" jdbcType="DECIMAL" />
         <result column="cgroup" property="cgroup" jdbcType="VARCHAR" />
-        <result column="plandate" property="plandate" jdbcType="DATE" />
+        <result column="plandate" property="plandate" jdbcType="VARCHAR" />
         <result column="planpos" property="planpos" jdbcType="DECIMAL" />
-        <result column="plantimestart" property="plantimestart" jdbcType="DATE" />
-        <result column="plantimeend" property="plantimeend" jdbcType="DATE" />
+        <result column="plantimestart" property="plantimestart" jdbcType="VARCHAR" />
+        <result column="plantimeend" property="plantimeend" jdbcType="VARCHAR" />
         <result column="planqty" property="planqty" jdbcType="DECIMAL" />
         <result column="classgrp" property="classgrp" jdbcType="VARCHAR" />
         <result column="shift" property="shift" jdbcType="VARCHAR" />
@@ -34,6 +34,13 @@
             </if>
         </where>
         order by planpos desc
+    </select>
+
+    <select id="selectByErdat" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from wip_cgroup_plan
+        <where>
+            plandate = #{erdat}
+        </where>
     </select>
 
 </mapper>

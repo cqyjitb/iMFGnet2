@@ -10,7 +10,6 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Time;
 import java.util.Date;
-
 @ExtensionAttribute(disable=true)
 @Table(name = "wip_cgroup_plan")
 public class CgroupPlan extends BaseDTO {
@@ -46,7 +45,7 @@ public class CgroupPlan extends BaseDTO {
         this.remarks = remarks;
     }
 
-    public void setWerks(String werks){
+     public void setWerks(String werks){
          this.werks = werks;
      }
 
