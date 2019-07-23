@@ -9,7 +9,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.sql.Time;
-import java.util.Date;
 @ExtensionAttribute(disable=true)
 @Table(name = "wip_cgroup_plan")
 public class CgroupPlan extends BaseDTO {
@@ -17,14 +16,14 @@ public class CgroupPlan extends BaseDTO {
      @GeneratedValue
       private String werks; //工厂
 
-      private Long deptId; //部门
+      private String deptId; //部门
 
      @NotEmpty
       private String cgroup; //产线组
 
-      private Date plandate; //生产计划日期
+      private String plandate; //生产计划日期
 
-      private Long planpos; //生产计划行
+      private Integer planpos; //生产计划行
 
       private Time plantimestart; //计划开始时间
 
@@ -36,6 +35,25 @@ public class CgroupPlan extends BaseDTO {
 
       private String shift;//班次
     private String remarks;//备注
+    private String plantimestart2; //计划开始时间
+
+    private String plantimeend2; //计划结束时间
+
+    public String getPlantimestart2() {
+        return plantimestart2;
+    }
+
+    public void setPlantimestart2(String plantimestart2) {
+        this.plantimestart2 = plantimestart2;
+    }
+
+    public String getPlantimeend2() {
+        return plantimeend2;
+    }
+
+    public void setPlantimeend2(String plantimeend2) {
+        this.plantimeend2 = plantimeend2;
+    }
 
     public String getRemarks() {
         return remarks;
@@ -53,11 +71,11 @@ public class CgroupPlan extends BaseDTO {
          return werks;
      }
 
-     public void setDeptId(Long deptId){
+     public void setDeptId(String deptId){
          this.deptId = deptId;
      }
 
-     public Long getDeptId(){
+     public String getDeptId(){
          return deptId;
      }
 
@@ -69,19 +87,19 @@ public class CgroupPlan extends BaseDTO {
          return cgroup;
      }
 
-     public void setPlandate(Date plandate){
+     public void setPlandate(String plandate){
          this.plandate = plandate;
      }
 
-     public Date getPlandate(){
+     public String getPlandate(){
          return plandate;
      }
 
-     public void setPlanpos(Long planpos){
+     public void setPlanpos(Integer planpos){
          this.planpos = planpos;
      }
 
-     public Long getPlanpos(){
+     public Integer getPlanpos(){
          return planpos;
      }
 

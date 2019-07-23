@@ -12,6 +12,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
     @Controller
@@ -23,15 +26,12 @@ import java.util.List;
         /**
          * 产线组生产计划维护页面查询请求 918100064
          * @param dto
-         * @param page
-         * @param pageSize
          * @param request
          * @return
          */
     @RequestMapping(value = "/wip/cgroup/plan/queryCgroupPlan")
     @ResponseBody
-    public ResponseData queryCgroupPlan(CgroupPlan dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
-        @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize, HttpServletRequest request) {
+    public ResponseData queryCgroupPlan(CgroupPlan dto, HttpServletRequest request) {
         IRequest requestContext = createRequestContext(request);
         return new ResponseData(service.selectCgroupPlan(dto,requestContext));
     }

@@ -25,7 +25,38 @@
         saveFunction: function () {
             var selections = grid.selectedDataItems();
             if(selections.length > 0){
-                $('#Grid').data('kendoGrid').saveChanges();
+                for (var i=0;i<selections.length;i++){
+                    if ((selections[i].plantimestart2 != null)&&((typeof selections[i].plantimestart2) == "object")){
+                        selections[i].plantimestart = selections[i].plantimestart2.getTime();
+                    }else {
+                        selections[i].plantimestart = selections[i].plantimestart2;
+                    }
+                    if ((selections[i].plantimeend2 != null)&&((typeof selections[i].plantimeend2) == "object")){
+                        selections[i].plantimeend = selections[i].plantimeend2.getTime();
+                    }else {
+                        selections[i].plantimeend = selections[i].plantimeend2;
+                    }
+                }
+                $.ajax({
+                    type   : 'POST',
+                    url    : _basePath + "/wip/cgroup/plan/submitCgroupPlan",
+                    dataType : "json",
+                    contentType : "application/json",
+                    data   : kendo.stringify(selections),
+                    success: function (rows) {
+                        var date = rows.rows;
+                        for (var i=0;i<date.length;i++){
+                            var data = grid.dataSource.at(i);
+                            data.set("planpos", date[i].planpos);
+                            data.set("remarks", date[i].remarks);
+                        }
+                        if(rows.success==false){
+                            kendo.ui.showErrorDialog({
+                                message:rows.message
+                            });
+                        }
+                    }
+                });
             }else{
                 kendo.ui.showInfoDialog({
                     message: '请先选择一行数据'
@@ -130,49 +161,8 @@
                 type: "POST",
                 contentType: "application/json"
             },
-            create: {
-                url: BaseUrl + "/wip/cgroup/plan/submitCgroupPlan",
-                type: "POST",
-                contentType: "application/json"
-            },
-            update: {
-                url: BaseUrl + "/wip/cgroup/plan/submitCgroupPlan",
-                type: "POST",
-                contentType: "application/json"
-            },
             parameterMap: function (options, type) {
                 if (type !== "read" && options.models) {
-                    for (var i=0;i<options.models.length;i++){
-                        if (options.models[i].deptId == null){
-                            kendo.ui.showErrorDialog({
-                                title: '错误',
-                                message: "部门不能为空！"
-                            });
-                        }else if (options.models[i].cgroup == null){
-                            kendo.ui.showErrorDialog({
-                                title: '错误',
-                                message: "产线组不能为空！"
-                            });
-                        }else if (options.models[i].plandate == null) {
-                            kendo.ui.showErrorDialog({
-                                title: '错误',
-                                message: "生产计划日期不能为空！"
-                            });
-                        }else if (options.models[i].plantimestart == null){
-                            kendo.ui.showErrorDialog({
-                                title: '错误',
-                                message: "计划开始时间不能为空！"
-                            });
-                        }else if (options.models[i].plantimeend == null){
-                            kendo.ui.showErrorDialog({
-                                title: '错误',
-                                message: "计划产量不能为空！"
-                            });
-                        }else {
-                            options.models[i].plantimestart = options.models[i].plantimestart.getTime();
-                            options.models[i].plantimeend = options.models[i].plantimeend.getTime();
-                        }
-                    }
                     var datas = Hap.prepareSubmitParameter(options, type);
                     return kendo.stringify(datas);
                 } else if (type === "read") {
@@ -187,8 +177,8 @@
             data: 'rows',
             total: 'total',
             model: {
-                id: "werks",
-                parentId: "plandate",
+                id: "plandate",
+                parentId: "werks",
                 fields: {
                     werks: {type: "string",defaultValue:"1001",editable:false},
                     plandate: {type: "date"},
@@ -282,7 +272,20 @@
                 }
             },
             {
-                field:"plantimestart",
+                field:"planpos",
+                title:"生产计划行",
+                width:100,
+                hidden:true,
+                format: "{0: yyyy-MM-dd}",
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"plantimestart2",
                 title:"计划开始时间",
                 width:100,
                 format: "{0: HH:mm:ss}",
@@ -301,7 +304,7 @@
                 }
             },
             {
-                field:"plantimeend",
+                field:"plantimeend2",
                 title:"计划结束时间",
                 width:100,
                 format: "{0: HH:mm:ss}",
@@ -324,6 +327,74 @@
                 field:"planqty",
                 title:"计划产量",
                 width:100,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"classgrp",
+                title:"班次",
+                width:120,
+                template:function (e) {
+                    if(e.classgrp == "1"){
+                        return "早班";
+                    }else if(e.classgrp == "2"){
+                        return "中班";
+                    }else if(e.classgrp == "3"){
+                        return "晚班";
+                    }else{
+                        return "";
+                    }
+                },
+                editor: function (container,options) {
+                    $('<input name="'+options.field+'"/>').appendTo(container).kendoDropDownList({
+                        dataTextField: "text",
+                        dataValueField: "value",
+                        valuePrimitive: true,
+                        dataSource: [
+                            {text:"早班",value: "1"},
+                            {text:"中班",value: "2"},
+                            {text:"晚班",value: "3"}
+                        ]
+                    })
+                },
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"shift",
+                title:"班组",
+                width:120,
+                template:function (e) {
+                    if(e.shift == "A"){
+                        return "A班";
+                    }else if(e.shift == "B"){
+                        return "B班";
+                    }else if(e.shift == "C"){
+                        return "C班";
+                    }else{
+                        return "";
+                    }
+                },
+                editor: function (container,options) {
+                    $('<input name="'+options.field+'"/>').appendTo(container).kendoDropDownList({
+                        dataTextField: "text",
+                        dataValueField: "value",
+                        valuePrimitive: true,
+                        dataSource: [
+                            {text:"A班",value: "A"},
+                            {text:"B班",value: "B"},
+                            {text:"C班",value: "C"}
+                        ]
+                    })
+                },
                 headerAttributes: {
                     style: "text-align: center;"
                 },

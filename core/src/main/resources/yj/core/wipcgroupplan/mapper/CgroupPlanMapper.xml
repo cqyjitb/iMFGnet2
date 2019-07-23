@@ -4,12 +4,12 @@
 <mapper namespace="yj.core.wipcgroupplan.mapper.CgroupPlanMapper">
     <resultMap id="BaseResultMap" type="yj.core.wipcgroupplan.dto.CgroupPlan">
         <result column="werks" property="werks" jdbcType="VARCHAR" />
-        <result column="DEPT_ID" property="deptId" jdbcType="DECIMAL" />
+        <result column="DEPT_ID" property="deptId" jdbcType="VARCHAR" />
         <result column="cgroup" property="cgroup" jdbcType="VARCHAR" />
         <result column="plandate" property="plandate" jdbcType="VARCHAR" />
         <result column="planpos" property="planpos" jdbcType="DECIMAL" />
-        <result column="plantimestart" property="plantimestart" jdbcType="VARCHAR" />
-        <result column="plantimeend" property="plantimeend" jdbcType="VARCHAR" />
+        <result column="plantimestart" property="plantimestart2" jdbcType="VARCHAR" />
+        <result column="plantimeend" property="plantimeend2" jdbcType="VARCHAR" />
         <result column="planqty" property="planqty" jdbcType="DECIMAL" />
         <result column="classgrp" property="classgrp" jdbcType="VARCHAR" />
         <result column="shift" property="shift" jdbcType="VARCHAR" />
@@ -17,7 +17,8 @@
     </resultMap>
 
     <select id="selectCgroupPlan" parameterType="yj.core.wipcgroupplan.dto.CgroupPlan" resultMap="BaseResultMap">
-        select * from wip_cgroup_plan
+        select werks,dept_id,cgroup,plandate,planpos,plantimestart as plantimestart2,plantimeend as plantimeend2,planqty,classgrp,shift
+        from wip_cgroup_plan
         <where>
             1 = 1
             <if test="werks != null">
@@ -26,14 +27,14 @@
             <if test="deptId != null">
                 AND DEPT_ID = #{deptId}
             </if>
-            <if test="werks != null">
+            <if test="cgroup != null">
                 AND cgroup = #{cgroup}
             </if>
-            <if test="werks != null">
+            <if test="plandate != null">
                 AND plandate = #{plandate}
             </if>
         </where>
-        order by planpos desc
+        order by dept_id asc,cgroup asc, plandate asc, planpos desc
     </select>
 
     <select id="selectByErdat" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -42,5 +43,34 @@
             plandate = #{erdat}
         </where>
     </select>
+
+    <insert id="insertCgroupPlan" parameterType="yj.core.wipcgroupplan.dto.CgroupPlan">
+        insert into wip_cgroup_plan(werks,dept_id,cgroup,plandate,planpos,plantimestart,plantimeend,planqty,classgrp,shift,created_by,creation_date)
+        values(#{werks},#{deptId},#{cgroup},#{plandate},#{planpos},#{plantimestart},#{plantimeend},#{planqty},#{classgrp},#{shift},#{createdBy},#{creationDate})
+    </insert>
+
+    <update id="updateCgroupPlan" parameterType="yj.core.wipcgroupplan.dto.CgroupPlan">
+        update wip_cgroup_plan set werks = #{werks},dept_id = #{deptId},cgroup = #{cgroup},plandate = #{plandate},planpos = #{planpos},
+        plantimestart = #{plantimestart},plantimeend = #{plantimeend},planqty = #{planqty},classgrp = #{classgrp},shift = #{shift},
+        last_updated_by = #{lastUpdatedBy},last_update_date = #{lastUpdateDate}
+        <where>
+            werks = #{werks}
+            AND dept_id = #{deptId}
+            AND cgroup = #{cgroup}
+            AND plandate = #{plandate}
+            AND planpos = #{planpos}
+        </where>
+    </update>
+
+    <delete id="deleteCgroupPlan" parameterType="yj.core.wipcgroupplan.dto.CgroupPlan">
+        delete from wip_cgroup_plan
+        <where>
+            werks = #{werks}
+            AND dept_id = #{deptId}
+            AND cgroup = #{cgroup}
+            AND plandate = #{plandate}
+            AND planpos = #{planpos}
+        </where>
+    </delete>
 
 </mapper>
