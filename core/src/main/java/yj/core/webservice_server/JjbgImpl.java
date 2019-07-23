@@ -71,7 +71,7 @@ public class JjbgImpl implements IJjbg {
                 cardh.setActdt(curtim);
                 cardh.setQtysm(Double.valueOf(params.getRMNGA()));
                 cardh.setQtysp(Double.valueOf(params.getXMNGA()));
-                cardh.setShift(params.getZSCBC());
+                //cardh.setShift(params.getZSCBC());
                 cardh.setAlqty(Double.valueOf(params.getGMNGA()));
                 cardh.setStatus2(cardh.getStatus());
                 cardh.setStatus("ECNF");

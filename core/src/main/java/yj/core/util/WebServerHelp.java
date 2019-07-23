@@ -31,7 +31,7 @@ public class WebServerHelp {
 
         //dev
         this.mesOraDriver = "oracle.jdbc.OracleDriver";
-        this.mesOraUrl = "jdbc:oracle:thin:@192.168.94.93:1521:orclyj";
+        this.mesOraUrl = "jdbc:oracle:thin:@192.168.0.114:1521:orclyj";
         this.mesOraUserName = "mes_query_usr";
         this.mesOraPass = "mesapp12345";
 

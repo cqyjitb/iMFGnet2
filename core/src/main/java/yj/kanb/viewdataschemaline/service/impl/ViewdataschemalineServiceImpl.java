@@ -27,4 +27,14 @@ public class ViewdataschemalineServiceImpl extends BaseServiceImpl<Viewdataschem
     public int updateforKanb(Viewdataschemaline viewdata) {
         return mapper.updateforKanb(viewdata);
     }
+
+    @Override
+    public void deleteKanb(String groupId) {
+        mapper.deleteViewdataschemaline(groupId);
+    }
+
+    @Override
+    public Viewdataschemaline selectforKanb2(String groupId, String werks) {
+        return mapper.selectforKanb2(groupId,werks);
+    }
 }
