@@ -175,7 +175,13 @@ public class KanbgetDateV2 extends AbstractJob {
                          }
                      }
                      viewdata.setActqty(actnum);//实际装箱数量
-                     viewdata.setInsufqty(Math.abs(viewdata.getPlanqty() - viewdata.getActqty()));//差缺数量
+                    if (viewdata.getPlanqty() < viewdata.getActqty()){
+                        viewdata.setInsufqty(0D);
+                    }else {
+                        viewdata.setInsufqty(Math.abs(viewdata.getPlanqty() - viewdata.getActqty()));//差缺数量
+                    }
+
+
                      Double qcrate = 0D;
                      if (viewdata.getActqty() > 0D){
                          qcrate  =  viewdata.getActqty() / ( viewdata.getActqty() + outnum )  * 100;
