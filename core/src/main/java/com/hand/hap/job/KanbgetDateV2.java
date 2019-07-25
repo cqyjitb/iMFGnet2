@@ -106,6 +106,8 @@ public class KanbgetDateV2 extends AbstractJob {
                 Double outnum = 0D;//取件汇总
                 Double jdcq = 0D;//进度差缺汇总
                 Double lncq = 0D;//理论产出汇总
+                Long    lntim = 0L;
+                Long    sjtim = 0L;
                 for (int j=0;j<listplan.size();j++){
                     //根据产线组code来匹配产线组计划，如果存在产线组计划 判断当前时间是否在计划时间范围之内，如果在则根据时间范围取产线组对应产线的生产数据统计后显示看板
                     //如果不存在产线组计划或者当前时间不在计划时间范围之类，则删除原有产线看板数据，不显示任何内容。
@@ -115,6 +117,8 @@ public class KanbgetDateV2 extends AbstractJob {
                         String planend = sdf.format(listplan.get(j).getPlandate()) +  " " + sdf3.format(listplan.get(j).getPlantimeend());
                         Date star = sdf2.parse(planstar);
                         Date end = sdf2.parse(planend);
+                        lntim = end.getTime() - star.getTime();
+                        sjtim = curdate.getTime() - star.getTime();
                         if (curdate.getTime() >= sdf2.parse(planstar).getTime() && curdate.getTime() <= sdf2.parse(planend).getTime()){
                             l_get = "X";
                             viewdata.setShift(listplan.get(j).getShift());//班次
@@ -181,12 +185,15 @@ public class KanbgetDateV2 extends AbstractJob {
                          viewdata.setQcRate(qcrate);
                      }
 
-                     //进度差缺
-                    if (Math.abs(Math.rint(viewdata.getActqty() - lncq)) >= viewdata.getPlanqty()){
-                        viewdata.setJdcqqty( 0 - viewdata.getPlanqty());//进度差缺
-                    }else{
-                        viewdata.setJdcqqty(Math.rint(viewdata.getActqty() - lncq ));//进度差缺
-                    }
+//                     //进度差缺
+//                    if (Math.abs(Math.rint(viewdata.getActqty() - lncq)) >= viewdata.getPlanqty()){
+//                        viewdata.setJdcqqty( 0 - viewdata.getPlanqty());//进度差缺
+//                    }else{
+//                        viewdata.setJdcqqty(Math.rint(viewdata.getActqty() - lncq ));//进度差缺
+//                    }
+                    viewdata.setJdcqqty(viewdata.getActqty() - Math.rint(sjtim / (lntim / viewdata.getPlanqty())));
+
+
 
                     //综合利用率
                     String oeestr = ddf1.format( viewdata.getActqty() / lncq * 100);
