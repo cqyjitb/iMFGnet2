@@ -44,7 +44,8 @@ public class NgRecordJob extends AbstractJob {
         minute = minute / 1000;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
-        Date endDate = context.getFireTime();
+        //Date endDate = context.getFireTime();
+        Date endDate = sdf.parse("2019-06-26 23:59:59");
         Calendar cal = Calendar.getInstance();
         cal.setTime(endDate);
         if (minute == 20*60){
@@ -66,7 +67,7 @@ public class NgRecordJob extends AbstractJob {
                     ngRecord.setZissuetxt(inOutRecord.getZissuetxt());
                     ngRecord.setZotype(inOutRecord.getZotype());
                     ngRecord.setZtext(inOutRecord.getZtext());
-                    ngRecord.setErdat(new Date());
+                    ngRecord.setErdat(sdf2.format(new Date()));
                     List<NgRecord> list2 = ngRecodeService.selectNgRecord(ngRecord);
                     List<InOutRecord> list1 = inOutRecordService.zissuetxtCount(inOutRecord);
                     ngRecord.setQty(list1.size());
@@ -102,7 +103,7 @@ public class NgRecordJob extends AbstractJob {
                         ngRecord.setZissuetxt(inOutRecord.getZissuetxt());
                         ngRecord.setZotype(inOutRecord.getZotype());
                         ngRecord.setZtext(inOutRecord.getZtext());
-                        ngRecord.setErdat(cal.getTime());
+                        ngRecord.setErdat(sdf2.format(cal.getTime()));
                         List<NgRecord> list2 = ngRecodeService.selectNgRecord(ngRecord);
                         List<InOutRecord> list1 = inOutRecordService.zissuetxtCount(inOutRecord);
                         ngRecord.setQty(list1.size());

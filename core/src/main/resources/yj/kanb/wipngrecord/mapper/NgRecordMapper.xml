@@ -8,7 +8,7 @@
         <result column="LINE_ID" property="lineId" jdbcType="VARCHAR"/>
         <result column="MATNR" property="matnr" jdbcType="VARCHAR"/>
         <result column="MAKTX" property="maktx" jdbcType="VARCHAR"/>
-        <result column="ERDAT" property="erdat" jdbcType="DATE"/>
+        <result column="ERDAT" property="erdat" jdbcType="VARCHAR"/>
         <result column="QTY" property="qty" jdbcType="DECIMAL"/>
         <result column="GMEIN" property="gmein" jdbcType="VARCHAR"/>
         <result column="ZOTYPR" property="zotype" jdbcType="VARCHAR"/>
@@ -128,7 +128,7 @@
     </insert>
 
     <update id="updateNgRecord" parameterType="yj.kanb.wipngrecord.dto.NgRecord">
-        update wip_ng_record set qty = #{qty},,last_updated_by = #{lastUpdatedBy},last_update_date = #{lastUpdateDate}
+        update wip_ng_record set qty = #{qty},last_updated_by = #{lastUpdatedBy},last_update_date = #{lastUpdateDate}
         <where>
             werks = #{werks}
             AND dept_id = #{deptId}

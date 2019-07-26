@@ -70,7 +70,7 @@ public class NgRecordDateJob extends AbstractJob {
                     ngRecord.setLineId(inOutRecord.getLineId());
                     ngRecord.setMatnr(inOutRecord.getMatnr2());
                     ngRecord.setMaktx(inOutRecord.getMaktx());
-                    ngRecord.setErdat(cal2.getTime());
+                    ngRecord.setErdat(sdf2.format(cal2.getTime()));
                     ngRecord.setGmein(inOutRecord.getGmein());
                     ngRecord.setZissuetxt(inOutRecord.getZissuetxt());
                     ngRecord.setZotype(inOutRecord.getZotype());

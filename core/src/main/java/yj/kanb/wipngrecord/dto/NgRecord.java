@@ -23,7 +23,7 @@ public class NgRecord extends BaseDTO {
 
     private String maktx;//物料描述
     @NotEmpty
-    private Date erdat;//生产日期
+    private String erdat;//生产日期
 
     private Integer qty;//汇总
 
@@ -132,11 +132,11 @@ public class NgRecord extends BaseDTO {
         this.maktx = maktx;
     }
 
-    public Date getErdat() {
+    public String getErdat() {
         return erdat;
     }
 
-    public void setErdat(Date erdat) {
+    public void setErdat(String erdat) {
         this.erdat = erdat;
     }
 

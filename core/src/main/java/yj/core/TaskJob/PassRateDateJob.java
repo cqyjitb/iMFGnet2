@@ -72,10 +72,10 @@ public class PassRateDateJob extends AbstractJob {
                     passRate.setWerks(list.get(i).getWerks());
                     passRate.setDeptId(list.get(i).getDeptId());
                     passRate.setLineId(String.valueOf(list.get(i).getLineId()));
-                    passRate.setErdat(cal2.getTime());
+                    passRate.setErdat(sdf2.format(cal2.getTime()));
                     passRate.setMatnr(list.get(i).getMatnr2());
-                    passRate.setDateStart(sdf2.format(cal.getTime()));
-                    passRate.setDateEnd(sdf2.format(cal.getTime()));
+                    passRate.setDateStart(sdf2.format(cal2.getTime()));
+                    passRate.setDateEnd(sdf2.format(cal2.getTime()));
                     List<PassRate> list3 = passRateService.queryPassRate(passRate);
                     passRate.setMaktx(list.get(i).getMaktx());
                     passRate.setGmein(list.get(i).getGmein());
