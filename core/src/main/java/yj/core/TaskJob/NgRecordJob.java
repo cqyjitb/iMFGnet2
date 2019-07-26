@@ -44,8 +44,7 @@ public class NgRecordJob extends AbstractJob {
         minute = minute / 1000;
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         SimpleDateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd");
-        //Date endDate = context.getFireTime();
-        Date endDate = sdf.parse("2019-06-26 23:59:59");
+        Date endDate = context.getFireTime();
         Calendar cal = Calendar.getInstance();
         cal.setTime(endDate);
         if (minute == 20*60){
