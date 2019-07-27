@@ -66,7 +66,7 @@ public class NgRecordJob extends AbstractJob {
                     ngRecord.setZissuetxt(inOutRecord.getZissuetxt());
                     ngRecord.setZotype(inOutRecord.getZotype());
                     ngRecord.setZtext(inOutRecord.getZtext());
-                    ngRecord.setErdat(new Date());
+                    ngRecord.setErdat(sdf2.format(new Date()));
                     List<NgRecord> list2 = ngRecodeService.selectNgRecord(ngRecord);
                     List<InOutRecord> list1 = inOutRecordService.zissuetxtCount(inOutRecord);
                     ngRecord.setQty(list1.size());
@@ -102,7 +102,7 @@ public class NgRecordJob extends AbstractJob {
                         ngRecord.setZissuetxt(inOutRecord.getZissuetxt());
                         ngRecord.setZotype(inOutRecord.getZotype());
                         ngRecord.setZtext(inOutRecord.getZtext());
-                        ngRecord.setErdat(cal.getTime());
+                        ngRecord.setErdat(sdf2.format(cal.getTime()));
                         List<NgRecord> list2 = ngRecodeService.selectNgRecord(ngRecord);
                         List<InOutRecord> list1 = inOutRecordService.zissuetxtCount(inOutRecord);
                         ngRecord.setQty(list1.size());

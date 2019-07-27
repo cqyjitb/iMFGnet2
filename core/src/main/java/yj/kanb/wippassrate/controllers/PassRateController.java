@@ -59,7 +59,7 @@ public class PassRateController extends BaseController {
                 int gmnga = 0,xmnga = 0,rmnga = 0;
                 int i;
                 for (i=0;i<list1.size();i++){
-                    if(list1.get(i).getErdat().compareTo(cal.getTime()) == 0){
+                    if(list1.get(i).getErdat().equals(sdf.format(cal.getTime()))){
                         break;
                     }
                 }

@@ -336,22 +336,22 @@
                 }
             },
             {
-                field:"classgrp",
+                field:"shift",
                 title:"班次",
                 width:120,
                 template:function (e) {
-                    if(e.classgrp == "1"){
+                    if(e.shift == "1"){
                         return "早班";
-                    }else if(e.classgrp == "2"){
+                    }else if(e.shift == "2"){
                         return "中班";
-                    }else if(e.classgrp == "3"){
+                    }else if(e.shift == "3"){
                         return "晚班";
                     }else{
                         return "";
                     }
                 },
                 editor: function (container,options) {
-                    $('<input name="'+options.field+'"/>').appendTo(container).kendoDropDownList({
+                    $('<input name="'+options.field+'"/>').appendTo(container).kendoComboBox({
                         dataTextField: "text",
                         dataValueField: "value",
                         valuePrimitive: true,
@@ -370,22 +370,22 @@
                 }
             },
             {
-                field:"shift",
+                field:"classgrp",
                 title:"班组",
                 width:120,
                 template:function (e) {
-                    if(e.shift == "A"){
+                    if(e.classgrp == "A"){
                         return "A班";
-                    }else if(e.shift == "B"){
+                    }else if(e.classgrp == "B"){
                         return "B班";
-                    }else if(e.shift == "C"){
+                    }else if(e.classgrp == "C"){
                         return "C班";
                     }else{
                         return "";
                     }
                 },
                 editor: function (container,options) {
-                    $('<input name="'+options.field+'"/>').appendTo(container).kendoDropDownList({
+                    $('<input name="'+options.field+'"/>').appendTo(container).kendoComboBox({
                         dataTextField: "text",
                         dataValueField: "value",
                         valuePrimitive: true,

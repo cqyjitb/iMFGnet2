@@ -8,7 +8,7 @@
         <result column="LINE_ID" property="lineId" jdbcType="VARCHAR"/>
         <result column="MATNR" property="matnr" jdbcType="VARCHAR"/>
         <result column="MAKTX" property="maktx" jdbcType="VARCHAR"/>
-        <result column="ERDAT" property="erdat" jdbcType="DATE"/>
+        <result column="ERDAT" property="erdat" jdbcType="VARCHAR"/>
         <result column="GMNGA" property="gmnga" jdbcType="DECIMAL"/>
         <result column="XMNGA" property="xmnga" jdbcType="DECIMAL"/>
         <result column="RMNGA" property="rmnga" jdbcType="DECIMAL"/>
