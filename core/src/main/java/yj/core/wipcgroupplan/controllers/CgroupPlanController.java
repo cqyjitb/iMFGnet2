@@ -49,7 +49,7 @@ import java.util.List;
         ResponseData rs = new ResponseData();
         String userId ="" + request.getSession().getAttribute("userId");
         if (dto.size() > 0){
-            for (int i=1;i>=0;i--){
+            for (int i=dto.size()-1;i>=0;i--){
                 CgroupPlan cgroupPlan = dto.get(i);
                 String result = service.insertOrUpdate(cgroupPlan,userId,requestCtx);
                 if (result == null){
