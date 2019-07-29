@@ -113,8 +113,8 @@ public class KanbgetDateV2 extends AbstractJob {
                     //如果不存在产线组计划或者当前时间不在计划时间范围之类，则删除原有产线看板数据，不显示任何内容。
                     if (listplan.get(j).getCgroup().equals(listvbgh.get(i).getLineId())){
 
-                        String planstar = sdf.format(listplan.get(j).getPlandate()) + " " + sdf3.format(listplan.get(j).getPlantimestart());
-                        String planend = sdf.format(listplan.get(j).getPlandate()) +  " " + sdf3.format(listplan.get(j).getPlantimeend());
+                        String planstar = listplan.get(j).getPlandate() + " " + listplan.get(j).getPlantimestart2();
+                        String planend = listplan.get(j).getPlandate() +  " " + listplan.get(j).getPlantimeend2();
                         Date star = sdf2.parse(planstar);
                         Date end = sdf2.parse(planend);
                         lntim = end.getTime() - star.getTime();
@@ -146,25 +146,26 @@ public class KanbgetDateV2 extends AbstractJob {
                             //取装箱数据
                              ServerSetting serverSetting = new ServerSetting();
                              serverSetting = serverSettingService.selectByLineId(listvbgh.get(i).getWerks(),lines.getLineId().toString());
-                             WebServerHelp webServerHelp = new WebServerHelp();
-                             OracleConn oracleConn = new OracleConn(webServerHelp.getMesOraUrl(),webServerHelp.getMesOraUserName(),webServerHelp.getMesOraPass(),webServerHelp.getMesOraDriver());
-                             String sqlzx = "select a.main_id from "+serverSetting.getDbUsername()+".wip_pallet_sn_rel  a"
-                                     +" inner join  "+serverSetting.getDbUsername()+".wip_main_data b on a.main_id = b.main_id";
-                             String where = " where a.zremade != '1' and a.line_id = " + "'" + listcurlzk.get(k).getLineId() + "' and  a.status = '0' and b.ENABLE_FLAG = '1' ";
-                             where = where + "and b.item_code = " + "'" + listvbgh.get(i).getProduct() + "' " ;
-                             where = where + " and a.creation_date >= to_date('"+viewdata.getShifttimebegin()+"','yyyy-mm-dd hh24:mi:ss')";
-                             where = where + " and a.creation_date <= to_date('"+viewdata.getShifttimeend()+"','yyyy-mm-dd hh24:mi:ss')";
-                             String sql = sqlzx + where;
-                             System.out.println("查询装箱数据sql:"+sql);
-                             List<Map<String, Object>> listresult = new ArrayList<Map<String,Object>>();
-                             try {
-                                 listresult = oracleConn.select(sql);
-                                 actnum = actnum + listresult.size();
-                                 System.out.println("获取到产线："+listcurlzk.get(k).getLineId()+"装箱数据:"+actnum+"条");
-                             } catch (Exception e) {
-                                 e.printStackTrace();
+                             if (serverSetting != null){
+                                 WebServerHelp webServerHelp = new WebServerHelp();
+                                 OracleConn oracleConn = new OracleConn(webServerHelp.getMesOraUrl(),webServerHelp.getMesOraUserName(),webServerHelp.getMesOraPass(),webServerHelp.getMesOraDriver());
+                                 String sqlzx = "select a.main_id from "+serverSetting.getDbUsername()+".wip_pallet_sn_rel  a"
+                                         +" inner join  "+serverSetting.getDbUsername()+".wip_main_data b on a.main_id = b.main_id";
+                                 String where = " where a.zremade != '1' and a.line_id = " + "'" + listcurlzk.get(k).getLineId() + "' and  a.status = '0' and b.ENABLE_FLAG = '1' ";
+                                 where = where + "and b.item_code = " + "'" + listvbgh.get(i).getProduct() + "' " ;
+                                 where = where + " and a.creation_date >= to_date('"+viewdata.getShifttimebegin()+"','yyyy-mm-dd hh24:mi:ss')";
+                                 where = where + " and a.creation_date <= to_date('"+viewdata.getShifttimeend()+"','yyyy-mm-dd hh24:mi:ss')";
+                                 String sql = sqlzx + where;
+                                 System.out.println("查询装箱数据sql:"+sql);
+                                 List<Map<String, Object>> listresult = new ArrayList<Map<String,Object>>();
+                                 try {
+                                     listresult = oracleConn.select(sql);
+                                     actnum = actnum + listresult.size();
+                                     System.out.println("获取到产线："+listcurlzk.get(k).getLineId()+"装箱数据:"+actnum+"条");
+                                 } catch (Exception e) {
+                                     e.printStackTrace();
+                                 }
                              }
-
                              //3.1 取件数量
                              InOutRecord inOutRecord = new InOutRecord();
                              List<InOutRecord> listio = inOutRecordService.selectforKanb(listvbgh.get(i).getWerks(),listcurlzk.get(k).getLineId(),listvbgh.get(i).getProduct(),viewdata.getShifttimebegin(),viewdata.getShifttimeend());
@@ -264,6 +265,6 @@ public class KanbgetDateV2 extends AbstractJob {
 
     @Override
     protected boolean isRefireImmediatelyWhenException() {
-        return true;
+        return false;
     }
 }
