@@ -133,10 +133,10 @@
     <select id="selectForYz" parameterType="java.lang.String" resultMap="BaseResultMap">
         select a.*,
         b.NAME
-        from wip_qcparam_lines a,hr_org_unit_b b
+        from wip_qcparam_lines a
+        left JOIN hr_org_unit_b b on a.DEFAULT_CASTDEPT = b.UNIT_CODE
         <where>
-            a.DEFAULT_CASTDEPT = b.UNIT_CODE
-            AND LINE_ID = #{lineId}
+            LINE_ID = #{lineId}
             and WERKS = #{werks}
         </where>
     </select>

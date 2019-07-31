@@ -2,15 +2,14 @@ package yj.core.inoutrecord.service.impl;
 
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.service.impl.BaseServiceImpl;
-import org.apache.bcel.generic.I2F;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.mapper.CardhMapper;
 import yj.core.inoutrecord.dto.InOutRecord;
 import yj.core.inoutrecord.mapper.InOutRecordMapper;
 import yj.core.inoutrecord.service.IInOutRecordService;
-import org.springframework.transaction.annotation.Transactional;
 import yj.core.marc.dto.Marc;
 import yj.core.marc.mapper.MarcMapper;
 import yj.core.qjcode.dto.Qjcode;
@@ -20,14 +19,11 @@ import yj.core.wipdftrghlist.mapper.DftrghlistMapper;
 import yj.core.wiplines.dto.Lines;
 import yj.core.wiplines.mapper.LinesMapper;
 import yj.core.wipqcparamlines.dto.QcparamLines;
-import yj.core.wipqcparamlines.dto.itemPageData;
 import yj.core.wipqcparamlines.mapper.QcparamLinesMapper;
 import yj.core.zudlist.dto.Zudlist;
-import yj.core.zwipq.dto.Zwipq;
 import yj.core.zwipq.mapper.ZwipqMapper;
 
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 @Service
@@ -128,7 +124,11 @@ public class InOutRecordServiceImpl extends BaseServiceImpl<InOutRecord> impleme
                 if (!zudlist.getZqxdm().equals("")){
                     if (zudlist.getZqxdm().substring(0,1).equals("M")){
                         QcparamLines qcparamLines = qcparamLinesMapper.selectForYz(Long.valueOf(list.get(i).getLineId()),"1001");
-                        zudlist.setRspart(qcparamLines.getDefaultCastdept());
+                        if(qcparamLines.getDefaultCastdept() == null){
+                            zudlist.setRspart("");
+                        }else{
+                            zudlist.setRspart(qcparamLines.getDefaultCastdept());
+                        }
                         zudlist.setName(qcparamLines.getName());
                     }else{
                         QcparamLines qcparamLines = qcparamLinesMapper.selectForJj(Long.valueOf(list.get(i).getLineId()),"1001");
