@@ -10,7 +10,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import yj.core.wipshotinput.dto.ShotInput;
 import yj.core.wipshotinput.service.IShotInputService;
-import yj.core.wipshotnum.dto.Shotnum;
 import yj.core.wipshotnum.service.IShotnumService;
 
 import java.text.SimpleDateFormat;
@@ -42,6 +41,34 @@ public class ShotInputJob extends AbstractJob {
         cal.setTime(prdDate);
         cal.add(Calendar.DATE,-1);
         List<ShotInput> list = shotnumService.selectShotnum2(sdf.format(cal.getTime()));
-        shotInputService.insertShotInput(list);
+        if (list.size() > 0){
+            for (int i=0;i<list.size();i++){
+                shotInputService.insertShotInput(list.get(i));
+            }
+        }
+        cal.add(Calendar.DATE,-1);
+        List<ShotInput> list2 = shotnumService.selectShotnum2(sdf.format(cal.getTime()));
+        if (list2.size() > 0){
+            for (int i=0;i<list2.size();i++){
+                ShotInput shotInput = shotInputService.queryShotInput(list2.get(i));
+                if (shotInput == null){
+                    shotInputService.insertShotInput(list2.get(i));
+                }else {
+                    shotInputService.updateShotInput(list2.get(i));
+                }
+            }
+        }
+        cal.add(Calendar.DATE,-1);
+        List<ShotInput> list3 = shotnumService.selectShotnum2(sdf.format(cal.getTime()));
+        if (list3.size() > 0){
+            for (int i=0;i<list3.size();i++){
+                ShotInput shotInput = shotInputService.queryShotInput(list3.get(i));
+                if (shotInput != null){
+                    shotInputService.updateShotInput(list3.get(i));
+                }else {
+                    shotInputService.insertShotInput(list3.get(i));
+                }
+            }
+        }
     }
 }

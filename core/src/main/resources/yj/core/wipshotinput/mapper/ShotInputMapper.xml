@@ -40,6 +40,30 @@
         order by prd_date asc,fevor asc,shifts asc,arbpl asc
     </select>
 
+    <select id="queryShotInput" parameterType="yj.core.wipshotinput.dto.ShotInput" resultType="yj.core.wipshotinput.dto.ShotInput">
+        select * from wip_shot_input
+        <where>
+            werks = #{werks}
+            AND fevor = #{fevor}
+            AND arbpl = #{arbpl}
+            AND PRD_DATE = #{prdDate}
+            AND shifts = #{shifts}
+        </where>
+    </select>
+
+    <update id="updateShotInput" parameterType="yj.core.wipshotinput.dto.ShotInput">
+        update wip_shot_input set werks = #{werks},fevor = #{fevor},txt = #{txt},arbpl = #{arbpl},ktext = #{ktext},PRD_DATE = #{prdDate},shifts = #{shifts},
+                          S_CLASS = #{sClass},SHOT_START = #{shotStart},SHOT_END = #{shotEnd},SHOT_NUM = #{shotNum},yeild = #{yeild},WASTE_NUM = #{wasteNum},
+                          DIFFERENT_NUM = #{differentNum},brgew = #{brgew},LAST_UPDATE_DATE = #{lastUpdateDate},LAST_UPDATED_BY = #{lastUpdatedBy}
+        <where>
+            werks = #{werks}
+            AND fevor = #{fevor}
+            AND arbpl = #{arbpl}
+            AND PRD_DATE = #{prdDate}
+            AND shifts = #{shifts}
+        </where>
+    </update>
+
     <insert id="insertShotInput" parameterType="yj.core.wipshotinput.dto.ShotInput" >
         insert INTO wip_shot_input(WERKS,FEVOR,TXT,ARBPL,KTEXT,PRD_DATE,SHIFTS,S_CLASS,SHOT_START,SHOT_END,
                                     SHOT_NUM,YEILD,WASTE_NUM,DIFFERENT_NUM,BRGEW,CREATED_BY,CREATION_DATE)

@@ -19,20 +19,28 @@ public class ShotInputServiceImpl extends BaseServiceImpl<ShotInput> implements 
     private ShotInputMapper shotInputMapper;
 
     @Override
-    public String insertShotInput(List<ShotInput> dto) {
-        if (dto.size() > 0){
-            for (int i=0;i<dto.size();i++){
-                ShotInput shotInput = dto.get(i);
-                shotInput.setCreatedBy(1001L);
-                shotInput.setCreationDate(new Date());
-                shotInputMapper.insertShotInput(shotInput);
-            }
-        }
+    public String insertShotInput(ShotInput shotInput) {
+        shotInput.setCreatedBy(10001L);
+        shotInput.setCreationDate(new Date());
+        shotInputMapper.insertShotInput(shotInput);
         return null;
     }
 
     @Override
     public List<ShotInput> selectShotInput(ShotInput dto) {
         return shotInputMapper.selectShotInput(dto);
+    }
+
+    @Override
+    public String updateShotInput(ShotInput shotInput) {
+        shotInput.setLastUpdatedBy(10001L);
+        shotInput.setLastUpdateDate(new Date());
+        shotInputMapper.updateShotInput(shotInput);
+        return null;
+    }
+
+    @Override
+    public ShotInput queryShotInput(ShotInput shotInput) {
+        return shotInputMapper.queryShotInput(shotInput);
     }
 }

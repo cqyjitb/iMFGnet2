@@ -18,4 +18,18 @@ public interface ShotInputMapper extends Mapper<ShotInput>{
      * @return
      */
     List<ShotInput> selectShotInput(ShotInput dto);
+
+    /**
+     * 压射号及报工统计表数据修改 918100064
+     * @param shotInput
+     * @return
+     */
+    void updateShotInput(ShotInput shotInput);
+
+    /**
+     * 查询压射号及报工统计表数据的存在 918100064
+     * @param shotInput
+     * @return
+     */
+    ShotInput queryShotInput(ShotInput shotInput);
 }
