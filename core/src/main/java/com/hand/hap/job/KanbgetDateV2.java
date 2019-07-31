@@ -106,15 +106,19 @@ public class KanbgetDateV2 extends AbstractJob {
                 Double outnum = 0D;//取件汇总
                 Double jdcq = 0D;//进度差缺汇总
                 Double lncq = 0D;//理论产出汇总
+                Long    lntim = 0L;
+                Long    sjtim = 0L;
                 for (int j=0;j<listplan.size();j++){
                     //根据产线组code来匹配产线组计划，如果存在产线组计划 判断当前时间是否在计划时间范围之内，如果在则根据时间范围取产线组对应产线的生产数据统计后显示看板
                     //如果不存在产线组计划或者当前时间不在计划时间范围之类，则删除原有产线看板数据，不显示任何内容。
                     if (listplan.get(j).getCgroup().equals(listvbgh.get(i).getLineId())){
 
-                        String planstar = sdf.format(listplan.get(j).getPlandate()) + " " + sdf3.format(listplan.get(j).getPlantimestart());
-                        String planend = sdf.format(listplan.get(j).getPlandate()) +  " " + sdf3.format(listplan.get(j).getPlantimeend());
+                        String planstar = listplan.get(j).getPlandate() + " " + listplan.get(j).getPlantimestart2();
+                        String planend = listplan.get(j).getPlandate() +  " " + listplan.get(j).getPlantimeend2();
                         Date star = sdf2.parse(planstar);
                         Date end = sdf2.parse(planend);
+                        lntim = end.getTime() - star.getTime();
+                        sjtim = curdate.getTime() - star.getTime();
                         if (curdate.getTime() >= sdf2.parse(planstar).getTime() && curdate.getTime() <= sdf2.parse(planend).getTime()){
                             l_get = "X";
                             viewdata.setShift(listplan.get(j).getShift());//班次
@@ -142,25 +146,26 @@ public class KanbgetDateV2 extends AbstractJob {
                             //取装箱数据
                              ServerSetting serverSetting = new ServerSetting();
                              serverSetting = serverSettingService.selectByLineId(listvbgh.get(i).getWerks(),lines.getLineId().toString());
-                             WebServerHelp webServerHelp = new WebServerHelp();
-                             OracleConn oracleConn = new OracleConn(webServerHelp.getMesOraUrl(),webServerHelp.getMesOraUserName(),webServerHelp.getMesOraPass(),webServerHelp.getMesOraDriver());
-                             String sqlzx = "select a.main_id from "+serverSetting.getDbUsername()+".wip_pallet_sn_rel  a"
-                                     +" inner join  "+serverSetting.getDbUsername()+".wip_main_data b on a.main_id = b.main_id";
-                             String where = " where a.zremade != '1' and a.line_id = " + "'" + listcurlzk.get(k).getLineId() + "' and  a.status = '0' and b.ENABLE_FLAG = '1' ";
-                             where = where + "and b.item_code = " + "'" + listvbgh.get(i).getProduct() + "' " ;
-                             where = where + " and a.creation_date >= to_date('"+viewdata.getShifttimebegin()+"','yyyy-mm-dd hh24:mi:ss')";
-                             where = where + " and a.creation_date <= to_date('"+viewdata.getShifttimeend()+"','yyyy-mm-dd hh24:mi:ss')";
-                             String sql = sqlzx + where;
-                             System.out.println("查询装箱数据sql:"+sql);
-                             List<Map<String, Object>> listresult = new ArrayList<Map<String,Object>>();
-                             try {
-                                 listresult = oracleConn.select(sql);
-                                 actnum = actnum + listresult.size();
-                                 System.out.println("获取到产线："+listcurlzk.get(k).getLineId()+"装箱数据:"+actnum+"条");
-                             } catch (Exception e) {
-                                 e.printStackTrace();
+                             if (serverSetting != null){
+                                 WebServerHelp webServerHelp = new WebServerHelp();
+                                 OracleConn oracleConn = new OracleConn(webServerHelp.getMesOraUrl(),webServerHelp.getMesOraUserName(),webServerHelp.getMesOraPass(),webServerHelp.getMesOraDriver());
+                                 String sqlzx = "select a.main_id from "+serverSetting.getDbUsername()+".wip_pallet_sn_rel  a"
+                                         +" inner join  "+serverSetting.getDbUsername()+".wip_main_data b on a.main_id = b.main_id";
+                                 String where = " where a.zremade != '1' and a.line_id = " + "'" + listcurlzk.get(k).getLineId() + "' and  a.status = '0' and b.ENABLE_FLAG = '1' ";
+                                 where = where + "and b.item_code = " + "'" + listvbgh.get(i).getProduct() + "' " ;
+                                 where = where + " and a.creation_date >= to_date('"+viewdata.getShifttimebegin()+"','yyyy-mm-dd hh24:mi:ss')";
+                                 where = where + " and a.creation_date <= to_date('"+viewdata.getShifttimeend()+"','yyyy-mm-dd hh24:mi:ss')";
+                                 String sql = sqlzx + where;
+                                 System.out.println("查询装箱数据sql:"+sql);
+                                 List<Map<String, Object>> listresult = new ArrayList<Map<String,Object>>();
+                                 try {
+                                     listresult = oracleConn.select(sql);
+                                     actnum = actnum + listresult.size();
+                                     System.out.println("获取到产线："+listcurlzk.get(k).getLineId()+"装箱数据:"+actnum+"条");
+                                 } catch (Exception e) {
+                                     e.printStackTrace();
+                                 }
                              }
-
                              //3.1 取件数量
                              InOutRecord inOutRecord = new InOutRecord();
                              List<InOutRecord> listio = inOutRecordService.selectforKanb(listvbgh.get(i).getWerks(),listcurlzk.get(k).getLineId(),listvbgh.get(i).getProduct(),viewdata.getShifttimebegin(),viewdata.getShifttimeend());
@@ -171,7 +176,13 @@ public class KanbgetDateV2 extends AbstractJob {
                          }
                      }
                      viewdata.setActqty(actnum);//实际装箱数量
-                     viewdata.setInsufqty(Math.abs(viewdata.getPlanqty() - viewdata.getActqty()));//差缺数量
+                    if (viewdata.getPlanqty() < viewdata.getActqty()){
+                        viewdata.setInsufqty(0D);
+                    }else {
+                        viewdata.setInsufqty(Math.abs(viewdata.getPlanqty() - viewdata.getActqty()));//差缺数量
+                    }
+
+
                      Double qcrate = 0D;
                      if (viewdata.getActqty() > 0D){
                          qcrate  =  viewdata.getActqty() / ( viewdata.getActqty() + outnum )  * 100;
@@ -181,12 +192,15 @@ public class KanbgetDateV2 extends AbstractJob {
                          viewdata.setQcRate(qcrate);
                      }
 
-                     //进度差缺
-                    if (Math.abs(Math.rint(viewdata.getActqty() - lncq)) >= viewdata.getPlanqty()){
-                        viewdata.setJdcqqty( 0 - viewdata.getPlanqty());//进度差缺
-                    }else{
-                        viewdata.setJdcqqty(Math.rint(viewdata.getActqty() - lncq ));//进度差缺
-                    }
+//                     //进度差缺
+//                    if (Math.abs(Math.rint(viewdata.getActqty() - lncq)) >= viewdata.getPlanqty()){
+//                        viewdata.setJdcqqty( 0 - viewdata.getPlanqty());//进度差缺
+//                    }else{
+//                        viewdata.setJdcqqty(Math.rint(viewdata.getActqty() - lncq ));//进度差缺
+//                    }
+                    viewdata.setJdcqqty(viewdata.getActqty() - Math.rint(sjtim / (lntim / viewdata.getPlanqty())));
+
+
 
                     //综合利用率
                     String oeestr = ddf1.format( viewdata.getActqty() / lncq * 100);
@@ -251,6 +265,6 @@ public class KanbgetDateV2 extends AbstractJob {
 
     @Override
     protected boolean isRefireImmediatelyWhenException() {
-        return true;
+        return false;
     }
 }
