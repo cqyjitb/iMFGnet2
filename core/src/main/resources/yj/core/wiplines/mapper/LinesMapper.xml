@@ -23,6 +23,7 @@
         <result column="OEERATE" property="oeerate" jdbcType="DECIMAL"/>
         <result column="SEG_OPR_NAME" property="segOprName" jdbcType="VARCHAR"/>
         <result column="POINT_NUM" property="pointNum" jdbcType="DECIMAL" />
+        <result column="TZFLG" property="tzflg" jdbcType="VARCHAR"/>
         <result column="CREATION_DATE" property="creationDate" jdbcType="DATE" />
         <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
         <result column="LAST_UPDATED_DATE" property="lastUpdatedDate" jdbcType="DATE" />
