@@ -325,8 +325,11 @@ public class ZwipqController extends BaseController {
             return rs;
         }
 
+        String tzflg = lines.getTzflg();
+
+
         //移动类型不为空，需要进行调账
-        if (!bwart.equals("") && cynum != 0){
+        if (!bwart.equals("") && cynum != 0 && tzflg.equals("1")){
             Logdtl logdtl = new Logdtl();
             logdtl.setId(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
             logdtl.setLogid(uuidH);
