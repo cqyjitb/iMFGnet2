@@ -435,65 +435,67 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
             List<Shotnum> list1 = shotnumMapper.selectShotnum("1001",fevor.get(k).getFevor(),null,null,prdDate,prdDate);
             List<Shotnum> list3 = new ArrayList<Shotnum>();
             List<ShotInput> list4 = new ArrayList<ShotInput>();
-            for (int i = 0; i < list1.size(); i++) {
-                list3.add(list1.get(i));
-                for (int j = i + 1; j < list1.size(); j++) {
-                    if ((list1.get(i).getArbpl().equals(list1.get(j).getArbpl()))
-                            && (list1.get(i).getShifts().equals(list1.get(j).getShifts()))) {
-                        list1.remove(j);
-                        j--;
-                    }
-                }
-            }
-            List<Shotnum> list2 = new ArrayList<Shotnum>();
-            for (int i = 0; i < list3.size(); i++) {
-                Integer mdnum = 1, shotNum = 0, yeild = 0;
-                Double grgew = 0.00;
-                ShotInput shotInput = new ShotInput();
-                shotInput.setWerks("1001");
-                shotInput.setFevor(list3.get(i).getFevor());
-                shotInput.setTxt(list3.get(i).getTxt());
-                shotInput.setArbpl(list3.get(i).getArbpl());
-                shotInput.setKtext(list3.get(i).getKtext());
-                shotInput.setPrdDate(list3.get(i).getPrdDate());
-                shotInput.setsClass(list3.get(i).getsClass());
-                shotInput.setShifts(list3.get(i).getShifts());
-                list2 = shotnumMapper.selectShotnum(shotInput.getWerks(), shotInput.getFevor(), shotInput.getShifts(),
-                        shotInput.getArbpl(), shotInput.getPrdDate(), shotInput.getPrdDate());
-                Long startMin = list2.get(0).getShotStart();
-                Long endMax = list2.get(0).getShotEnd();
-                for (int a = 0; a < list2.size(); a++) {
-                    mdnum = mouldcavityMapper.selectByMatnr(list2.get(a).getMatnr(), list2.get(a).getMdno());
-                    marc = marcMapper.selectByMatnr(list2.get(a).getMatnr());
-                    if (mdnum == null) {
-                        mdnum = 1;
-                    }
-                    Integer shotNum1 = ((int) (list2.get(a).getShotEnd() - list2.get(a).getShotStart()) * mdnum);
-                    shotNum = shotNum + shotNum1;
-                    if (marc != null) {
-                        if (marc.getBrgew() == null) {
-                            marc.setBrgew(0.0);
-                        }
-                        grgew = grgew + (shotNum1 * marc.getBrgew());
-                    }
-                    if (a > 0) {
-                        if (list2.get(a).getShotStart() < startMin) {
-                            startMin = list2.get(a).getShotStart();
-                        }
-                        if (list2.get(a).getShotEnd() > endMax) {
-                            endMax = list2.get(a).getShotEnd();
+            if (list1.size() > 0){
+                for (int i = 0; i < list1.size(); i++) {
+                    list3.add(list1.get(i));
+                    for (int j = i + 1; j < list1.size(); j++) {
+                        if ((list1.get(i).getArbpl().equals(list1.get(j).getArbpl()))
+                                && (list1.get(i).getShifts().equals(list1.get(j).getShifts()))) {
+                            list1.remove(j);
+                            j--;
                         }
                     }
                 }
-                shotInput.setShotStart(startMin);
-                shotInput.setShotEnd(endMax);
-                shotInput.setShotNum(shotNum);
-                shotInput.setBrgew(df.format(grgew));
-                InputLog inputLog1 = inputLogMapper.selectByOrderno2(shotInput.getWerks(), shotInput.getArbpl(), shotInput.getShifts(), shotInput.getPrdDate());
-                shotInput.setYeild(inputLog1.getYeild().intValue());
-                shotInput.setWasteNum(inputLog1.getWorkScrap().intValue() + inputLog1.getRowScrap().intValue());
-                shotInput.setDifferentNum(shotInput.getYeild() + shotInput.getWasteNum() - shotInput.getShotNum());
-                list4.add(shotInput);
+                List<Shotnum> list2 = new ArrayList<Shotnum>();
+                for (int i = 0; i < list3.size(); i++) {
+                    Integer mdnum = 1, shotNum = 0, yeild = 0;
+                    Double grgew = 0.00;
+                    ShotInput shotInput = new ShotInput();
+                    shotInput.setWerks("1001");
+                    shotInput.setFevor(list3.get(i).getFevor());
+                    shotInput.setTxt(list3.get(i).getTxt());
+                    shotInput.setArbpl(list3.get(i).getArbpl());
+                    shotInput.setKtext(list3.get(i).getKtext());
+                    shotInput.setPrdDate(list3.get(i).getPrdDate());
+                    shotInput.setsClass(list3.get(i).getsClass());
+                    shotInput.setShifts(list3.get(i).getShifts());
+                    list2 = shotnumMapper.selectShotnum(shotInput.getWerks(), shotInput.getFevor(), shotInput.getShifts(),
+                            shotInput.getArbpl(), shotInput.getPrdDate(), shotInput.getPrdDate());
+                    Long startMin = list2.get(0).getShotStart();
+                    Long endMax = list2.get(0).getShotEnd();
+                    for (int a = 0; a < list2.size(); a++) {
+                        mdnum = mouldcavityMapper.selectByMatnr(list2.get(a).getMatnr(), list2.get(a).getMdno());
+                        marc = marcMapper.selectByMatnr(list2.get(a).getMatnr());
+                        if (mdnum == null) {
+                            mdnum = 1;
+                        }
+                        Integer shotNum1 = ((int) (list2.get(a).getShotEnd() - list2.get(a).getShotStart()) * mdnum);
+                        shotNum = shotNum + shotNum1;
+                        if (marc != null) {
+                            if (marc.getBrgew() == null) {
+                                marc.setBrgew(0.0);
+                            }
+                            grgew = grgew + (shotNum1 * marc.getBrgew());
+                        }
+                        if (a > 0) {
+                            if (list2.get(a).getShotStart() < startMin) {
+                                startMin = list2.get(a).getShotStart();
+                            }
+                            if (list2.get(a).getShotEnd() > endMax) {
+                                endMax = list2.get(a).getShotEnd();
+                            }
+                        }
+                    }
+                    shotInput.setShotStart(startMin);
+                    shotInput.setShotEnd(endMax);
+                    shotInput.setShotNum(shotNum);
+                    shotInput.setBrgew(df.format(grgew));
+                    InputLog inputLog1 = inputLogMapper.selectByOrderno2(shotInput.getWerks(), shotInput.getArbpl(), shotInput.getShifts(), shotInput.getPrdDate());
+                    shotInput.setYeild(inputLog1.getYeild().intValue());
+                    shotInput.setWasteNum(inputLog1.getWorkScrap().intValue() + inputLog1.getRowScrap().intValue());
+                    shotInput.setDifferentNum(shotInput.getYeild() + shotInput.getWasteNum() - shotInput.getShotNum());
+                    list4.add(shotInput);
+                }
             }
             List<Crhd> crhds = crhdMapper.selectByVeran("1001", fevor.get(k).getFevor(), null);
             Integer num = list3.size();

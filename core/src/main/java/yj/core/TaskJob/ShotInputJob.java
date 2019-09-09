@@ -39,34 +39,17 @@ public class ShotInputJob extends AbstractJob {
         Date prdDate = context.getFireTime();
         Calendar cal = Calendar.getInstance();
         cal.setTime(prdDate);
-        cal.add(Calendar.DATE,-1);
-        List<ShotInput> list = shotnumService.selectShotnum2(sdf.format(cal.getTime()));
-        if (list.size() > 0){
-            for (int i=0;i<list.size();i++){
-                shotInputService.insertShotInput(list.get(i));
-            }
-        }
-        cal.add(Calendar.DATE,-1);
-        List<ShotInput> list2 = shotnumService.selectShotnum2(sdf.format(cal.getTime()));
-        if (list2.size() > 0){
-            for (int i=0;i<list2.size();i++){
-                ShotInput shotInput = shotInputService.queryShotInput(list2.get(i));
-                if (shotInput == null){
-                    shotInputService.insertShotInput(list2.get(i));
-                }else {
-                    shotInputService.updateShotInput(list2.get(i));
-                }
-            }
-        }
-        cal.add(Calendar.DATE,-1);
-        List<ShotInput> list3 = shotnumService.selectShotnum2(sdf.format(cal.getTime()));
-        if (list3.size() > 0){
-            for (int i=0;i<list3.size();i++){
-                ShotInput shotInput = shotInputService.queryShotInput(list3.get(i));
-                if (shotInput != null){
-                    shotInputService.updateShotInput(list3.get(i));
-                }else {
-                    shotInputService.insertShotInput(list3.get(i));
+        for (int i=0;i<5;i++) {
+            cal.add(Calendar.DATE,-1);
+            List<ShotInput> list = shotnumService.selectShotnum2(sdf.format(cal.getTime()));
+            if (list.size() > 0){
+                for (int j=0;j<list.size();j++){
+                    ShotInput shotInput = shotInputService.queryShotInput(list.get(j));
+                    if (shotInput == null){
+                        shotInputService.insertShotInput(list.get(j));
+                    }else {
+                        shotInputService.updateShotInput(list.get(j));
+                    }
                 }
             }
         }
