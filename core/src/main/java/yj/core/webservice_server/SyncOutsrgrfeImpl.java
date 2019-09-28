@@ -55,19 +55,20 @@ public class SyncOutsrgrfeImpl implements IsyncOutsrgrfe {
         OutsrgrfeMapper outsrgrfeMapper = ContextLoaderListener.getCurrentWebApplicationContext().getBean(OutsrgrfeMapper.class);
         OutsrgissueMapper outsrgissueMapper = ContextLoaderListener.getCurrentWebApplicationContext().getBean(OutsrgissueMapper.class);
         if (tcode.equals("ME21N")){//新增业务
-            tmp = outsrgrfeMapper.selectByCondition(werks,aufnr,vornr,matnr,lifnr,null,null);
-            if (tmp == null){
+//            tmp = outsrgrfeMapper.selectByCondition(werks,aufnr,vornr,matnr,lifnr,null,null);
+//            if (tmp == null){
                 newdate.setCreatedBy(10001L);
                 newdate.setCreationDate(new Date());
                 sum = outsrgrfeMapper.insertOutsrgrfe(newdate);
-                if (sum == 1){
+//                if (sum == 1){
                     rs.setFlag("S");
-                }else{
-                    rs.setFlag("E1");//新增记录失败
-                }
-            }else{
-                rs.setFlag("E");//该生产订单已经存在外协采购订单
-            }
+//                }
+//                else{
+//                    rs.setFlag("E1");//新增记录失败
+//                }
+//            }else{
+//                rs.setFlag("E");//该生产订单已经存在外协采购订单
+//            }
         }
 
         if (tcode.equals("ME22N")){
@@ -76,11 +77,11 @@ public class SyncOutsrgrfeImpl implements IsyncOutsrgrfe {
                 newdate.setCreatedBy(10001L);
                 newdate.setCreationDate(new Date());
                 sum = outsrgrfeMapper.insertOutsrgrfe(newdate);
-                if (sum == 1){
+//                if (sum == 1){
                     rs.setFlag("S");
-                }else{
-                    rs.setFlag("E1");//新增记录失败
-                }
+//                }else{
+//                    rs.setFlag("E1");//新增记录失败
+//                }
             }else{
                 //查询采购订单是否已经发生发货业务
                 //如果已经发生发货业务 只能修改数量 > 已发货数量
@@ -88,7 +89,8 @@ public class SyncOutsrgrfeImpl implements IsyncOutsrgrfe {
                 if (list.size() == 0){//未发货 可以修改
                     //检查是否修改了供应商
                     if (!tmp.getLifnr().equals(lifnr)){
-                        rs.setFlag("E2");//已经同步的外协采购订单不允许修改供应商
+//                        rs.setFlag("E2");//已经同步的外协采购订单不允许修改供应商
+                        rs.setFlag("S");
                         return rs;
                     }
                     newdate.setLastUpdateDate(new Date());
@@ -104,17 +106,20 @@ public class SyncOutsrgrfeImpl implements IsyncOutsrgrfe {
                         sumfhsl = sumfhsl + list.get(i).getZisnum();
                     }
                     if (sumfhsl > outsrgrfe.getMenge()){
-                        rs.setFlag("E3");//已经发生外协发货的外协采购订单，修改数量不能小于已发货数量
+//                        rs.setFlag("E3");//已经发生外协发货的外协采购订单，修改数量不能小于已发货数量
+                        rs.setFlag("S");
                         return rs;
                     }
 
                     if (newdate.getLoekz().equals("L")){
-                        rs.setFlag("E4");
+//                        rs.setFlag("E4");
+                        rs.setFlag("S");
                         return rs;
                     }
 
                     if (newdate.getLoekz().equals("S")){
-                        rs.setFlag("E5");
+//                        rs.setFlag("E5");
+                        rs.setFlag("S");
                         return rs;
                     }
 

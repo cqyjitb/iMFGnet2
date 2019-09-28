@@ -1,11 +1,14 @@
 package yj.core.batchpds.controllers;
 
-import jdk.internal.util.xml.impl.Input;
-import org.springframework.stereotype.Controller;
-import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.core.IRequest;
+import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.system.dto.ResponseData;
-import sun.reflect.annotation.ExceptionProxy;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import yj.core.afko.dto.Afko;
 import yj.core.afko.service.IAfkoService;
 import yj.core.afvc.dto.Afvc;
@@ -16,11 +19,6 @@ import yj.core.batchpds.dto.Batchpdlogs;
 import yj.core.batchpds.dto.Batchpdsource;
 import yj.core.batchpds.service.IBatchpdlogsService;
 import yj.core.batchpds.service.IBatchpdsourceService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.service.ICardhService;
 import yj.core.cardhst.dto.Cardhst;
@@ -425,7 +423,7 @@ public class BatchpdsourceController extends BaseController {
 
                     try {
 //                                Thread.sleep(2000);
-                        TimeUnit.MILLISECONDS.sleep(4000);
+                        TimeUnit.MILLISECONDS.sleep(10000);
                     } catch (Exception e) {
 
                     }
@@ -601,7 +599,7 @@ public class BatchpdsourceController extends BaseController {
 
                         try {
 //                                Thread.sleep(2000);
-                            TimeUnit.MILLISECONDS.sleep(4000);
+                            TimeUnit.MILLISECONDS.sleep(10000);
                         } catch (Exception e) {
 
                         }
