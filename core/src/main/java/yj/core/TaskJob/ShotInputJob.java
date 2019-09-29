@@ -39,7 +39,7 @@ public class ShotInputJob extends AbstractJob {
         Date prdDate = context.getFireTime();
         Calendar cal = Calendar.getInstance();
         cal.setTime(prdDate);
-        for (int i=0;i<5;i++) {
+        for (int i=0;i<10;i++) {
             cal.add(Calendar.DATE,-1);
             List<ShotInput> list = shotnumService.selectShotnum2(sdf.format(cal.getTime()));
             if (list.size() > 0){

@@ -47,6 +47,7 @@
 		select * from sap_fevor
 		<where>
 			fevor like "4%"
+            AND unit_code is not null
 			<if test="fevor != null">
                 AND fevor = #{fevor}
             </if>
