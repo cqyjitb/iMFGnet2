@@ -21,7 +21,6 @@ import yj.core.dispatch.mapper.ResultMapper;
 import yj.core.dispatch.service.IInputLogService;
 import yj.core.outsrgissue.dto.Outsrgissue;
 import yj.core.outsrgissue.mapper.OutsrgissueMapper;
-import yj.core.outsrgissuehead.mapper.OutsrgissueheadMapper;
 import yj.core.webservice.components.ConfirmationWebserviceUtil;
 import yj.core.webservice.dto.DTPP001Parameters;
 import yj.core.webservice.dto.DTPP001ReturnResult;
@@ -153,23 +152,23 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
             }
         }
         currentInputSum = currentInputSum + input.getYeild() + input.getRowScrap() + input.getWorkScrap();
-
+        return before(input, returnResult, currentInputSum, historyMaxOperationYeildSum, beforeMaxOpera);
         /*update furong.tang*/
         //生产订单号的号码范围为：1000000000至2999999999，或9300000000至9499999999
-        if ((IOrderno >= 1000000000L && IOrderno <= 2999999999L) || (IOrderno >= 9300000000L && IOrderno <= 9499999999L)) {
-            //此派工单是否是未冲销的
-            if (existReversedInputLogs.size() == 0 || existReversedInputLogs == null) {
-                /*before*/
-                return before(input, returnResult, currentInputSum, historyMaxOperationYeildSum, beforeMaxOpera);
-                /*before*/
-            } else {
-                returnResult.setMESSAGE("此派工单的该工序已经报工，请勿重复报工");
-                return returnResult;
-            }
-
-        } else {
-            return before(input, returnResult, currentInputSum, historyMaxOperationYeildSum, beforeMaxOpera);
-        }
+//        if ((IOrderno >= 1000000000L && IOrderno <= 2999999999L) || (IOrderno >= 9300000000L && IOrderno <= 9499999999L)) {
+//            //此派工单是否是未冲销的
+//            if (existReversedInputLogs.size() == 0 || existReversedInputLogs == null) {
+//                /*before*/
+//                return before(input, returnResult, currentInputSum, historyMaxOperationYeildSum, beforeMaxOpera);
+//                /*before*/
+//            } else {
+//                returnResult.setMESSAGE("此派工单的该工序已经报工，请勿重复报工");
+//                return returnResult;
+//            }
+//
+//        } else {
+//            return before(input, returnResult, currentInputSum, historyMaxOperationYeildSum, beforeMaxOpera);
+//        }
         /*update furong.tang*/
 
     }

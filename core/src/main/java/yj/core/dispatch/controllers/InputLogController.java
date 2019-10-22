@@ -4,8 +4,6 @@ import com.hand.hap.account.dto.User;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.system.dto.ResponseData;
-import org.apache.bcel.generic.I2F;
-import org.apache.bcel.generic.IF_ACMPEQ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -20,9 +18,7 @@ import yj.core.cardh.service.ICardhService;
 import yj.core.cardhst.dto.Cardhst;
 import yj.core.cardhst.service.ICardhstService;
 import yj.core.cardt.dto.Cardt;
-import yj.core.cardt.dto.VCardt;
 import yj.core.cardt.service.ICardtService;
-import yj.core.cardt.service.impl.CardtServiceImpl;
 import yj.core.dispatch.dto.InputLog;
 import yj.core.dispatch.service.IInputLogService;
 import yj.core.marc.dto.Marc;
@@ -50,10 +46,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.sql.Time;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 
@@ -288,7 +282,8 @@ public class InputLogController extends BaseController {
         String attr8 = request.getParameter("8");
         String attr9 = request.getParameter("9");
         String attr10 = request.getParameter("10");
-        String attr11 = request.getParameter("11");
+//        String attr11 = request.getParameter("11");
+        String attr11 = "X";//老报工绕过重复报工检查
         String attr12 = request.getParameter("12");
         String attr13 = request.getParameter("13");
         String attr14 = request.getParameter("14");
@@ -430,7 +425,8 @@ public class InputLogController extends BaseController {
         inputLog.setAttr8("");
         inputLog.setAttr9("");
         inputLog.setAttr10("");
-        inputLog.setAttr11("");
+        //inputLog.setAttr11("");
+        inputLog.setAttr11("X");//imfgnet 报工识别标识
         inputLog.setAttr12("");
         inputLog.setAttr13("");
         inputLog.setAttr14("");
@@ -921,7 +917,8 @@ public class InputLogController extends BaseController {
         String attr8 = request.getParameter("8");
         String attr9 = request.getParameter("9");
         String attr10 = request.getParameter("10");
-        String attr11 = request.getParameter("11");
+//        String attr11 = request.getParameter("11");
+        String attr11 = "X";//imfgnet 报工识别标识
         String attr12 = request.getParameter("12");
         String attr13 = request.getParameter("13");
         String attr14 = request.getParameter("14");

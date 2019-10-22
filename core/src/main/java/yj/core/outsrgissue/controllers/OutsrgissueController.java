@@ -1,10 +1,10 @@
 package yj.core.outsrgissue.controllers;
 
-import org.apache.bcel.generic.IF_ACMPEQ;
-import org.springframework.stereotype.Controller;
-import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.core.IRequest;
+import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.system.dto.ResponseData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.service.ICardhService;
@@ -14,7 +14,6 @@ import yj.core.marc.dto.Marc;
 import yj.core.marc.service.IMarcService;
 import yj.core.outsrgissue.dto.Outsrgissue;
 import yj.core.outsrgissue.service.IOutsrgissueService;
-import org.springframework.beans.factory.annotation.Autowired;
 import yj.core.outsrgissuehead.dto.Outsrgissuehead;
 import yj.core.outsrgissuehead.service.IOutsrgissueheadService;
 import yj.core.outsrgreceipt.dto.Outsrgreceipt;
@@ -25,7 +24,6 @@ import yj.core.webservice_outsrgissue.components.SyncOutsrgissueWebserviceUtil;
 import yj.core.webservice_outsrgissue.dto.DTOUTSRGISSUEhead;
 import yj.core.webservice_outsrgissue.dto.DTOUTSRGISSUEitem;
 import yj.core.webservice_outsrgissue.dto.DTOUTSRGISSUEreturn;
-import yj.core.wipdftrghlist.dto.Dftrghlist;
 
 import javax.servlet.http.HttpServletRequest;
 import java.text.SimpleDateFormat;
@@ -82,6 +80,11 @@ import java.util.List;
         cardh = cardhService.selectByBarcode(barcode);
 
         Outsrgrfe outsrgrfe = outsrgrfeService.selectByCondition(cardh.getWerks(),cardh.getAufnr(),vornr,cardh.getMatnr(),lifnr,null,null);
+        if (outsrgrfe.getLoekz().equals('L')){
+            rs.setMessage("外协采购订单已经关闭，不允许进行外协发料");
+            rs.setSuccess(false);
+            return rs;
+        }
         Marc marc = new Marc();
         marc = marcService.selectByMatnr(cardh.getMatnr());
         Cardt cardt = new Cardt();

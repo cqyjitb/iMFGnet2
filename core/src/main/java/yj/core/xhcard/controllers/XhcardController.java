@@ -1,15 +1,8 @@
 package yj.core.xhcard.controllers;
 
-import com.github.pagehelper.PageHelper;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.system.dto.ResponseData;
-
-import java.util.ArrayList;
-import java.util.List;
-import javax.servlet.http.HttpServletRequest;
-
-import org.apache.bcel.generic.IF_ACMPEQ;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -24,7 +17,6 @@ import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.service.ICardhService;
 import yj.core.dispatch.dto.InputLog;
 import yj.core.dispatch.service.IInputLogService;
-import yj.core.fevor.service.IFevorService;
 import yj.core.lineiocfg.dto.LineioCfg;
 import yj.core.lineiocfg.service.ILineioCfgService;
 import yj.core.marc.dto.Marc;
@@ -48,6 +40,10 @@ import yj.core.xhcard.dto.Xhcard;
 import yj.core.xhcard.service.IXhcardService;
 import yj.core.zwipq.dto.Zwipq;
 import yj.core.zwipq.service.IZwipqService;
+
+import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 public class XhcardController
