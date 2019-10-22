@@ -276,14 +276,14 @@ public class InputLogController extends BaseController {
         String attr2 = request.getParameter("2");
         String attr3 = request.getParameter("3");
         String attr4 = request.getParameter("4");
-        String attr5 = request.getParameter("5");
+        String attr5 = request.getParameter("5");//老报工绕过重复报工检查
+        attr5 = attr5 + "-X";
         String attr6 = request.getParameter("6");
         String attr7 = request.getParameter("7");
         String attr8 = request.getParameter("8");
         String attr9 = request.getParameter("9");
         String attr10 = request.getParameter("10");
-//        String attr11 = request.getParameter("11");
-        String attr11 = "X";//老报工绕过重复报工检查
+        String attr11 = request.getParameter("11");
         String attr12 = request.getParameter("12");
         String attr13 = request.getParameter("13");
         String attr14 = request.getParameter("14");
