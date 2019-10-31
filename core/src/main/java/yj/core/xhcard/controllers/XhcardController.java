@@ -218,7 +218,13 @@ public class XhcardController
         DTWEIDUParam param = new DTWEIDUParam();
         param.setMATNR(xhcard.getMatnr());
         param.setWERKS(xhcard.getWerks());
-        param.setZBANB(xhcard.getZtxt());
+        if (xhcard.getZtxt() == null || xhcard.getZtxt().equals(""))
+        {
+            param.setZBANB("");
+        }else{
+            param.setZBANB(xhcard.getZtxt());
+        }
+
         param.setZMODEL(xhcard.getZmnum().toUpperCase());
         param.setZXHBAR(xhcard.getZxhbar());
         WeiduWebserviceUtil weiduWebserviceUtil = new WeiduWebserviceUtil();
@@ -279,98 +285,98 @@ public class XhcardController
         //查询所有生产线 当前毛坯箱号记录
         List<Curlzk> allcurlzk = new ArrayList<>();
         allcurlzk = curlzkService.selectAllLinesforZxhbar(Long.valueOf(line_id));
-        String l_error = "E";
-        if (curxhcard == null) {
-            if (allxhcard.size() > 0) {
-                for (int j = 0; j < allxhcard.size(); j++) {
-                    String letgo = "";
-                    if (Long.valueOf(allxhcard.get(j).getChargkc()) < Long.valueOf(xhcard.getChargkc())) {
-                        for (int w = 0; w < allcurlzk.size(); w++) {
-                            if (allcurlzk.get(w).getZxhbar().equals((allxhcard.get(j).getZxhbar()))) {
-                                letgo = "X";
-                            }
-                        }
-
-                        if (letgo.equals("X")) {//批次比当前箱号批次小的 ，如果小批次箱号属于其他线正在上线的箱 不属于先进先出考虑范围
-                            continue;
-                        }
-
-                        DTWEIDUParam param1 = new DTWEIDUParam();
-                        param1.setMATNR(allxhcard.get(j).getMatnr());
-                        param1.setWERKS(allxhcard.get(j).getWerks());
-                        param1.setZBANB((allxhcard.get(j).getZtxt()));
-                        param1.setZMODEL((allxhcard.get(j).getZmnum().toUpperCase()));
-                        param1.setZXHBAR(xhcard.getZxhbar());
-                        DTWEIDUReturn dtweiduReturn1 = new DTWEIDUReturn();
-                        dtweiduReturn1 = weiduWebserviceUtil.receiveConfirmation(param1);
-                        if (dtweiduReturn1.getMTYPE().equals("S")) {
-                            if (dtweiduReturn1.getWEIDUFLG() != null) {
-                                if (dtweiduReturn1.getWEIDUFLG().equals("1")) {
-
-                                } else {
-                                    if (marcjj.getFifof() != null && marcjj.getFifof().equals("Y")){
-                                        rs.setSuccess(false);
-                                        rs.setMessage("未按先进先出规则上线，请先上线批次为：" + allxhcard.get(j).getChargkc() + ",箱号：" + allxhcard.get(j).getZxhbar() + " 的毛坯框！");
-                                        return rs;
-                                    }
-
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-
-        } else if (!xhcard.getZxhbar().equals(curxhcard.getZxhbar())) {
-            String newXhflg = "";
-            if (!zxhbar.equals(curlzk.getZxhbar())) {//扫描的毛坯框码 和当前毛坯框码不一致的时候
-                if (curxhcard.getZsxwc() == null || curxhcard.getZsxwc().equals("")) {
-                    rs.setSuccess(false);
-                    rs.setMessage("上一毛坯框：" + curlzk.getZxhbar() + " 未完成上线！请使用该框码继续上线！");
-                    return rs;
-                }
-
-                if (allxhcard.size() > 0) {
-                    for (int j = 0; j < allxhcard.size(); j++) {
-                        String letgo = "";
-                        if (Long.valueOf(allxhcard.get(j).getChargkc()) < Long.valueOf(xhcard.getChargkc())) {
-                            for (int w = 0; w < allcurlzk.size(); w++) {
-                                if (allcurlzk.get(w).getZxhbar().equals((allxhcard.get(j).getZxhbar()))) {
-                                    letgo = "X";
-                                }
-                            }
-
-                            if (letgo.equals("X")) {//批次比当前箱号批次小的 ，如果小批次箱号属于其他线正在上线的箱 不属于先进先出考虑范围
-                                continue;
-                            }
-
-                            DTWEIDUParam param1 = new DTWEIDUParam();
-                            param1.setMATNR(allxhcard.get(j).getMatnr());
-                            param1.setWERKS(allxhcard.get(j).getWerks());
-                            param1.setZBANB((allxhcard.get(j).getZtxt()));
-                            param1.setZMODEL((allxhcard.get(j).getZmnum().toUpperCase()));
-                            param1.setZXHBAR(xhcard.getZxhbar());
-                            DTWEIDUReturn dtweiduReturn1 = new DTWEIDUReturn();
-                            dtweiduReturn1 = weiduWebserviceUtil.receiveConfirmation(param1);
-                            if (dtweiduReturn1.getMTYPE().equals("S")) {
-                                if (dtweiduReturn1.getWEIDUFLG() != null) {
-                                    if (dtweiduReturn1.getWEIDUFLG().equals("1")) {
-
-                                    } else {
-                                        if (marcjj.getFifof() != null && marcjj.getFifof().equals("Y")){
-                                            rs.setSuccess(false);
-                                            rs.setMessage("未按先进先出规则上线，请先上线批次为：" + allxhcard.get(j).getChargkc() + ",箱号：" + allxhcard.get(j).getZxhbar() + " 的毛坯框！");
-                                            return rs;
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-
-            }
-        }
+//        String l_error = "E";
+//        if (curxhcard == null) {
+//            if (allxhcard.size() > 0) {
+//                for (int j = 0; j < allxhcard.size(); j++) {
+//                    String letgo = "";
+//                    if (Long.valueOf(allxhcard.get(j).getChargkc()) < Long.valueOf(xhcard.getChargkc())) {
+//                        for (int w = 0; w < allcurlzk.size(); w++) {
+//                            if (allcurlzk.get(w).getZxhbar().equals((allxhcard.get(j).getZxhbar()))) {
+//                                letgo = "X";
+//                            }
+//                        }
+//
+//                        if (letgo.equals("X")) {//批次比当前箱号批次小的 ，如果小批次箱号属于其他线正在上线的箱 不属于先进先出考虑范围
+//                            continue;
+//                        }
+//
+//                        DTWEIDUParam param1 = new DTWEIDUParam();
+//                        param1.setMATNR(allxhcard.get(j).getMatnr());
+//                        param1.setWERKS(allxhcard.get(j).getWerks());
+//                        param1.setZBANB((allxhcard.get(j).getZtxt()));
+//                        param1.setZMODEL((allxhcard.get(j).getZmnum().toUpperCase()));
+//                        param1.setZXHBAR(xhcard.getZxhbar());
+//                        DTWEIDUReturn dtweiduReturn1 = new DTWEIDUReturn();
+//                        dtweiduReturn1 = weiduWebserviceUtil.receiveConfirmation(param1);
+//                        if (dtweiduReturn1.getMTYPE().equals("S")) {
+//                            if (dtweiduReturn1.getWEIDUFLG() != null) {
+//                                if (dtweiduReturn1.getWEIDUFLG().equals("1")) {
+//
+//                                } else {
+//                                    if (marcjj.getFifof() != null && marcjj.getFifof().equals("Y")){
+//                                        rs.setSuccess(false);
+//                                        rs.setMessage("未按先进先出规则上线，请先上线批次为：" + allxhcard.get(j).getChargkc() + ",箱号：" + allxhcard.get(j).getZxhbar() + " 的毛坯框！");
+//                                        return rs;
+//                                    }
+//
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//            }
+//
+//        } else if (!xhcard.getZxhbar().equals(curxhcard.getZxhbar())) {
+//            String newXhflg = "";
+//            if (!zxhbar.equals(curlzk.getZxhbar())) {//扫描的毛坯框码 和当前毛坯框码不一致的时候
+//                if (curxhcard.getZsxwc() == null || curxhcard.getZsxwc().equals("")) {
+//                    rs.setSuccess(false);
+//                    rs.setMessage("上一毛坯框：" + curlzk.getZxhbar() + " 未完成上线！请使用该框码继续上线！");
+//                    return rs;
+//                }
+//
+//                if (allxhcard.size() > 0) {
+//                    for (int j = 0; j < allxhcard.size(); j++) {
+//                        String letgo = "";
+//                        if (Long.valueOf(allxhcard.get(j).getChargkc()) < Long.valueOf(xhcard.getChargkc())) {
+//                            for (int w = 0; w < allcurlzk.size(); w++) {
+//                                if (allcurlzk.get(w).getZxhbar().equals((allxhcard.get(j).getZxhbar()))) {
+//                                    letgo = "X";
+//                                }
+//                            }
+//
+//                            if (letgo.equals("X")) {//批次比当前箱号批次小的 ，如果小批次箱号属于其他线正在上线的箱 不属于先进先出考虑范围
+//                                continue;
+//                            }
+//
+//                            DTWEIDUParam param1 = new DTWEIDUParam();
+//                            param1.setMATNR(allxhcard.get(j).getMatnr());
+//                            param1.setWERKS(allxhcard.get(j).getWerks());
+//                            param1.setZBANB((allxhcard.get(j).getZtxt()));
+//                            param1.setZMODEL((allxhcard.get(j).getZmnum().toUpperCase()));
+//                            param1.setZXHBAR(xhcard.getZxhbar());
+//                            DTWEIDUReturn dtweiduReturn1 = new DTWEIDUReturn();
+//                            dtweiduReturn1 = weiduWebserviceUtil.receiveConfirmation(param1);
+//                            if (dtweiduReturn1.getMTYPE().equals("S")) {
+//                                if (dtweiduReturn1.getWEIDUFLG() != null) {
+//                                    if (dtweiduReturn1.getWEIDUFLG().equals("1")) {
+//
+//                                    } else {
+//                                        if (marcjj.getFifof() != null && marcjj.getFifof().equals("Y")){
+//                                            rs.setSuccess(false);
+//                                            rs.setMessage("未按先进先出规则上线，请先上线批次为：" + allxhcard.get(j).getChargkc() + ",箱号：" + allxhcard.get(j).getZxhbar() + " 的毛坯框！");
+//                                            return rs;
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//                    }
+//                }
+//
+//            }
+//        }
         List list = new ArrayList();
         list.add(xhcard);
         list.add(marc);
@@ -850,6 +856,29 @@ public class XhcardController
             dto.setZsxwc(null);
         }
         return new ResponseData(service.selectXbkc(dto));
+    }
+
+    @RequestMapping(value = {"/sap/xhcard/checkXhcardType"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})
+    @ResponseBody
+    ResponseData checkcardh(HttpServletRequest request, String zxhbar) {
+        ResponseData rs = new ResponseData();
+        Xhcard xhcard = new Xhcard();
+        xhcard = service.selectByBacode(zxhbar);
+        if (xhcard == null){
+            rs.setSuccess(false);
+            rs.setMessage("箱号不存在");
+            return rs;
+        }
+        Cardh cardh = new Cardh();
+        cardh = cardhService.selectByZxhbar(xhcard.getAufnr(),xhcard.getZxhnum());
+        if (cardh == null){
+            rs.setMessage("old");
+
+        }else{
+            rs.setMessage("new");
+        }
+        rs.setSuccess(true);
+        return rs;
     }
 
     @RequestMapping(value = {"/sap/xhcard/BlmpclCheckZxhbar"}, method = {org.springframework.web.bind.annotation.RequestMethod.GET})

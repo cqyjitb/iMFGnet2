@@ -324,8 +324,14 @@ public class ZwipqController extends BaseController {
             logdtlService.insertNewDtl(logdtl);
             return rs;
         }
+        String tzflg = "";
+        if (lines.getTzflg() == null){
+            tzflg = "";
+        }else{
+            tzflg = lines.getTzflg();
+        }
 
-        String tzflg = lines.getTzflg();
+
 
 
         //移动类型不为空，需要进行调账
