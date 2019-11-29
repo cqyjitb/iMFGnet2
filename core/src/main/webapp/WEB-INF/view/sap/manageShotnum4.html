@@ -396,8 +396,8 @@
             },
             {
                 field: "checkError",
-                title: '验证压射号数',
-                width: 120,
+                title: '检查压射起止数录入错误',
+                width: 180,
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -415,6 +415,10 @@
     });
     $("#arbplError").on('click',function () {
         var data = dataSource.data();
+        var prdDateAfter = document.getElementById('prdDateAfter').value;
+        prdDateAfter = kendo.toString(kendo.parseDate(prdDateAfter), "yyyy.MM.dd");
+        var prdDateBefore = document.getElementById('prdDateBefore').value;
+        prdDateBefore = kendo.toString(kendo.parseDate(prdDateBefore), "yyyy.MM.dd");
         if (data.length > 0){
             var fevor=[],txt=[],ktext=[];
             var arbpl = [];//机台
@@ -473,8 +477,8 @@
             totalDifferentNum = parseFloat(totalDifferentNum);
             numDifferent.push((Math.round(totalDifferentNum / totalNum * 10000) / 100.00)+"%");
             var list = [];
-            list.push(fevor,txt,arbpl,ktext,num,checkError,numCheck,differentNum,numDifferent);
-            var excelTitles = ['<@spring.message "车间"/>','<@spring.message "车间名称"/>',
+            list.push(prdDateAfter+" ~ "+prdDateBefore+"",fevor,txt,arbpl,ktext,num,checkError,numCheck,differentNum,numDifferent);
+            var excelTitles = ['<@spring.message "日期段"/>','<@spring.message "车间"/>','<@spring.message "车间名称"/>',
                 '<@spring.message "工作中心"/>','<@spring.message "工作中心名称"/>','<@spring.message "录入起、止数的总次数"/>',
                 '<@spring.message "错误次数"/>','<@spring.message "录入起、止数与总次数占比"/>',
                 '<@spring.message "压射次数与报工总数的差异次数"/>','<@spring.message "压射次数与报工总数与总次数占比"/>'];
@@ -502,7 +506,7 @@
             for(var i=0;i < num.length;i++){
                 excelData.push({
                     cells: [
-                        { value: list[0][i], verticalAlign: 'center', textAlign: 'center'},
+                        { value: list[0], verticalAlign: 'center', textAlign: 'center'},
                         { value: list[1][i], verticalAlign: 'center', textAlign: 'center'},
                         { value: list[2][i], verticalAlign: 'center', textAlign: 'center'},
                         { value: list[3][i], verticalAlign: 'center', textAlign: 'center'},
@@ -510,7 +514,8 @@
                         { value: list[5][i], verticalAlign: 'center', textAlign: 'center'},
                         { value: list[6][i], verticalAlign: 'center', textAlign: 'center'},
                         { value: list[7][i], verticalAlign: 'center', textAlign: 'center'},
-                        { value: list[8][i], verticalAlign: 'center', textAlign: 'center'}
+                        { value: list[8][i], verticalAlign: 'center', textAlign: 'center'},
+                        { value: list[9][i], verticalAlign: 'center', textAlign: 'center'}
                     ]
                 });
             }
