@@ -44,6 +44,25 @@ public class ShotInput extends BaseDTO {
 
     private String prdDateAfter;//开始日期
     private String prdDateBefore;//结束日期
+    private Long checkError;//验证压射号数
+    @Transient
+    private String shiftSeq;//班次轮班
+
+    public String getShiftSeq() {
+        return shiftSeq;
+    }
+
+    public void setShiftSeq(String shiftSeq) {
+        this.shiftSeq = shiftSeq;
+    }
+
+    public Long getCheckError() {
+        return checkError;
+    }
+
+    public void setCheckError(Long checkError) {
+        this.checkError = checkError;
+    }
 
     public String getPrdDateAfter() {
         return prdDateAfter;
