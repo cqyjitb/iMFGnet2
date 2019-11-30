@@ -38,7 +38,7 @@ public class ShotInputController extends BaseController {
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
         if (list.size() > 0){
             for (int i=0;i<list.size();i++){
-                if ((list.get(i).getYeild()==0)&&(list.get(i).getWasteNum()==0)){
+                if ((list.get(i).getYeild()==0)&&(list.get(i).getWasteNum()==0)&&(list.get(i).getsClass() == null)){
                     list.remove(i);
                     i--;
                 }
