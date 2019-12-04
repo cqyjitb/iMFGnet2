@@ -429,6 +429,11 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
         SimpleDateFormat sf = new SimpleDateFormat("yyyy-MM-dd");
         Calendar cal = new GregorianCalendar();
         Calendar cal2 = Calendar.getInstance();
+        try {
+            cal2.setTime(sf.parse(prdDate));
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
         DecimalFormat df = new DecimalFormat("#0.00");
         List<Fevor> fevor = fevorMapper.selectFevor(null);
         for (int k=0;k<fevor.size();k++){

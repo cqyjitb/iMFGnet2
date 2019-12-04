@@ -18,26 +18,27 @@
         <result column="WASTE_NUM" property="wasteNum" jdbcType="DECIMAL"/>
         <result column="DIFFERENT_NUM" property="differentNum" jdbcType="DECIMAL"/>
         <result column="BRGEW" property="brgew" jdbcType="VARCHAR"/>
+        <result column="SHIFT_SEQ" property="shiftSeq" jdbcType="VARCHAR"/>
     </resultMap>
 
     <select id="selectShotInput" parameterType="yj.core.wipshotinput.dto.ShotInput" resultMap="BaseResultMap">
-        select * from wip_shot_input
+        select sh.*,fe.shift_seq from wip_shot_input sh,sap_fevor fe
         <where>
-            1 = 1
+            sh.fevor = fe.fevor
             <if test="werks != null">
-                AND werks = #{werks}
+                AND sh.werks = #{werks}
             </if>
             <if test="fevor != null">
-                AND fevor = #{fevor}
+                AND sh.fevor = #{fevor}
             </if>
             <if test="prdDateAfter != null">
-                AND  prd_date >= #{prdDateAfter}
+                AND  sh.prd_date >= #{prdDateAfter}
             </if>
             <if test="prdDateBefore != null">
-                AND #{prdDateBefore} >= prd_date
+                AND #{prdDateBefore} >= sh.prd_date
             </if>
         </where>
-        order by prd_date asc,fevor asc,shifts asc,arbpl asc
+        order by sh.fevor asc,sh.arbpl asc,sh.prd_date asc,sh.shifts asc
     </select>
 
     <select id="queryShotInput" parameterType="yj.core.wipshotinput.dto.ShotInput" resultType="yj.core.wipshotinput.dto.ShotInput">
