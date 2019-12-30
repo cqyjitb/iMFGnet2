@@ -1,16 +1,13 @@
 package yj.core.webservice.components;
 
 
-import java.io.File;
-
-
 /**
  * Created by TFR on 2017/6/14.
  */
 public class test {
 
     public static void main(String[] args) {
-        ConfirmationWebserviceUtil util = new ConfirmationWebserviceUtil();
+//        ConfirmationWebserviceUtil util = new ConfirmationWebserviceUtil();
         //InputLog inputLog = new InputLog();
        /* DTPP001Parameters param = new DTPP001Parameters();
         param.setPWERK("1001");
@@ -40,14 +37,13 @@ public class test {
         inputLog.setDispatch("");
         inputLog.setDispatchLogicID("");*/
         //util.receiveConfirmation(param);
-
-        System.out.println(Thread.currentThread().getContextClassLoader().getResource(""));
-        System.out.println(test.class.getClassLoader().getResource(""));
-        System.out.println(ClassLoader.getSystemResource(""));
-        System.out.println(test.class.getResource(""));
-        System.out.println(test.class.getResource("/")); //Class文件所在路径
-        System.out.println(new File("/").getAbsolutePath());
-        System.out.println(System.getProperty("user.dir"));
+//        System.out.println(Thread.currentThread().getContextClassLoader().getResource(""));
+//        System.out.println(test.class.getClassLoader().getResource(""));
+//        System.out.println(ClassLoader.getSystemResource(""));
+//        System.out.println(test.class.getResource(""));
+//        System.out.println(test.class.getResource("/")); //Class文件所在路径
+//        System.out.println(new File("/").getAbsolutePath());
+//        System.out.println(System.getProperty("user.dir"));
 
     }
 }

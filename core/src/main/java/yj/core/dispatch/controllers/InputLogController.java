@@ -311,7 +311,7 @@ public class InputLogController extends BaseController {
         inputLog.setLine(line);
         inputLog.setModelNo(modelNo);
         inputLog.setPlant(plant);
-        SimpleDateFormat sdf = new SimpleDateFormat("YYYY-MM-dd");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         inputLog.setPostingDate(sdf.format(new Date()));
         inputLog.setDispatchLogicID(dispatchLogicID);
         inputLog.setCreated_by(createdBy);
