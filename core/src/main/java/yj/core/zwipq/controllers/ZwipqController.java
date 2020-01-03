@@ -332,26 +332,31 @@ public class ZwipqController extends BaseController {
         }
 
         //查询箱号已上线数量
-        Long xhmenge = Long.valueOf(xhcard.getMenge());
-        List<Zwipq> listzwipq = service.selectByZxhbar(zxhbar);
-        if (listzwipq != null){
-            Integer ysx = listzwipq.size();
-            if ( cursum + ysx > Math.round(xhmenge * 0.05) ){
-                rs.setSuccess(false);
-                rs.setMessage("上线数量不能超过箱号正常数量的%5,不允许继续上线！");
-                return rs;
-            }
+        //Long xhmenge = Long.valueOf(xhcard.getMenge());
+        String menge = xhcard.getMenge();
+        if (menge.substring(xhcard.getMenge().length()-2,menge.length()).equals(".0")){
+            menge = menge.substring(0,menge.length()-2);
         }
+//        Long xhmenge = Long.parseLong(menge);
+//        List<Zwipq> listzwipq = service.selectByZxhbar(zxhbar);
+//        if (listzwipq != null){
+//            Integer ysx = listzwipq.size();
+//            if ( cursum + ysx > Math.round(xhmenge * 0.05) ){
+//                rs.setSuccess(false);
+//                rs.setMessage("上线数量不能超过箱号正常数量的5%,不允许继续上线！");
+//                return rs;
+//            }
+//        }
 
 
 
         //移动类型不为空，需要进行调账
         if (!bwart.equals("") && cynum != 0 && tzflg.equals("1")){
-            if (cynum > Math.round( xhmenge * 0.05)){
-                rs.setMessage("上线差异数量不允许超过箱号正常数量的%5，不允许继续上线！");
-                rs.setSuccess(false);
-                return  rs;
-            }
+//            if (cynum > Math.round( xhmenge * 0.05)){
+//                rs.setMessage("上线差异数量不允许超过箱号正常数量的5%，不允许继续上线！");
+//                rs.setSuccess(false);
+//                return  rs;
+//            }
 
             Logdtl logdtl = new Logdtl();
             logdtl.setId(java.util.UUID.randomUUID().toString().replaceAll("-", ""));
