@@ -640,7 +640,7 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         param.setATTR8(inputLog.getAttr8());
         param.setATTR9(inputLog.getAttr9());
         param.setATTR10(inputLog.getAttr10());
-        param.setATTR11(inputLog.getAttr11());
+        param.setATTR11("X");
         param.setATTR12(inputLog.getAttr12());
         param.setATTR13(inputLog.getAttr13());
         param.setATTR14(inputLog.getAttr14());

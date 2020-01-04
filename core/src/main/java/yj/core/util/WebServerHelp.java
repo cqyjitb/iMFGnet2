@@ -35,7 +35,7 @@ public class WebServerHelp {
 //        this.mesOraUserName = "mes_query_usr";
 //        this.mesOraPass = "mesapp12345";
 
-        //prd
+//        //prd
           this.username = "HAPUSER";
           this.password = "YJhap201707@CQ";
         //prd
