@@ -72,5 +72,12 @@
             FEVOR = #{fevor}
         </where>
     </select>
-	
+
+    <select id="selectFevorByWerks" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from sap_fevor
+        <where>
+            fevor not like "4%"
+            AND werks = #{werks}
+        </where>
+    </select>
 </mapper>

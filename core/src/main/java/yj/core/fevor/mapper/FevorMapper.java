@@ -22,6 +22,8 @@ public interface FevorMapper extends Mapper<Fevor> {
      */
     List<Fevor> selectFevor2(@Param("fevor") String fevor);
 
+    List<Fevor> selectFevorByWerks(@Param("werks") String werks);
+
     Fevor selectByfevorSinger(@Param("fevor") String fevor);
 
     List<Zwipqhz> selectZwipqhz(@Param("unitCode")String unitCode,@Param("lineId")String lineId);

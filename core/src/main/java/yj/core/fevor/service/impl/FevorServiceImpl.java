@@ -5,18 +5,12 @@ import com.hand.hap.system.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import yj.core.HanaCon.HanaCon;
-import yj.core.OracleConn.OracleConn;
 import yj.core.fevor.dto.Fevor;
 import yj.core.fevor.dto.Zwipqhz;
 import yj.core.fevor.mapper.FevorMapper;
 import yj.core.fevor.service.IFevorService;
-import yj.core.seversetting.dto.ServerSetting;
-import yj.core.util.WebServerHelp;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Transactional
@@ -37,5 +31,10 @@ public class FevorServiceImpl extends BaseServiceImpl<Fevor> implements IFevorSe
     @Override
     public List<Zwipqhz> queryZwipqhz(IRequest requestContext, String unitCode, String lineId) {
         return fevorMapper.selectZwipqhz(unitCode,lineId);
+    }
+
+    @Override
+    public List<Fevor> selectFevorByWerks(String werks) {
+        return fevorMapper.selectFevorByWerks(werks);
     }
 }

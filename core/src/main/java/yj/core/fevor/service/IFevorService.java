@@ -12,6 +12,8 @@ public interface IFevorService extends IBaseService<Fevor>, ProxySelf<IFevorServ
 
     List<Fevor> selectFevor2 (String fevor);
 
+    List<Fevor> selectFevorByWerks(String werks);
+
     Fevor selectByfevorSinger(String fevor);
 
     List<Zwipqhz> queryZwipqhz(IRequest requestContext, String unitCode, String lineId);
