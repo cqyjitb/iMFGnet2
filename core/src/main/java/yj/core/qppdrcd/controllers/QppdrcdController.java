@@ -1,21 +1,20 @@
 package yj.core.qppdrcd.controllers;
 
-import org.springframework.stereotype.Controller;
-import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.core.IRequest;
+import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.system.dto.ResponseData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import yj.core.fevor.dto.Fevor;
 import yj.core.fevor.service.IFevorService;
 import yj.core.marc.dto.Marc;
 import yj.core.marc.service.IMarcService;
 import yj.core.qppdrcd.dto.Qppdrcd;
 import yj.core.qppdrcd.service.IQppdrcdService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-import yj.core.wiplines.dto.Lines;
 import yj.core.wiplines.service.ILinesService;
 
 import javax.servlet.http.HttpServletRequest;
@@ -89,7 +88,7 @@ public class QppdrcdController extends BaseController {
         String fevorstr = request.getParameter("fevor") == null ? "" : request.getParameter("fevor");
         String zbeiz = request.getParameter("zbeiz") == null ? "" : request.getParameter("zbeiz");
         String operator = request.getParameter("operator") == null ? "" : request.getParameter("operator");
-        String werks = "1001";
+        String werks = "";
         String zxhbar = request.getParameter("zxhbar") == null ? "" : request.getParameter("zxhbar");
 
 
@@ -125,6 +124,7 @@ public class QppdrcdController extends BaseController {
             Fevor fevor = new Fevor();
             fevor = fevorService.selectByfevorSinger(qppdrcd.getFevor());
             qppdrcd.setFevortxt(fevor.getTxt());
+            qppdrcd.setWerks(fevor.getWerks());
         } else {
             qppdrcd.setFevortxt("");
         }
@@ -132,7 +132,8 @@ public class QppdrcdController extends BaseController {
         UUID uuid = java.util.UUID.randomUUID();
         String uuidstr = uuid.toString().replaceAll("-", "");
         qppdrcd.setRcdid(uuidstr);
-        qppdrcd.setWerks(werks);
+
+
 
         int result = service.insertPdRow(qppdrcd);
         if (result == 1) {
