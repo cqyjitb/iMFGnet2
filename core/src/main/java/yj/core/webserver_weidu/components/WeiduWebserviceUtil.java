@@ -1,6 +1,5 @@
 package yj.core.webserver_weidu.components;
 
-import org.apache.bcel.generic.IF_ACMPEQ;
 import yj.core.util.WebServerHelp;
 import yj.core.webserver_weidu.dto.DTWEIDUParam;
 import yj.core.webserver_weidu.dto.DTWEIDUReturn;
@@ -8,7 +7,6 @@ import yj.core.webserver_weidu.receiver.DTWEIDURes;
 import yj.core.webserver_weidu.sender.DTWEIDUReq;
 import yj.core.webserver_weidu.sender.SIWEIDUSenderSyn;
 import yj.core.webserver_weidu.sender.SIWEIDUSenderSynService;
-
 
 import javax.xml.namespace.QName;
 import java.net.URL;
@@ -44,7 +42,7 @@ public class WeiduWebserviceUtil {
         DTWEIDUReq.ITEM item = new DTWEIDUReq.ITEM();
         item.setMATNR(param.getMATNR());
         item.setWERKS(param.getWERKS());
-        item.setZBANB(param.getZBANB());
+        item.setZBANB(param.getZBANB().toUpperCase());
         item.setZMODEL(param.getZMODEL());
         item.setZXHBAR(param.getZXHBAR());
 

@@ -156,8 +156,8 @@ public class ZwipqServiceImpl extends BaseServiceImpl<Zwipq> implements IZwipqSe
     }
 
     @Override
-    public List<Zwipq> selectForqj(String line_id, String sfflg) {
-        return zwipqMapper.selectForqj(line_id, sfflg);
+    public List<Zwipq> selectForqj(String line_id, String sfflg,String matnr) {
+        return zwipqMapper.selectForqj(line_id, sfflg, matnr);
     }
 
     @Override

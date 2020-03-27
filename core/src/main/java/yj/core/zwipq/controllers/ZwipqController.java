@@ -332,23 +332,38 @@ public class ZwipqController extends BaseController {
         }
 
         //查询箱号已上线数量
-        //Long xhmenge = Long.valueOf(xhcard.getMenge());
         String menge = xhcard.getMenge();
         if (menge.substring(xhcard.getMenge().length()-2,menge.length()).equals(".0")){
             menge = menge.substring(0,menge.length()-2);
         }
-//        Long xhmenge = Long.parseLong(menge);
-//        List<Zwipq> listzwipq = service.selectByZxhbar(zxhbar);
-//        if (listzwipq != null){
-//            Integer ysx = listzwipq.size();
-//            if ( cursum + ysx > Math.round(xhmenge * 0.05) ){
-//                rs.setSuccess(false);
-//                rs.setMessage("上线数量不能超过箱号正常数量的5%,不允许继续上线！");
-//                return rs;
-//            }
+        Long xhmenge = Long.parseLong(menge);
+        List<Zwipq> listzwipq = service.selectByZxhbar(zxhbar);
+
+        Integer ysx = 0;
+
+        if (listzwipq != null){
+            ysx = listzwipq.size();
+
+        }
+        long up = Math.round(xhmenge * (1 + marc.getOnLineUpCap()) );
+        if ( cursum + ysx > up){
+            rs.setSuccess(false);
+            rs.setMessage("投料数量超出上限，上限比例为"+ marc.getOnLineUpCap() * 100 +"%");
+            return rs;
+        }
+
+//        if ( cursum + ysx < Math.round(xhmenge * (1 - marc.getOnLineDownCap()) ) ){
+//            rs.setSuccess(false);
+//            rs.setMessage("投料数量超出下限，下限比例为"+ marc.getOnLineUpCap() * 100 +"%");
+//            return rs;
 //        }
+        long down = Math.round(xhmenge * ( 1 - marc.getOnLineDownCap()));
+        if ( cursum + ysx < down && isAll.equals("true")){
+                rs.setSuccess(false);
+                rs.setMessage("投料数量超出下限，下限比例为"+ ( marc.getOnLineDownCap() * 100 ) +"%");
+                return rs;
 
-
+        }
 
         //移动类型不为空，需要进行调账
         if (!bwart.equals("") && cynum != 0 && tzflg.equals("1")){
@@ -541,6 +556,8 @@ public class ZwipqController extends BaseController {
         }
         //如果勾选了上线完成标识 更新箱号的上线完成标识
         if (isAll.equals("true")) {
+
+
             xhcard.setZsxwc("X");
             xhcardService.updateZsxwc(xhcard);
 
@@ -758,8 +775,13 @@ public class ZwipqController extends BaseController {
         Cardh cardhjj = cardhService.selectByBarcode(curlzk.getZpgdbar());
         Afko afko = afkoService.selectByAufnr(cardhjj.getAufnr());
         //查询队列中是否包含足够的数量支持取件
+        List<Resb> list = resbService.selectByRsnumForzpjsx(afko.getRsnum());
+        String matnryz = "";
+        if (list != null){
+            matnryz = list.get(0).getMatnr();
+        }
         List<Zwipq> listtmp = new ArrayList<>();
-        listtmp = service.selectForqj(line_id,sfflg);
+        listtmp = service.selectForqj(line_id,sfflg,matnryz);
         if (listtmp.size() == 0) {
             rs.setSuccess(false);
             rs.setMessage("在制队列中没有班标为：" + sfflg + "的毛坯，不允许进行该班标的取件操作！");

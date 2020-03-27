@@ -439,9 +439,9 @@ public class XhcardController
             if (dtweiduReturn.getWEIDUFLG() != null) {
                 if (dtweiduReturn.getWEIDUFLG().equals("1")) {
 
-                    rs.setSuccess(false);
-                    rs.setMessage("该毛坯框，班标：" + cardh.getSfflg() + ",属于围堵批次！不允许上线扫描！");
-                    return rs;
+                    //rs.setSuccess(false);
+                    rs.setMessage("该毛坯框，班标：" + cardh.getSfflg() + ",属于围堵批次！围堵原因："+ dtweiduReturn.getBEIZ() + "请核查！");
+                    //return rs;
                 }
             }
         }
@@ -697,7 +697,7 @@ public class XhcardController
             }
             rs.setRows(rslist);
         }
-        return rs;
+         return rs;
     }
 
     /**
@@ -824,7 +824,7 @@ public class XhcardController
                         if (dtweiduReturn1.getWEIDUFLG().equals("1")) {
                             continue;
                         }else{
-                            ck.setFlag("E");
+                            ck.setFlag("S");
                             ck.setMessage("未按先进先出规则上线，请先上线批次为：" + xhcardlist.get(i).getChargkc() + ",箱号：" + xhcardlist.get(i).getZxhbar() + " 的毛坯框！");
                             return ck;
                         }

@@ -21,7 +21,7 @@ public interface ZwipqMapper extends Mapper<Zwipq> {
     List<Zwipq> selectBylineforjjqj(@Param("line_id") String line_id,@Param("matnr") String matnr);
 
     //查询队列中符合取件的数据
-    List<Zwipq> selectForqj(@Param("line_id") String line_id, @Param("sfflg") String sfflg);
+    List<Zwipq> selectForqj(@Param("line_id") String line_id, @Param("sfflg") String sfflg,@Param("matnr") String matnr);
 
     //更新在制队列取件标识
     int updateForQj(Zwipq zwipq);

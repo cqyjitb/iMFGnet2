@@ -43,6 +43,8 @@
         <result column="ATTR7" property="attr7" jdbcType="VARCHAR"/>
         <result column="ZBTIF" property="zbtif" jdbcType="VARCHAR"/>
         <result column="YZCBARF" property="yzcbarf" jdbcType="VARCHAR"/>
+        <result column="ONLINE_UP_CAP" property="onLineUpCap" jdbcType="DECIMAL"/>
+        <result column="ONLINE_DOWN_CAP" property="onLineDownCap" jdbcType="DECIMAL"/>
     </resultMap>
 
     <select id="queryByFileId" parameterType="java.lang.Long" resultType="java.lang.String">
@@ -120,7 +122,7 @@
             and WERKS = #{werks}
         </where>
     </update>
-    <select id="selectByMatnr" parameterType="java.lang.String" resultType="yj.core.marc.dto.Marc">
+    <select id="selectByMatnr" parameterType="java.lang.String" resultMap="BaseResultMap">
         select * FROM sap_marc
         <where>
             MATNR = #{matnr}
