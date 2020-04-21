@@ -17,6 +17,7 @@
         <intercept-url pattern="/yujiang/login" access="permitAll"/>
         <intercept-url pattern="/yujiang/checkVersion" access="permitAll"/>
         <intercept-url pattern="/dispatch/dispatch.html" access="permitAll"/>
+        <intercept-url pattern="/dispatch/dispatch_bak.html" access="permitAll"/>
         <intercept-url pattern="/dispatch/dispatch_index.html" access="permitAll"/>
         <intercept-url pattern="/dispatch2/dispatch_index.html" access="permitAll"/>
         <intercept-url pattern="/dispatch/dispatch_pd.html" access="permitAll"/>
@@ -31,6 +32,7 @@
         <intercept-url pattern="/sys/userrole/queryByUserName" access="permitAll"/>
         <intercept-url pattern="/confirmation/input/log/writeOff" access="permitAll"/>
         <intercept-url pattern="/confirmation/input/log/insertInputLog" access="permitAll"/>
+        <intercept-url pattern="/confirmation/input/log/insertInputLogZP05" access="permitAll"/>
         <intercept-url pattern="/confirmation/input/log/insertInputLogN" access="permitAll"/>
         <intercept-url pattern="/confirmation/input/log/test" access="permitAll"/>
         <intercept-url pattern="/confirmation/input/log/insertInputLogNWX" access="permitAll"/>
@@ -61,6 +63,7 @@
         <intercept-url pattern="/common/**" access="permitAll" />
         <intercept-url pattern="/sys/**" access="permitAll" />
         <intercept-url pattern="/intergration/**" access="permitAll" />
+        <intercept-url pattern="/ztbc0002/querytpbar" access="permitAll" />
         <intercept-url pattern="/**" access="hasRole('ROLE_USER')" />
 
 

@@ -3,18 +3,7 @@ package yj.core.xhcard.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.service.impl.BaseServiceImpl;
-
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
-
-import com.sun.corba.se.spi.ior.IdentifiableFactory;
-import groovy.json.internal.Dates;
-import org.apache.ibatis.session.RowBounds;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
-import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.ContextLoaderListener;
@@ -31,6 +20,11 @@ import yj.core.xhcard.service.IXhcardService;
 import yj.core.ztbc0018.dto.Ztbc0018;
 import yj.core.ztbc0018.mapper.Ztbc0018Mapper;
 import yj.core.zwipq.mapper.ZwipqMapper;
+
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
 @Service
 @Transactional
@@ -374,5 +368,10 @@ public class XhcardServiceImpl
             }
         }
         return list;
+    }
+
+    @Override
+    public Xhcard selectByBarcodeAndAufnr(Xhcard xhcard) {
+        return xhcardMapper.selectByBarcodeAndAufnr(xhcard);
     }
 }

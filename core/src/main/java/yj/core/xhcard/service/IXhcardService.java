@@ -3,11 +3,11 @@ package yj.core.xhcard.service;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.core.ProxySelf;
 import com.hand.hap.system.service.IBaseService;
-import java.util.List;
-
 import yj.core.webservice_queryXhcard.dto.QueryXhcardReturnResult;
 import yj.core.webservice_xhcard.dto.XhcardReturnResult;
 import yj.core.xhcard.dto.Xhcard;
+
+import java.util.List;
 
 public  interface IXhcardService
         extends IBaseService<Xhcard>, ProxySelf<IXhcardService>
@@ -23,6 +23,8 @@ public  interface IXhcardService
      Xhcard selectByXhAndAufnr(String zxhbar);
 
      Xhcard selectByBacode(String zxhbar);
+
+     Xhcard selectByBarcodeAndAufnr(Xhcard xhcard);
 
      QueryXhcardReturnResult selectByBacodeFromSap(String zxhbar,String matnr,String lgort,String qtype);
 

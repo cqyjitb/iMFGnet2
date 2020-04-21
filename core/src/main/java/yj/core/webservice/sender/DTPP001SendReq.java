@@ -9,14 +9,14 @@ import java.util.List;
 
 /**
  * 报工接收数据结构
- * 
+ *
  * <p>
  * Java class for DT_PP001_Send_Req complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="DT_PP001_Send_Req">
  *   &lt;complexContent>
@@ -43,6 +43,24 @@ import java.util.List;
  *                   &lt;element name="RSNUM" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="RSPOS" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                   &lt;element name="REVERSE" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="USERNAME" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ATTR1" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ATTR2" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ATTR3" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ATTR4" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ATTR5" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ATTR6" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ATTR7" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ATTR8" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ATTR9" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ATTR10" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ATTR11" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ATTR12" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ATTR13" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ATTR14" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ATTR15" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="ZTPBAR" type="{http://www.w3.org/2001/XMLSchema}string"/>
+ *                   &lt;element name="UUID" type="{http://www.w3.org/2001/XMLSchema}string"/>
  *                 &lt;/sequence>
  *               &lt;/restriction>
  *             &lt;/complexContent>
@@ -53,42 +71,42 @@ import java.util.List;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "DT_PP001_Send_Req", propOrder = { "item" })
 public class DTPP001SendReq {
 
 	@XmlElement(name = "ITEM", required = true)
-	protected List<ITEM> item;
+	protected List<DTPP001SendReq.ITEM> item;
 
 	/**
 	 * Gets the value of the item property.
-	 * 
+	 *
 	 * <p>
 	 * This accessor method returns a reference to the live list, not a
 	 * snapshot. Therefore any modification you make to the returned list will
 	 * be present inside the JAXB object. This is why there is not a
 	 * <CODE>set</CODE> method for the item property.
-	 * 
+	 *
 	 * <p>
 	 * For example, to add a new item, do as follows:
-	 * 
+	 *
 	 * <pre>
 	 * getITEM().add(newItem);
 	 * </pre>
-	 * 
-	 * 
+	 *
+	 *
 	 * <p>
 	 * Objects of the following type(s) are allowed in the list
-	 * {@link ITEM }
-	 * 
-	 * 
+	 * {@link DTPP001SendReq.ITEM }
+	 *
+	 *
 	 */
-	public List<ITEM> getITEM() {
+	public List<DTPP001SendReq.ITEM> getITEM() {
 		if (item == null) {
-			item = new ArrayList<ITEM>();
+			item = new ArrayList<DTPP001SendReq.ITEM>();
 		}
 		return this.item;
 	}
@@ -96,11 +114,11 @@ public class DTPP001SendReq {
 	/**
 	 * <p>
 	 * Java class for anonymous complex type.
-	 * 
+	 *
 	 * <p>
 	 * The following schema fragment specifies the expected content contained
 	 * within this class.
-	 * 
+	 *
 	 * <pre>
 	 * &lt;complexType>
 	 *   &lt;complexContent>
@@ -122,18 +140,39 @@ public class DTPP001SendReq {
 	 *         &lt;element name="RSNUM" type="{http://www.w3.org/2001/XMLSchema}string"/>
 	 *         &lt;element name="RSPOS" type="{http://www.w3.org/2001/XMLSchema}string"/>
 	 *         &lt;element name="REVERSE" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="USERNAME" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="ATTR1" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="ATTR2" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="ATTR3" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="ATTR4" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="ATTR5" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="ATTR6" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="ATTR7" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="ATTR8" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="ATTR9" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="ATTR10" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="ATTR11" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="ATTR12" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="ATTR13" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="ATTR14" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="ATTR15" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="ZTPBAR" type="{http://www.w3.org/2001/XMLSchema}string"/>
+	 *         &lt;element name="UUID" type="{http://www.w3.org/2001/XMLSchema}string"/>
 	 *       &lt;/sequence>
 	 *     &lt;/restriction>
 	 *   &lt;/complexContent>
 	 * &lt;/complexType>
 	 * </pre>
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@XmlType(name = "", propOrder = { "pwerk", "aufnr", "vornr", "budat",
 			"gmnga", "xmnga", "rmnga", "zscbc", "zscx", "zmnum", "datum",
-			"zpgdbar", "zpgdbh", "rsnum", "rspos", "reverse", "attr1", "attr2", "attr3", "attr4", "attr5", "attr6", "attr7", "userName" })
+			"zpgdbar", "zpgdbh", "rsnum", "rspos", "reverse", "username",
+			"attr1", "attr2", "attr3", "attr4", "attr5", "attr6", "attr7",
+			"attr8", "attr9", "attr10", "attr11", "attr12", "attr13", "attr14",
+			"attr15", "ztpbar", "uuid" })
 	public static class ITEM {
 
 		@XmlElement(name = "PWERK", required = true)
@@ -168,28 +207,48 @@ public class DTPP001SendReq {
 		protected String rspos;
 		@XmlElement(name = "REVERSE", required = true)
 		protected String reverse;
-		@XmlElement(name="ATTR1", required=true)
+		@XmlElement(name = "USERNAME", required = true)
+		protected String username;
+		@XmlElement(name = "ATTR1", required = true)
 		protected String attr1;
-		@XmlElement(name="ATTR2", required=true)
+		@XmlElement(name = "ATTR2", required = true)
 		protected String attr2;
-		@XmlElement(name="ATTR3", required=true)
+		@XmlElement(name = "ATTR3", required = true)
 		protected String attr3;
-		@XmlElement(name="ATTR4", required=true)
+		@XmlElement(name = "ATTR4", required = true)
 		protected String attr4;
-		@XmlElement(name="ATTR5", required=true)
+		@XmlElement(name = "ATTR5", required = true)
 		protected String attr5;
-		@XmlElement(name="ATTR6", required=true)
+		@XmlElement(name = "ATTR6", required = true)
 		protected String attr6;
-		@XmlElement(name="ATTR7", required=true)
+		@XmlElement(name = "ATTR7", required = true)
 		protected String attr7;
-		@XmlElement(name="USERNAME", required=true)
-		protected String userName;
+		@XmlElement(name = "ATTR8", required = true)
+		protected String attr8;
+		@XmlElement(name = "ATTR9", required = true)
+		protected String attr9;
+		@XmlElement(name = "ATTR10", required = true)
+		protected String attr10;
+		@XmlElement(name = "ATTR11", required = true)
+		protected String attr11;
+		@XmlElement(name = "ATTR12", required = true)
+		protected String attr12;
+		@XmlElement(name = "ATTR13", required = true)
+		protected String attr13;
+		@XmlElement(name = "ATTR14", required = true)
+		protected String attr14;
+		@XmlElement(name = "ATTR15", required = true)
+		protected String attr15;
+		@XmlElement(name = "ZTPBAR", required = true)
+		protected String ztpbar;
+		@XmlElement(name = "UUID", required = true)
+		protected String uuid;
 
 		/**
 		 * Gets the value of the pwerk property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getPWERK() {
 			return pwerk;
@@ -197,10 +256,10 @@ public class DTPP001SendReq {
 
 		/**
 		 * Sets the value of the pwerk property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setPWERK(String value) {
 			this.pwerk = value;
@@ -208,9 +267,9 @@ public class DTPP001SendReq {
 
 		/**
 		 * Gets the value of the aufnr property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getAUFNR() {
 			return aufnr;
@@ -218,10 +277,10 @@ public class DTPP001SendReq {
 
 		/**
 		 * Sets the value of the aufnr property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setAUFNR(String value) {
 			this.aufnr = value;
@@ -229,9 +288,9 @@ public class DTPP001SendReq {
 
 		/**
 		 * Gets the value of the vornr property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getVORNR() {
 			return vornr;
@@ -239,10 +298,10 @@ public class DTPP001SendReq {
 
 		/**
 		 * Sets the value of the vornr property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setVORNR(String value) {
 			this.vornr = value;
@@ -250,9 +309,9 @@ public class DTPP001SendReq {
 
 		/**
 		 * Gets the value of the budat property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getBUDAT() {
 			return budat;
@@ -260,10 +319,10 @@ public class DTPP001SendReq {
 
 		/**
 		 * Sets the value of the budat property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setBUDAT(String value) {
 			this.budat = value;
@@ -271,9 +330,9 @@ public class DTPP001SendReq {
 
 		/**
 		 * Gets the value of the gmnga property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getGMNGA() {
 			return gmnga;
@@ -281,10 +340,10 @@ public class DTPP001SendReq {
 
 		/**
 		 * Sets the value of the gmnga property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setGMNGA(String value) {
 			this.gmnga = value;
@@ -292,9 +351,9 @@ public class DTPP001SendReq {
 
 		/**
 		 * Gets the value of the xmnga property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getXMNGA() {
 			return xmnga;
@@ -302,10 +361,10 @@ public class DTPP001SendReq {
 
 		/**
 		 * Sets the value of the xmnga property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setXMNGA(String value) {
 			this.xmnga = value;
@@ -313,9 +372,9 @@ public class DTPP001SendReq {
 
 		/**
 		 * Gets the value of the rmnga property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getRMNGA() {
 			return rmnga;
@@ -323,10 +382,10 @@ public class DTPP001SendReq {
 
 		/**
 		 * Sets the value of the rmnga property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setRMNGA(String value) {
 			this.rmnga = value;
@@ -334,9 +393,9 @@ public class DTPP001SendReq {
 
 		/**
 		 * Gets the value of the zscbc property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getZSCBC() {
 			return zscbc;
@@ -344,10 +403,10 @@ public class DTPP001SendReq {
 
 		/**
 		 * Sets the value of the zscbc property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setZSCBC(String value) {
 			this.zscbc = value;
@@ -355,9 +414,9 @@ public class DTPP001SendReq {
 
 		/**
 		 * Gets the value of the zscx property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getZSCX() {
 			return zscx;
@@ -365,10 +424,10 @@ public class DTPP001SendReq {
 
 		/**
 		 * Sets the value of the zscx property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setZSCX(String value) {
 			this.zscx = value;
@@ -376,9 +435,9 @@ public class DTPP001SendReq {
 
 		/**
 		 * Gets the value of the zmnum property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getZMNUM() {
 			return zmnum;
@@ -386,10 +445,10 @@ public class DTPP001SendReq {
 
 		/**
 		 * Sets the value of the zmnum property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setZMNUM(String value) {
 			this.zmnum = value;
@@ -397,9 +456,9 @@ public class DTPP001SendReq {
 
 		/**
 		 * Gets the value of the datum property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getDATUM() {
 			return datum;
@@ -407,10 +466,10 @@ public class DTPP001SendReq {
 
 		/**
 		 * Sets the value of the datum property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setDATUM(String value) {
 			this.datum = value;
@@ -418,9 +477,9 @@ public class DTPP001SendReq {
 
 		/**
 		 * Gets the value of the zpgdbar property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getZPGDBAR() {
 			return zpgdbar;
@@ -428,10 +487,10 @@ public class DTPP001SendReq {
 
 		/**
 		 * Sets the value of the zpgdbar property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setZPGDBAR(String value) {
 			this.zpgdbar = value;
@@ -439,9 +498,9 @@ public class DTPP001SendReq {
 
 		/**
 		 * Gets the value of the zpgdbh property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getZPGDBH() {
 			return zpgdbh;
@@ -449,10 +508,10 @@ public class DTPP001SendReq {
 
 		/**
 		 * Sets the value of the zpgdbh property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setZPGDBH(String value) {
 			this.zpgdbh = value;
@@ -460,9 +519,9 @@ public class DTPP001SendReq {
 
 		/**
 		 * Gets the value of the rsnum property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getRSNUM() {
 			return rsnum;
@@ -470,10 +529,10 @@ public class DTPP001SendReq {
 
 		/**
 		 * Sets the value of the rsnum property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setRSNUM(String value) {
 			this.rsnum = value;
@@ -481,9 +540,9 @@ public class DTPP001SendReq {
 
 		/**
 		 * Gets the value of the rspos property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getRSPOS() {
 			return rspos;
@@ -491,10 +550,10 @@ public class DTPP001SendReq {
 
 		/**
 		 * Sets the value of the rspos property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setRSPOS(String value) {
 			this.rspos = value;
@@ -502,9 +561,9 @@ public class DTPP001SendReq {
 
 		/**
 		 * Gets the value of the reverse property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getREVERSE() {
 			return reverse;
@@ -512,93 +571,391 @@ public class DTPP001SendReq {
 
 		/**
 		 * Sets the value of the reverse property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setREVERSE(String value) {
 			this.reverse = value;
 		}
 
-		public String getAttr1()
-		{
-			return this.attr1;
+		/**
+		 * Gets the value of the username property.
+		 *
+		 * @return possible object is {@link String }
+		 *
+		 */
+		public String getUSERNAME() {
+			return username;
 		}
 
-		public String getAttr2()
-		{
-			return this.attr2;
+		/**
+		 * Sets the value of the username property.
+		 *
+		 * @param value
+		 *            allowed object is {@link String }
+		 *
+		 */
+		public void setUSERNAME(String value) {
+			this.username = value;
 		}
 
-		public String getAttr3()
-		{
-			return this.attr3;
+		/**
+		 * Gets the value of the attr1 property.
+		 *
+		 * @return possible object is {@link String }
+		 *
+		 */
+		public String getATTR1() {
+			return attr1;
 		}
 
-		public String getAttr4()
-		{
-			return this.attr4;
+		/**
+		 * Sets the value of the attr1 property.
+		 *
+		 * @param value
+		 *            allowed object is {@link String }
+		 *
+		 */
+		public void setATTR1(String value) {
+			this.attr1 = value;
 		}
 
-		public String getAttr5()
-		{
-			return this.attr5;
+		/**
+		 * Gets the value of the attr2 property.
+		 *
+		 * @return possible object is {@link String }
+		 *
+		 */
+		public String getATTR2() {
+			return attr2;
 		}
 
-		public String getAttr6()
-		{
-			return this.attr6;
+		/**
+		 * Sets the value of the attr2 property.
+		 *
+		 * @param value
+		 *            allowed object is {@link String }
+		 *
+		 */
+		public void setATTR2(String value) {
+			this.attr2 = value;
 		}
 
-		public String getAttr7()
-		{
-			return this.attr7;
+		/**
+		 * Gets the value of the attr3 property.
+		 *
+		 * @return possible object is {@link String }
+		 *
+		 */
+		public String getATTR3() {
+			return attr3;
 		}
 
-		public String getUserName()
-		{
-			return this.userName;
+		/**
+		 * Sets the value of the attr3 property.
+		 *
+		 * @param value
+		 *            allowed object is {@link String }
+		 *
+		 */
+		public void setATTR3(String value) {
+			this.attr3 = value;
 		}
 
-		public void setAttr1(String attr1)
-		{
-			this.attr1 = attr1;
+		/**
+		 * Gets the value of the attr4 property.
+		 *
+		 * @return possible object is {@link String }
+		 *
+		 */
+		public String getATTR4() {
+			return attr4;
 		}
 
-		public void setAttr2(String attr2)
-		{
-			this.attr2 = attr2;
+		/**
+		 * Sets the value of the attr4 property.
+		 *
+		 * @param value
+		 *            allowed object is {@link String }
+		 *
+		 */
+		public void setATTR4(String value) {
+			this.attr4 = value;
 		}
 
-		public void setAttr3(String attr3)
-		{
-			this.attr3 = attr3;
+		/**
+		 * Gets the value of the attr5 property.
+		 *
+		 * @return possible object is {@link String }
+		 *
+		 */
+		public String getATTR5() {
+			return attr5;
 		}
 
-		public void setAttr4(String attr4)
-		{
-			this.attr4 = attr4;
+		/**
+		 * Sets the value of the attr5 property.
+		 *
+		 * @param value
+		 *            allowed object is {@link String }
+		 *
+		 */
+		public void setATTR5(String value) {
+			this.attr5 = value;
 		}
 
-		public void setAttr5(String attr5)
-		{
-			this.attr5 = attr5;
+		/**
+		 * Gets the value of the attr6 property.
+		 *
+		 * @return possible object is {@link String }
+		 *
+		 */
+		public String getATTR6() {
+			return attr6;
 		}
 
-		public void setAttr6(String attr6)
-		{
-			this.attr6 = attr6;
+		/**
+		 * Sets the value of the attr6 property.
+		 *
+		 * @param value
+		 *            allowed object is {@link String }
+		 *
+		 */
+		public void setATTR6(String value) {
+			this.attr6 = value;
 		}
 
-		public void setAttr7(String attr7)
-		{
-			this.attr7 = attr7;
+		/**
+		 * Gets the value of the attr7 property.
+		 *
+		 * @return possible object is {@link String }
+		 *
+		 */
+		public String getATTR7() {
+			return attr7;
 		}
 
-		public void setUserName(String userName)
-		{
-			this.userName = userName;
+		/**
+		 * Sets the value of the attr7 property.
+		 *
+		 * @param value
+		 *            allowed object is {@link String }
+		 *
+		 */
+		public void setATTR7(String value) {
+			this.attr7 = value;
+		}
+
+		/**
+		 * Gets the value of the attr8 property.
+		 *
+		 * @return possible object is {@link String }
+		 *
+		 */
+		public String getATTR8() {
+			return attr8;
+		}
+
+		/**
+		 * Sets the value of the attr8 property.
+		 *
+		 * @param value
+		 *            allowed object is {@link String }
+		 *
+		 */
+		public void setATTR8(String value) {
+			this.attr8 = value;
+		}
+
+		/**
+		 * Gets the value of the attr9 property.
+		 *
+		 * @return possible object is {@link String }
+		 *
+		 */
+		public String getATTR9() {
+			return attr9;
+		}
+
+		/**
+		 * Sets the value of the attr9 property.
+		 *
+		 * @param value
+		 *            allowed object is {@link String }
+		 *
+		 */
+		public void setATTR9(String value) {
+			this.attr9 = value;
+		}
+
+		/**
+		 * Gets the value of the attr10 property.
+		 *
+		 * @return possible object is {@link String }
+		 *
+		 */
+		public String getATTR10() {
+			return attr10;
+		}
+
+		/**
+		 * Sets the value of the attr10 property.
+		 *
+		 * @param value
+		 *            allowed object is {@link String }
+		 *
+		 */
+		public void setATTR10(String value) {
+			this.attr10 = value;
+		}
+
+		/**
+		 * Gets the value of the attr11 property.
+		 *
+		 * @return possible object is {@link String }
+		 *
+		 */
+		public String getATTR11() {
+			return attr11;
+		}
+
+		/**
+		 * Sets the value of the attr11 property.
+		 *
+		 * @param value
+		 *            allowed object is {@link String }
+		 *
+		 */
+		public void setATTR11(String value) {
+			this.attr11 = value;
+		}
+
+		/**
+		 * Gets the value of the attr12 property.
+		 *
+		 * @return possible object is {@link String }
+		 *
+		 */
+		public String getATTR12() {
+			return attr12;
+		}
+
+		/**
+		 * Sets the value of the attr12 property.
+		 *
+		 * @param value
+		 *            allowed object is {@link String }
+		 *
+		 */
+		public void setATTR12(String value) {
+			this.attr12 = value;
+		}
+
+		/**
+		 * Gets the value of the attr13 property.
+		 *
+		 * @return possible object is {@link String }
+		 *
+		 */
+		public String getATTR13() {
+			return attr13;
+		}
+
+		/**
+		 * Sets the value of the attr13 property.
+		 *
+		 * @param value
+		 *            allowed object is {@link String }
+		 *
+		 */
+		public void setATTR13(String value) {
+			this.attr13 = value;
+		}
+
+		/**
+		 * Gets the value of the attr14 property.
+		 *
+		 * @return possible object is {@link String }
+		 *
+		 */
+		public String getATTR14() {
+			return attr14;
+		}
+
+		/**
+		 * Sets the value of the attr14 property.
+		 *
+		 * @param value
+		 *            allowed object is {@link String }
+		 *
+		 */
+		public void setATTR14(String value) {
+			this.attr14 = value;
+		}
+
+		/**
+		 * Gets the value of the attr15 property.
+		 *
+		 * @return possible object is {@link String }
+		 *
+		 */
+		public String getATTR15() {
+			return attr15;
+		}
+
+		/**
+		 * Sets the value of the attr15 property.
+		 *
+		 * @param value
+		 *            allowed object is {@link String }
+		 *
+		 */
+		public void setATTR15(String value) {
+			this.attr15 = value;
+		}
+
+		/**
+		 * Gets the value of the ztpbar property.
+		 *
+		 * @return possible object is {@link String }
+		 *
+		 */
+		public String getZTPBAR() {
+			return ztpbar;
+		}
+
+		/**
+		 * Sets the value of the ztpbar property.
+		 *
+		 * @param value
+		 *            allowed object is {@link String }
+		 *
+		 */
+		public void setZTPBAR(String value) {
+			this.ztpbar = value;
+		}
+
+		/**
+		 * Gets the value of the uuid property.
+		 *
+		 * @return possible object is {@link String }
+		 *
+		 */
+		public String getUUID() {
+			return uuid;
+		}
+
+		/**
+		 * Sets the value of the uuid property.
+		 *
+		 * @param value
+		 *            allowed object is {@link String }
+		 *
+		 */
+		public void setUUID(String value) {
+			this.uuid = value;
 		}
 
 	}

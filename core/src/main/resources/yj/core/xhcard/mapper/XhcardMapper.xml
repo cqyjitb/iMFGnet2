@@ -198,6 +198,14 @@
         </where>
     </select>
 
+    <select id="selectByBarcodeAndAufnr" parameterType="yj.core.xhcard.dto.Xhcard" resultMap="BaseResultMap">
+        select * from sap_xhcard
+        <where>
+            ZXHBAR = #{zxhbar}
+            and AUFNR = #{aufnr}
+        </where>
+    </select>
+
     <select id="selectByMatnrAndLgortSort" parameterType="java.lang.String" resultMap="BaseResultMap">
         SELECT * FROM  sap_xhcard
         <where>

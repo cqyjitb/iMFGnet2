@@ -28,6 +28,9 @@ import yj.core.webservice_newbg.components.ConfirmationWebserviceUtilNew;
 import yj.core.webservice_newbg.dto.DTBAOGONGParameters;
 import yj.core.webservice_newbg.dto.DTBAOGONGParametersitem;
 import yj.core.webservice_newbg.dto.DTBAOGONGReturnResult;
+import yj.core.webservice_queryXhcard.components.QueryXhcardWebserviceUtil;
+import yj.core.webservice_readztpbar.components.ReadZtpbarWebserviceUtil;
+import yj.core.xhcard.mapper.XhcardMapper;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -63,6 +66,12 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
     @Autowired
     private CardhlockMapper cardhlockMapper;
 
+    @Autowired
+    private ReadZtpbarWebserviceUtil readZtpbarWebserviceUtil;
+    @Autowired
+    private XhcardMapper xhcardMapper;
+    @Autowired
+    private QueryXhcardWebserviceUtil queryXhcardWebserviceUtil;
     DateFormat df = new SimpleDateFormat("yyyyMMdd");
 
     //报工冲销页面数据查询
@@ -133,6 +142,8 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
 
     @Override
     public DTPP001ReturnResult inputDispatch(InputLog input) {
+
+
         DTPP001ReturnResult returnResult = new DTPP001ReturnResult();
         returnResult.setMESSAGE("报工失败！当前工序报工数量大于前工序合格数量。");
         returnResult.setMSGTY("E");
@@ -417,64 +428,76 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
     }
 
     public DTPP001ReturnResult returnResultAndUpdateConfirmation(InputLog inputLog) {
-
-        DTPP001Parameters param = new DTPP001Parameters();
-        param.setPWERK(inputLog.getPlant());
-        param.setAUFNR(inputLog.getOrderno());
-        param.setVORNR(inputLog.getOperation());
-        param.setBUDAT(inputLog.getPostingDate().replaceAll("-", ""));
-        param.setGMNGA(inputLog.getYeild().toString());
-        param.setXMNGA(inputLog.getWorkScrap().toString());
-        param.setRMNGA(inputLog.getRowScrap().toString());
-        param.setZSCBC(inputLog.getClassgrp() == null ? "" : inputLog.getClassgrp());
-        param.setZSCX(inputLog.getLine() == null ? "" : inputLog.getLine());
-        param.setZMNUM(inputLog.getModelNo() == null ? "" : inputLog.getModelNo());
-        param.setDATUM(this.df.format(new Date()));
-        param.setZPGDBAR(inputLog.getDispatch());
-        param.setZPGDBH(inputLog.getDispatchLogicID() == null ? "" : inputLog.getDispatchLogicID());
-        param.setRSNUM("");
-        param.setRSPOS("");
-        param.setREVERSE("");
-        param.setATTR1(inputLog.getAttr1());
-        param.setATTR2(inputLog.getAttr2());
-        param.setATTR3(inputLog.getAttr3());
-        param.setATTR4(inputLog.getAttr4());
-        param.setATTR5(inputLog.getAttr5());
-        param.setATTR6(inputLog.getAttr6().replaceAll("-", ""));
-        param.setATTR7(inputLog.getAttr7());
-        param.setUSERNAME(inputLog.getUserName());
-
+            UUID uuid = java.util.UUID.randomUUID();
+            String uuidstr = uuid.toString().replaceAll("-", "");
+            DTPP001Parameters param = new DTPP001Parameters();
+            param.setPWERK(inputLog.getPlant());
+            param.setAUFNR(inputLog.getOrderno());
+            param.setVORNR(inputLog.getOperation());
+            param.setBUDAT(inputLog.getPostingDate().replaceAll("-", ""));
+            param.setGMNGA(inputLog.getYeild().toString());
+            param.setXMNGA(inputLog.getWorkScrap().toString());
+            param.setRMNGA(inputLog.getRowScrap().toString());
+            param.setZSCBC(inputLog.getClassgrp() == null ? "" : inputLog.getClassgrp());
+            param.setZSCX(inputLog.getLine() == null ? "" : inputLog.getLine());
+            param.setZMNUM(inputLog.getModelNo() == null ? "" : inputLog.getModelNo());
+            param.setDATUM(this.df.format(new Date()));
+            param.setZPGDBAR(inputLog.getDispatch());
+            param.setZPGDBH(inputLog.getDispatchLogicID() == null ? "" : inputLog.getDispatchLogicID());
+            param.setRSNUM("");
+            param.setRSPOS("");
+            param.setREVERSE("");
+            param.setATTR1(inputLog.getAttr1() == null ? "" : inputLog.getAttr1());
+            param.setATTR2(inputLog.getAttr2() == null ? "" : inputLog.getAttr2());
+            param.setATTR3(inputLog.getAttr3() == null ? "" : inputLog.getAttr3());
+            param.setATTR4(inputLog.getAttr4() == null ? "" : inputLog.getAttr4());
+            param.setATTR5(inputLog.getAttr5() == null ? "" : inputLog.getAttr5());
+            param.setATTR6(inputLog.getAttr6().replaceAll("-", ""));
+            param.setATTR7(inputLog.getAttr7() == null ? "" : inputLog.getAttr7());
+            param.setATTR8(inputLog.getAttr8() == null ? "" : inputLog.getAttr8());
+            param.setATTR9(inputLog.getAttr9() == null ? "" : inputLog.getAttr9());
+            param.setATTR10(inputLog.getAttr10() == null ? "" : inputLog.getAttr10());
+            param.setATTR11(inputLog.getAttr11() == null ? "" : inputLog.getAttr11());
+            param.setATTR12(inputLog.getAttr12() == null ? "" : inputLog.getAttr12());
+            param.setATTR13(inputLog.getAttr13() == null ? "" : inputLog.getAttr13());
+            param.setATTR14(inputLog.getAttr14() == null ? "" : inputLog.getAttr14());
+            param.setATTR15(inputLog.getAttr15() == null ? "" : inputLog.getAttr15());
+            param.setZTPBAR(inputLog.getZtpbar());
+            param.setUSERNAME(inputLog.getUserName());
+            param.setZTPBAR(inputLog.getZtpbar());
+            param.setUUID(uuidstr);
         /*//test furong.tang
         DTPP001ReturnResult returnResult = new DTPP001ReturnResult();*/
 
-        DTPP001ReturnResult returnResult = webserviceUtil.receiveConfirmation(param);
+            DTPP001ReturnResult returnResult = webserviceUtil.receiveConfirmation(param);
 
-        Log log = new Log();
-        Result result = new Result();
-        inputLog.setMaterial(returnResult.getMATNR());
-        inputLog.setMatDesc(returnResult.getMAKTX());
-        inputLogMapper.insertInputLog(inputLog);
-        Long id = inputLogMapper.selectNextId();
-        result.setPlant(inputLog.getPlant());
-        result.setInputId(id);
-        result.setIsReversed("0");
-        result.setMaterial(inputLog.getMaterial());
-        result.setMatDesc(inputLog.getMatDesc());
-        result.setCreated_by(inputLog.getCreated_by());
-        result.setConfirmationNo(returnResult.getRSNUM());
-        result.setConfirmationPos(returnResult.getRSPOS());
-        result.setFevor(returnResult.getFEVOR());
-        result.setFevorTxt(returnResult.getTXT());
-        result.setOperationDesc(returnResult.getLTXA1());
-        log.setMsgty(returnResult.getMSGTY());
-        log.setMsgtx(returnResult.getMESSAGE());
-        log.setTranType("0");
-        log.setRefId(id);
-        log.setCreated_by(inputLog.getCreated_by());
-        resultMapper.insertResult(result);
-        logMapper.insertLog(log);
-        return returnResult;
-
+            Log log = new Log();
+            Result result = new Result();
+            inputLog.setMaterial(returnResult.getMATNR());
+            inputLog.setMatDesc(returnResult.getMAKTX());
+            inputLog.setBguuid(uuidstr);
+            inputLog.setAttr15(inputLog.getZtpbar());
+            inputLogMapper.insertInputLog(inputLog);
+            Long id = inputLogMapper.selectNextId();
+            result.setPlant(inputLog.getPlant());
+            result.setInputId(id);
+            result.setIsReversed("0");
+            result.setMaterial(inputLog.getMaterial());
+            result.setMatDesc(inputLog.getMatDesc());
+            result.setCreated_by(inputLog.getCreated_by());
+            result.setConfirmationNo(returnResult.getRSNUM());
+            result.setConfirmationPos(returnResult.getRSPOS());
+            result.setFevor(returnResult.getFEVOR());
+            result.setFevorTxt(returnResult.getTXT());
+            result.setOperationDesc(returnResult.getLTXA1());
+            log.setMsgty(returnResult.getMSGTY());
+            log.setMsgtx(returnResult.getMESSAGE());
+            log.setTranType("0");
+            log.setRefId(id);
+            log.setCreated_by(inputLog.getCreated_by());
+            resultMapper.insertResult(result);
+            logMapper.insertLog(log);
+            return returnResult;
     }
 
     public DTBAOGONGReturnResult returnResultAndUpdateConfirmationNew(InputLog inputLog) {
@@ -683,7 +706,8 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
     }
 
     public DTPP001ReturnResult returnWriteOffResultAndUpdateConfirmation(InputLog inputLog) {
-
+        UUID uuid = java.util.UUID.randomUUID();
+        String uuidstr = uuid.toString().replaceAll("-", "");
         DTPP001Parameters param = new DTPP001Parameters();
         param.setPWERK(inputLog.getPlant());
         param.setAUFNR(inputLog.getOrderno());
@@ -708,7 +732,17 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         param.setATTR4(inputLog.getAttr4());
         param.setATTR5(inputLog.getAttr5());
         param.setATTR6(inputLog.getAttr6().replaceAll("-", ""));
-        param.setATTR7(inputLog.getAttr7());
+        param.setATTR7(inputLog.getAttr7() == null ? "" : inputLog.getAttr7());
+        param.setATTR8(inputLog.getAttr8() == null ? "" : inputLog.getAttr8());
+        param.setATTR9(inputLog.getAttr9() == null ? "" : inputLog.getAttr9());
+        param.setATTR10(inputLog.getAttr10() == null ? "" : inputLog.getAttr10());
+        param.setATTR11(inputLog.getAttr11() == null ? "" : inputLog.getAttr11());
+        param.setATTR12(inputLog.getAttr12() == null ? "" : inputLog.getAttr12());
+        param.setATTR13(inputLog.getAttr13() == null ? "" : inputLog.getAttr13());
+        param.setATTR14(inputLog.getAttr14() == null ? "" : inputLog.getAttr14());
+        param.setATTR15(inputLog.getAttr15() == null ? "" : inputLog.getAttr15());
+        param.setZTPBAR("");
+        param.setUUID(uuidstr);
         param.setUSERNAME(inputLog.getUserName());
 
         DTPP001ReturnResult returnResult = webserviceUtil.receiveConfirmation(param);

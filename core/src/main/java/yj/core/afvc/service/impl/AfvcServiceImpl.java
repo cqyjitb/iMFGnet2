@@ -1,13 +1,14 @@
 package yj.core.afvc.service.impl;
 
 import com.hand.hap.system.service.impl.BaseServiceImpl;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import yj.core.afvc.dto.Afvc;
 import yj.core.afvc.mapper.AfvcMapper;
 import yj.core.afvc.service.IAfvcService;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -56,5 +57,10 @@ public class AfvcServiceImpl
     @Override
     public List<Afvc> selectByArbpl(String arbpl) {
         return afvcMapper.selectByArbpl(arbpl);
+    }
+
+    @Override
+    public Afvc selectByAufplAndVornr(String aufpl, String vornr) {
+        return afvcMapper.selectByAufplAndVornr(aufpl,vornr);
     }
 }

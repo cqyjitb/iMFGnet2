@@ -9,14 +9,14 @@ import java.util.List;
 
 /**
  * 生产订单报工返回
- * 
+ *
  * <p>
  * Java class for DT_PP001_Send_Res complex type.
- * 
+ *
  * <p>
  * The following schema fragment specifies the expected content contained within
  * this class.
- * 
+ *
  * <pre>
  * &lt;complexType name="DT_PP001_Send_Res">
  *   &lt;complexContent>
@@ -93,65 +93,65 @@ import java.util.List;
  *   &lt;/complexContent>
  * &lt;/complexType>
  * </pre>
- * 
- * 
+ *
+ *
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "DT_PP001_Send_Res", propOrder = { "_return", "detail" })
 public class DTPP001SendRes {
 
 	@XmlElement(name = "RETURN", required = true)
-	protected RETURN _return;
+	protected DTPP001SendRes.RETURN _return;
 	@XmlElement(name = "DETAIL")
-	protected List<DETAIL> detail;
+	protected List<DTPP001SendRes.DETAIL> detail;
 
 	/**
 	 * Gets the value of the return property.
-	 * 
-	 * @return possible object is {@link RETURN }
-	 * 
+	 *
+	 * @return possible object is {@link DTPP001SendRes.RETURN }
+	 *
 	 */
-	public RETURN getRETURN() {
+	public DTPP001SendRes.RETURN getRETURN() {
 		return _return;
 	}
 
 	/**
 	 * Sets the value of the return property.
-	 * 
+	 *
 	 * @param value
-	 *            allowed object is {@link RETURN }
-	 * 
+	 *            allowed object is {@link DTPP001SendRes.RETURN }
+	 *
 	 */
-	public void setRETURN(RETURN value) {
+	public void setRETURN(DTPP001SendRes.RETURN value) {
 		this._return = value;
 	}
 
 	/**
 	 * Gets the value of the detail property.
-	 * 
+	 *
 	 * <p>
 	 * This accessor method returns a reference to the live list, not a
 	 * snapshot. Therefore any modification you make to the returned list will
 	 * be present inside the JAXB object. This is why there is not a
 	 * <CODE>set</CODE> method for the detail property.
-	 * 
+	 *
 	 * <p>
 	 * For example, to add a new item, do as follows:
-	 * 
+	 *
 	 * <pre>
 	 * getDETAIL().add(newItem);
 	 * </pre>
-	 * 
-	 * 
+	 *
+	 *
 	 * <p>
 	 * Objects of the following type(s) are allowed in the list
-	 * {@link DETAIL }
-	 * 
-	 * 
+	 * {@link DTPP001SendRes.DETAIL }
+	 *
+	 *
 	 */
-	public List<DETAIL> getDETAIL() {
+	public List<DTPP001SendRes.DETAIL> getDETAIL() {
 		if (detail == null) {
-			detail = new ArrayList<DETAIL>();
+			detail = new ArrayList<DTPP001SendRes.DETAIL>();
 		}
 		return this.detail;
 	}
@@ -159,11 +159,11 @@ public class DTPP001SendRes {
 	/**
 	 * <p>
 	 * Java class for anonymous complex type.
-	 * 
+	 *
 	 * <p>
 	 * The following schema fragment specifies the expected content contained
 	 * within this class.
-	 * 
+	 *
 	 * <pre>
 	 * &lt;complexType>
 	 *   &lt;complexContent>
@@ -212,8 +212,8 @@ public class DTPP001SendRes {
 	 *   &lt;/complexContent>
 	 * &lt;/complexType>
 	 * </pre>
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@XmlType(name = "", propOrder = { "aufnr", "matnr", "rsnum", "rspos",
@@ -234,9 +234,9 @@ public class DTPP001SendRes {
 		@XmlElement(name = "TXT", required = true)
 		protected String txt;
 		@XmlElement(name = "MAKT")
-		protected List<MAKT> makt;
+		protected List<DTPP001SendRes.DETAIL.MAKT> makt;
 		@XmlElement(name = "AFVC")
-		protected List<AFVC> afvc;
+		protected List<DTPP001SendRes.DETAIL.AFVC> afvc;
 		@XmlElement(name = "MSGTY", required = true)
 		protected String msgty;
 		@XmlElement(name = "MSGNO", required = true)
@@ -256,9 +256,9 @@ public class DTPP001SendRes {
 
 		/**
 		 * Gets the value of the aufnr property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getAUFNR() {
 			return aufnr;
@@ -266,10 +266,10 @@ public class DTPP001SendRes {
 
 		/**
 		 * Sets the value of the aufnr property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setAUFNR(String value) {
 			this.aufnr = value;
@@ -277,9 +277,9 @@ public class DTPP001SendRes {
 
 		/**
 		 * Gets the value of the matnr property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getMATNR() {
 			return matnr;
@@ -287,10 +287,10 @@ public class DTPP001SendRes {
 
 		/**
 		 * Sets the value of the matnr property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setMATNR(String value) {
 			this.matnr = value;
@@ -298,9 +298,9 @@ public class DTPP001SendRes {
 
 		/**
 		 * Gets the value of the rsnum property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getRSNUM() {
 			return rsnum;
@@ -308,10 +308,10 @@ public class DTPP001SendRes {
 
 		/**
 		 * Sets the value of the rsnum property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setRSNUM(String value) {
 			this.rsnum = value;
@@ -319,9 +319,9 @@ public class DTPP001SendRes {
 
 		/**
 		 * Gets the value of the rspos property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getRSPOS() {
 			return rspos;
@@ -329,10 +329,10 @@ public class DTPP001SendRes {
 
 		/**
 		 * Sets the value of the rspos property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setRSPOS(String value) {
 			this.rspos = value;
@@ -340,9 +340,9 @@ public class DTPP001SendRes {
 
 		/**
 		 * Gets the value of the fevor property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getFEVOR() {
 			return fevor;
@@ -350,10 +350,10 @@ public class DTPP001SendRes {
 
 		/**
 		 * Sets the value of the fevor property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setFEVOR(String value) {
 			this.fevor = value;
@@ -361,9 +361,9 @@ public class DTPP001SendRes {
 
 		/**
 		 * Gets the value of the txt property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getTXT() {
 			return txt;
@@ -371,10 +371,10 @@ public class DTPP001SendRes {
 
 		/**
 		 * Sets the value of the txt property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setTXT(String value) {
 			this.txt = value;
@@ -382,69 +382,69 @@ public class DTPP001SendRes {
 
 		/**
 		 * Gets the value of the makt property.
-		 * 
+		 *
 		 * <p>
 		 * This accessor method returns a reference to the live list, not a
 		 * snapshot. Therefore any modification you make to the returned list
 		 * will be present inside the JAXB object. This is why there is not a
 		 * <CODE>set</CODE> method for the makt property.
-		 * 
+		 *
 		 * <p>
 		 * For example, to add a new item, do as follows:
-		 * 
+		 *
 		 * <pre>
 		 * getMAKT().add(newItem);
 		 * </pre>
-		 * 
-		 * 
+		 *
+		 *
 		 * <p>
 		 * Objects of the following type(s) are allowed in the list
-		 * {@link MAKT }
-		 * 
-		 * 
+		 * {@link DTPP001SendRes.DETAIL.MAKT }
+		 *
+		 *
 		 */
-		public List<MAKT> getMAKT() {
+		public List<DTPP001SendRes.DETAIL.MAKT> getMAKT() {
 			if (makt == null) {
-				makt = new ArrayList<MAKT>();
+				makt = new ArrayList<DTPP001SendRes.DETAIL.MAKT>();
 			}
 			return this.makt;
 		}
 
 		/**
 		 * Gets the value of the afvc property.
-		 * 
+		 *
 		 * <p>
 		 * This accessor method returns a reference to the live list, not a
 		 * snapshot. Therefore any modification you make to the returned list
 		 * will be present inside the JAXB object. This is why there is not a
 		 * <CODE>set</CODE> method for the afvc property.
-		 * 
+		 *
 		 * <p>
 		 * For example, to add a new item, do as follows:
-		 * 
+		 *
 		 * <pre>
 		 * getAFVC().add(newItem);
 		 * </pre>
-		 * 
-		 * 
+		 *
+		 *
 		 * <p>
 		 * Objects of the following type(s) are allowed in the list
-		 * {@link AFVC }
-		 * 
-		 * 
+		 * {@link DTPP001SendRes.DETAIL.AFVC }
+		 *
+		 *
 		 */
-		public List<AFVC> getAFVC() {
+		public List<DTPP001SendRes.DETAIL.AFVC> getAFVC() {
 			if (afvc == null) {
-				afvc = new ArrayList<AFVC>();
+				afvc = new ArrayList<DTPP001SendRes.DETAIL.AFVC>();
 			}
 			return this.afvc;
 		}
 
 		/**
 		 * Gets the value of the msgty property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getMSGTY() {
 			return msgty;
@@ -452,10 +452,10 @@ public class DTPP001SendRes {
 
 		/**
 		 * Sets the value of the msgty property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setMSGTY(String value) {
 			this.msgty = value;
@@ -463,9 +463,9 @@ public class DTPP001SendRes {
 
 		/**
 		 * Gets the value of the msgno property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getMSGNO() {
 			return msgno;
@@ -473,10 +473,10 @@ public class DTPP001SendRes {
 
 		/**
 		 * Sets the value of the msgno property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setMSGNO(String value) {
 			this.msgno = value;
@@ -484,9 +484,9 @@ public class DTPP001SendRes {
 
 		/**
 		 * Gets the value of the msgid property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getMSGID() {
 			return msgid;
@@ -494,10 +494,10 @@ public class DTPP001SendRes {
 
 		/**
 		 * Sets the value of the msgid property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setMSGID(String value) {
 			this.msgid = value;
@@ -505,9 +505,9 @@ public class DTPP001SendRes {
 
 		/**
 		 * Gets the value of the msgv1 property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getMSGV1() {
 			return msgv1;
@@ -515,10 +515,10 @@ public class DTPP001SendRes {
 
 		/**
 		 * Sets the value of the msgv1 property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setMSGV1(String value) {
 			this.msgv1 = value;
@@ -526,9 +526,9 @@ public class DTPP001SendRes {
 
 		/**
 		 * Gets the value of the msgv2 property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getMSGV2() {
 			return msgv2;
@@ -536,10 +536,10 @@ public class DTPP001SendRes {
 
 		/**
 		 * Sets the value of the msgv2 property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setMSGV2(String value) {
 			this.msgv2 = value;
@@ -547,9 +547,9 @@ public class DTPP001SendRes {
 
 		/**
 		 * Gets the value of the msgv3 property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getMSGV3() {
 			return msgv3;
@@ -557,10 +557,10 @@ public class DTPP001SendRes {
 
 		/**
 		 * Sets the value of the msgv3 property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setMSGV3(String value) {
 			this.msgv3 = value;
@@ -568,9 +568,9 @@ public class DTPP001SendRes {
 
 		/**
 		 * Gets the value of the msgv4 property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getMSGV4() {
 			return msgv4;
@@ -578,10 +578,10 @@ public class DTPP001SendRes {
 
 		/**
 		 * Sets the value of the msgv4 property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setMSGV4(String value) {
 			this.msgv4 = value;
@@ -589,9 +589,9 @@ public class DTPP001SendRes {
 
 		/**
 		 * Gets the value of the message property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getMESSAGE() {
 			return message;
@@ -599,10 +599,10 @@ public class DTPP001SendRes {
 
 		/**
 		 * Sets the value of the message property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setMESSAGE(String value) {
 			this.message = value;
@@ -611,11 +611,11 @@ public class DTPP001SendRes {
 		/**
 		 * <p>
 		 * Java class for anonymous complex type.
-		 * 
+		 *
 		 * <p>
 		 * The following schema fragment specifies the expected content
 		 * contained within this class.
-		 * 
+		 *
 		 * <pre>
 		 * &lt;complexType>
 		 *   &lt;complexContent>
@@ -628,8 +628,8 @@ public class DTPP001SendRes {
 		 *   &lt;/complexContent>
 		 * &lt;/complexType>
 		 * </pre>
-		 * 
-		 * 
+		 *
+		 *
 		 */
 		@XmlAccessorType(XmlAccessType.FIELD)
 		@XmlType(name = "", propOrder = { "vornr", "ltxa1" })
@@ -642,9 +642,9 @@ public class DTPP001SendRes {
 
 			/**
 			 * Gets the value of the vornr property.
-			 * 
+			 *
 			 * @return possible object is {@link String }
-			 * 
+			 *
 			 */
 			public String getVORNR() {
 				return vornr;
@@ -652,10 +652,10 @@ public class DTPP001SendRes {
 
 			/**
 			 * Sets the value of the vornr property.
-			 * 
+			 *
 			 * @param value
 			 *            allowed object is {@link String }
-			 * 
+			 *
 			 */
 			public void setVORNR(String value) {
 				this.vornr = value;
@@ -663,9 +663,9 @@ public class DTPP001SendRes {
 
 			/**
 			 * Gets the value of the ltxa1 property.
-			 * 
+			 *
 			 * @return possible object is {@link String }
-			 * 
+			 *
 			 */
 			public String getLTXA1() {
 				return ltxa1;
@@ -673,10 +673,10 @@ public class DTPP001SendRes {
 
 			/**
 			 * Sets the value of the ltxa1 property.
-			 * 
+			 *
 			 * @param value
 			 *            allowed object is {@link String }
-			 * 
+			 *
 			 */
 			public void setLTXA1(String value) {
 				this.ltxa1 = value;
@@ -687,11 +687,11 @@ public class DTPP001SendRes {
 		/**
 		 * <p>
 		 * Java class for anonymous complex type.
-		 * 
+		 *
 		 * <p>
 		 * The following schema fragment specifies the expected content
 		 * contained within this class.
-		 * 
+		 *
 		 * <pre>
 		 * &lt;complexType>
 		 *   &lt;complexContent>
@@ -704,8 +704,8 @@ public class DTPP001SendRes {
 		 *   &lt;/complexContent>
 		 * &lt;/complexType>
 		 * </pre>
-		 * 
-		 * 
+		 *
+		 *
 		 */
 		@XmlAccessorType(XmlAccessType.FIELD)
 		@XmlType(name = "", propOrder = { "spras", "maktx" })
@@ -718,9 +718,9 @@ public class DTPP001SendRes {
 
 			/**
 			 * Gets the value of the spras property.
-			 * 
+			 *
 			 * @return possible object is {@link String }
-			 * 
+			 *
 			 */
 			public String getSPRAS() {
 				return spras;
@@ -728,10 +728,10 @@ public class DTPP001SendRes {
 
 			/**
 			 * Sets the value of the spras property.
-			 * 
+			 *
 			 * @param value
 			 *            allowed object is {@link String }
-			 * 
+			 *
 			 */
 			public void setSPRAS(String value) {
 				this.spras = value;
@@ -739,9 +739,9 @@ public class DTPP001SendRes {
 
 			/**
 			 * Gets the value of the maktx property.
-			 * 
+			 *
 			 * @return possible object is {@link String }
-			 * 
+			 *
 			 */
 			public String getMAKTX() {
 				return maktx;
@@ -749,10 +749,10 @@ public class DTPP001SendRes {
 
 			/**
 			 * Sets the value of the maktx property.
-			 * 
+			 *
 			 * @param value
 			 *            allowed object is {@link String }
-			 * 
+			 *
 			 */
 			public void setMAKTX(String value) {
 				this.maktx = value;
@@ -765,11 +765,11 @@ public class DTPP001SendRes {
 	/**
 	 * <p>
 	 * Java class for anonymous complex type.
-	 * 
+	 *
 	 * <p>
 	 * The following schema fragment specifies the expected content contained
 	 * within this class.
-	 * 
+	 *
 	 * <pre>
 	 * &lt;complexType>
 	 *   &lt;complexContent>
@@ -788,8 +788,8 @@ public class DTPP001SendRes {
 	 *   &lt;/complexContent>
 	 * &lt;/complexType>
 	 * </pre>
-	 * 
-	 * 
+	 *
+	 *
 	 */
 	@XmlAccessorType(XmlAccessType.FIELD)
 	@XmlType(name = "", propOrder = { "msgty", "msgno", "msdid", "msgv1",
@@ -815,9 +815,9 @@ public class DTPP001SendRes {
 
 		/**
 		 * Gets the value of the msgty property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getMSGTY() {
 			return msgty;
@@ -825,10 +825,10 @@ public class DTPP001SendRes {
 
 		/**
 		 * Sets the value of the msgty property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setMSGTY(String value) {
 			this.msgty = value;
@@ -836,9 +836,9 @@ public class DTPP001SendRes {
 
 		/**
 		 * Gets the value of the msgno property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getMSGNO() {
 			return msgno;
@@ -846,10 +846,10 @@ public class DTPP001SendRes {
 
 		/**
 		 * Sets the value of the msgno property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setMSGNO(String value) {
 			this.msgno = value;
@@ -857,9 +857,9 @@ public class DTPP001SendRes {
 
 		/**
 		 * Gets the value of the msdid property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getMSDID() {
 			return msdid;
@@ -867,10 +867,10 @@ public class DTPP001SendRes {
 
 		/**
 		 * Sets the value of the msdid property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setMSDID(String value) {
 			this.msdid = value;
@@ -878,9 +878,9 @@ public class DTPP001SendRes {
 
 		/**
 		 * Gets the value of the msgv1 property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getMSGV1() {
 			return msgv1;
@@ -888,10 +888,10 @@ public class DTPP001SendRes {
 
 		/**
 		 * Sets the value of the msgv1 property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setMSGV1(String value) {
 			this.msgv1 = value;
@@ -899,9 +899,9 @@ public class DTPP001SendRes {
 
 		/**
 		 * Gets the value of the msgv2 property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getMSGV2() {
 			return msgv2;
@@ -909,10 +909,10 @@ public class DTPP001SendRes {
 
 		/**
 		 * Sets the value of the msgv2 property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setMSGV2(String value) {
 			this.msgv2 = value;
@@ -920,9 +920,9 @@ public class DTPP001SendRes {
 
 		/**
 		 * Gets the value of the msgv3 property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getMSGV3() {
 			return msgv3;
@@ -930,10 +930,10 @@ public class DTPP001SendRes {
 
 		/**
 		 * Sets the value of the msgv3 property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setMSGV3(String value) {
 			this.msgv3 = value;
@@ -941,9 +941,9 @@ public class DTPP001SendRes {
 
 		/**
 		 * Gets the value of the msgv4 property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getMSGV4() {
 			return msgv4;
@@ -951,10 +951,10 @@ public class DTPP001SendRes {
 
 		/**
 		 * Sets the value of the msgv4 property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setMSGV4(String value) {
 			this.msgv4 = value;
@@ -962,9 +962,9 @@ public class DTPP001SendRes {
 
 		/**
 		 * Gets the value of the message property.
-		 * 
+		 *
 		 * @return possible object is {@link String }
-		 * 
+		 *
 		 */
 		public String getMESSAGE() {
 			return message;
@@ -972,10 +972,10 @@ public class DTPP001SendRes {
 
 		/**
 		 * Sets the value of the message property.
-		 * 
+		 *
 		 * @param value
 		 *            allowed object is {@link String }
-		 * 
+		 *
 		 */
 		public void setMESSAGE(String value) {
 			this.message = value;

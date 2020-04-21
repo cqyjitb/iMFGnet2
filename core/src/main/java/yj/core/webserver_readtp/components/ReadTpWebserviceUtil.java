@@ -1,5 +1,6 @@
 package yj.core.webserver_readtp.components;
 
+import org.springframework.stereotype.Component;
 import yj.core.util.WebServerHelp;
 import yj.core.webserver_readtp.receiver.DTREADTPRes;
 import yj.core.webserver_readtp.sender.DTREADTPReq;
@@ -13,6 +14,7 @@ import java.util.Map;
 /**
  * Created by 917110140 on 2018/10/6.
  */
+@Component
 public class ReadTpWebserviceUtil {
 
     private static final QName SERVICE_NAME = new QName("http://www.cq-yj.com/HAP/READTP/Sender", "SI_READTP_Sender_SynService");

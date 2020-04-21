@@ -94,4 +94,12 @@
                 </where>
 
     </select>
+
+    <select id="selectByAufplAndVornr" parameterType="yj.core.afvc.dto.Afvc" resultMap="BaseResultMap">
+        SELECT * from sap_afvc
+        <where>
+            aufpl = #{aufpl}
+            and vornr = #{vornr}
+        </where>
+    </select>
 </mapper>

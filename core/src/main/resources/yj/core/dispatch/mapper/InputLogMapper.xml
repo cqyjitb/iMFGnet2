@@ -323,6 +323,7 @@
             AND r.is_reversed ='0'
             AND l.tran_type = '0'
             AND l.msgty = 'S'
+            and il.attr15 = ''
             <if test="plant != null">
                  and il.plant = #{plant}
             </if>

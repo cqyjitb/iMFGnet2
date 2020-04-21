@@ -15,7 +15,7 @@ var rowScrap;           //料废数量
 var classgrp;           //班组
 var line;               //生产线
 var modelNo;            //模号
-
+var ztpbar;             //托盘码
 var plant;              //工厂
 var dispatch;           //报工单号
 var dispatchLogicID;    //报工单流水号
@@ -175,7 +175,7 @@ function delDispatchValues() {
 /*    document.getElementById("classgrp").value = "";*/
     document.getElementById("line").value = "";
     document.getElementById("modelNo").value = "";
-
+    document.getElementById("ztpbar").value = "";
     document.getElementById("attr1").value = "";
     document.getElementById("attr2").value = "";
     document.getElementById("attr3").value = "";

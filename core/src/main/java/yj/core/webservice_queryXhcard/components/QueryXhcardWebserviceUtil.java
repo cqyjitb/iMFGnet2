@@ -1,12 +1,6 @@
 package yj.core.webservice_queryXhcard.components;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.context.ContextLoaderListener;
-import yj.core.cardh.dto.Cardh;
-import yj.core.cardh.mapper.CardhMapper;
-import yj.core.cardh.service.ICardhService;
-import yj.core.cardh.service.impl.CardhServiceImpl;
 import yj.core.util.WebServerHelp;
 import yj.core.webservice_queryXhcard.dto.QueryXhcardParam;
 import yj.core.webservice_queryXhcard.dto.QueryXhcardReturnResult;
@@ -15,7 +9,6 @@ import yj.core.webservice_queryXhcard.sender.DTQUERYXHCARDReq;
 import yj.core.webservice_queryXhcard.sender.SIQUERYXHCARDSenderSyn;
 import yj.core.webservice_queryXhcard.sender.SIQUERYXHCARDSenderSynService;
 import yj.core.xhcard.dto.Xhcard;
-import yj.core.xhcard.mapper.XhcardMapper;
 import yj.core.xhcard.service.IXhcardService;
 import yj.core.xhcard.service.impl.XhcardServiceImpl;
 
@@ -64,7 +57,7 @@ public class QueryXhcardWebserviceUtil {
         if (dtqueryxhcardRes.getXHCARD().size() > 0){
             for (int i = 0; i < dtqueryxhcardRes.getXHCARD().size(); i++) {
                 Xhcard xhcard = new Xhcard();
-                xhcard.setAufnr(dtqueryxhcardRes.getXHCARD().get(i).getAUFNR());
+                xhcard.setAufnr(dtqueryxhcardRes.getXHCARD().get(i).getAUFNR().trim());
                 xhcard.setZxhnum(dtqueryxhcardRes.getXHCARD().get(i).getZXHNUM());
                 xhcard.setMatnr(dtqueryxhcardRes.getXHCARD().get(i).getMATNR());
                 xhcard.setWerks(dtqueryxhcardRes.getXHCARD().get(i).getWERKS());

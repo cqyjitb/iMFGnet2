@@ -698,7 +698,8 @@
                                     LODOP.ADD_PRINT_LINE("80.27mm", "1.51mm", "80.01mm", "199.5mm", 0, 1);
                                     if (auart.substring(0, 1) == "Y") {
                                         LODOP.ADD_PRINT_TEXTA("modno", "62.44mm", "131.5mm", "9.26mm", "5.29mm", "模号");
-                                        LODOP.ADD_PRINT_BARCODEA("ZXHBAR_CODE", "238.65mm", "83.61mm", "59mm", "39.42mm", "QRCode", zxhbar);
+                                        //LODOP.ADD_PRINT_BARCODEA("ZXHBAR_CODE", "238.65mm", "83.61mm", "59mm", "39.42mm", "QRCode", zxhbar);
+                                        LODOP.ADD_PRINT_BARCODEA("ZXHBAR_CODE", "233.65mm", "83.61mm", "59mm", "39.42mm", "QRCode", zxhbar);
                                     } else {
                                         LODOP.ADD_PRINT_TEXTA("modno", "62.44mm", "131.5mm", "9.26mm", "5.29mm", "班组");
                                         LODOP.ADD_PRINT_TEXT("61.91mm", "153.99mm", "41.28mm", "5.29mm", shift);
@@ -770,12 +771,18 @@
 
                                     LODOP.ADD_PRINT_TEXT("62.44mm", "2.91mm", "16.93mm", "5.29mm", "铝液批次");
                                     LODOP.ADD_PRINT_TEXT("62.18mm", "61.65mm", "17.2mm", "5.29mm", "熔炼炉号");
-                                    LODOP.ADD_PRINT_TEXTA("zxhbar", "274.9mm", "81.23mm", "42.86mm", "5.29mm", zxhbar);
+                                    LODOP.ADD_PRINT_TEXTA("zxhbar", "269.9mm", "81.23mm", "42.86mm", "5.29mm", zxhbar);
+
 
 
                                     var num = 0;
                                     var cardt = rows[1];
+                                    var zp06flag = "";
                                     for (var j = 0; j < cardt.length; j++) {
+                                        if(cardt[j].steus == "ZP06")
+                                        {
+                                            zp06flag = "X";
+                                        }
                                         if (j == 0) {
                                             LODOP.ADD_PRINT_TEXTA("row1_vonor", "95.28mm", "5mm", "12.7mm", "5.29mm", cardt[j].vornr);
                                             LODOP.ADD_PRINT_TEXT("95.01mm", "21.99mm", "15.88mm", "12.44mm", cardt[j].ltxa1+"("+cardt[j].steus +")");
@@ -807,6 +814,11 @@
                                             LODOP.ADD_PRINT_TEXT("213.68mm", "21.99mm", "15.88mm", "13.23mm", cardt[j].ltxa1+"("+cardt[j].steus +")");
                                             //LODOP.ADD_PRINT_TEXT("211.93mm","141.02mm","37.31mm","15.08mm",cardt[j].ktext);
                                         }
+                                    }
+
+                                    if (zp06flag == "X"){
+                                        LODOP.ADD_PRINT_TEXTA("zxhbar", "273.9mm", "81.23mm", "42.86mm", "10mm", "注：此订单末工序报工自动入车间成品库！");
+                                        LODOP.SET_PRINT_STYLEA(0, "Bold", 1);
                                     }
                                 }
                             }

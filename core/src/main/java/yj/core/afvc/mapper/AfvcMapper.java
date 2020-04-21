@@ -1,10 +1,10 @@
 package yj.core.afvc.mapper;
 
 import com.hand.hap.mybatis.common.Mapper;
-import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 import yj.core.afvc.dto.Afvc;
+
+import java.util.List;
 
 public  interface AfvcMapper
         extends Mapper<Afvc>
@@ -39,6 +39,8 @@ public  interface AfvcMapper
      * @return
      */
     Afvc selectByZpgdbar(String zpgdbar);
+
+    Afvc selectByAufplAndVornr(@Param("aufpl") String aufpl,@Param("vornr") String vornr);
 
 
 }

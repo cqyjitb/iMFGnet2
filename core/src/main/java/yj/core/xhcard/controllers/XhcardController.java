@@ -464,7 +464,7 @@ public class XhcardController
 
         if (cardh.getStatus().equals("HOLD")) {
             rs.setSuccess(false);
-            rs.setMessage("当前毛坯框对应的机加流转卡已被冻结，不允许进行机加上线操作！");
+            rs.setMessage("当前毛坯框对应的压铸流转卡已被冻结，不允许进行机加上线操作！");
             return rs;
         }
 

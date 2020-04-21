@@ -2,8 +2,9 @@ package yj.core.afvc.service;
 
 import com.hand.hap.core.ProxySelf;
 import com.hand.hap.system.service.IBaseService;
-import java.util.List;
 import yj.core.afvc.dto.Afvc;
+
+import java.util.List;
 
 public abstract interface IAfvcService
         extends IBaseService<Afvc>, ProxySelf<IAfvcService>
@@ -38,4 +39,6 @@ public abstract interface IAfvcService
       * @return
       */
      List<Afvc> selectByArbpl(String arbpl);
+
+     Afvc selectByAufplAndVornr(String aufpl,String vornr);
 }

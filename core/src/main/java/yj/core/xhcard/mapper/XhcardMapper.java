@@ -1,10 +1,10 @@
 package yj.core.xhcard.mapper;
 
 import com.hand.hap.mybatis.common.Mapper;
-import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 import yj.core.xhcard.dto.Xhcard;
+
+import java.util.List;
 
 public  interface XhcardMapper
         extends Mapper<Xhcard>
@@ -18,6 +18,8 @@ public  interface XhcardMapper
      Xhcard selectByXhAndAufnr(String zxhbar);
 
      Xhcard selectByBacode(String zxhbar);
+
+     Xhcard selectByBarcodeAndAufnr(Xhcard xhcard);
 
      int updateXhcard(Xhcard paramXhcard);
 

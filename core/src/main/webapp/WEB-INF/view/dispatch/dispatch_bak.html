@@ -177,57 +177,11 @@
                 }
             }
 
-
-
             //获取合格数量页面元素
             var cYeild = document.getElementById("yeild");
             cYeild.onkeydown = function () {
                 if (event.keyCode == 13) {
                     cWorkScrap.focus();
-                }
-            }
-
-
-            var Oztpbar = document.getElementById("ztpbar");
-
-            cRowScrap.onchange = function () {
-                document.getElementById("ztpbar").value = "";
-                Oztpbar.setAttribute("disable","true");
-            }
-
-            Oztpbar.onkeydown = function () {
-                if(event.keyCode == 13){
-                    document.getElementById("workScrap").value = "";
-                    document.getElementById("rowScrap").value = "";
-                    var strTpbar = document.getElementById("ztpbar").value;
-                    if (strTpbar.length > 0){
-                        //调用接口访问查询托盘
-                        orderno = document.getElementById("orderno").value;
-                        $.ajax({
-                            url: "${base.contextPath}/ztbc0002/querytpbar",
-                            type: "get",
-                            data: {"ztpbar":strTpbar,
-                                    "orderno":orderno },
-                            contentType: "application/json; charset=utf-8",
-                            success: function (data) {
-                                if (data.success){
-                                    if(data.rows.length > 0){
-                                        var menge = JSON.stringify(data.rows[0].menge);
-                                        document.getElementById("yeild").value = menge;
-                                        document.getElementById("workScrap").style.backgroundColor = "#C9C9C9";
-                                        $("#workScrap").attr("readOnly",true);
-                                        document.getElementById("rowScrap").style.backgroundColor = "#C9C9C9";
-                                        $("#rowScrap").attr("readOnly",true);
-                                        ztpbar = document.getElementById("ztpbar").value;
-                                    }else{
-                                        openMsgDialogZtp("错误","托盘码不存在！","M");
-                                    }
-                                }else{
-                                    openMsgDialogZtp("错误","托盘码不存在！","M");
-                                }
-                            }
-                        });
-                    }
                 }
             }
 
@@ -249,18 +203,6 @@
                             contentType: "application/json; charset=utf-8",
                             success: function (data) {
                                 if (data.success) {
-                                    document.getElementById("workScrap").style.backgroundColor = "#FFFFFF";
-                                    $("#workScrap").attr("readOnly",false);
-                                    document.getElementById("rowScrap").style.backgroundColor = "#FFFFFF";
-                                    $("#rowScrap").attr("readOnly",false);
-                                    document.getElementById("ztpbar").value = "";
-                                    ztpbar = "";
-                                    document.getElementById("workScrap").value = "";
-                                    workScrap = "";
-                                    document.getElementById("rowScrap").value = "";
-                                    rowScrap = "";
-                                    document.getElementById("yeild").value = "";
-                                    yeild = "";
                                     if(data.rows.length > 0)
                                     {
                                         newZPGDBAR = JSON.stringify(data.rows[0].newZpgdbar);
@@ -329,8 +271,7 @@
                         document.getElementById("orderno").value = "";
                         document.getElementById("operation").value = "";
                     }
-                    //cYeild.focus();
-                    ztpbar.focus();
+                    cYeild.focus();
                 }
             }
 
@@ -633,11 +574,6 @@
             var cCleanData = document.getElementById("cleanData");
             cCleanData.onclick=function () {
 
-                document.getElementById("workScrap").style.backgroundColor = "#ffffff";
-                $("#workScrap").attr("readOnly",false);
-                document.getElementById("rowScrap").style.backgroundColor = "#ffffff";
-                $("#rowScrap").attr("readOnly",false);
-
                 //清空页面元素
                 delDispatchValues();
 
@@ -653,32 +589,6 @@
         }
     </script>
     <script>
-        //消息界面
-        //msgTitle:标题
-        //msgText：内容
-        //msgType：类型(M:提示消息;C:过账确认消息)
-        function openMsgDialogZtp(msgTitle,msgText,msgType){
-            appendMask2Dialog();
-            disableClassgrp();
-            var dMsg=document.getElementById("msg-area");
-            dMsg.style.display="";
-            document.getElementById("msg1").innerHTML="&nbsp"+msgTitle;
-            document.getElementById("msg2").innerHTML=msgText;
-            var bCan=document.getElementById("cancer");
-            var bCls=document.getElementById("close");
-            if (msgType == "M"){
-                bCan.style.display = "none";
-                bCls.onclick=function () {
-                    document.getElementById("ztpbar").value = "";
-                    ableClassgrp();
-                    removeMask2Dialog();
-                    dMsg.style.display="none";
-                    var ztpbar = document.getElementById("ztpbar");
-                    ztpbar.focus()
-                }
-            }
-        }
-
         //消息界面
         //msgTitle:标题
         //msgText：内容
@@ -747,7 +657,7 @@
                     setDispatchData();
                     appendMask2Dialog();
                     $.ajax({
-                        url:"${base.contextPath}/confirmation/input/log/insertInputLogZP05",
+                        url:"${base.contextPath}/confirmation/input/log/insertInputLog",
                         type:"get",
                         //data : dispatchDataMin,
                         data : {"a":barcode,
@@ -764,7 +674,6 @@
                             "l":dispatch,
                             "m":dispatchLogicID,
                             "n":createdBy,
-                            "z":ztpbar,
                             "1":attr1,
                             "2":attr2,
                             "3":attr3,
@@ -890,11 +799,9 @@
         <!--<label class="dcp-label">过账日期</label><select id="postingDate" class="cls-attr-input"><option></option><option></option></select><br>-->
         <label class="dcp-label">订单号</label><input id="orderno"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>
         <label class="dcp-label">工序</label><input id="operation"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>
-        <label class="dcp-label">托盘号</label><input id="ztpbar"  class="cls-attr-input" type="text"><br>
-        <label class="dcp-label">合格数量</label><input id="yeild" style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>
+        <label class="dcp-label">合格数量</label><input id="yeild" class="cls-attr-input" type="number"><br>
         <label class="dcp-label">工废数量</label><input id="workScrap" class="cls-attr-input" type="number"><br>
         <label class="dcp-label">料废数量</label><input id="rowScrap" class="cls-attr-input" type="number"><br>
-
         <!--<label class="dcp-label">班组</label><input id="classgrp" class="cls-attr-input" type="text"><br>-->
         <label class="dcp-label">班组</label><select id="classgrp" class="cls-attr-input">
             <option value="A">A</option>
@@ -903,7 +810,7 @@
         </select><br>
         <label class="dcp-label">生产线</label><input id="line" class="cls-attr-input" type="text"><br>
         <label class="dcp-label">模号</label><input id="modelNo" class="cls-attr-input" type="text"><br>
-
+        <label class="dcp-label">操作人1</label><input id="attr1" class="cls-attr-input" type="text"><br>
     </div>
 
     <div style="width: 220px;height: 30px;margin-top: 2px">
@@ -923,7 +830,6 @@
     </div>
 
     <div style="margin-left: 10px;width: 220px;height: 265px">
-        <label class="dcp-label">操作人1</label><input id="attr1" class="cls-attr-input" type="text"><br>
         <label class="dcp-label">操作人2</label><input id="attr2" class="cls-attr-input" type="text"><br>
         <label class="dcp-label">操作人3</label><input id="attr3" class="cls-attr-input" disabled="true" type="text"><br>
         <label class="dcp-label">操作人4</label><input id="attr4" class="cls-attr-input" disabled="true" type="text"><br>

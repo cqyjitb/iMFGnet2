@@ -40,20 +40,6 @@ public class ConfirmationWebserviceUtil{
 //        reqCtxt.put(javax.xml.ws.BindingProvider.USERNAME_PROPERTY, "HAPUSER");
 //        reqCtxt.put(javax.xml.ws.BindingProvider.PASSWORD_PROPERTY, "Yjsap123@CQ");
         DTPP001SendReq.ITEM item = new DTPP001SendReq.ITEM();
-        /*item.setPWERK("");
-        item.setAUFNR("");
-        item.setVORNR("");
-        item.setBUDAT("");
-        item.setGMNGA("");
-        item.setXMNGA("");
-        item.setRMNGA("");
-        item.setZSCBC("");
-        item.setZSCX("");
-        item.setZMNUM("");
-        item.setDATUM("");
-        item.setZPGDBAR("");
-        item.setZPGDBH("");*/
-
         item.setPWERK(params.getPWERK());
         item.setAUFNR(params.getAUFNR());
         item.setVORNR(params.getVORNR());
@@ -70,29 +56,24 @@ public class ConfirmationWebserviceUtil{
         item.setRSPOS(params.getRSPOS());
         item.setRSNUM(params.getRSNUM());
         item.setREVERSE(params.getREVERSE());
-        item.setAttr1(params.getATTR1());
-        item.setAttr2(params.getATTR2());
-        item.setAttr3(params.getATTR3());
-        item.setAttr4(params.getATTR4());
-        item.setAttr5(params.getATTR5());
-        item.setAttr6(params.getATTR6());
-        item.setAttr7(params.getATTR7());
-        item.setUserName(params.getUSERNAME());
-
-        /*item.setPWERK(inputLog.getPlant());
-        item.setAUFNR(inputLog.getOrderno());
-        item.setVORNR(inputLog.getOperation());
-        item.setBUDAT(inputLog.getPostingDate().replaceAll("-",""));
-        item.setGMNGA(inputLog.getYeild().toString());
-        item.setXMNGA(inputLog.getWorkScrap().toString());
-        item.setRMNGA(inputLog.getRowScrap().toString());
-        item.setZSCBC(inputLog.getClassgrp());
-        item.setZSCX(inputLog.getLine());
-        item.setZMNUM(inputLog.getModelNo());
-        item.setDATUM(df.format(new Date()));
-        item.setZPGDBAR(inputLog.getDispatch());
-        item.setZPGDBH(inputLog.getDispatchLogicID());*/
-
+        item.setATTR1(params.getATTR1());
+        item.setATTR2(params.getATTR2());
+        item.setATTR3(params.getATTR3());
+        item.setATTR4(params.getATTR4());
+        item.setATTR5(params.getATTR5());
+        item.setATTR6(params.getATTR6());
+        item.setATTR7(params.getATTR7());
+        item.setATTR8(params.getATTR8());
+        item.setATTR9(params.getATTR9());
+        item.setATTR10(params.getATTR10());
+        item.setATTR11(params.getATTR11());
+        item.setATTR12(params.getATTR12());
+        item.setATTR13(params.getATTR13());
+        item.setATTR14(params.getATTR14());
+        item.setATTR15(params.getATTR15());
+        item.setZTPBAR(params.getZTPBAR());
+        item.setUSERNAME(params.getUSERNAME());
+        item.setUUID(params.getUUID());
         DTPP001SendReq _siPP001SenderSync_mtPP001SendReq = new DTPP001SendReq();
 
         //传入参数

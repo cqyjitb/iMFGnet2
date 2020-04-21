@@ -39,6 +39,8 @@ import yj.core.webserver_outsrgreceipt.dto.DTOUTSRGRECEIPTReturn;
 import yj.core.webserver_outsrgreceipt.dto.DTOUTSRGRECEIPTitem;
 import yj.core.webservice.dto.DTPP001ReturnResult;
 import yj.core.webservice_newbg.dto.DTBAOGONGReturnResult;
+import yj.core.webservice_queryXhcard.components.QueryXhcardWebserviceUtil;
+import yj.core.webservice_readztpbar.components.ReadZtpbarWebserviceUtil;
 import yj.core.xhcard.dto.Xhcard;
 import yj.core.xhcard.service.IXhcardService;
 
@@ -93,6 +95,10 @@ public class InputLogController extends BaseController {
     private IMarcService marcService;
     @Autowired
     private IOutsrgreceiptheadService outsrgreceiptheadService;
+    @Autowired
+    private ReadZtpbarWebserviceUtil readZtpbarWebserviceUtil;
+    @Autowired
+    private QueryXhcardWebserviceUtil queryXhcardWebserviceUtil;
 
 
     /*
@@ -247,7 +253,6 @@ public class InputLogController extends BaseController {
 
     }
 
-
     @RequestMapping(value = {"/confirmation/input/log/insertInputLog"}, method = {RequestMethod.GET})
     @ResponseBody
     public ResponseData inputDispatch(HttpServletRequest request) {
@@ -289,6 +294,9 @@ public class InputLogController extends BaseController {
         String attr14 = request.getParameter("14");
         String attr15 = request.getParameter("15");
         String userName = request.getParameter("16");
+        String ztpbar = "";
+
+
 //        int length = attr7.length();
 //        if ((length == 7) && (operation != "0030"))
 //        {
@@ -332,11 +340,168 @@ public class InputLogController extends BaseController {
         inputLog.setAttr14(attr14);
         inputLog.setAttr15(attr15);
         inputLog.setUserName(userName);
+        inputLog.setZtpbar(ztpbar);
 
         List<DTPP001ReturnResult> list = new ArrayList<>();
         DTPP001ReturnResult returnResult = service.inputDispatch(inputLog);
         list.add(returnResult);
-        return new ResponseData(list);
+        ResponseData rs = new ResponseData(list);
+        return rs;
+//        return new ResponseData(list);
+    }
+
+    @RequestMapping(value = {"/confirmation/input/log/insertInputLogZP05"}, method = {RequestMethod.GET})
+    @ResponseBody
+    public ResponseData inputDispatchZp05(HttpServletRequest request) {
+        InputLog inputLog = new InputLog();
+        System.out.println(request.getParameter("a"));
+
+        String createdBy1 = "" + request.getSession().getAttribute("userId");
+        System.out.println(createdBy1);
+        inputLog.setCreated_by(createdBy1);
+
+        String barcode = request.getParameter("a");
+//        String postingDate = request.getParameter("b");
+        String orderno = request.getParameter("c");
+        String operation = request.getParameter("d");
+        String ztpbar = request.getParameter("z");
+        String yeild = request.getParameter("e");
+        String workScrap = request.getParameter("f");
+        String rowScrap = request.getParameter("g");
+        String classgrp = request.getParameter("h");
+        String line = request.getParameter("i");
+        String modelNo = request.getParameter("j");
+        String plant = request.getParameter("k");
+        String dispatch = request.getParameter("l");
+        String dispatchLogicID = request.getParameter("m");
+        String createdBy = request.getParameter("n");
+        String attr1 = request.getParameter("1");
+        String attr2 = request.getParameter("2");
+        String attr3 = request.getParameter("3");
+        String attr4 = request.getParameter("4");
+        String attr5 = request.getParameter("5");//老报工绕过重复报工检查
+        attr5 = attr5 + "-X";//压铸重复报工标识
+        String attr6 = request.getParameter("6");
+        String attr7 = request.getParameter("7");
+        String attr8 = request.getParameter("8");
+        String attr9 = request.getParameter("9");
+        String attr10 = request.getParameter("10");
+        String attr11 = request.getParameter("11");
+        String attr12 = request.getParameter("12");
+        String attr13 = request.getParameter("13");
+        String attr14 = request.getParameter("14");
+        String attr15 = request.getParameter("15");
+        String userName = request.getParameter("16");
+
+        if(ztpbar == "" ){
+            inputLog.setBarcode(barcode);
+            inputLog.setOrderno(orderno);
+            inputLog.setDispatch(dispatch);
+            inputLog.setOperation(operation);
+            inputLog.setYeild(Double.parseDouble(yeild));
+            inputLog.setWorkScrap(Double.parseDouble(workScrap));
+            inputLog.setRowScrap(Double.parseDouble(rowScrap));
+            inputLog.setClassgrp(classgrp);
+            inputLog.setLine(line);
+            inputLog.setModelNo(modelNo);
+            inputLog.setPlant(plant);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            inputLog.setPostingDate(sdf.format(new Date()));
+            inputLog.setDispatchLogicID(dispatchLogicID);
+            inputLog.setCreated_by(createdBy);
+            inputLog.setAttr1(attr1);
+            inputLog.setAttr2(attr2);
+            inputLog.setAttr3(attr3);
+            inputLog.setAttr4(attr4);
+            inputLog.setAttr5(attr5);
+            inputLog.setAttr6(attr6);
+            inputLog.setAttr7(attr7);
+            inputLog.setAttr8(attr8);
+            inputLog.setAttr9(attr9);
+            inputLog.setAttr10(attr10);
+            inputLog.setAttr11(attr11);
+            inputLog.setAttr12(attr12);
+            inputLog.setAttr13(attr13);
+            inputLog.setAttr14(attr14);
+            inputLog.setAttr15(attr15);
+            inputLog.setZtpbar(ztpbar);
+            inputLog.setUserName(userName);
+            List<DTPP001ReturnResult> list = new ArrayList<>();
+            DTPP001ReturnResult returnResult = service.inputDispatch(inputLog);
+            list.add(returnResult);
+            return new ResponseData(list);
+        }else{
+                    barcode = request.getParameter("a");
+                    orderno = request.getParameter("c");
+                    operation = request.getParameter("d");
+                    ztpbar = request.getParameter("z");
+                    yeild = request.getParameter("e");
+                    workScrap = "0";
+                    rowScrap = "0";
+                    classgrp = request.getParameter("h");
+                    line = request.getParameter("i");
+                    modelNo = request.getParameter("j");
+                    plant = request.getParameter("k");
+                    dispatch = request.getParameter("l");
+                    dispatchLogicID = request.getParameter("m");
+                    createdBy = request.getParameter("n");
+                    attr1 = request.getParameter("1");
+                    attr2 = request.getParameter("2");
+                    attr3 = request.getParameter("3");
+                    attr4 = request.getParameter("4");
+                    attr5 = request.getParameter("5");//老报工绕过重复报工检查
+                    attr5 = attr5 + "-X";//压铸重复报工标识
+                    attr6 = request.getParameter("6");
+                    attr7 = request.getParameter("7");
+                    attr8 = request.getParameter("8");
+                    attr9 = request.getParameter("9");
+//                    attr10 = request.getParameter("10");
+                    attr10 = "X";
+                    attr11 = request.getParameter("11");
+                    attr12 = request.getParameter("12");
+                    attr13 = request.getParameter("13");
+                    attr14 = request.getParameter("14");
+                    attr15 = request.getParameter("15");
+                    userName = request.getParameter("16");
+                    ztpbar = request.getParameter("z");
+
+                    inputLog.setBarcode(barcode);
+                    inputLog.setOrderno(orderno);
+                    inputLog.setDispatch(dispatch);
+                    inputLog.setOperation(operation);
+                    inputLog.setYeild(Double.parseDouble(yeild));
+                    inputLog.setWorkScrap(Double.parseDouble(workScrap));
+                    inputLog.setRowScrap(Double.parseDouble(rowScrap));
+                    inputLog.setClassgrp(classgrp);
+                    inputLog.setLine(line);
+                    inputLog.setModelNo(modelNo);
+                    inputLog.setPlant(plant);
+                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    inputLog.setPostingDate(sdf.format(new Date()));
+                    inputLog.setDispatchLogicID(dispatchLogicID);
+                    inputLog.setCreated_by(createdBy);
+                    inputLog.setAttr1(attr1);
+                    inputLog.setAttr2(attr2);
+                    inputLog.setAttr3(attr3);
+                    inputLog.setAttr4(attr4);
+                    inputLog.setAttr5(attr5);
+                    inputLog.setAttr6(attr6);
+                    inputLog.setAttr7(attr7);
+                    inputLog.setAttr8(attr8);
+                    inputLog.setAttr9(attr9);
+                    inputLog.setAttr10(attr10);
+                    inputLog.setAttr11(attr11);
+                    inputLog.setAttr12(attr12);
+                    inputLog.setAttr13(attr13);
+                    inputLog.setAttr14(attr14);
+                    inputLog.setAttr15(attr15);
+                    inputLog.setZtpbar(ztpbar);
+                    inputLog.setUserName(userName);
+                    List<DTPP001ReturnResult> list = new ArrayList<>();
+                    DTPP001ReturnResult returnResult = service.inputDispatch(inputLog);
+                    list.add(returnResult);
+                    return new ResponseData(list);
+        }
     }
 
 
@@ -917,6 +1082,7 @@ public class InputLogController extends BaseController {
         String attr8 = request.getParameter("8");
         String attr9 = request.getParameter("9");
         String attr10 = request.getParameter("10");
+        attr10 = "X";
 //        String attr11 = request.getParameter("11");
         String attr11 = "X";//imfgnet 报工识别标识
         String attr12 = request.getParameter("12");
@@ -1173,6 +1339,16 @@ public class InputLogController extends BaseController {
 //                rs.setMessage("外协工序收货/报工只能通过手机APP进行冲销！");
 //                return rs;
 //            }
+            Afko afko = new Afko();
+            afko = afkoService.selectByAufnr(inputLog.getOrderno());
+            Afvc afvc = new Afvc();
+            afvc = afvcService.selectByAufplAndVornr(afko.getAufpl(),inputLog.getOperation());
+            if (afvc.getSteus().equals("ZP06") && !inputLog.getYeild().equals(0d)){
+                ResponseData rs = new ResponseData();
+                rs.setSuccess(false);
+                rs.setMessage("ZP06工序为报工自动入库，不允许冲销报工！");
+                return rs;
+            }
 
             String fstvor = "";
             String lstvor = "";
@@ -1207,9 +1383,9 @@ public class InputLogController extends BaseController {
             }
 
             //排除机加的报工冲销 机加报工冲销只能在装箱系统中操作
-            Afko afko = new Afko();
-            afko = afkoService.selectByAufnr(cardh.getAufnr());
-            if (afko.getAuart().substring(0, 1).equals("Q")) {//机加订单
+            Afko afkojj = new Afko();
+            afkojj = afkoService.selectByAufnr(cardh.getAufnr());
+            if (afkojj.getAuart().substring(0, 1).equals("Q")) {//机加订单
                 returnResult.setMSGTY("E");
                 returnResult.setMESSAGE("机加报工冲销，请到装箱系统冲销！");
                 list.add(returnResult);

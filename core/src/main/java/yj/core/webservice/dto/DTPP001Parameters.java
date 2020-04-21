@@ -28,37 +28,46 @@ public class DTPP001Parameters {
     private String ATTR5;
     private String ATTR6;
     private String ATTR7;
+    private String ATTR8;
+    private String ATTR9;
+    private String ATTR10;
+    private String ATTR11;
+    private String ATTR12;
+    private String ATTR13;
+    private String ATTR14;
+    private String ATTR15;
+    private String ZTPBAR;
     private String USERNAME;
-
+    private String UUID;
 
 
     public DTPP001Parameters(){
 
     }
 
-    public DTPP001Parameters(String PWERK, String AUFNR, String VORNR, String BUDAT, String GMNGA, String XMNGA, String RMNGA, String ZSCBC, String ZSCX, String ZMNUM, String DATUM, String ZPGDBAR, String ZPGDBH) {
-        this.PWERK = PWERK;
-        this.AUFNR = AUFNR;
-        this.VORNR = VORNR;
-        this.BUDAT = BUDAT;
-        this.GMNGA = GMNGA;
-        this.XMNGA = XMNGA;
-        this.RMNGA = RMNGA;
-        this.ZSCBC = ZSCBC;
-        this.ZSCX = ZSCX;
-        this.ZMNUM = ZMNUM;
-        this.DATUM = DATUM;
-        this.ZPGDBAR = ZPGDBAR;
-        this.ZPGDBH = ZPGDBH;
-        this.ATTR1 = ATTR1;
-        this.ATTR2 = ATTR2;
-        this.ATTR3 = ATTR3;
-        this.ATTR4 = ATTR4;
-        this.ATTR5 = ATTR5;
-        this.ATTR6 = ATTR6;
-        this.ATTR7 = ATTR7;
-        this.USERNAME = USERNAME;
-    }
+//    public DTPP001Parameters(String PWERK, String AUFNR, String VORNR, String BUDAT, String GMNGA, String XMNGA, String RMNGA, String ZSCBC, String ZSCX, String ZMNUM, String DATUM, String ZPGDBAR, String ZPGDBH) {
+//        this.PWERK = PWERK;
+//        this.AUFNR = AUFNR;
+//        this.VORNR = VORNR;
+//        this.BUDAT = BUDAT;
+//        this.GMNGA = GMNGA;
+//        this.XMNGA = XMNGA;
+//        this.RMNGA = RMNGA;
+//        this.ZSCBC = ZSCBC;
+//        this.ZSCX = ZSCX;
+//        this.ZMNUM = ZMNUM;
+//        this.DATUM = DATUM;
+//        this.ZPGDBAR = ZPGDBAR;
+//        this.ZPGDBH = ZPGDBH;
+//        this.ATTR1 = ATTR1;
+//        this.ATTR2 = ATTR2;
+//        this.ATTR3 = ATTR3;
+//        this.ATTR4 = ATTR4;
+//        this.ATTR5 = ATTR5;
+//        this.ATTR6 = ATTR6;
+//        this.ATTR7 = ATTR7;
+//        this.USERNAME = USERNAME;
+//    }
 
     public String getRSPOS() {
         return RSPOS;
@@ -249,5 +258,85 @@ public class DTPP001Parameters {
 
     public void setUSERNAME(String USERNAME) {
         this.USERNAME = USERNAME;
+    }
+
+    public String getATTR8() {
+        return ATTR8;
+    }
+
+    public void setATTR8(String ATTR8) {
+        this.ATTR8 = ATTR8;
+    }
+
+    public String getATTR9() {
+        return ATTR9;
+    }
+
+    public void setATTR9(String ATTR9) {
+        this.ATTR9 = ATTR9;
+    }
+
+    public String getATTR10() {
+        return ATTR10;
+    }
+
+    public void setATTR10(String ATTR10) {
+        this.ATTR10 = ATTR10;
+    }
+
+    public String getATTR11() {
+        return ATTR11;
+    }
+
+    public void setATTR11(String ATTR11) {
+        this.ATTR11 = ATTR11;
+    }
+
+    public String getATTR12() {
+        return ATTR12;
+    }
+
+    public void setATTR12(String ATTR12) {
+        this.ATTR12 = ATTR12;
+    }
+
+    public String getATTR13() {
+        return ATTR13;
+    }
+
+    public void setATTR13(String ATTR13) {
+        this.ATTR13 = ATTR13;
+    }
+
+    public String getATTR14() {
+        return ATTR14;
+    }
+
+    public void setATTR14(String ATTR14) {
+        this.ATTR14 = ATTR14;
+    }
+
+    public String getATTR15() {
+        return ATTR15;
+    }
+
+    public void setATTR15(String ATTR15) {
+        this.ATTR15 = ATTR15;
+    }
+
+    public String getZTPBAR() {
+        return ZTPBAR;
+    }
+
+    public void setZTPBAR(String ZTPBAR) {
+        this.ZTPBAR = ZTPBAR;
+    }
+
+    public String getUUID() {
+        return UUID;
+    }
+
+    public void setUUID(String UUID) {
+        this.UUID = UUID;
     }
 }
