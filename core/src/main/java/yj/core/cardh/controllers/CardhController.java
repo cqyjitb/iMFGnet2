@@ -26,7 +26,6 @@ import yj.core.inoutrecord.dto.InOutRecord;
 import yj.core.inoutrecord.service.IInOutRecordService;
 import yj.core.marc.dto.Marc;
 import yj.core.marc.service.IMarcService;
-import yj.core.resb.dto.Resb;
 import yj.core.resb.service.IResbService;
 import yj.core.sccl.dto.Sccl;
 import yj.core.sccl.service.IScclService;
@@ -259,31 +258,31 @@ public class CardhController
         }
 
         //检查机加生产订单BOM比例
-        List<Resb> listresb = new ArrayList<>();
-        if (afkotmp.getAuart().equals("QP01") || afkotmp.getAuart().equals("QP04")){
-            listresb = resbService.selectByRsnumForzpjsx(afkotmp.getRsnum());
-            if (listresb.size() == 0){
-                ResponseData rs = new ResponseData();
-                rs.setSuccess(false);
-                rs.setMessage("没有获取到生产订单对应的产品BOM信息，请联系管理员。");
-                return rs;
-            }else{
-                String l_error = "";
-                for (int i=0;i<listresb.size();i++){
-                    if (afkotmp.getGamng() % listresb.get(i).getBdmng() != 0){
-                        l_error = "X";
-                        break;
-                    }
-                }
-                if (l_error.equals("X")){
-                    ResponseData rs = new ResponseData();
-                    rs.setSuccess(false);
-                    rs.setMessage("生产订单BOM比例异常，不允许创建流转卡，请联系管理员。");
-                    return rs;
-                }
-
-            }
-        }
+//        List<Resb> listresb = new ArrayList<>();
+//        if (afkotmp.getAuart().equals("QP01") || afkotmp.getAuart().equals("QP04")){
+//            listresb = resbService.selectByRsnumForzpjsx(afkotmp.getRsnum());
+//            if (listresb.size() == 0){
+//                ResponseData rs = new ResponseData();
+//                rs.setSuccess(false);
+//                rs.setMessage("没有获取到生产订单对应的产品BOM信息，请联系管理员。");
+//                return rs;
+//            }else{
+//                String l_error = "";
+//                for (int i=0;i<listresb.size();i++){
+//                    if (afkotmp.getGamng() % listresb.get(i).getBdmng() != 0){
+//                        l_error = "X";
+//                        break;
+//                    }
+//                }
+//                if (l_error.equals("X")){
+//                    ResponseData rs = new ResponseData();
+//                    rs.setSuccess(false);
+//                    rs.setMessage("生产订单BOM比例异常，不允许创建流转卡，请联系管理员。");
+//                    return rs;
+//                }
+//
+//            }
+//        }
 
 
 

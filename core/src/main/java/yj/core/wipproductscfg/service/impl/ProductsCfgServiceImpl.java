@@ -5,11 +5,10 @@ import com.hand.hap.core.IRequest;
 import com.hand.hap.system.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import yj.core.wipdot.dto.Dot;
+import org.springframework.transaction.annotation.Transactional;
 import yj.core.wipproductscfg.dto.ProductsCfg;
 import yj.core.wipproductscfg.mapper.ProductsCfgMapper;
 import yj.core.wipproductscfg.service.IProductsCfgService;
-import org.springframework.transaction.annotation.Transactional;
 import yj.core.zwipq.mapper.ZwipqMapper;
 
 import java.util.Date;
@@ -41,6 +40,11 @@ public class ProductsCfgServiceImpl extends BaseServiceImpl<ProductsCfg> impleme
     @Override
     public ProductsCfg selectByLineidAndPMatnr(String line_id, String matnr) {
         return productsCfgMapper.selectByLineidAndPMatnr(line_id,matnr);
+    }
+
+    @Override
+    public List<ProductsCfg> selectByLineidAndPMatnrs(String line_id, String matnr) {
+        return productsCfgMapper.selectByLineidAndPMatnrs(line_id,matnr);
     }
 
     @Override

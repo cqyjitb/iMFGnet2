@@ -1,26 +1,21 @@
 package yj.core.wiplines.controllers;
 
-import org.apache.bcel.generic.IF_ACMPEQ;
-import org.springframework.stereotype.Controller;
-import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.core.IRequest;
+import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.system.dto.ResponseData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import yj.core.afko.dto.Afko;
-import yj.core.afko.service.IAfkoService;
 import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.service.ICardhService;
 import yj.core.lineiocfg.dto.LineioCfg;
 import yj.core.lineiocfg.service.ILineioCfgService;
 import yj.core.marc.dto.Marc;
 import yj.core.marc.service.IMarcService;
-import yj.core.resb.dto.Resb;
-import yj.core.resb.service.IResbService;
 import yj.core.wipcurlzk.dto.Curlzk;
 import yj.core.wipcurlzk.service.ICurlzkService;
 import yj.core.wiplines.dto.Lines;
 import yj.core.wiplines.service.ILinesService;
-import org.springframework.beans.factory.annotation.Autowired;
 import yj.core.wipproductscfg.dto.ProductsCfg;
 import yj.core.wipproductscfg.service.IProductsCfgService;
 
@@ -191,13 +186,14 @@ public class LinesController extends BaseController {
         Marc marc = marcService.selectByMatnr(cardhjj.getMatnr());
 
         List<ProductsCfg> listpcfg = new ArrayList<>();
-        ProductsCfg pc = new ProductsCfg();
-        pc.setLineId(Long.valueOf(line_id));
-        pc.setPmatnr(marc.getMatnr());
-        pc = productsCfgService.selectByLineidAndPMatnr(Long.valueOf(line_id).toString(),marc.getMatnr());
-        if (pc != null){
-            listpcfg.add(pc);
-        }
+//        ProductsCfg pc = new ProductsCfg();
+//        pc.setLineId(Long.valueOf(line_id));
+//        pc.setPmatnr(marc.getMatnr());
+//        pc = productsCfgService.selectByLineidAndPMatnr(Long.valueOf(line_id).toString(),marc.getMatnr());
+//        if (pc != null){
+//            listpcfg.add(pc);
+//        }
+        listpcfg = productsCfgService.selectByLineidAndPMatnrs(Long.valueOf(line_id).toString(),marc.getMatnr());
 
         List<Marc> marclist = new ArrayList<>();
         marclist.add(marc);

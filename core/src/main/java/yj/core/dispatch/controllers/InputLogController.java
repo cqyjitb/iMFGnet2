@@ -631,6 +631,7 @@ public class InputLogController extends BaseController {
 
         if (cardtdesc.get(0).getVornr().equals(vornr)) {
             lstvor = "X";
+            inputLog.setAttr10("X");
         }
         inputLog.setLstvor(lstvor);
         inputLog.setFstvor(fstvor);
@@ -1082,7 +1083,7 @@ public class InputLogController extends BaseController {
         String attr8 = request.getParameter("8");
         String attr9 = request.getParameter("9");
         String attr10 = request.getParameter("10");
-        attr10 = "X";
+       // attr10 = "X";
 //        String attr11 = request.getParameter("11");
         String attr11 = "X";//imfgnet 报工识别标识
         String attr12 = request.getParameter("12");
@@ -1128,7 +1129,7 @@ public class InputLogController extends BaseController {
         inputLog.setAttr7(attr7);
         inputLog.setAttr8(attr8);
         inputLog.setAttr9(attr9);
-        inputLog.setAttr10(attr10);
+        inputLog.setAttr10("");
         inputLog.setAttr11(attr11);
         inputLog.setAttr12(attr12);
         inputLog.setAttr13(attr13);
@@ -1136,6 +1137,8 @@ public class InputLogController extends BaseController {
         inputLog.setAttr15(attr15);
         User user = new User();
         inputLog.setUserName(userName);
+
+
 
         //获取流转卡数据
         Cardh cardh = new Cardh();
@@ -1172,6 +1175,10 @@ public class InputLogController extends BaseController {
 
         if (isfirst.equals("FIRST")) {
             fstvor = "X";
+        }
+
+        if (lstvor.equals("X")){
+            inputLog.setAttr10("X");
         }
 
 

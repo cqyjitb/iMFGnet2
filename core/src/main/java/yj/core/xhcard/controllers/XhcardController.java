@@ -215,30 +215,30 @@ public class XhcardController
         }
 
         //检查扫描的框是不是属于围堵批次
-        DTWEIDUParam param = new DTWEIDUParam();
-        param.setMATNR(xhcard.getMatnr());
-        param.setWERKS(xhcard.getWerks());
-        if (xhcard.getZtxt() == null || xhcard.getZtxt().equals(""))
-        {
-            param.setZBANB("");
-        }else{
-            param.setZBANB(xhcard.getZtxt());
-        }
-
-        param.setZMODEL(xhcard.getZmnum().toUpperCase());
-        param.setZXHBAR(xhcard.getZxhbar());
-        WeiduWebserviceUtil weiduWebserviceUtil = new WeiduWebserviceUtil();
-        DTWEIDUReturn dtweiduReturn = weiduWebserviceUtil.receiveConfirmation(param);
-        if (dtweiduReturn.getMTYPE().equals("S")) {
-            if (dtweiduReturn.getWEIDUFLG() != null) {
-                if (dtweiduReturn.getWEIDUFLG().equals("1")) {
-
-                    rs.setSuccess(false);
-                    rs.setMessage("该毛坯框，班标：" + xhcard.getZtxt() + ",属于围堵批次！不允许上线扫描！");
-                    return rs;
-                }
-            }
-        }
+//        DTWEIDUParam param = new DTWEIDUParam();
+//        param.setMATNR(xhcard.getMatnr());
+//        param.setWERKS(xhcard.getWerks());
+//        if (xhcard.getZtxt() == null || xhcard.getZtxt().equals(""))
+//        {
+//            param.setZBANB("");
+//        }else{
+//            param.setZBANB(xhcard.getZtxt());
+//        }
+//
+//        param.setZMODEL(xhcard.getZmnum().toUpperCase());
+//        param.setZXHBAR(xhcard.getZxhbar());
+//        WeiduWebserviceUtil weiduWebserviceUtil = new WeiduWebserviceUtil();
+//        DTWEIDUReturn dtweiduReturn = weiduWebserviceUtil.receiveConfirmation(param);
+//        if (dtweiduReturn.getMTYPE().equals("S")) {
+//            if (dtweiduReturn.getWEIDUFLG() != null) {
+//                if (dtweiduReturn.getWEIDUFLG().equals("1")) {
+//
+//                    rs.setSuccess(false);
+//                    rs.setMessage("该毛坯框，班标：" + xhcard.getZtxt() + ",属于围堵批次！不允许上线扫描！");
+//                    return rs;
+//                }
+//            }
+//        }
 
 
         //先进先出控制
@@ -672,9 +672,9 @@ public class XhcardController
             resblist = resbService.selectByRsnum(afko.getRsnum());
             for (int i = 0; i < resblist.size(); i++) {
                 if (resblist.get(i).getMatnr().equals(xhcard.getMatnr())) {
-//                    String lgort = resblist.get(i).getLgort();
-//                    String matnr = xhcard.getMatnr();
-//                    qrs1 = service.selectByBacodeFromSap(zxhbar, matnr, lgort, "M");
+                    String lgort = resblist.get(i).getLgort();
+                    String matnr = xhcard.getMatnr();
+                    qrs1 = service.selectByBacodeFromSap(zxhbar, matnr, lgort, "M");
                     l_error = "";
                 }
 

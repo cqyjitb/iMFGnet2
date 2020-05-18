@@ -112,8 +112,8 @@ public class BatchpdsourceController extends BaseController {
                 Batchpdlogs logs = new Batchpdlogs();
                 num = num + 1;
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                //String newPostingdate = df.format(new Date()).substring(0, 10).replaceAll("-", "");
-                String newPostingdate = "20191231";
+                String newPostingdate = df.format(new Date()).substring(0, 10).replaceAll("-", "");
+                //String newPostingdate = "20191231";
                 String dispatch = dto.get(i).getZpgdbar();
                 InputLog inputLogtmp = new InputLog();
                 inputLogtmp.setDispatch(dispatch);
@@ -244,8 +244,8 @@ public class BatchpdsourceController extends BaseController {
                 Cardh cardh  = new Cardh();
                 num = num + 1;
                 SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                //String newPostingdate = df.format(new Date()).substring(0, 10).replaceAll("-", "");
-                String newPostingdate = "20191231";
+                String newPostingdate = df.format(new Date()).substring(0, 10).replaceAll("-", "");
+                //String newPostingdate = "20191231";
                 String dispatch = dto.get(i).getZpgdbar();
                 cardh = cardhService.selectByBarcode(dispatch);
                 InputLog inputLogtmp = new InputLog();
