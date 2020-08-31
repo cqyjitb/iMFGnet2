@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import yj.core.afko.dto.Afko;
+import yj.core.afko.dto.AfkoforZudlist;
 import yj.core.afko.mapper.AfkoMapper;
 import yj.core.afko.service.IAfkoService;
 
@@ -66,5 +67,10 @@ public class AfkoServiceImpl
     public List<Afko> selectJiJa(IRequest iRequest, Afko paramAfko, int page, int pagesize) {
         PageHelper.startPage(page, pagesize);
         return afkoMapper.selectJija(paramAfko);
+    }
+
+    @Override
+    public AfkoforZudlist selectForZudlist(String matnr) {
+        return afkoMapper.selectForZudlist(matnr);
     }
 }

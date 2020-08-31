@@ -176,6 +176,8 @@
 </div>
 <div id="mask2">
 </div>
+<div id="newWin" style="display: none"></div>
+
 <script type="text/javascript">
     var dMask2 = document.getElementById("mask2");
     dMask2.style.display = "none";//不显示遮罩
@@ -195,6 +197,28 @@
         }
         Hap.autoResizeGrid("#Grid");
     }
+
+    function newData(url) {
+        var dialog = $("#newWin").kendoWindow({
+            actions: ["Close"],
+            width: 1500,
+            height: 520,
+            title: '不合格品审理单1处理',
+            content: url,
+            iframe: true,
+            visible: false,
+            resizable: true,
+            modal: true,
+            close: function () {
+                var dMask2 = document.getElementById("mask2");
+                dMask2.style.display = "none";
+                //window 关闭  刷新 本页面的  Grid
+                $('#Grid').data('kendoGrid').dataSource.page(1);
+            }
+        }).data("kendoWindow");
+        dialog.center().open();
+    }
+
     var BaseUrl = _basePath;
     dataSource = new kendo.data.DataSource({
         transport: {
@@ -257,7 +281,7 @@
 
     $("#Grid").kendoGrid({
         dataSource: dataSource,
-        autoBind: false,
+        //autoBind: false,
         height: '100%',
         resizable: true,
         scrollable: true,
@@ -618,52 +642,55 @@
         var dMask2 = document.getElementById("mask2");
         dMask2.style.display = "";
         var tmparry= new Array();
-        if  (data == undefined){
-            kendo.ui.showErrorDialog({
-                message:"没有需要处理的不合格品审理单1数据！"
-            });
-            dMask2.style.display = "none";
-        }else{
-            for (var i = 0;i<data.length;i++){
-                var viewModel3 = kendo.observable({
-                    model: {
-                        zudnum:data[i].zudnum,
-                        item:data[i].item,
-                        reviewc:data[i].reviewc
 
-                    }
-                });
-                tmparry[i] = viewModel3.model.toJSON();
-            }
-            var postdata = JSON.stringify(tmparry);
-            var BaseUrl = _basePath;
-            $.ajax({
-                type   : 'POST',
-                url    : BaseUrl + "/wip/zudhead/processZud",
-                contentType: "application/json; charset=utf-8",
-                async: false,
-                data   : postdata,
-                success: function (data) {
-                    if(data.success==false){
-                        kendo.ui.showErrorDialog({
-                            message:data.message
-                        });
-                        dMask2.style.display = "none";
-                    }
-                    else{
-                        dMask2.style.display = "none";
-                        kendo.ui.showConfirmDialog({
-                            message:data.message
-                        });
-                        viewModel.model.set('status',0);
-                        $('#Grid').data('kendoGrid').dataSource.page(1);
-                    }
-                },
-                error:function () {
-                    dMask2.style.display = "none";
-                }
-            });
-        }
+        var diagurl = 'processZudlistDialog.html';
+        newData(diagurl);
+//        if  (data == undefined){
+//            kendo.ui.showErrorDialog({
+//                message:"没有需要处理的不合格品审理单1数据！"
+//            });
+//            dMask2.style.display = "none";
+//        }else{
+//            for (var i = 0;i<data.length;i++){
+//                var viewModel3 = kendo.observable({
+//                    model: {
+//                        zudnum:data[i].zudnum,
+//                        item:data[i].item,
+//                        reviewc:data[i].reviewc
+//
+//                    }
+//                });
+//                tmparry[i] = viewModel3.model.toJSON();
+//            }
+//            var postdata = JSON.stringify(tmparry);
+//            var BaseUrl = _basePath;
+//            $.ajax({
+//                type   : 'POST',
+//                url    : BaseUrl + "/wip/zudhead/processZud",
+//                contentType: "application/json; charset=utf-8",
+//                async: false,
+//                data   : postdata,
+//                success: function (data) {
+//                    if(data.success==false){
+//                        kendo.ui.showErrorDialog({
+//                            message:data.message
+//                        });
+//                        dMask2.style.display = "none";
+//                    }
+//                    else{
+//                        dMask2.style.display = "none";
+//                        kendo.ui.showConfirmDialog({
+//                            message:data.message
+//                        });
+//                        viewModel.model.set('status',0);
+//                        $('#Grid').data('kendoGrid').dataSource.page(1);
+//                    }
+//                },
+//                error:function () {
+//                    dMask2.style.display = "none";
+//                }
+//            });
+//        }
 
     });
     Hap.autoResizeGrid("#Grid");

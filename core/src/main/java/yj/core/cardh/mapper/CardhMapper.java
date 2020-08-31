@@ -1,10 +1,10 @@
 package yj.core.cardh.mapper;
 
 import com.hand.hap.mybatis.common.Mapper;
-import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 import yj.core.cardh.dto.Cardh;
+
+import java.util.List;
 
 public  interface CardhMapper
         extends Mapper<Cardh>
@@ -41,5 +41,7 @@ public  interface CardhMapper
       * @return
       */
      List<Cardh> queryAfterSortForClientPrint(Cardh dto);
+
+     Cardh selectTop1(@Param("aufnr") String aufnr);
 
 }

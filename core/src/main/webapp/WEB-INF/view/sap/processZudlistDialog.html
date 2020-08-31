@@ -1,0 +1,356 @@
+<#include "../include/header.html">
+    <body>
+    <script src="${base.contextPath}/lib/bootstrap-3.3.7/js/bootstrap.min.js"></script>
+    <script type="text/javascript">
+        var newViewModel = kendo.observable({
+            model: {
+                deptId:"",
+                lineId:"",
+                zudnum:"",
+                status:"0"
+
+            },
+            save: function(e){
+                var grid = $("#Grid").data("kendoGrid");
+                var rows = grid._data;
+                var dataarray = new Array();
+                var lineId = window.parent.document.getElementById("line_id").value;
+                for (var i = 0; i < rows.length; i++) {
+                    var viewModel = kendo.observable({
+                        model: {
+                            aufnr:rows[i].aufnr,
+                            auart:rows[i].auart,
+                            fgnum:rows[i].fgnum,
+                            gnum:rows[i].gnum,
+                            auartxt:rows[i].auartxt,
+                            gltrp:rows[i].gltrp,
+                            gstrp:rows[i].gstrp,
+                            gamng:rows[i].gamng,
+                            itemsf:rows[i].itemsf,
+                            itemsg:rows[i].itemsg,
+                            zudnum:rows[i].zudnum,
+                            lineId:lineId
+                        }
+                    });
+                    dataarray[i] = viewModel.model.toJSON();
+                }
+                var list = JSON.stringify(dataarray);
+                $.ajax({
+                    url: "${base.contextPath}/sap/afko/processZudlist",
+                    type: "POST",
+                    data: list,
+                    async: false,
+                    contentType: "application/json; charset=utf-8",
+                    success: function (res) {
+                        if (res.success){
+                            kendo.ui.showInfoDialog({
+                                message:res.message
+                            })    ;
+                        }
+                        window.parent.$("#newWin").data("kendoWindow").close();
+                    }
+                });
+            },
+            closeWin: function(e){
+                window.parent.$("#newWin").data("kendoWindow").close();
+            }
+        });
+    </script>
+    <div id="content-container">
+        <div id="page-content">
+            <div style="clear:both">
+                <div id="Grid"></div>
+            </div>
+            <!--<div id="btn">-->
+                <!--<div class="pull-right">-->
+                    <!--<span class="btn btn-primary" data-bind="click:save" type="submit" style="margin-right:5px"><@spring.message "hap.save"/></span>-->
+                    <!--<span class="btn btn-default" data-bind="click:closeWin" type="button" style="margin-right:25px;"><@spring.message "hap.cancel"/></span>-->
+                <!--</div>-->
+            <!--</div>-->
+        </div>
+    </div>
+    <script type="text/javascript">
+        kendo.bind($('#page-content'), newViewModel);
+        var zudlist = window.parent.$("#Grid").data('kendoGrid')._data;
+        //newViewModel.model.zudlist = zudlist;
+        var dataarray = new Array();
+        for (var i = 0; i < zudlist.length; i++) {
+            var viewModel = kendo.observable({
+                model: {
+                    zudnum:zudlist[i].zudnum,
+                    item:zudlist[i].item,
+                    reviewc:zudlist[i].reviewc,
+                    zpgdbar:zudlist[i].zpgdbar,
+                    deptId:zudlist[i].deptId,
+                    lineId:zudlist[i].lineId,
+                    zdnum:zudlist[i].zdnum,
+                    sfflg:zudlist[i].sfflg,
+                    zqxdm2:zudlist[i].zqxdm2
+
+                }
+            });
+            dataarray[i] = viewModel.model.toJSON();
+        }
+        var data = JSON.stringify(dataarray);
+//        var deptId = window.parent.document.getElementById("unit_code").value;
+//        var lineId = window.parent.document.getElementById("line_id").value;
+//        var zudnum = window.parent.document.getElementById("zudnum").value;
+//        newViewModel.model.zudnum = zudnum;
+//        newViewModel.model.unit_code = deptId;
+//        newViewModel.model.line_id = lineId;
+        var BaseUrl = _basePath;
+        dataSource = new kendo.data.DataSource({
+            transport: {
+                read: {
+                    url: BaseUrl + "/sap/afko/queryAfkoForZudlist",
+                    type: "POST",
+                    dataType: "json",
+                    contentType: "application/json; charset=utf-8"
+                },
+                parameterMap: function (options, type) {
+                    if (type !== "read" && options.models) {
+                        var datas = Hap.prepareSubmitParameter(options, type);
+                        return kendo.stringify(datas);
+                    } else if (type === "read") {
+                        return Hap.prepareQueryParameter(data, options);
+                    }
+                }
+            },
+            batch: true,
+            serverPaging: true,
+            pageSize: 10,
+            schema: {
+                data: 'rows',
+                total: 'total',
+                model: {
+                    id: "aufnr",
+                    fields: {
+                        aufnr: {type: "string",editable: false},
+                        auart: {type: "string",editable: false},
+                        auartxt: {type: "string",editable: false},
+                        gstrp: {type: "string",editable: false},
+                        gltrp: {type: "string",editable: false},
+                        gamng:{type: "string",editable: false},
+                        fgnum: {type: "string",editable: false},
+                        gfnum:{type: "string",editable: false},
+                        lfnum:{type: "string",editable: false},
+                        matnr:{type: "string",editable: false},
+                        zudnum:{type: "string",editable: false},
+                        itemsf:{type:"string",editable:false},
+                        qnum: {type: "string",editable: false},
+                        itemsq: {type: "string",editable: false}
+                    }
+                }
+            }
+        });
+        $("#Grid").kendoGrid({
+            dataSource: dataSource,
+            //autoBind: false,
+            height: '50%',
+            resizable: false,
+            scrollable: false,
+            navigatable: false,
+            editable: true,
+//            pageable: {
+//                pageSizes: ["all"],
+//                refresh: true,
+//                buttonCount: 10
+//            },
+            toolbar: [
+
+                {
+                    name: "save",
+                    template: '<span id="save" class="btn btn-success">提交</span>'
+                },{
+                    name: "cancel",
+                    template: '<span id="cancel" class="btn btn-default">关闭</span>'
+                }],
+            columns:[
+                {
+                    field:"aufnr",
+                    title:"生产订单",
+                    width:10,
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    },
+                    attributes: {
+                        style: "text-align: center;"
+                    }
+                },
+                {
+                    field:"auart",
+                    title:"订单类型",
+                    width:10,
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    },
+                    attributes: {
+                        style: "text-align: center;"
+                    }
+                },
+                {
+                    field:"auartxt",
+                    title:"订单类型描述",
+                    width:10,
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    },
+                    attributes: {
+                        style: "text-align: center;"
+                    }
+                },
+                {
+                    field:"gstrp",
+                    title:"订单开始日期",
+                    width:10,
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    },
+                    attributes: {
+                        style: "text-align: center;"
+                    }
+                },
+                {
+                    field:"gltrp",
+                    title:"订单结束日期",
+                    width:10,
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    },
+                    attributes: {
+                        style: "text-align: center;"
+                    }
+                },
+                {
+                    field:"matnr",
+                    title:"物料编码",
+                    width:10,
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    },
+                    attributes: {
+                        style: "text-align: center;"
+                    }
+                },
+                {
+                    field:"gfnum",
+                    title:"工废数量",
+                    width:10,
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    },
+                    attributes: {
+                        style: "text-align: center;"
+                    }
+                },
+                {
+                    field:"lfnum",
+                    title:"料废数量",
+                    width:10,
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    },
+                    attributes: {
+                        style: "text-align: center;"
+                    }
+                },
+                {
+                    field:"zudnum",
+                    title:"审理单",
+                    width:10,
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    },
+                    attributes: {
+                        style: "text-align: center;"
+                    }
+                },
+                {
+                    field:"itemsf",
+                    title:"结论为F的审理单行",
+                    width:10,
+                    headerAttributes: {
+                        style: "text-align: center;"
+                    },
+                    attributes: {
+                        style: "text-align: center;"
+                    }
+                }
+//                ,
+//                {
+//                    field:"qnum",
+//                    title:"结论为Q的数量汇总",
+//                    width:10,
+//                    headerAttributes: {
+//                        style: "text-align: center;"
+//                    },
+//                    attributes: {
+//                        style: "text-align: center;"
+//                    }
+//                },
+//                {
+//                    field:"itemsq",
+//                    title:"结论为Q的审理单行",
+//                    width:10,
+//                    headerAttributes: {
+//                        style: "text-align: center;"
+//                    },
+//                    attributes: {
+//                        style: "text-align: center;"
+//                    }
+//                }
+            ]
+        });
+        Hap.autoResizeGrid("#Grid");
+
+        $("#save").on('click',function () {
+            var grid = $("#Grid").data("kendoGrid");
+            var rows = grid._data;
+            var dataarray = new Array();
+            var lineId = window.parent.document.getElementById("line_id").value;
+            for (var i = 0; i < rows.length; i++) {
+                var viewModel = kendo.observable({
+                    model: {
+                        aufnr:rows[i].aufnr,
+                        auart:rows[i].auart,
+                        fgnum:rows[i].fgnum,
+                        gnum:rows[i].gnum,
+                        auartxt:rows[i].auartxt,
+                        gltrp:rows[i].gltrp,
+                        gstrp:rows[i].gstrp,
+                        gamng:rows[i].gamng,
+                        itemsf:rows[i].itemsf,
+                        itemsg:rows[i].itemsg,
+                        zudnum:rows[i].zudnum,
+                        lineId:lineId
+                    }
+                });
+                dataarray[i] = viewModel.model.toJSON();
+            }
+            var list = JSON.stringify(dataarray);
+            $.ajax({
+                url: "${base.contextPath}/sap/afko/processZudlist",
+                type: "POST",
+                data: list,
+                async: false,
+                contentType: "application/json; charset=utf-8",
+                success: function (res) {
+                    if (res.success){
+                        kendo.ui.showInfoDialog({
+                            message:res.message
+                        }).done(function (e) {
+                            window.parent.$("#newWin").data("kendoWindow").close();
+                        })
+                    }
+
+                }
+            });
+        });
+
+        $("#cancel").on('click',function () {
+            window.parent.$("#newWin").data("kendoWindow").close();
+        });
+
+
+    </script>
+    </body>

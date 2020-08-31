@@ -67,7 +67,7 @@
         select * from sap_resb
         <where>
             RSNUM = #{rsnum}
-            AND  (RGEKZ != 'X' OR RGEKZ IS NULL )
+            AND MATNR LIKE '2%'
             AND  (XLOEK != 'X' OR XLOEK IS NULL )
         </where>
     </select>

@@ -46,6 +46,15 @@ public class DTBAOGONGParameters
     private String LSTVOR;//末工序（"X"）
     private String CHARG;//""
     private String BGUUID;//报工uuid
+    private String employeeCode;
+
+    public String getEmployeeCode() {
+        return employeeCode;
+    }
+
+    public void setEmployeeCode(String employeeCode) {
+        this.employeeCode = employeeCode;
+    }
 
     public String getBGUUID() {
         return BGUUID;

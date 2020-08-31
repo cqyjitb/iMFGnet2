@@ -4,6 +4,7 @@ import com.hand.hap.core.IRequest;
 import com.hand.hap.core.ProxySelf;
 import com.hand.hap.system.service.IBaseService;
 import yj.core.afko.dto.Afko;
+import yj.core.afko.dto.AfkoforZudlist;
 
 import java.util.List;
 
@@ -24,4 +25,6 @@ public abstract interface IAfkoService
 
     public List<Afko> selectJiJa(IRequest iRequest,Afko paramAfko,int page,int pagesize);
     Afko selectByAufnr(String aufnr);
+
+    AfkoforZudlist selectForZudlist(String matnr);
 }

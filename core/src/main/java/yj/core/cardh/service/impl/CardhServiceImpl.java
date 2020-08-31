@@ -3,13 +3,14 @@ package yj.core.cardh.service.impl;
 import com.github.pagehelper.PageHelper;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.service.impl.BaseServiceImpl;
-import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.mapper.CardhMapper;
 import yj.core.cardh.service.ICardhService;
+
+import java.util.List;
 
 @Service
 @Transactional
@@ -102,4 +103,8 @@ public class CardhServiceImpl
         return cardhMapper.queryAfterSortForClientPrint(dto);
     }
 
+    @Override
+    public Cardh selectTop1(String aufnr) {
+        return cardhMapper.selectTop1(aufnr);
+    }
 }

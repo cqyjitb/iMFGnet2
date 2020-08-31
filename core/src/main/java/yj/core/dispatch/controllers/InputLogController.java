@@ -1350,12 +1350,12 @@ public class InputLogController extends BaseController {
             afko = afkoService.selectByAufnr(inputLog.getOrderno());
             Afvc afvc = new Afvc();
             afvc = afvcService.selectByAufplAndVornr(afko.getAufpl(),inputLog.getOperation());
-            if (afvc.getSteus().equals("ZP06") && !inputLog.getYeild().equals(0d)){
-                ResponseData rs = new ResponseData();
-                rs.setSuccess(false);
-                rs.setMessage("ZP06工序为报工自动入库，不允许冲销报工！");
-                return rs;
-            }
+//            if (afvc.getSteus().equals("ZP06") && !inputLog.getYeild().equals(0d)){
+//                ResponseData rs = new ResponseData();
+//                rs.setSuccess(false);
+//                rs.setMessage("ZP06工序为报工自动入库，不允许冲销报工！");
+//                return rs;
+//            }
 
             String fstvor = "";
             String lstvor = "";

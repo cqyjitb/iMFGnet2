@@ -60,4 +60,6 @@ public interface ZudlistMapper extends Mapper<Zudlist>{
     List<Zudlist> selectForPassrateReportlf(@Param("lineId") String lineId, @Param("matnr") String matnr, @Param("datestart") String datestart,@Param("dateend") String dateend);
 
     List<Zudlist> selectForBaltuChart(@Param("lineId") String lineId, @Param("matnr") String matnr, @Param("datestart") String datestart,@Param("dateend") String dateend);
+
+
 }

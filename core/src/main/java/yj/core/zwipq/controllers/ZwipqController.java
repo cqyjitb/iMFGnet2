@@ -824,7 +824,12 @@ public class ZwipqController extends BaseController {
                 Cardh cardhyz = cardhService.selectByZxhbar(xhcard.getAufnr(), xhcard.getZxhnum());
                 inOutRecord.setZpgdbar(cardhjj.getZpgdbar());//机加当前流转卡号
                 if (xhcard.getZtxt() == null || xhcard.getZtxt().equals("")){
-                    inOutRecord.setZpgdbar2(cardhyz.getZpgdbar());//压铸工序流转卡号
+                    if  (cardhyz != null){
+                        inOutRecord.setZpgdbar2(cardhyz.getZpgdbar());//压铸工序流转卡号
+                    }else{
+                        inOutRecord.setZpgdbar2("");//压铸工序流转卡号
+                    }
+
                 }else{
                     inOutRecord.setZpgdbar2("");//压铸工序流转卡号
                 }

@@ -291,6 +291,14 @@
         </where>
     </select>
 
+    <select id="selectTop1" parameterType="java.lang.String" resultMap="BaseResultMap2">
+        select * from sap_cardh
+        <where>
+            AUFNR = #{aufnr}
+        </where>
+        LIMIT 1
+    </select>
+
     <!--报工完成后更新班标，班次 模号 -->
     <update id="updateCardhShiftAndSfflg" parameterType="yj.core.cardh.dto.Cardh">
         UPDATE sap_cardh SET SHIFT = #{shift},

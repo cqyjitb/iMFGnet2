@@ -66,6 +66,15 @@
         <result column="FLGRG" property="flgrg" jdbcType="VARCHAR"/>
     </resultMap>
 
+    <resultMap id="BaseResultMap3" type="yj.core.afko.dto.AfkoforZudlist">
+        <result column="AUFNR" property="aufnr" jdbcType="VARCHAR"/>
+        <result column="AUART" property="auart" jdbcType="VARCHAR"/>
+        <result column="AUART_TXT" property="auartxt" jdbcType="VARCHAR"/>
+        <result column="GLTRP" property="gltrp" jdbcType="VARCHAR"/>
+        <result column="GSTRP" property="gstrp" jdbcType="VARCHAR"/>
+        <result column="GAMNG" property="gamng" jdbcType="DECIMAL"/>
+    </resultMap>
+
     <select id="selectByPlnbez" parameterType="java.lang.String" resultMap="BaseResultMap">
         select DISTINCT plnbez,maktx from sap_afko
         <where>
@@ -340,6 +349,19 @@
                  <where>
                      AUFNR = #{aufnr}
                  </where>
+    </select>
+
+    <select id="selectForZudlist" parameterType="java.lang.String" resultMap="BaseResultMap3">
+        		select *  from sap_afko
+        		<where>
+                    auart in ('QP01','QP04')
+                    and PLNBEZ = #{matnr}
+                    and STATUS NOT LIKE '%TECO%'
+                    AND STATUS NOT LIKE '%DLV%'
+                    AND STATUS NOT LIKE '%CLSD%'
+                    AND ( EXCLUD = '' OR EXCLUD IS NULL )
+                    order by gltrp asc LIMIT 1
+                </where>
     </select>
 
 

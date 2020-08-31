@@ -680,11 +680,11 @@ public class XhcardController
 
             }
 
-            if (l_error.equals("E")) {
-                rs.setSuccess(false);
-                rs.setMessage("该毛坯框物料:" + xhcard.getMatnr() + "不是本生产线所需物料,请检查!");
-                return rs;
-            }
+//            if (l_error.equals("E")) {
+//                rs.setSuccess(false);
+//                rs.setMessage("该毛坯框物料:" + xhcard.getMatnr() + "不是本生产线所需物料,请检查!");
+//                return rs;
+//            }
 
             //查询毛坯不良品处理记录
             List<Dftrghlist> dftrghlists = dftrghlistService.selectByZxhbar(zxhbar);

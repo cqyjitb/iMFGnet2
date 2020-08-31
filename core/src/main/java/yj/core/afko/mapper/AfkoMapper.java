@@ -3,6 +3,7 @@ package yj.core.afko.mapper;
 import com.hand.hap.mybatis.common.Mapper;
 import org.apache.ibatis.annotations.Param;
 import yj.core.afko.dto.Afko;
+import yj.core.afko.dto.AfkoforZudlist;
 
 import java.util.List;
 
@@ -45,4 +46,8 @@ public  interface AfkoMapper
       * @return
       */
      List<Afko> selectByPlnbez(@Param("plnbez")String plnbez);
+
+
+     AfkoforZudlist selectForZudlist(@Param("matnr")String matnr);
+
 }

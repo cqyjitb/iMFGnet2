@@ -64,7 +64,7 @@ public class ConfirmationWebserviceUtilNew {
         item.setRSPOS(params.getRSPOS());
         item.setRSNUM(params.getRSNUM());
         item.setREVERSE(params.getREVERSE());
-        item.setATTR1(params.getATTR1());
+        item.setATTR1(params.getEmployeeCode());
         item.setATTR2(params.getATTR2());
         item.setATTR3(params.getATTR3());
         item.setATTR4(params.getATTR4());//报工班次
@@ -80,7 +80,7 @@ public class ConfirmationWebserviceUtilNew {
         item.setATTR14(params.getATTR14());
         item.setATTR15(params.getATTR15());
         item.setUUID(params.getBGUUID());
-        item.setUSERNAME(params.getUSERNAME());
+        item.setUSERNAME(params.getEmployeeCode());
         item.setLSTVOR(params.getLSTVOR());
         item.setAUART(params.getAUART());
         item.setFSTVOR(params.getFSTVOR());

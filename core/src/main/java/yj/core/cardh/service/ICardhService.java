@@ -3,8 +3,9 @@ package yj.core.cardh.service;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.core.ProxySelf;
 import com.hand.hap.system.service.IBaseService;
-import java.util.List;
 import yj.core.cardh.dto.Cardh;
+
+import java.util.List;
 
 public  interface ICardhService
         extends IBaseService<Cardh>, ProxySelf<ICardhService>
@@ -38,5 +39,7 @@ public  interface ICardhService
       * @return
       */
      List<Cardh> queryAfterSortForClientPrint(Cardh dto);
+
+     Cardh selectTop1(String aufnr);
 
 }
