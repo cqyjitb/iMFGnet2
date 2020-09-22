@@ -1,7 +1,6 @@
 package yj.core.afko.controllers;
 
-import com.hand.hap.account.dto.User;
-import com.hand.hap.account.service.IUserService;
+
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.system.dto.ResponseData;
@@ -26,6 +25,8 @@ import yj.core.inoutrecord.service.IInOutRecordService;
 import yj.core.marc.service.IMarcService;
 import yj.core.sccl.dto.Sccl;
 import yj.core.sccl.service.IScclService;
+import yj.core.sysuser.dto.SYSUser;
+import yj.core.sysuser.service.ISYSUserService;
 import yj.core.webservice_newbg.components.ConfirmationWebserviceUtilNew;
 import yj.core.webservice_newbg.dto.DTBAOGONGParameters;
 import yj.core.webservice_newbg.dto.DTBAOGONGParametersitem;
@@ -82,7 +83,8 @@ public class AfkoController
     @Autowired
     private ILogService logService;
     @Autowired
-    private IUserService userService;
+    private ISYSUserService userService;
+
 
 
     class MantnrAndSum{
@@ -456,8 +458,8 @@ public class AfkoController
     public ResponseData processZudlist(HttpServletRequest request,@RequestBody List<AfkoforZudlist> list){
         String createdBy = "" + request.getSession().getAttribute("userId");
         Long id = Long.parseLong(request.getSession().getAttribute("userId").toString());
-        User user = userService.queryUserById(id);
-        String employeecode = user.getEmployeeCode();
+        SYSUser user = userService.queryUserById(id);
+        String employeecode = user.getUserName();
         ResponseData responseData = new ResponseData();
         String msg = "";
         if (list.size() > 0){
@@ -473,8 +475,8 @@ public class AfkoController
             for (int i = 0;i<list.size();i++){
                 String itemsq = list.get(i).getItemsq();
                 String itemsf = list.get(i).getItemsf();
-                String[] a = null;
-                String[] b = null;
+                String[] a = {""};
+                String[] b = {""};
                 if (itemsq != null){
                     if (itemsq.contains(",")){
                         a = itemsq.split(",");
@@ -487,7 +489,7 @@ public class AfkoController
                     if (itemsf.contains(",")){
                         b = itemsf.split(",");
                     }else{
-                        b[0] = itemsq;
+                        b[0] = itemsf;
                     }
                     msg = processZudlistF(list.get(i).getAufnr(),zh,b,createdBy,employeecode,PlineId);
                 }

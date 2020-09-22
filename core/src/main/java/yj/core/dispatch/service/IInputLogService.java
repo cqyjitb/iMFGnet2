@@ -9,6 +9,8 @@ import yj.core.cardt.dto.Cardt;
 import yj.core.dispatch.dto.InputLog;
 import yj.core.webservice.dto.DTPP001ReturnResult;
 import yj.core.webservice_newbg.dto.DTBAOGONGReturnResult;
+import yj.core.webservice_readzpgdbar.dto.ReadZpgdbarParam;
+import yj.core.webservice_readzpgdbar.dto.ReadZpgdbarResult;
 
 import java.util.List;
 
@@ -50,4 +52,13 @@ public interface IInputLogService extends IBaseService<InputLog>, ProxySelf<IInp
 
     InputLog querySumInputlogForShotnum(String werks,String matnr,String arbpl, String attr6,String attr4);
 
+    Double queryAllWriteOffByTpbar(String tpbar);
+
+    Double queryAllWriteOffByZpgdbar(String barcode);
+
+    List<InputLog> queryExitInputLogSuccess(InputLog inputLog);
+
+    ReadZpgdbarResult checkZpgdbarFromSap(ReadZpgdbarParam param);
+
+    List<InputLog> queryExitInputLogSuccessByAufnr(InputLog inputLog);
 }

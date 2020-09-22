@@ -190,10 +190,10 @@
 
             var Oztpbar = document.getElementById("ztpbar");
 
-            cRowScrap.onchange = function () {
-                document.getElementById("ztpbar").value = "";
-                Oztpbar.setAttribute("disable","true");
-            }
+//            cRowScrap.onchange = function () {
+//                document.getElementById("ztpbar").value = "";
+//                Oztpbar.setAttribute("disable","true");
+//            }
 
             Oztpbar.onkeydown = function () {
                 if(event.keyCode == 13){
@@ -211,14 +211,12 @@
                             contentType: "application/json; charset=utf-8",
                             success: function (data) {
                                 if (data.success){
+
                                     if(data.rows.length > 0){
                                         var menge = JSON.stringify(data.rows[0].menge);
                                         document.getElementById("yeild").value = menge;
-                                        document.getElementById("workScrap").style.backgroundColor = "#C9C9C9";
-                                        $("#workScrap").attr("readOnly",true);
-                                        document.getElementById("rowScrap").style.backgroundColor = "#C9C9C9";
-                                        $("#rowScrap").attr("readOnly",true);
                                         ztpbar = document.getElementById("ztpbar").value;
+                                        cLine.focus();
                                     }else{
                                         openMsgDialogZtp("错误","托盘码不存在！","M");
                                     }
@@ -243,83 +241,49 @@
                         var oldZPGDBAR = strBarcode.substring(0,lenBarcode - 4);
                         var oldoperation = strBarcode.substring(lenBarcode - 4,lenBarcode);
                         $.ajax({
-                            url: "${base.contextPath}/bartobar/getnewbar",
+                            url: "${base.contextPath}/confirmation/input/log/checkZpgdbar",
                             type: "get",
-                            data: {"wipZpgdbar":oldZPGDBAR},
+                            data: {"zpgdbar":oldZPGDBAR,
+                                    "vornr":oldoperation
+                                },
                             contentType: "application/json; charset=utf-8",
                             success: function (data) {
                                 if (data.success) {
-                                    document.getElementById("workScrap").style.backgroundColor = "#FFFFFF";
-                                    $("#workScrap").attr("readOnly",false);
-                                    document.getElementById("rowScrap").style.backgroundColor = "#FFFFFF";
-                                    $("#rowScrap").attr("readOnly",false);
-                                    document.getElementById("ztpbar").value = "";
-                                    ztpbar = "";
-                                    document.getElementById("workScrap").value = "";
-                                    workScrap = "";
-                                    document.getElementById("rowScrap").value = "";
-                                    rowScrap = "";
-                                    document.getElementById("yeild").value = "";
-                                    yeild = "";
-                                    if(data.rows.length > 0)
-                                    {
-                                        newZPGDBAR = JSON.stringify(data.rows[0].newZpgdbar);
-                                    }
-
-                                    if(newZPGDBAR != null)
-                                    {
-                                        newZPGDBAR = newZPGDBAR.substring(1,newZPGDBAR.length-1);
-                                        document.getElementById("barcode").value = newZPGDBAR + oldoperation;//替换
-                                        strBarcode = newZPGDBAR + oldoperation;//替换
-                                        document.getElementById("orderno").value = strBarcode.substring(4, lenBarcode - 8);
-                                        document.getElementById("operation").value = strBarcode.substring(lenBarcode - 4, lenBarcode);
+                                    document.getElementById("orderno").value = strBarcode.substring(4, lenBarcode - 8);
+                                    document.getElementById("operation").value = strBarcode.substring(lenBarcode - 4, lenBarcode);
+                                    if(data.code == "E"){
+                                        document.getElementById("ztpbar").value = "";
+                                        ztpbar = "";
+                                        document.getElementById("workScrap").value = "";
+                                        workScrap = "";
+                                        document.getElementById("rowScrap").value = "";
+                                        rowScrap = "";
+                                        document.getElementById("yeild").style.backgroundColor = "#FFFFFF";
+                                        $("#rowScrap").attr("yeild",false);
+                                        document.getElementById("yeild").value = "";
+                                        yeild = "";
+                                        document.getElementById("ztpbar").style.backgroundColor = "#C9C9C9";
+                                        $("#ztpbar").attr("readOnly",true);
+                                        cYeild.focus();
                                     }else{
-                                        document.getElementById("orderno").value = strBarcode.substring(4, lenBarcode - 8);
-                                        document.getElementById("operation").value = strBarcode.substring(lenBarcode - 4, lenBarcode);
+
+                                        document.getElementById("ztpbar").value = "";
+                                        ztpbar = "";
+                                        document.getElementById("workScrap").value = "";
+                                        workScrap = "";
+                                        document.getElementById("rowScrap").value = "";
+                                        rowScrap = "";
+                                        document.getElementById("yeild").style.backgroundColor = "#C9C9C9";
+                                        $("#yeild").attr("readOnly",true);
+                                        document.getElementById("yeild").value = "";
+                                        yeild = "";
+                                        document.getElementById("ztpbar").style.backgroundColor = "#FFFFFF";
+                                        $("#ztpbar").attr("readOnly",false);
+                                        Oztpbar.focus();
                                     }
-                                    // document.getElementById("orderno").value = strBarcode.substring(4, lenBarcode - 8);
-                                    // document.getElementById("operation").value = strBarcode.substring(lenBarcode - 4, lenBarcode);
-                                    //add by 张滔 2017-12-5 添加扫描条码后判断如果不是首工序，查询首工序扫描记录中输入的 模号，生产线，班标
-                                    //同时锁定 模号 生产线 班组 班标不允许编辑。
-                                    var ordernotmp = strBarcode.substring(4, lenBarcode - 8);
-                                    tmpattr7 = "";
-                                    if (strBarcode.substring(lenBarcode - 4, lenBarcode) != "0010" && ((ordernotmp >= "1000000000" && ordernotmp <= "2999999999") || (ordernotmp >= "9400000000" && ordernotmp <= "9499999999") )) {//只针对压铸生产订单
-                                        //如果不是首工序 锁定模号字段，生产线字段，班标字段 不允许修改
-                                        //disableModelNo();//模号不允许编辑   暂时允许输入先运行一段时间再做管控
-                                        //disableLine();//生产线不允许编辑
-                                        var firstDispatch = strBarcode.substring(0, strBarcode.length - 4);
-                                        var firstOperation = "0010";
-                                        $.ajax({
-                                            url: "${base.contextPath}/confirmation/input/log/inputFindHistory",
-                                            type: "get",
-                                            data: {
-                                                "dispatch": firstDispatch,
-                                                "operation": firstOperation
-                                            },
-                                            contentType: "application/json; charset=utf-8",
-                                            success: function (res) {
-                                                if (res.success) {
-                                                    if(res.rows.length > 0)
-                                                    {
-                                                        tmpmodeNo = JSON.stringify(res.rows[0].modelNo);
-                                                        tmpmodeNo = tmpmodeNo.substring(1, tmpmodeNo.length - 1);
-                                                        tmpline = JSON.stringify(res.rows[0].line);
-                                                        tmpline = tmpline.substring(1, tmpline.length - 1);
-                                                        tmpattr7 = JSON.stringify(res.rows[0].attr7);
-                                                        tmpattr7 = tmpattr7.substring(1, tmpattr7.length - 1);
-                                                        //设置模号的值
-                                                        document.getElementById("modelNo").value = tmpmodeNo;
-                                                        document.getElementById("line").value = tmpline;
-                                                    }
-
-                                                }
-                                            }
-
-                                        });
-                                    } else {
                                         ableModelNo();
                                         ableLine();
-                                    }
+
                                 }
                             }
                         });
@@ -330,7 +294,7 @@
                         document.getElementById("operation").value = "";
                     }
                     //cYeild.focus();
-                    Oztpbar.focus();
+
                 }
             }
 
@@ -800,7 +764,7 @@
 								if(falsemsg == "Read timed out"){
 									falsemsg = "请求超时-";
 								}
-                                openMsgDialog("失败",falsemsg + "报工失败","M");
+                                openMsgDialog("失败",falsemsg,"M");
                             }
                         },
                         error:function (res) {
@@ -890,8 +854,8 @@
         <!--<label class="dcp-label">过账日期</label><select id="postingDate" class="cls-attr-input"><option></option><option></option></select><br>-->
         <label class="dcp-label">订单号</label><input id="orderno"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>
         <label class="dcp-label">工序</label><input id="operation"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>
-        <label class="dcp-label">托盘号</label><input id="ztpbar"  class="cls-attr-input" type="text"><br>
-        <label class="dcp-label">合格数量</label><input id="yeild" style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>
+        <label class="dcp-label">托盘条码</label><input id="ztpbar"  class="cls-attr-input" type="text"><br>
+        <label class="dcp-label">合格数量</label><input id="yeild" class="cls-attr-input" type="number"><br>
         <label class="dcp-label">工废数量</label><input id="workScrap" class="cls-attr-input" type="number"><br>
         <label class="dcp-label">料废数量</label><input id="rowScrap" class="cls-attr-input" type="number"><br>
 

@@ -281,7 +281,7 @@
 
     $("#Grid").kendoGrid({
         dataSource: dataSource,
-        //autoBind: false,
+        autoBind: false,
         height: '100%',
         resizable: true,
         scrollable: true,
@@ -645,52 +645,6 @@
 
         var diagurl = 'processZudlistDialog.html';
         newData(diagurl);
-//        if  (data == undefined){
-//            kendo.ui.showErrorDialog({
-//                message:"没有需要处理的不合格品审理单1数据！"
-//            });
-//            dMask2.style.display = "none";
-//        }else{
-//            for (var i = 0;i<data.length;i++){
-//                var viewModel3 = kendo.observable({
-//                    model: {
-//                        zudnum:data[i].zudnum,
-//                        item:data[i].item,
-//                        reviewc:data[i].reviewc
-//
-//                    }
-//                });
-//                tmparry[i] = viewModel3.model.toJSON();
-//            }
-//            var postdata = JSON.stringify(tmparry);
-//            var BaseUrl = _basePath;
-//            $.ajax({
-//                type   : 'POST',
-//                url    : BaseUrl + "/wip/zudhead/processZud",
-//                contentType: "application/json; charset=utf-8",
-//                async: false,
-//                data   : postdata,
-//                success: function (data) {
-//                    if(data.success==false){
-//                        kendo.ui.showErrorDialog({
-//                            message:data.message
-//                        });
-//                        dMask2.style.display = "none";
-//                    }
-//                    else{
-//                        dMask2.style.display = "none";
-//                        kendo.ui.showConfirmDialog({
-//                            message:data.message
-//                        });
-//                        viewModel.model.set('status',0);
-//                        $('#Grid').data('kendoGrid').dataSource.page(1);
-//                    }
-//                },
-//                error:function () {
-//                    dMask2.style.display = "none";
-//                }
-//            });
-//        }
 
     });
     Hap.autoResizeGrid("#Grid");

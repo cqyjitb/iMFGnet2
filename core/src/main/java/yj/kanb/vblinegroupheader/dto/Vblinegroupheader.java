@@ -25,8 +25,36 @@ public class Vblinegroupheader  extends BaseDTO {
     private String groupNameEn;
     private String groupType;//资源类别：LINEDATA
     private String templeteUrl;//模板URL
+    private String lineLeader;
+    private String lineLeaderEn;
+    private String leaderPhone;
     @Transient
     private String vbgroupId;//显示组ID
+
+
+    public String getLineLeader() {
+        return lineLeader;
+    }
+
+    public void setLineLeader(String lineLeader) {
+        this.lineLeader = lineLeader;
+    }
+
+    public String getLineLeaderEn() {
+        return lineLeaderEn;
+    }
+
+    public void setLineLeaderEn(String lineLeaderEn) {
+        this.lineLeaderEn = lineLeaderEn;
+    }
+
+    public String getLeaderPhone() {
+        return leaderPhone;
+    }
+
+    public void setLeaderPhone(String leaderPhone) {
+        this.leaderPhone = leaderPhone;
+    }
 
     public String getLineId() {
         return lineId;

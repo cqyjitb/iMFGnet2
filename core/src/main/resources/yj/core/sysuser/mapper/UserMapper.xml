@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.sysuser.mapper.SYSUserMapper">
+    <resultMap id="BaseResultMap" type="yj.core.sysuser.dto.SYSUser" >
+        <id column="USER_ID" property="userId" jdbcType="DECIMAL" />
+        <result column="USER_NAME" property="userName" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <select id="queryUserById" resultMap="BaseResultMap" parameterType="java.lang.Long">
+          select * from sys_user
+          <where>
+              USER_ID = #{id}
+          </where>
+    </select>
+</mapper>

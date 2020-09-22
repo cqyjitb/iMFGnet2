@@ -36,6 +36,7 @@ public class Ztbc0002ServiceImpl extends BaseServiceImpl<Ztbc0002> implements IZ
             if (res.getRETURN().getZFLAG().equals("S")) {
                 ztbc0002.setZtpbar(res.getRETURN().getZTPBAR());
                 ztbc0002.setMenge(Double.parseDouble(res.getRETURN().getMENGE()));
+                ztbc0002.setZtpzt(res.getRETURN().getZTPZT());
             } else {
                 ztbc0002.setZtpbar(res.getRETURN().getZTPBAR());
             }

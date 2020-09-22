@@ -107,4 +107,9 @@ public class CardhServiceImpl
     public Cardh selectTop1(String aufnr) {
         return cardhMapper.selectTop1(aufnr);
     }
+
+    @Override
+    public List<Cardh> selectByAufnrOrZpgdbar(String aufnr, String zpgdbar) {
+        return cardhMapper.selectByAufnrOrZpgdbar(aufnr,zpgdbar);
+    }
 }

@@ -12,6 +12,8 @@ public  interface ICardhService
 {
      List<Cardh> selectByAufnr(String paramString);
 
+     List<Cardh> selectByAufnrOrZpgdbar(String aufnr,String zpgdbar);
+
      int insertCardh(List<Cardh> paramList);
 
      List<Cardh> queryAfterSort(IRequest paramIRequest, Cardh paramCardh, int paramInt1, int paramInt2);

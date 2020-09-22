@@ -14,6 +14,9 @@
     <result column="groupName" property="groupName" jdbcType="VARCHAR"/>
     <result column="groupNameEn" property="groupNameEn" jdbcType="VARCHAR"/>
     <result column="groupType" property="groupType" jdbcType="VARCHAR"/>
+    <result column="lineLeader" property="lineLeader" jdbcType="VARCHAR"/>
+    <result column="lineLeaderEn" property="lineLeaderEn" jdbcType="VARCHAR"/>
+    <result column="leaderPhone" property="leaderPhone" jdbcType="VARCHAR"/>
 </resultMap>
 
     <select id="selectLineGroupH2" parameterType="java.lang.String" resultMap="BaseResultMap">
@@ -54,7 +57,8 @@
 
     <update id="updateLineGroupH" parameterType="yj.kanb.vblinegroupheader.dto.Vblinegroupheader">
         update vb_line_group_h set product = #{product},groupName = #{groupName},groupType = #{groupType},kunnr = #{kunnr},lineId = #{lineId},
-        groupNameEn = #{groupNameEn},templeteUrl = #{templeteUrl},last_updated_by = #{lastUpdatedBy},last_update_date = #{lastUpdateDate}
+        groupNameEn = #{groupNameEn},templeteUrl = #{templeteUrl},last_updated_by = #{lastUpdatedBy},last_update_date = #{lastUpdateDate},lineLeader = #{lineLeader},
+        lineLeaderEn = #{lineLeaderEn},leaderPhone = #{leaderPhone}
         <where>
             groupId = #{groupId}
             AND bukrs = #{bukrs}
@@ -65,8 +69,8 @@
     </update>
 
     <insert id="insertLineGroupH" parameterType="yj.kanb.vblinegroupheader.dto.Vblinegroupheader">
-        insert into vb_line_group_h(groupId,bukrs,werks,workshopId,lineId,templeteUrl,product,kunnr,groupName,groupType,groupNameEn,created_by,creation_date)
-        values(#{groupId},#{bukrs},#{werks},#{workshopId},#{lineId},#{templeteUrl},#{product},#{kunnr},#{groupName},#{groupType},#{groupNameEn},#{createdBy},#{creationDate})
+        insert into vb_line_group_h(groupId,bukrs,werks,workshopId,lineId,templeteUrl,product,kunnr,groupName,groupType,groupNameEn,created_by,creation_date,lineLeader,lineLeaderEn,leaderPhone)
+        values(#{groupId},#{bukrs},#{werks},#{workshopId},#{lineId},#{templeteUrl},#{product},#{kunnr},#{groupName},#{groupType},#{groupNameEn},#{createdBy},#{creationDate},#{lineLeader},#{lineLeaderEn},#{leaderPhone})
     </insert>
     <select id="selectAllGroup" resultMap="BaseResultMap">
         select * from vb_line_group_h ;

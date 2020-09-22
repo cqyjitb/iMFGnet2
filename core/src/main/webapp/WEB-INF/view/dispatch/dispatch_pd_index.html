@@ -84,6 +84,14 @@
         text-align: center;
     }
 
+    #login #login_er{
+        width :190px;
+        height: 60px;
+        margin:0 auto;
+        background-color: #C0C2CC;
+        text-align: center;
+    }
+
     #login #btn{
         width :120px;
         height: 30px;
@@ -129,6 +137,21 @@
         cursor: pointer
     }
 
+    #login #btn_er {
+        width :120px;
+        height: 30px;
+        margin-top: 15px;
+        background-color: #0D8EDC;
+        color: #FFFFFF;
+        display: inline-block;
+        padding: 5px 10px 6px;
+        text-decoration: none;
+        -webkit-border-radius: 3px;
+        border: none ;
+        position: relative;
+        cursor: pointer
+    }
+
 </style>
 <body >
 <div id="login">
@@ -142,6 +165,10 @@
 
     <div id="login_shot">
         <button id="btn_shot" onclick="submit2()">其他盘点</button>
+    </div>
+
+    <div id="login_er">
+        <button id="btn_er" onclick="submit4()">二维码记录</button>
     </div>
 
     <div id="login_pd">
@@ -164,6 +191,10 @@
 
     function submit3(){
         window.location.href='${base.contextPath}/dispatch/dispatch_jjpd3.html';
+    }
+
+    function submit4(){
+        window.location.href='${base.contextPath}/dispatch/dispatch_jjpd4.html';
     }
 
 </script>

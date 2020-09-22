@@ -44,4 +44,6 @@ public  interface CardhMapper
 
      Cardh selectTop1(@Param("aufnr") String aufnr);
 
+     List<Cardh> selectByAufnrOrZpgdbar(@Param("aufnr") String aufnr,@Param("zpgdbar") String zpgdbar);
+
 }

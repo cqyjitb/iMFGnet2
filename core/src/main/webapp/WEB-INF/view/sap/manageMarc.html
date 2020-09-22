@@ -4,7 +4,9 @@
 <#include "../include/header.html">
     <script type="text/javascript">
         var viewModel = kendo.observable({
-            model: {},
+            model: {
+                werks:"1001"
+            },
             createFunction: function () {
                 $('#Grid').data('kendoGrid').addRow();
             },

@@ -2,13 +2,15 @@ package yj.core.dispatch.mapper;
 
 import com.hand.hap.mybatis.common.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.security.access.method.P;
 import yj.core.dispatch.dto.InputLog;
+
 import java.util.List;
 
 public interface InputLogMapper extends Mapper<InputLog>{
 
     List<InputLog> queryAllWriteOff(InputLog inputLog);//报功冲销页面数据查询
+
+    List<InputLog> queryAllWriteOffByAufnr(InputLog inputLog);//报功冲销页面数据查询
 
     List<InputLog> queryAllLog(InputLog inputLog);//报功日志页面数据查询
 
@@ -106,4 +108,6 @@ public interface InputLogMapper extends Mapper<InputLog>{
     InputLog selectByBgUuid(@Param("bguuid") String bguuid);
 
     InputLog selectByCxUuid(@Param("cxuuid") String cxuuid);
+
+
 }

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.core.pandianqr.mapper.PandianqrMapper">
+    <resultMap id="BaseResultMap" type="yj.core.pandianqr.dto.Pandianqr">
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="fevor" property="fevor" jdbcType="VARCHAR" />
+        <result column="fevor_txt" property="fevorTxt" jdbcType="VARCHAR" />
+        <result column="CREATION_DATE" property="creationDate" jdbcType="VARCHAR" />
+        <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
+        <result column="zbarcode" property="zbarcode" jdbcType="VARCHAR" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <insert id="insertPdRow" parameterType="yj.core.pandianqr.dto.Pandianqr">
+        insert INTO wip_pandianqr (id,fevor_txt,zbarcode,fevor,CREATED_BY,CREATION_DATE,username)
+        VALUES (#{id},#{fevorTxt},#{zbarcode},#{fevor},#{createdBy},#{creationDate},#{username})
+    </insert>
+</mapper>

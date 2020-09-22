@@ -356,9 +356,7 @@
         		<where>
                     auart in ('QP01','QP04')
                     and PLNBEZ = #{matnr}
-                    and STATUS NOT LIKE '%TECO%'
-                    AND STATUS NOT LIKE '%DLV%'
-                    AND STATUS NOT LIKE '%CLSD%'
+                    and STATUS LIKE '%REL%'
                     AND ( EXCLUD = '' OR EXCLUD IS NULL )
                     order by gltrp asc LIMIT 1
                 </where>

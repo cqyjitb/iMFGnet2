@@ -28,6 +28,7 @@
         <intercept-url pattern="/dispatch/dispatch_jjpd1.html" access="permitAll"/>
         <intercept-url pattern="/dispatch/dispatch_jjpd2.html" access="permitAll"/>
         <intercept-url pattern="/dispatch/dispatch_jjpd3.html" access="permitAll"/>
+        <intercept-url pattern="/dispatch/dispatch_jjpd4.html" access="permitAll"/>
         <intercept-url pattern="/hr/employee/queryByCode" access="permitAll"/>
         <intercept-url pattern="/sys/userrole/queryByUserName" access="permitAll"/>
         <intercept-url pattern="/confirmation/input/log/writeOff" access="permitAll"/>
@@ -40,6 +41,7 @@
         <intercept-url pattern="/confirmation/input/log/queryResultpd" access="permitAll"/>
         <intercept-url pattern="/confirmation/input/log/pandian" access="permitAll"/>
         <intercept-url pattern="/confirmation/input/log/queryBeforeResult" access="permitAll"/>
+        <intercept-url pattern="/confirmation/input/log/checkZpgdbar" access="permitAll"/>
         <intercept-url pattern="/wip/**" access="permitAll"/>
         <intercept-url pattern="/Kbtest/**" access="permitAll"/>
         <intercept-url pattern="/kanb/**" access="permitAll"/>

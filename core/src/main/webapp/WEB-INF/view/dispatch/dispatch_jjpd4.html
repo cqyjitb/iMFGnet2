@@ -1,0 +1,384 @@
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!DOCTYPE html>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta name="_csrf" content="${_csrf.token}"/>
+    <meta name="_csrf_header" content="X-CSRF-TOKEN"/>
+    <title>机加二维码记录</title>
+
+    <!--
+        Created by Rebs on 2017/6/12.
+    -->
+
+    <!–[if lt IE 9]>
+    <Script src="${base.contextPath}/resources/js/IE9.js"></Script>
+    <![endif]–>
+    <!--
+    <Script src="${base.contextPath}/resources/js/yj-pda.js?v=201706261447"></Script>
+    -->
+    <Script src="${base.contextPath}/resources/js/yj-pda.js"></Script>
+    <Script src="${base.contextPath}/resources/js/json2.js"></Script>
+    <script src="${base.contextPath}/lib/kendoui/js/jquery.min.js"></script>
+
+
+    <style type="text/css">
+        #dispatch-area {
+            margin-top: -7px;
+            width: 220px;
+            height: 285px;
+            z-index: 999;
+        }
+
+        #otherInfo-area {
+            background-color: #CCCCCC;
+
+            position: absolute;
+            width: 220px;
+            height: 285px;
+            z-index: 998;
+            top: 0px;
+            left: 0px;
+        }
+
+        .dcp-label {
+            font-size: 16px;
+            width: 80px;
+            height: 20px;
+            display: inline-block;
+        }
+
+        .cls-attr-input {
+            font-size: 16px;
+            width: 120px;
+            height: 21px;
+            margin-bottom: 1px;
+        }
+
+        #mask {
+            background-color: #434343;
+            opacity: 0.5;
+            filter: alpha(opacity=50);
+            position: absolute;
+            left: 0;
+            top: 0;
+            z-index: 1000;
+        }
+
+        #mask2 {
+            background-color: #434343;
+            opacity: 0.5;
+            filter: alpha(opacity=50);
+            position: absolute;
+            width: 240px;
+            height: 320px;
+            left: 0;
+            top: 0;
+            z-index: 1001;
+        }
+
+        #msg-area {
+            background-color: white;
+            width: 200px;
+            height: 120px;
+            top: 100px;
+            left: 20px;
+            position: absolute;
+            z-index: 1002;
+        }
+
+        #msg1 {
+            width: 200px;
+            height: 30px;
+            background-color: #F5F1DD;
+            border-radius: 5px;
+        }
+
+        #msg2 {
+            width: 200px;
+            height: 60px;
+        }
+
+        #msg3 {
+            width: 200px;
+            height: 30px;
+        }
+
+        #text {
+            width: 100%;
+            height: 100%;
+            float: left;
+            font-size: medium;
+            font-family: "微软雅黑";
+        }
+    </style>
+    <script>
+        /*
+         window.onunload=function () {
+         var n = window.event.screenX - window.screenLeft;
+         var b = n > document.documentElement.scrollWidth-20;
+
+         if(b && window.event.clientY < 0 || window.event.altKey){
+         // 这个可以排除刷新 关闭的时候触发
+         delCookie("username");
+         }
+         }*/
+
+        window.onload = function () {
+            var msg = "";
+
+            var l_error = "";
+
+            var oBcd = document.getElementById("zxhbar");
+            var oFevor = document.getElementById("fevor");
+            var zxhbar = "";
+            var fevor = "";
+            var matnr = "";
+            var num = "";
+            var pd_sum = "";
+            var matnr = "";
+            //进入报工页面时，光标定位到条码输入框
+            oBcd.focus();
+
+            //获取主界面DIV页面元素
+            var dDpt = document.getElementById("dispatch-area");
+
+            //获取消息界面DIV页面元素
+            var dMsg = document.getElementById("msg-area");            //获取消息界面DIV页面元素
+
+            //获取遮罩层2DIV页面元素
+            var dMask2 = document.getElementById("mask2");
+
+
+            //初始化界面状态
+            dDpt.style.display = "";
+            dMsg.style.display = "none";
+            dMask2.style.display = "none";
+
+
+            var username = getCookie("username");
+
+            //用户登录判定操作
+            if (username == "" || username == null) {
+                //当用户未登录,返回登录界面
+                window.location.href = '${base.contextPath}/yjlogin.html';
+                return null;
+            } else {
+                //当用户登录，在界面展示用户信息，并记下用户id
+                document.getElementById("user").innerHTML = username;
+                /*var data = {"userName":username}*/
+                $.ajax({
+                    url: "${base.contextPath}/sys/userrole/queryByUserName",
+                    type: "get",
+                    data: {"username": username},
+                    contentType: "application/json; charset=utf-8",
+                    success: function (res) {
+                        var userId = JSON.stringify(res.rows[0].userId);
+                        createdBy = userId;
+                        //document.getElementById("user").innerHTML = userId;
+                    }
+                });
+                $.ajax({
+                    url: "${base.contextPath}/hr/employee/queryByCode",
+                    type: "get",
+                    data: {"code": username},
+                    contentType: "application/json; charset=utf-8",
+                    success: function (res) {
+                        var name = JSON.stringify(res.rows[0].name);
+                        name = name.substring(1, name.length - 1);
+                        eval("var strname = '" + name + "';")
+                        document.getElementById("user").innerHTML = strname;
+                    }
+                });
+            }
+
+            //初始化车间选择列表
+            if (username != "" && username != null) {
+                $.ajax({
+                    url: "${base.contextPath}/sap/fevor/selectFevor2",
+                    type: "get",
+                    contentType: "application/json; charset=utf-8",
+                    success: function (res) {
+                        if (res.success) {
+                            var rows = res.rows;
+                            //oFevor.innerHTML = "<option>" + "请选择" + "</option>"
+                            if (rows.length > 0) {
+                                for (var i = 0; i < rows.length; i++) {
+                                    oFevor.options[i + 1].value = rows[i].fevor;
+                                    oFevor.options[i + 1].innerHTML = rows[i].txt;
+//                                    oFevor.innerHTML = oFevor.innerHTML + "<option value=" + rows[i].fevor + ">" + rows[i].fevor + "." + rows[i].txt + "</option>"
+                                }
+                            }
+                        }
+                    }
+                });
+            }
+
+            oFevor.onchange = function () {
+                var strfevor = oFevor.options[oFevor.selectedIndex].value;
+                fevor = strfevor;
+                console.log(fevor);
+            }
+
+            /*用户注销相关操作*/
+            //获取注销页面元素
+            //获取返回页面元素
+            var cLot = document.getElementById("logout");
+            var back = document.getElementById("back");
+
+            //注销点击事件
+            cLot.onclick = function () {
+                delCookie("username");
+                window.location.href = '${base.contextPath}/yjlogin.html';
+                return null;
+            }
+
+            back.onclick = function () {
+                window.location.href = '${base.contextPath}/dispatch/dispatch_pd_index.html';
+                return null;
+            }
+
+
+            var cBarcode = document.getElementById("zxhbar");
+            cBarcode.onkeydown = function () {
+                if(event.keyCode == 13){
+                    var l_error = "";
+                    var oFevor = document.getElementById("fevor");
+                    var zxhbar = document.getElementById("zxhbar").value;
+                    var username = getCookie("username");
+
+
+                    if (fevor == "" || fevor == "请选择") {
+                        l_error = "E";
+                        document.getElementById("returnmsg").value = "请选择车间!";
+                    }
+//                    alert(l_error);
+                    if (zxhbar == "" < 0 && l_error != "E") {
+                        l_error = "E";
+                        document.getElementById("returnmsg").value = "条码不能为空!";
+//                        alert("箱号不能为空！");
+                    }
+
+//                        alert(l_error);
+                    if (l_error != "E") {
+                        $.ajax({
+                            url: "${base.contextPath}/wip/pandianqr/insertPdRow",
+                            type: "get",
+                            data: {
+                                "fevor": fevor,
+                                "zxhbar": zxhbar,
+                                "operator": username,
+                                "createdBy": createdBy,
+                                "type": "1"
+                            },
+                            contentType: "application/json; charset=utf-8",
+                            success: function (res) {
+                                if (res.success){
+                                    document.getElementById("returnmsg").value = res.message;
+                                    clearData();
+
+                                } else {
+                                    document.getElementById("returnmsg").value = "保存失败，请联系管理员！";
+                                    clearData();
+                                }
+                            }
+                        });
+                    }
+                }
+
+            }
+
+
+            function openMsgDialog(msgTitle, msgText, msgType) {
+            }
+
+            function clearData() {
+                document.getElementById("zxhbar").value = "";
+//            document.getElementById("zxhzt").value = "";
+            }
+        }
+
+
+    </script>
+</head>
+<body>
+<!--报工主界面-->
+<div id="dispatch-area">
+
+    <div style="width: 220px;height: 20px">
+        <div id="back"
+             style="font-size: 16px;width:40px;height:20px;float: left;background-color:#169bd5;top: 0px;margin-bottom: 1px">
+            &nbsp;返回
+        </div>
+        <div style="width:20px;height:20px;float: left;background-color:white;top: 0px"></div>
+        <div id="logout"
+             style="font-size: 16px;width:40px;height:20px;float: left;background-color:#169bd5;top: 0px;margin-bottom: 1px">
+            &nbsp;注销
+        </div>
+        <div style="width:20px;height:20px;float: left;background-color:white;top: 0px"></div>
+        <div id="user"
+             style="margin-right: 25px;font-size:14px;height:20px;float: right;background-color:white;top: 0px"></div>
+    </div>
+
+    <div style="width: 220px;height: 180px">
+        <!--<input id="barcode" style="font-size:16px;width: 200px;height: 22px;margin-bottom: 1px;" type="text"><br>-->
+        <br/>
+        <label class="dcp-label">车间</label><select id="fevor" class="cls-attr-input" type="text">
+        <option value="">请选择</option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+        <option></option>
+    </select><br>
+        <!--<label class="dcp-label">物料描述</label><input id="matDesc"  style="font-size:10px;width: 120px;height: 40px;background-color: #C9C9C9" disabled="true" type="text"><br>-->
+        <label class="dcp-label">机加二维码</label><input id="zxhbar" class="cls-attr-input" type="text"><br>
+        <input id="returnmsg"  style="width: 200px;height: 20px;" disabled="true" type="text">
+        <!--<label class="dcp-label">箱号状态</label><input id="zxhzt"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>-->
+        <!--<label class="dcp-label">物料编码</label><input id="matnr"  style="width: 120px;height: 20px;" disabled="true" type="text"><br>-->
+        <!--<label class="dcp-label">物料描述</label><textarea id="maktx" style="width: 120px;height: 35px;" disabled="true" rows="2"></textarea><br>-->
+        <!--&lt;!&ndash;<label class="dcp-label">报工数量</label><input id="yeild" class="cls-attr-input" disabled="true" type="number"><br>&ndash;&gt;-->
+        <!--<label class="dcp-label">账面数量</label><input id="num" class="cls-attr-input" type="number" disabled="true"><br>-->
+        <!--<label class="dcp-label">盘点数量</label><input id="pdnum" class="cls-attr-input" type="number"><br>-->
+    </div>
+
+    <div style="width: 220px;height: 30px;margin-top: 2px">
+        <div style="width:50px;height:20px;float: left;">
+            <button id="confirm2" style="width: auto;height: 27px" hidefocus="true" class="login-btn">确认</button>
+        </div>
+        <!--add furong.tang-->
+        <div></div>
+        <div style="width:50px;height:20px;float: right;">
+            <button id="cleanData" style="width: auto;height: 27px" hidefocus="true" class="login-btn">清空</button>
+        </div>
+        <!--add furong.tang-->
+    </div>
+</div>
+
+
+<!--消息界面-->
+<div id="msg-area">
+    <div>
+        <div id="msg1" style="font-size: 16px; line-height: 25px"></div>
+        <div id="msg2" style="font-size: 10px; text-align: center;line-height: 20px"></div>
+        <div id="msg3">
+            <button id="cancer" style="float: left;width: auto;background-color: white">取消</button>
+            <!--<button id="put" style="float: right;width: auto;background-color: white">确定</button>-->
+        </div>
+    </div>
+</div>
+
+<!--遮罩层-->
+<div id="mask2">
+</div>
+</body>
+</html>

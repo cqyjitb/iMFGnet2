@@ -181,7 +181,7 @@ function delDispatchValues() {
     document.getElementById("attr3").value = "";
     document.getElementById("attr4").value = "";
     document.getElementById("attr5").value = "";
-    document.getElementById("attr6").value = "";
+    // document.getElementById("attr6").value = "";
     document.getElementById("attr7").value = "";
     document.getElementById("attr8").value = "";
     document.getElementById("attr9").value = "";

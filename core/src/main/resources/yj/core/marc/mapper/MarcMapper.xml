@@ -45,8 +45,22 @@
         <result column="YZCBARF" property="yzcbarf" jdbcType="VARCHAR"/>
         <result column="ONLINE_UP_CAP" property="onLineUpCap" jdbcType="DECIMAL"/>
         <result column="ONLINE_DOWN_CAP" property="onLineDownCap" jdbcType="DECIMAL"/>
+        <result column="CUSTOMER" property="customer" jdbcType="VARCHAR"/>
+        <result column="SGQX_FLAG" property="sgqxFlag" jdbcType="VARCHAR"/>
+        <result column="UNIT_PRICE" property="unitPrice" jdbcType="DECIMAL"/>
     </resultMap>
-
+    <select id="queryByMarcDto" parameterType="yj.core.marc.dto.Marc" resultMap="BaseResultMap">
+        select * from sap_marc
+        <where>
+            1 = 1
+            <if test="werks != null">
+                and werks = #{werks}
+            </if>
+            <if test="matnr != null">
+                and matnr = #{matnr}
+            </if>
+        </where>
+    </select>
     <select id="queryByFileId" parameterType="java.lang.Long" resultType="java.lang.String">
         select file_name from sys_file
         <where>
@@ -146,10 +160,19 @@
         </if>
         <if test="zbtif != null">
             ,ZBTIF = #{zbtif}
-
+        </if>
+        <if test="customer != null">
+            ,CUSTOMER = #{customer}
+        </if>
+        <if test="sgqxFlag != null">
+            ,SGQX_FLAG = #{sgqxFlag}
+        </if>
+        <if test="unitPrice != null">
+            ,UNIT_PRICE = #{unitPrice}
         </if>
         <where>
             MATNR = #{matnr}
+            and WERKS = #{werks}
         </where>
     </update>
 </mapper>

@@ -1,5 +1,6 @@
 package yj.core.webservice_readbglog.components;
 
+import org.springframework.stereotype.Component;
 import yj.core.util.WebServerHelp;
 import yj.core.webservice_newbg.dto.DTBAOGONGReturnResult;
 import yj.core.webservice_readbglog.dto.ReadlogParam;
@@ -11,7 +12,7 @@ import yj.core.webservice_readbglog.sender.SIREADBGLOGSenderSynService;
 import javax.xml.namespace.QName;
 import java.net.URL;
 import java.util.Map;
-
+@Component
 public class ReadbglogWebsrviceUtil {
     private static final QName SERVICE_NAME = new QName("http://www.cq-yj.com/HAP/READBGLOG/Sender","SI_READBGLOG_Sender_SynService");
     public ReadbglogWebsrviceUtil(){

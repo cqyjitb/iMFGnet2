@@ -260,20 +260,20 @@
                 field:"lineId",
                 title:"产线组",
                 width:100,
-                template: function (dataItem) {
-                    return dataItem['lineId'] || ''
-                },
-                editor : function (container, options) {
-                    $('<input name="'+options.field+'"/>').appendTo(container).kendoLov($.extend(<@lov "LOV_CGROUP"/>,
-                        {
-                            query: function(e) {
-                                e.param['werks'] = options.model.werks;
-                                e.param['deptId'] = options.model.workshopId;
-                            },
-                            textField: 'groupName',
-                            model: options.model
-                        }));
-                },
+//                template: function (dataItem) {
+//                    return dataItem['lineId'] || ''
+//                },
+//                editor : function (container, options) {
+//                    $('<input name="'+options.field+'"/>').appendTo(container).kendoLov($.extend(<@lov "LOV_CGROUP"/>,
+//                        {
+//                            query: function(e) {
+//                                e.param['werks'] = options.model.werks;
+//                                e.param['deptId'] = options.model.workshopId;
+//                            },
+//                            textField: 'groupName',
+//                            model: options.model
+//                        }));
+//                },
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -285,20 +285,20 @@
                 field:"product",
                 title:"产品物料编码",
                 width:120,
-                hidden:true,
-                template: function (dataItem) {
-                    return dataItem['product'] || ''
-                },
-                editor : function (container, options) {
-                    $('<input name="'+options.field+'"/>').appendTo(container).kendoLov($.extend(<@lov "LOV_PRODUCT2"/>,
-                        {
-                            query: function(e) {
-                                e.param['lineId'] = options.model.lineId;
-                            },
-                            textField: 'kunnr',
-                            model: options.model
-                        }));
-                },
+                hidden:false,
+//                template: function (dataItem) {
+//                    return dataItem['product'] || ''
+//                },
+//                editor : function (container, options) {
+//                    $('<input name="'+options.field+'"/>').appendTo(container).kendoLov($.extend(<@lov "LOV_PRODUCT2"/>,
+//                        {
+//                            query: function(e) {
+//                                e.param['lineId'] = options.model.lineId;
+//                            },
+//                            textField: 'kunnr',
+//                            model: options.model
+//                        }));
+//                },
                 headerAttributes: {
                     style: "text-align: center;"
                 },
@@ -332,6 +332,39 @@
             {
                 field:"groupNameEn",
                 title:"产线组名称(英文)",
+                width:240,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"lineLeader",
+                title:"产线负责人",
+                width:240,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"lineLeaderEn",
+                title:"产线负责人(英文)",
+                width:240,
+                headerAttributes: {
+                    style: "text-align: center;"
+                },
+                attributes: {
+                    style: "text-align: center;"
+                }
+            },
+            {
+                field:"leaderPhone",
+                title:"产线负责人电话",
                 width:240,
                 headerAttributes: {
                     style: "text-align: center;"

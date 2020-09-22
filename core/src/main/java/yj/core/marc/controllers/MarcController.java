@@ -1,14 +1,13 @@
 package yj.core.marc.controllers;
 
-import org.springframework.stereotype.Controller;
-import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.core.IRequest;
+import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.system.dto.ResponseData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import yj.core.marc.dto.Marc;
 import yj.core.marc.service.IMarcService;
-import org.springframework.beans.factory.annotation.Autowired;
-import yj.core.wiplines.dto.Lines;
 import yj.kanb.marcres.dto.MarcRes;
 import yj.kanb.marcres.service.IMarcResService;
 
@@ -31,7 +30,7 @@ import java.util.List;
     public ResponseData query(Marc dto, @RequestParam(defaultValue = DEFAULT_PAGE) int page,
         @RequestParam(defaultValue = DEFAULT_PAGE_SIZE) int pageSize, HttpServletRequest request) {
         IRequest requestContext = createRequestContext(request);
-        return new ResponseData(service.select(requestContext,dto,page,pageSize));
+        return new ResponseData(service.queryByMarcDto(requestContext,dto,page,pageSize));
     }
 
     @RequestMapping(value = "/sap/marc/submit")

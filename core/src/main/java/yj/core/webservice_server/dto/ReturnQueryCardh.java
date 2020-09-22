@@ -1,26 +1,15 @@
 package yj.core.webservice_server.dto;
 
-import net.sf.json.JSONArray;
-import yj.core.cardh.dto.Cardh;
-import yj.core.cardt.dto.Cardt;
+import yj.core.cardh.dto.CardhRec;
 
 import java.util.List;
 
 public class ReturnQueryCardh {
 
-    private String syncdate;
+
     private String flag;
     private String message;
-    private JSONArray cardh;
-    private JSONArray cardt;
-
-    public String getSyncdate() {
-        return syncdate;
-    }
-
-    public void setSyncdate(String syncdate) {
-        this.syncdate = syncdate;
-    }
+    private List<CardhRec> item;
 
     public String getFlag() {
         return flag;
@@ -38,21 +27,29 @@ public class ReturnQueryCardh {
         this.message = message;
     }
 
-    public JSONArray getCardh() {
-        return cardh;
+    public List<CardhRec> getItem() {
+        return item;
     }
 
-    public void setCardh(JSONArray cardh) {
-        this.cardh = cardh;
+    public void setItem(List<CardhRec> item) {
+        this.item = item;
     }
 
-    public JSONArray getCardt() {
-        return cardt;
-    }
-
-    public void setCardt(JSONArray cardt) {
-        this.cardt = cardt;
-    }
+    //    public JSONArray getCardh() {
+//        return cardh;
+//    }
+//
+//    public void setCardh(JSONArray cardh) {
+//        this.cardh = cardh;
+//    }
+//
+//    public JSONArray getCardt() {
+//        return cardt;
+//    }
+//
+//    public void setCardt(JSONArray cardt) {
+//        this.cardt = cardt;
+//    }
 
     //    public List<Cardt> getCardts() {
 //        return cardts;

@@ -53,12 +53,17 @@
         <!--<property name="minEvictableIdleTimeMillis" value="${jdbc.minEvictableIdleTimeMillis}"/>-->
     </bean>
 
+    <bean id="mesDataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+        <property name="jndiName" value="java:comp/env/jdbc/mes_prd"/>
+    </bean>
+
     <bean id="dataSource" class="com.hand.hap.comm.DynamicDataSource"><!-- 这里写选择数据源的类地址 下面跟着给出-->
         <property name="defaultTargetDataSource" ref="mainDataSource"/><!-- 设置默认为此mySqlDataSource数据源-->
         <property name="targetDataSources">
             <map key-type="java.lang.String">
                 <entry key="mySqlDataSource" value-ref="mySqlDataSource"/>
                 <entry key="mainDataSource" value-ref="mainDataSource"/>
+                <entry key="mesDataSource" value-ref="mesDataSource"/>
             </map>
         </property>
     </bean>

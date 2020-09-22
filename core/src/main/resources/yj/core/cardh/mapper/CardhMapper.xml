@@ -99,6 +99,19 @@
 
     </select>
 
+    <select id="selectByAufnrOrZpgdbar" parameterType="java.lang.String" resultMap="BaseResultMap">
+        select * from sap_cardh
+        <where>
+            1 = 1
+            <if test="aufnr != null">
+                and aufnr = #{aufnr}
+            </if>
+            <if test="zpgdbar != null">
+                and zpgdbar = #{zpgdbar}
+            </if>
+        </where>
+    </select>
+
     <update id="updateCardhStatus" parameterType="yj.core.cardh.dto.Cardh">
         UPDATE sap_cardh SET STATUS = #{status},STATUS2 = #{status2}
                           <if test="fprddat != null">

@@ -53,41 +53,45 @@ public class QueryXhcardWebserviceUtil {
         List<Xhcard> list = new ArrayList<>();
         DTQUERYXHCARDRes dtqueryxhcardRes = port.siQUERYXHCARDSenderSyn(dtqueryxhcardReq);
         if (dtqueryxhcardRes.getXHCARD().size() > 0){
-//            for (int i = 0; i < dtqueryxhcardRes.getXHCARD().size(); i++) {
-//                Xhcard xhcard = new Xhcard();
-//                xhcard.setAufnr(dtqueryxhcardRes.getXHCARD().get(i).getAUFNR().trim());
-//                xhcard.setZxhnum(dtqueryxhcardRes.getXHCARD().get(i).getZXHNUM());
-//                xhcard.setMatnr(dtqueryxhcardRes.getXHCARD().get(i).getMATNR());
-//                xhcard.setWerks(dtqueryxhcardRes.getXHCARD().get(i).getWERKS());
-//                xhcard.setCharg(dtqueryxhcardRes.getXHCARD().get(i).getCHARG());
-//                xhcard.setChargkc(dtqueryxhcardRes.getXHCARD().get(i).getCHARGKC());
-//                xhcard.setLgort(dtqueryxhcardRes.getXHCARD().get(i).getLGORT());
-//                xhcard.setMeins(dtqueryxhcardRes.getXHCARD().get(i).getMEINS());
-//                double menge = dtqueryxhcardRes.getXHCARD().get(i).getMENGE();
-//                xhcard.setMenge(String.valueOf(menge));
-//                //xhcard.setMenge(dtqueryxhcardRes.getXHCARD().getMENGE());
-//                xhcard.setZbqbd(dtqueryxhcardRes.getXHCARD().get(i).getZBQBD());
-//                xhcard.setZjyy(dtqueryxhcardRes.getXHCARD().get(i).getZJYY());
-//                xhcard.setZmnum(dtqueryxhcardRes.getXHCARD().get(i).getZMNUM());
-//                xhcard.setZscbc(dtqueryxhcardRes.getXHCARD().get(i).getZSCBC());
-//                xhcard.setZsctptm(dtqueryxhcardRes.getXHCARD().get(i).getZSCTPTM());
-//                xhcard.setZscx(dtqueryxhcardRes.getXHCARD().get(i).getZSCX());
-//                xhcard.setZtxt(dtqueryxhcardRes.getXHCARD().get(i).getZTXT());
-//                xhcard.setZxhbar(dtqueryxhcardRes.getXHCARD().get(i).getZXHBAR());
-//                xhcard.setZxhwz(dtqueryxhcardRes.getXHCARD().get(i).getZXHWZ());
-//                xhcard.setZxhzt(dtqueryxhcardRes.getXHCARD().get(i).getZXHZT());
-//                xhcard.setZxhzt2(dtqueryxhcardRes.getXHCARD().get(i).getZXHZT2());
-//                list.add(xhcard);
-//
-//            }
+            for (int i = 0; i < dtqueryxhcardRes.getXHCARD().size(); i++) {
+                Xhcard xhcard = new Xhcard();
+                xhcard.setAufnr(dtqueryxhcardRes.getXHCARD().get(i).getAUFNR().trim());
+                xhcard.setZxhnum(dtqueryxhcardRes.getXHCARD().get(i).getZXHNUM());
+                xhcard.setMatnr(dtqueryxhcardRes.getXHCARD().get(i).getMATNR());
+                xhcard.setWerks(dtqueryxhcardRes.getXHCARD().get(i).getWERKS());
+                xhcard.setCharg(dtqueryxhcardRes.getXHCARD().get(i).getCHARG());
+                xhcard.setChargkc(dtqueryxhcardRes.getXHCARD().get(i).getCHARGKC());
+                xhcard.setLgort(dtqueryxhcardRes.getXHCARD().get(i).getLGORT());
+                xhcard.setMeins(dtqueryxhcardRes.getXHCARD().get(i).getMEINS());
+                double menge = dtqueryxhcardRes.getXHCARD().get(i).getMENGE();
+                xhcard.setMenge(String.valueOf(menge));
+                //xhcard.setMenge(dtqueryxhcardRes.getXHCARD().getMENGE());
+                xhcard.setZbqbd(dtqueryxhcardRes.getXHCARD().get(i).getZBQBD());
+                xhcard.setZjyy(dtqueryxhcardRes.getXHCARD().get(i).getZJYY());
+                xhcard.setZmnum(dtqueryxhcardRes.getXHCARD().get(i).getZMNUM());
+                xhcard.setZscbc(dtqueryxhcardRes.getXHCARD().get(i).getZSCBC());
+                xhcard.setZsctptm(dtqueryxhcardRes.getXHCARD().get(i).getZSCTPTM());
+                xhcard.setZscx(dtqueryxhcardRes.getXHCARD().get(i).getZSCX());
+                xhcard.setZtxt(dtqueryxhcardRes.getXHCARD().get(i).getZTXT());
+                xhcard.setZxhbar(dtqueryxhcardRes.getXHCARD().get(i).getZXHBAR());
+                xhcard.setZxhwz(dtqueryxhcardRes.getXHCARD().get(i).getZXHWZ());
+                xhcard.setZxhzt(dtqueryxhcardRes.getXHCARD().get(i).getZXHZT());
+                xhcard.setZxhzt2(dtqueryxhcardRes.getXHCARD().get(i).getZXHZT2());
+                list.add(xhcard);
+
+            }
             rs.setMSGTY("S");
             rs.setMESSAGE("箱号已经同步更新！");
+            rs.setMSGV1(list.get(0).getMenge());
+            rs.setMSGV2(list.get(0).getZxhzt());
+            rs.setMSGV3(list.get(0).getAufnr());
 //            IXhcardService xhcardService = new XhcardServiceImpl();
 //            xhcardService.updateXhcardFromSap(list);
 
         }else{
             rs.setMSGTY("S");
             rs.setMESSAGE("未查找到符合条件的箱号！");
+
         }
         return rs;
     }

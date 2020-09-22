@@ -1,17 +1,16 @@
 package yj.core.marc.service.impl;
 
+import com.github.pagehelper.PageHelper;
+import com.hand.hap.core.IRequest;
 import com.hand.hap.system.service.impl.BaseServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import yj.core.marc.dto.Marc;
 import yj.core.marc.mapper.MarcMapper;
 import yj.core.marc.service.IMarcService;
-import org.springframework.transaction.annotation.Transactional;
-import yj.kanb.marcres.dto.MarcRes;
-import yj.kanb.marcres.mapper.MarcResMapper;
 
 import java.util.List;
-import java.util.Map;
 
 @Service
 @Transactional
@@ -56,5 +55,18 @@ public class MarcServiceImpl extends BaseServiceImpl<Marc> implements IMarcServi
     @Override
     public String queryByFileId(Long fileId) {
         return marcMapper.queryByFileId(fileId);
+    }
+
+    @Override
+    public List<Marc> queryByMarc(IRequest requestContext, String werks, String matnr, int page, int pageSize) {
+        PageHelper.startPage(page, pageSize);
+        marcMapper.queryByMarc(werks,matnr);
+        return null;
+    }
+
+    @Override
+    public List<Marc> queryByMarcDto(IRequest requestContext, Marc dto, int page, int pageSize) {
+        PageHelper.startPage(page, pageSize);
+        return marcMapper.queryByMarcDto(dto);
     }
 }

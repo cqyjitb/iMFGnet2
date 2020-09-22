@@ -17,9 +17,11 @@ public class DataSourceExchange {
             System.out.println(DataSourceEnum.mySqlDataSource.getKey());
             DataSourceHolder.setDataSources(DataSourceEnum.mySqlDataSource.getKey());
            // System.out.println("数据源："+DataSourceEnum.mySqlDataSource.getKey());
-        } else {
+        } else if("core".equals(packageName)){
             DataSourceHolder.setDataSources(DataSourceEnum.mainDataSource.getKey());
            // System.out.println("数据源："+DataSourceEnum.mainDataSource.getKey());
+        } else if("mes".equals(packageName)){
+            DataSourceHolder.setDataSources(DataSourceEnum.mesDataSource.getKey());
         }
     }
 

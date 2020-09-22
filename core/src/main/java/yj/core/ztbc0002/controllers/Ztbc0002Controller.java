@@ -73,6 +73,7 @@ public class Ztbc0002Controller extends BaseController {
             ResponseData rs = new ResponseData();
             rs.setSuccess(false);
             rs.setMessage(res.getMESSAGE());
+
             return rs;
         }
 
@@ -99,13 +100,12 @@ public class Ztbc0002Controller extends BaseController {
             } else {
                 Xhcard xhctmp = new Xhcard();
                 xhctmp.setZxhbar(ztbc0002s.get(i).getZxhbar());
-                xhctmp.setAufnr(orderno);
-                Xhcard xhcard = xhcardService.selectByBacode(ztbc0002s.get(i).getZxhbar());
-                if (!listaufnrstr.contains(xhcard.getAufnr().trim())) {
-                    listaufnrstr.add(xhcard.getAufnr().trim());
-                }
+                xhctmp.setAufnr(queryXhcardReturnResult.getMSGV3());
+                xhctmp.setMenge(queryXhcardReturnResult.getMSGV1());
+                xhctmp.setZxhzt(queryXhcardReturnResult.getMSGV2());
 
-                listtmp.add(xhcard);
+
+                listtmp.add(xhctmp);
 
 
             }
@@ -127,7 +127,6 @@ public class Ztbc0002Controller extends BaseController {
 
         }
         ztbc0002.setMenge(sum);
-
         ResponseData rs = new ResponseData();
         rs.setSuccess(true);
         List list = new ArrayList();

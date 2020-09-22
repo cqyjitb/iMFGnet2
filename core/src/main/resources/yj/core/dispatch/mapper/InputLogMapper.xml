@@ -323,7 +323,6 @@
             AND r.is_reversed ='0'
             AND l.tran_type = '0'
             AND l.msgty = 'S'
-            and il.attr15 = ''
             <if test="plant != null">
                  and il.plant = #{plant}
             </if>
@@ -367,6 +366,110 @@
             </if>
             <if test="postingDateBefore != null">
                 and #{postingDateBefore} > il.posting_date
+            </if>
+            <if test="attr15 != null">
+                and il.attr15 = #{attr15}
+            </if>
+            <!--update furong.tang-->
+        </where>
+
+    </select>
+
+    <select id="queryAllWriteOffByAufnr" resultMap="BaseResultMap" parameterType="yj.core.dispatch.dto.InputLog">
+        SELECT
+        DISTINCT
+        il.id,
+        il.barcode,
+        il.dispatch,
+        il.orderno,
+        il.operation,
+        il.CREATION_DATE,
+        il.posting_date,
+        il.yeild,
+        il.work_scrap,
+        il.row_scrap,
+        il.classgrp,
+        il.model_no,
+        il.line,
+        il.plant,
+        il.CREATED_BY,
+        il.attr1,
+        il.attr2,
+        il.attr3,
+        il.attr4,
+        il.attr5,
+        il.attr6,
+        il.attr7,
+        il.attr8,
+        il.attr9,
+        il.attr10,
+        il.attr11,
+        il.attr12,
+        il.attr13,
+        il.attr14,
+        il.attr15,
+        r.mat_desc,
+        r.material,
+        r.confirmation_no,
+        r.confirmation_pos,
+        u.user_name,
+        r.operation_desc,
+        r.fevor,
+        r.fevor_txt
+        FROM confirmation_input_log il,confirmation_result r,sys_user u,confirmation_log l
+        <where>
+            il.id= r.input_id
+            AND il.CREATED_BY = u.user_id
+            AND l.ref_id = il.id
+            AND r.is_reversed ='0'
+            AND l.tran_type = '0'
+            AND l.msgty = 'S'
+            <if test="plant != null">
+                and il.plant = #{plant}
+            </if>
+            <if test="orderno != null">
+                and il.orderno = #{orderno}
+            </if>
+            <if test="operation != null">
+                and il.operation = #{operation}
+            </if>
+            <if test="material != null">
+                and r.material = #{material}
+            </if>
+            <if test="dispatch != null">
+                and il.dispatch = #{dispatch}
+            </if>
+            <if test="fevor != null">
+                and r.fevor = #{fevor}
+            </if>
+            <!--
+            <if test="creatDateAfter != null and creatDateBefore != null">
+                and il.CREATION_DATE  >=  #{creatDateAfter}  and  #{creatDateBefore} > il.CREATION_DATE
+            </if>
+            -->
+            <!--update furong.tang-->
+            <if test="creatDateAfter != null">
+                and il.CREATION_DATE  >=  #{creatDateAfter}
+            </if>
+            <if test="creatDateBefore != null">
+                and #{creatDateBefore} > il.CREATION_DATE
+            </if>
+            <!--update furong.tang-->
+
+            <!--
+            <if test="postingDateAfter != null and postingDateBefore != null">
+                and  il.posting_date  >=  #{postingDateAfter} and #{postingDateBefore} > il.posting_date
+            </if>
+            -->
+            <!--update furong.tang-->
+            <if test="postingDateAfter != null">
+                and  il.posting_date  >=  #{postingDateAfter}
+            </if>
+            <if test="postingDateBefore != null">
+                and #{postingDateBefore} > il.posting_date
+            </if>
+            <if test="attr15 != null">
+                and il.attr15 = #{attr15}
             </if>
             <!--update furong.tang-->
         </where>
@@ -495,6 +598,9 @@
             </if>
             <if test="attr7 != null">
                 and il.attr7 = #{attr7}
+            </if>
+            <if test="attr15 != null">
+                and il.attr15 = #{attr15}
             </if>
             <!--add furong.tang-->
         </where>

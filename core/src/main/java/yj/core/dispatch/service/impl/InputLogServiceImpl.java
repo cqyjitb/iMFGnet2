@@ -29,6 +29,9 @@ import yj.core.webservice_newbg.dto.DTBAOGONGParameters;
 import yj.core.webservice_newbg.dto.DTBAOGONGParametersitem;
 import yj.core.webservice_newbg.dto.DTBAOGONGReturnResult;
 import yj.core.webservice_queryXhcard.components.QueryXhcardWebserviceUtil;
+import yj.core.webservice_readzpgdbar.components.ReadZpgdbarWebServiceUtil;
+import yj.core.webservice_readzpgdbar.dto.ReadZpgdbarParam;
+import yj.core.webservice_readzpgdbar.dto.ReadZpgdbarResult;
 import yj.core.webservice_readztpbar.components.ReadZtpbarWebserviceUtil;
 import yj.core.xhcard.mapper.XhcardMapper;
 
@@ -65,7 +68,8 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
     private OutsrgissueMapper outsrgissueMapper;
     @Autowired
     private CardhlockMapper cardhlockMapper;
-
+    @Autowired
+    private ReadZpgdbarWebServiceUtil readZpgdbarWebServiceUtil;
     @Autowired
     private ReadZtpbarWebserviceUtil readZtpbarWebserviceUtil;
     @Autowired
@@ -73,6 +77,12 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
     @Autowired
     private QueryXhcardWebserviceUtil queryXhcardWebserviceUtil;
     DateFormat df = new SimpleDateFormat("yyyyMMdd");
+
+
+    @Override
+    public ReadZpgdbarResult checkZpgdbarFromSap(ReadZpgdbarParam param) {
+        return readZpgdbarWebServiceUtil.receiveConfirmation(param);
+    }
 
     //报工冲销页面数据查询
     @Override
@@ -544,6 +554,7 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         param.setAUART(inputLog.getAuart());
         param.setZPRTP(inputLog.getZprtp());
         param.setZTPBAR(inputLog.getZtpbar());
+        param.setEmployeeCode(inputLog.getUserName());
 
         DTBAOGONGParametersitem paramitem = new DTBAOGONGParametersitem();
         List<DTBAOGONGParametersitem> list = new ArrayList<DTBAOGONGParametersitem>();
@@ -681,7 +692,7 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
             param.setZPRTP("");
         }
         param.setZTPBAR("");
-
+        param.setEmployeeCode(inputLog.getUserName());
         DTBAOGONGReturnResult returnResult = webserviceUtilNew.receiveConfirmation(param, list);
         Date inDate = new Date();
         inputLog.setCxuuid(uuidstr);
@@ -740,10 +751,11 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
         param.setATTR12(inputLog.getAttr12() == null ? "" : inputLog.getAttr12());
         param.setATTR13(inputLog.getAttr13() == null ? "" : inputLog.getAttr13());
         param.setATTR14(inputLog.getAttr14() == null ? "" : inputLog.getAttr14());
-        param.setATTR15(inputLog.getAttr15() == null ? "" : inputLog.getAttr15());
-        param.setZTPBAR("");
+        param.setATTR15("");
+        param.setZTPBAR(inputLog.getAttr15() == null ? "" : inputLog.getAttr15());
         param.setUUID(uuidstr);
         param.setUSERNAME(inputLog.getUserName());
+
 
         DTPP001ReturnResult returnResult = webserviceUtil.receiveConfirmation(param);
         Log log = new Log();
@@ -788,5 +800,48 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
     @Override
     public InputLog querySumInputlogForShotnum(String werks, String matnr, String arbpl, String attr6, String attr4) {
         return inputLogMapper.querySumInputlogForShotnum(werks,matnr,arbpl,attr6,attr4);
+    }
+
+    @Override
+    public Double queryAllWriteOffByTpbar(String tpbar) {
+        Double sum = 0D;
+        InputLog inputLog = new InputLog();
+        inputLog.setAttr15(tpbar);
+        List<InputLog> list = inputLogMapper.queryAllWriteOff(inputLog);
+        if (list.size() > 0){
+            for(int i=0;i<list.size();i++){
+                sum = sum + list.get(i).getYeild();
+//                sum = sum - list.get(i).getWorkScrap();
+//                sum = sum - list.get(i).getRowScrap();
+            }
+        }
+        return sum;
+    }
+
+    @Override
+    public Double queryAllWriteOffByZpgdbar(String barcode) {
+        Double sum = 0D;
+        InputLog inputLog = new InputLog();
+        inputLog.setDispatch(barcode);
+        inputLog.setAttr15("");
+        List<InputLog> list = inputLogMapper.queryAllWriteOff(inputLog);
+        if (list.size() > 0){
+            for(int i=0;i<list.size();i++){
+                sum = sum + list.get(i).getYeild();
+                sum = sum - list.get(i).getWorkScrap();
+                sum = sum - list.get(i).getRowScrap();
+            }
+        }
+        return sum;
+    }
+
+    @Override
+    public List<InputLog> queryExitInputLogSuccess(InputLog inputLog) {
+        return inputLogMapper.queryAllWriteOff(inputLog);
+    }
+
+    @Override
+    public List<InputLog> queryExitInputLogSuccessByAufnr(InputLog inputLog) {
+        return inputLogMapper.queryAllWriteOffByAufnr(inputLog);
     }
 }

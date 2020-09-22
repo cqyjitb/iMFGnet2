@@ -1,6 +1,5 @@
 package yj.core.dispatch.controllers;
 
-import com.hand.hap.account.dto.User;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.system.dto.ResponseData;
@@ -33,16 +32,21 @@ import yj.core.outsrgrfe.dto.Outsrgrfe;
 import yj.core.outsrgrfe.service.IOutsrgrfeService;
 import yj.core.pandian.dto.Pandian;
 import yj.core.pandian.service.IPandianService;
+import yj.core.sysuser.service.ISYSUserService;
 import yj.core.webserver_outsrgreceipt.components.SyncOutsrgreceiptWebserviceUtil;
 import yj.core.webserver_outsrgreceipt.dto.DTOUTSRGRECEIPTHead;
 import yj.core.webserver_outsrgreceipt.dto.DTOUTSRGRECEIPTReturn;
 import yj.core.webserver_outsrgreceipt.dto.DTOUTSRGRECEIPTitem;
 import yj.core.webservice.dto.DTPP001ReturnResult;
+import yj.core.webservice_createtp.components.CreateTpWebserviceUtil;
+import yj.core.webservice_createtp.dto.DTPARAM;
 import yj.core.webservice_newbg.dto.DTBAOGONGReturnResult;
-import yj.core.webservice_queryXhcard.components.QueryXhcardWebserviceUtil;
-import yj.core.webservice_readztpbar.components.ReadZtpbarWebserviceUtil;
+import yj.core.webservice_readzpgdbar.dto.ReadZpgdbarParam;
+import yj.core.webservice_readzpgdbar.dto.ReadZpgdbarResult;
 import yj.core.xhcard.dto.Xhcard;
 import yj.core.xhcard.service.IXhcardService;
+import yj.core.ztbc0002.dto.Ztbc0002;
+import yj.core.ztbc0002.service.IZtbc0002Service;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -96,10 +100,41 @@ public class InputLogController extends BaseController {
     @Autowired
     private IOutsrgreceiptheadService outsrgreceiptheadService;
     @Autowired
-    private ReadZtpbarWebserviceUtil readZtpbarWebserviceUtil;
+    private ISYSUserService userService;
     @Autowired
-    private QueryXhcardWebserviceUtil queryXhcardWebserviceUtil;
+    private IZtbc0002Service ztbc0002Service;
 
+    @RequestMapping(value = {"/confirmation/input/log/checkZpgdbar"}, method = {RequestMethod.GET})
+    @ResponseBody
+    public ResponseData checkZpgdbarFromSap(HttpServletRequest request){
+        ResponseData rs = new ResponseData();
+        String zpgdbar = request.getParameter("zpgdbar");
+        String vornr = request.getParameter("vornr");
+        ReadZpgdbarResult rz = new ReadZpgdbarResult();
+        ReadZpgdbarParam rp = new ReadZpgdbarParam();
+        rp.setVornr(vornr);
+        rp.setZpgdbar(zpgdbar);
+        rz = service.checkZpgdbarFromSap(rp);
+        if (rz.getTYPE().equals("S")){
+            rs.setCode("S");
+            rs.setMessage(rz.getMESSAGE());
+            rs.setSuccess(true);
+            return  rs;
+        }else if (rz.getTYPE().equals("E")){
+            rs.setCode("E");
+            rs.setMessage(rz.getMESSAGE());
+            rs.setSuccess(true);
+            return rs;
+        }else{
+            rs.setCode("E");
+            rs.setMessage(rz.getMESSAGE());
+            rs.setSuccess(false);
+            return rs;
+        }
+
+
+
+    }
 
     /*
     *报功日志界面查询
@@ -435,9 +470,11 @@ public class InputLogController extends BaseController {
                     orderno = request.getParameter("c");
                     operation = request.getParameter("d");
                     ztpbar = request.getParameter("z");
+
+
                     yeild = request.getParameter("e");
-                    workScrap = "0";
-                    rowScrap = "0";
+                    workScrap = request.getParameter("f");
+                    rowScrap = request.getParameter("g");
                     classgrp = request.getParameter("h");
                     line = request.getParameter("i");
                     modelNo = request.getParameter("j");
@@ -494,11 +531,41 @@ public class InputLogController extends BaseController {
                     inputLog.setAttr12(attr12);
                     inputLog.setAttr13(attr13);
                     inputLog.setAttr14(attr14);
-                    inputLog.setAttr15(attr15);
+                    inputLog.setAttr15(ztpbar);
                     inputLog.setZtpbar(ztpbar);
+                    inputLog.setZprtp("1");
                     inputLog.setUserName(userName);
                     List<DTPP001ReturnResult> list = new ArrayList<>();
+                    //List<InputLog> listtmp = service.queryExitInputLogSuccess(inputLog);
+                    InputLog inputLogParam = new InputLog();
+                    inputLogParam.setOrderno(request.getParameter("c"));
+                    inputLogParam.setAttr15(request.getParameter("z"));
+                    List<InputLog> listtmp = service.queryExitInputLogSuccessByAufnr(inputLogParam);
+                    if (listtmp.size() > 0){
+                        ResponseData rs = new ResponseData();
+                        rs.setMessage("该托盘条码已报工！不能重复报工！");
+                        rs.setSuccess(false);
+                        return rs;
+                    }
                     DTPP001ReturnResult returnResult = service.inputDispatch(inputLog);
+                    if ( returnResult.getMSGTY().equals("S")){
+                        Double hgsum = service.queryAllWriteOffByTpbar(ztpbar);
+                        //Double bfsum = service.queryAllWriteOffByZpgdbar(barcode);
+                        Ztbc0002 ztbc0002 = ztbc0002Service.queryTpBarFromWS(ztpbar);
+                        if (ztbc0002.getMenge().equals(hgsum) ){
+                            CreateTpWebserviceUtil createTpWebserviceUtil = new CreateTpWebserviceUtil();
+                            DTPARAM dtparam = new DTPARAM();
+                            dtparam.setZTPBAR(ztpbar);
+                            dtparam.setZBQBD("X");
+                            dtparam.setWERKS("");
+                            dtparam.setDATUM("");
+                            dtparam.setMATNR("");
+                            dtparam.setMENGE("");
+                            dtparam.setZTXT2("");
+                            dtparam.setZMNUM("");
+                            createTpWebserviceUtil.receiveConfirmation(dtparam);
+                        }
+                    }
                     list.add(returnResult);
                     return new ResponseData(list);
         }
@@ -1051,7 +1118,6 @@ public class InputLogController extends BaseController {
         System.out.println(request.getMethod() + "********************************");
         InputLog inputLog = new InputLog();
         System.out.println(request.getParameter("a"));
-
         String createdBy1 = "" + request.getSession().getAttribute("userId");
         System.out.println(createdBy1);
         inputLog.setCreated_by(createdBy1);
@@ -1135,7 +1201,7 @@ public class InputLogController extends BaseController {
         inputLog.setAttr13(attr13);
         inputLog.setAttr14(attr14);
         inputLog.setAttr15(attr15);
-        User user = new User();
+
         inputLog.setUserName(userName);
 
 
@@ -1335,10 +1401,40 @@ public class InputLogController extends BaseController {
         cardh = cardhService.selectByBarcode(inputLog.getDispatch());
         listcardhst = cardhstService.selectAllActive(inputLog.getDispatch());
         if (cardh == null) {
+            String ztpbar = inputLog.getAttr15();
+            if (!ztpbar.equals("")){
+                Ztbc0002 ztbc0002 = ztbc0002Service.queryTpBarFromWS(ztpbar);
+                if (ztbc0002.getZtpzt().equals("4") || ztbc0002.getZtpzt().equals("7")){
+                    ResponseData rs = new ResponseData();
+                    rs.setSuccess(false);
+                    rs.setMessage("托盘已入库，不允许冲销！");
+                    return rs;
+                }else if(ztbc0002.getZtpzt().equals("9")){
+                    ResponseData rs = new ResponseData();
+                    rs.setSuccess(false);
+                    rs.setMessage("托盘码已作废！");
+                    return rs;
+                }
+            }
             List<DTPP001ReturnResult> list = new ArrayList<>();
+            inputLog.setZtpbar(inputLog.getAttr15());
             DTPP001ReturnResult returnResult = service.writeOffDispatch(inputLog);
+            if (!ztpbar.equals("") && returnResult.getMSGTY().equals("S")){
+                CreateTpWebserviceUtil createTpWebserviceUtil = new CreateTpWebserviceUtil();
+                DTPARAM dtparam = new DTPARAM();
+                dtparam.setZTPBAR(ztpbar);
+                dtparam.setZBQBD("");
+                dtparam.setWERKS("");
+                dtparam.setDATUM("");
+                dtparam.setMATNR("");
+                dtparam.setMENGE("");
+                dtparam.setZTXT2("");
+                dtparam.setZMNUM("");
+                createTpWebserviceUtil.receiveConfirmation(dtparam);
+            }
             list.add(returnResult);
             return new ResponseData(list);
+
         } else {
 //            if (inputLog.getAttr15().equals("5")) {
 //                ResponseData rs = new ResponseData();

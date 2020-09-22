@@ -32,5 +32,7 @@ public interface MarcMapper extends Mapper<Marc>{
      */
     List<Marc> queryByMarc(@Param("werks") String werks,@Param("matnr") String matnr);
 
+    List<Marc> queryByMarcDto(Marc dto);
+
     String queryByFileId(Long fileId);
 }

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.mes.oee.mapper.OeeLineDataMapper">
+    <resultMap id="BaseResultMap" type="yj.mes.oee.dto.OeeLineData">
+        <result column="company_code" property="companyCode" jdbcType="VARCHAR"/>
+        <result column="company_name" property="companyName" jdbcType="VARCHAR"/>
+        <result column="warehouse_code" property="warehouseCode" jdbcType="VARCHAR"/>
+        <result column="warehouse_name" property="warehouseName" jdbcType="VARCHAR"/>
+        <result column="line_code" property="lineCode" jdbcType="VARCHAR"/>
+        <result column="line_name" property="lineName" jdbcType="VARCHAR"/>
+        <result column="material_code" property="materialCode" jdbcType="DECIMAL"/>
+        <result column="material_name" property="materialName" jdbcType="DECIMAL"/>
+        <result column="shift_date" property="shiftDate" jdbcType="DECIMAL"/>
+        <result column="shift_id" property="shiftId" jdbcType="VARCHAR"/>
+        <result column="shift_name" property="shiftName" jdbcType="VARCHAR"/>
+        <result column="work_team" property="workTeam" jdbcType="VARCHAR"/>
+        <result column="shift_begin_time" property="shiftBeginTime" jdbcType="VARCHAR"/>
+        <result column="shift_end_time" property="shiftEndTime" jdbcType="VARCHAR"/>
+        <result column="plan_work_times" property="planWorkTimes" jdbcType="VARCHAR"/>
+        <result column="real_work_times" property="realWorkTimes" jdbcType="VARCHAR"/>
+        <result column="stop_times" property="stopTimes" jdbcType="DECIMAL"/>
+        <result column="plan_qty" property="planQty" jdbcType="DECIMAL"/>
+        <result column="total_qty" property="totalQty" jdbcType="DECIMAL"/>
+        <result column="qualified_qty" property="qualifiedQty" jdbcType="DECIMAL"/>
+        <result column="cycle_times" property="cycleTimes" jdbcType="DECIMAL"/>
+        <result column="user_cn_name" property="userCnname" jdbcType="VARCHAR"/>
+        <result column="user_en_name" property="userEnname" jdbcType="VARCHAR"/>
+        <result column="telphone_no" property="telphoneNo" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="queryOeeDataByLineCode" resultMap="BaseResultMap" parameterType="java.lang.String">
+        select * from tb_oee_line_data_jj_realtime
+        <where>
+            1 = 1
+            <if test="companyCode != null">
+                and company_code = #{companyCode}
+            </if>
+            <if test="warehouseCode != null">
+                and warehouse_code = #{warehouseCode}
+            </if>
+            <if test="lineCode != null">
+                and line_code = #{lineCode}
+            </if>
+
+        </where>
+    </select>
+</mapper>
