@@ -32,7 +32,7 @@
     <select id="queryOeeDataByLineCode" resultMap="BaseResultMap" parameterType="java.lang.String">
         select * from tb_oee_line_data_jj_realtime
         <where>
-            1 = 1
+            shift_id != ''
             <if test="companyCode != null">
                 and company_code = #{companyCode}
             </if>
@@ -42,7 +42,6 @@
             <if test="lineCode != null">
                 and line_code = #{lineCode}
             </if>
-
         </where>
     </select>
 </mapper>

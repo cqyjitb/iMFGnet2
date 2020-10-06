@@ -103,13 +103,13 @@ public class KanbGetDataJobV3 extends AbstractJob {
                             }
 
                             viewdatatmp.setJdcqqty(list.get(j).getQualifiedQty() - Math.rint(sjtim / list.get(j).getCycleTimes()));//进度差缺数量
-                            viewdatatmp.setOeeRate(list.get(j).getQualifiedQty().doubleValue() * list.get(j).getCycleTimes().doubleValue() / sjtim * 100 ) ;
+                            //viewdatatmp.setOeeRate(list.get(j).getQualifiedQty().doubleValue() * list.get(j).getCycleTimes().doubleValue() / sjtim * 100 ) ;
                             if ((list.get(j).getTotalQty() - viewdatatmp.getJdcqqty()) != 0){
                                 viewdatatmp.setInsufqty(list.get(j).getTotalQty().doubleValue() / ( list.get(j).getTotalQty().doubleValue() - viewdatatmp.getJdcqqty()) * 100 );
                             }else{
                                 viewdatatmp.setInsufqty(0D);
                             }
-
+                            viewdatatmp.setOeeRate(viewdatatmp.getInsufqty() * viewdatatmp.getQcRate());
                             viewdatatmp.setLastUpdateDate(new Date());
                             viewdatatmp.setLastUpdatedBy(10001L);
                             viewdataschemalineService.updateforKanb(viewdatatmp);
@@ -156,13 +156,13 @@ public class KanbGetDataJobV3 extends AbstractJob {
                             }
 
                             viewdataschemaline.setJdcqqty(list.get(j).getQualifiedQty() - Math.rint(sjtim / list.get(j).getCycleTimes()));//进度差缺数量
-                            viewdataschemaline.setOeeRate(list.get(j).getQualifiedQty().doubleValue() * list.get(j).getCycleTimes().doubleValue() / sjtim * 100 ) ;
+                            //viewdataschemaline.setOeeRate(list.get(j).getQualifiedQty().doubleValue() * list.get(j).getCycleTimes().doubleValue() / sjtim * 100 ) ;
                             if ((list.get(j).getTotalQty() - viewdataschemaline.getJdcqqty()) != 0){
                                 viewdataschemaline.setInsufqty(list.get(j).getTotalQty() / ( list.get(j).getTotalQty() - viewdataschemaline.getJdcqqty()) * 100 );
                             }else{
                                 viewdataschemaline.setInsufqty(0D);
                             }
-
+                            viewdataschemaline.setOeeRate(viewdataschemaline.getInsufqty() * viewdataschemaline.getQcRate());
                             viewdataschemaline.setCreatedBy(10001L);
                             viewdataschemaline.setCreationDate(new Date());
                             viewdataschemalineService.insertforKanb(viewdataschemaline);
