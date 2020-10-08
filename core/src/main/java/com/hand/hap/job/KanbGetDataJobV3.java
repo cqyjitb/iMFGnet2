@@ -109,7 +109,7 @@ public class KanbGetDataJobV3 extends AbstractJob {
                             }else{
                                 viewdatatmp.setInsufqty(0D);
                             }
-                            viewdatatmp.setOeeRate(viewdatatmp.getInsufqty() * viewdatatmp.getQcRate());
+                            viewdatatmp.setOeeRate(viewdatatmp.getInsufqty() * viewdatatmp.getQcRate() / 100);
                             viewdatatmp.setLastUpdateDate(new Date());
                             viewdatatmp.setLastUpdatedBy(10001L);
                             viewdataschemalineService.updateforKanb(viewdatatmp);
@@ -162,7 +162,7 @@ public class KanbGetDataJobV3 extends AbstractJob {
                             }else{
                                 viewdataschemaline.setInsufqty(0D);
                             }
-                            viewdataschemaline.setOeeRate(viewdataschemaline.getInsufqty() * viewdataschemaline.getQcRate());
+                            viewdataschemaline.setOeeRate(viewdataschemaline.getInsufqty() * viewdataschemaline.getQcRate() / 100);
                             viewdataschemaline.setCreatedBy(10001L);
                             viewdataschemaline.setCreationDate(new Date());
                             viewdataschemalineService.insertforKanb(viewdataschemaline);
