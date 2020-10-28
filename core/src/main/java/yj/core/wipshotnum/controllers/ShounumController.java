@@ -3,7 +3,6 @@ package yj.core.wipshotnum.controllers;
 import com.hand.hap.core.IRequest;
 import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.system.dto.ResponseData;
-import com.sun.corba.se.spi.ior.IdentifiableFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -13,7 +12,6 @@ import yj.core.cardh.dto.Cardh;
 import yj.core.cardh.service.ICardhService;
 import yj.core.dispatch.dto.InputLog;
 import yj.core.dispatch.service.IInputLogService;
-import yj.core.fevor.service.IFevorService;
 import yj.core.marc.dto.Marc;
 import yj.core.marc.service.IMarcService;
 import yj.core.webservice_queryoldzpgdbar.components.QueryOldZpgdbarUtil;
@@ -21,14 +19,12 @@ import yj.core.webservice_queryoldzpgdbar.dto.DtqueryParm;
 import yj.core.webservice_queryoldzpgdbar.dto.DtqueryReturn;
 import yj.core.wipshotnum.dto.Shotnum;
 import yj.core.wipshotnum.service.IShotnumService;
+import yj.core.wipshotnumadd.dto.ShotnumAdd;
+import yj.core.wipshotnumadd.service.IShotnumAddService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -47,6 +43,8 @@ public class ShounumController extends BaseController {
     private IMarcService marcService;
     @Autowired
     private IInputLogService inputLogService;
+    @Autowired
+    private IShotnumAddService shotnumAddService;
 
     /**
      * 压射号及压铸报工查询  918100064
@@ -147,6 +145,26 @@ public class ShounumController extends BaseController {
         //shot.setMdnum(mdnum);
         shot.setCrdat(sdf.format(new Date()));
         int i = service.insertRow(shot);
+
+        ShotnumAdd shot2 = new ShotnumAdd();
+        shot2.setArbpl(arbpl);
+        shot2.setZpgdbar(zpgdbar);
+        shot2.setWerks(werks);
+        shot2.setPrdDate(erp_date);
+        shot2.setShifts(banc);
+        shot2.setsClass(banz);
+        shot2.setShotStart(Long.parseLong(shot_start));
+        shot2.setShotEnd(Long.parseLong(shot_end));
+        shot2.setCrnam(userName);
+        shot2.setKtext(ktext);
+        shot2.setCreationDate(new Date());
+        shot2.setCreatedBy(Long.parseLong(createdBy));
+        shot2.setMatnr(matnr);
+        shot2.setMaktx(maktx);
+        shot2.setMdno(mode);
+        //shot2.setMdnum(mdnum);
+        shot2.setCrdat(shot.getCrdat());
+        shotnumAddService.insertRow(shot2);
 
         Double sum = 0D;
         Long shotnum = ( shot.getShotEnd() - shot.getShotStart() ) * mdnum;

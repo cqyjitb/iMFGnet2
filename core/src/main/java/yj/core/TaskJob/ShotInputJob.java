@@ -35,23 +35,34 @@ public class ShotInputJob extends AbstractJob {
         TriggerKey triggerKey = context.getTrigger().getKey();
         String msg = "KanbGetDataJob Test<insertNewData>! - . jobKey:" + key + ", triggerKey:" + triggerKey + ", execTime:" + new Date();
         log.info(msg);
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
-        Date prdDate = context.getFireTime();
-        Calendar cal = Calendar.getInstance();
-        cal.setTime(prdDate);
-        for (int i=0;i<10;i++) {
-            cal.add(Calendar.DATE,-1);
-            List<ShotInput> list = shotnumService.selectShotnum2(sdf.format(cal.getTime()));
-            if (list.size() > 0){
-                for (int j=0;j<list.size();j++){
-                    ShotInput shotInput = shotInputService.queryShotInput(list.get(j));
-                    if (shotInput == null){
-                        shotInputService.insertShotInput(list.get(j));
-                    }else {
-                        shotInputService.updateShotInput(list.get(j));
-                    }
+        List<ShotInput> list = shotnumService.selectShotnumNew();
+        if (list.size() > 0) {
+            for (int j = 0; j < list.size(); j++) {
+                ShotInput shotInput = shotInputService.queryShotInput(list.get(j));
+                if (shotInput == null) {
+                    shotInputService.insertShotInput(list.get(j));
+                } else {
+                    shotInputService.updateShotInput(list.get(j));
                 }
             }
         }
+//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+//        Date prdDate = context.getFireTime();
+//        Calendar cal = Calendar.getInstance();
+//        cal.setTime(prdDate);
+//        for (int i=0;i<10;i++) {
+//            cal.add(Calendar.DATE,-1);
+//            List<ShotInput> list = shotnumService.selectShotnum2(sdf.format(cal.getTime()));
+//            if (list.size() > 0){
+//                for (int j=0;j<list.size();j++){
+//                    ShotInput shotInput = shotInputService.queryShotInput(list.get(j));
+//                    if (shotInput == null){
+//                        shotInputService.insertShotInput(list.get(j));
+//                    }else {
+//                        shotInputService.updateShotInput(list.get(j));
+//                    }
+//                }
+//            }
+//        }
     }
 }

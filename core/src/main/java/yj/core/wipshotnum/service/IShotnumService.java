@@ -5,6 +5,7 @@ import com.hand.hap.core.ProxySelf;
 import com.hand.hap.system.service.IBaseService;
 import yj.core.wipshotinput.dto.ShotInput;
 import yj.core.wipshotnum.dto.Shotnum;
+import yj.core.wipshotnumadd.dto.ShotnumAdd;
 
 import java.util.List;
 
@@ -80,4 +81,17 @@ public interface IShotnumService extends IBaseService<Shotnum>, ProxySelf<IShotn
      * @return
      */
     List<Shotnum> selectShotnum4(Shotnum dto, IRequest requestContext);
+
+    /**
+     * 压射号及报工统计新增及修改数据整理 918100064
+     * @return
+     */
+    List<ShotInput> selectShotnumNew();
+
+    /**
+     * 压射号及报工统计只报工无压射号数据 918100064
+     * @param list
+     * @return
+     */
+    List<ShotInput> selectShotnumAdd(List<ShotnumAdd> list);
 }
