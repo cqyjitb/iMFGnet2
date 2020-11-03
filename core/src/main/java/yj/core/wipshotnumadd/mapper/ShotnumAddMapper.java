@@ -28,4 +28,11 @@ public interface ShotnumAddMapper extends Mapper<ShotnumAdd> {
     List<ShotnumAdd> isExit(ShotnumAdd dto);
 
     List<ShotnumAdd> selectShotnumAdd();
+
+    /**
+     * 删除某数据 918100064
+     * @param shotnumAdd
+     * @return
+     */
+    int deleteShotnumAdd(ShotnumAdd shotnumAdd);
 }

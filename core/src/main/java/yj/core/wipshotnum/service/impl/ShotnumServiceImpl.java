@@ -447,6 +447,14 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
         if(dto.size() > 0){
             for(int i=0;i<dto.size();i++){
                 shotnumMapper.deleteShotnum(dto.get(i));
+                Shotnum shotnum = dto.get(i);
+                ShotnumAdd shotnumAdd = new ShotnumAdd();
+                shotnumAdd.setWerks(shotnum.getWerks());
+                shotnumAdd.setArbpl(shotnum.getArbpl());
+                shotnumAdd.setCrdat(shotnum.getCrdat());
+                shotnumAdd.setPrdDate(shotnum.getPrdDate());
+                shotnumAdd.setShifts(shotnum.getShifts());
+                shotnumAddMapper.deleteShotnumAdd(shotnumAdd);
             }
         }
         return null;
