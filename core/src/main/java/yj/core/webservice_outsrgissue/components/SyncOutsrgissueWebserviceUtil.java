@@ -102,8 +102,6 @@ public class SyncOutsrgissueWebserviceUtil {
                 rs.setMSGTY(dtoutsrgissueRes.getRETURN().getMSGTY());
             }
 
-
-
         return rs;
     }
 }

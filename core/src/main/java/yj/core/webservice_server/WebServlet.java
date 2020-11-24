@@ -1,6 +1,5 @@
 package yj.core.webservice_server;
 
-import jdk.nashorn.internal.codegen.CompilerConstants;
 import org.apache.cxf.Bus;
 import org.apache.cxf.BusFactory;
 import org.apache.cxf.frontend.ServerFactoryBean;
@@ -123,6 +122,13 @@ public class WebServlet extends CXFNonSpringServlet {
         serverFactoryBean12.setAddress("/QueryJJbg"); //服务请求路径
         serverFactoryBean12.setServiceBean(queryJJbglogimpl);
         serverFactoryBean12.create();
+
+        ServerFactoryBean serverFactoryBean13 = new ServerFactoryBean(); //server工厂
+        ExecSqlProcImp execSqlProcImp = new ExecSqlProcImp();
+        serverFactoryBean13.setServiceClass(IExecSqlProc.class);
+        serverFactoryBean13.setAddress("/execsqlproc"); //服务请求路径
+        serverFactoryBean13.setServiceBean(execSqlProcImp);
+        serverFactoryBean13.create();
 
     }
 }

@@ -709,68 +709,74 @@
                     ableClassgrp();
                     removeMaskDialog();
                     setDispatchData();
-                    appendMask2Dialog();
-                    $.ajax({
-                        url:"${base.contextPath}/confirmation/input/log/insertInputLogZP05",
-                        type:"get",
-                        //data : dispatchDataMin,
-                        data : {"a":barcode,
-                            "b":"",
-                            "c":orderno,
-                            "d":operation,
-                            "e":yeild,
-                            "f":workScrap,
-                            "g":rowScrap,
-                            "h":classgrp,
-                            "i":line,
-                            "j":modelNo,
-                            "k":plant,
-                            "l":dispatch,
-                            "m":dispatchLogicID,
-                            "n":createdBy,
-                            "z":ztpbar,
-                            "1":attr1,
-                            "2":attr2,
-                            "3":attr3,
-                            "4":attr4,
-                            "5":attr5,
-                            "6":attr6,
-                            "7":attr7,
-                            "8":attr8,
-                            "9":attr9,
-                            "10":attr10,
-                            "11":attr11,
-                            "12":attr12,
-                            "13":attr13,
-                            "14":attr14,
-                            "15":attr15,
-                            "16":userName},
-                        contentType :"application/json; charset=utf-8",
-                        success:function (res){
-                            removeMask2Dialog();
-                            if(res.success){
-                                var msgty = JSON.stringify(res.rows[0].msgty);
-                                var message = JSON.stringify(res.rows[0].message);
-                                message = message.substring(1,message.length-1);
-                                eval("var strmessage = '" + message + "';")
-                                if(msgty.substring(1,msgty.length-1) == "S"){
-                                    openMsgDialog("成功",strmessage,"M");
-                                }else{
-                                    openMsgDialog("失败",strmessage,"M");
+                    //appendMask2Dialog();
+                    if(yeild > 0 && ( rowScrap > 0 || workScrap > 0 )){
+                        openMsgDialog("成功","请分别报工合格品数量和废品数量（合格品数量和废品数不要同时报工）！","M");
+                    }else{
+                        appendMask2Dialog();
+                        $.ajax({
+                            url:"${base.contextPath}/confirmation/input/log/insertInputLogZP05",
+                            type:"get",
+                            //data : dispatchDataMin,
+                            data : {"a":barcode,
+                                "b":"",
+                                "c":orderno,
+                                "d":operation,
+                                "e":yeild,
+                                "f":workScrap,
+                                "g":rowScrap,
+                                "h":classgrp,
+                                "i":line,
+                                "j":modelNo,
+                                "k":plant,
+                                "l":dispatch,
+                                "m":dispatchLogicID,
+                                "n":createdBy,
+                                "z":ztpbar,
+                                "1":attr1,
+                                "2":attr2,
+                                "3":attr3,
+                                "4":attr4,
+                                "5":attr5,
+                                "6":attr6,
+                                "7":attr7,
+                                "8":attr8,
+                                "9":attr9,
+                                "10":attr10,
+                                "11":attr11,
+                                "12":attr12,
+                                "13":attr13,
+                                "14":attr14,
+                                "15":attr15,
+                                "16":userName},
+                            contentType :"application/json; charset=utf-8",
+                            success:function (res){
+                                removeMask2Dialog();
+                                if(res.success){
+                                    var msgty = JSON.stringify(res.rows[0].msgty);
+                                    var message = JSON.stringify(res.rows[0].message);
+                                    message = message.substring(1,message.length-1);
+                                    eval("var strmessage = '" + message + "';")
+                                    if(msgty.substring(1,msgty.length-1) == "S"){
+                                        openMsgDialog("成功",strmessage,"M");
+                                    }else{
+                                        openMsgDialog("失败",strmessage,"M");
+                                    }
+                                } else {
+                                    var falsemsg = JSON.stringify(res.message);
+                                    falsemsg = falsemsg.substring(1,falsemsg.length-1);
+                                    if(falsemsg == "Read timed out"){
+                                        falsemsg = "请求超时-";
+                                    }
+                                    openMsgDialog("失败",falsemsg,"M");
                                 }
-                            } else {
-                                var falsemsg = JSON.stringify(res.message);
-								falsemsg = falsemsg.substring(1,falsemsg.length-1);
-								if(falsemsg == "Read timed out"){
-									falsemsg = "请求超时-";
-								}
-                                openMsgDialog("失败",falsemsg,"M");
+                            },
+                            error:function (res) {
+                                openMsgDialog("失败","报工失败","M");
                             }
-                        },
-                        error:function (res) {
-                            openMsgDialog("失败","报工失败","M");
-                        }
-                    });
+                        });
+                    }
+
                 }
             }
         }
