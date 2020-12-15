@@ -1,5 +1,6 @@
 package yj.core.webservice_server;
 
+import yj.core.util.WebServerHelp;
 import yj.core.webservice_server.dto.ExecProcReturn;
 
 import javax.jws.WebService;
@@ -7,17 +8,15 @@ import java.sql.*;
 
 @WebService
 public class ExecSqlProcImp implements IExecSqlProc {
-    private String username = "sa";
-    private String password = "Pinknet8";
     private String driverName="com.microsoft.sqlserver.jdbc.SQLServerDriver";//SQL数据库引擎
-    private String dbUrl = "jdbc:sqlserver://192.168.4.41:1433;databaseName=tn_iot_yz;integratedSecurity=false;";
     @Override
     public ExecProcReturn callProc(String guid,String sql) {
         ExecProcReturn res = new ExecProcReturn();
+        WebServerHelp serverHelp = new WebServerHelp();
         Connection connection=null;
         try{
             Class.forName(driverName);
-            connection=DriverManager.getConnection(dbUrl,username,password);
+            connection=DriverManager.getConnection(serverHelp.getMesDbUrl(),serverHelp.getMesDbuser(),serverHelp.getMesDbpassword());
         }catch (Exception e){
             e.printStackTrace();
             res.setCode("-1");

@@ -31,6 +31,7 @@ public class OeeLineData {
     private String userCnname;
     private String userEnname;
     private String telphoneNo;
+    private Integer seqCount;
 
     public String getUserCnname() {
         return userCnname;
@@ -222,5 +223,13 @@ public class OeeLineData {
 
     public void setCycleTimes(Integer cycleTimes) {
         this.cycleTimes = cycleTimes;
+    }
+
+    public Integer getSeqCount() {
+        return seqCount;
+    }
+
+    public void setSeqCount(Integer seqCount) {
+        this.seqCount = seqCount;
     }
 }
