@@ -487,6 +487,7 @@ public class InputLogServiceImpl extends BaseServiceImpl<InputLog> implements II
             inputLog.setMatDesc(returnResult.getMAKTX());
             inputLog.setBguuid(uuidstr);
             inputLog.setAttr15(inputLog.getZtpbar());
+            inputLog.setAttr14(inputLog.getAttr14());
             inputLogMapper.insertInputLog(inputLog);
             Long id = inputLogMapper.selectNextId();
             result.setPlant(inputLog.getPlant());

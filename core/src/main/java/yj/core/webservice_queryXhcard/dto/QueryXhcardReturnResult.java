@@ -76,4 +76,5 @@ public class QueryXhcardReturnResult {
     public void setMESSAGE(String MESSAGE) {
         this.MESSAGE = MESSAGE;
     }
+
 }

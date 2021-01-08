@@ -90,7 +90,7 @@ public class KanbGetDataJobV3 extends AbstractJob {
                             viewdatatmp.setLineLeader(list.get(j).getUserCnname());
                             viewdatatmp.setLineLeaderEn(list.get(j).getUserEnname());
                             viewdatatmp.setLeaderPhone(list.get(j).getTelphoneNo());
-                            viewdatatmp.setCycletime(list.get(j).getCycleTimes().doubleValue() / list.get(j).getSeqCount());
+                            viewdatatmp.setCycletime(list.get(j).getCycleTimes().doubleValue());
 
                             if (list.get(j).getTotalQty() == 0){
                                 viewdatatmp.setQcRate(0D);
@@ -102,7 +102,7 @@ public class KanbGetDataJobV3 extends AbstractJob {
                                 sjtim = ( curdate.getTime() - star.getTime() ) / 1000;
                             }
 
-                            viewdatatmp.setJdcqqty(list.get(j).getQualifiedQty() - Math.rint(sjtim / list.get(j).getCycleTimes() / list.get(j).getSeqCount() ));//进度差缺数量  合格数-时间差/节拍
+                            viewdatatmp.setJdcqqty(list.get(j).getQualifiedQty() - Math.rint(sjtim / ( list.get(j).getCycleTimes() / list.get(j).getSeqCount() ) ));//进度差缺数量  合格数-时间差/节拍
                             //viewdatatmp.setOeeRate(list.get(j).getQualifiedQty().doubleValue() * list.get(j).getCycleTimes().doubleValue() / sjtim * 100 ) ;
                             if ((list.get(j).getTotalQty() - viewdatatmp.getJdcqqty()) != 0){
                                 viewdatatmp.setInsufqty(list.get(j).getTotalQty().doubleValue() / ( list.get(j).getTotalQty().doubleValue() - viewdatatmp.getJdcqqty()) * 100 );
@@ -143,7 +143,7 @@ public class KanbGetDataJobV3 extends AbstractJob {
                             viewdataschemaline.setLineLeader(list.get(j).getUserCnname());
                             viewdataschemaline.setLineLeaderEn(list.get(j).getUserEnname());
                             viewdataschemaline.setLeaderPhone(list.get(j).getTelphoneNo());
-                            viewdataschemaline.setCycletime(list.get(j).getCycleTimes().doubleValue() / list.get(j).getSeqCount());
+                            viewdataschemaline.setCycletime(list.get(j).getCycleTimes().doubleValue());
 
                             if (list.get(j).getTotalQty() == 0){
                                 viewdataschemaline.setQcRate(0D);
@@ -155,7 +155,7 @@ public class KanbGetDataJobV3 extends AbstractJob {
                                 sjtim = ( curdate.getTime() - star.getTime() ) / 1000;
                             }
 
-                            viewdataschemaline.setJdcqqty(list.get(j).getQualifiedQty() - Math.rint(sjtim / list.get(j).getCycleTimes() / list.get(j).getSeqCount() ));//进度差缺数量
+                            viewdataschemaline.setJdcqqty(list.get(j).getQualifiedQty() - Math.rint(sjtim / ( list.get(j).getCycleTimes() / list.get(j).getSeqCount() ) ));//进度差缺数量
                             //viewdataschemaline.setOeeRate(list.get(j).getQualifiedQty().doubleValue() * list.get(j).getCycleTimes().doubleValue() / sjtim * 100 ) ;
                             if ((list.get(j).getTotalQty() - viewdataschemaline.getJdcqqty()) != 0){
                                 viewdataschemaline.setInsufqty(list.get(j).getTotalQty() / ( list.get(j).getTotalQty() - viewdataschemaline.getJdcqqty()) * 100 );

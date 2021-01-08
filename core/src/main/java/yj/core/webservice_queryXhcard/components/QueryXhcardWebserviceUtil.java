@@ -63,8 +63,11 @@ public class QueryXhcardWebserviceUtil {
                 xhcard.setChargkc(dtqueryxhcardRes.getXHCARD().get(i).getCHARGKC());
                 xhcard.setLgort(dtqueryxhcardRes.getXHCARD().get(i).getLGORT());
                 xhcard.setMeins(dtqueryxhcardRes.getXHCARD().get(i).getMEINS());
-                double menge = dtqueryxhcardRes.getXHCARD().get(i).getMENGE();
-                xhcard.setMenge(String.valueOf(menge));
+                Double menge = dtqueryxhcardRes.getXHCARD().get(i).getMENGE();
+                System.out.println("*****************************************************************************");
+                System.out.println("menge:"+menge);
+                System.out.println("*****************************************************************************");
+                xhcard.setMenge(menge.toString());
                 //xhcard.setMenge(dtqueryxhcardRes.getXHCARD().getMENGE());
                 xhcard.setZbqbd(dtqueryxhcardRes.getXHCARD().get(i).getZBQBD());
                 xhcard.setZjyy(dtqueryxhcardRes.getXHCARD().get(i).getZJYY());

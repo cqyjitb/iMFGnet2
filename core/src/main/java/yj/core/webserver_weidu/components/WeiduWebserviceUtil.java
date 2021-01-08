@@ -45,6 +45,17 @@ public class WeiduWebserviceUtil {
         item.setZBANB(param.getZBANB().toUpperCase());
         item.setZMODEL(param.getZMODEL());
         item.setZXHBAR(param.getZXHBAR());
+        item.setZBZ1("");
+        item.setZBZ2("");
+        item.setZBZ3("");
+        item.setZBZ4("");
+        item.setZBZ5("");
+        item.setZBZ6("");
+        item.setZBZ7("");
+        item.setZBZ8("");
+        item.setZBZ9("");
+        item.setZBZ10("");
+        item.setZXQH("");
 
         DTWEIDUReq dtweiduReq = new DTWEIDUReq();
         dtweiduReq.setITEM(item);
@@ -66,6 +77,7 @@ public class WeiduWebserviceUtil {
                 dtweiduReturn.setWERKS(dtweiduRes.getTZTPP0012().get(0).getWERKS());
                 dtweiduReturn.setZBANB(dtweiduRes.getTZTPP0012().get(0).getZBANB());
                 dtweiduReturn.setZMODEL(dtweiduRes.getTZTPP0012().get(0).getZMODEL());
+                dtweiduReturn.setZXHBAR(dtweiduRes.getTZTPP0012().get(0).getZXQH());
             }
 
             if (dtweiduRes.getTZTPP0013().size() > 0 ){
@@ -74,6 +86,7 @@ public class WeiduWebserviceUtil {
                 dtweiduReturn.setMATNR(dtweiduRes.getTZTPP0013().get(0).getMATNR());
                 dtweiduReturn.setZMODEL(dtweiduRes.getTZTPP0013().get(0).getZMODEL());
                 dtweiduReturn.setZXHBAR(dtweiduRes.getTZTPP0013().get(0).getZXHBAR());
+                dtweiduReturn.setZXQH(dtweiduRes.getTZTPP0013().get(0).getZXQH());
             }
         }
 

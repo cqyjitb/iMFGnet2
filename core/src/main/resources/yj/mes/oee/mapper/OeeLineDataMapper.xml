@@ -27,7 +27,7 @@
         <result column="user_cn_name" property="userCnname" jdbcType="VARCHAR"/>
         <result column="user_en_name" property="userEnname" jdbcType="VARCHAR"/>
         <result column="telphone_no" property="telphoneNo" jdbcType="VARCHAR"/>
-        <result column="seq_count" property="qualifiedQty" jdbcType="DECIMAL"/>
+        <result column="seq_count" property="seqCount" jdbcType="DECIMAL"/>
     </resultMap>
 
     <select id="queryOeeDataByLineCode" resultMap="BaseResultMap" parameterType="java.lang.String">

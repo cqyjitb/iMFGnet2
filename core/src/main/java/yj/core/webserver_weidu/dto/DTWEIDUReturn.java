@@ -13,6 +13,7 @@ public class DTWEIDUReturn {
     private String MATNR;
     private String ZBANB;
     private String ZMODEL;
+    private String ZXQH;
     private String MAKTX;
     private String MEINS;
     private String STATUS;
@@ -22,6 +23,14 @@ public class DTWEIDUReturn {
     //T_ZTPP0013
     private String ZXHBAR;
 
+
+    public String getZXQH() {
+        return ZXQH;
+    }
+
+    public void setZXQH(String ZXQH) {
+        this.ZXQH = ZXQH;
+    }
 
     public String getWEIDUFLG() {
         return WEIDUFLG;

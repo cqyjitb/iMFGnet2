@@ -15,6 +15,7 @@ var rowScrap;           //料废数量
 var classgrp;           //班组
 var line;               //生产线
 var modelNo;            //模号
+var cavNum;             //型腔
 var ztpbar;             //托盘码
 var plant;              //工厂
 var dispatch;           //报工单号
@@ -82,6 +83,7 @@ function getDispatchValues() {
     classgrp = document.getElementById("classgrp").options[document.getElementById("classgrp").selectedIndex].value;
     line = document.getElementById("line").value;
     modelNo = document.getElementById("modelNo").value;
+    cavNum = document.getElementById("cavNum").value;
     plant = barcode.substring(0,4);
     dispatch = barcode.substring(0,barcode.length-4);
     dispatchLogicID = barcode.substring(barcode.length-8,barcode.length-4);
@@ -175,6 +177,7 @@ function delDispatchValues() {
 /*    document.getElementById("classgrp").value = "";*/
     document.getElementById("line").value = "";
     document.getElementById("modelNo").value = "";
+    document.getElementById("cavNum").value = "";
     document.getElementById("ztpbar").value = "";
     document.getElementById("attr1").value = "";
     document.getElementById("attr2").value = "";

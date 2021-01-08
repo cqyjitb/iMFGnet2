@@ -644,7 +644,8 @@
         il.model_no,
         il.line,
         il.attr6,
-        il.attr7
+        il.attr7,
+        il.attr12
         FROM confirmation_input_log il,confirmation_result r,confirmation_log l
         <where>
             il.dispatch = #{dispatch}
