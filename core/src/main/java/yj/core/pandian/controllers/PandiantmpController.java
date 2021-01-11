@@ -1,18 +1,17 @@
 package yj.core.pandian.controllers;
 
-import org.springframework.stereotype.Controller;
-import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.core.IRequest;
+import com.hand.hap.system.controllers.BaseController;
 import com.hand.hap.system.dto.ResponseData;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import yj.core.SqlConn.SqlConnGzb;
 import yj.core.SqlConn.SqlConnTj;
 import yj.core.pandian.dto.Pandiantmp;
 import yj.core.pandian.service.IPandiantmpService;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -57,14 +56,14 @@ import java.util.UUID;
         UUID uuid = java.util.UUID.randomUUID();
         String uuidstr = uuid.toString().replaceAll("-", "");
         Long userId = Long.parseLong(request.getParameter("userId"));
-
+        String howei = request.getParameter("howei");
+        String beiz = request.getParameter("beiz");
             String werks = request.getParameter("werks");
             if (werks.equals("gzzzb")){
                 werks = "工装制造部";
             }else if (werks.equals("tjyj")){
                 werks = "天津渝江";
             }
-
 
             Pandiantmp pdtmp = new Pandiantmp();
         pdtmp.setRcdid(uuidstr);
@@ -76,7 +75,8 @@ import java.util.UUID;
         pdtmp.setCreationDate(new Date());
         pdtmp.setCreatedBy(userId);
         pdtmp.setWerks(werks);
-
+        pdtmp.setHowei(howei);
+        pdtmp.setBeiz(beiz);
             int i = service.insertNewRow(pdtmp);
             if (i == 1){
                 int result = 0;

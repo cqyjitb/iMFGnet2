@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="_csrf" content="${_csrf.token}"/>
     <meta name="_csrf_header" content="X-CSRF-TOKEN" />
-    <title>工装部盘点</title>
+    <title>天津渝江盘点</title>
 
     <!--
         Created by Rebs on 2017/6/12.
@@ -134,7 +134,7 @@
             //用户登录判定操作
             if (username == "" || username == null) {
                 //当用户未登录,返回登录界面
-                window.location.href = '${base.contextPath}/yjlogin.html';
+                window.location.href = '${base.contextPath}/yjloginpd.html';
                 return null;
             } else {
                 //当用户登录，在界面展示用户信息，并记下用户id
@@ -183,24 +183,42 @@
                 return null;
             }
             var cBarcode = document.getElementById("barcode");
-            var cVornr = document.getElementById("vornr");
+//            var cVornr = document.getElementById("vornr");
+            var cHowei = document.getElementById("howei");
             var cNum = document.getElementById("num");
+            var cBeiz = document.getElementById("beiz");
             cBarcode.onkeydown = function () {
                 if (event.keyCode == 13) {
                     l_error = "";
                     msg = "";
                     var barcode = document.getElementById("barcode").value;
                     var lenBarcode = barcode.length;
+                    cNum.focus();
+//                    if (lenBarcode != 10 ){
+//                        msg = "流转卡号格式错误！"
+//                        openMsgDialog("错误",msg,"M");
+//                        document.getElementById("barcode").value = "";
+//                        oBcd.focus();
+//                    }else{
+//                        cHowei.focus();
+//                    }
 
-                    if (lenBarcode <10 ){
-                        msg = "流转卡号格式错误！"
-                        openMsgDialog("错误",msg,"M");
-                        document.getElementById("barcode").value = "";
-                        oBcd.focus();
-                    }else{
-                        cVornr.focus();
-                    }
+                }
+            }
 
+            cNum.onkeydown = function () {
+                if (event.keyCode == 13) {
+                    l_error = "";
+                    msg = "";
+                    cHowei.focus();
+                }
+            }
+
+            cHowei.onkeydown = function () {
+                if (event.keyCode == 13) {
+                    l_error = "";
+                    msg = "";
+                    cBeiz.focus();
                 }
             }
 
@@ -214,23 +232,40 @@
                 var l_error = "";
                 pd_sum = document.getElementById("num").value;
                 var oPd_sum = document.getElementById("num");
-                var vornr = document.getElementById("vornr").value;
-                var vorlen = vornr.length;
-                var oVornr = document.getElementById("vornr");
-                if (vorlen > 4){
-                    msg = "工序号错误！";
-                    openMsgDialog("错误",msg,"M");
-                    oVornr.focus();
-                    l_error = "E";
-                }else if(vorlen < 4){
-                    for (var i=0;i<4-vorlen;i++){
-                        vornr = "0"+vornr;
-                    }
-                    document.getElementById("vornr").value = vornr;
-                }
+//                var vornr = document.getElementById("vornr").value;
+//                var vorlen = vornr.length;
+//                var oVornr = document.getElementById("vornr");
+                howei = document.getElementById("howei").value;
+                var howeilen = howei.length;
+                var beiz = document.getElementById("beiz").value;
+//                if (vorlen > 4){
+//                    msg = "工序号错误！";
+//                    openMsgDialog("错误",msg,"M");
+//                    oVornr.focus();
+//                    l_error = "E";
+//                }else if(vorlen < 4){
+//                    for (var i=0;i<4-vorlen;i++){
+//                        vornr = "0"+vornr;
+//                    }
+//                    document.getElementById("vornr").value = vornr;
+//                }
 
                 if ( pd_sum == '' || pd_sum == null || pd_sum == ""){
                     msg = "请输入盘点数量！";
+                    openMsgDialog("错误",msg,"M");
+                    oPd_sum.focus();
+                    l_error = "E";
+                }
+
+                if ( howei == '' || howei == null || howei == ""){
+                    msg = "请输入货位！";
+                    openMsgDialog("错误",msg,"M");
+                    oPd_sum.focus();
+                    l_error = "E";
+                }
+
+                if (howeilen != 8){
+                    msg = "货位格式错误，请确认长度是否为8位！";
                     openMsgDialog("错误",msg,"M");
                     oPd_sum.focus();
                     l_error = "E";
@@ -240,20 +275,21 @@
                     appendMaskDialog();
                     var barcode = document.getElementById("barcode").value;
                     var num = document.getElementById("num").value;
-                    var vornr = document.getElementById("vornr").value;
+//                    var vornr = document.getElementById("vornr").value;
                     var userName = getCookie("username");
-                    if (barcode != "" && num != "" && vornr != ""){
+                    if (barcode != "" && num != ""){
                         //保存盘点记录
                         $.ajax({
                             url: "${base.contextPath}/wip/pandiantmp/insertNewRow",
                             type: "get",
                             data: {
                                 "barcode": barcode,
-                                "vornr": vornr,
+                                "vornr": "",
                                 "num": num,
-                                "howei":"",
-                                "beiz":"",
+                                "howei":howei,
+                                "beiz":beiz,
                                 "userName": userName,
+                                "werks": "tjyj",
                                 "userId": createdBy
                             },
                             contentType: "application/json; charset=utf-8",
@@ -272,10 +308,13 @@
                         if (barcode == ""){
                             openMsgDialog("失败","请扫描流转卡！","M");
                             removeMaskDialog();
-                        }else if(vornr == ""){
-                            openMsgDialog("失败","请输入工序行号！","M");
-                            removeMaskDialog();
+//                        }else if(vornr == ""){
+//                            openMsgDialog("失败","请输入工序行号！","M");
+//                            removeMaskDialog();
                         }else if(num == ""){
+                            openMsgDialog("失败","请输入盘点数量！","M");
+                            removeMaskDialog();
+                        }else if(howei == ""){
                             openMsgDialog("失败","请输入盘点数量！","M");
                             removeMaskDialog();
                         }
@@ -333,24 +372,15 @@
 
                 }
             }
-//            else if(msgType == "C") {
-//                bCan.style.display = "";
-//                bCan.onclick=function () {
-//                    dMsg.style.display="none";
-//                    removeMaskDialog();
-//                }
-//                bCls2.onclick=function () {
-//
-//
-//                }
-//            }
         }
 
 
         function clearData() {
             document.getElementById("barcode").value = "";
-            document.getElementById("vornr").value = "";
+//            document.getElementById("vornr").value = "";
             document.getElementById("num").value = "";
+            document.getElementById("howei").value = "";
+            document.getElementById("beiz").value = "";
         }
 
 
@@ -373,11 +403,15 @@
     <div style="width: 220px">
 
         <br>
-        <label class="dcp-label">流转卡号</label><input id="barcode"  class="cls-attr-input"  type="text"><br>
+        <label class="dcp-label">存货批号</label><input id="barcode"  class="cls-attr-input"  type="text"><br>
         <br>
-        <label class="dcp-label">工序行号</label><input id="vornr"  class="cls-attr-input"  type="text"><br>
-        <br>
+        <!--<label class="dcp-label">工序行号</label><input id="vornr"  class="cls-attr-input"  type="text"><br>-->
+        <!--<br>-->
         <label class="dcp-label">盘点数量</label><input id="num" class="cls-attr-input" type="number"><br>
+        <br>
+        <label class="dcp-label">货&nbsp;&nbsp;位</label><input id="howei" class="cls-attr-input" type="number"><br>
+        <br>
+        <label class="dcp-label">备&nbsp;&nbsp;注</label><input id="beiz" class="cls-attr-input" type="text"><br>
     </div>
 
     <div style="width: 220px;height: 30px;margin-top: 2px">

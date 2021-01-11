@@ -14,9 +14,11 @@
         <result column="CREATED_BY" property="createdBy" jdbcType="DECIMAL" />
         <result column="LAST_UPDATE_DATE" property="lastUpdateDate" jdbcType="DATE" />
         <result column="LAST_UPDATED_BY" property="lastUpdatedBy" jdbcType="DECIMAL" />
+        <result column="HOWEI" property="howei" jdbcType="VARCHAR" />
+        <result column="BEIZ" property="beiz" jdbcType="VARCHAR" />
     </resultMap>
 
     <insert id="insertNewRow" parameterType="yj.core.pandian.dto.Pandiantmp">
-      insert into wip_pandiantmp(RCDID,WERKS,CARDNO,CARDH,NUM,OPERATOR,RCDDAT,CREATION_DATE,CREATED_BY)value(#{rcdid},#{werks},#{cardno},#{cardh},#{num},#{operator},#{rcddat},#{creationDate},#{createdBy})
+      insert into wip_pandiantmp(RCDID,WERKS,CARDNO,CARDH,NUM,OPERATOR,RCDDAT,CREATION_DATE,CREATED_BY,HOWEI,BEIZ)value(#{rcdid},#{werks},#{cardno},#{cardh},#{num},#{operator},#{rcddat},#{creationDate},#{createdBy},#{howei},#{beiz})
     </insert>
 </mapper>

@@ -57,8 +57,8 @@ public class SqlConnTj {
 
     public int insertPanDianTmp(Pandiantmp pandiantmp) throws Exception{
         Connection con = this.getConnection();
-        String sql = "insert INTO jb_data.dbo.pandiantmp (RCDID, WERKS, CARDNO, CARDH, NUM, OPERATOR, RCDDAT, CREATED_BY, CREATION_DATE) VALUES " +
-                "(?,?,?,?,?,?,?,?,?)";
+        String sql = "insert INTO jb_data.dbo.pandiantmp (RCDID, WERKS, CARDNO, CARDH, NUM, OPERATOR, RCDDAT, CREATED_BY, CREATION_DATE,HOWEI,BEIZ) VALUES " +
+                "(?,?,?,?,?,?,?,?,?,?,?)";
         int result = 0;
         SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         PreparedStatement pstmt = con.prepareStatement(sql);
@@ -71,6 +71,8 @@ public class SqlConnTj {
         pstmt.setString(7,format.format(pandiantmp.getRcddat()));
         pstmt.setLong(8,pandiantmp.getCreatedBy());
         pstmt.setString(9,format.format(pandiantmp.getCreationDate()));
+        pstmt.setString(10,pandiantmp.getHowei());
+        pstmt.setString(11,pandiantmp.getBeiz());
         result = pstmt.executeUpdate();
         this.closeConnection(con, pstmt);
         return result;

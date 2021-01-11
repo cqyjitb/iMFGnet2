@@ -129,6 +129,21 @@
         cursor: pointer
     }
 
+    #login #btn_howei {
+        width :120px;
+        height: 30px;
+        margin-top: 15px;
+        background-color: #0D8EDC;
+        color: #FFFFFF;
+        display: inline-block;
+        padding: 5px 10px 6px;
+        text-decoration: none;
+        -webkit-border-radius: 3px;
+        border: none ;
+        position: relative;
+        cursor: pointer
+    }
+
 </style>
 <body >
 <div id="login">
@@ -137,6 +152,10 @@
 
     <div id="login_shot">
         <button id="btn_shot" onclick="submit2()">天津渝江盘点</button>
+    </div>
+
+    <div id="login_shot">
+        <button id="btn_howei" onclick="submit4()">货位盘点</button>
     </div>
 
     <div id="login_pd">
@@ -190,6 +209,29 @@
                 }
             }
         });
+
+    }
+
+    function submit4(){
+        var username = getCookie("username");
+        $.ajax({
+            url:"${base.contextPath}/wip/pandiantcode/checkCode",
+            type:"get",
+            data : {
+                "username":username,
+                "tj":"X",
+                "gz":""
+            },
+            contentType :"application/json",
+            success:function (res){
+                if (res.success == true){
+                    window.location.href='${base.contextPath}/dispatch2/dispatch_pd_tj_hw.html';
+                }else{
+                    alert("用户不具备天津渝江货位盘点权限！");
+                }
+            }
+        });
+
 
     }
 

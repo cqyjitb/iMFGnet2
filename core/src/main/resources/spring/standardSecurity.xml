@@ -22,6 +22,7 @@
         <intercept-url pattern="/dispatch2/dispatch_index.html" access="permitAll"/>
         <intercept-url pattern="/dispatch/dispatch_pd.html" access="permitAll"/>
         <intercept-url pattern="/dispatch2/dispatch_pd_tj.html" access="permitAll"/>
+        <intercept-url pattern="/dispatch2/dispatch_pd_tj_hw.html" access="permitAll"/>
         <intercept-url pattern="/dispatch2/dispatch_pd_gz.html" access="permitAll"/>
         <intercept-url pattern="/dispatch/dispatch_shot.html" access="permitAll"/>
         <intercept-url pattern="/dispatch/dispatch_pd_index.html" access="permitAll"/>

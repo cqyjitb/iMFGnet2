@@ -46,21 +46,9 @@
             height: 20px;
             display: inline-block;
         }
-        .dcp-label2{
-            font-size: 16px;
-            width: 40px;
-            height: 20px;
-            display: inline-block;
-        }
         .cls-attr-input{
             font-size: 16px;
             width: 120px;
-            height: 21px;
-            margin-bottom: 1px;
-        }
-        .cls-attr-input2{
-            font-size: 16px;
-            width: 60px;
             height: 21px;
             margin-bottom: 1px;
         }
@@ -116,16 +104,16 @@
         }
     </style>
     <script>
-/*
-        window.onunload=function () {
-            var n = window.event.screenX - window.screenLeft;
-            var b = n > document.documentElement.scrollWidth-20;
+        /*
+                window.onunload=function () {
+                    var n = window.event.screenX - window.screenLeft;
+                    var b = n > document.documentElement.scrollWidth-20;
 
-            if(b && window.event.clientY < 0 || window.event.altKey){
-                // 这个可以排除刷新 关闭的时候触发
-                delCookie("username");
-            }
-        }*/
+                    if(b && window.event.clientY < 0 || window.event.altKey){
+                        // 这个可以排除刷新 关闭的时候触发
+                        delCookie("username");
+                    }
+                }*/
 
         window.onload=function () {
 
@@ -142,8 +130,8 @@
 
 
             //获取模号页面元素
-            var cCavNum = document.getElementById("cavNum");
-            cCavNum.onkeydown = function () {
+            var cModelNo = document.getElementById("modelNo");
+            cModelNo.onkeydown = function () {
                 var cdMsg = document.getElementById("msg-area")
                 var oMaskD2 = document.getElementById("mask2");
                 if (event.keyCode == 13) {
@@ -157,12 +145,6 @@
                 }
             }
 
-            var cModelNo = document.getElementById("modelNo");
-            cModelNo.onkeydown = function () {
-                if (event.keyCode == 13) {
-                    cCavNum.focus();
-                }
-            }
             //获取生产线页面元素
             var cLine = document.getElementById("line");
             cLine.onkeydown = function () {
@@ -225,7 +207,7 @@
                             url: "${base.contextPath}/ztbc0002/querytpbar",
                             type: "get",
                             data: {"ztpbar":strTpbar,
-                                    "orderno":orderno },
+                                "orderno":orderno },
                             contentType: "application/json; charset=utf-8",
                             success: function (data) {
                                 if (data.success){
@@ -262,8 +244,8 @@
                             url: "${base.contextPath}/confirmation/input/log/checkZpgdbar",
                             type: "get",
                             data: {"zpgdbar":oldZPGDBAR,
-                                    "vornr":oldoperation
-                                },
+                                "vornr":oldoperation
+                            },
                             contentType: "application/json; charset=utf-8",
                             success: function (data) {
                                 if (data.success) {
@@ -299,10 +281,8 @@
                                         $("#ztpbar").attr("readOnly",false);
                                         Oztpbar.focus();
                                     }
-                                        ableModelNo();
-                                        ableCavNum();
-                                        ableLine();
-
+                                    ableModelNo();
+                                    ableLine();
                                 }
                             }
                         });
@@ -763,7 +743,7 @@
                                 "9":attr9,
                                 "10":attr10,
                                 "11":attr11,
-                                "12":cavNum,
+                                "12":attr12,
                                 "13":attr13,
                                 "14":attr14,
                                 "15":attr15,
@@ -842,22 +822,6 @@
             oModelNo.style.zIndex="-1";
         }
 
-        //模号字段可编辑
-        function ableCavNum() {
-            var oCavNum = document.getElementById("cavNum");
-            oCavNum.disabled = "";
-            oCavNum.style.display = "";
-            oCavNum.style.zIndex = "-1";
-        }
-
-        //模号字段不可编辑
-        function disableCavNum() {
-            var oCavNum=document.getElementById("cavNum");
-            oCavNum.disabled="disabled";
-            oCavNum.style.display="";
-            oCavNum.style.zIndex="-1";
-        }
-
         //生产线字段可编辑
         function ableLine() {
             var oLine = document.getElementById("line");
@@ -902,12 +866,13 @@
 
         <!--<label class="dcp-label">班组</label><input id="classgrp" class="cls-attr-input" type="text"><br>-->
         <label class="dcp-label">班组</label><select id="classgrp" class="cls-attr-input">
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
-        </select><br>
+        <option value="A">A</option>
+        <option value="B">B</option>
+        <option value="C">C</option>
+    </select><br>
         <label class="dcp-label">生产线</label><input id="line" class="cls-attr-input" type="text"><br>
-        <label class="dcp-label2">模号</label><input id="modelNo" class="cls-attr-input2" type="number"><label class="dcp-label2">型腔</label><input id="cavNum" class="cls-attr-input2" type="number"><br>
+        <label class="dcp-label">模号</label><input id="modelNo" class="cls-attr-input" type="text"><br>
+
     </div>
 
     <div style="width: 220px;height: 30px;margin-top: 2px">
@@ -938,7 +903,7 @@
         <option></option>
         <option></option>
         <option></option>
-            </select><br>
+    </select><br>
         <label class="dcp-label">班标</label><input id="attr7" class="cls-attr-input" disabled="true" type="text"><br>
         <label class="dcp-label">年标日期</label><select id="attr8" class="cls-attr-input" type="text">
         <option></option>
@@ -948,7 +913,7 @@
         <option></option>
         <option></option>
         <option></option>
-        </select><br>
+    </select><br>
         <label class="dcp-label">质量问题</label><input id="attr9" class="cls-attr-input" type="text"><br>
         <label class="dcp-label">扩充字段10</label><input id="attr10" class="cls-attr-input" type="text"><br>
         <label class="dcp-label">扩充字段11</label><input id="attr11" class="cls-attr-input" type="text"><br>

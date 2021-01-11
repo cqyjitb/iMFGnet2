@@ -61,6 +61,7 @@ var matnr;
 var maktx;
 var mode;
 var mdnum;
+var howei;
 function getDispatchValues() {
     tm = new Date().format("yyyy-MM-dd hh:mm:ss");
     var bg = getTodayDate() + " 23:59:59" ;
@@ -83,7 +84,6 @@ function getDispatchValues() {
     classgrp = document.getElementById("classgrp").options[document.getElementById("classgrp").selectedIndex].value;
     line = document.getElementById("line").value;
     modelNo = document.getElementById("modelNo").value;
-    cavNum = document.getElementById("cavNum").value;
     plant = barcode.substring(0,4);
     dispatch = barcode.substring(0,barcode.length-4);
     dispatchLogicID = barcode.substring(barcode.length-8,barcode.length-4);
