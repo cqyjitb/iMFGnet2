@@ -146,26 +146,6 @@ public class ShounumController extends BaseController {
         shot.setCrdat(sdf.format(new Date()));
         int i = service.insertRow(shot);
 
-        ShotnumAdd shot2 = new ShotnumAdd();
-        shot2.setArbpl(arbpl);
-        shot2.setZpgdbar(zpgdbar);
-        shot2.setWerks(werks);
-        shot2.setPrdDate(erp_date);
-        shot2.setShifts(banc);
-        shot2.setsClass(banz);
-        shot2.setShotStart(Long.parseLong(shot_start));
-        shot2.setShotEnd(Long.parseLong(shot_end));
-        shot2.setCrnam(userName);
-        shot2.setKtext(ktext);
-        shot2.setCreationDate(new Date());
-        shot2.setCreatedBy(Long.parseLong(createdBy));
-        shot2.setMatnr(matnr);
-        shot2.setMaktx(maktx);
-        shot2.setMdno(mode);
-        //shot2.setMdnum(mdnum);
-        shot2.setCrdat(shot.getCrdat());
-        shotnumAddService.insertRow(shot2);
-
         Double sum = 0D;
         Long shotnum = ( shot.getShotEnd() - shot.getShotStart() ) * mdnum;
         InputLog inputLog = inputLogService.querySumInputlogForShotnum(werks,matnr,arbpl,erp_date,banc);

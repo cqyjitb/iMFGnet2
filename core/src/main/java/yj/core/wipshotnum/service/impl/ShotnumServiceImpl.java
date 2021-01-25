@@ -1061,6 +1061,11 @@ public class ShotnumServiceImpl extends BaseServiceImpl<Shotnum> implements ISho
             ShotnumAdd shotnumAdd = new ShotnumAdd();
             shotnumAddMapper.delete(shotnumAdd);
         }
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE,-1);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        List<ShotInput> list2 = selectShotnum2(sdf.format(cal.getTime()));
+        list.addAll(list2);
         return list;
     }
 
