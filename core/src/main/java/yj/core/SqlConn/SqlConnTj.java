@@ -55,6 +55,18 @@ public class SqlConnTj {
         return list;
     }
 
+    public List queryBatchAndPostCode(String barcode) throws Exception{
+        String sql = " select cbatch,cPosCode from jb_data.dbo.WQH_STOCK_FOR_BCP_LYCK_RKD_777_SIGNAL_V where cbatch = ?  and cPosCode is not null and cPosCode != '' ";
+        Connection con = this.getConnection();
+        PreparedStatement pstmt = con.prepareStatement(sql);
+        pstmt.setString(1,barcode);
+        ResultSet rs = pstmt.executeQuery();
+        List<Map<String, Object>> list = new ArrayList<Map<String,Object>>();
+        list = this.processResult(rs);
+        this.closeConnection(con, pstmt);
+        return list;
+    }
+
     public int insertPanDianTmp(Pandiantmp pandiantmp) throws Exception{
         Connection con = this.getConnection();
         String sql = "insert INTO jb_data.dbo.pandiantmp (RCDID, WERKS, CARDNO, CARDH, NUM, OPERATOR, RCDDAT, CREATED_BY, CREATION_DATE,HOWEI,BEIZ) VALUES " +

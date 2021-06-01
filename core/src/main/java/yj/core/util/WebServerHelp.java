@@ -23,49 +23,49 @@ public class WebServerHelp {
 
 
     public WebServerHelp(){
-//        //dev
-//        this.username = "HAPUSER";
-//        this.password = "Yjsap123@CQ";
-//
-//        //dev
-//        this.HanaDRIVER = "com.sap.db.jdbc.Driver";
-//        this.HanaUrl ="jdbc:sap://192.168.3.20:35015?reconnect=true";
-//        this.HanaUserName = "FINEREPORT";
-//        this.HanaPass = "Finereport159";
-//        this.mandt = "300";
-//
-//        //dev
-//        this.mesOraDriver = "oracle.jdbc.OracleDriver";
-//        this.mesOraUrl = "jdbc:oracle:thin:@192.168.0.114:1521:orclyj";
-//        this.mesOraUserName = "mes_query_usr";
-//        this.mesOraPass = "mesapp12345";
-//
-//          this.mesDbUrl = "jdbc:sqlserver://192.168.4.41:1433;databaseName=tn_iot_yz;integratedSecurity=false;";
-//          this.mesDbuser = "sa";
-//          this.mesDbpassword = "Pinknet8";
+        //dev
+        this.username = "HAPUSER";
+        this.password = "Yjsap123@CQ";
 
-
-
-        //prd
-          this.username = "HAPUSER";
-          this.password = "YJhap201707@CQ";
-        //prd
-
+        //dev
         this.HanaDRIVER = "com.sap.db.jdbc.Driver";
-        this.HanaUrl ="jdbc:sap://192.168.3.11:30015?reconnect=true";
-        this.HanaUserName = "SAPABAP1";
-        this.HanaPass = "Handhand0";
-        this.mandt = "800";
+        this.HanaUrl ="jdbc:sap://192.168.3.20:35015?reconnect=true";
+        this.HanaUserName = "FINEREPORT";
+        this.HanaPass = "Finereport159";
+        this.mandt = "300";
 
-
+        //dev
         this.mesOraDriver = "oracle.jdbc.OracleDriver";
-        this.mesOraUrl = "jdbc:oracle:thin:@192.168.4.37:1521:orclyj";
-        this.mesOraPass = "mesapp12345";
+        this.mesOraUrl = "jdbc:oracle:thin:@192.168.0.114:1521:orclyj";
         this.mesOraUserName = "mes_query_usr";
+        this.mesOraPass = "mesapp12345";
 
-        this.mesDbUrl = "jdbc:sqlserver://192.168.4.44:1433;databaseName=tn_iot;integratedSecurity=false;";
+        this.mesDbUrl = "jdbc:sqlserver://192.168.4.41:1433;databaseName=tn_iot_yz;integratedSecurity=false;";
         this.mesDbuser = "sa";
         this.mesDbpassword = "Pinknet8";
+
+
+
+//        //prd
+//          this.username = "HAPUSER";
+//          this.password = "YJhap201707@CQ";
+//        //prd
+//
+//        this.HanaDRIVER = "com.sap.db.jdbc.Driver";
+//        this.HanaUrl ="jdbc:sap://192.168.3.11:30015?reconnect=true";
+//        this.HanaUserName = "SAPABAP1";
+//        this.HanaPass = "Handhand0";
+//        this.mandt = "800";
+//
+//
+//        this.mesOraDriver = "oracle.jdbc.OracleDriver";
+//        this.mesOraUrl = "jdbc:oracle:thin:@192.168.4.37:1521:orclyj";
+//        this.mesOraPass = "mesapp12345";
+//        this.mesOraUserName = "mes_query_usr";
+//
+//        this.mesDbUrl = "jdbc:sqlserver://192.168.4.80:1433;databaseName=tn_iot;integratedSecurity=false;";
+//        this.mesDbuser = "sa";
+//        this.mesDbpassword = "c1!";
 
 
     }

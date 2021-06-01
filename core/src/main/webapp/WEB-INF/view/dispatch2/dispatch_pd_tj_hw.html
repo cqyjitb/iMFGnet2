@@ -193,16 +193,26 @@
                     msg = "";
                     var barcode = document.getElementById("barcode").value;
                     var lenBarcode = barcode.length;
-                    cNum.focus();
-//                    if (lenBarcode != 10 ){
-//                        msg = "流转卡号格式错误！"
-//                        openMsgDialog("错误",msg,"M");
-//                        document.getElementById("barcode").value = "";
-//                        oBcd.focus();
-//                    }else{
-//                        cHowei.focus();
-//                    }
+                    $.ajax({
+                        url: "${base.contextPath}/wip/pandiantmp/queryBatchCode",
+                        type: "get",
+                        data: {
+                            "barcode": barcode,
+                        },
+                        contentType: "application/json; charset=utf-8",
+                        success: function (res) {
+                            if (res.success == true){
+                                var xthowei = JSON.stringify(res.rows[0].cPosCode);
+                                xthowei = xthowei.replace('\"', '');
+                                xthowei = xthowei.replace('\"', '');
+                                document.getElementById("xthowei").value = xthowei;
+                            }else{
 
+                            }
+                        }
+                    });
+
+                    cNum.focus();
                 }
             }
 
@@ -221,7 +231,6 @@
                     cBeiz.focus();
                 }
             }
-
             var bClear = document.getElementById("cleanData");
             bClear.onclick= function(){
                 clearData();
@@ -380,6 +389,7 @@
 //            document.getElementById("vornr").value = "";
             document.getElementById("num").value = "";
             document.getElementById("howei").value = "";
+            document.getElementById("xthowei").value = "";
             document.getElementById("beiz").value = "";
         }
 
@@ -409,7 +419,10 @@
         <!--<br>-->
         <label class="dcp-label">盘点数量</label><input id="num" class="cls-attr-input" type="number"><br>
         <br>
-        <label class="dcp-label">货&nbsp;&nbsp;位</label><input id="howei" class="cls-attr-input" type="number"><br>
+        <!--<label class="dcp-label">系统货位</label><input id="xthowei" class="cls-attr-input" type="text"><br>-->
+        <label class="dcp-label">系统货位</label><input id="xthowei"  style="font-size:10px;width: 120px;height: 20px;background-color: #C9C9C9" disabled="true" type="text"><br>
+        <br>
+        <label class="dcp-label">盘点货位</label><input id="howei" class="cls-attr-input" type="number"><br>
         <br>
         <label class="dcp-label">备&nbsp;&nbsp;注</label><input id="beiz" class="cls-attr-input" type="text"><br>
     </div>

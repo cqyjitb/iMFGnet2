@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="yj.kanb.viewdatawarn.mapper.ViewDataWarnUserMapper">
+    <resultMap id="BaseResultMap" type="yj.kanb.viewdatawarn.dto.ViewDataWarnUser">
+        <result column="usercode" property="userCode" jdbcType="VARCHAR"/>
+        <result column="warn_type" property="warnType" jdbcType="VARCHAR"/>
+        <result column="warn_level" property="warnLevel" jdbcType="VARCHAR"/>
+        <result column="username" property="userName" jdbcType="VARCHAR"/>
+        <result column="werks" property="werks" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <select id="queryBylevelandType" parameterType="yj.kanb.viewdatawarn.dto.ViewDataWarnUser" resultMap="BaseResultMap">
+        select * from yj_view_data_warn_user
+        <where>
+            werks = #{werks}
+            and warn_type = #{warnType}
+            and warn_level = #{warnLevel}
+        </where>
+    </select>
+
+</mapper>

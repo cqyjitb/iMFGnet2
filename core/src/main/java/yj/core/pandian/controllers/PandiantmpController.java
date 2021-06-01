@@ -12,6 +12,7 @@ import yj.core.pandian.dto.Pandiantmp;
 import yj.core.pandian.service.IPandiantmpService;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.UUID;
@@ -36,6 +37,30 @@ import java.util.UUID;
     public ResponseData update(HttpServletRequest request,@RequestBody List<Pandiantmp> dto){
         IRequest requestCtx = createRequestContext(request);
         return new ResponseData(service.batchUpdate(requestCtx, dto));
+    }
+
+    @RequestMapping(value = {"/wip/pandiantmp/queryBatchCode"},method = {RequestMethod.GET})
+    @ResponseBody
+    public ResponseData queryBacthCode(HttpServletRequest request){
+        ResponseData rs = new ResponseData();
+        String barcode = request.getParameter("barcode");
+        SqlConnTj connTj = new SqlConnTj();
+        List list = new ArrayList();
+        try {
+            list = connTj.queryBatchAndPostCode(barcode);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        if (list.size() > 0)
+        {
+            rs.setSuccess(true);
+            rs.setRows(list);
+        }else
+        {
+            rs.setSuccess(false);
+            rs.setMessage("查询存货批号不存在！");
+        }
+        return rs;
     }
 
     @RequestMapping(value = "/wip/pandiantmp/remove")
